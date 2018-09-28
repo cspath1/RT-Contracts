@@ -20,7 +20,7 @@ interface UserContext {
      * @return a [SecuredAction] object
      */
     fun <S, E> require(
-        requiredRoles: List<Role>,
+        requiredRoles: List<UserRole.Role>,
         successCommand: Command<S, E>,
         failureCommand: UserPreconditionFailure
     ): SecuredAction<S, E>
@@ -35,7 +35,7 @@ interface UserContext {
      * @return a [SecuredAction] object
      */
     fun <S, E> requireAny(
-            requiredRoles: List<Role>,
+            requiredRoles: List<UserRole.Role>,
             successCommand: Command<S, E>,
             failureCommand: UserPreconditionFailure
     ): SecuredAction<S, E>
@@ -50,6 +50,6 @@ interface UserContext {
  * Data class that will keep track of all of the missing roles a user
  * had for a request
  *
- * @param missingRoles a [List] of missing [Role] values
+ * @param missingRoles a [List] of missing [UserRole.Role] values
  */
-data class AccessReport(val missingRoles: List<Role>)
+data class AccessReport(val missingRoles: List<UserRole.Role>)

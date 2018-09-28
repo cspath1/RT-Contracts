@@ -20,12 +20,13 @@ data class UserRole(
     constructor(userId: Long, role: Role) : this(role) {
         this.userId = userId
     }
+
+    enum class Role {
+        GUEST,
+        STUDENT,
+        RESEARCHER,
+        MEMBER,
+        ADMIN
+    }
 }
 
-enum class Role {
-    GUEST,
-    STUDENT,
-    RESEARCHER,
-    MEMBER,
-    ADMIN
-}

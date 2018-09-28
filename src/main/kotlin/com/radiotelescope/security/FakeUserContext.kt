@@ -3,13 +3,13 @@ package com.radiotelescope.security
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SecuredAction
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.repository.role.Role
+import com.radiotelescope.repository.role.UserRole
 
 /**
  * Fake implementation of the [UserContext] object for use in in-memory tests
  */
 class FakeUserContext : UserContext {
-    var currentRoles = mutableListOf<Role>()
+    var currentRoles = mutableListOf<UserRole.Role>()
     private var currentUserId = -1L
 
     /**
@@ -21,10 +21,10 @@ class FakeUserContext : UserContext {
      * NOTE: Kotlin can tell if the withAccess anonymous function was called or not, and the [SimpleResult] method it uses can be used in
      * by the method that called this
      */
-    override fun <S, E> require(requiredRoles: List<Role>, successCommand: Command<S, E>, failureCommand: UserPreconditionFailure): SecuredAction<S, E> {
+    override fun <S, E> require(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>, failureCommand: UserPreconditionFailure): SecuredAction<S, E> {
         return object : SecuredAction<S, E> {
             override fun execute(withAccess: (result: SimpleResult<S, E>) -> Unit): AccessReport? {
-                val missingRoles = mutableListOf<Role>()
+                val missingRoles = mutableListOf<UserRole.Role>()
                 var failure = false
 
                 requiredRoles.forEach {
@@ -49,10 +49,10 @@ class FakeUserContext : UserContext {
      * and if any of the required roles are found in the current roles list, then the user's action is allowed. Otherwise
      * we will return an [AccessReport] data class with a list of the missing roles
      */
-    override fun <S, E> requireAny(requiredRoles: List<Role>, successCommand: Command<S, E>, failureCommand: UserPreconditionFailure): SecuredAction<S, E> {
+    override fun <S, E> requireAny(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>, failureCommand: UserPreconditionFailure): SecuredAction<S, E> {
         return object : SecuredAction<S, E> {
             override fun execute(withAccess: (result: SimpleResult<S, E>) -> Unit): AccessReport? {
-                val missingRoles = mutableListOf<Role>()
+                val missingRoles = mutableListOf<UserRole.Role>()
 
                 requiredRoles.forEach {
                     if (currentRoles.contains(it)) {
@@ -86,7 +86,7 @@ class FakeUserContext : UserContext {
      */
     fun login(userId: Long) {
         currentUserId = userId
-        currentRoles.add(Role.GUEST)
+        currentRoles.add(UserRole.Role.GUEST)
     }
 
     /**
