@@ -2,6 +2,7 @@ package com.radiotelescope.security
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.contracts.SimpleResult
 
 interface UserPreconditionFailure : Command<Nothing?, Multimap<UserPreconditionFailureTag, String>> {
     val errors: Multimap<UserPreconditionFailureTag, String>
@@ -16,8 +17,8 @@ interface UserPreconditionFailure : Command<Nothing?, Multimap<UserPreconditionF
      */
     fun addErrors(errors: Multimap<UserPreconditionFailureTag, String>)
 
-    override fun execute(): Pair<Nothing?, Multimap<UserPreconditionFailureTag, String>> {
-        return Pair(null, errors)
+    override fun execute(): SimpleResult<Nothing?, Multimap<UserPreconditionFailureTag, String>> {
+        return SimpleResult(null, errors)
     }
 }
 
