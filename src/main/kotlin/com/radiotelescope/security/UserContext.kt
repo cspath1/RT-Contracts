@@ -2,7 +2,6 @@ package com.radiotelescope.security
 
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SecuredAction
-import com.radiotelescope.repository.role.Role
 import com.radiotelescope.repository.role.UserRole
 
 /**
