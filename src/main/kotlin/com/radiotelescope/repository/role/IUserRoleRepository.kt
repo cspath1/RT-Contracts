@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository
  * Spring Repository Interface for the [UserRole] Entity
  */
 @Repository
-interface IUserRoleRepository : PagingAndSortingRepository<UserRole, Long>
+interface IUserRoleRepository : PagingAndSortingRepository<UserRole, Long> {
+    fun findAllByUserId(userId: Long): List<UserRole>
+}

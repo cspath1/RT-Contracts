@@ -1,9 +1,5 @@
-package com.radiotelescope.project.contracts
+package com.radiotelescope.contracts
 
-/**
- * Interface for Create Request objects
- */
-
-internal interface BaseCreateRequest<ENTITY>{
+internal interface BaseCreateRequest<ENTITY> {
     fun toEntity(): ENTITY
 }
