@@ -5,7 +5,8 @@ Back-end architecture for the Radio Telescope Senior Software Design Project for
 * https://dev.mysql.com/downloads/mysql/
 * username and password for the localhost db should be "root"
 * start mysql - "mysql.server start"
-** use "stop" and "restart" when needed
+* for linux, the command "sudo systemctl start mysql" or "sudo systemctl start mysqld" depedning on the linux distro
+* use "stop" and "restart" when needed
 
 2. Install Gradle
 * https://gradle.org/install
