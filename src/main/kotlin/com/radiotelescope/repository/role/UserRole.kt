@@ -26,6 +26,9 @@ data class UserRole(
     @Column(name = "user_id")
     var userId: Long? = null
 
+    @Column(name = "accepted")
+    var accepted: Boolean = false
+
     constructor(userId: Long, role: Role) : this(role) {
         this.userId = userId
     }

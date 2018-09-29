@@ -84,6 +84,9 @@ class Register(
                 userId = user.id
         )
 
+        // TODO: Change the accepted field to false once the admin can accept/decline a user's role
+        role.accepted = true
+
         userRoleRepo.save(role)
     }
 
@@ -103,6 +106,9 @@ class Register(
             val categoryOfService: UserRole.Role
     ) : BaseCreateRequest<User> {
         override fun toEntity(): User {
+            // Uses SHA-1 by default. Adds the salt value (secret)
+            // to the password and encrypts it 50 times, resulting
+            // in a hash size of 256
             val passwordEncoder = Pbkdf2PasswordEncoder(
                    "YCAS2018",
                     50,
