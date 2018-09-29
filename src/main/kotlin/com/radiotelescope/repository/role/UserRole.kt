@@ -1,7 +1,16 @@
 package com.radiotelescope.repository.role
 
+import com.radiotelescope.repository.user.User
+
 import javax.persistence.*
 
+/**
+ * Entity class used to store a [User] Entity's roles. These roles
+ * are used with Spring Security to validate the actions a [User] is
+ * able to execute.
+ *
+ * This Entity correlates to the UserRole SQL Table.
+ */
 @Entity
 @Table(name = "user_role")
 data class UserRole(
