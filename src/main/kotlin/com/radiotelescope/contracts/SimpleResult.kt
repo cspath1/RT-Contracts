@@ -1,3 +1,3 @@
 package com.radiotelescope.contracts
 
-class SimpleResult<out S, out E>(success: S?, error: E?)
+data class SimpleResult<out S, out E>(val success: S?, val error: E?)
