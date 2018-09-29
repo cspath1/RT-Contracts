@@ -30,6 +30,7 @@ internal class BaseUserFactoryTest {
 
     @Test
     fun register() {
+        // Call the factory method
         val cmd = factory.register(
                 request = Register.Request(
                         firstName = "Cody",
@@ -43,6 +44,7 @@ internal class BaseUserFactoryTest {
                 )
         )
 
+        // Ensure it is the correct command
         assertTrue(cmd is Register)
     }
 }
