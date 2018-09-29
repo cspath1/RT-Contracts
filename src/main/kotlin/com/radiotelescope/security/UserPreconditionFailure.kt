@@ -23,6 +23,5 @@ interface UserPreconditionFailure : Command<Nothing?, Multimap<UserPreconditionF
 }
 
 enum class UserPreconditionFailureTag {
-    MISSING_ROLE,
-    MISSING_PERMISSION
+    MISSING_ROLE
 }
