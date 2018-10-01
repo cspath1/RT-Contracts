@@ -10,5 +10,6 @@ enum class ErrorTag {
     PASSWORD_CONFIRM,
     PROFILE_PICTURE,
     ACTIVE,
-    STATUS
+    STATUS,
+    CATEGORY_OF_SERVICE
 }
