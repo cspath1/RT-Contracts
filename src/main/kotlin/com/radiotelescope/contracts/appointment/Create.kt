@@ -16,13 +16,14 @@ class Create(
     private val responder: CreateResponder<ErrorTag>,
     private val userRepo: IUserRepository,
     private val appointmentRepo: IAppointmentRepository
-) : Command{
+) : Command<Long, Multimap<ErrorTag,String>>{
     override fun execute(){
         val errors = valideRequest()
         if (!errors.isEmpty) {
-            responder.onFailure(errors)
+            return SimpleResult(null, errors)
         } else {
             val newAppointment = appointmentRepo.save(request.toEntity())
+            return SimpleResult(appointment.id, null)
         }
     }
 
@@ -48,8 +49,8 @@ class Create(
     data class Request(
             val userId: Long,
             val type: String,
-            val startTime: String,
-            val endTime: String,
+            val startTime: Date,
+            val endTime: Date,
             val telescopeId: Int,
             val celestialBodyId: Int,
             val coordinates: Int,
