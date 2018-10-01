@@ -72,7 +72,7 @@ class FakeUserContext : UserContext {
      * Test implementation of the [UserContext.currentUserId] method that will return the [currentUserId] if it is greater than 0
      * (meaning they are logged in), and -1 otherwise (signifying they are not logged in
      */
-    override fun currentUserId(): Long {
+    override fun currentUserId(): Long? {
         return if (currentUserId >= 0) {
             currentUserId
         } else {
