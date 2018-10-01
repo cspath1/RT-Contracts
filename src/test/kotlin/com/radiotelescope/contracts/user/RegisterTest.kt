@@ -283,7 +283,7 @@ internal class RegisterTest {
 
     @Test
     fun testPasswordsDoNotMatch_Failure() {
-        // Set the password to blank
+        // Set the password confirm to something different than the password
         val requestCopy = baseRequest.copy(
                 passwordConfirm = "BeepBoopBop"
         )
@@ -299,7 +299,29 @@ internal class RegisterTest {
         assertNull(id)
         assertNotNull(error)
 
-        // Ensure it failed because of the password
+        // Ensure it failed because of the password confirm not matching
         assertTrue(error!![ErrorTag.PASSWORD_CONFIRM].isNotEmpty())
+    }
+
+    @Test
+    fun testPasswordRegexNotAMatch_Failure() {
+        // Set the password to something that will not pass validation
+        val requestCopy = baseRequest.copy(
+                password = "Password"
+        )
+
+        // Execute the command
+        val (id, error) = Register(
+                request = requestCopy,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Should have failed
+        assertNull(id)
+        assertNotNull(error)
+
+        // Ensure it failed because of the password
+        assertTrue(error!![ErrorTag.PASSWORD].isNotEmpty())
     }
 }
