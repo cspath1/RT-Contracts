@@ -106,8 +106,8 @@ class Register(
     ) : BaseCreateRequest<User> {
         override fun toEntity(): User {
             // Uses SHA-1 by default. Adds the salt value (secret)
-            // to the password and encrypts it 50 times, resulting
-            // in a hash size of 256
+            // to the password and encrypts it 50 times, specifying
+            // a hash size of 256
             val passwordEncoder = Pbkdf2PasswordEncoder(
                    "YCAS2018",
                     50,

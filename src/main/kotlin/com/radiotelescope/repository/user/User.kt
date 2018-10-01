@@ -66,4 +66,9 @@ data class User(
         const val passwordErrorMessage = "Passwords must be 8 characters long and have 3 or 4 of the following: " +
                 "Upper Case, Lower Case, Special Character, Digit"
     }
+
+    @PostUpdate
+    fun logUpdateEvent() {
+
+    }
 }
