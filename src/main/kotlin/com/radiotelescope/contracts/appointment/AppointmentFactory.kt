@@ -18,7 +18,7 @@ interface AppointmentFactory
 {
 
 
-    fun create(request: Create.Request responder: CreateResponder<ErrorTag>):Command
+    fun create(request: Create.Request, responder: CreateResponder<ErrorTag>):Command
 
     fun delete(id:Long, responder: DeleteResponder<ErrorTag>):Command
 
