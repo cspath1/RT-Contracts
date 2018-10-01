@@ -42,7 +42,7 @@ interface UserContext {
     /**
      * Abstract method to grab the user id of the currently logged in user
      */
-    fun currentUserId(): Long
+    fun currentUserId(): Long?
 }
 
 /**
