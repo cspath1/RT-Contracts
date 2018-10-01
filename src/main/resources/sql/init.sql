@@ -1,5 +1,14 @@
 USE radio_telescope;
 
+DROP TABLE IF EXISTS telescope;
+CREATE TABLE telescope (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  online TINYINT(1) DEFAULT '1',
+
+  PRIMARY KEY (id),
+  KEY online_idx(online)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS user;
 CREATE TABLE user (
   id INT(11) NOT NULL AUTO_INCREMENT,
