@@ -48,8 +48,6 @@ class Register(
     private fun validateRequest(): Multimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        // TODO: Add password constraints
-
         with(request) {
             if (firstName.isBlank())
                 errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
@@ -86,7 +84,7 @@ class Register(
         )
 
         // TODO: Change the accepted field to false once the admin can accept/decline a user's role
-        role.accepted = true
+        role.approved = true
 
         userRoleRepo.save(role)
     }
