@@ -35,4 +35,13 @@ internal class UserTest {
         // The User Entity should exist
         Assert.assertTrue(exists)
     }
+
+    @Test
+    fun testFindByEmail() {
+        // Use the variable set in the set up method
+        val user = userRepo.findByEmail(email)
+
+        // The user val should not be null
+        Assert.assertNotNull(user)
+    }
 }
