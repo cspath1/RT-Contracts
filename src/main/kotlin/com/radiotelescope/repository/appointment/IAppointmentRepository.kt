@@ -13,16 +13,14 @@ Spring Repository Interface for the Appointment Entity
 
  */
 @Repository
-interface AppointmentRepository : PagingAndSortingRepository<Appointment, Long> {
+interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long> {
 /*
-find appointment by userId and by appointmentID
+find appointment by userId
 
 
  */
 
-    fun findApptByApptID(): Appointment?
-
-    fun findApptByUserID(): Appointment?
+    fun findByUserId(userId: Long): List<Appointment>
 
 
 }

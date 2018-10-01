@@ -5,7 +5,7 @@ import com.radiotelescope.contract.responder.CreateResponder
 import com.radiotelescope.contract.responder.DeleteResponder
 import com.radiotelescope.contract.responder.RetrieveResponder
 import com.radiotelescope.contract.responder.UpdateResponder
-import com.radiotelescope.repository.appointment.AppointmentRepository
+import com.radiotelescope.repository.appointment.IAppointmentRepository
 
 class BaseAppointmentFactory(
     private val apptRepo: AppointmentRepository
