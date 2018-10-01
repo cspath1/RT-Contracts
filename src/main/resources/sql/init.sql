@@ -1,5 +1,22 @@
 USE radio_telescope;
 
+DROP TABLE IF EXISTS log;
+CREATE TABLE log(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11),
+  affected_table ENUM('USER', 'APPOINTMENT') NOT NULL,
+  action ENUM('CREATE', 'RETRIEVE', 'UPDATE', 'DELETE') NOT NULL,
+  timestamp DATETIME NOT NULL,
+  affected_record_id INT(11) NOT NULL,
+
+  PRIMARY KEY (id),
+  KEY user_id_idx (user_id),
+  KEY affected_table_idx (affected_table),
+  KEY action_idx (action),
+  KEY timestamp_idx (timestamp),
+  KEY affected_record_id_idx (affected_record_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS user;
 CREATE TABLE user (
   id INT(11) NOT NULL AUTO_INCREMENT,
