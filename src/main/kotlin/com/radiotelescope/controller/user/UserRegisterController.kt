@@ -1,9 +1,8 @@
 package com.radiotelescope.controller.user
 
-import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestController
-import com.radiotelescope.controller.model.RegisterForm
+import com.radiotelescope.controller.model.user.RegisterForm
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.toStringMap
 import org.springframework.web.bind.annotation.PostMapping
