@@ -18,10 +18,11 @@ apply plugin: 'kotlin-spring'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
 
 group = 'com.radiotelescope'
 
-version = '0.0.2'
+version = '0.0.3'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -56,6 +57,38 @@ processResources {
 repositories {
 	mavenCentral()
 	mavenLocal()
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				includes = ['com.radiotelescope.contract.*',
+							'com.radiotelescope.repository.*']
+
+				minimum = 0.7
+			}
+
+			rule {
+				element = 'PACKAGE'
+				includes = ['com.radiotelescope.contract.*',
+							'com.radiotelescope.repository.*']
+
+				limit {
+					counter = 'CLASS'
+					value = 'COVEREDRATIO'
+					minimum = 0.8
+				}
+			}
+		}
+	}
+	dependsOn test
+}
+
+task verify(type: GradleBuild) {
+	group 'Verification'
+	description 'Verify the build by building, testing, and validation coverage ratio (80 or above).'
+	tasks = ['build', 'test', 'jacocoTestCoverageVerification']
 }
 
 
