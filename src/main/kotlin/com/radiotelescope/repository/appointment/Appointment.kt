@@ -15,19 +15,19 @@ data class Appointment(
         @Column(name = "type", nullable = false)
         var type: String,
         @Column(name = "start_time", nullable = false, unique = true)
-        var startTime: String,
+        var startTime: Date,
         @Column(name = "end_time", nullable = false, unique = true)
-        var endTime: String,
+        var endTime: Date,
         @Column(name = "telescope_id", nullable = false)
-        var telescopeId: Int,
+        var telescopeId: Long,
         @Column(name = "celestial_body_id", nullable = false)
-        var celestialBodyId: Int,
+        var celestialBodyId: Long,
         @Column(name = "coordinates", nullable = false)
         var coordinates: Int,
         @Column(name = "receiver", nullable = false)
         var receiver: String,
         @Column(name = "public", nullable = false)
-        var startTime: Boolean
+        var public: Boolean
 
 ) {
     @Id
@@ -39,21 +39,11 @@ data class Appointment(
     @Enumerated(value = EnumType.STRING)
     var status: Appointment.Status = Status.Requested
 
-    @Column(name = "state")
-    @Enumerated(value = EnumType.STRING)
-    var state: Appointment.State = State.Waiting
-
     enum class Status {
         Requested,
         Scheduled,
         InProgress,
         Completed,
         Canceled
-    }
-        /*
-        Not sure on the possible values for the state enum - JM
-         */
-    enum class State{
-        Waiting
     }
 }
