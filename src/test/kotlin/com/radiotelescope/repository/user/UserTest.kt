@@ -44,4 +44,31 @@ internal class UserTest {
         // The user val should not be null
         Assert.assertNotNull(user)
     }
+
+    @Test
+    fun testPasswordRegex() {
+        // All lowercase, under 8
+        Assert.assertFalse("password".matches(User.passwordRegex))
+
+        // One uppercase, one lowercase, under 8
+        Assert.assertFalse("Password".matches(User.passwordRegex))
+
+        // One of each, under 8
+        Assert.assertFalse("1qW#".matches(User.passwordRegex))
+
+        // One uppercase, one lowercase, one digit, over 8
+        Assert.assertTrue("Password1".matches(User.passwordRegex))
+
+        // One uppercase, one lowercase, one digit, over 8
+        Assert.assertTrue("GoodPassword1".matches(User.passwordRegex))
+
+        // One uppercase, one lowercase, one special character, over 8
+        Assert.assertTrue("GoodPassword?".matches(User.passwordRegex))
+
+        // One lowercase, one special character, one digit, over 8
+        Assert.assertTrue("goodpassword?1".matches(User.passwordRegex))
+
+        // All four, over 8
+        Assert.assertTrue("GoodPassword!?3".matches(User.passwordRegex))
+    }
 }

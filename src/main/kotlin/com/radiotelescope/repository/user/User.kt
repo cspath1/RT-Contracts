@@ -56,5 +56,14 @@ data class User(
                             + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
             ).matcher(email).matches()
         }
+
+        // Any of the following must also be over 8
+        val passwordRegex = Regex("^((?=.*?[A-Z])(?=.*?[a-z])(?=.*?\\d)|" + // Uppercase, lowercase, digit
+                "(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^a-zA-Z0-9])|" + // Uppercase, lowercase, special characters
+                "(?=.*?[A-Z])(?=.*?\\d)(?=.*?[^a-zA-Z0-9])|" + // Uppercase, digit, special characters
+                "(?=.*?[a-z])(?=.*?\\d)(?=.*?[^a-zA-Z0-9])).{8,}\$") // lowercase, digit, special characters
+
+        const val passwordErrorMessage = "Passwords must be 8 characters long and have 3 or 4 of the following: " +
+                "Upper Case, Lower Case, Special Character, Digit"
     }
 }

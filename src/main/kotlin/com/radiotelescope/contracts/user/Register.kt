@@ -69,7 +69,8 @@ class Register(
                 errors.put(ErrorTag.PASSWORD, "Password may not be blank")
             if (password != passwordConfirm)
                 errors.put(ErrorTag.PASSWORD_CONFIRM, "Passwords do not match")
-
+            if (!password.matches(User.passwordRegex))
+                errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
         }
 
         return errors

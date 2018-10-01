@@ -11,8 +11,8 @@ class RegisterFormTest {
             lastName = "Spath",
             email = "cspath1@ycp.edu",
             phoneNumber = "717-823-2216",
-            password = "ValidPassword",
-            passwordConfirm = "ValidPassword",
+            password = "ValidPassword1",
+            passwordConfirm = "ValidPassword1",
             company = "York College of PA",
             categoryOfService = UserRole.Role.GUEST
     )
