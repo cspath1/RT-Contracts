@@ -5,13 +5,13 @@ package com.radiotelescope.contracts.appointment
  */
 
 enum class ErrorTag{
+    ID,
     USER_ID,
-    TYPE,
     START_TIME,
     END_TIME,
+    STATE,
+    TYPE,
     TELESCOPE_ID,
     CELESTIAL_BODY_ID,
     COORDINATES,
-    RECEIVER,
-    PUBLIC
 }
