@@ -7,7 +7,7 @@ CREATE TABLE log(
   affected_table ENUM('USER', 'APPOINTMENT') NOT NULL,
   action ENUM('CREATE', 'RETRIEVE', 'UPDATE', 'DELETE') NOT NULL,
   timestamp DATETIME NOT NULL,
-  affected_record_id INT(11) NOT NULL,
+  affected_record_id INT(11),
 
   PRIMARY KEY (id),
   KEY user_id_idx (user_id),

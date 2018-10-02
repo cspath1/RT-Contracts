@@ -14,7 +14,7 @@ data class Log(
         @Column(name = "timestamp")
         var timestamp: Date,
         @Column(name = "affected_record_id")
-        var affectedRecordId: Long = 0
+        var affectedRecordId: Long? = null
 ) {
 
     @Id

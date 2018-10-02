@@ -32,7 +32,7 @@ class Logger(
             var affectedTable: Log.AffectedTable,
             var action: Log.Action,
             var timestamp: Date,
-            var affectedRecordId: Long
+            var affectedRecordId: Long?
     ) : BaseCreateRequest<Log> {
         override fun toEntity(): Log {
             return Log(
