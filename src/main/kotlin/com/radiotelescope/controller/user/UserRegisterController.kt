@@ -20,7 +20,10 @@ class UserRegisterController(
     @PostMapping(value = ["/users/register"])
     fun execute(@RequestBody form: RegisterForm): Result {
         // If the form validation fails, respond with errors
-        form.validateRequest()?.let { 
+        form.validateRequest()?.let {
+            // Create error logs
+            logger.createErrorLogs(errorLog(), it.toStringMap())
+
             result = Result(errors = it.toStringMap())
         } ?:
         // Otherwise execute the factory command
@@ -38,6 +41,9 @@ class UserRegisterController(
             }
             // Otherwise, it was a failure
             simpleResult.error?.let {
+                // Create error logs
+                logger.createErrorLogs(errorLog(), it.toStringMap())
+
                 result = Result(
                         errors = it.toStringMap()
                 )
@@ -53,6 +59,15 @@ class UserRegisterController(
                 action = Log.Action.CREATE,
                 timestamp = Date(),
                 affectedRecordId = id
+        )
+    }
+
+    fun errorLog(): Logger.Info {
+        return Logger.Info(
+                affectedTable = Log.AffectedTable.USER,
+                action = Log.Action.CREATE,
+                timestamp = Date(),
+                affectedRecordId = null
         )
     }
 }

@@ -11,6 +11,8 @@ data class Error(
         @JoinColumn(name = "log_id")
         @JsonIgnore
         var log: Log,
+        @Column(name = "key_field")
+        var field: String,
         @Column(name = "message")
         var message: String
 ) {

@@ -4,10 +4,12 @@ DROP TABLE IF EXISTS error;
 CREATE TABLE error(
   id INT(11) NOT NULL AUTO_INCREMENT,
   log_id INT(11) NOT NULL,
+  key_field VARCHAR(50) NOT NULL,
   message VARCHAR(200) NOT NULL,
 
   PRIMARY KEY (id),
   KEY log_id_idx (log_id),
+  KEY field_idx (key_field),
   KEY message_idx (message)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
