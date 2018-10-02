@@ -41,6 +41,7 @@ data class Log(
         CREATE,
         RETRIEVE,
         UPDATE,
-        DELETE
+        DELETE,
+        LOG_IN
     }
 }
