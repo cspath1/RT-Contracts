@@ -1,5 +1,16 @@
 USE radio_telescope;
 
+DROP TABLE IF EXISTS error;
+CREATE TABLE error(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  log_id INT(11) NOT NULL,
+  message VARCHAR(200) NOT NULL,
+
+  PRIMARY KEY (id),
+  KEY log_id_idx (log_id),
+  KEY message_idx (message)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS log;
 CREATE TABLE log(
   id INT(11) NOT NULL AUTO_INCREMENT,
