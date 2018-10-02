@@ -22,4 +22,15 @@ class BaseUserFactory(
                 userRoleRepo = userRoleRepo
         )
     }
+
+    /**
+     * Override of the [UserFactory.update] method that will return a [Update] command object
+     */
+    override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return Update(
+                request = request,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        )
+    }
 }

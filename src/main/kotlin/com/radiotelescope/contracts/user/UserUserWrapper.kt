@@ -39,6 +39,19 @@ class UserUserWrapper(
                         userRoleRepo = userRoleRepo
                 )
             }
+
+            /**
+             *
+             */
+            // TODO: IMPLEMENT validation?
+            override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>> {
+                return Update(
+                        request = request,
+                        userRepo = userRepo,
+                        userRoleRepo = userRoleRepo
+
+                )
+            }
         }
     }
 }

@@ -10,4 +10,5 @@ import com.radiotelescope.contracts.Command
  */
 interface UserFactory {
     fun register(request: Register.Request): Command<Long, Multimap<ErrorTag, String>>
+    fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
 }
