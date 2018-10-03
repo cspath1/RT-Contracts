@@ -47,7 +47,7 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
 
     @Test
     fun testValidRegistration_Success() {
-        wrapper.factory(failure).register(
+        wrapper.register(
                 request = baseCreateRequest
         ).execute()
         assertTrue(executed)
