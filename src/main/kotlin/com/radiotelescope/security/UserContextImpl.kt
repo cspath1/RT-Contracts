@@ -24,7 +24,7 @@ class UserContextImpl(
      * all of the roles in the requiredRoles parameter. If they do, it will call the success command.
      * If not, it will return the list of missing roles
      */
-    override fun <S, E> require(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>, failureCommand: UserPreconditionFailure): SecuredAction<S, E> {
+    override fun <S, E> require(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>): SecuredAction<S, E> {
         var missingRoles: MutableList<UserRole.Role>? = mutableListOf()
 
         // If the authentication object exists, we can check the user's roles
@@ -82,7 +82,7 @@ class UserContextImpl(
      * any of the roles in the requiredRoles parameter. If they do, it will call the success command.
      * If not, it will return a list of the missing roles
      */
-    override fun <S, E> requireAny(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>, failureCommand: UserPreconditionFailure): SecuredAction<S, E> {
+    override fun <S, E> requireAny(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>): SecuredAction<S, E> {
         var hasAnyRole = false
 
         // If the authentication object exists, we can actually check the roles

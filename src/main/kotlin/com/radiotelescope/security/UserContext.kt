@@ -20,8 +20,7 @@ interface UserContext {
      */
     fun <S, E> require(
         requiredRoles: List<UserRole.Role>,
-        successCommand: Command<S, E>,
-        failureCommand: UserPreconditionFailure
+        successCommand: Command<S, E>
     ): SecuredAction<S, E>
 
     /**
@@ -35,8 +34,7 @@ interface UserContext {
      */
     fun <S, E> requireAny(
             requiredRoles: List<UserRole.Role>,
-            successCommand: Command<S, E>,
-            failureCommand: UserPreconditionFailure
+            successCommand: Command<S, E>
     ): SecuredAction<S, E>
 
     /**
