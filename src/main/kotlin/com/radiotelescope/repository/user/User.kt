@@ -1,8 +1,9 @@
 package com.radiotelescope.repository.user
 
+import com.radiotelescope.repository.role.UserRole
 import java.util.regex.Pattern
 import javax.persistence.*
-
+import com.google.common.collect.Multimap
 /**
  * Entity Class representing a User for the web-application
  *
@@ -18,7 +19,12 @@ data class User(
         @Column(name = "email_address", nullable = false, unique = true)
         var email: String,
         @Column(name = "password", nullable = false)
-        var password: String
+        var password: String,
+
+        var role: String,
+
+        @Column(name="minLeft", nullable = false)
+        var minLeft: Int
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,5 +71,17 @@ data class User(
 
         const val passwordErrorMessage = "Passwords must be 8 characters long and have 3 or 4 of the following: " +
                 "Upper Case, Lower Case, Special Character, Digit"
+
+
+
+
+
+
+
     }
+
+
+
+
+
 }
