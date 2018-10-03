@@ -53,9 +53,7 @@ internal class BaseAppointmentFactoryTest
         val uid: Long = 50
         u.id = uid
 
-
-        @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic)  values ('{a.type}', '{a.assocUserId}', '{a.d}', '{a.dd}', '{apptStatus}', '{a.telescopeId}', '{a.celestialBodyId}', '{a.orientationId}', '{a.receiver}', '{a.isPublic}')")
-        queries.insertAppt()
+    queries.insertAppt2()
 
     }
 
@@ -93,7 +91,11 @@ internal class BaseAppointmentFactoryTest
         fun insertAppt():Appointment
 
 
-   //     @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic) values ('type2', '500', ')
+
+        @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic)  values ('{a.type}', '{a.assocUserId}', '{a.d}', '{a.dd}', '{apptStatus}', '{a.telescopeId}', '{a.celestialBodyId}', '{a.orientationId}', '{a.receiver}', '{a.isPublic}')")
+        fun insertAppt2():Appointment
+
+        //     @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic) values ('type2', '500', ')
 
     }
 }
