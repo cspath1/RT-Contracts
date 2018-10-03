@@ -1,36 +1,32 @@
+package com.radiotelescope.contracts.appointment;
+
+import com.google.common.collect.Multimap
 import com.radiotelescope.repository.appointment
 
-import com.radiotelescope.contract.Command
-import com.radiotelescope.contract.responder.CreateResponder
-import com.radiotelescope.contract.responder.DeleteResponder
-import com.radiotelescope.contract.responder.RetrieveResponder
-import com.radiotelescope.contract.responder.UpdateResponder
+import com.radiotelescope.contracts.Command
+import com.radiotelescope.repository.user.User
 
 
 /*
 So for the Appointment entity we have the findByAppointmentId and findByUsernameId command objects
-
-
 
  */
 
 interface AppointmentFactory
 {
 
+    fun create(request: Create.Request):Command<Long, Multimap<ErrorTag, String>>
 
-    fun create(request: Create.Request, responder: CreateResponder<ErrorTag>):Command
+    fun delete(id:Long):Command<Long, Multimap<ErrorTag,String>>
 
-    fun delete(id:Long, responder: DeleteResponder<ErrorTag>):Command
+    fun retrieve(id:Long):Command<Long, Multimap<ErrorTag,String>>
 
-    fun retrieve(id:Long, responder: RetrieveResponder<UserInfo, ErrorTag>):Command
+    fun retrieveList(u: User):Command <Long, Multimap<ErrorTag,String>>
 
-    fun retrieve(request: Validate.Request, responder: RetrieveResponder<UserInfo, ErrorTag>):Command
+    //For later
+    /*
+    fun retrieve(request: Validate.Request):Command
 
-    fun update(request: Update.Request, responder:UpdateResponder<ErrorTag>):Command
-
-
-
-
-
-
+    fun update(request: Update.Request):Command
+    */
 }
