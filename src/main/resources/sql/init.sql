@@ -11,6 +11,7 @@ CREATE TABLE user (
   password VARCHAR(256),
   active TINYINT(1) DEFAULT '0',
   status ENUM('Inactive', 'Active', 'Banned', 'Deleted'),
+  minLeft int
 
   PRIMARY KEY (id),
   UNIQUE KEY email_address (email_address),
@@ -33,4 +34,50 @@ CREATE TABLE user_role (
   KEY user_id_idx (user_id),
   KEY role_idx (role),
   KEY approved_idx (approved)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+drop table if exists appointment;
+create table appointment(
+id int primary key,
+type varchar(100),
+assocUserId int,
+starttime timestamp,
+endtime timestamp,
+
+status ENUM('Requested',
+        'Scheduled',
+        'InProgress',
+        'Completed',
+        'Canceled'),
+
+telescopeId int,
+celestialBodyId int,
+orientationId int,
+receiver varchar(100),
+isPublic TINYINT(1) DEFAULT '1',
+
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+drop table if exists orientation;
+create table orientation(
+
+id int,
+azimuth double,
+elevation double
+
+foreign key id references appointment(orientationId)
+
+);
+
+
+drop table if exists celestialBody;
+create table celestialBody(
+id int,
+name varchar(64),
+foreign key id references appointment(celestialBodyId)
+
+ );
+
+create index id on appointment(id, telescopeId, celestialBodyId, isPublic, assocUserId);
