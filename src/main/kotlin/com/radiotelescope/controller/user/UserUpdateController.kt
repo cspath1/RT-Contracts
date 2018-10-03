@@ -1,6 +1,5 @@
 package com.radiotelescope.controller.user
 
-import com.radiotelescope.contracts.user.Update
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.user.UpdateForm
@@ -20,11 +19,12 @@ class UserUpdateController(
         form.validateRequest()?.let {
             result = Result(errors = it.toStringMap())
         } ?: let { _ ->
-            val simpleResult = userWrapper.factory(userPreconditionFailure()).update(
+            userWrapper.update(
                     request = form.toRequest()
-            ).execute()
-            simpleResult.success?.let { result = Result(it) }
-            simpleResult.error?.let { result = Result(it) }
+            ) { it ->
+                it.success?.let { result = Result(data = it) }
+                it.error?.let { result = Result(errors = it.toStringMap()) }
+            }?.let { result = Result(errors = it.toStringMap()) }
         }
 
         return result

@@ -18,7 +18,7 @@ class UserRegisterController(
         form.validateRequest()?.let { 
             result = Result(errors = it.toStringMap())
         } ?: let { _ ->
-            val simpleResult = userWrapper.factory(userPreconditionFailure()).register(
+            val simpleResult = userWrapper.register(
                     request = form.toRequest()
             ).execute()
             simpleResult.success?.let { result = Result(it) }
