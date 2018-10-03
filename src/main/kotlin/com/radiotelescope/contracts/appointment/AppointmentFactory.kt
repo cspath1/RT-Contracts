@@ -1,7 +1,6 @@
 package com.radiotelescope.contracts.appointment;
 
 import com.google.common.collect.Multimap
-
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.user.User
 
