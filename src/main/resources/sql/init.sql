@@ -21,13 +21,15 @@ CREATE TABLE log(
   action ENUM('CREATE', 'RETRIEVE', 'UPDATE', 'DELETE') NOT NULL,
   timestamp DATETIME NOT NULL,
   affected_record_id INT(11),
+  success TINYINT(1) DEFAULT '1',
 
   PRIMARY KEY (id),
   KEY user_id_idx (user_id),
   KEY affected_table_idx (affected_table),
   KEY action_idx (action),
   KEY timestamp_idx (timestamp),
-  KEY affected_record_id_idx (affected_record_id)
+  KEY affected_record_id_idx (affected_record_id),
+  KEY success_idx (success)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS user;

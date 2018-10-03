@@ -28,6 +28,7 @@ class Logger(
         userContext.currentUserId()?.let {
             log.userId = it
         }
+        log.isSuccess = true
         logRepo.save(log)
     }
 
@@ -36,6 +37,7 @@ class Logger(
         userContext.currentUserId()?.let {
             log.userId = it
         }
+        log.isSuccess = false
         logRepo.save(log)
 
         errors.keys.forEach {

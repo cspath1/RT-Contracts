@@ -32,6 +32,9 @@ data class Log(
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     var errors: MutableSet<Error> = mutableSetOf()
 
+    @Column(name = "success")
+    var isSuccess: Boolean = true
+
     enum class AffectedTable {
         USER,
         APPOINTMENT
