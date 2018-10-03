@@ -36,48 +36,20 @@ CREATE TABLE user_role (
   KEY approved_idx (approved)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-
-drop table if exists appointment;
-create table appointment(
-id int primary key,
-type varchar(100),
-assocUserId int,
-starttime timestamp,
-endtime timestamp,
-
-status ENUM('Requested',
+DROP TABLE IF EXISTS appointment;
+CREATE TABLE appointment(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  start_time DATETIME NOT NULL,
+  end_time DATETIME NOT NULL,
+  status ENUM('Requested',
         'Scheduled',
         'InProgress',
         'Completed',
         'Canceled'),
-
-telescopeId int,
-celestialBodyId int,
-orientationId int,
-receiver varchar(100),
-isPublic TINYINT(1) DEFAULT '1',
+  telescope_id INT(11) NOT NULL,
+  celestial_body_id INT(11) NOT NULL,
+  orientation_id INT(11) NOT NULL,
+  public TINYINT(1) DEFAULT '1'
 
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
-
-drop table if exists orientation;
-create table orientation(
-
-id int,
-azimuth double,
-elevation double
-
-foreign key id references appointment(orientationId)
-
-);
-
-
-drop table if exists celestialBody;
-create table celestialBody(
-id int,
-name varchar(64),
-foreign key id references appointment(celestialBodyId)
-
- );
-
-create index id on appointment(id, telescopeId, celestialBodyId, isPublic, assocUserId);
