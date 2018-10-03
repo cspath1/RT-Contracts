@@ -1,11 +1,9 @@
 package com.radiotelescope.contracts.appointment;
 
 import com.google.common.collect.Multimap
-import com.radiotelescope.repository.appointment
 
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.user.User
-
 
 /*
 So for the Appointment entity we have the findByAppointmentId and findByUsernameId command objects
