@@ -1,59 +1,64 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.repository.appointment.Appointment
-import java.util.regex.Pattern
+import com.radiotelescope.repository.user.User
+import java.util.*
 //View class for Appointment Entity
 
-//
 
-data class AppointmentInfo
 
-//date is supposed to be of type "LocalDate"?
-(
-        var id: Long,
-        var type: String,
-        var assocUserId:Int,
-        var startTime: Date,
-        var endTime: Date,
-        var status: Status,
-        var telescopeId: Long,
-        var celestialBodyId: Long,
-        var latitude: Long,
-        var longitude: Long,
-        var receiver: String,
-        var public: boolean
+
+ data class AppointmentInfo(
+
+   var appt:Appointment,
+    var user:User, //we need user id, lastname and firstname
+  //  var orientation:Orientation, //later to implement Orientation entity
+  //  var celestialBody:CelestialBody, //same
+    var typeI: String,
+    var startTimeI: Date,
+    var endTimeI: Date,
+    var telescopeIdI: Long,
+    var celestialBodyIdI: Long,
+    var receiverI: String,
+    var isPublicI: Boolean,
+    var dateI: Date,
+    var assocUserIdI:Int,
+    var uFirstName: String,
+    var uLastName: String,
+    var apptidI: Long,
+    var statusI: Appointment.Status,
+    var stateI: Int
 )
-{
 
-    constructor(appointment: Appointment) : this
-    (
-        id = appointment.id,
-        type = appointment.type,
-        state = appointment.state,
-        assocUserId = appointment.assocUserId,
-        startTime = appointment.startTime,
-        endTime = appointment.endTime,
-        status = appointment.status,
-        date = appointment.date,
-        telescopeId = appointment.telescopeId,
-        celestialBodyId = appointment.celestialBodyId,
-        latitude = appointment.latitude,
-        longitude = appointment.longitude,
-        receiver = appointment.receiver,
-        public = appointment.public
+ {
 
+   init {
 
+       typeI = appt.type;
+       startTimeI = appt.startTime;
+       endTimeI = appt.endTime;
+       telescopeIdI = appt.telescopeId;
+       celestialBodyIdI = appt.celestialBodyId;
+       receiverI = appt.receiver;
+       isPublicI = appt.isPublic;
+       dateI = appt.date;
+       assocUserIdI = appt.assocUserId;
+       uFirstName = user.firstName;
+       uLastName = user.lastName;
+       apptidI = appt.id;
+       statusI = appt.status;
+       stateI = appt.state;
 
-    )
-
+   }
 
 
-    //check, e.g. email validation
-//regex
-
-
-
-
+    //Get 2ndary constructor working
+/*
+      constructor(a: Appointment): this( u = a.user, typeI = a.type, startTimeI = a.startTime, endTimeI = a.endTime, telescopeIdI = a.telescopeId, celestialBodyIdI = a.celestialBodyId,
+            receiverI = a.receiver, isPublicI = a.isPublic, dateI = a.date, assocUserIdI = a.assocUserId, uFirstName = a.user.firstName, uLastName = a.user.lastName,
+            apptidI = a.id, statusI = a.status, stateI = a.state
+            )
+         */
 
 
 
