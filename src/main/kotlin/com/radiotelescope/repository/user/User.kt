@@ -21,8 +21,6 @@ data class User(
         @Column(name = "password", nullable = false)
         var password: String
 
-  //      var roleStr: String,
-
    //     @Column(name="minLeft", nullable = false)
   //      var minLeft: Int
 ) {
