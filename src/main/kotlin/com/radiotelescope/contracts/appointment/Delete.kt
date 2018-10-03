@@ -14,29 +14,25 @@ import org.springframework.data.jpa.repository.Query
 //Delete an appointment
 class Delete
 (private var appt: Appointment,
- private val apptRepo: IAppointmentRepository,
- private val apptId: Long, //id of the appointment
-private val user:User //for findByUser
-
-
+ private val apptRepo: IAppointmentRepository
 ): Command<Long, Multimap<ErrorTag, String>>
 {
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
         //failure case-- appointment is not there to be deleted
-        if (!apptRepo.existsById(apptId)) {
+        if (!apptRepo.existsById(appt.id)) {
             val errors = HashMultimap.create<ErrorTag, String>()
-            errors.put(ErrorTag.ID, "appt with ID $apptId does not exist (attempted deletion)")
+            errors.put(ErrorTag.ID, "appt with ID ${appt.id} does not exist (attempted deletion)")
 
             return SimpleResult(null, errors)
 
         } else //success case
         {
-           appt = apptRepo.findByApptId(apptId)
+           appt = apptRepo.findById(appt.id).get()
             //the delete method actually cancels the appointment
             apptRepo.delete(appt)
 
-            return SimpleResult(apptId, null)
+            return SimpleResult(appt.id, null)
 
         }
 
