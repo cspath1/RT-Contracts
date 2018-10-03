@@ -17,7 +17,6 @@ import java.util.*
 //create an appointment
 class Create(
     private val request: Request,
-    private val userRepo: IUserRepository,
     private val appointmentRepo: IAppointmentRepository
 ) : Command<Long, Multimap<ErrorTag,String>>
 {
@@ -123,7 +122,7 @@ class Create(
                     assocUserId = assocUserId,
                     uFirstName = uFirstName,
                     uLastName = uLastName,
-                    //Status = status.Scheduled, //should be set to 'Scheduled' ?
+                 //   status = Appointment.Status.Scheduled //doesn't like this?
                     state = state
             )
         }
