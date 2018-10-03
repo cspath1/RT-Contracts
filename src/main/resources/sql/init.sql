@@ -11,7 +11,6 @@ CREATE TABLE user (
   password VARCHAR(256),
   active TINYINT(1) DEFAULT '0',
   status ENUM('Inactive', 'Active', 'Banned', 'Deleted'),
-  minLeft int
 
   PRIMARY KEY (id),
   UNIQUE KEY email_address (email_address),
