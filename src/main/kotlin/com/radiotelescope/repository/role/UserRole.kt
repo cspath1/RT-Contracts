@@ -40,5 +40,6 @@ data class UserRole(
         MEMBER,
         ADMIN
     }
-}
 
+
+}
