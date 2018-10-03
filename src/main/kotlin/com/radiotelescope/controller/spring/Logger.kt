@@ -7,6 +7,7 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.security.UserContext
 import com.radiotelescope.security.UserContextImpl
 import org.springframework.stereotype.Service
 import java.util.*
@@ -15,13 +16,8 @@ import java.util.*
 class Logger(
         private var logRepo: ILogRepository,
         private var errorRepo: IErrorRepository,
-        userRepo: IUserRepository,
-        userRoleRepo: IUserRoleRepository
+        private var userContext: UserContext
 ) {
-    var userContext = UserContextImpl(
-            userRepo = userRepo,
-            userRoleRepo = userRoleRepo
-    )
 
     fun createSuccessLog(info: Info) {
         val log = info.toEntity()

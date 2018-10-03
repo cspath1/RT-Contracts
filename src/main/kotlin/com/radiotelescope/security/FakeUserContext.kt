@@ -76,7 +76,7 @@ class FakeUserContext : UserContext {
         return if (currentUserId >= 0) {
             currentUserId
         } else {
-            -1
+            null
         }
     }
 
