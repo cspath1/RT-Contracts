@@ -13,12 +13,10 @@ import org.springframework.data.jpa.repository.Query
 import java.util.*
 
 class RetrieveList(
-        private val aRepo: IAppointmentRepository,
-        private var aL: List<Appointment>,
+       private val aRepo: IAppointmentRepository,
         private val user:User,
-        private var aI: AppointmentInfo,
-        private val userRepo: IUserRepository,
-        private var aa: Appointment
+        private val userRepo: IUserRepository
+
 
 ):Command<Long, Multimap<ErrorTag,String>> {
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
@@ -26,20 +24,24 @@ class RetrieveList(
 
         //if an appointment is attempted to be retrieved that does not exist, then we have errors
 
+        //check if the user exists
         if (!userRepo.existsById(user.id)) {
             errors.put(ErrorTag.USER_ID, "User with id ${user.id} does not exist")
             return SimpleResult(user.id, errors)
         } else {
 
-            aL = userRepo.findByUser()
+           val aL = userRepo.findByUser()
+
+            //val aRepo: IAppointmentRepository
+       //     IAppointmentRepository()
 
             for (a: Appointment in aL) {
                 //Again, use secondary constructor
-                aI = AppointmentInfo(a, a.user, a.type, a.startTime, a.endTime, a.telescopeId, a.celestialBodyId, a.receiver, a.isPublic, a.date, a.assocUserId, a.uFirstName,
+              val aI = AppointmentInfo(a, a.user, a.type, a.startTime, a.endTime, a.telescopeId, a.celestialBodyId, a.receiver, a.isPublic, a.date, a.assocUserId, a.uFirstName,
                         a.uLastName, a.id, a.status, a.state)
 
                 //This right?
-                aa = aRepo.save(a)
+             val aa:Appointment = aRepo.save(a)
 
             }
 //If everything is successful:
