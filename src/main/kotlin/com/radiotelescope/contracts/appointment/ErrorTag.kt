@@ -14,4 +14,6 @@ enum class ErrorTag{
     TELESCOPE_ID,
     CELESTIAL_BODY_ID,
     COORDINATES,
+    RECEIVER,
+    DATE
 }
