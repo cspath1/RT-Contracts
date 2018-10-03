@@ -19,12 +19,12 @@ data class User(
         @Column(name = "email_address", nullable = false, unique = true)
         var email: String,
         @Column(name = "password", nullable = false)
-        var password: String,
+        var password: String
 
-        var role: String,
+  //      var roleStr: String,
 
-        @Column(name="minLeft", nullable = false)
-        var minLeft: Int
+   //     @Column(name="minLeft", nullable = false)
+  //      var minLeft: Int
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
