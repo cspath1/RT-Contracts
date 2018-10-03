@@ -22,4 +22,11 @@ class BaseUserFactory(
                 userRoleRepo = userRoleRepo
         )
     }
+
+    override fun authenticate(request: Authenticate.Request): Command<UserInfo, Multimap<ErrorTag, String>> {
+        return Authenticate(
+                request = request,
+                userRepo = userRepo
+        )
+    }
 }
