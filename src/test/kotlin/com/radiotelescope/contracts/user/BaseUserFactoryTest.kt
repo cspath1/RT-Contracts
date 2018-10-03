@@ -47,4 +47,25 @@ internal class BaseUserFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is Register)
     }
+
+    @Test
+    fun update(){
+        // Call the factory method
+        val cmd = factory.update(
+                request = Update.Request(
+                        id = 123456789,
+                        firstName = "Cody",
+                        lastName = "Spath",
+                        email = "cspath1@ycp.edu",
+                        phoneNumber = "717-823-2216",
+                        password = "ValidPassword",
+                        passwordConfirm = "ValidPassword",
+                        company = "York College of Pennsylvania",
+                        categoryOfService = UserRole.Role.GUEST
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Update)
+    }
 }
