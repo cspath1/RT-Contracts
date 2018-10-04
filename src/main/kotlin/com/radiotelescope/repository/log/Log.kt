@@ -5,6 +5,11 @@ import com.radiotelescope.repository.error.Error
 import java.util.*
 import javax.persistence.*
 
+/**
+ * Entity Class representing a Log of an action in the web-application
+ *
+ * This Entity correlates to the Log SQL table
+ */
 @Entity
 @Table(name = "log")
 data class Log(

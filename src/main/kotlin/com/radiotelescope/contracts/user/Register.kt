@@ -11,6 +11,13 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 
+/**
+ * Override of the [Command] interface method used for User registration
+ *
+ * @param request the [Request] object
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ */
 class Register(
         private val request: Request,
         private val userRepo: IUserRepository,

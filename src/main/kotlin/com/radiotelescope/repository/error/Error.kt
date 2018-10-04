@@ -4,6 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.radiotelescope.repository.log.Log
 import javax.persistence.*
 
+/**
+ * Entity Class representing an Error for the web-application.
+ * This is tied to the [Log] Entity and indicates a failed transaction
+ *
+ * This Entity correlates to the Error SQL table
+ */
 @Entity
 @Table(name = "error")
 data class Error(

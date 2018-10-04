@@ -23,6 +23,9 @@ class BaseUserFactory(
         )
     }
 
+    /**
+     * Override of the [UserFactory.authenticate] method that will return a [Authenticate] command object
+     */
     override fun authenticate(request: Authenticate.Request): Command<UserInfo, Multimap<ErrorTag, String>> {
         return Authenticate(
                 request = request,
