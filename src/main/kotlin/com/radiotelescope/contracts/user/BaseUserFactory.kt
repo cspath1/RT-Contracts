@@ -22,4 +22,11 @@ class BaseUserFactory(
                 userRoleRepo = userRoleRepo
         )
     }
+
+    override fun retrieve(id: Long): Command<UserInfo, Multimap<ErrorTag, String>> {
+        return Retrieve(
+                id = id,
+                userRepo = userRepo
+        )
+    }
 }
