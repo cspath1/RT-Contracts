@@ -23,6 +23,19 @@ class BaseUserFactory(
         )
     }
 
+    /**
+     * Override of the [UserFactory.authenticate] method that will return a [Authenticate] command object
+     */
+    override fun authenticate(request: Authenticate.Request): Command<UserInfo, Multimap<ErrorTag, String>> {
+        return Authenticate(
+                request = request,
+                userRepo = userRepo
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.retrieve] method that will return a [Retrieve] command object
+     */
     override fun retrieve(id: Long): Command<UserInfo, Multimap<ErrorTag, String>> {
         return Retrieve(
                 id = id,

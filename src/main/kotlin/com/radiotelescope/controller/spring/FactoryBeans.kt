@@ -7,7 +7,11 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 /**
- * Concrete implementation of the [FactoryProvider] interface
+ * Concrete implementation of the [FactoryProvider] interface. It is in charge
+ * of making sure the UserWrappers are able to be autowired by Spring when the
+ * server is started
+ *
+ * @param repositories the [RepositoryBeans] Spring component
  */
 @Configuration
 class FactoryBeans(

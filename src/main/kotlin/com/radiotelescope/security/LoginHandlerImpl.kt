@@ -12,6 +12,10 @@ class LoginHandlerImpl : AuthenticationSuccessHandler {
     /**
      * Override of the [AuthenticationSuccessHandler.onAuthenticationSuccess] method
      * that sets the session to be 10 days
+     *
+     * @param request the [HttpServletRequest]
+     * @param response the [HttpServletResponse]
+     * @param authentication the [Authentication] object
      */
     override fun onAuthenticationSuccess(request: HttpServletRequest?, response: HttpServletResponse?, authentication: Authentication?) {
         // Set the timeout to 10 days
