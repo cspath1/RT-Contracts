@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component
  * can be autowired by Spring when the application runs, allowing for the [Logger]
  * service to be instantiated automatically. This is very important because it allows
  * us to use the [FakeUserContext] with the [Logger] so it can still be tested
+ *
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository]
  */
 @Component(value = "UserContext")
 class UserContextImpl(
