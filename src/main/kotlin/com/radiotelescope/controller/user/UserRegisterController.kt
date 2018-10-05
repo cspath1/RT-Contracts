@@ -31,6 +31,8 @@ class UserRegisterController(
      *
      * If so, it will be adapted and the execute methof ror the
      * respective command will be called.
+     *
+     * @param form the [RegisterForm]
      */
     @PostMapping(value = ["/users/register"])
     fun execute(@RequestBody form: RegisterForm): Result {
@@ -68,9 +70,11 @@ class UserRegisterController(
         return result
     }
 
-    // TODO - Make these abstract methods in the BestRestController
-
-    fun successLog(id: Long): Logger.Info {
+    /**
+     * Override of the [BaseRestController.successLog] method that
+     * returns a controller specific [Logger.Info]
+     */
+    override fun successLog(id: Long): Logger.Info {
         return Logger.Info(
                 affectedTable = Log.AffectedTable.USER,
                 action = Log.Action.CREATE,
@@ -79,9 +83,11 @@ class UserRegisterController(
         )
     }
 
-    // TODO - Make these abstract methods in the BestRestController
-
-    fun errorLog(): Logger.Info {
+    /**
+     * Override of the [BaseRestController.errorLog] method that
+     * returns a controller specific [Logger.Info]
+     */
+    override fun errorLog(): Logger.Info {
         return Logger.Info(
                 affectedTable = Log.AffectedTable.USER,
                 action = Log.Action.CREATE,

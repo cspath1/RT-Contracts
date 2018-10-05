@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
-/**\
+/**
  * REST Controller to handle User Login
  *
  * @param userWrapper the [UserUserWrapper]
@@ -31,6 +31,8 @@ class UserLoginController(
      *
      * If so, it will be adapted and the execute method for the
      * respective command will be called
+     *
+     * @param form the [LoginForm]
      */
     @PostMapping(value = ["/login"])
     fun execute(@RequestBody form: LoginForm): Result {
@@ -64,9 +66,11 @@ class UserLoginController(
         return result
     }
 
-    // TODO - Make these abstract methods in the BestRestController
-
-    fun successLog(id: Long): Logger.Info {
+    /**
+     * Override of the [BaseRestController.successLog] method that
+     * returns a controller specific [Logger.Info]
+     */
+    override fun successLog(id: Long): Logger.Info {
         return Logger.Info(
                 affectedTable = Log.AffectedTable.USER,
                 action = Log.Action.LOG_IN,
@@ -75,12 +79,14 @@ class UserLoginController(
         )
     }
 
-    // TODO - Make these abstract methods in the BestRestController
-
-    fun errorLog(): Logger.Info {
+    /**
+     * Override of the [BaseRestController.errorLog] method that
+     * returns a controller specific [Logger.Info]
+     */
+    override fun errorLog(): Logger.Info {
         return Logger.Info(
                 affectedTable = Log.AffectedTable.USER,
-                action = Log.Action.CREATE,
+                action = Log.Action.LOG_IN,
                 timestamp = Date(),
                 affectedRecordId = null
         )
