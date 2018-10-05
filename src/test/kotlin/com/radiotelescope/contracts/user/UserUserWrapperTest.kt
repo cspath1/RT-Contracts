@@ -5,7 +5,6 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Assert.*
 import org.junit.Before

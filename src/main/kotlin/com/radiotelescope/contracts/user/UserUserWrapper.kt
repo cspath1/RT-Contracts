@@ -2,7 +2,6 @@ package com.radiotelescope.contracts.user
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
-import com.radiotelescope.contracts.SecuredAction
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
