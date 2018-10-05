@@ -55,30 +55,31 @@ class UserUserWrapper(
         )
     }
 
+    /**
+     * Concrete implementation of the [UserRetrievable] interface used to add Spring Security
+     * authentication to the [Retrieve] command object
+     */
     override fun retrieve(request: Long, withAccess: (result: SimpleResult<UserInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
         if (context.currentUserId() != null) {
-            // If the user object exists and refers to the same id,
-            // we can execute the command
             val theUser = userRepo.findById(context.currentUserId()!!)
-            return if (theUser.isPresent && theUser.get().id == request) {
-                context.require(
-                        requiredRoles = listOf(),
-                        successCommand = factory.retrieve(request)
-                ).execute(withAccess)
-            } else  {
-                // Otherwise, they must be an admin
-                return if (theUser.isPresent) {
+
+            // If the user exists, they must either be the owner or an admin
+            if (theUser.isPresent) {
+                return if (theUser.isPresent && theUser.get().id == request) {
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.USER),
+                            successCommand = factory.retrieve(request)
+                    ).execute(withAccess)
+                } else {
                     context.require(
                             requiredRoles = listOf(UserRole.Role.ADMIN),
                             successCommand = factory.retrieve(request)
                     ).execute(withAccess)
-                } else {
-                    AccessReport(missingRoles = listOf(UserRole.Role.GUEST))
                 }
             }
-        } else {
-            return AccessReport(missingRoles = listOf(UserRole.Role.GUEST))
         }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
 }

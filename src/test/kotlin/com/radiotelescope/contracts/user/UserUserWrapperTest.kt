@@ -40,6 +40,9 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
     lateinit var factory: BaseUserFactory
     lateinit var wrapper: UserUserWrapper
 
+    private var userId = -1L
+    private var otherUserId = -1L
+
     private val baseAuthenticateRequest = Authenticate.Request(
             email = "spathcody@gmail.com",
             password = "Password"
@@ -60,12 +63,22 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
         )
 
         // Persist the User with the hashed password
-        userRepo.save(User(
+        val user = userRepo.save(User(
                 firstName = "Cody",
                 lastName = "Spath",
                 email = "spathcody@gmail.com",
                 password = passwordEncoder.encode("Password")
         ))
+
+        val otherUser = userRepo.save(User(
+                firstName = "Punished",
+                lastName = "Snake",
+                email = "snake@kojima.biz",
+                password = passwordEncoder.encode("Password")
+        ))
+
+        userId = user.id
+        otherUserId = otherUser.id
     }
 
     @Test
@@ -87,4 +100,87 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
         assertNotNull(info)
         assertNull(error)
     }
+
+    @Test
+    fun testValidRetrieve_SameUser_Success() {
+        // Simulate a login
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        var userInfo: UserInfo? = null
+
+        val error = wrapper.retrieve(
+                request = userId
+        ) {
+            userInfo = it.success
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+        assertNotNull(userInfo)
+    }
+
+    @Test
+    fun testValidRetrieve_Admin_Success() {
+        // Simulate login as admin
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        var userInfo: UserInfo? = null
+
+        val error = wrapper.retrieve(
+                request = userId
+        ) {
+            userInfo = it.success
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+        assertNotNull(userInfo)
+    }
+
+    @Test
+    fun testInvalidRetrieve_NoUserRole_Failure() {
+        // Simulate a login but do not add USER role
+        context.login(userId)
+
+        val error = wrapper.retrieve(
+                request = userId
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidRetrieve_NotLoggedIn_Failure() {
+        // Do not log the user in
+        val error = wrapper.retrieve(
+                request = userId
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidRetrieve_DifferentUser_Failure() {
+        // Log the user in as a different user than the retrieve
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.retrieve(
+                request = userId
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+    }
+
 }
