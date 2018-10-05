@@ -24,4 +24,12 @@ interface UserFactory {
      * @return a [Command] object
      */
     fun authenticate(request: Authenticate.Request): Command<UserInfo, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve the user's information
+     *
+     * @param id the [User] id
+     * @return a [Command] object
+     */
+    fun retrieve(id: Long): Command<UserInfo, Multimap<ErrorTag,String>>
 }

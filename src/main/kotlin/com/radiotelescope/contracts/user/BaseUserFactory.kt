@@ -32,4 +32,14 @@ class BaseUserFactory(
                 userRepo = userRepo
         )
     }
+
+    /**
+     * Override of the [UserFactory.retrieve] method that will return a [Retrieve] command object
+     */
+    override fun retrieve(id: Long): Command<UserInfo, Multimap<ErrorTag, String>> {
+        return Retrieve(
+                id = id,
+                userRepo = userRepo
+        )
+    }
 }
