@@ -12,6 +12,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import org.springframework.test.context.junit4.SpringRunner
 
@@ -182,4 +185,50 @@ internal class UserUserWrapperTest : BaseDataJpaTest() {
         assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
     }
 
+    @Test
+    fun testValidList_Admin_Success() {
+        // Log the user in and make them an admin
+        context.login(otherUserId)
+        context.currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
+
+        var info: Page<UserInfo> = PageImpl<UserInfo>(arrayListOf())
+
+        val error = wrapper.pageable(
+                request = PageRequest.of(0, 5)
+        ) {
+            info = it.success!!
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+        assertEquals(2, info.content.size)
+    }
+
+    @Test
+    fun testInvalidList_UserNotLoggedIn_Failure() {
+        val error = wrapper.pageable(
+                request = PageRequest.of(0, 5)
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.containsAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER)))
+    }
+
+    @Test
+    fun testInvalidList_UserNotAdmin_Failure() {
+        // Log the user in as a base user
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.pageable(
+                request = PageRequest.of(0, 5)
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+    }
 }

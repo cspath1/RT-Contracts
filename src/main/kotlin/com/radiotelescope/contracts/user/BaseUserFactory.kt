@@ -4,6 +4,8 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 /**
  * Base concrete implementation of the [UserFactory] interface
@@ -39,6 +41,16 @@ class BaseUserFactory(
     override fun retrieve(id: Long): Command<UserInfo, Multimap<ErrorTag, String>> {
         return Retrieve(
                 id = id,
+                userRepo = userRepo
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.list] method that will return a [List] command object
+     */
+    override fun list(pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
+        return List(
+                pageable = pageable,
                 userRepo = userRepo
         )
     }

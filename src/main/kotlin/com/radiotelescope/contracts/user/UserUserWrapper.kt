@@ -8,7 +8,10 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
+import com.radiotelescope.security.crud.UserPageable
 import com.radiotelescope.security.crud.UserRetrievable
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 /**
  * Wrapper that takes a [UserFactory] and is responsible for all
@@ -24,7 +27,8 @@ class UserUserWrapper(
         private val factory: UserFactory,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository
-) : UserRetrievable<Long, SimpleResult<UserInfo, Multimap<ErrorTag, String>>>{
+) : UserRetrievable<Long, SimpleResult<UserInfo, Multimap<ErrorTag, String>>>,
+UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>{
     /**
      * Register function that will return a [Register] command object. This does not need any
      * user role authentication since the user will not be signed in at the time
@@ -57,6 +61,9 @@ class UserUserWrapper(
     /**
      * Concrete implementation of the [UserRetrievable] interface used to add Spring Security
      * authentication to the [Retrieve] command object
+     *
+     * @param request the User id
+     * @return An [AccessReport] if authentication fails, null otherwise
      */
     override fun retrieve(request: Long, withAccess: (result: SimpleResult<UserInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
@@ -80,5 +87,23 @@ class UserUserWrapper(
         }
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+    }
+
+    /**
+     * Concrete implementation of the [UserPageable] interface used to add Spring Security
+     * authentication to the [List] command object
+     *
+     * @param request the [Pageable] object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    override fun pageable(request: Pageable, withAccess: (result: SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.list(request)
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
     }
 }
