@@ -50,6 +50,7 @@ internal class BaseUserFactoryTest {
 
     @Test
     fun authenticate() {
+        // Call the factory method
         val cmd = factory.authenticate(
                 request = Authenticate.Request(
                         email = "cspath1@ycp.edu",
@@ -59,5 +60,16 @@ internal class BaseUserFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is Authenticate)
+    }
+
+    @Test
+    fun retrieve() {
+        // Call the factory
+        val cmd = factory.retrieve(
+                id = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Retrieve)
     }
 }

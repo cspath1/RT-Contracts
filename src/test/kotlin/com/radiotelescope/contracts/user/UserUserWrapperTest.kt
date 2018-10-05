@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.user
 
-import com.radiotelescope.contracts.BaseUserWrapperTest
+import com.radiotelescope.BaseDataJpaTest
+import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -17,7 +18,10 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-class UserUserWrapperTest : BaseUserWrapperTest() {
+internal class UserUserWrapperTest : BaseDataJpaTest() {
+
+    @Autowired
+    private lateinit var testUtil: TestUtil
 
     @Autowired
     private lateinit var userRepo: IUserRepository
@@ -28,7 +32,7 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
     private val baseCreateRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
-            email = "codyspath@gmail.com",
+            email = "spathcody@gmail.com",
             phoneNumber = "717-823-2216",
             password = "ValidPassword1",
             passwordConfirm = "ValidPassword1",
@@ -44,7 +48,7 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
     private var otherUserId = -1L
 
     private val baseAuthenticateRequest = Authenticate.Request(
-            email = "spathcody@gmail.com",
+            email = "cspath1@ycp.edu",
             password = "Password"
     )
 
@@ -63,19 +67,15 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
         )
 
         // Persist the User with the hashed password
-        val user = userRepo.save(User(
-                firstName = "Cody",
-                lastName = "Spath",
-                email = "spathcody@gmail.com",
+        val user = testUtil.createUserWithEncodedPassword(
+                email = "cspath1@ycp.edu",
                 password = passwordEncoder.encode("Password")
-        ))
+        )
 
-        val otherUser = userRepo.save(User(
-                firstName = "Punished",
-                lastName = "Snake",
-                email = "snake@kojima.biz",
+        val otherUser = testUtil.createUserWithEncodedPassword(
+                email = "codyspath@gmail.com",
                 password = passwordEncoder.encode("Password")
-        ))
+        )
 
         userId = user.id
         otherUserId = otherUser.id

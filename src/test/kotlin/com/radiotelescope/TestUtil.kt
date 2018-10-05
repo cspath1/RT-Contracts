@@ -26,4 +26,17 @@ internal class TestUtil {
         user.status = User.Status.Active
         return userRepo.save(user)
     }
+
+    fun createUserWithEncodedPassword(email: String, password: String): User {
+        val user = User(
+                firstName = "First Name",
+                lastName = "Last Name",
+                email = email,
+                password = password
+        )
+
+        user.active = true
+        user.status = User.Status.Active
+        return userRepo.save(user)
+    }
 }

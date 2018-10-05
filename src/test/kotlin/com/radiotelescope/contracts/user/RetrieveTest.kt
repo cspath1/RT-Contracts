@@ -1,5 +1,7 @@
 package com.radiotelescope.contracts.user
 
+import com.radiotelescope.BaseDataJpaTest
+import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -15,7 +17,10 @@ import javax.validation.constraints.Null
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class RetrieveTest {
+internal class RetrieveTest : BaseDataJpaTest() {
+    @Autowired
+    private lateinit var testUtil: TestUtil
+
     @Autowired
     private lateinit var userRepo: IUserRepository
     private var id: Long = 0
@@ -24,8 +29,7 @@ internal class RetrieveTest {
     @Before
     fun setUp() {
         // Instantiate and persist a User Entity Object
-        val user = User("Donald", "Trump", "trump@trump.com", "MAGA" )
-        userRepo.save(user)
+        val user = testUtil.createUser("cspath1@ycp.edu")
         id = user.id
     }
 

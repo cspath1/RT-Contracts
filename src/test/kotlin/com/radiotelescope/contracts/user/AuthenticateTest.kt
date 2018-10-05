@@ -1,5 +1,7 @@
 package com.radiotelescope.contracts.user
 
+import com.radiotelescope.BaseDataJpaTest
+import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
@@ -13,7 +15,10 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-class AuthenticateTest {
+internal class AuthenticateTest : BaseDataJpaTest() {
+    @Autowired
+    private lateinit var testUtil: TestUtil
+
     @Autowired
     private lateinit var userRepo: IUserRepository
 
@@ -30,14 +35,13 @@ class AuthenticateTest {
                 50,
                 256
         )
+        val encodedPassword = passwordEncoder.encode("Password")
 
         // Persist the User with the hashed password
-        val user = userRepo.save(User(
-                firstName = "Cody",
-                lastName = "Spath",
+        val user = testUtil.createUserWithEncodedPassword(
                 email = "cspath1@ycp.edu",
-                password = passwordEncoder.encode("Password")
-        ))
+                password = encodedPassword
+        )
 
         // Make sure this was correctly executed
         assertEquals(1, userRepo.count())

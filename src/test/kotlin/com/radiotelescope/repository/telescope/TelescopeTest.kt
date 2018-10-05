@@ -1,5 +1,6 @@
 package com.radiotelescope.repository.telescope
 
+import com.radiotelescope.BaseDataJpaTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -12,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class TelescopeTest {
+internal class TelescopeTest : BaseDataJpaTest() {
 
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository

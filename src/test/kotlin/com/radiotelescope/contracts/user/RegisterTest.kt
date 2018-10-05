@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.user
 
+import com.radiotelescope.BaseDataJpaTest
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -12,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class RegisterTest {
+internal class RegisterTest : BaseDataJpaTest() {
 
     @Autowired
     private lateinit var userRepo: IUserRepository

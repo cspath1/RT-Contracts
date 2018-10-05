@@ -1,5 +1,7 @@
 package com.radiotelescope.repository.user
 
+import com.radiotelescope.BaseDataJpaTest
+import com.radiotelescope.TestUtil
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -10,7 +12,10 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class UserTest {
+internal class UserTest : BaseDataJpaTest() {
+
+    @Autowired
+    private lateinit var testUtil: TestUtil
 
     @Autowired
     private lateinit var userRepo: IUserRepository
@@ -20,8 +25,7 @@ internal class UserTest {
     @Before
     fun setUp() {
         // Instantiate and persist a User Entity Object
-        val user = User("David", "Bowie", "blackstar@bowie.com", "Password1234")
-        userRepo.save(user)
+        val user = testUtil.createUser("cspath1@ycp.edu")
 
         // Set the email variable to be used used in the IUserRepository existsByEmail query
         email = user.email
