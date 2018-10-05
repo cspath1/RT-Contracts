@@ -21,7 +21,7 @@ class FakeUserContext : UserContext {
      * NOTE: Kotlin can tell if the withAccess anonymous function was called or not, and the [SimpleResult] method it uses can be used in
      * by the method that called this
      */
-    override fun <S, E> require(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>, failureCommand: UserPreconditionFailure): SecuredAction<S, E> {
+    override fun <S, E> require(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>): SecuredAction<S, E> {
         return object : SecuredAction<S, E> {
             override fun execute(withAccess: (result: SimpleResult<S, E>) -> Unit): AccessReport? {
                 val missingRoles = mutableListOf<UserRole.Role>()
@@ -49,7 +49,7 @@ class FakeUserContext : UserContext {
      * and if any of the required roles are found in the current roles list, then the user's action is allowed. Otherwise
      * we will return an [AccessReport] data class with a list of the missing roles
      */
-    override fun <S, E> requireAny(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>, failureCommand: UserPreconditionFailure): SecuredAction<S, E> {
+    override fun <S, E> requireAny(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>): SecuredAction<S, E> {
         return object : SecuredAction<S, E> {
             override fun execute(withAccess: (result: SimpleResult<S, E>) -> Unit): AccessReport? {
                 val missingRoles = mutableListOf<UserRole.Role>()
@@ -76,7 +76,7 @@ class FakeUserContext : UserContext {
         return if (currentUserId >= 0) {
             currentUserId
         } else {
-            -1
+            null
         }
     }
 

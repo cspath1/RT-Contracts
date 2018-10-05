@@ -44,9 +44,9 @@ internal class RegisterTest {
         assertNull(error)
         assertNotNull(id)
 
-        // Should now have 1 user and 1 user role
+        // Should now have 1 user and 2 user roles
         assertEquals(1, userRepo.count())
-        assertEquals(1, userRoleRepo.count())
+        assertEquals(2, userRoleRepo.count())
 
         // Grab the user
         val user = userRepo.findById(id!!).get()
@@ -61,8 +61,12 @@ internal class RegisterTest {
         val roles = userRoleRepo.findAllByUserId(id)
 
         // Ensure the role was properly set
-        assertEquals(1, roles.size)
-        assertEquals(UserRole.Role.GUEST, roles[0].role)
+        assertEquals(2, roles.size)
+        roles.forEach {
+            if (it.role != UserRole.Role.GUEST && it.role != UserRole.Role.USER) {
+                fail("An unknown enum value was persisted")
+            }
+        }
     }
 
     @Test
@@ -84,9 +88,9 @@ internal class RegisterTest {
         assertNull(error)
         assertNotNull(id)
 
-        // Should now have 1 user and 1 user role
+        // Should now have 1 user and 2 user role
         assertEquals(1, userRepo.count())
-        assertEquals(1, userRoleRepo.count())
+        assertEquals(2, userRoleRepo.count())
 
         // Grab the user
         val user = userRepo.findById(id!!).get()
@@ -101,8 +105,12 @@ internal class RegisterTest {
         val roles = userRoleRepo.findAllByUserId(id)
 
         // Ensure the role was properly set
-        assertEquals(1, roles.size)
-        assertEquals(UserRole.Role.GUEST, roles[0].role)
+        assertEquals(2, roles.size)
+        roles.forEach {
+            if (it.role != UserRole.Role.GUEST && it.role != UserRole.Role.USER) {
+                fail("An unknown enum value was persisted")
+            }
+        }
     }
 
     @Test

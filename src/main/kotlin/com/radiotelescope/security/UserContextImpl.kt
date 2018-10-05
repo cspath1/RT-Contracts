@@ -3,16 +3,27 @@ package com.radiotelescope.security
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SecuredAction
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Component
 
 /**
  * Concrete implementation of [UserContext] interface that uses Spring Security to validate
  * if a user has the ability to execute an action or not
+ *
+ * This is declared as a Component with a Bean value of "UserContext" so that it
+ * can be autowired by Spring when the application runs, allowing for the [Logger]
+ * service to be instantiated automatically. This is very important because it allows
+ * us to use the [FakeUserContext] with the [Logger] so it can still be tested
+ *
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository]
  */
+@Component(value = "UserContext")
 class UserContextImpl(
         private var userRepo: IUserRepository,
         private var userRoleRepo: IUserRoleRepository
@@ -24,7 +35,7 @@ class UserContextImpl(
      * all of the roles in the requiredRoles parameter. If they do, it will call the success command.
      * If not, it will return the list of missing roles
      */
-    override fun <S, E> require(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>, failureCommand: UserPreconditionFailure): SecuredAction<S, E> {
+    override fun <S, E> require(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>): SecuredAction<S, E> {
         var missingRoles: MutableList<UserRole.Role>? = mutableListOf()
 
         // If the authentication object exists, we can check the user's roles
@@ -82,7 +93,7 @@ class UserContextImpl(
      * any of the roles in the requiredRoles parameter. If they do, it will call the success command.
      * If not, it will return a list of the missing roles
      */
-    override fun <S, E> requireAny(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>, failureCommand: UserPreconditionFailure): SecuredAction<S, E> {
+    override fun <S, E> requireAny(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>): SecuredAction<S, E> {
         var hasAnyRole = false
 
         // If the authentication object exists, we can actually check the roles

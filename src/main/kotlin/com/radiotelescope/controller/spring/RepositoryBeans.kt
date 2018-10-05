@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component
 
 /**
  * Spring Beans class used to autowire all Spring Repositories
+ *
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
  */
 @Component
 @Configuration

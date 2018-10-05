@@ -1,26 +1,20 @@
 package com.radiotelescope.controller
 
-import com.google.common.collect.HashMultimap
-import com.google.common.collect.Multimap
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.security.UserPreconditionFailure
-import com.radiotelescope.security.UserPreconditionFailureTag
+import com.radiotelescope.controller.spring.Logger
 
-abstract class BaseRestController {
+/**
+ * Abstract class that all REST controllers will extend
+ * that takes a [Logger] as a parameter so we can handle
+ * logging successes and errors. It also has a [Result]
+ * object that is used to return information to the client
+ */
+abstract class BaseRestController(
+        val logger: Logger
+) {
     var result = Result()
 
-    fun userPreconditionFailure(): UserPreconditionFailure {
-        return object : UserPreconditionFailure {
-            override fun addError(error: Pair<UserPreconditionFailureTag, String>) {
-                errors.put(error.first, error.second)
-            }
+    abstract fun successLog(id: Long): Logger.Info
 
-            override fun addErrors(errors: Multimap<UserPreconditionFailureTag, String>) {
-                this.errors.putAll(errors)
-            }
-
-            override val errors: Multimap<UserPreconditionFailureTag, String>
-                get() = HashMultimap.create()
-        }
-    }
+    abstract fun errorLog(): Logger.Info
 }

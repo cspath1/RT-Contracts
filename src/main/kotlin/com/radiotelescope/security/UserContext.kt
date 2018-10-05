@@ -10,33 +10,29 @@ import com.radiotelescope.repository.role.UserRole
 interface UserContext {
 
     /**
-     * Abstract method declaration used when ALL roles in the [Role] [List]
+     * Abstract method declaration used when ALL roles in the [UserRole.Role] [List]
      * are required to pass validation
      *
-     * @param requiredRoles a list of all required [Role]
+     * @param requiredRoles a list of all required [UserRole.Role]
      * @param successCommand [Command] object to be called upon successful authentication
-     * @param failureCommand a [UserPreconditionFailure] that will respond when authentication fails
      * @return a [SecuredAction] object
      */
     fun <S, E> require(
         requiredRoles: List<UserRole.Role>,
-        successCommand: Command<S, E>,
-        failureCommand: UserPreconditionFailure
+        successCommand: Command<S, E>
     ): SecuredAction<S, E>
 
     /**
-     * Abstract method declaration used when any role in the [Role] [List]
+     * Abstract method declaration used when any role in the [UserRole.Role] [List]
      * is sufficient for validation
      *
-     * @param requiredRoles a list of any of the required [Role] values.
+     * @param requiredRoles a list of any of the required [UserRole.Role] values.
      * @param successCommand [Command] object to be called upon successful authentication
-     * @param failureCommand a [UserPreconditionFailure] that will respond when authentication fails
      * @return a [SecuredAction] object
      */
     fun <S, E> requireAny(
             requiredRoles: List<UserRole.Role>,
-            successCommand: Command<S, E>,
-            failureCommand: UserPreconditionFailure
+            successCommand: Command<S, E>
     ): SecuredAction<S, E>
 
     /**
