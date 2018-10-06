@@ -101,6 +101,7 @@ dependencies {
 	compile('com.fasterxml.jackson.module:jackson-module-kotlin')
 
 	compile group: 'com.google.guava', name: 'guava', version: '19.0'
+	compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
 
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compile("org.jetbrains.kotlin:kotlin-reflect")
@@ -110,4 +111,5 @@ dependencies {
 	testCompile("com.h2database:h2")
 
 	runtime('mysql:mysql-connector-java')
+	runtime group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
 }
