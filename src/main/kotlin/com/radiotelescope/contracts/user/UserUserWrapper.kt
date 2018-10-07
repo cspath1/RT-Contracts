@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable
 
 /**
  * Wrapper that takes a [UserFactory] and is responsible for all
- * user role validations for our endpoints for the User Entity
+ * user role validations for endpoints for the User Entity
  *
  * @property context the [UserContext] interface
  * @property factory the [UserFactory] factory interface
@@ -97,12 +97,12 @@ UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     override fun pageable(request: Pageable, withAccess: (result: SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        if (context.currentUserId() != null) {
+        if (context.currentUserId() != null)
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
                     successCommand = factory.list(request)
             ).execute(withAccess)
-        }
+
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
     }
