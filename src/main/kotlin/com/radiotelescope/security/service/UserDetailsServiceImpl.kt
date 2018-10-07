@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service
 
 /**
  * This service is a concrete implementation of the [UserDetailsService]
+ *
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
  */
 @Service(value = "UserDetailsService")
 class UserDetailsServiceImpl(

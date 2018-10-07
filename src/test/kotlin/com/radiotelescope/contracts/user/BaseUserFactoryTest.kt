@@ -47,4 +47,17 @@ internal class BaseUserFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is Register)
     }
+
+    @Test
+    fun authenticate() {
+        val cmd = factory.authenticate(
+                request = Authenticate.Request(
+                        email = "cspath1@ycp.edu",
+                        password = "Password"
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Authenticate)
+    }
 }

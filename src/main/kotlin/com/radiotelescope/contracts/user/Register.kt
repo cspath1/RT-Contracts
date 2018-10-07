@@ -11,6 +11,13 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 
+/**
+ * Override of the [Command] interface method used for User registration
+ *
+ * @param request the [Request] object
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ */
 class Register(
         private val request: Request,
         private val userRepo: IUserRepository,
@@ -34,7 +41,7 @@ class Register(
             return SimpleResult(null, errors)
 
         val newUser = userRepo.save(request.toEntity())
-        generateUserRole(newUser)
+        generateUserRoles(newUser)
         return SimpleResult(newUser.id, null)
     }
 
@@ -75,18 +82,32 @@ class Register(
     }
 
     /**
-     * Private method to generate and save a [UserRole]
+     * Private method to generate and save a base [UserRole] of type
+     * USER as well as the category of service entered in the [Request]
+     * data class
      */
-    private fun generateUserRole(user: User) {
+    private fun generateUserRoles(user: User) {
+        // Generate the basic user UserRole
         val role = UserRole(
+                role = UserRole.Role.USER,
+                userId = user.id
+        )
+
+        // TODO: Change the accepted field to false when confirming a user's account is implemented
+        role.approved = true
+
+        userRoleRepo.save(role)
+
+        // Generate the categoryOfService UserRole
+        val categoryRole = UserRole(
                 role = request.categoryOfService,
                 userId = user.id
         )
 
         // TODO: Change the accepted field to false once the admin can accept/decline a user's role
-        role.approved = true
+        categoryRole.approved = true
 
-        userRoleRepo.save(role)
+        userRoleRepo.save(categoryRole)
     }
 
     /**
@@ -106,8 +127,8 @@ class Register(
     ) : BaseCreateRequest<User> {
         override fun toEntity(): User {
             // Uses SHA-1 by default. Adds the salt value (secret)
-            // to the password and encrypts it 50 times, resulting
-            // in a hash size of 256
+            // to the password and encrypts it 50 times, specifying
+            // a hash size of 256
             val passwordEncoder = Pbkdf2PasswordEncoder(
                    "YCAS2018",
                     50,
