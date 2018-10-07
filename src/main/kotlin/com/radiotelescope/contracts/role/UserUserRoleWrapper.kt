@@ -41,4 +41,22 @@ class UserUserRoleWrapper(
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
     }
+
+    /**
+     * Wrapper method for the [UserRoleFactory.validate] method that adds Spring
+     * Security authentication to the [Validate] command object
+     *
+     * @param request the [Validate.Request] object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun validate(request: Validate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        context.currentUserId()?.let {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.validate(request)
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+    }
 }

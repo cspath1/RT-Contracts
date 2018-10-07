@@ -36,6 +36,13 @@ internal class UserUserRoleWrapperTest : BaseDataJpaTest() {
     private var adminId: Long? = null
     private var userId: Long? = null
 
+    private var baseValidateRequest = Validate.Request(
+            id = -1L,
+            role = UserRole.Role.GUEST
+    )
+
+    private var unapprovedRoleId = -1L
+
     @Before
     fun setUp() {
         // Initialize the factory and wrapper
@@ -53,11 +60,16 @@ internal class UserUserRoleWrapperTest : BaseDataJpaTest() {
 
         // Persist a user and give them some roles
         val user = testUtil.createUser("cspath1@ycp.edu")
-        testUtil.createUserRolesForUser(
+        val roles = testUtil.createUserRolesForUser(
                 userId = user.id,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )
+
+        roles.forEach {
+            if (!it.approved)
+                unapprovedRoleId = it.id
+        }
 
         userId = user.id
 
@@ -117,5 +129,61 @@ internal class UserUserRoleWrapperTest : BaseDataJpaTest() {
 
         assertNull(error)
         assertEquals(1, data.content.size)
+    }
+
+    @Test
+    fun testValidate_NotLoggedIn_Failure() {
+        val requestCopy = baseValidateRequest.copy(
+                id = unapprovedRoleId
+        )
+
+        val error = wrapper.validate(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.containsAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN)))
+    }
+
+    @Test
+    fun testValidate_UserNotAdmin_Failure() {
+        // Log the user in as the student user
+        context.login(userId!!)
+        context.currentRoles.add(UserRole.Role.STUDENT)
+
+        val requestCopy = baseValidateRequest.copy(
+                id = unapprovedRoleId
+        )
+
+        val error = wrapper.validate(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testValidate_Admin_Success() {
+        // Log the user in as the student user
+        context.login(adminId!!)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val requestCopy = baseValidateRequest.copy(
+                id = unapprovedRoleId
+        )
+
+        val error = wrapper.validate(
+                request = requestCopy
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
     }
 }
