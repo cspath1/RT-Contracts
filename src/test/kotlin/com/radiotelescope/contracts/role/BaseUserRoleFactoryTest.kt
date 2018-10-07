@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.role
 
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.*
 import org.junit.Before
@@ -40,5 +41,19 @@ internal class BaseUserRoleFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is UnapprovedList)
+    }
+
+    @Test
+    fun validate() {
+        // Call the factory method
+        val cmd = factory.validate(
+                request = Validate.Request(
+                        id = 1L,
+                        role = UserRole.Role.MEMBER
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Validate)
     }
 }

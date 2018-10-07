@@ -31,4 +31,18 @@ class BaseUserRoleFactory(
                 userRoleRepo = userRoleRepo
         )
     }
+
+    /**
+     * Override of the [UserRoleFactory.validate] method that will return a [Validate] command
+     * object
+     *
+     * @param request the [Validate.Request] object
+     * @return a [Validate] command object
+     */
+    override fun validate(request: Validate.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return Validate(
+                request = request,
+                userRoleRepo = userRoleRepo
+        )
+    }
 }
