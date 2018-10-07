@@ -73,7 +73,7 @@ internal class UserUserRoleWrapperTest : BaseDataJpaTest() {
 
     @Test
     fun testUnapprovedList_NotLoggedIn_Failure() {
-        val error = wrapper.unApprovedList(
+        val error = wrapper.unapprovedList(
                 pageable = PageRequest.of(0, 5)
         ) {
             fail("Should fail on precondition")
@@ -89,7 +89,7 @@ internal class UserUserRoleWrapperTest : BaseDataJpaTest() {
         context.login(userId!!)
         context.currentRoles.add(UserRole.Role.STUDENT)
 
-        val error = wrapper.unApprovedList(
+        val error = wrapper.unapprovedList(
                 pageable = PageRequest.of(0, 5)
         ) {
             fail("Should fail on precondition")
@@ -107,7 +107,7 @@ internal class UserUserRoleWrapperTest : BaseDataJpaTest() {
 
         var data: Page<UserRoleInfo> = PageImpl(arrayListOf())
 
-        val error = wrapper.unApprovedList(
+        val error = wrapper.unapprovedList(
                 pageable = PageRequest.of(0, 5)
         ) {
             assertNotNull(it.success)

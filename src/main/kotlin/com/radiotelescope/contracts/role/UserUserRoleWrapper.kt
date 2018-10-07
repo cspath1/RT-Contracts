@@ -32,7 +32,7 @@ class UserUserRoleWrapper(
      * @param pageable the [Pageable] request
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun unApprovedList(pageable: Pageable, withAccess: (result: SimpleResult<Page<UserRoleInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun unapprovedList(pageable: Pageable, withAccess: (result: SimpleResult<Page<UserRoleInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null)
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),

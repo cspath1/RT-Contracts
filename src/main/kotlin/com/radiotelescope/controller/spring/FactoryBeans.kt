@@ -1,5 +1,7 @@
 package com.radiotelescope.controller.spring
 
+import com.radiotelescope.contracts.role.BaseUserRoleFactory
+import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.security.UserContextImpl
@@ -30,6 +32,19 @@ class FactoryBeans(
         return UserUserWrapper(
                 context = userContext,
                 factory = BaseUserFactory(
+                        userRepo = repositories.userRepo,
+                        userRoleRepo = repositories.userRoleRepo
+                ),
+                userRepo = repositories.userRepo,
+                userRoleRepo = repositories.userRoleRepo
+        )
+    }
+
+    @Bean
+    override fun getUserRoleWrapper(): UserUserRoleWrapper {
+        return UserUserRoleWrapper(
+                context = userContext,
+                factory = BaseUserRoleFactory(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo
                 ),

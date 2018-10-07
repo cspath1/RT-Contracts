@@ -7,5 +7,6 @@ enum class ErrorTag {
     ID,
     USER_ID,
     APPROVED,
-    ROLE
+    ROLE,
+    PAGE_PARAMS
 }
