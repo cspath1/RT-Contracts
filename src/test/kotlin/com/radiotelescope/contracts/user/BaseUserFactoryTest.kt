@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner
 internal class BaseUserFactoryTest {
 
     @Autowired
-    private lateinit var userRepo:IUserRepository
+    private lateinit var userRepo: IUserRepository
 
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository

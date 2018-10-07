@@ -9,6 +9,9 @@ import org.springframework.data.domain.Pageable
 
 /**
  * Base concrete implementation of the [UserFactory] interface
+ *
+ * @param userRepo the [IUserRepository]
+ * @param userRoleRepo the [IUserRoleRepository]
  */
 class BaseUserFactory(
         private val userRepo: IUserRepository,
@@ -16,6 +19,9 @@ class BaseUserFactory(
 ) : UserFactory {
     /**
      * Override of the [UserFactory.register] method that will return a [Register] command object
+     *
+     * @param request the [Register.Request] object
+     * @return a [Register] command object
      */
     override fun register(request: Register.Request): Command<Long, Multimap<ErrorTag, String>> {
         return Register(
@@ -27,6 +33,9 @@ class BaseUserFactory(
 
     /**
      * Override of the [UserFactory.authenticate] method that will return a [Authenticate] command object
+     *
+     * @param request the [Authenticate.Request] object
+     * @return a [Authenticate] command object
      */
     override fun authenticate(request: Authenticate.Request): Command<UserInfo, Multimap<ErrorTag, String>> {
         return Authenticate(
@@ -37,6 +46,9 @@ class BaseUserFactory(
 
     /**
      * Override of the [UserFactory.retrieve] method that will return a [Retrieve] command object
+     *
+     * @param id the User id
+     * @return a [Retrieve] command object
      */
     override fun retrieve(id: Long): Command<UserInfo, Multimap<ErrorTag, String>> {
         return Retrieve(
@@ -47,6 +59,9 @@ class BaseUserFactory(
 
     /**
      * Override of the [UserFactory.list] method that will return a [List] command object
+     *
+     * @param pageable the [Pageable] request
+     * @return a [List] command object
      */
     override fun list(pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
         return List(
