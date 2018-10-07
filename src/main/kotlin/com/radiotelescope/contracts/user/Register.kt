@@ -31,18 +31,17 @@ class Register(
      * the [UserRole] associated with it. It will then return a [SimpleResult]
      * object with the [User] id and a null errors field.
      *
-     * If validation fields, it will return a [SimpleResult] with the errors and a
+     * If validation fails, it will return a [SimpleResult] with the errors and a
      * null success field
      */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
-        val errors = validateRequest()
-
-        if (!errors.isEmpty)
-            return SimpleResult(null, errors)
-
-        val newUser = userRepo.save(request.toEntity())
-        generateUserRoles(newUser)
-        return SimpleResult(newUser.id, null)
+        // If there is a value returned with the validateRequest call, there were errors
+        // Otherwise we can persist the entity
+        validateRequest()?.let { return SimpleResult(null, it) } ?: let {
+            val newUser = userRepo.save(request.toEntity())
+            generateUserRoles(newUser)
+            return SimpleResult(newUser.id, null)
+        }
     }
 
     /**
@@ -52,7 +51,7 @@ class Register(
      * is not already in use and that the password is not blank and matches the
      * password confirm field
      */
-    private fun validateRequest(): Multimap<ErrorTag, String> {
+    private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
@@ -78,7 +77,7 @@ class Register(
                 errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
         }
 
-        return errors
+        return if (errors.isEmpty) null else errors
     }
 
     /**
