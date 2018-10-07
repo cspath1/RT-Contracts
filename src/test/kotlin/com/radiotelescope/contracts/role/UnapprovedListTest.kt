@@ -1,7 +1,10 @@
-package com.radiotelescope.repository.role
+package com.radiotelescope.contracts.role
 
 import com.radiotelescope.BaseDataJpaTest
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -13,10 +16,13 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class UserRoleTest : BaseDataJpaTest() {
+internal class UnapprovedListTest : BaseDataJpaTest() {
 
     @Autowired
     private lateinit var testUtil: TestUtil
+
+    @Autowired
+    private lateinit var userRepo: IUserRepository
 
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
@@ -31,9 +37,10 @@ internal class UserRoleTest : BaseDataJpaTest() {
 
         val firstRoles = testUtil.createUserRolesForUser(
                 userId = firstUser.id,
-                role = UserRole.Role.STUDENT,
+                role = UserRole.Role.RESEARCHER,
                 isApproved = false
         )
+
         val secondRoles = testUtil.createUserRolesForUser(
                 userId = secondUser.id,
                 role = UserRole.Role.MEMBER,
@@ -55,17 +62,18 @@ internal class UserRoleTest : BaseDataJpaTest() {
     }
 
     @Test
-    fun testFindNonApprovedRoles() {
-        val rolePage = userRoleRepo.findNeedsApprovedUserRoles(PageRequest.of(0, 5))
+    fun testUnApprovedList_Success() {
+        val (infos, errors) = UnapprovedList(
+                pageable = PageRequest.of(0, 5),
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
 
-        assertEquals(2, rolePage.content.size)
+        assertNotNull(infos)
+        assertNull(errors)
 
-        // Make sure each is role is actually not approved
-        rolePage.content.forEach { it ->
-            assertFalse(it.approved)
+        infos!!.forEach {
 
-            // also make sure it is one of the ones from the list
-            // populated during setup
             val sameRole = nonApprovedRoles.any { role ->
                 role.id == it.id
             }
