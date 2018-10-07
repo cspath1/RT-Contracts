@@ -1,6 +1,7 @@
 package com.radiotelescope
 
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,5 +39,26 @@ internal class TestUtil {
         user.active = true
         user.status = User.Status.Active
         return userRepo.save(user)
+    }
+
+    fun createUserRolesForUser(userId: Long, role: UserRole.Role, isApproved: Boolean): List<UserRole> {
+        // Creates a User UserRole by default
+        val userRole = UserRole(
+                userId = userId,
+                role = UserRole.Role.USER
+        )
+
+        userRole.approved = true
+        userRoleRepo.save(userRole)
+
+        val otherRole = UserRole(
+                userId = userId,
+                role = role
+        )
+
+        otherRole.approved = isApproved
+        userRoleRepo.save(otherRole)
+
+        return listOf(userRole, otherRole)
     }
 }
