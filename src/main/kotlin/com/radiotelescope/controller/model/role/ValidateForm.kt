@@ -4,13 +4,13 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.role.ErrorTag
 import com.radiotelescope.contracts.role.Validate
-import com.radiotelescope.controller.model.BaseCreateForm
+import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.repository.role.UserRole
 
 data class ValidateForm(
         val id: Long?,
         val role: UserRole.Role?
-) : BaseCreateForm<Validate.Request> {
+) : BaseForm<Validate.Request> {
     override fun toRequest(): Validate.Request {
         return Validate.Request(
                 id = id!!,

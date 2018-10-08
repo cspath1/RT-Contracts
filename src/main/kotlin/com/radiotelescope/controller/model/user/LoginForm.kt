@@ -4,7 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.user.Authenticate
 import com.radiotelescope.contracts.user.ErrorTag
-import com.radiotelescope.controller.model.BaseCreateForm
+import com.radiotelescope.controller.model.BaseForm
 
 /**
  * Login form that takes nullable versions of the [Authenticate.Request] object.
@@ -17,9 +17,9 @@ import com.radiotelescope.controller.model.BaseCreateForm
 data class LoginForm(
         val email: String?,
         val password: String?
-) : BaseCreateForm<Authenticate.Request> {
+) : BaseForm<Authenticate.Request> {
     /**
-     * Override of the [BaseCreateForm.toRequest] method that adapts
+     * Override of the [BaseForm.toRequest] method that adapts
      * the form into a [Authenticate.Request] object
      *
      * @return the [Authenticate.Request] object
