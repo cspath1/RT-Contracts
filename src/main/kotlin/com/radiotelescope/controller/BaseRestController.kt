@@ -13,8 +13,4 @@ abstract class BaseRestController(
         val logger: Logger
 ) {
     var result = Result()
-
-    abstract fun successLog(id: Long): Logger.Info
-
-    abstract fun errorLog(): Logger.Info
 }

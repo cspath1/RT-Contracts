@@ -106,4 +106,18 @@ class Logger(
             )
         }
     }
+
+    companion object {
+        fun createInfo(
+                affectedTable: Log.AffectedTable,
+                action: Log.Action,
+                affectedRecordId: Long?) : Info {
+            return Info(
+                    affectedTable = affectedTable,
+                    action = action,
+                    timestamp = Date(),
+                    affectedRecordId = affectedRecordId
+            )
+        }
+    }
 }

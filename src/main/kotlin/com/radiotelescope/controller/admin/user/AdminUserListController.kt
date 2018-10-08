@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
 
 /**
  * REST controller to handle retrieving a [Page] of users
@@ -31,7 +30,15 @@ class AdminUserListController(
         if (pageNumber == null || pageSize == null) {
             val errors = pageErrors()
             // Create error logs
-            logger.createErrorLogs(errorLog(), errors.toStringMap())
+            logger.createErrorLogs(
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.USER,
+                            action = Log.Action.RETRIEVE,
+                            affectedRecordId = null
+                    ),
+                    errors = errors.toStringMap()
+            )
+
             result = Result(errors = errors.toStringMap())
         }
         // Otherwise, call the wrapper method
@@ -41,19 +48,41 @@ class AdminUserListController(
                 it.success?.let { page ->
                     // Create success logs
                     page.content.forEach {
-                        logger.createSuccessLog(successLog(it.id))
+                        logger.createSuccessLog(
+                                info = Logger.createInfo(Log.AffectedTable.USER,
+                                        action = Log.Action.RETRIEVE,
+                                        affectedRecordId = it.id
+                                )
+                        )
                     }
+
                     result = Result(data = it)
                 }
                 // If the command was a failure
                 it.error?.let { errors ->
-                    logger.createErrorLogs(errorLog(), errors.toStringMap())
+                    logger.createErrorLogs(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.USER,
+                                    action = Log.Action.RETRIEVE,
+                                    affectedRecordId = null
+                            ),
+                            errors = errors.toStringMap()
+                    )
+
                     result = Result(errors = errors.toStringMap())
                 }
             }?.let {
                 // If we get here, this means the User did not pass validation
                 // Create error logs
-                logger.createErrorLogs(errorLog(), it.toStringMap())
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.USER,
+                                action = Log.Action.RETRIEVE,
+                                affectedRecordId = null
+                        ),
+                        errors = it.toStringMap()
+                )
+
                 result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
@@ -63,23 +92,5 @@ class AdminUserListController(
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")
         return errors
-    }
-
-    override fun errorLog(): Logger.Info {
-        return Logger.Info(
-                affectedTable = Log.AffectedTable.USER,
-                action = Log.Action.RETRIEVE,
-                timestamp = Date(),
-                affectedRecordId = null
-        )
-    }
-
-    override fun successLog(id: Long): Logger.Info {
-        return Logger.Info(
-                affectedTable = Log.AffectedTable.USER,
-                action = Log.Action.RETRIEVE,
-                timestamp = Date(),
-                affectedRecordId = id
-        )
     }
 }

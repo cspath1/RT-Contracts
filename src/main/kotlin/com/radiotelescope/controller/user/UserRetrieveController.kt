@@ -48,19 +48,42 @@ class UserRetrieveController(
                 // success
                 it.success?.let {
                     // Create success logs
-                    logger.createSuccessLog(successLog(it.id))
+                    logger.createSuccessLog(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.USER,
+                                    action = Log.Action.RETRIEVE,
+                                    affectedRecordId = it.id
+                            )
+                    )
+
                     result = Result(data = it)
                 }
                 // Otherwise, it was an error
                 it.error?.let {
                     // Create error logs
-                    logger.createErrorLogs(errorLog(), it.toStringMap())
+                    logger.createErrorLogs(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.USER,
+                                    action = Log.Action.RETRIEVE,
+                                    affectedRecordId = null
+                            ),
+                            errors = it.toStringMap()
+                    )
+
                     result = Result(errors = it.toStringMap())
                 }
             }?.let {
                 // If we get here, this means the User did not pass validation
                 // Create error logs
-                logger.createErrorLogs(errorLog(), it.toStringMap())
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.USER,
+                                action = Log.Action.RETRIEVE,
+                                affectedRecordId = null
+                        ),
+                        errors = it.toStringMap()
+                )
+
                 result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         } ?:
@@ -68,7 +91,14 @@ class UserRetrieveController(
         let {
             // Create error logs
             val errors = idErrors()
-            logger.createErrorLogs(errorLog(), errors.toStringMap())
+            logger.createErrorLogs(
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.USER,
+                            action = Log.Action.RETRIEVE,
+                            affectedRecordId = null
+                    ),
+                    errors = errors.toStringMap()
+            )
 
             result = Result(errors = errors.toStringMap())
         }
@@ -84,31 +114,5 @@ class UserRetrieveController(
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.ID, "Invalid User Id")
         return errors
-    }
-
-    /**
-     * Override of the [BaseRestController.successLog] method that
-     * returns a controller specific [Logger.Info]
-     */
-    override fun successLog(id: Long): Logger.Info {
-        return Logger.Info(
-                affectedTable = Log.AffectedTable.USER,
-                action = Log.Action.RETRIEVE,
-                timestamp = Date(),
-                affectedRecordId = id
-        )
-    }
-
-    /**
-     * Override of the [BaseRestController.errorLog] method that
-     * returns a controller specific [Logger.Info]
-     */
-    override fun errorLog(): Logger.Info {
-        return Logger.Info(
-                affectedTable = Log.AffectedTable.USER,
-                action = Log.Action.RETRIEVE,
-                timestamp = Date(),
-                affectedRecordId = null
-        )
     }
 }

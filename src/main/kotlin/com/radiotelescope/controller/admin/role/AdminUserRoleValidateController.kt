@@ -36,9 +36,14 @@ class AdminUserRoleValidateController(
         validateForm.validateRequest()?.let { errors -> 
             // Create error logs
             logger.createErrorLogs(
-                    info = errorLog(), 
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.USER_ROLE,
+                            action = Log.Action.UPDATE,
+                            affectedRecordId = null
+                    ),
                     errors = errors.toStringMap()
             )
+
             result = Result(errors = errors.toStringMap())
         } ?: let { _ ->
             // Otherwise, call the wrapper command
@@ -48,14 +53,25 @@ class AdminUserRoleValidateController(
                 // If the request was a success
                 it.success?.let { id -> 
                     // Create success log
-                    logger.createSuccessLog(successLog(id))
+                    logger.createSuccessLog(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.USER_ROLE,
+                                    action = Log.Action.UPDATE,
+                                    affectedRecordId = id
+                            )
+                    )
+
                     result = Result(data = id)
                 }
                 // Otherwise it was a failure
                 it.error?.let { errors ->
                     // Create error logs
                     logger.createErrorLogs(
-                            info = errorLog(),
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.USER_ROLE,
+                                    action = Log.Action.UPDATE,
+                                    affectedRecordId = null
+                            ),
                             errors = errors.toStringMap()
                     )
                     
@@ -65,38 +81,16 @@ class AdminUserRoleValidateController(
                 // If we get here, user authentication failed
                 // Create error logs
                 logger.createErrorLogs(
-                        info = errorLog(),
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.USER_ROLE,
+                                action = Log.Action.UPDATE,
+                                affectedRecordId = null
+                        ),
                         errors = it.toStringMap()
                 )
             }
         }
 
         return result
-    }
-
-    /**
-     * Override of the [BaseRestController.errorLog] method that
-     * returns a controller-specific [Logger.Info]
-     */
-    override fun errorLog(): Logger.Info {
-        return Logger.Info(
-                affectedTable = Log.AffectedTable.USER_ROLE,
-                action = Log.Action.UPDATE,
-                timestamp = Date(),
-                affectedRecordId = null
-        )
-    }
-
-    /**
-     * Override of the [BaseRestController.successLog] method that
-     * returns a controller specific [Logger.Info]
-     */
-    override fun successLog(id: Long): Logger.Info {
-        return Logger.Info(
-                affectedTable = Log.AffectedTable.USER_ROLE,
-                action = Log.Action.RETRIEVE,
-                timestamp = Date(),
-                affectedRecordId = id
-        )
     }
 }
