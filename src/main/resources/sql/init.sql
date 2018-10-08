@@ -90,6 +90,15 @@ CREATE TABLE appointment(
   telescope_id INT(11) NOT NULL,
   celestial_body_id INT(11) NOT NULL,
   orientation_id INT(11) NOT NULL,
-  public TINYINT(1) DEFAULT '1'
+  public TINYINT(1) DEFAULT '1',
+  PRIMARY KEY (id),
+  KEY user_id_idx (user_id),
+  KEY start_time_idx (start_time),
+  KEY end_time_idx (end_time),
+  KEY status_idx (status),
+  KEY telescope_id_idx (telescope_id),
+  KEY celestial_body_id_idx (celestial_body_id),
+  KEY orientation_id_idx (orientation_id),
+  KEY public_idx (public)
 
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
