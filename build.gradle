@@ -46,11 +46,19 @@ processResources {
 	def profile = (project.hasProperty('profile') ? project.profile : 'local').toLowerCase()
 
 	copy {
-		from "src/main/resources/properties/application_${profile}.properties"
-		into "build/resources/main/"
+		from 'src/main/resources/properties/application_${profile}.properties'
+		into 'build/resources/main/'
 		rename {
 			'application.properties'
 		}
+	}
+	copy {
+		from 'src/main/resources/sql/schema-h2.sql'
+		into 'build/resources'
+	}
+	copy {
+		from 'src/main/resources/sql/seedTelescope.sql'
+		into 'build/resources'
 	}
 
 	exclude("**/properties")

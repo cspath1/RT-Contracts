@@ -16,10 +16,12 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
+@ActiveProfiles(value = ["test"])
 internal class UserUserWrapperTest : BaseDataJpaTest() {
 
     @Autowired
