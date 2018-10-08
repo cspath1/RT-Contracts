@@ -92,7 +92,6 @@ class Register(
                 userId = user.id
         )
 
-        // TODO: Change the accepted field to false when confirming a user's account is implemented
         role.approved = true
 
         userRoleRepo.save(role)
@@ -103,8 +102,8 @@ class Register(
                 userId = user.id
         )
 
-        // TODO: Change the accepted field to false once the admin can accept/decline a user's role
-        categoryRole.approved = true
+        categoryRole.approved = request.categoryOfService == UserRole.Role.GUEST
+
 
         userRoleRepo.save(categoryRole)
     }

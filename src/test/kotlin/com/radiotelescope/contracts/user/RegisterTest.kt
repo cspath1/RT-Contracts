@@ -29,7 +29,7 @@ internal class RegisterTest : BaseDataJpaTest() {
             password = "ValidPassword1",
             passwordConfirm = "ValidPassword1",
             company = "York College of Pennsylvania",
-            categoryOfService = UserRole.Role.GUEST
+            categoryOfService = UserRole.Role.STUDENT
     )
 
     @Test
@@ -64,9 +64,11 @@ internal class RegisterTest : BaseDataJpaTest() {
         // Ensure the role was properly set
         assertEquals(2, roles.size)
         roles.forEach {
-            if (it.role != UserRole.Role.GUEST && it.role != UserRole.Role.USER) {
+            if (it.role != UserRole.Role.STUDENT && it.role != UserRole.Role.USER) {
                 fail("An unknown enum value was persisted")
             }
+            if (it.role == UserRole.Role.STUDENT)
+                assertFalse(it.approved)
         }
     }
 
@@ -108,9 +110,44 @@ internal class RegisterTest : BaseDataJpaTest() {
         // Ensure the role was properly set
         assertEquals(2, roles.size)
         roles.forEach {
-            if (it.role != UserRole.Role.GUEST && it.role != UserRole.Role.USER) {
+            if (it.role != UserRole.Role.STUDENT && it.role != UserRole.Role.USER) {
                 fail("An unknown enum value was persisted")
             }
+            if (it.role == UserRole.Role.STUDENT)
+                assertFalse(it.approved)
+        }
+    }
+
+    @Test
+    fun testValidConstraints_GuestApproved_Success() {
+        // Set the category of service to guest, meaning
+        // it will be approved
+        val requestCopy = baseRequest.copy(
+                categoryOfService = UserRole.Role.GUEST
+        )
+
+        // Execute the command
+        val (id, error) = Register(
+                request = requestCopy,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Should not have failed
+        assertNull(error)
+        assertNotNull(id)
+
+        // Should now have 1 user and 2 user roles
+        assertEquals(1, userRepo.count())
+        assertEquals(2, userRoleRepo.count())
+
+        // Since we have already confirmed that the values
+        // are set accordingly in the above test case, let's
+        // just make sure the user roles are both approved
+        val roles = userRoleRepo.findAllByUserId(id!!)
+
+        roles.forEach {
+            assertTrue(it.approved)
         }
     }
 
