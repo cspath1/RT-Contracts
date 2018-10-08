@@ -70,7 +70,7 @@ class UserContextImpl(
         }
         // Otherwise, they are not logged in
         else
-            missingRoles?.add(UserRole.Role.GUEST)
+            missingRoles?.add(UserRole.Role.USER)
 
         // If the missing roles list is empty
         // they have passed authentication
