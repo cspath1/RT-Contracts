@@ -6,7 +6,7 @@ import com.radiotelescope.repository.user.User
 
 /*
 So for the Appointment entity we have the findByAppointmentId and findByUsernameId command objects
- */
+*/
 
 interface AppointmentFactory
 {
@@ -19,7 +19,6 @@ interface AppointmentFactory
 
     fun retrieveList(u: User):Command <Long, Multimap<ErrorTag,String>>
 
-    /*
-    fun update(appt_id, apptRepo):Command<Long, Multimap<ErrorTag, String>>
-    */
+   // fun update(appt_id, apptRepo):Command<Long, Multimap<ErrorTag, String>>
+
 }
