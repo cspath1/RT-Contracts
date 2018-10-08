@@ -24,6 +24,16 @@ class AdminUnapprovedUserRoleListController(
         private val roleWrapper: UserUserRoleWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of returning a [Page]
+     * of unapproved user roles. If the [PageRequest] does not
+     * have valid parameters, it will respond with errors.
+     * Otherwise, it will call the [UserUserRoleWrapper.unapprovedList]
+     * method, and respond accordingly
+     *
+     * @param pageNumber the Page Number
+     * @param pageSize the Page Size
+     */
     @GetMapping(value = ["/users/roles/unapproved"])
     fun execute(@RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?): Result {
@@ -69,12 +79,20 @@ class AdminUnapprovedUserRoleListController(
         return result
     }
 
+    /**
+     * Private method that will return erros if any of the parameters
+     * are not valid
+     */
     private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.PAGE_PARAMS, "Invalid Page parameters")
         return errors
     }
 
+    /**
+     * Override of the [BaseRestController.errorLog] method that
+     * returns a controller-specific [Logger.Info]
+     */
     override fun errorLog(): Logger.Info {
         return Logger.Info(
                 affectedTable = Log.AffectedTable.USER_ROLE,
@@ -84,6 +102,10 @@ class AdminUnapprovedUserRoleListController(
         )
     }
 
+    /**
+     * Override of the [BaseRestController.successLog] method that
+     * returns a controller specific [Logger.Info]
+     */
     override fun successLog(id: Long): Logger.Info {
         return Logger.Info(
                 affectedTable = Log.AffectedTable.USER_ROLE,

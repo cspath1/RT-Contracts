@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.admin.role
 
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.role.Validate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.role.ValidateForm
@@ -12,11 +13,24 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
+/**
+ * REST controller to handle validate a user's category of service
+ */
 @RestController
 class AdminUserRoleValidateController(
         private val roleWrapper: UserUserRoleWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of adapting a [ValidateForm]
+     * to a [Validate.Request] command (if possible). Otherwise, it
+     * will respond with errors.
+     *
+     * Once validated, it will call the [UserUserRoleWrapper.validate]
+     * method, and respond accordingly
+     *
+     * @param validateForm the [ValidateForm] object
+     */
     @PostMapping(value = ["/users/roles/validate"])
     fun execute(@RequestBody validateForm: ValidateForm): Result {
         validateForm.validateRequest()?.let { errors -> 
@@ -60,6 +74,10 @@ class AdminUserRoleValidateController(
         return result
     }
 
+    /**
+     * Override of the [BaseRestController.errorLog] method that
+     * returns a controller-specific [Logger.Info]
+     */
     override fun errorLog(): Logger.Info {
         return Logger.Info(
                 affectedTable = Log.AffectedTable.USER_ROLE,
@@ -69,6 +87,10 @@ class AdminUserRoleValidateController(
         )
     }
 
+    /**
+     * Override of the [BaseRestController.successLog] method that
+     * returns a controller specific [Logger.Info]
+     */
     override fun successLog(id: Long): Logger.Info {
         return Logger.Info(
                 affectedTable = Log.AffectedTable.USER_ROLE,
