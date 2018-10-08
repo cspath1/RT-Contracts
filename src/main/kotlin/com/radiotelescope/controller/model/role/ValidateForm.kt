@@ -7,10 +7,24 @@ import com.radiotelescope.contracts.role.Validate
 import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.repository.role.UserRole
 
+/**
+ * Validate for that takes nullable versions of the [Validate.Request] object.
+ * It is in charge of making sure these values are not null before adapting it
+ * to a [Validate.Request] object
+ *
+ * @param id the UserRole id
+ * @param role the UserRole role
+ */
 data class ValidateForm(
         val id: Long?,
         val role: UserRole.Role?
 ) : BaseForm<Validate.Request> {
+    /**
+     * Override of the [BaseForm.toRequest] method that adapts
+     * the form into a [Validate.Request] object
+     *
+     * @return the [Validate.Request] object
+     */
     override fun toRequest(): Validate.Request {
         return Validate.Request(
                 id = id!!,
@@ -18,6 +32,11 @@ data class ValidateForm(
         )
     }
 
+    /**
+     * Makes sure the for's id and role are not null
+     *
+     * @return a [HashMultimap] of errors or null
+     */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
         if (id == null)
