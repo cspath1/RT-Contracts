@@ -67,7 +67,7 @@ DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11) NOT NULL,
-  role ENUM('Guest', 'Student', 'Researcher', 'Member', 'Admin'),
+  role ENUM('User', 'Guest', 'Student', 'Researcher', 'Member', 'Admin'),
   approved TINYINT(1) DEFAULT '0',
   
   PRIMARY KEY (id),
