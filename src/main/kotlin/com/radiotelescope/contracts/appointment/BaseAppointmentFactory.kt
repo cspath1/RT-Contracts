@@ -7,6 +7,8 @@ import com.radiotelescope.contracts.appointment.*
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import org.springframework.data.domain.Pageable
+
 
 
 class BaseAppointmentFactory(
@@ -24,9 +26,9 @@ class BaseAppointmentFactory(
         return Retrieve(apptRepo.findById(id).get(), apptInfo , apptRepo, id)
     }
 
-    override fun retrieveList(u: User):Command<Long,Multimap<ErrorTag, String>>
+    override fun retrieveList(u: User, pageable: Pageable):Command<Long,Multimap<ErrorTag, String>>
     {
-        return RetrieveList(apptRepo, u.id, userRepo)
+        return RetrieveList(apptRepo, u.id, userRepo, pageable)
     }
 
 
