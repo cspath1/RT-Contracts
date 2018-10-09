@@ -1,5 +1,6 @@
 package com.radiotelescope.repository.user
 
+import com.radiotelescope.repository.appointment.Appointment
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 
@@ -22,4 +23,7 @@ interface IUserRepository : PagingAndSortingRepository<User, Long> {
      * @return a [User]
      */
     fun findByEmail(email: String): User?
+
+//find an Appt by user-- makes sense to put it in UserRepo, not ApptRepo, because ApptRepo is for one specific appt..?
+    fun findByUser(): List<Appointment>
 }

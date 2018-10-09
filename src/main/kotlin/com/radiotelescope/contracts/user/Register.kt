@@ -138,6 +138,8 @@ class Register(
                     lastName = lastName,
                     email = email,
                     password = encryptedPassword
+          //          minLeft =
+
             )
 
             if (!phoneNumber.isNullOrBlank())
