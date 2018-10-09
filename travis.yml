@@ -12,3 +12,7 @@ cache:
 sudo: enabled
 
 script: gradle verify
+
+branches:
+  only:
+    - /.*/
