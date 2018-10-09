@@ -45,4 +45,19 @@ class BaseUserRoleFactory(
                 userRoleRepo = userRoleRepo
         )
     }
+
+    /**
+     * Override of the [UserRoleFactory.retrieve] method that will return a [Retrieve] command
+     * object
+     *
+     * @param id the UserRole id
+     * @return a [Retrieve] command object
+     */
+    override fun retrieve(id: Long): Command<UserRoleInfo, Multimap<ErrorTag, String>> {
+        return Retrieve(
+                roleId = id,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo
+        )
+    }
 }

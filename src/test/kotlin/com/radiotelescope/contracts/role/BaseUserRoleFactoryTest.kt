@@ -58,4 +58,15 @@ internal class BaseUserRoleFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is Validate)
     }
+
+    @Test
+    fun retrieve() {
+        // Call the factory method
+        val cmd = factory.retrieve(
+                id = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Retrieve)
+    }
 }

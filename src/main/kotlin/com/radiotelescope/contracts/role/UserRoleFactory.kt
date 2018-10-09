@@ -26,4 +26,12 @@ interface UserRoleFactory {
      * @return a [Command] object
      */
     fun validate(request: Validate.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve a specific [UserRole]
+     *
+     * @param id the [UserRole] id
+     * @return a [Command] object
+     */
+    fun retrieve(id: Long): Command<UserRoleInfo, Multimap<ErrorTag, String>>
 }
