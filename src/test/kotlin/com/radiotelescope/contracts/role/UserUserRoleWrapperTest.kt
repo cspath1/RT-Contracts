@@ -195,4 +195,43 @@ internal class UserUserRoleWrapperTest {
 
         assertNull(error)
     }
+
+    @Test
+    fun testRetrieve_NotLoggedIn_Failure() {
+        val error = wrapper.retrieve(unapprovedRoleId) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertEquals(2, error!!.missingRoles.size)
+        assertTrue(error.missingRoles.containsAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN)))
+    }
+
+    @Test
+    fun testRetrieve_UserNotAdmin_Failure() {
+        // Log the user in as the student user
+        context.login(userId!!)
+        context.currentRoles.add(UserRole.Role.STUDENT)
+
+        val error = wrapper.retrieve(unapprovedRoleId) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testRetrieve_Admin_Success() {
+        // Log the user in as the student user
+        context.login(adminId!!)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.retrieve(unapprovedRoleId) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
 }

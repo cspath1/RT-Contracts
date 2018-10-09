@@ -59,4 +59,22 @@ class UserUserRoleWrapper(
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
     }
+
+    /**
+     * Wrapper method for the [UserRoleFactory.retrieve] method that adds Spring
+     * Security authentication to the [Retrieve] command object
+     *
+     * @param id the UserRole id
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun retrieve(id: Long, withAccess: (result: SimpleResult<UserRoleInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        context.currentUserId()?.let {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.retrieve(id)
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+    }
 }
