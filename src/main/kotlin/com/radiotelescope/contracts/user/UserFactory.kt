@@ -3,6 +3,8 @@ package com.radiotelescope.contracts.user
 import com.google.common.collect.Multimap
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.contracts.Command
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 /**
  * Abstract factory wrapper to all [User] CRUD operations. Each factory interface needs
@@ -32,4 +34,9 @@ interface UserFactory {
      * @return a [Command] object
      */
     fun retrieve(id: Long): Command<UserInfo, Multimap<ErrorTag,String>>
+
+    /**
+     * Abstract command used by admins to retrieve a [Page] of [UserInfo]
+     */
+    fun list(pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>>
 }

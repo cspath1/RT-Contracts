@@ -4,7 +4,7 @@ import com.radiotelescope.contracts.user.ErrorTag
 import org.junit.Assert.*
 import org.junit.Test
 
-class LoginFormTest {
+internal class LoginFormTest {
     private val baseForm = LoginForm(
             email = "cspath1@ycp.edu",
             password = "Password"

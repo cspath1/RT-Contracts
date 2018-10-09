@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.user
 
+import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -8,11 +9,20 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
+@ActiveProfiles(value = ["test"])
 internal class RegisterTest {
+    @TestConfiguration
+    class UtilTestContextConfiguration {
+        @Bean
+        fun utilService(): TestUtil { return TestUtil() }
+    }
 
     @Autowired
     private lateinit var userRepo: IUserRepository
@@ -28,7 +38,7 @@ internal class RegisterTest {
             password = "ValidPassword1",
             passwordConfirm = "ValidPassword1",
             company = "York College of Pennsylvania",
-            categoryOfService = UserRole.Role.GUEST
+            categoryOfService = UserRole.Role.STUDENT
     )
 
     @Test
@@ -63,9 +73,11 @@ internal class RegisterTest {
         // Ensure the role was properly set
         assertEquals(2, roles.size)
         roles.forEach {
-            if (it.role != UserRole.Role.GUEST && it.role != UserRole.Role.USER) {
+            if (it.role != UserRole.Role.STUDENT && it.role != UserRole.Role.USER) {
                 fail("An unknown enum value was persisted")
             }
+            if (it.role == UserRole.Role.STUDENT)
+                assertFalse(it.approved)
         }
     }
 
@@ -107,9 +119,44 @@ internal class RegisterTest {
         // Ensure the role was properly set
         assertEquals(2, roles.size)
         roles.forEach {
-            if (it.role != UserRole.Role.GUEST && it.role != UserRole.Role.USER) {
+            if (it.role != UserRole.Role.STUDENT && it.role != UserRole.Role.USER) {
                 fail("An unknown enum value was persisted")
             }
+            if (it.role == UserRole.Role.STUDENT)
+                assertFalse(it.approved)
+        }
+    }
+
+    @Test
+    fun testValidConstraints_GuestApproved_Success() {
+        // Set the category of service to guest, meaning
+        // it will be approved
+        val requestCopy = baseRequest.copy(
+                categoryOfService = UserRole.Role.GUEST
+        )
+
+        // Execute the command
+        val (id, error) = Register(
+                request = requestCopy,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Should not have failed
+        assertNull(error)
+        assertNotNull(id)
+
+        // Should now have 1 user and 2 user roles
+        assertEquals(1, userRepo.count())
+        assertEquals(2, userRoleRepo.count())
+
+        // Since we have already confirmed that the values
+        // are set accordingly in the above test case, let's
+        // just make sure the user roles are both approved
+        val roles = userRoleRepo.findAllByUserId(id!!)
+
+        roles.forEach {
+            assertTrue(it.approved)
         }
     }
 

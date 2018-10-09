@@ -1,10 +1,9 @@
 package com.radiotelescope.contracts.user
 
-import com.radiotelescope.contracts.BaseUserWrapperTest
+import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Assert.*
 import org.junit.Before
@@ -12,12 +11,27 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-class UserUserWrapperTest : BaseUserWrapperTest() {
+@ActiveProfiles(value = ["test"])
+internal class UserUserWrapperTest {
+    @TestConfiguration
+    class UtilTestContextConfiguration {
+        @Bean
+        fun utilService(): TestUtil { return TestUtil() }
+    }
+
+    @Autowired
+    private lateinit var testUtil: TestUtil
 
     @Autowired
     private lateinit var userRepo: IUserRepository
@@ -28,7 +42,7 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
     private val baseCreateRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
-            email = "codyspath@gmail.com",
+            email = "spathcody@gmail.com",
             phoneNumber = "717-823-2216",
             password = "ValidPassword1",
             passwordConfirm = "ValidPassword1",
@@ -44,7 +58,7 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
     private var otherUserId = -1L
 
     private val baseAuthenticateRequest = Authenticate.Request(
-            email = "spathcody@gmail.com",
+            email = "cspath1@ycp.edu",
             password = "Password"
     )
 
@@ -63,19 +77,15 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
         )
 
         // Persist the User with the hashed password
-        val user = userRepo.save(User(
-                firstName = "Cody",
-                lastName = "Spath",
-                email = "spathcody@gmail.com",
+        val user = testUtil.createUserWithEncodedPassword(
+                email = "cspath1@ycp.edu",
                 password = passwordEncoder.encode("Password")
-        ))
+        )
 
-        val otherUser = userRepo.save(User(
-                firstName = "Punished",
-                lastName = "Snake",
-                email = "snake@kojima.biz",
+        val otherUser = testUtil.createUserWithEncodedPassword(
+                email = "codyspath@gmail.com",
                 password = passwordEncoder.encode("Password")
-        ))
+        )
 
         userId = user.id
         otherUserId = otherUser.id
@@ -183,4 +193,50 @@ class UserUserWrapperTest : BaseUserWrapperTest() {
         assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
     }
 
+    @Test
+    fun testValidList_Admin_Success() {
+        // Log the user in and make them an admin
+        context.login(otherUserId)
+        context.currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
+
+        var info: Page<UserInfo> = PageImpl<UserInfo>(arrayListOf())
+
+        val error = wrapper.pageable(
+                request = PageRequest.of(0, 5)
+        ) {
+            info = it.success!!
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+        assertEquals(2, info.content.size)
+    }
+
+    @Test
+    fun testInvalidList_UserNotLoggedIn_Failure() {
+        val error = wrapper.pageable(
+                request = PageRequest.of(0, 5)
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.containsAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER)))
+    }
+
+    @Test
+    fun testInvalidList_UserNotAdmin_Failure() {
+        // Log the user in as a base user
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.pageable(
+                request = PageRequest.of(0, 5)
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+    }
 }

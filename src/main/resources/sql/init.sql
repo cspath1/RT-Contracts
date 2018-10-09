@@ -17,8 +17,8 @@ DROP TABLE IF EXISTS log;
 CREATE TABLE log(
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11),
-  affected_table ENUM('USER', 'APPOINTMENT') NOT NULL,
-  action ENUM('CREATE', 'RETRIEVE', 'UPDATE', 'DELETE') NOT NULL,
+  affected_table ENUM('USER', 'APPOINTMENT', 'USER_ROLE') NOT NULL,
+  action ENUM('CREATE', 'RETRIEVE', 'UPDATE', 'DELETE', 'LOG_IN') NOT NULL,
   timestamp DATETIME NOT NULL,
   affected_record_id INT(11),
   success TINYINT(1) DEFAULT '1',
@@ -67,7 +67,7 @@ DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11) NOT NULL,
-  role ENUM('Guest', 'Student', 'Researcher', 'Member', 'Admin'),
+  role ENUM('User', 'Guest', 'Student', 'Researcher', 'Member', 'Admin'),
   approved TINYINT(1) DEFAULT '0',
   
   PRIMARY KEY (id),

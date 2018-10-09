@@ -14,5 +14,6 @@ enum class ErrorTag {
     PROFILE_PICTURE,
     ACTIVE,
     STATUS,
-    CATEGORY_OF_SERVICE
+    CATEGORY_OF_SERVICE,
+    PAGE_PARAMS
 }

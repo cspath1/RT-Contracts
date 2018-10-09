@@ -4,7 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.contracts.user.Register
-import com.radiotelescope.controller.model.BaseCreateForm
+import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.repository.role.UserRole
 
 /**
@@ -30,9 +30,9 @@ data class RegisterForm(
         val passwordConfirm: String?,
         val company: String?,
         val categoryOfService: UserRole.Role?
-) : BaseCreateForm<Register.Request> {
+) : BaseForm<Register.Request> {
     /**
-     * Override of the [BaseCreateForm.toRequest] method that adapts
+     * Override of the [BaseForm.toRequest] method that adapts
      * the form into a [Register.Request] object
      */
     override fun toRequest(): Register.Request {

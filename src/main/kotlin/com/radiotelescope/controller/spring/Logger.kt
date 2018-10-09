@@ -5,10 +5,7 @@ import com.radiotelescope.repository.error.Error
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
-import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.UserContext
-import com.radiotelescope.security.UserContextImpl
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -105,6 +102,20 @@ class Logger(
                     affectedTable = affectedTable,
                     action = action,
                     timestamp = timestamp,
+                    affectedRecordId = affectedRecordId
+            )
+        }
+    }
+
+    companion object {
+        fun createInfo(
+                affectedTable: Log.AffectedTable,
+                action: Log.Action,
+                affectedRecordId: Long?) : Info {
+            return Info(
+                    affectedTable = affectedTable,
+                    action = action,
+                    timestamp = Date(),
                     affectedRecordId = affectedRecordId
             )
         }
