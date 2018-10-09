@@ -16,3 +16,6 @@ script: gradle verify
 branches:
   only:
     - /.*/
+
+notifications:
+  slack: radio-tele-back-end:BZ7Jptb9v5i7YA46sS9V0fG6
