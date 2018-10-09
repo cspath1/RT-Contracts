@@ -60,6 +60,8 @@ processResources {
 		from 'src/main/resources/sql/seedTelescope.sql'
 		into 'build/resources'
 	}
+
+	exclude("**/properties")
 }
 
 repositories {
