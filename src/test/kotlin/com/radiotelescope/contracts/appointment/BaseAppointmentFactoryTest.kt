@@ -19,9 +19,24 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
+interface Queries
+{
+    //is it going to see those values?
+    @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic)  values ('{a.type}', '{a.assocUserId}', '{a.d}', '{a.dd}', '{apptStatus}', '{a.telescopeId}', '{a.celestialBodyId}', '{a.orientationId}', '{a.receiver}', '{a.isPublic}')")
+    fun insertAppt():Appointment
+
+
+
+    @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic)  values ('{a.type}', '{a.assocUserId}', '{a.d}', '{a.dd}', '{apptStatus}', '{a.telescopeId}', '{a.celestialBodyId}', '{a.orientationId}', '{a.receiver}', '{a.isPublic}')")
+    fun insertAppt2():Appointment
+
+    //     @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic) values ('type2', '500', ')
+
+}
+
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class BaseAppointmentFactoryTest
+internal class BaseAppointmentFactoryTest : Queries
 {
     @Autowired
     private lateinit var apptRepo: IAppointmentRepository
@@ -45,15 +60,15 @@ internal class BaseAppointmentFactoryTest
     @Before
     fun init() {
         factory = BaseAppointmentFactory(apptRepo, apptInfo, userRepo)
-        val apptStatus = Appointment.Status.InProgress;
-        val apptStatus2 = Appointment.Status.Completed;
+        val apptStatus = Appointment.Status.InProgress
+        val apptStatus2 = Appointment.Status.Completed
 
         val orientationId = 5;
 
         val uid: Long = 50
         u.id = uid
 
-    queries.insertAppt2()
+    insertAppt2()
 
     }
 
@@ -69,7 +84,7 @@ internal class BaseAppointmentFactoryTest
         //@Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic)  values ('{a.type}', '{a.assocUserId}', '{a.d}', '{a.dd}', '{apptStatus}', '{a.telescopeId}', '{a.celestialBodyId}', '{a.orientationId}', '{a.receiver}', '{a.isPublic}')")
 
         //call sql insertion
-        val aa:Appointment = queries.insertAppt()
+        val aa:Appointment = insertAppt()
 
         val retrieved = factory.retrieve(1)
 
@@ -82,20 +97,4 @@ internal class BaseAppointmentFactoryTest
 
     }
 
-
-
-    interface queries
-    {
-        //is it going to see those values?
-        @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic)  values ('{a.type}', '{a.assocUserId}', '{a.d}', '{a.dd}', '{apptStatus}', '{a.telescopeId}', '{a.celestialBodyId}', '{a.orientationId}', '{a.receiver}', '{a.isPublic}')")
-        fun insertAppt():Appointment
-
-
-
-        @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic)  values ('{a.type}', '{a.assocUserId}', '{a.d}', '{a.dd}', '{apptStatus}', '{a.telescopeId}', '{a.celestialBodyId}', '{a.orientationId}', '{a.receiver}', '{a.isPublic}')")
-        fun insertAppt2():Appointment
-
-        //     @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic) values ('type2', '500', ')
-
-    }
 }

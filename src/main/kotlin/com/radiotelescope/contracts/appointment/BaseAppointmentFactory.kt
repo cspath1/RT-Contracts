@@ -26,7 +26,7 @@ class BaseAppointmentFactory(
 
     override fun retrieveList(u: User):Command<Long,Multimap<ErrorTag, String>>
     {
-        return RetrieveList(apptRepo, u, userRepo)
+        return RetrieveList(apptRepo, u.id, userRepo)
     }
 
 

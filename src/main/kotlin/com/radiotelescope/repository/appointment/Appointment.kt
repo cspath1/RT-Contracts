@@ -41,7 +41,7 @@ data class Appointment(
         @Column(name = "date", nullable = false)
         var date: Date,
         @Column(name = "assocUserId", nullable= false)
-        var assocUserId: Int,
+        var assocUserId: Long,
         @Column(name = "uFirstName", nullable= false)
         var uFirstName: String,
         @Column(name = "uLastName", nullable = false)

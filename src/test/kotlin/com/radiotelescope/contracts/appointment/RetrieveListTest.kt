@@ -14,6 +14,8 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import java.util.*
+import org.springframework.beans.factory.annotation.Autowired
+
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -26,11 +28,11 @@ internal class RetrieveListTest
 
     private var a:Appointment = Appointment(u, "appt-type1", d, dd, 2, 4, "1", true, Date(), 3, u.firstName, u.lastName, 0 )
 
-    //How to initialize repos
- //   private var uRepo:IUserRepository = IUserRepository;
- //   private var aRepo:IAppointmentRepository = IAppointmentRepository;
+    @Autowired
+    private lateinit var uRepo:IUserRepository
+    private lateinit var aRepo:IAppointmentRepository
 
-   private var rL:RetrieveList = RetrieveList(aRepo, u, uRepo)
+   private var rL:RetrieveList = RetrieveList(aRepo, u.id, uRepo)
 
     @Test
     fun RetrieveTest()

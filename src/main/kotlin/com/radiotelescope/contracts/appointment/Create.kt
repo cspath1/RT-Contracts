@@ -99,7 +99,7 @@ class Create(
             val receiver: String,
             val isPublic: Boolean,
             val date: Date, //date being the day/month/year of the appt?
-            val assocUserId: Int,
+            val assocUserId: Long,
             val uFirstName: String,
             val uLastName: String,
             val apptId: Long,

@@ -52,7 +52,7 @@ internal class AppointmentTest {
                         celestialBodyId = 1,
                         receiver = "unneeded field",
                         isPublic = true,
-                        assocUserId = user!!.id.toInt(),
+                        assocUserId = user!!.id,
                         uFirstName = "Cody",
                         uLastName = "Spath",
                         state = 1

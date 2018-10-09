@@ -12,6 +12,8 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.user.User
 import java.util.*
+import org.springframework.beans.factory.annotation.Autowired
+import com.radiotelescope.repository.appointment.IAppointmentRepository
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -25,14 +27,13 @@ internal class RetrieveTest
 
     private var a:Appointment = Appointment(u, "appt-type1", d, dd, 2, 4, "1", true, Date(), 3, u.firstName, u.lastName, 0 )
 
-    private var aI: AppointmentInfo = AppointmentInfo(a, a.user, a.type, a.startTime, a.endTime, a.telescopeId, a.celestialBodyId, a.receiver, a.isPublic, a.date, a.assocUserId, a.uFirstName,
-    a.uLastName, a.id, a.status, a.state)
+    private var aI: AppointmentInfo = AppointmentInfo( a.id, a.startTime, a.endTime, a.telescopeId, a.celestialBodyId, a.isPublic, a.assocUserId, a.uFirstName, a.uLastName, a.status)
 
 
     //How do you initialize a Repository object?
     //if I need to pass in a repository object to Retrieve?
-
-  //  private val aRepo: IAppointmentRepository
+    @Autowired
+    private lateinit var aRepo:IAppointmentRepository
 
     private val retrieveT:Retrieve = Retrieve(a, aI, aRepo, a.id)
 
