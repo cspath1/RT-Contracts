@@ -10,3 +10,5 @@ cache:
   - $HOME/.gradle/wrapper/
 
 sudo: enabled
+
+script: gradle verify
