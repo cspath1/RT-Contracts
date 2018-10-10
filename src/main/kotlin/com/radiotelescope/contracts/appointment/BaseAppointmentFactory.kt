@@ -10,7 +10,10 @@ import com.radiotelescope.repository.user.User
 class BaseAppointmentFactory(
     private val apptRepo: IAppointmentRepository,
     private var apptInfo: AppointmentInfo,
-    private var userRepo: IUserRepository
+    private var userRepo: IUserRepository,
+    private var page: Int,
+    private var size: Int
+
 ): AppointmentFactory {
 
     override fun retrieve(id: Long): Command<Long, Multimap<ErrorTag, String>> {
@@ -19,7 +22,7 @@ class BaseAppointmentFactory(
 
     override fun retrieveList(u: User):Command<Long,Multimap<ErrorTag, String>>
     {
-        return RetrieveList(apptRepo, u.id, userRepo)
+        return RetrieveList(apptRepo, u.id, userRepo, page, size )
     }
 
     //Create appt
