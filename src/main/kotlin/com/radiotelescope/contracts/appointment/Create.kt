@@ -1,20 +1,16 @@
 package com.radiotelescope.contracts.appointment
 
-
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
-import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
-import org.springframework.data.jpa.repository.Query
 import java.util.*
 
-
-//create an appointment
+//Create Appointment
 class Create(
     private val request: Request,
     private val appointmentRepo: IAppointmentRepository
@@ -22,20 +18,14 @@ class Create(
 {
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
+            //Failure case: Conflict occurred
         if (!errors.isEmpty) {
             return SimpleResult(null, errors)
+            //Success case: No conflicts
         } else {
             val newAppointment = appointmentRepo.save(request.toEntity())
             return SimpleResult(newAppointment.id, null)
         }
-    }
-
-
-
-    interface getAppts
-    {
-        @Query("select startTime, endTime from appointment")
-        fun getTimesOfAppts():Appointment
     }
 
     private fun validateRequest(): Multimap<ErrorTag, String>
@@ -55,42 +45,22 @@ class Create(
             if (receiver.isBlank())
                 errors.put(ErrorTag.RECEIVER, "Receiver may not be blank")
 
-            //If the start time > end time, we cause an error.
+            //If the start time > end time (in regards to the new appointment itself), we cause an error.
             if (startTime.after(endTime))
                 errors.put(ErrorTag.START_TIME, "Start time may not be greater than end time")
 
-            //if that date scheduled is before the current date
-            if (date.before(Date()))
+            //If the startTime is before the current date and time, we cannot schedule it
+            if (startTime.before(Date()))
                 errors.put(ErrorTag.DATE, "Date of appointment may not be before current date" )
 
-
-
-            //if someone's trying to schedule an appointment that overlaps an existing scheduled appointment, cause an entry in the errors multimap
-            //iterate through all other appointments in the appointment table, and if there's a conflict... enter into errors map
-
-          /*  val aa:getAppts? = null
-            aa?.getTimesOfAppts()
-*/
-
-
-
-
-
-
-
-
-
-
+            //Conflict scheduling avoidance algorithm here
         }
-
       return errors
     }
-
-
     data class Request(
             val user: User,
-    //        val orientation: Orientation, //to implement-- uncomment once implemented
-    //        val celestialBody: CelestialBody,
+    //        val orientation: Orientation, //to implement
+    //        val celestialBody: CelestialBody, //to implement
             val type: String,
             val startTime: Date,
             val endTime: Date,
@@ -98,8 +68,7 @@ class Create(
             val celestialBodyId: Long,
             val receiver: String,
             val isPublic: Boolean,
-            val date: Date, //date being the day/month/year of the appt?
-            val assocUserId: Int,
+            val userId: Long,
             val uFirstName: String,
             val uLastName: String,
             val apptId: Long,
@@ -109,7 +78,7 @@ class Create(
         override fun toEntity(): Appointment {
             return Appointment(
                     user= user,
-         //           orientation = orientation,  //uncomment once implemented
+         //           orientation = orientation,
          //           celestialBody = celestialBody,
                     type = type,
                     startTime = startTime,
@@ -118,12 +87,11 @@ class Create(
                     celestialBodyId = celestialBodyId,
                     receiver = receiver,
                     isPublic = isPublic,
-                    date = date,
-                    assocUserId = assocUserId,
+                     userId = userId,
                     uFirstName = uFirstName,
                     uLastName = uLastName,
-                 //   status = Appointment.Status.Scheduled //doesn't like this?
                     state = state
+                 // status = Appointment.Status.Scheduled //doesn't like this?
             )
         }
     }
