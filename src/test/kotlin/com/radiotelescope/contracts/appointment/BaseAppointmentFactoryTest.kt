@@ -33,7 +33,9 @@ internal class BaseAppointmentFactoryTest
 
     @Before
     fun init() {
-        factory = BaseAppointmentFactory(apptRepo, apptInfo, userRepo)
+        val page:Int = 3;
+        val size:Int = 5;
+        factory = BaseAppointmentFactory(apptRepo, apptInfo, userRepo, page, size)
         val uid: Long = 50
         u.id = uid
     }
