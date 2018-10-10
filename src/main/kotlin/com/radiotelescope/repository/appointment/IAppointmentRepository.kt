@@ -22,7 +22,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             nativeQuery = true)
     fun findFutureAppointmentsByUser(userId: Long, pageable: Pageable): Page<Appointment>
 
-    @Query(value = "select a from appointment a where user_id=?1 AND end_time < CURRENT_TIMESTAMP")
+    @Query(value = "select * from appointment where user_id=?1 AND end_time < CURRENT_TIMESTAMP", countQuery = "select count(*) from appointment where user_id=?1 and end_time < current_timestamp \\n#pageable\\n", nativeQuery = true)
     fun findPreviousAppointmentsByUser(userId: Long, pageable:Pageable): Page<Appointment>
 
     //Do we need to ensure that the change is reflected in the IAppointmentRepository?
