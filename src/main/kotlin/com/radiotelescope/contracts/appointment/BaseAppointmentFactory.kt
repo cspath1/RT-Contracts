@@ -28,16 +28,13 @@ class BaseAppointmentFactory(
         return Create(request, apptRepo)
     }
 
-    /* Update appt
     override fun update(appt_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
         return Update(appt_id, apptRepo)
     }
-    */
 
     //Delete appt
     override fun delete(id: Long): Command<Long, Multimap<ErrorTag, String>>  {
         return Delete(id, apptRepo)
     }
-
 }
 
