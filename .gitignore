@@ -6,6 +6,7 @@ gradle
 gradlew.bat
 
 **/application_remote.properties
+**/application_local.properties
 
 
 ### STS ###
