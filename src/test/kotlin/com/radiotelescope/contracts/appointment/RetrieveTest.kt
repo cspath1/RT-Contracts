@@ -22,8 +22,8 @@ internal class RetrieveTest
 {
 
     private var u: User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
-    val d =  Date()
-    val dd = Date("2018-1-1")
+    val d =  Date(9000)
+    val dd = Date(10000)
 
     private var a:Appointment = Appointment(u, "appt-type1", d, dd, 2, 4, "1", true, Date(), 3, u.firstName, u.lastName, 0 )
 
@@ -38,21 +38,28 @@ internal class RetrieveTest
     private val retrieveT:Retrieve = Retrieve(a, aI, aRepo, a.id)
 
     @Test
-fun RetrieveTest()
+    fun retrieveTest()
     {
-        var errors = HashMultimap.create<ErrorTag,String>()
-        var s: SimpleResult<Long, Multimap<ErrorTag, String>> =  SimpleResult(null, errors)
+        val (info, error) = Retrieve(
+                appt = a,
+                appt_id = 10,
+                apptInfo = aI,
+                apptRepo = aRepo
+        ).execute()
 
-        s =  retrieveT.execute()
+        assertNull(error)
+        assertNotNull(info)
+    }
+    @Test
+    fun failRetrieveTest(){
+        val (info, error) = Retrieve(
+                appt = a,
+                appt_id = 11,
+                apptInfo = aI,
+                apptRepo = aRepo
+        ).execute()
 
-        //pass if errors Multimap remains empty
-        if ( errors.isEmpty() )
-        {
-
-        }
-        //fail if otherwise
-        else assertTrue(false)
-
-
+        assertNull(info)
+        assertNotNull(error)
     }
 }
