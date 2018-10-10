@@ -49,9 +49,6 @@ data class Appointment(
         var uLastName: String,
         @Column(name = "state", nullable = false)
         var state: Int
-
-
-
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
