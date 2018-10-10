@@ -18,38 +18,20 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import java.util.*
 
-
-@DataJpaTest
-@RunWith(SpringRunner::class)
-
-internal class RetrieveTelescopeByIdTest
+internal class UpdateTest()
 {
-
     @Autowired
     private lateinit var apptRepo: IAppointmentRepository
-    @Autowired
-    private lateinit var userRepo: IUserRepository
-
     private var u: User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
     val startDate =  Date(9000)
     val endDate = Date(10000)
     private var a:Appointment = Appointment(u, "appt-type1", startDate, endDate, 2, 4, "1", true, 500, u.firstName, u.lastName, 5)
-    private var apptInfo: AppointmentInfo = AppointmentInfo(a)
-    private var t: Telescope = Telescope()
-    private var pageable = PageRequest.of(0, 5)
 
     @Test
-    fun getApptsByTelescopeIdTest()
+    fun updatetest()
     {
-        t.setId(0)
-        //fail case
-       if (RetrieveByTelescopeId(apptRepo, apptInfo, t.getId(), pageable, userRepo, u.id).execute().success == null)
-        assertTrue(false)
-
+         if (Update(a.id, apptRepo ).execute().success == null)
+             fail("updatetest failed")
         //else pass
-
     }
-
-
-
 }
