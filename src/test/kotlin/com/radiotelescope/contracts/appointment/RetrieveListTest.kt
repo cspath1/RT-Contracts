@@ -15,6 +15,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import java.util.*
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 
 
 @DataJpaTest
@@ -31,11 +32,13 @@ internal class RetrieveListTest
     @Autowired
     private lateinit var uRepo:IUserRepository
     private lateinit var aRepo:IAppointmentRepository
+    private var pageable = PageRequest.of(0, 5)
 
-   private var rL:RetrieveList = RetrieveList(aRepo, u.id, uRepo)
+
+    private var rL:RetrieveList = RetrieveList(aRepo, u.id, uRepo, pageable)
 
     @Test
-    fun RetrieveTest()
+    fun retrieveTest()
     {
         var errors = HashMultimap.create<ErrorTag,String>()
         var s: SimpleResult<Long, Multimap<ErrorTag, String>> =  SimpleResult(null, errors)

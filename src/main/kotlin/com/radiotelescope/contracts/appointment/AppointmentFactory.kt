@@ -3,6 +3,8 @@ package com.radiotelescope.contracts.appointment;
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.user.User
+import org.springframework.data.domain.Pageable
+
 
 /*
 So for the Appointment entity we have the findByAppointmentId and findByUsernameId command objects
@@ -18,7 +20,7 @@ interface AppointmentFactory
 
     fun retrieve(id:Long):Command<Long, Multimap<ErrorTag,String>>
 
-    fun retrieveList(u: User):Command <Long, Multimap<ErrorTag,String>>
+    fun retrieveList(u: User, pageable: Pageable):Command <Long, Multimap<ErrorTag,String>>
 
     //For later
     /*

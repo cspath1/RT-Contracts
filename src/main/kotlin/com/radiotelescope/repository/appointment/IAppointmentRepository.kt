@@ -1,4 +1,4 @@
-package com.radiotelescope.repository.appointment;
+package com.radiotelescope.repository.appointment
 
 import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
@@ -28,13 +28,19 @@ find appointment by userId
 
     fun findByUser(user: User): List<Appointment>
 
-    override fun delete(a: Appointment): Unit
+    @Query(value = "SELECT * " +
+            "FROM appointment " +
+            "WHERE user_id=?1 AND end_time < CURRENT_TIMESTAMP()",
+            countQuery = "SELECT COUNT(*) " +
+                "FROM appointment " +
+                "WHERE user_id=?1 AND end_time < CURRENT_TIMESTAMP() \\n#pageable\\n",
+            nativeQuery = true)
+    fun findPastAppointmentsByUser(userId: Long, pageable: Pageable) : Page<Appointment>
+
+    override fun delete(a: Appointment)
     {
-        a.status = Appointment.Status.Canceled;
+        a.status = Appointment.Status.Canceled
         //anything else?
 
     }
-
-
-
 }
