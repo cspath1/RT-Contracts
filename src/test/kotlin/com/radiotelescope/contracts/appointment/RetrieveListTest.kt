@@ -13,6 +13,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 
 @DataJpaTest
@@ -21,36 +22,23 @@ import java.util.*
 internal class RetrieveListTest
 {
     private var u: User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
-    val d =  Date()
-    val dd = Date("2018-1-1")
-
-    private var a:Appointment = Appointment(u, "appt-type1", d, dd, 2, 4, "1", true, Date(), 3, u.firstName, u.lastName, 0 )
-
-    //How to initialize repos
- //   private var uRepo:IUserRepository = IUserRepository;
- //   private var aRepo:IAppointmentRepository = IAppointmentRepository;
-
-   private var rL:RetrieveList = RetrieveList(aRepo, u, uRepo)
+    val startDate =  Date()
+    val endDate = Date("2018-1-1")
+    private var a:Appointment = Appointment(u, "appt-type1", startDate, endDate, 2, 4, "1", true, 500, u.firstName, u.lastName, 5 )
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+    @Autowired
+    private lateinit var apptRepo: IAppointmentRepository
+    private var retrieveList : RetrieveList = RetrieveList(apptRepo, u.id, userRepo)
 
     @Test
     fun RetrieveTest()
     {
         var errors = HashMultimap.create<ErrorTag,String>()
-        var s: SimpleResult<Long, Multimap<ErrorTag, String>> =  SimpleResult(null, errors)
-
-        s =  rL.execute()
-
-        //pass if errors Multimap remains empty
-        if ( errors.isEmpty() )
-        {
-
-        }
-        //fail if otherwise
-        else assertTrue(false)
-
-
-
+        var s: SimpleResult<Long, Multimap<ErrorTag, String>> = retrieveList.execute()
+        //fail case
+        if (s.success == null)
+            return assertTrue(false)
+        //else pass
     }
-
-
 }
