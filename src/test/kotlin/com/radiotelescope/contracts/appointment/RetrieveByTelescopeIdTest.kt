@@ -22,7 +22,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 
-internal class RetrieveTelescopeByIdTest
+internal class RetrieveByTelescopeIdTest
 {
 
     @Autowired
