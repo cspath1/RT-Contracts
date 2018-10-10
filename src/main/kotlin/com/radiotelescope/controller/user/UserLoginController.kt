@@ -39,7 +39,14 @@ class UserLoginController(
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
             // Create error logs
-            logger.createErrorLogs(errorLog(), it.toStringMap())
+            logger.createErrorLogs(
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.USER,
+                            action = Log.Action.LOG_IN,
+                            affectedRecordId = null
+                    ),
+                    errors = it.toStringMap()
+            )
 
             result = Result(errors = it.toStringMap())
         } ?:
@@ -51,44 +58,32 @@ class UserLoginController(
             // If the command was a success
             simpleResult.success?.let {
                 result = Result(data = it)
+
                 // Create a success log
-                logger.createSuccessLog(successLog(it.id))
+                logger.createSuccessLog(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.USER,
+                                action = Log.Action.LOG_IN,
+                                affectedRecordId = it.id
+                        )
+                )
             }
             // Otherwise, it was a failure
             simpleResult.error?.let {
                 // Create error logs
-                logger.createErrorLogs(errorLog(), it.toStringMap())
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.USER,
+                                action = Log.Action.LOG_IN,
+                                affectedRecordId = null
+                        ),
+                        errors = it.toStringMap()
+                )
 
                 result = Result(errors = it.toStringMap())
             }
         }
 
         return result
-    }
-
-    /**
-     * Override of the [BaseRestController.successLog] method that
-     * returns a controller specific [Logger.Info]
-     */
-    override fun successLog(id: Long): Logger.Info {
-        return Logger.Info(
-                affectedTable = Log.AffectedTable.USER,
-                action = Log.Action.LOG_IN,
-                timestamp = Date(),
-                affectedRecordId = id
-        )
-    }
-
-    /**
-     * Override of the [BaseRestController.errorLog] method that
-     * returns a controller specific [Logger.Info]
-     */
-    override fun errorLog(): Logger.Info {
-        return Logger.Info(
-                affectedTable = Log.AffectedTable.USER,
-                action = Log.Action.LOG_IN,
-                timestamp = Date(),
-                affectedRecordId = null
-        )
     }
 }
