@@ -15,5 +15,6 @@ enum class ErrorTag{
     CELESTIAL_BODY_ID,
     COORDINATES,
     RECEIVER,
-    DATE
+    DATE,
+    PAGE_PARAMS
 }
