@@ -33,19 +33,23 @@ internal class BaseAppointmentFactoryTest
 
   val endTime = Date(99999)
 
-    private var a:Appointment = Appointment(u, "appt-type1", d, dd, 2, 4, "1", true, Date(), 3, u.firstName, u.lastName, 0 )
+    private var a:Appointment = Appointment(u, "appt-type1", startTime, endTime, 2, 4, "1", true, 3, u.firstName, u.lastName, 0 )
 
     private val baseRequest = Create.Request(
-            id = u.id,
+            user = u,
+            userId = u.id,
             startTime = startTime,
             endTime = endTime,
             telescopeId = 2,
             celestialBodyId = 4,
             isPublic = true,
-            userId = 3,
             uFirstName = u.firstName,
             uLastName =  u.lastName,
-            status = Appointment.Status.InProgress
+            status = Appointment.Status.InProgress,
+            receiver = a.receiver,
+            apptId = a.id,
+            state = a.state,
+            type = a.type
     )
 
 

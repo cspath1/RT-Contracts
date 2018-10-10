@@ -30,7 +30,7 @@ internal class RetrieveListTest
     private lateinit var userRepo: IUserRepository
     @Autowired
     private lateinit var apptRepo: IAppointmentRepository
-    private var retrieveList : RetrieveList = RetrieveList(apptRepo, u.id, userRepo)
+    private var retrieveList : RetrieveList = RetrieveList(apptRepo, u.id, userRepo, pageable)
 
    private var rL:RetrieveList = RetrieveList(apptRepo, u.id, userRepo, pageable)
 
