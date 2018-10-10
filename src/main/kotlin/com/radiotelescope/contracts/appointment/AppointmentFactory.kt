@@ -19,6 +19,6 @@ interface AppointmentFactory
 
     fun retrieveList(u: User):Command <Long, Multimap<ErrorTag,String>>
 
-   // fun update(appt_id, apptRepo):Command<Long, Multimap<ErrorTag, String>>
+    fun update(id: Long):Command<Long, Multimap<ErrorTag, String>>
 
 }
