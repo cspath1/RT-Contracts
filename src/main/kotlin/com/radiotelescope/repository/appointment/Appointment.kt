@@ -3,6 +3,8 @@ package com.radiotelescope.repository.appointment
 import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
+
+
 /**
  * Entity Class representing an Appointment for the web-application
  *
@@ -47,6 +49,9 @@ data class Appointment(
         var uLastName: String,
         @Column(name = "state", nullable = false)
         var state: Int
+
+
+
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

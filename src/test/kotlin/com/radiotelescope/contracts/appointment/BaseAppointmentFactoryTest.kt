@@ -1,6 +1,9 @@
 package com.radiotelescope.contracts.appointment
 
+
 import com.example.project.contracts.appointment.BaseAppointmentFactory
+import com.google.common.collect.Multimap
+import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.appointment.Appointment
 
@@ -25,27 +28,62 @@ internal class BaseAppointmentFactoryTest
     private lateinit var userRepo: IUserRepository
     private lateinit var apptInfo: AppointmentInfo
     private var u:User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
-    val startDate =  Date()
-    val endDate = Date("2019-1-1")
-    private var a:Appointment = Appointment(u, "appt-type1", startDate, endDate, 2, 4, "1", true, 500, u.firstName, u.lastName, 5 )
 
-    private lateinit var factory: AppointmentFactory
+  val startTime =  Date(99990)
+
+  val endTime = Date(99999)
+
+    private var a:Appointment = Appointment(u, "appt-type1", d, dd, 2, 4, "1", true, Date(), 3, u.firstName, u.lastName, 0 )
+
+    private val baseRequest = Create.Request(
+            id = u.id,
+            startTime = startTime,
+            endTime = endTime,
+            telescopeId = 2,
+            celestialBodyId = 4,
+            isPublic = true,
+            userId = 3,
+            uFirstName = u.firstName,
+            uLastName =  u.lastName,
+            status = Appointment.Status.InProgress
+    )
+
+
+    lateinit var factory: AppointmentFactory
 
     @Before
     fun init() {
-        val page:Int = 3;
-        val size:Int = 5;
-        factory = BaseAppointmentFactory(apptRepo, apptInfo, userRepo, page, size)
+
+        factory = BaseAppointmentFactory(apptRepo, apptInfo, userRepo)
         val uid: Long = 50
         u.id = uid
-    }
-   @Test
+
+        //for createTest
+        factory.create(baseRequest)
+
+    @Test
     fun retrieveTest()
     {
-        val retrieved = factory.retrieve(a.id)
-        //fail
-        if (retrieved.execute().success == null)
-        return assertTrue(false)
-        //else pass
+       val retrieved = factory.retrieve(a.id)
+       //fail
+       if (retrieved.execute().success == null)
+           return assertTrue(false)
+       //else pass
     }
+}
+
+    @Test
+    fun createTest(){
+        val cmd = factory.create(baseRequest)
+        assertTrue(cmd is Create)
+    }
+
+@Test
+fun deleteTest(){
+
+}
+
+
+
+
 }

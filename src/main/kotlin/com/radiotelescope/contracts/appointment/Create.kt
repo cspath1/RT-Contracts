@@ -18,10 +18,8 @@ class Create(
 {
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
-            //Failure case: Conflict occurred
         if (!errors.isEmpty) {
             return SimpleResult(null, errors)
-            //Success case: No conflicts
         } else {
             val newAppointment = appointmentRepo.save(request.toEntity())
             return SimpleResult(newAppointment.id, null)
@@ -55,12 +53,15 @@ class Create(
 
             //Conflict scheduling avoidance algorithm here
         }
+
       return errors
     }
+
+
     data class Request(
             val user: User,
     //        val orientation: Orientation, //to implement
-    //        val celestialBody: CelestialBody, //to implement
+    //        val celestialBody: CelestialBody,
             val type: String,
             val startTime: Date,
             val endTime: Date,
@@ -87,7 +88,7 @@ class Create(
                     celestialBodyId = celestialBodyId,
                     receiver = receiver,
                     isPublic = isPublic,
-                     userId = userId,
+                    userId = userId,
                     uFirstName = uFirstName,
                     uLastName = uLastName,
                     state = state
