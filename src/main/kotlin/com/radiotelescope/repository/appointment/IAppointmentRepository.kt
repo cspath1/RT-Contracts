@@ -12,11 +12,7 @@ Spring Repository Interface for the Appointment Entity
  */
 @Repository
 interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long> {
-/*
-find appointment by userId
-
- */
-
+//Find an appointment by user id (AFTER the current time)
     @Query(value = "SELECT * " +
             "FROM appointment " +
             "WHERE user_id=?1 AND end_time > CURRENT_TIMESTAMP()",
@@ -26,15 +22,21 @@ find appointment by userId
             nativeQuery = true)
     fun findFutureAppointmentsByUser(userId: Long, pageable: Pageable): Page<Appointment>
 
-    fun findByUser(user: User): List<Appointment>
+    @Query(value = "select a from appointment a where user_id=?1 AND end_time < CURRENT_TIMESTAMP")
+    fun findPreviousAppointmentsByUser(userId: Long, pageable:Pageable): Page<Appointment>
 
+    //Do we need to ensure that the change is reflected in the IAppointmentRepository?
+    @Query(value = "update a appointment a set status = 'Canceled' where id = ?1")
+    fun delete(userId: Long):Appointment
+
+    /*
     override fun delete(a: Appointment): Unit
     {
         a.status = Appointment.Status.Canceled;
-        //anything else?
-
     }
-
-
+    */
+    //update (edit start or end time)
+    @Query(value = "update a appointment a set start_time = ?1, end_time = ?2 where id = ?3 ")
+    fun updateSingleAppointmentTimes(starttime:Long, endtime: Long, id:Long):Appointment
 
 }
