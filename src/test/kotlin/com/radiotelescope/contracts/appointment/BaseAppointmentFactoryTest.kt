@@ -19,24 +19,10 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
-interface Queries
-{
-    //is it going to see those values?
-    @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic)  values ('{a.type}', '{a.assocUserId}', '{a.d}', '{a.dd}', '{apptStatus}', '{a.telescopeId}', '{a.celestialBodyId}', '{a.orientationId}', '{a.receiver}', '{a.isPublic}')")
-    fun insertAppt():Appointment
-
-
-
-    @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic)  values ('{a.type}', '{a.assocUserId}', '{a.d}', '{a.dd}', '{apptStatus}', '{a.telescopeId}', '{a.celestialBodyId}', '{a.orientationId}', '{a.receiver}', '{a.isPublic}')")
-    fun insertAppt2():Appointment
-
-    //     @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic) values ('type2', '500', ')
-
-}
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class BaseAppointmentFactoryTest : Queries
+internal class BaseAppointmentFactoryTest
 {
     @Autowired
     private lateinit var apptRepo: IAppointmentRepository
@@ -48,52 +34,70 @@ internal class BaseAppointmentFactoryTest : Queries
 
     private var u:User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
 
-  val d =  Date()
+    val d =  Date(99990)
 
-  val dd = Date("2018-1-1")
+    val dd = Date(99999)
 
     private var a:Appointment = Appointment(u, "appt-type1", d, dd, 2, 4, "1", true, Date(), 3, u.firstName, u.lastName, 0 )
 
+    private val baseRequest = Create.Request(
+            user = u,
+            type = "appt-type1",
+            startTime = d,
+            endTime = dd,
+            telescopeId = 2,
+            celestialBodyId = 4,
+            receiver = "1",
+            isPublic = true,
+            date = d,
+            assocUserId = 3,
+            uFirstName = u.firstName,
+            uLastName =  u.lastName,
+            state = 1,
+            apptId = 10,
+            status = Appointment.Status.InProgress
+    )
 
     lateinit var factory: AppointmentFactory
 
     @Before
     fun init() {
         factory = BaseAppointmentFactory(apptRepo, apptInfo, userRepo)
-        val apptStatus = Appointment.Status.InProgress
-        val apptStatus2 = Appointment.Status.Completed
+        //val apptStatus = Appointment.Status.InProgress
+       // val apptStatus2 = Appointment.Status.Completed
 
-        val orientationId = 5;
+        //val orientationId = 5;
 
-        val uid: Long = 50
-        u.id = uid
+       // val uid: Long = 50
+       // u.id = uid
 
-    insertAppt2()
+        factory.create(baseRequest)
+
 
     }
-
-
-
-
-   // @Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic) values ( 'RandomDude2', 'WithAWeirdLastName2', 'piano1mano2@gmail.com', 'YCAS', '717-123-4568', 'pw2' , 0, 'apptStatus2', 60) ")
-
 
    @Test
     fun retrieveTest()
     {
-        //@Query("insert into appointment(type, assocUserId, startTime, endTime, status, telescopeId, celestialBodyId, orientationId, receiver, isPublic)  values ('{a.type}', '{a.assocUserId}', '{a.d}', '{a.dd}', '{apptStatus}', '{a.telescopeId}', '{a.celestialBodyId}', '{a.orientationId}', '{a.receiver}', '{a.isPublic}')")
 
-        //call sql insertion
-        val aa:Appointment = insertAppt()
 
-        val retrieved = factory.retrieve(1)
+    }
 
-        //Trying to figure out how to test the result of retrieve, because it returns a Command object
+    @Test
+    fun createTest(){
+        val cmd = factory.create(baseRequest)
 
-        //this is always true..
-       // assertTrue(retrieved is Command<Long, Multimap<ErrorTag, String>>)
+        assertTrue(cmd is Create)
 
-       // assertTrue()
+    }
+
+    @Test
+    fun deleteTest(){
+
+    }
+
+    @Test
+    fun retrieveListTest(){
 
     }
 
