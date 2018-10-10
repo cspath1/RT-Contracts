@@ -39,4 +39,9 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
     @Query(value = "update a appointment a set start_time = ?1, end_time = ?2 where id = ?3 ")
     fun updateSingleAppointmentTimes(starttime:Long, endtime: Long, id:Long):Appointment
 
+
+
+    @Query(value ="select * from appointment where telescope_id = ?1")
+    fun retrieveAppointmentsByTelescopeId(tele_id: Long, pageable:Pageable): Page<Appointment>
+
 }

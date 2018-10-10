@@ -19,6 +19,7 @@ class AppointmentWrapper(
 {
          fun pageableAppointments(request: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit):Unit {
             if (context.currentUserId() != null)
-                context.require(requiredRoles = listOf(UserRole.Role.ADMIN), successCommand = factory.list(request)).execute()
+
+               context.require(requiredRoles = listOf(UserRole.Role.ADMIN), successCommand = factory.list(request)).execute()
     }
 }

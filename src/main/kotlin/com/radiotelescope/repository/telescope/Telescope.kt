@@ -20,4 +20,9 @@ class Telescope {
     fun getOnline(): Boolean {
         return online
     }
+
+    fun setId(idd: Long)
+    {
+        id = idd
+    }
 }

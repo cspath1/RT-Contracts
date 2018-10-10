@@ -29,7 +29,7 @@ class UserRegisterController(
      * [RegisterForm] object and seeing if it can be adapted to a
      * [Register.Request] object.
      *
-     * If so, it will be adapted and the execute methof ror the
+     * If so, it will be adapted and the execute method for the
      * respective command will be called.
      *
      * @param form the [RegisterForm]
