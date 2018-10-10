@@ -25,7 +25,7 @@ internal class UpdateTest()
     private var u: User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
     val startDate =  Date(9000)
     val endDate = Date(10000)
-    private var a:Appointment = Appointment(u, "appt-type1", startDate, endDate, 2, 4, "1", true, 500, u.firstName, u.lastName, 5)
+    private var a:Appointment = Appointment(u,  startDate, endDate, 2, 4,  true, 500, u.firstName, u.lastName )
 
     @Test
     fun updatetest()

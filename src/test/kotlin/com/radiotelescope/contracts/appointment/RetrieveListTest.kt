@@ -25,7 +25,8 @@ internal class RetrieveListTest
     private var u: User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
     val startDate =  Date()
     val endDate = Date("2019-1-1")
-    private var a:Appointment = Appointment(u, "appt-type1", startDate, endDate, 2, 4, "1", true, 500, u.firstName, u.lastName, 5 )
+    //    var request: Create.Request = Create.Request(u,  Date(), Date("2019-7-7"), 1, 2,  true, u.id,  u.firstName, u.lastName, 500,  Appointment.Status.InProgress)
+    private var a:Appointment = Appointment(u,  startDate, endDate, 2, 4,  true, 500, u.firstName, u.lastName )
     @Autowired
     private lateinit var userRepo: IUserRepository
     @Autowired

@@ -7,8 +7,8 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 
-//Delete an appointment
-class Delete
+//Cancel an appointment
+class Cancel
 (private var apptId:Long,
  private val apptRepo: IAppointmentRepository
 ): Command<Long, Multimap<ErrorTag, String>>
@@ -24,7 +24,7 @@ class Delete
         else
         {
             val appt:Appointment = apptRepo.findById(apptId).get()
-            apptRepo.delete(appt)
+            apptRepo.cancel(appt, apptRepo, apptId)
             return SimpleResult(apptId, null)
         }
     }

@@ -28,8 +28,7 @@ data class Appointment(
         @JoinColumn(name="celestialBody_id", nullable = false)
        var celestialBody: CelestialBody,
        */
-        var type: String,
-        @Column(name = "start_time", nullable = false, unique = true)
+
         var startTime: Date,
         @Column(name = "end_time", nullable = false, unique = true)
         var endTime: Date,
@@ -37,8 +36,6 @@ data class Appointment(
         var telescopeId: Long,
         @Column(name = "celestial_body_id", nullable = false)
         var celestialBodyId: Long,
-        @Column(name = "receiver", nullable = false)
-        var receiver: String,
         @Column(name = "isPublic", nullable = false)
         var isPublic: Boolean,
         @Column(name = "date", nullable = false)
@@ -46,9 +43,7 @@ data class Appointment(
         @Column(name = "uFirstName", nullable= false)
         var uFirstName: String,
         @Column(name = "uLastName", nullable = false)
-        var uLastName: String,
-        @Column(name = "state", nullable = false)
-        var state: Int
+        var uLastName: String
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

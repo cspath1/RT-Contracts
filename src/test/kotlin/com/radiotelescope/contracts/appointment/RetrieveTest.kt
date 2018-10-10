@@ -25,17 +25,17 @@ internal class RetrieveTest
     private var u: User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
     val startDate =  Date(9000)
     val endDate = Date(10000)
-    private var a:Appointment = Appointment(u, "appt-type1", startDate, endDate, 2, 4, "1", true, 500, u.firstName, u.lastName, 5)
+    private var a:Appointment = Appointment(u,  startDate, endDate, 2, 4,  true, 500, u.firstName, u.lastName )
     private var apptInfo: AppointmentInfo = AppointmentInfo(a)
     @Autowired
     private lateinit var apptRepo: IAppointmentRepository
-    private val retrieveObj:Retrieve = Retrieve(a, apptInfo, apptRepo, a.id)
+    private val retrieveObj:Retrieve = Retrieve(a, apptRepo, a.id)
 
     @Test
     fun retrieveTest()
     {
         var errors = HashMultimap.create<ErrorTag,String>()
-        var s: SimpleResult<Long, Multimap<ErrorTag, String>> =  retrieveObj.execute()
+        var s: SimpleResult<AppointmentInfo, Multimap<ErrorTag, String>> =  retrieveObj.execute()
         //fail case
         if ( s.success == null )
          assertTrue(false)
@@ -48,7 +48,6 @@ internal class RetrieveTest
         val (info, error) = Retrieve(
                 appt = a,
                 appt_id = 10,
-                apptInfo = apptInfo,
                 apptRepo = apptRepo
         ).execute()
 
@@ -60,7 +59,6 @@ internal class RetrieveTest
         val (info, error) = Retrieve(
                 appt = a,
                 appt_id = 11,
-                apptInfo = apptInfo,
                 apptRepo = apptRepo
         ).execute()
 

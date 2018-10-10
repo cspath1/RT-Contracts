@@ -3,6 +3,7 @@ package com.example.project.contracts.appointment
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.*
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -16,8 +17,8 @@ class BaseAppointmentFactory(
 ): AppointmentFactory {
 
     //gets an appointment by id
-    override fun retrieve(id: Long): Command<Long, Multimap<ErrorTag, String>> {
-        return Retrieve(apptRepo.findById(id).get(), apptInfo , apptRepo, id)
+    override fun retrieve(id: Long): Command<AppointmentInfo, Multimap<ErrorTag, String>> {
+        return Retrieve(apptRepo.findById(id).get(), apptRepo, id)
     }
 
     override fun retrieveList(u: User, pageable: Pageable):Command<Long,Multimap<ErrorTag, String>>
@@ -37,9 +38,9 @@ class BaseAppointmentFactory(
     }
 
 
-    //Delete appt
-    override fun delete(id: Long): Command<Long, Multimap<ErrorTag, String>>  {
-        return Delete(id, apptRepo)   }
+    //Cancel appt
+    override fun cancel(a: Appointment, apptRepo: IAppointmentRepository, apptId: Long): Command<Long, Multimap<ErrorTag, String>>  {
+        return Cancel(apptId, apptRepo)   }
 
     override fun retrieveTelescopeById(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
         return RetrieveByTelescopeId(apptRepo, apptInfo, id, pageable, userRepo, user_id  )   }

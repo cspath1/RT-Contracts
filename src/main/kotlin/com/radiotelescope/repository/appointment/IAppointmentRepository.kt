@@ -29,12 +29,14 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
     @Query(value = "update a appointment a set status = 'Canceled' where id = ?1")
     fun delete(userId: Long):Appointment
 
-    /*
-    override fun delete(a: Appointment): Unit
+
+    fun cancel(a: Appointment, apptRepo: IAppointmentRepository, apptId: Long): Unit
     {
         a.status = Appointment.Status.Canceled;
+        apptRepo.delete(apptId)
+        apptRepo.save(a)
     }
-    */
+
     //update (edit start or end time)
     @Query(value = "update a appointment a set start_time = ?1, end_time = ?2 where id = ?3 ")
     fun updateSingleAppointmentTimes(starttime:Long, endtime: Long, id:Long):Appointment

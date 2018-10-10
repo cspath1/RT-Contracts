@@ -10,12 +10,11 @@ import com.radiotelescope.contracts.SimpleResult
 //This class retrieves one specific appointment, by its appointment ID.
 class Retrieve(
    private var appt: Appointment,
-   private var apptInfo: AppointmentInfo,
    private val apptRepo: IAppointmentRepository,
    private val appt_id: Long
-): Command<Long, Multimap<ErrorTag,String>>
+): Command<AppointmentInfo, Multimap<ErrorTag,String>>
 {
-        override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
+        override fun execute(): SimpleResult<AppointmentInfo, Multimap<ErrorTag, String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
         //Failure case
         if (!apptRepo.existsById(appt_id)) {
@@ -25,8 +24,8 @@ class Retrieve(
         //Success case
         else {
             appt = apptRepo.findById(appt_id).get()
-            apptInfo = AppointmentInfo(appt)
-            return SimpleResult(appt_id, null)
+           var apptInfo: AppointmentInfo = AppointmentInfo(appt)
+            return SimpleResult(apptInfo, null)
         }
     }
 }

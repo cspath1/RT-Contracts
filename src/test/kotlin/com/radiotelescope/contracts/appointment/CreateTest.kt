@@ -23,7 +23,7 @@ internal class CreateTest
     @Autowired
     private lateinit var apptRepo: IAppointmentRepository
     var u:User= User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
-    var request:Request  = Create.Request(u, "type1", Date(), Date("2019-7-7"), 1, 2, "1", true, 500, u.firstName, u.lastName, 500,  Appointment.Status.InProgress, 1 )
+    var request: Create.Request = Create.Request(u,  Date(), Date("2019-7-7"), 1, 2,  true, u.id,  u.firstName, u.lastName, 500,  Appointment.Status.InProgress)
     var CreateObj:Create = Create(request, apptRepo)
 
     @Before

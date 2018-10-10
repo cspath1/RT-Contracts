@@ -40,8 +40,6 @@ class Create(
             if (endTime.toString().isBlank()) {
                 errors.put(ErrorTag.END_TIME, "End time may not be blank")
             }
-            if (receiver.isBlank())
-                errors.put(ErrorTag.RECEIVER, "Receiver may not be blank")
 
             //If the start time > end time (in regards to the new appointment itself), we cause an error.
             if (startTime.after(endTime))
@@ -57,41 +55,34 @@ class Create(
       return errors
     }
 
-
     data class Request(
             val user: User,
     //        val orientation: Orientation, //to implement
     //        val celestialBody: CelestialBody,
-            val type: String,
             val startTime: Date,
             val endTime: Date,
             val telescopeId: Long,
             val celestialBodyId: Long,
-            val receiver: String,
             val isPublic: Boolean,
             val userId: Long,
             val uFirstName: String,
             val uLastName: String,
             val apptId: Long,
-            val status: Appointment.Status,
-            val state: Int
+            val status: Appointment.Status
     ) : BaseCreateRequest<Appointment>{
         override fun toEntity(): Appointment {
             return Appointment(
                     user= user,
          //           orientation = orientation,
          //           celestialBody = celestialBody,
-                    type = type,
                     startTime = startTime,
                     endTime = endTime,
                     telescopeId = telescopeId,
                     celestialBodyId = celestialBodyId,
-                    receiver = receiver,
                     isPublic = isPublic,
                     userId = userId,
                     uFirstName = uFirstName,
-                    uLastName = uLastName,
-                    state = state
+                    uLastName = uLastName
                  // status = Appointment.Status.Scheduled //doesn't like this?
             )
         }

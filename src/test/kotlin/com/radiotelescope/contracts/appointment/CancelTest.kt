@@ -16,19 +16,19 @@ import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class DeleteTest
+internal class CancelTest
 {
     @Autowired
     private lateinit var apptRepo: IAppointmentRepository
     var u: User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
-    var request: Create.Request = Create.Request(u, "type1", Date(), Date("2019-7-7"), 1, 2, "1", true, 500, u.firstName, u.lastName, 500,  Appointment.Status.InProgress, 1 )
-    var deleteObj:Delete = Delete(request.apptId, apptRepo)
+    var request: Create.Request = Create.Request(u,  Date(), Date("2019-7-7"), 1, 2,  true, u.id,  u.firstName, u.lastName, 500,  Appointment.Status.InProgress)
+    var cancelObj:Cancel = Cancel(request.apptId, apptRepo)
 
     @Test
     fun deleteTest()
     {
         var errors = HashMultimap.create<ErrorTag,String>()
-        var s: SimpleResult<Long, Multimap<ErrorTag, String>> = deleteObj.execute()
+        var s: SimpleResult<Long, Multimap<ErrorTag, String>> = cancelObj.execute()
         //fail case
         if (s.success== null)
             assertTrue(false)
