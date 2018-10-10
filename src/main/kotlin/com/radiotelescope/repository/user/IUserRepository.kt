@@ -24,6 +24,5 @@ interface IUserRepository : PagingAndSortingRepository<User, Long> {
      */
     fun findByEmail(email: String): User?
 
-//find an Appt by user-- makes sense to put it in UserRepo, not ApptRepo, because ApptRepo is for one specific appt..?
-    fun findByUser(): List<Appointment>
+
 }
