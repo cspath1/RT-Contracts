@@ -31,11 +31,10 @@ internal class CreateTest
     }
 
     @Test
-    fun CreateTest()
+    fun createTest()
     {
         var errors = HashMultimap.create<ErrorTag,String>()
-        var s: SimpleResult<Long, Multimap<ErrorTag, String>> =  SimpleResult(null, errors)
-        s =  CreateObj.execute()
+        var s: SimpleResult<Long, Multimap<ErrorTag, String>> =  CreateObj.execute()
         //fail
         if (s.success == null)
             return assertTrue(false)
