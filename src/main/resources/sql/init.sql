@@ -93,3 +93,13 @@ CREATE TABLE appointment(
   public TINYINT(1) DEFAULT '1'
 
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE orientation(
+appt_id INT NOT NULL,
+azimuth INT NOT NULL,
+elevation INT NOT NULL,
+
+KEY azimuth_idx (azimuth),
+KEY elevation_idx (elevation)
+
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
