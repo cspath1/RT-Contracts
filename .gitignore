@@ -5,6 +5,8 @@ gradlew
 gradle
 gradlew.bat
 
+**application_remote.properties
+
 
 ### STS ###
 .apt_generated
