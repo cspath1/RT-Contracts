@@ -31,7 +31,7 @@ class Register(
      * the [UserRole] associated with it. It will then return a [SimpleResult]
      * object with the [User] id and a null errors field.
      *
-     * If validation fields, it will return a [SimpleResult] with the errors and a
+     * If validation fails, it will return a [SimpleResult] with the errors and a
      * null success field
      */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
@@ -77,7 +77,6 @@ class Register(
             if (!password.matches(User.passwordRegex))
                 errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
         }
-
         return errors
     }
 
@@ -140,8 +139,6 @@ class Register(
                     lastName = lastName,
                     email = email,
                     password = encryptedPassword
-          //          minLeft =
-
             )
 
             if (!phoneNumber.isNullOrBlank())
