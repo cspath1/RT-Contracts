@@ -27,10 +27,18 @@ class UserAppointmentWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun create(request: Create.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        return context.require(
-                requiredRoles = listOf(UserRole.Role.USER),
-                successCommand = factory.create(request)
-        ).execute(withAccess)
+        // If public, they only need to be a base user
+        return if (request.isPublic)
+            context.require(
+                    requiredRoles = listOf(UserRole.Role.USER),
+                    successCommand = factory.create(request)
+            ).execute(withAccess)
+        // Otherwise, they need to be a researcher
+        else
+            context.require(
+                    requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                    successCommand = factory.create(request)
+            ).execute(withAccess)
     }
 
     /**

@@ -92,7 +92,7 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
-    fun testCreate_NotUser_Failure() {
+    fun testCreatePublic_NotUser_Failure() {
         // Do not log the user in
 
         // Create a base request copy with a valid id
@@ -111,7 +111,7 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
-    fun testCreate_User_Success() {
+    fun testCreatePublic_User_Success() {
         // Simulate a login
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
@@ -119,6 +119,52 @@ internal class UserAppointmentWrapperTest {
         // Create a base request copy with a valid id
         val requestCopy = baseCreateRequest.copy(
                 userId = user.id
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testCreatePrivate_NotResearcher_Failure() {
+        // Simulate a login, but do not make them a researcher
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Create a base request copy with a valid id that
+        // is also private
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id,
+                isPublic = false
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.RESEARCHER))
+    }
+
+    @Test
+    fun testCreatePrivate_Researcher_Failure() {
+        // Simulate a login and make the user a researcher
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
+
+        // Create a base request copy with a valid id that
+        // is also private
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id,
+                isPublic = false
         )
 
         val error = wrapper.create(
