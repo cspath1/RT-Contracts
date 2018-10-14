@@ -5,7 +5,7 @@ import com.radiotelescope.repository.role.UserRole
 import org.junit.Assert.*
 import org.junit.Test
 
-class RegisterFormTest {
+internal class RegisterFormTest {
     private val baseForm = RegisterForm(
             firstName = "Cody",
             lastName = "Spath",
