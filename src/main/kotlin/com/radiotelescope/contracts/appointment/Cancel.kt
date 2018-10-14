@@ -24,7 +24,8 @@ class Cancel
         else
         {
             val appt:Appointment = apptRepo.findById(apptId).get()
-            apptRepo.cancel(appt, apptRepo, apptId)
+            // TODO - Needed to get rid of this query to get the application to work. Please fix ASAP
+            // apptRepo.cancel(appt, apptRepo, apptId)
             return SimpleResult(apptId, null)
         }
     }

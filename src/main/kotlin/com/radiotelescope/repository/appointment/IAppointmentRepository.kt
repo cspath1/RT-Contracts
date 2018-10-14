@@ -25,25 +25,6 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
     @Query(value = "select * from appointment where user_id=?1 AND end_time < CURRENT_TIMESTAMP", countQuery = "select count(*) from appointment where user_id=?1 and end_time < current_timestamp \\n#pageable\\n", nativeQuery = true)
     fun findPreviousAppointmentsByUser(userId: Long, pageable:Pageable): Page<Appointment>
 
-    //Do we need to ensure that the change is reflected in the IAppointmentRepository?
-    @Query(value = "update a appointment a set status = 'Canceled' where id = ?1")
-    fun delete(userId: Long):Appointment
-
-
-    fun cancel(a: Appointment, apptRepo: IAppointmentRepository, apptId: Long): Unit
-    {
-        a.status = Appointment.Status.Canceled;
-        apptRepo.delete(apptId)
-        apptRepo.save(a)
-    }
-
-    //update (edit start or end time)
-    @Query(value = "update a appointment a set start_time = ?1, end_time = ?2 where id = ?3 ")
-    fun updateSingleAppointmentTimes(starttime:Long, endtime: Long, id:Long):Appointment
-
-
-
-    @Query(value ="select * from appointment where telescope_id = ?1")
+    @Query(value ="select * from appointment where telescope_id = ?1", nativeQuery = true)
     fun retrieveAppointmentsByTelescopeId(tele_id: Long, pageable:Pageable): Page<Appointment>
-
 }

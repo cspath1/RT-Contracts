@@ -1,50 +1,47 @@
 package com.radiotelescope.contracts.appointment
 
-import com.google.common.collect.HashMultimap
-import com.radiotelescope.repository.appointment.Appointment
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
-import com.google.common.collect.Multimap
-import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.repository.user.User
-import org.springframework.data.domain.PageRequest
+import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.test.context.ActiveProfiles
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-
-internal class RetrieveListTest
-{
-    private var pageable = PageRequest.of(0, 5)
-    private var u: User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
-    val startDate =  Date()
-    val endDate = Date("2019-1-1")
-    //    var request: Create.Request = Create.Request(u,  Date(), Date("2019-7-7"), 1, 2,  true, u.id,  u.firstName, u.lastName, 500,  Appointment.Status.InProgress)
-    private var a:Appointment = Appointment(u,  startDate, endDate, 2, 4,  true, 500, u.firstName, u.lastName )
-    @Autowired
-    private lateinit var userRepo: IUserRepository
-    @Autowired
-    private lateinit var apptRepo: IAppointmentRepository
-    private var retrieveList : RetrieveList = RetrieveList(apptRepo, u.id, userRepo, pageable)
-
-   private var rL:RetrieveList = RetrieveList(apptRepo, u.id, userRepo, pageable)
-
-    @Test
-    fun retrieveListTest()
-    {
-        var errors = HashMultimap.create<ErrorTag,String>()
-        var s: SimpleResult<Long, Multimap<ErrorTag, String>> = retrieveList.execute()
-        //fail case
-        if (s.success == null)
-            return assertTrue(false)
-        //else pass
+@ActiveProfiles(value = ["test"])
+internal class RetrieveListTest {
+    @TestConfiguration
+    class UtilTestContextConfiguration {
+        @Bean
+        fun utilService(): TestUtil { return TestUtil() }
     }
 
+    @Autowired
+    private lateinit var testUtil: TestUtil
+
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
+    @Autowired
+    private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Before
+    fun setUp() {
+        // Persist a user
+        val user = testUtil.createUser("spathcody@gmail.com")
+
+        // TODO - Add test setup here
+
+    }
+
+    // TODO - Add unit tests here
 
 }

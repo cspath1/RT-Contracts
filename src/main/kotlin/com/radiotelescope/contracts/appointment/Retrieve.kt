@@ -7,25 +7,35 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 
-//This class retrieves one specific appointment, by its appointment ID.
+/**
+ * Override of the [Command] interface method used to retrieve [Appointment]
+ * information
+ *
+ * @param appointmentId the requested Appointment's id
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ */
 class Retrieve(
-   private var appt: Appointment,
-   private val apptRepo: IAppointmentRepository,
-   private val appt_id: Long
-): Command<AppointmentInfo, Multimap<ErrorTag,String>>
-{
-        override fun execute(): SimpleResult<AppointmentInfo, Multimap<ErrorTag, String>> {
-        val errors = HashMultimap.create<ErrorTag, String>()
-        //Failure case
-        if (!apptRepo.existsById(appt_id)) {
-            errors.put(ErrorTag.ID, "Attempted to retrieve appointment with id $appt_id that does not exist")
+        private val appointmentId: Long,
+        private val appointmentRepo: IAppointmentRepository
+) : Command<AppointmentInfo, Multimap<ErrorTag,String>> {
+    /**
+     * Override of the [Command] execute method. It checks to see if the
+     * supplied id refers to an existing [Appointment] Entity, and if so,
+     * it will retrieve it and adapt it to a [AppointmentInfo] data class.
+     * It will then return this information in a [SimpleResult].
+     *
+     * If the appointment does not exist, it will return an error in the
+     * [SimpleResult]
+     */
+    override fun execute(): SimpleResult<AppointmentInfo, Multimap<ErrorTag, String>> {
+        if (!appointmentRepo.existsById(appointmentId)) {
+            val errors = HashMultimap.create<ErrorTag, String>()
+            errors.put(ErrorTag.ID, "Appointment Id #$appointmentId not found")
             return SimpleResult(null, errors)
         }
-        //Success case
-        else {
-            appt = apptRepo.findById(appt_id).get()
-           var apptInfo: AppointmentInfo = AppointmentInfo(appt)
-            return SimpleResult(apptInfo, null)
-        }
+
+        val theAppointment = appointmentRepo.findById(appointmentId).get()
+        val theInfo = AppointmentInfo(theAppointment)
+        return SimpleResult(theInfo, null)
     }
 }

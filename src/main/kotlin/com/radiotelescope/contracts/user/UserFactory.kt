@@ -7,8 +7,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 /**
- * Abstract factory wrapper to all [User] CRUD operations. Each factory interface needs
- * to have a method for each command object for its respective entity.
+ * Abstract factory interface with methods for all [User] CRUD operations.
  */
 interface UserFactory {
     /**
@@ -37,6 +36,9 @@ interface UserFactory {
 
     /**
      * Abstract command used by admins to retrieve a [Page] of [UserInfo]
+     *
+     * @param pageable the [Pageable] object
+     * @return a [Command] object
      */
     fun list(pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>>
 }

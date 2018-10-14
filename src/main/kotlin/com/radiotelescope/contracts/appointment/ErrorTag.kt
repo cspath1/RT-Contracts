@@ -1,20 +1,14 @@
 package com.radiotelescope.contracts.appointment
 
 /**
- * Field validation tags
+ * Enum representing field validation failures for the Appointment Entity
  */
-
 enum class ErrorTag{
     ID,
     USER_ID,
     START_TIME,
     END_TIME,
-    STATE,
-    TYPE,
+    STATUS,
     TELESCOPE_ID,
-    CELESTIAL_BODY_ID,
-    COORDINATES,
-    RECEIVER,
-    DATE,
     PAGE_PARAMS
 }

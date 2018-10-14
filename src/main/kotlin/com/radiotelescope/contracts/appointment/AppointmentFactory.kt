@@ -1,4 +1,4 @@
-package com.radiotelescope.contracts.appointment;
+package com.radiotelescope.contracts.appointment
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
@@ -7,19 +7,28 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Pageable
 
-
-/*
-So for the Appointment entity we have the findByAppointmentId and findByUsernameId command objects
-*/
-
+/**
+ * Abstract factory interface with methods for all [Appointment] CRUD operations
+ */
 interface AppointmentFactory
 {
-
-    fun create(request: Create.Request):Command<Long, Multimap<ErrorTag, String>>
+    /**
+     * Abstract command used to schedule an appointment
+     *
+     * @param request the [Create.Request] request
+     * @return a [Command] object
+     */
+    fun create(request: Create.Request): Command<Long, Multimap<ErrorTag, String>>
 
     fun cancel(a: Appointment, apptRepo: IAppointmentRepository, apptId: Long):Command<Long, Multimap<ErrorTag,String>>
 
-    fun retrieve(id:Long):Command<AppointmentInfo, Multimap<ErrorTag,String>>
+    /**
+     * Abstract command used to retrieve appointment information
+     *
+     * @param id the Appointment's id
+     * @return a [Command] object
+     */
+    fun retrieve(id: Long): Command<AppointmentInfo, Multimap<ErrorTag,String>>
 
     fun retrieveList(u: User, pageable: Pageable):Command <Long, Multimap<ErrorTag,String>>
 

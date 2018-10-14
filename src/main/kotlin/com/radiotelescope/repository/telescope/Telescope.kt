@@ -2,6 +2,14 @@ package com.radiotelescope.repository.telescope
 
 import javax.persistence.*
 
+/**
+ * Entity Class representing a Radio Telescope. This is used with
+ * scheduling appointments. This is information that will be
+ * updated by the control room software, and will not be modified by
+ * our application
+ *
+ * This Entity correlates to the Telescope SQL Table
+ */
 @Entity
 @Table(name = "telescope")
 class Telescope {
@@ -19,10 +27,5 @@ class Telescope {
 
     fun getOnline(): Boolean {
         return online
-    }
-
-    fun setId(idd: Long)
-    {
-        id = idd
     }
 }

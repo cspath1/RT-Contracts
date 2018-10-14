@@ -2,88 +2,97 @@ package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
-import com.radiotelescope.repository.user.User
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
-//Create Appointment
+/**
+ * Override of the [Command] interface method used for Appointment creation
+ *
+ * @param request the [Request] object
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param userRepo the [IUserRepository] interface
+ * @param telescopeRepo the [ITelescopeRepository] interface
+ */
 class Create(
     private val request: Request,
-    private val appointmentRepo: IAppointmentRepository
-) : Command<Long, Multimap<ErrorTag,String>>
-{
+    private val appointmentRepo: IAppointmentRepository,
+    private val userRepo: IUserRepository,
+    private val telescopeRepo: ITelescopeRepository
+) : Command<Long, Multimap<ErrorTag,String>> {
+    /**
+     * Override of the [Command.execute] method. Calls the [validateRequest] method
+     * that will handle all constraint checking and validation.
+     *
+     * If validation passes, it will create and persist the [Appointment] object and
+     * return the id in the [SimpleResult] object.
+     *
+     * If validation fails, it will return a [SimpleResult] with the errors
+     */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
-        val errors = validateRequest()
-        if (!errors.isEmpty) {
-            return SimpleResult(null, errors)
-        } else {
-            val newAppointment = appointmentRepo.save(request.toEntity())
-            return SimpleResult(newAppointment.id, null)
+        validateRequest()?.let { return SimpleResult(null, it) } ?: let {
+            val theAppointment = request.toEntity()
+            theAppointment.user = userRepo.findById(request.userId).get()
+            appointmentRepo.save(theAppointment)
+            return SimpleResult(theAppointment.id, null)
         }
     }
 
-    private fun validateRequest(): Multimap<ErrorTag, String>
-    {
+    /**
+     * Method responsible for constraint checking and validations for the
+     * appointment create request. It will ensure that both the user and telescope
+     * id exists and that the appointment's end time is not before its start time.
+     * It also ensures that the start time is not before the current date
+     */
+    private fun validateRequest(): Multimap<ErrorTag, String>? {
+
+        // TODO - Add more validation as more features are implemented
+
         val errors = HashMultimap.create<ErrorTag,String>()
-        with(request){
-            /**
-             * TODO : add validation checking
-             */
-
-            if (startTime.toString().isBlank()) {
-                errors.put(ErrorTag.START_TIME, "Start time may not be blank")
+        with(request) {
+            if (!userRepo.existsById(userId)) {
+                errors.put(ErrorTag.USER_ID, "User Id #$userId could not be found")
+                return errors
             }
-            if (endTime.toString().isBlank()) {
-                errors.put(ErrorTag.END_TIME, "End time may not be blank")
+            if (!telescopeRepo.existsById(telescopeId)) {
+                errors.put(ErrorTag.TELESCOPE_ID, "Telescope Id #$telescopeId could not be found")
+                return errors
             }
-
-            //If the start time > end time (in regards to the new appointment itself), we cause an error.
             if (startTime.after(endTime))
-                errors.put(ErrorTag.START_TIME, "Start time may not be greater than end time")
-
-            //If the startTime is before the current date and time, we cannot schedule it
+                errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime.before(Date()))
-                errors.put(ErrorTag.DATE, "Date of appointment may not be before current date" )
-
-            //Conflict scheduling avoidance algorithm here
+                errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
         }
 
-      return errors
+      return if (errors.isEmpty) null else errors
     }
 
+    /**
+     * Data class containing all fields necessary for appointment creation. Implements
+     * the [BaseCreateRequest] interface.
+     */
     data class Request(
-            val user: User,
-    //        val orientation: Orientation, //to implement
-    //        val celestialBody: CelestialBody,
+            val userId: Long,
             val startTime: Date,
             val endTime: Date,
             val telescopeId: Long,
-            val celestialBodyId: Long,
-            val isPublic: Boolean,
-            val userId: Long,
-            val uFirstName: String,
-            val uLastName: String,
-            val apptId: Long,
-            val status: Appointment.Status
-    ) : BaseCreateRequest<Appointment>{
+            val isPublic: Boolean
+    ) : BaseCreateRequest<Appointment> {
+        /**
+         * Concrete implementation of the [BaseCreateRequest.toEntity] method that
+         * returns an Appointment object
+         */
         override fun toEntity(): Appointment {
             return Appointment(
-                    user= user,
-         //           orientation = orientation,
-         //           celestialBody = celestialBody,
                     startTime = startTime,
                     endTime = endTime,
                     telescopeId = telescopeId,
-                    celestialBodyId = celestialBodyId,
-                    isPublic = isPublic,
-                    userId = userId,
-                    uFirstName = uFirstName,
-                    uLastName = uLastName
-                 // status = Appointment.Status.Scheduled //doesn't like this?
+                    isPublic = isPublic
             )
         }
     }

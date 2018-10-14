@@ -9,47 +9,48 @@ import org.junit.runner.RunWith
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
 import com.google.common.collect.Multimap
+import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.telescope.Telescope
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
+import org.springframework.test.context.ActiveProfiles
 import java.util.*
 
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-
-internal class RetrieveByTelescopeIdTest
-{
+@ActiveProfiles(value = ["test"])
+internal class RetrieveByTelescopeIdTest {
+    @TestConfiguration
+    class UtilTestContextConfiguration {
+        @Bean
+        fun utilService(): TestUtil { return TestUtil() }
+    }
 
     @Autowired
-    private lateinit var apptRepo: IAppointmentRepository
+    private lateinit var testUtil: TestUtil
+
     @Autowired
-    private lateinit var userRepo: IUserRepository
+    private lateinit var telescopeRepo: ITelescopeRepository
 
-    private var u: User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
-    val startDate =  Date(9000)
-    val endDate = Date(10000)
-    private var a:Appointment = Appointment(u,  startDate, endDate, 2, 4,  true, 500, u.firstName, u.lastName )
-    private var apptInfo: AppointmentInfo = AppointmentInfo(a)
-    private var t: Telescope = Telescope()
-    private var pageable = PageRequest.of(0, 5)
+    @Autowired
+    private lateinit var appointmentRepo: IAppointmentRepository
 
-    @Test
-    fun getApptsByTelescopeIdTest()
-    {
-        t.setId(0)
-        //fail case
-       if (RetrieveByTelescopeId(apptRepo, apptInfo, t.getId(), pageable, userRepo, u.id).execute().success == null)
-        assertTrue(false)
+    @Before
+    fun setUp() {
+        // Persist a user
+        val user = testUtil.createUser("spathcody@gmail.com")
 
-        //else pass
+        // TODO - Add test setup here
 
     }
 
-
-
+    // TODO - Add unit tests here
 }

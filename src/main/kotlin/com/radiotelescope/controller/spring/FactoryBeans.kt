@@ -1,5 +1,7 @@
 package com.radiotelescope.controller.spring
 
+import com.radiotelescope.contracts.appointment.BaseAppointmentFactory
+import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.role.BaseUserRoleFactory
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
@@ -50,6 +52,19 @@ class FactoryBeans(
                 ),
                 userRepo = repositories.userRepo,
                 userRoleRepo = repositories.userRoleRepo
+        )
+    }
+
+    @Bean
+    override fun getAppointmentWrapper(): UserAppointmentWrapper {
+        return UserAppointmentWrapper(
+                context = userContext,
+                factory = BaseAppointmentFactory(
+                        userRepo = repositories.userRepo,
+                        appointmentRepo = repositories.appointmentRepo,
+                        telescopeRepo = repositories.telescopeRepo
+                ),
+                appointmentRepo = repositories.appointmentRepo
         )
     }
 }

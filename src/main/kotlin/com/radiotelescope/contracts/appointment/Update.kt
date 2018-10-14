@@ -25,7 +25,8 @@ override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>>
 
     else {
         var appt: Appointment = apptRepo.findById(a_id).get()
-        apptRepo.updateSingleAppointmentTimes(appt.startTime.time, appt.endTime.time, a_id)
+        // TODO - Needed to get rid of this query to get the application to work. Please fix ASAP
+        // apptRepo.updateSingleAppointmentTimes(appt.startTime.time, appt.endTime.time, a_id)
         apptRepo.save(appt)
         return SimpleResult(a_id, null)
     }

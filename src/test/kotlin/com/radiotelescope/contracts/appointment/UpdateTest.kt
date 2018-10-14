@@ -1,37 +1,43 @@
 package com.radiotelescope.contracts.appointment
 
-import com.google.common.collect.HashMultimap
-import com.radiotelescope.repository.appointment.Appointment
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
-import com.google.common.collect.Multimap
-import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.telescope.Telescope
-import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.repository.user.User
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.PageRequest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.test.context.ActiveProfiles
 import java.util.*
 
-internal class UpdateTest()
-{
-    @Autowired
-    private lateinit var apptRepo: IAppointmentRepository
-    private var u: User = User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
-    val startDate =  Date(9000)
-    val endDate = Date(10000)
-    private var a:Appointment = Appointment(u,  startDate, endDate, 2, 4,  true, 500, u.firstName, u.lastName )
-
-    @Test
-    fun updatetest()
-    {
-         if (Update(a.id, apptRepo ).execute().success == null)
-             fail("updatetest failed")
-        //else pass
+@DataJpaTest
+@RunWith(SpringRunner::class)
+@ActiveProfiles(value = ["test"])
+internal class UpdateTest {
+    @TestConfiguration
+    class UtilTestContextConfiguration {
+        @Bean
+        fun utilService(): TestUtil { return TestUtil() }
     }
+
+    @Autowired
+    private lateinit var testUtil: TestUtil
+
+    @Autowired
+    private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Before
+    fun setUp() {
+        // Persist a user
+        val user = testUtil.createUser("spathcody@gmail.com")
+
+        // TODO - Add test setup here
+
+    }
+
+    // TODO - Add unit tests here
 }

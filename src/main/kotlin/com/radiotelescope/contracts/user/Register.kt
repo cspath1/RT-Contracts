@@ -104,14 +104,12 @@ class Register(
 
         categoryRole.approved = request.categoryOfService == UserRole.Role.GUEST
 
-
         userRoleRepo.save(categoryRole)
     }
 
     /**
      * Data class containing all fields necessary for user creation. Implements the
-     * [BaseCreateRequest] interface and overrides the [BaseCreateRequest.toEntity]
-     * method
+     * [BaseCreateRequest] interface.
      */
     data class Request(
             val firstName: String,
@@ -123,6 +121,10 @@ class Register(
             val company: String?,
             val categoryOfService: UserRole.Role
     ) : BaseCreateRequest<User> {
+        /**
+         * Concrete implementation of the [BaseCreateRequest.toEntity] method that
+         * returns a User object with a hashed password
+         */
         override fun toEntity(): User {
             // Uses SHA-1 by default. Adds the salt value (secret)
             // to the password and encrypts it 50 times, specifying

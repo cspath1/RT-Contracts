@@ -1,43 +1,186 @@
 package com.radiotelescope.contracts.appointment
 
-import com.google.common.collect.HashMultimap
+
+import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import com.radiotelescope.contracts.appointment.Create.Request
 import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
-import com.google.common.collect.Multimap
-import com.radiotelescope.contracts.SimpleResult
-import org.springframework.beans.factory.annotation.Autowired
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class CreateTest
-{
+@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
+@ActiveProfiles(value = ["test"])
+internal class CreateTest {
+    @TestConfiguration
+    class UtilTestContextConfiguration {
+        @Bean
+        fun utilService(): TestUtil { return TestUtil() }
+    }
+
     @Autowired
-    private lateinit var apptRepo: IAppointmentRepository
-    var u:User= User("Someone", "LastName123", "piano1mano@gmail.com","123456" )
-    var request: Create.Request = Create.Request(u,  Date(), Date("2019-7-7"), 1, 2,  true, u.id,  u.firstName, u.lastName, 500,  Appointment.Status.InProgress)
-    var CreateObj:Create = Create(request, apptRepo)
+    private lateinit var testUtil: TestUtil
+
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
+    @Autowired
+    private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Autowired
+    private lateinit var telescopeRepo: ITelescopeRepository
+
+    private val baseRequest = Create.Request(
+            userId = -1L,
+            telescopeId = 1L,
+            startTime = Date(System.currentTimeMillis() + 10000L),
+            endTime = Date(System.currentTimeMillis() + 30000L),
+            isPublic = true
+    )
+
+    private lateinit var user: User
 
     @Before
-    fun init() {
+    fun setUp() {
+        user = testUtil.createUser("cspath1@ycp.edu")
     }
 
     @Test
-    fun createTest()
-    {
-        var errors = HashMultimap.create<ErrorTag,String>()
-        var s: SimpleResult<Long, Multimap<ErrorTag, String>> =  CreateObj.execute()
-        //fail
-        if (s.success == null)
-            return assertTrue(false)
-        //else pass
+    fun testValidConstraints_Success() {
+        // Create a copy of the baseRequest with the correct
+        // user id
+        val requestCopy = baseRequest.copy(userId = user.id)
+
+        // Execute the command
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNotNull(id)
+        assertNull(errors)
+
+        // And make sure the appointment was persisted
+        val theAppointment = appointmentRepo.findById(id!!)
+        assertTrue(theAppointment.isPresent)
+
+        // Make sure the correct information was persisted
+        assertEquals(requestCopy.startTime, theAppointment.get().startTime)
+        assertEquals(requestCopy.endTime, theAppointment.get().endTime)
+        assertEquals(requestCopy.telescopeId, theAppointment.get().telescopeId)
+        assertEquals(requestCopy.userId, theAppointment.get().user!!.id)
+        assertTrue(theAppointment.get().isPublic)
     }
+
+    @Test
+    fun testInvalidTelescopeId_Failure() {
+        // Create a copy of the baseRequest with the correct
+        // user id but an invalid telescope id
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                telescopeId = 311L
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.TELESCOPE_ID].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidUserId_Failure() {
+        // Since the is in the base request is
+        // already invalid, just execute the command
+        val (id, errors) = Create(
+                request = baseRequest,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.USER_ID].isNotEmpty())
+    }
+
+    @Test
+    fun testStartAfterEnd_Failure() {
+        // Create a copy of the baseRequest with the
+        // start time before the end time
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                startTime = Date(System.currentTimeMillis() + 30000L),
+                endTime = Date(System.currentTimeMillis() + 10000L)
+        )
+
+        // Execute the command
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.END_TIME].isNotEmpty())
+    }
+
+    @Test
+    fun testStartBeforeNow_Failure() {
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                startTime = Date(System.currentTimeMillis() - 10000L)
+        )
+
+        // Execute the command
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.START_TIME].isNotEmpty())
+    }
+
 }

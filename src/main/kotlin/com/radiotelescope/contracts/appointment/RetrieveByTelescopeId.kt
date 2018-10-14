@@ -14,15 +14,13 @@ import org.springframework.data.domain.Pageable
 
 //Get appointments from a telescope
 class RetrieveByTelescopeId(
-
         private var apptRepo: IAppointmentRepository,
-        private var apptInfo: AppointmentInfo,
         private var teleId: Long,
         private var pageable: Pageable,
         private var userRepo: IUserRepository,
         private var userId: Long
 
-        ):Command<Long, Multimap<ErrorTag, String>>
+):Command<Long, Multimap<ErrorTag, String>>
 {
 
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
@@ -37,7 +35,9 @@ class RetrieveByTelescopeId(
         }
         for (a:Appointment in apptPages)
         {
-           apptInfo = AppointmentInfo(a)
+            // Had to comment this out to get BaseAppointmentFactory to
+            // compile. Please fix ASAP
+            // apptInfo = AppointmentInfo(a)
         }
 
         //sucess
