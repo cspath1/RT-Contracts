@@ -34,7 +34,7 @@ interface AppointmentFactory
 
     fun update(id: Long):Command<Long, Multimap<ErrorTag, String>>
 
-    fun retrieveTelescopeById(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>
+    fun retrieveByTelescopeId(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>
 
 
 

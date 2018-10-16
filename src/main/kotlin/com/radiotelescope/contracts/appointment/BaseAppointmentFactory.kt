@@ -77,12 +77,15 @@ class BaseAppointmentFactory(
         )
     }
 
-    override fun retrieveTelescopeById(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
-        return RetrieveList(
+    override fun retrieveByTelescopeId(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
+        return RetrieveByTelescopeId(
                 apptRepo = appointmentRepo,
-                userId = user_id,
+               teleId = id,
+                pageable = pageable,
                 userRepo = userRepo,
-                pageable = pageable
+                userId = user_id
+
+
         )
     }
 

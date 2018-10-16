@@ -35,9 +35,7 @@ class RetrieveByTelescopeId(
         }
         for (a:Appointment in apptPages)
         {
-            // Had to comment this out to get BaseAppointmentFactory to
-            // compile. Please fix ASAP
-            // apptInfo = AppointmentInfo(a)
+             var apptInfo = AppointmentInfo(a)
         }
 
         //sucess
