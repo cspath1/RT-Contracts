@@ -39,7 +39,6 @@ internal class RetrieveListTest {
         val user = testUtil.createUser("spathcody@gmail.com")
 
         // TODO - Add test setup here
-
     }
 
     // TODO - Add unit tests here
