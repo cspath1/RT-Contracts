@@ -20,13 +20,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import java.util.*
 
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
+@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescopeForRetrieveByTelescopeIdTest.sql"])
 internal class RetrieveByTelescopeIdTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
@@ -43,14 +46,42 @@ internal class RetrieveByTelescopeIdTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
+
+
+
+
+    lateinit var pageable: Pageable
+
+
+    val user = testUtil.createUser("spathcody@gmail.com")
     @Before
     fun setUp() {
         // Persist a user
-        val user = testUtil.createUser("spathcody@gmail.com")
+
 
         // TODO - Add test setup here
+        //Persist a telescope
+
+        //count tells you how many telescopes are in the Repo
+        assertEquals(1, telescopeRepo.count())
 
     }
 
     // TODO - Add unit tests here
+
+    @Test
+    fun getAppointmentsByTelescopeIdTest()
+    {
+
+        val telescope = telescopeRepo.findById(2)
+
+        if ( RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), pageable, userRepo, user.id).execute().success == null )
+            fail()
+
+        //else pass
+
+    }
 }
