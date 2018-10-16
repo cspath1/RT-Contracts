@@ -51,6 +51,7 @@ data class Log(
         RETRIEVE,
         UPDATE,
         DELETE,
-        LOG_IN
+        LOG_IN,
+        LIST_FUTURE_APPOINTMENT_BY_USER
     }
 }
