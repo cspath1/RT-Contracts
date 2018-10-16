@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.AppointmentInfo
 import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
 import org.springframework.data.domain.Page
@@ -35,4 +36,13 @@ fun Page<Appointment>.toAppointmentInfoPage(): Page<AppointmentInfo> {
     }
 
     return PageImpl(infoList, pageable, totalElements)
+}
+
+fun List<UserRole>.toUserRoleRoleList(): List<UserRole.Role>{
+    val list = arrayListOf<UserRole.Role>()
+    forEach{
+        list.add(it.role)
+    }
+
+    return list
 }

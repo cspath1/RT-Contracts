@@ -7,6 +7,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.toUserRoleRoleList
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
@@ -147,5 +148,13 @@ class UserContextImpl(
      */
     override fun currentUserId(): Long? {
         return (authentication as? AuthenticatedUserToken)?.userId
+    }
+
+    /**
+     * Override of the [UserContext.currentUserRole] method that will grab the authentication
+     * token if it exists and return a list of UserRole
+     */
+    override fun currentUserRole(): MutableList<UserRole.Role>? {
+        return userRoleRepo.findAllByUserId((authentication as? AuthenticatedUserToken)?.userId!!).toUserRoleRoleList().toMutableList()
     }
 }
