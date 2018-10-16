@@ -7,6 +7,7 @@ import org.junit.runner.RunWith
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
@@ -37,7 +38,18 @@ internal class UpdateTest {
 
         // TODO - Add test setup here
 
+        val appointment = testUtil.createAppointment(user, 1, Appointment.Status.Scheduled, Date(), Date(Date().time+500), true)
+
+
     }
 
     // TODO - Add unit tests here
+
+    @Test
+    fun updatetest()
+    {
+        if (Update( 1  , appointmentRepo ).execute().success == null)
+            fail("updatetest failed")
+        //else pass
+    }
 }
