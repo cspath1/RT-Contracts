@@ -35,27 +35,20 @@ internal class RetrieveListTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-
     private var user_id:Long = 0
 
     @Before
     fun setUp() {
         // Persist a user
         val user = testUtil.createUser("spathcody@gmail.com")
-
-        // TODO - Add test setup here
         user_id = user.id
 
     }
-
-    // TODO - Add unit tests here
 
     @Test
     fun retrieveListTest()
     {
         if ( RetrieveList(appointmentRepo, user_id, userRepo, PageRequest.of(0, 10)).execute().success  == null)
             fail()
-
     }
-
 }

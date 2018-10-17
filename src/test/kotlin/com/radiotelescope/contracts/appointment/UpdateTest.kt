@@ -44,11 +44,8 @@ internal class UpdateTest {
         // Persist a user
         val user = testUtil.createUser("spathcody@gmail.com")
 
-        // TODO - Add test setup here
         val appointment = testUtil.createAppointment(user = user, telescopeId = createReq.telescopeId, status = Appointment.Status.Scheduled, startTime = createReq.startTime, endTime = createReq.endTime, isPublic = createReq.isPublic)
     }
-
-    // TODO - Add unit tests here
 
     @Test
     fun updatetest()

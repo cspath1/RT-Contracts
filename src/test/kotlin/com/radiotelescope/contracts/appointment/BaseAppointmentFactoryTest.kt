@@ -53,7 +53,6 @@ internal class BaseAppointmentFactoryTest {
                         telescopeId = 1L
                 )
         )
-
         // Ensure it is the correct command
         assertTrue(cmd is Create)
     }
@@ -64,7 +63,6 @@ internal class BaseAppointmentFactoryTest {
         val cmd = factory.retrieve(
                 id = 1L
         )
-
         // Ensure it is the correct command
         assertTrue(cmd is Retrieve)
     }
@@ -76,9 +74,7 @@ internal class BaseAppointmentFactoryTest {
                 userId = 123456789123456,
                 pageRequest = PageRequest.of(0,10)
         )
-
         //Ensure it is the correct command
         assertTrue(cmd is ListFutureAppointmentByUser)
     }
-
 }
