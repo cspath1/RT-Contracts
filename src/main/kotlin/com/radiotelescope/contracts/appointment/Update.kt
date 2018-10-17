@@ -5,6 +5,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
+import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.SimpleResult
 import java.util.*
 
@@ -12,7 +13,8 @@ import java.util.*
 class Update(private val a_id: Long,
              private val apptRepo: IAppointmentRepository,
              private val newStartTime: Date,
-             private val newEndTime:Date
+             private val newEndTime:Date,
+             private val telescopeId:Long
              ):  Command<Long, Multimap<ErrorTag,String>>
 {
 override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
@@ -43,4 +45,23 @@ override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         }
     }
 }
+
+
+    data class Request(
+            val id:Long,
+            val telescope_id:Long,
+            val startTime:Date,
+            val endTime:Date
+    ): BaseUpdateRequest<Appointment>
+    {
+        override fun toEntity(): Appointment
+        {
+        return Appointment(
+                startTime = startTime,
+                endTime = endTime,
+                telescopeId = telescope_id,
+                isPublic = true
+        )
+        }
+    }
 }
