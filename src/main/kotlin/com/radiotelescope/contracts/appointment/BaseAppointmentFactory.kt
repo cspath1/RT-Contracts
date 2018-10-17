@@ -70,7 +70,8 @@ class BaseAppointmentFactory(
                 apptRepo = appointmentRepo,
                 newStartTime = newStartTime,
                 newEndTime = newEndTime,
-                telescopeId = tele_id
+                telescopeId = tele_id,
+                teleRepo = telescopeRepo
         )
     }
 
