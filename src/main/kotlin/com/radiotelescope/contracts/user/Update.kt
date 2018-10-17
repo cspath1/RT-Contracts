@@ -142,7 +142,6 @@ class Update(
             if (!company.isNullOrBlank())
                 user.company = company
 
-            user.active = true
             user.status = User.Status.Active
 
             return user
