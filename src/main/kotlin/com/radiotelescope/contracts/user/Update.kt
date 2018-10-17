@@ -32,7 +32,8 @@ class Update(
         if (!errors.isEmpty)
             return SimpleResult(null, errors)
 
-        val updatedUser = userRepo.save(request.updateEntity(userRepo))
+        val user = userRepo.findById(request.id).get()
+        val updatedUser = userRepo.save(request.updateEntity(user))
         return SimpleResult(updatedUser.id, null)
     }
 
@@ -85,11 +86,8 @@ class Update(
             val phoneNumber: String?,
             val company: String?
     ) : BaseUpdateRequest<User> {
-        override fun updateEntity(userRepo: IUserRepository): User {
-
-
+        override fun updateEntity(user: User): User {
             //Find the existing user from the repository and update its' information
-            val user = userRepo.findById(id).get()
             user.firstName = firstName
             user.lastName = lastName
             user.email = email

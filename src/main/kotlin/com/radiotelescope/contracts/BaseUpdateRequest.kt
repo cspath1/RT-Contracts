@@ -1,7 +1,7 @@
 package com.radiotelescope.contracts
 
-import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 
 internal interface BaseUpdateRequest<ENTITY> {
-    fun updateEntity(userRepo: IUserRepository): ENTITY
+    fun updateEntity(user: User): ENTITY
 }
