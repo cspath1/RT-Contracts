@@ -27,6 +27,7 @@ internal class BaseUserFactoryTest {
 
     @Before
     fun init() {
+        // Instantiate the factory
         factory = BaseUserFactory(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
