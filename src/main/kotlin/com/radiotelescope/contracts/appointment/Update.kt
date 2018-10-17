@@ -1,8 +1,6 @@
 package com.radiotelescope.contracts.appointment
 
-import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
-import com.radiotelescope.repository.user.User
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
