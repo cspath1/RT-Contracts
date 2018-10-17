@@ -67,14 +67,14 @@ internal class RetrieveByTelescopeIdTest {
     fun retrieveByTelescopeIdTest() {
 
         var telescope = telescopeRepo.findById(2)
-        if (RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), userRepo, user_id).execute().success == null)
+        if (RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), userRepo, user_id, telescopeRepo).execute().success == null)
             fail()
     }
 
     @Test
     fun invalidTelescopeId()
     {
-       if (RetrieveByTelescopeId(appointmentRepo, -600, PageRequest.of(0, 10), userRepo, user_id).execute().error == null)
+       if (RetrieveByTelescopeId(appointmentRepo, -600, PageRequest.of(0, 10), userRepo, user_id, telescopeRepo).execute().error == null)
            fail()
     }
 
@@ -82,7 +82,7 @@ internal class RetrieveByTelescopeIdTest {
     fun invalidUserId()
     {
         var telescope = telescopeRepo.findById(2)
-        if (RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), userRepo, -700).execute().error == null)
+        if (RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), userRepo, -700, telescopeRepo).execute().error == null)
             fail()
     }
 

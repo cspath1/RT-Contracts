@@ -19,7 +19,8 @@ class RetrieveByTelescopeId(
         private var teleId: Long,
         private var pageRequest: PageRequest,
         private var userRepo: IUserRepository,
-        private var userId: Long
+        private var userId: Long,
+        private var teleRepo: ITelescopeRepository
 
 ):Command<Long, Multimap<ErrorTag, String>>
 {
@@ -32,6 +33,12 @@ class RetrieveByTelescopeId(
             errors.put(ErrorTag.USER_ID, "User $userId not found")
             return SimpleResult(null, errors)
         }
+
+        if (!teleRepo.existsById(teleId)) {
+            errors.put(ErrorTag.TELESCOPE_ID, "Telescope id $teleId not found")
+            return SimpleResult(null, errors)
+        }
+
         for (a:Appointment in apptPages)
         {
              var apptInfo = AppointmentInfo(a)

@@ -89,7 +89,8 @@ class BaseAppointmentFactory(
                teleId = id,
                 pageRequest = pageRequest,
                 userRepo = userRepo,
-                userId = user_id)
+                userId = user_id,
+                teleRepo = telescopeRepo)
     }
 
 
