@@ -34,7 +34,9 @@ internal class RetrieveByTelescopeIdTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
-        fun utilService(): TestUtil { return TestUtil() }
+        fun utilService(): TestUtil {
+            return TestUtil()
+        }
     }
 
     @Autowired
@@ -49,7 +51,7 @@ internal class RetrieveByTelescopeIdTest {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
-    private var user_id:Long = 0
+    private var user_id: Long = 0
 
     @Before
     fun setUp() {
@@ -60,12 +62,28 @@ internal class RetrieveByTelescopeIdTest {
         user_id = user.id
 
     }
+
     @Test
-    fun retrieveByTelescopeIdTest()
-    {
+    fun retrieveByTelescopeIdTest() {
 
         var telescope = telescopeRepo.findById(2)
-        if ( RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), userRepo, user_id).execute().success == null )
+        if (RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), userRepo, user_id).execute().success == null)
             fail()
     }
+
+    @Test
+    fun invalidTelescopeId()
+    {
+       if (RetrieveByTelescopeId(appointmentRepo, -600, PageRequest.of(0, 10), userRepo, user_id).execute().error == null)
+           fail()
+    }
+
+    @Test
+    fun invalidUserId()
+    {
+        var telescope = telescopeRepo.findById(2)
+        if (RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), userRepo, -700).execute().error == null)
+            fail()
+    }
+
 }
