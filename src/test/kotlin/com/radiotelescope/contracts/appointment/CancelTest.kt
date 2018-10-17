@@ -75,9 +75,7 @@ internal class CancelTest {
                 startTime = appointmentRequest2.startTime,
                 endTime = appointmentRequest2.endTime,
                 isPublic = appointmentRequest2.isPublic
-
         )
-
         //Should result in error: Canceled to Canceled
      var appt3 =   testUtil.createAppointment(user = user,
                 telescopeId = appointmentRequest3.telescopeId,
@@ -89,22 +87,13 @@ internal class CancelTest {
         globalId1 = appt1.id
         globalId2 = appt2.id
         globalId3 = appt3.id
-
     }
-
 
 @Test
 fun CancelExecuteTest()
 {
-
-
     var cancelObject: Cancel = Cancel(globalId1, appointmentRepo)
     var cancelObject2: Cancel = Cancel(globalId2, appointmentRepo)
-
-/*
-    var cancelObject: Cancel = Cancel(appointmentRepo.findById(1).get().id, appointmentRepo)
-    var cancelObject2: Cancel = Cancel(appointmentRepo.findById(2).get().id, appointmentRepo)
-*/
 
     if (cancelObject.execute().success == null)
         fail()
@@ -117,12 +106,20 @@ fun CancelExecuteTest()
 //an attempt to Cancel an already Canceled appointment should result in an error-- see Cancel.kt
 fun CanceledToCanceled()
 {
-    //IS the id 3? (or maybe just return the createAppointment return value into an appointment var)
     val cancelObject3: Cancel = Cancel(globalId3, appointmentRepo)
 
     //to fail, error should be null, because in this test case, upon execute(), error will be populated
     if (cancelObject3.execute().error == null)
         fail()
 
+}
+
+@Test
+//should cause an error, so fail if error is null
+fun NonexistentAppointmentId()
+{
+    val cancelObject4: Cancel = Cancel(-500, appointmentRepo)
+    if (cancelObject4.execute().error == null)
+        fail()
 }
 }
