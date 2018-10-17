@@ -99,6 +99,4 @@ class AppointmentCreateController(
 
         return result
     }
-
-
 }

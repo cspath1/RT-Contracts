@@ -8,6 +8,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 
 /**
  * Wrapper that takes a [AppointmentFactory] and is responsible for all
@@ -68,22 +69,28 @@ class UserAppointmentWrapper(
      * Security authentication to the [ListFutureAppointmentByUser] command object.
      *
      * @param userId the user Id of the appointment
-     * @param pageRequest contains the pageSize and pageNumber
+     * @param pageable contains the pageSize and pageNumber
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun getFutureAppointmentsForUser(userId: Long, pageRequest: PageRequest, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if(context.currentUserId() != null) {
             if (context.currentUserId() == userId) {
                 return context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
-                        successCommand = factory.getFutureAppointmentsForUser(userId, pageRequest)
+                        successCommand = factory.getFutureAppointmentsForUser(
+                                userId = userId,
+                                pageable = pageable
+                        )
                 ).execute(withAccess)
             }
             // Otherwise, they need to be an admin
             else {
                 return context.require(
                         requiredRoles = listOf(UserRole.Role.ADMIN),
-                        successCommand = factory.getFutureAppointmentsForUser(userId, pageRequest)
+                        successCommand = factory.getFutureAppointmentsForUser(
+                                userId = userId,
+                                pageable = pageable
+                        )
                 ).execute(withAccess)
             }
         }

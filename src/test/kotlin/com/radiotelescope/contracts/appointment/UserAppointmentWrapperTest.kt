@@ -263,7 +263,7 @@ internal class UserAppointmentWrapperTest {
         )
 
         val error = wrapper.getFutureAppointmentsForUser(
-                pageRequest = PageRequest.of(0, 10),
+                pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
             assertNotNull(it.success)
@@ -287,7 +287,7 @@ internal class UserAppointmentWrapperTest {
         )
 
         val error = wrapper.getFutureAppointmentsForUser(
-                pageRequest = PageRequest.of(0, 10),
+                pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
             assertNotNull(it.success)
@@ -310,7 +310,7 @@ internal class UserAppointmentWrapperTest {
         )
 
         val error = wrapper.getFutureAppointmentsForUser(
-                pageRequest = PageRequest.of(0, 10),
+                pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
             assertNull(it.success)
@@ -333,7 +333,7 @@ internal class UserAppointmentWrapperTest {
         )
 
         val error = wrapper.getFutureAppointmentsForUser(
-                pageRequest = PageRequest.of(0, 10),
+                pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
             assertNull(it.success)
@@ -358,7 +358,7 @@ internal class UserAppointmentWrapperTest {
         )
 
         val error = wrapper.getFutureAppointmentsForUser(
-                pageRequest = PageRequest.of(0, 10),
+                pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
             assertNull(it.success)
@@ -383,7 +383,7 @@ internal class UserAppointmentWrapperTest {
         )
 
         val error = wrapper.getFutureAppointmentsForUser(
-                pageRequest = PageRequest.of(0, 10),
+                pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
             assertNull(it.success)

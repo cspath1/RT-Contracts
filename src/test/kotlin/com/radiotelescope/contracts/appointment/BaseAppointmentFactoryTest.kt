@@ -73,7 +73,7 @@ internal class BaseAppointmentFactoryTest {
         // Call the factory method
         val cmd = factory.getFutureAppointmentsForUser(
                 userId = 123456789123456,
-                pageRequest = PageRequest.of(0,10)
+                pageable = PageRequest.of(0,10)
         )
 
         //Ensure it is the correct command

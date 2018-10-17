@@ -38,7 +38,14 @@ interface AppointmentFactory
 
     fun retrieveTelescopeById(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>
 
-    fun getFutureAppointmentsForUser(userId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
+    /**
+     * Abstract command used to retrieve a user's future appointments
+     *
+     * @param userId the User's id
+     * @param pageable the [Pageable] interface
+     * @return a [Command] object
+     */
+    fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
 
 }
