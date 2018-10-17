@@ -87,8 +87,7 @@ internal class BaseUserFactoryTest {
                         phoneNumber = "717-823-2216",
                         password = "ValidPassword",
                         passwordConfirm = "ValidPassword",
-                        company = "York College of Pennsylvania",
-                        categoryOfService = UserRole.Role.GUEST
+                        company = "York College of Pennsylvania"
                 )
         )
 

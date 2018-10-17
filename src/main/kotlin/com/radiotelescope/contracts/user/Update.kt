@@ -13,8 +13,7 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 
 class Update(
         private val request: Update.Request,
-        private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRepo: IUserRepository
 ) : Command<Long, Multimap<ErrorTag, String>>{
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
@@ -34,7 +33,6 @@ class Update(
             return SimpleResult(null, errors)
 
         val updatedUser = userRepo.save(request.updateEntity(userRepo))
-        updateUserRole(updatedUser)
         return SimpleResult(updatedUser.id, null)
     }
 
@@ -73,34 +71,6 @@ class Update(
         return errors
     }
 
-    /**
-     * Private method to update and save a [UserRole] if it has changed
-     */
-    private fun updateUserRole(user: User) {
-
-        // Check to see if this role already existed in the database for a specific user
-        var roles = userRoleRepo.findAllByUserId(user.id)
-        var roleExist = false;
-        for(role in roles){
-            if(role.role == request.categoryOfService){
-                roleExist = true;
-            }
-        }
-
-        // if the requested role already existed, do nothing
-        // else if the requested role doesn't exist, add it to the UserRole Repository
-        if(roleExist == false) {
-            var role = UserRole(
-                    role = request.categoryOfService,
-                    userId = user.id
-            )
-
-            // TODO: Change the accepted field to false once the admin can accept/decline a user's role
-            role.approved = true
-
-            userRoleRepo.save(role)
-        }
-    }
 
     /**
      * Data class containing all fields necessary for user update. Implements the
@@ -115,8 +85,7 @@ class Update(
             val phoneNumber: String?,
             val password: String,
             val passwordConfirm: String,
-            val company: String?,
-            val categoryOfService: UserRole.Role
+            val company: String?
     ) : BaseUpdateRequest<User> {
         override fun updateEntity(userRepo: IUserRepository): User {
             // Uses SHA-1 by default. Adds the salt value (secret)

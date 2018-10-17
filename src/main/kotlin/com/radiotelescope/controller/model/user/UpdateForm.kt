@@ -4,7 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.contracts.user.Update
-import com.radiotelescope.controller.model.BaseUpdateForm
+import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.repository.role.UserRole
 
 data class UpdateForm(
@@ -15,9 +15,8 @@ data class UpdateForm(
         val phoneNumber: String?,
         val password: String?,
         val passwordConfirm: String?,
-        val company: String?,
-        val categoryOfService: UserRole.Role?
-) : BaseUpdateForm<Update.Request> {
+        val company: String?
+) : BaseForm<Update.Request> {
     override fun toRequest(): Update.Request {
         return Update.Request(
                 id = id!!,
@@ -27,8 +26,7 @@ data class UpdateForm(
                 phoneNumber = phoneNumber,
                 password = password!!,
                 passwordConfirm = passwordConfirm!!,
-                company = company,
-                categoryOfService = categoryOfService!!
+                company = company
         )
     }
 
@@ -46,9 +44,6 @@ data class UpdateForm(
             errors.put(ErrorTag.PASSWORD, "Password may not be blank")
         if (passwordConfirm.isNullOrBlank())
             errors.put(ErrorTag.PASSWORD_CONFIRM, "Password may not be blank")
-        if (categoryOfService == null)
-            errors.put(ErrorTag.CATEGORY_OF_SERVICE, "Required field")
-
         return if (errors.isEmpty) null else errors
     }
 }

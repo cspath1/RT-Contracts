@@ -76,8 +76,7 @@ class BaseUserFactory(
     override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>> {
         return Update(
                 request = request,
-                userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRepo = userRepo
         )
     }
 }
