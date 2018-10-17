@@ -13,8 +13,6 @@ data class UpdateForm(
         val lastName: String?,
         val email: String?,
         val phoneNumber: String?,
-        val password: String?,
-        val passwordConfirm: String?,
         val company: String?
 ) : BaseForm<Update.Request> {
     override fun toRequest(): Update.Request {
@@ -24,8 +22,6 @@ data class UpdateForm(
                 lastName = lastName!!,
                 email = email!!,
                 phoneNumber = phoneNumber,
-                password = password!!,
-                passwordConfirm = passwordConfirm!!,
                 company = company
         )
     }
@@ -40,10 +36,6 @@ data class UpdateForm(
             errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
         if (email.isNullOrBlank())
             errors.put(ErrorTag.EMAIL, "Email may not be blank")
-        if (password.isNullOrBlank())
-            errors.put(ErrorTag.PASSWORD, "Password may not be blank")
-        if (passwordConfirm.isNullOrBlank())
-            errors.put(ErrorTag.PASSWORD_CONFIRM, "Password may not be blank")
         return if (errors.isEmpty) null else errors
     }
 }

@@ -85,8 +85,6 @@ internal class BaseUserFactoryTest {
                         lastName = "Spath",
                         email = "cspath1@ycp.edu",
                         phoneNumber = "717-823-2216",
-                        password = "ValidPassword",
-                        passwordConfirm = "ValidPassword",
                         company = "York College of Pennsylvania"
                 )
         )

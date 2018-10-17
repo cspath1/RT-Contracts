@@ -83,27 +83,16 @@ class Update(
             val lastName: String,
             val email: String,
             val phoneNumber: String?,
-            val password: String,
-            val passwordConfirm: String,
             val company: String?
     ) : BaseUpdateRequest<User> {
         override fun updateEntity(userRepo: IUserRepository): User {
-            // Uses SHA-1 by default. Adds the salt value (secret)
-            // to the password and encrypts it 50 times, resulting
-            // in a hash size of 256
-            val passwordEncoder = Pbkdf2PasswordEncoder(
-                    "YCAS2018",
-                    50,
-                    256
-            )
-            val encryptedPassword = passwordEncoder.encode(password)
+
 
             //Find the existing user from the repository and update its' information
             val user = userRepo.findById(id).get()
             user.firstName = firstName
             user.lastName = lastName
             user.email = email
-            user.password = encryptedPassword
 
 
             if (!phoneNumber.isNullOrBlank())
