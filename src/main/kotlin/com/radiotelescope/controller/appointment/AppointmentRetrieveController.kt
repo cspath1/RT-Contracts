@@ -34,7 +34,7 @@ class AppointmentRetrieveController(
      * will check whether or not this command was a success or not, responding
      * appropriately.
      */
-    @GetMapping(value = ["users/appointment/{appointmentId}/retrieve"])
+    @GetMapping(value = ["users/appointments/{appointmentId}/retrieve"])
     fun execute(@PathVariable("appointmentId") id: Long): Result {
         appointmentWrapper.retrieve(id) { it ->
             // If the command was a success
