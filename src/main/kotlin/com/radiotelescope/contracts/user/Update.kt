@@ -49,26 +49,25 @@ class Update(
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
-            if (firstName.isBlank())
-                errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
-            if (firstName.length > 100)
-                errors.put(ErrorTag.FIRST_NAME, "First Name must be under 100 characters")
-            if (lastName.isBlank())
-                errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
-            if (lastName.length > 100)
-                errors.put(ErrorTag.LAST_NAME, "Last Name must be under 100 characters")
-            if (email.isBlank())
-                errors.put(ErrorTag.EMAIL, "Email Address may not be blank")
-            if (!User.isEmailValid(email))
-                errors.put(ErrorTag.EMAIL, "Invalid Email Address")
-            if (userRepo.existsByEmail(email))
-                errors.put(ErrorTag.EMAIL, "Email Address is already in use")
-            if (password.isBlank())
-                errors.put(ErrorTag.PASSWORD, "Password may not be blank")
-            if (password != passwordConfirm)
-                errors.put(ErrorTag.PASSWORD_CONFIRM, "Passwords do not match")
-            if (!password.matches(User.passwordRegex))
-                errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
+            if (userRepo.existsById(id)) {
+                if (firstName.isBlank())
+                    errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
+                if (firstName.length > 100)
+                    errors.put(ErrorTag.FIRST_NAME, "First Name must be under 100 characters")
+                if (lastName.isBlank())
+                    errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
+                if (lastName.length > 100)
+                    errors.put(ErrorTag.LAST_NAME, "Last Name must be under 100 characters")
+                if (email.isBlank())
+                    errors.put(ErrorTag.EMAIL, "Email Address may not be blank")
+                if (!User.isEmailValid(email))
+                    errors.put(ErrorTag.EMAIL, "Invalid Email Address")
+                if (userRepo.existsByEmail(email) && userRepo.findByEmail(email)!!.email == email)
+                    errors.put(ErrorTag.EMAIL, "Email Address is already in use")
+            }else{
+                errors.put(ErrorTag.ID, "No User was found with specified Id")
+                return errors
+            }
         }
 
         return errors
