@@ -35,7 +35,7 @@ class ListFutureAppointmentByUser(
     {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        // Check to see if user acutally exists
+        // Check to see if user actually exists
         if(!userRepo.existsById(userId))
             errors.put(ErrorTag.USER_ID, "There is no user with the id = $userId")
 

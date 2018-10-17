@@ -32,11 +32,11 @@ interface AppointmentFactory
      */
     fun retrieve(id: Long): Command<AppointmentInfo, Multimap<ErrorTag,String>>
 
-    fun retrieveList(u: User, pageable: Pageable):Command <Long, Multimap<ErrorTag,String>>
+    fun retrieveList(u: User, pageRequest:PageRequest):Command <Long, Multimap<ErrorTag,String>>
 
     fun update(id: Long):Command<Long, Multimap<ErrorTag, String>>
 
-    fun retrieveByTelescopeId(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>
+    fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest, user_id: Long): Command<Long, Multimap<ErrorTag, String>>
 
     fun getFutureAppointmentsForUser(userId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 

@@ -12,6 +12,8 @@ import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.test.context.ActiveProfiles
 
 @DataJpaTest
@@ -33,14 +35,27 @@ internal class RetrieveListTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
+
+    private var user_id:Long = 0
+
     @Before
     fun setUp() {
         // Persist a user
         val user = testUtil.createUser("spathcody@gmail.com")
 
         // TODO - Add test setup here
+        user_id = user.id
+
     }
 
     // TODO - Add unit tests here
+
+    @Test
+    fun retrieveListTest()
+    {
+        if ( RetrieveList(appointmentRepo, user_id, userRepo, PageRequest.of(0, 10)).execute().success  == null)
+            fail()
+
+    }
 
 }

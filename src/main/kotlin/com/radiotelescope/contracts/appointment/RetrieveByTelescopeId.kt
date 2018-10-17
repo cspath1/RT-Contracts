@@ -10,23 +10,22 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 //Get appointments from a telescope
 class RetrieveByTelescopeId(
         private var apptRepo: IAppointmentRepository,
         private var teleId: Long,
-        private var pageable: Pageable,
+        private var pageRequest: PageRequest,
         private var userRepo: IUserRepository,
         private var userId: Long
 
 ):Command<Long, Multimap<ErrorTag, String>>
 {
-
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
-        var apptPages: Page<Appointment> = apptRepo.retrieveAppointmentsByTelescopeId(teleId, pageable)
-
+        var apptPages: Page<Appointment> = apptRepo.retrieveAppointmentsByTelescopeId(teleId, pageRequest)
         var errors = HashMultimap.create<ErrorTag, String>()
 
         if (!userRepo.existsById(userId)) {
@@ -37,18 +36,7 @@ class RetrieveByTelescopeId(
         {
              var apptInfo = AppointmentInfo(a)
         }
-
-        //sucess
+        //success
         return SimpleResult(teleId, null)
-
-
     }
-
-
-
-
-
-
-
-
 }

@@ -37,12 +37,12 @@ class BaseAppointmentFactory(
         )
     }
 
-    override fun retrieveList(u: User, pageable: Pageable):Command<Long,Multimap<ErrorTag, String>> {
+    override fun retrieveList(u: User, pageRequest:PageRequest):Command<Long,Multimap<ErrorTag, String>> {
         return RetrieveList(
                 apptRepo = appointmentRepo,
                 userId = u.id,
                 userRepo = userRepo,
-                pageable = pageable
+                pageRequest= pageRequest
         )
     }
 
@@ -80,11 +80,11 @@ class BaseAppointmentFactory(
     }
 
 
-    override fun retrieveByTelescopeId(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
+    override fun retrieveByTelescopeId(id: Long, pageRequest: PageRequest, user_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
         return RetrieveByTelescopeId(
                 apptRepo = appointmentRepo,
                teleId = id,
-                pageable = pageable,
+                pageRequest = pageRequest,
                 userRepo = userRepo,
                 userId = user_id)
     }

@@ -50,38 +50,30 @@ internal class RetrieveByTelescopeIdTest {
     private lateinit var userRepo: IUserRepository
 
 
+    private var user_id:Long = 0
 
 
-
-    lateinit var pageable: Pageable
-
-
-    val user = testUtil.createUser("spathcody@gmail.com")
     @Before
     fun setUp() {
         // Persist a user
-
-
-        // TODO - Add test setup here
-        //Persist a telescope
-
+        val user = testUtil.createUser("spathcody@gmail.com")
         //count tells you how many telescopes are in the Repo
         assertEquals(1, telescopeRepo.count())
+
+       user_id = user.id
 
     }
 
     // TODO - Add unit tests here
-
     @Test
-    fun getAppointmentsByTelescopeIdTest()
+    fun retrieveByTelescopeIdTest()
     {
 
-        val telescope = telescopeRepo.findById(2)
+        var telescope = telescopeRepo.findById(2)
 
-        if ( RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), pageable, userRepo, user.id).execute().success == null )
+        if ( RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), userRepo, user_id).execute().success == null )
             fail()
 
         //else pass
-
     }
 }

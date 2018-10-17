@@ -7,16 +7,17 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 //Only for PAST appointments
 
 class RetrieveList(
-       private val apptRepo: IAppointmentRepository,
-       private val userId:Long,
-       private val userRepo: IUserRepository,
-       private val pageable: Pageable
-):Command <Long, Multimap<ErrorTag, String>> {
+        private val apptRepo: IAppointmentRepository,
+        private val userId:Long,
+        private val userRepo: IUserRepository,
+        private val pageRequest: PageRequest
+        ):Command <Long, Multimap<ErrorTag, String>> {
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
         //check if the user exists
@@ -25,7 +26,7 @@ class RetrieveList(
             return SimpleResult(userId, errors)
             //Success case
         } else {
-           val apptList = apptRepo.findPreviousAppointmentsByUser(userId, pageable)
+           val apptList = apptRepo.findPreviousAppointmentsByUser(userId, pageRequest)
             for (appt: Appointment in apptList) {
                 val apptInfo = AppointmentInfo(appt)
             }
