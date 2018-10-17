@@ -33,7 +33,7 @@ interface AppointmentFactory
      */
     fun retrieve(id: Long): Command<AppointmentInfo, Multimap<ErrorTag,String>>
 
-    fun retrieveList(u: User, pageRequest:PageRequest):Command <Long, Multimap<ErrorTag,String>>
+    fun pastAppointmentListForUser(u: User, pageRequest:PageRequest):Command <Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
     fun update(appt_id: Long, newStartTime: Date, newEndTime: Date, tele_id:Long):Command<Long, Multimap<ErrorTag, String>>
 

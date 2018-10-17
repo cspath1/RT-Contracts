@@ -39,10 +39,11 @@ class RetrieveByTelescopeId(
             return SimpleResult(null, errors)
         }
 
-        for (a:Appointment in apptPages)
+        apptPages.forEach()
         {
-             var apptInfo = AppointmentInfo(a)
+           val info =  AppointmentInfo(it)
         }
+
         //success
         return SimpleResult(teleId, null)
     }

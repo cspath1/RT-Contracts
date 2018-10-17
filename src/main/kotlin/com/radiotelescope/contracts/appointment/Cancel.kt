@@ -18,7 +18,7 @@ class Cancel
         val errors = HashMultimap.create<ErrorTag, String>()
         if (!apptRepo.existsById(apptId))
         {
-            errors.put(ErrorTag.ID, "appt with ID ${apptId} does not exist (attempted cancellation)")
+            errors.put(ErrorTag.ID, "appt with ID $apptId does not exist (attempted cancellation)")
             return SimpleResult(null, errors)
         }
         //Success case: Found appointment to cancel
@@ -29,7 +29,7 @@ class Cancel
             if (appt.status != Appointment.Status.Canceled && appt.status != Appointment.Status.Completed)
             appt.status = Appointment.Status.Canceled
             else {
-                errors.put(ErrorTag.STATUS, "Cannot cancel an already canceled or completed appointment: appointment id is ${apptId}")
+                errors.put(ErrorTag.STATUS, "Cannot cancel an already canceled or completed appointment: appointment id is $apptId")
                 return SimpleResult(null, errors)
             }
 

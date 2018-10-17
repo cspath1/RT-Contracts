@@ -13,13 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.test.context.ActiveProfiles
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class RetrieveListTest {
+internal class PastAppointmentListForUserTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -48,14 +47,14 @@ internal class RetrieveListTest {
     @Test
     fun retrieveListTest()
     {
-        if ( RetrieveList(appointmentRepo, user_id, userRepo, PageRequest.of(0, 10)).execute().success  == null)
+        if ( PastAppointmentListForUser(appointmentRepo, user_id, userRepo, PageRequest.of(0, 10)).execute().success  == null)
             fail()
     }
 
     @Test
     fun invalidUserId()
     {
-        if ( RetrieveList(appointmentRepo, -500, userRepo, PageRequest.of(0, 10)).execute().error  == null)
+        if ( PastAppointmentListForUser(appointmentRepo, -500, userRepo, PageRequest.of(0, 10)).execute().error  == null)
             fail()
     }
 

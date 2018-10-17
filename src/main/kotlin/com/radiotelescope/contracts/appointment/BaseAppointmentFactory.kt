@@ -38,12 +38,12 @@ class BaseAppointmentFactory(
         )
     }
 
-    override fun retrieveList(u: User, pageRequest:PageRequest):Command<Long,Multimap<ErrorTag, String>> {
-        return RetrieveList(
+    override fun pastAppointmentListForUser(u: User, pageRequest:PageRequest):Command<Page<AppointmentInfo>,Multimap<ErrorTag, String>> {
+        return PastAppointmentListForUser(
                 apptRepo = appointmentRepo,
                 userId = u.id,
                 userRepo = userRepo,
-                pageRequest= pageRequest
+                pageRequest = pageRequest
         )
     }
 
