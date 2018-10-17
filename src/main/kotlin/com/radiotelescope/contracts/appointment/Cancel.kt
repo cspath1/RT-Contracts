@@ -26,10 +26,10 @@ class Cancel
         {
             val appt:Appointment = apptRepo.findById(apptId).get()
 
-            if (appt.status != Appointment.Status.Canceled)
+            if (appt.status != Appointment.Status.Canceled && appt.status != Appointment.Status.Completed)
             appt.status = Appointment.Status.Canceled
             else {
-                errors.put(ErrorTag.STATUS, "Cannot cancel an already canceled appointment: appointment id is ${apptId}")
+                errors.put(ErrorTag.STATUS, "Cannot cancel an already canceled or completed appointment: appointment id is ${apptId}")
                 return SimpleResult(null, errors)
             }
 
