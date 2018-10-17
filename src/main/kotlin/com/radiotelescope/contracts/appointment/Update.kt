@@ -29,7 +29,7 @@ override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
         //TODO: Add conflict scheduling avoidance algorithm, as in Create.kt
 
-        if (appointment.startTime == newStartTime && appointment.endTime == newEndTime) {
+        if (appointment.startTime.time == newStartTime.time && appointment.endTime.time == newEndTime.time) {
             errors.put(ErrorTag.START_TIME, "Cannot update the start and end times to be exactly the same")
             return SimpleResult(null, errors)
         } else if (newStartTime >= newEndTime) {

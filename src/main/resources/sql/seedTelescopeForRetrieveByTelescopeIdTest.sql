@@ -1,1 +1,1 @@
-INSERT INTO telescope VALUES(2, 2)
+INSERT INTO telescope VALUES(2, 1)
