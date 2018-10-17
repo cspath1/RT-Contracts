@@ -17,7 +17,7 @@ import com.radiotelescope.contracts.SimpleResult
 class Retrieve(
         private val appointmentId: Long,
         private val appointmentRepo: IAppointmentRepository
-) : Command<AppointmentInfo, Multimap<ErrorTag,String>> {
+) : Command<AppointmentInfo, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. It checks to see if the
      * supplied id refers to an existing [Appointment] Entity, and if so,
