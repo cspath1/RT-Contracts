@@ -104,8 +104,8 @@ class BaseAppointmentFactory(
     override fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return ListFutureAppointmentByUser(
                 userId = userId,
-                pageRequest = pageRequest,
-                apptRepo = appointmentRepo,
+                pageable = pageable,
+                appointmentRepo = appointmentRepo,
                 userRepo = userRepo
         )
     }
