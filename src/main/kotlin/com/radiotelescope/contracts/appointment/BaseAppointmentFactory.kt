@@ -6,9 +6,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 /**
@@ -37,15 +35,6 @@ class BaseAppointmentFactory(
         )
     }
 
-    override fun retrieveList(u: User, pageable: Pageable):Command<Long,Multimap<ErrorTag, String>> {
-        return RetrieveList(
-                apptRepo = appointmentRepo,
-                userId = u.id,
-                userRepo = userRepo,
-                pageable = pageable
-        )
-    }
-
     /**
      * Override of the [AppointmentFactory.create] method that will return a [Create]
      * command object
@@ -59,32 +48,6 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo
-        )
-    }
-
-
-    override fun update(appt_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
-        return Update(
-                a_id = appt_id,
-                apptRepo = appointmentRepo
-        )
-    }
-
-
-    //Cancel appt
-    override fun cancel(a: Appointment, apptRepo: IAppointmentRepository, apptId: Long): Command<Long, Multimap<ErrorTag, String>>  {
-        return Cancel(
-                apptId = apptId,
-                apptRepo = apptRepo
-        )
-    }
-
-    override fun retrieveTelescopeById(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
-        return RetrieveList(
-                apptRepo = appointmentRepo,
-                userId = user_id,
-                userRepo = userRepo,
-                pageable = pageable
         )
     }
 
