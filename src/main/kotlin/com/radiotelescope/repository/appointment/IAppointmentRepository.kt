@@ -22,8 +22,10 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             nativeQuery = true)
     fun findFutureAppointmentsByUser(userId: Long, pageable: Pageable): Page<Appointment>
 
-    @Query(value = "SELECT * FROM appointment WHERE user_id=?1 AND end_time < CURRENT_TIMESTAMP",
-            countQuery = "SELECT count(*) FROM appointment WHERE user_id=?1 AND end_time < CURRENT_TIMESTAMP",
+    @Query(value = "SELECT * FROM appointment WHERE user_id=?1 AND end_time < CURRENT_TIMESTAMP " +
+            "AND status <> 'Canceled' ",
+            countQuery = "SELECT count(*) FROM appointment WHERE user_id=?1 AND end_time < CURRENT_TIMESTAMP " +
+                    "AND status <> 'Canceled'",
             nativeQuery = true)
     fun findPreviousAppointmentsByUser(userId: Long, pageable:Pageable): Page<Appointment>
 

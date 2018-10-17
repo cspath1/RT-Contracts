@@ -26,6 +26,9 @@ class RetrieveByTelescopeId(
 {
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
+
+        //Add functionality to get future appointments by t_id that ARE NOT canceled (add new method to IAppointmentRepo)
+
         var apptPages: Page<Appointment> = apptRepo.retrieveAppointmentsByTelescopeId(teleId, pageRequest)
         var errors = HashMultimap.create<ErrorTag, String>()
 
