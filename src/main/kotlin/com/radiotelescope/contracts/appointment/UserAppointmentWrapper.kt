@@ -80,7 +80,7 @@ class UserAppointmentWrapper(
                 ).execute(withAccess)
             }
             // Otherwise, they need to be an admin
-            else if (context.currentUserRole()!!.contains(UserRole.Role.ADMIN)) {
+            else {
                 return context.require(
                         requiredRoles = listOf(UserRole.Role.ADMIN),
                         successCommand = factory.getFutureAppointmentsForUser(userId, pageRequest)

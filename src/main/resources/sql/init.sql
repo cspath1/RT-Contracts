@@ -75,4 +75,41 @@ CREATE TABLE user_role (
   KEY user_id_idx (user_id),
   KEY role_idx (role),
   KEY approved_idx (approved)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS appointment;
+CREATE TABLE appointment(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  start_time DATETIME NOT NULL,
+  end_time DATETIME NOT NULL,
+  status ENUM('Requested',
+        'Scheduled',
+        'InProgress',
+        'Completed',
+        'Canceled'),
+  telescope_id INT(11) NOT NULL,
+  celestial_body_id INT(11) NOT NULL,
+  orientation_id INT(11) NOT NULL,
+  public TINYINT(1) DEFAULT '1',
+  PRIMARY KEY (id),
+  KEY user_id_idx (user_id),
+  KEY start_time_idx (start_time),
+  KEY end_time_idx (end_time),
+  KEY status_idx (status),
+  KEY telescope_id_idx (telescope_id),
+  KEY celestial_body_id_idx (celestial_body_id),
+  KEY orientation_id_idx (orientation_id),
+  KEY public_idx (public)
+
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE orientation(
+appt_id INT NOT NULL,
+azimuth INT NOT NULL,
+elevation INT NOT NULL,
+
+KEY azimuth_idx (azimuth),
+KEY elevation_idx (elevation)
+
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;

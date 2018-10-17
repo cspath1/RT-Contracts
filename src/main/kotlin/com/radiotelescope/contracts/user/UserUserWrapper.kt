@@ -106,4 +106,5 @@ UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
     }
+
 }

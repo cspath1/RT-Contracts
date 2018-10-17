@@ -1,6 +1,5 @@
 package com.radiotelescope.repository.telescope
 
-import com.radiotelescope.BaseDataJpaTest
 import com.radiotelescope.TestUtil
 import org.junit.Assert.*
 import org.junit.Before

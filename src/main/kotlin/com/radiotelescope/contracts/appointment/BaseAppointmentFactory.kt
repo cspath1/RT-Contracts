@@ -91,8 +91,8 @@ class BaseAppointmentFactory(
     override fun getFutureAppointmentsForUser(userId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return ListFutureAppointmentByUser(
                 userId = userId,
-                pageRequest = pageRequest,
-                apptRepo = appointmentRepo,
+                pageable = pageRequest,
+                appointmentRepo = appointmentRepo,
                 userRepo = userRepo
         )
     }

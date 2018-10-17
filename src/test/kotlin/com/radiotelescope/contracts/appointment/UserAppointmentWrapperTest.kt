@@ -134,7 +134,6 @@ internal class UserAppointmentWrapperTest {
         assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
     }
 
-    /*
     @Test
     fun testCreatePublic_User_Success() {
         // Simulate a login
@@ -155,7 +154,7 @@ internal class UserAppointmentWrapperTest {
 
         assertNull(error)
     }
-*/
+
     @Test
     fun testCreatePrivate_NotResearcher_Failure() {
         // Simulate a login, but do not make them a researcher
@@ -298,8 +297,6 @@ internal class UserAppointmentWrapperTest {
         assertNull(error)
     }
 
-
-
     @Test
     fun testInvalidGetFutureAppointmentsForUser_NoUserRole_Failure(){
         // Simulate a login
@@ -369,7 +366,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -394,7 +391,6 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
     }
-
 }

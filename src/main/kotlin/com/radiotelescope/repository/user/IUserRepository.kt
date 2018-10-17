@@ -1,5 +1,6 @@
 package com.radiotelescope.repository.user
 
+import com.radiotelescope.repository.appointment.Appointment
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 
@@ -22,4 +23,6 @@ interface IUserRepository : PagingAndSortingRepository<User, Long> {
      * @return a [User]
      */
     fun findByEmail(email: String): User?
+
+
 }

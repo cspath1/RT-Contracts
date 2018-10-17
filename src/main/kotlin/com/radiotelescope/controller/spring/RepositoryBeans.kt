@@ -1,5 +1,6 @@
 package com.radiotelescope.controller.spring
 
+import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -21,5 +22,6 @@ class RepositoryBeans(
         val userRoleRepo: IUserRoleRepository,
         val logRepo: ILogRepository,
         val errorRepo: IErrorRepository,
-        val telescopeRepo: ITelescopeRepository
+        val telescopeRepo: ITelescopeRepository,
+        val appointmentRepo: IAppointmentRepository
 )

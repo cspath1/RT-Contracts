@@ -39,11 +39,6 @@ interface UserContext {
      * Abstract method to grab the user id of the currently logged in user
      */
     fun currentUserId(): Long?
-
-    /**
-     * Abstract method to grab the user role of the currently logged in user
-     */
-    fun currentUserRole(): MutableList<UserRole.Role>?
 }
 
 /**

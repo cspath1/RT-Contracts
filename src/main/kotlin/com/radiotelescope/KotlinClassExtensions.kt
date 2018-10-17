@@ -37,12 +37,3 @@ fun Page<Appointment>.toAppointmentInfoPage(): Page<AppointmentInfo> {
 
     return PageImpl(infoList, pageable, totalElements)
 }
-
-fun List<UserRole>.toUserRoleRoleList(): List<UserRole.Role>{
-    val list = arrayListOf<UserRole.Role>()
-    forEach{
-        list.add(it.role)
-    }
-
-    return list
-}
