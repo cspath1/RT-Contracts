@@ -31,16 +31,21 @@ internal class UpdateTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
+    private val createReq = Create.Request(
+            startTime=Date(),
+            endTime = Date(Date().time+100000),
+            isPublic = true,
+            telescopeId = 1,
+            userId = 50
+    )
+
     @Before
     fun setUp() {
         // Persist a user
         val user = testUtil.createUser("spathcody@gmail.com")
 
         // TODO - Add test setup here
-
-        val appointment = testUtil.createAppointment(user, 1, Appointment.Status.Scheduled, Date(), Date(Date().time+500), true)
-
-
+        val appointment = testUtil.createAppointment(user = user, telescopeId = createReq.telescopeId, status = Appointment.Status.Scheduled, startTime = createReq.startTime, endTime = createReq.endTime, isPublic = createReq.isPublic)
     }
 
     // TODO - Add unit tests here
@@ -48,8 +53,8 @@ internal class UpdateTest {
     @Test
     fun updatetest()
     {
-        if (Update( 1  , appointmentRepo ).execute().success == null)
-            fail("updatetest failed")
-        //else pass
+        //Is the id going to be 1?
+        if (Update(appointmentRepo.findById(1).get().id,  appointmentRepo, Date(Date().time+500000), Date(Date().time + 700000 )).execute().success == null)
+            fail()
     }
 }

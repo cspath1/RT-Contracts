@@ -10,6 +10,7 @@ import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import java.util.*
 
 /**
  * Base concrete implementation of the [AppointmentFactory] interface
@@ -63,10 +64,12 @@ class BaseAppointmentFactory(
     }
 
 
-    override fun update(appt_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
+    override fun update(appt_id: Long, newStartTime:Date, newEndTime:Date): Command<Long, Multimap<ErrorTag, String>>  {
         return Update(
                 a_id = appt_id,
-                apptRepo = appointmentRepo
+                apptRepo = appointmentRepo,
+                newStartTime = newStartTime,
+                newEndTime = newEndTime
         )
     }
 

@@ -8,6 +8,7 @@ import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import java.util.*
 
 /**
  * Abstract factory interface with methods for all [Appointment] CRUD operations
@@ -34,7 +35,7 @@ interface AppointmentFactory
 
     fun retrieveList(u: User, pageRequest:PageRequest):Command <Long, Multimap<ErrorTag,String>>
 
-    fun update(id: Long):Command<Long, Multimap<ErrorTag, String>>
+    fun update(appt_id: Long, newStartTime: Date, newEndTime: Date):Command<Long, Multimap<ErrorTag, String>>
 
     fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest, user_id: Long): Command<Long, Multimap<ErrorTag, String>>
 

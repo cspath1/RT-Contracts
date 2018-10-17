@@ -10,9 +10,11 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import java.util.*
 
-//To edit an appt
+//To edit the start and end time of an Appointment
 class Update(private val a_id: Long,
-             private val apptRepo: IAppointmentRepository
+             private val apptRepo: IAppointmentRepository,
+             private val newStartTime: Date,
+             private val newEndTime:Date
              ):  Command<Long, Multimap<ErrorTag,String>>
 {
 override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>>
@@ -24,18 +26,13 @@ override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>>
     }
 
     else {
-        var appt: Appointment = apptRepo.findById(a_id).get()
-        // TODO - Needed to get rid of this query to get the application to work. Please fix ASAP
-        // apptRepo.updateSingleAppointmentTimes(appt.startTime.time, appt.endTime.time, a_id)
-        apptRepo.save(appt)
+        var appointment: Appointment = apptRepo.findById(a_id).get()
+
+        appointment.startTime = newStartTime
+        appointment.endTime = newEndTime
+
+        apptRepo.save(appointment)
         return SimpleResult(a_id, null)
     }
-
-
 }
-
-
-
-
 }
-

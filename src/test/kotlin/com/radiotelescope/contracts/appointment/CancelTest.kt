@@ -50,43 +50,38 @@ internal class CancelTest {
 
         // TODO - Add test setup here
 
-//do one for in-progress also
         testUtil.createAppointment(user = user,
-                telescopeId = 1,
+                telescopeId = appointmentRequest.telescopeId,
                 status = Appointment.Status.Scheduled,
                 startTime = appointmentRequest.startTime,
                 endTime = appointmentRequest.endTime,
                 isPublic = appointmentRequest.isPublic
                 )
 
-
+        //InProgress to Canceled
         testUtil.createAppointment(user = user,
-                telescopeId = 2,
+                telescopeId = appointmentRequest2.telescopeId,
                 status = Appointment.Status.InProgress,
                 startTime = appointmentRequest2.startTime,
                 endTime = appointmentRequest2.endTime,
                 isPublic = appointmentRequest2.isPublic
         )
-
-
     }
 
-    private var cancelObject: Cancel = Cancel(appointmentRepo.findById(456).get().id, appointmentRepo)
-    private var cancelObject2: Cancel = Cancel(appointmentRepo.findById(512).get().id, appointmentRepo)
 
     // TODO - Add unit tests here
-
 
 @Test
 fun CancelExecuteTest()
 {
+    var cancelObject: Cancel = Cancel(appointmentRepo.findById(1).get().id, appointmentRepo)
+    var cancelObject2: Cancel = Cancel(appointmentRepo.findById(2).get().id, appointmentRepo)
 
     if (cancelObject.execute().success == null)
         fail()
 
     if (cancelObject2.execute().success == null)
         fail()
-
 }
 
 }
