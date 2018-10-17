@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS radio_telescope;
 USE radio_telescope;
 
 DROP TABLE IF EXISTS error;

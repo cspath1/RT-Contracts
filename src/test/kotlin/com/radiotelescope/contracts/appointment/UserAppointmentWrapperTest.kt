@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
@@ -29,7 +31,9 @@ internal class UserAppointmentWrapperTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
-        fun utilService(): TestUtil { return TestUtil() }
+        fun utilService(): TestUtil {
+            return TestUtil()
+        }
     }
 
     @Autowired
@@ -53,6 +57,9 @@ internal class UserAppointmentWrapperTest {
     )
 
     private lateinit var user: User
+    private lateinit var admin: User
+    private lateinit var user2: User
+    private lateinit var notAdminYet: User
     private lateinit var appointment: Appointment
 
     private val context = FakeUserContext()
@@ -63,6 +70,23 @@ internal class UserAppointmentWrapperTest {
     fun setUp() {
         // Persist a user
         user = testUtil.createUser("cspath1@ycp.edu")
+        admin = testUtil.createUser("rpim@ycp.edu")
+        user2 = testUtil.createUser("rathanapim@yahoo.com")
+        notAdminYet = testUtil.createUser("rathanapim1@yahoo.com")
+
+        // Persist Role.ADMIN for admin
+        testUtil.createUserRolesForUser(
+                isApproved = true,
+                role = UserRole.Role.ADMIN,
+                userId = admin.id
+        )
+
+        // Persis the Role.ADMIN for notAdminYet, but is not approved
+        testUtil.createUserRolesForUser(
+                isApproved = false,
+                role = UserRole.Role.ADMIN,
+                userId = notAdminYet.id
+        )
 
         // Persist an appointment for the user
         appointment = testUtil.createAppointment(
@@ -100,7 +124,7 @@ internal class UserAppointmentWrapperTest {
                 userId = user.id
         )
 
-        val error =  wrapper.create(
+        val error = wrapper.create(
                 request = requestCopy
         ) {
             fail("Should fail on precondition")
@@ -110,6 +134,7 @@ internal class UserAppointmentWrapperTest {
         assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
     }
 
+    /*
     @Test
     fun testCreatePublic_User_Success() {
         // Simulate a login
@@ -130,7 +155,7 @@ internal class UserAppointmentWrapperTest {
 
         assertNull(error)
     }
-
+*/
     @Test
     fun testCreatePrivate_NotResearcher_Failure() {
         // Simulate a login, but do not make them a researcher
@@ -224,4 +249,152 @@ internal class UserAppointmentWrapperTest {
 
         assertNull(error)
     }
+
+    @Test
+    fun testValidGetFutureAppointmentsForUser_SameUser_Success() {
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.getFutureAppointmentsForUser(
+                pageRequest = PageRequest.of(0, 10),
+                userId = user.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testValidGetFutureAppointmentsForUser_Admin_Success() {
+        // Simulate a login
+        context.login(admin.id)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.getFutureAppointmentsForUser(
+                pageRequest = PageRequest.of(0, 10),
+                userId = user.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+
+
+    @Test
+    fun testInvalidGetFutureAppointmentsForUser_NoUserRole_Failure(){
+        // Simulate a login
+        context.login(user.id)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.getFutureAppointmentsForUser(
+                pageRequest = PageRequest.of(0, 10),
+                userId = user.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidGetFutureAppointmentsForUser_NotLoggedIn_Failure(){
+        // Do not log the user in
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.getFutureAppointmentsForUser(
+                pageRequest = PageRequest.of(0, 10),
+                userId = user.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidGetFutureAppointmentsForUser_DifferentUser_Failure(){
+        // Simulate a login
+        context.login(user2.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.getFutureAppointmentsForUser(
+                pageRequest = PageRequest.of(0, 10),
+                userId = user.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidGetFutureAppointmentsForUser_NotAdminYet_Failure(){
+        // Simulate a login
+        context.login(notAdminYet.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.getFutureAppointmentsForUser(
+                pageRequest = PageRequest.of(0, 10),
+                userId = user.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+    }
+
 }

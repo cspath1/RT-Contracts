@@ -5,6 +5,8 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.User
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 /**
@@ -36,6 +38,6 @@ interface AppointmentFactory
 
     fun retrieveByTelescopeId(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>
 
-
+    fun getFutureAppointmentsForUser(userId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
 }

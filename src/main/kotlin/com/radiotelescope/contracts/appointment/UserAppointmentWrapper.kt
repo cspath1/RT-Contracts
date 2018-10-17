@@ -6,6 +6,8 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 
 /**
  * Wrapper that takes a [AppointmentFactory] and is responsible for all
@@ -60,4 +62,32 @@ class UserAppointmentWrapper(
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
+
+    /**
+     * Wrapper method for the [AppointmentFactory.getFutureAppointmentsForUser] method that adds Spring
+     * Security authentication to the [ListFutureAppointmentByUser] command object.
+     *
+     * @param userId the user Id of the appointment
+     * @param pageRequest contains the pageSize and pageNumber
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun getFutureAppointmentsForUser(userId: Long, pageRequest: PageRequest, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if(context.currentUserId() != null) {
+            if (context.currentUserId() == userId) {
+                return context.require(
+                        requiredRoles = listOf(UserRole.Role.USER),
+                        successCommand = factory.getFutureAppointmentsForUser(userId, pageRequest)
+                ).execute(withAccess)
+            }
+            // Otherwise, they need to be an admin
+            else if (context.currentUserRole()!!.contains(UserRole.Role.ADMIN)) {
+                return context.require(
+                        requiredRoles = listOf(UserRole.Role.ADMIN),
+                        successCommand = factory.getFutureAppointmentsForUser(userId, pageRequest)
+                ).execute(withAccess)
+            }
+        }
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+    }
+
 }

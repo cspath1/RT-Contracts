@@ -7,6 +7,8 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 /**
@@ -77,15 +79,23 @@ class BaseAppointmentFactory(
         )
     }
 
+
     override fun retrieveByTelescopeId(id: Long, pageable:Pageable, user_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
         return RetrieveByTelescopeId(
                 apptRepo = appointmentRepo,
                teleId = id,
                 pageable = pageable,
                 userRepo = userRepo,
-                userId = user_id
+                userId = user_id)
+    }
 
 
+    override fun getFutureAppointmentsForUser(userId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        return ListFutureAppointmentByUser(
+                userId = userId,
+                pageRequest = pageRequest,
+                apptRepo = appointmentRepo,
+                userRepo = userRepo
         )
     }
 
