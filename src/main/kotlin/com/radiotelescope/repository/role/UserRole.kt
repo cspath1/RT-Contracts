@@ -34,6 +34,7 @@ data class UserRole(
     }
 
     enum class Role {
+        USER,
         GUEST,
         STUDENT,
         RESEARCHER,

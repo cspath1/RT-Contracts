@@ -1,5 +1,46 @@
 USE radio_telescope;
 
+DROP TABLE IF EXISTS error;
+CREATE TABLE error(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  log_id INT(11) NOT NULL,
+  key_field VARCHAR(50) NOT NULL,
+  message VARCHAR(200) NOT NULL,
+
+  PRIMARY KEY (id),
+  KEY log_id_idx (log_id),
+  KEY field_idx (key_field),
+  KEY message_idx (message)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS log;
+CREATE TABLE log(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11),
+  affected_table ENUM('USER', 'APPOINTMENT', 'USER_ROLE') NOT NULL,
+  action ENUM('CREATE', 'RETRIEVE', 'UPDATE', 'DELETE', 'LOG_IN') NOT NULL,
+  timestamp DATETIME NOT NULL,
+  affected_record_id INT(11),
+  success TINYINT(1) DEFAULT '1',
+
+  PRIMARY KEY (id),
+  KEY user_id_idx (user_id),
+  KEY affected_table_idx (affected_table),
+  KEY action_idx (action),
+  KEY timestamp_idx (timestamp),
+  KEY affected_record_id_idx (affected_record_id),
+  KEY success_idx (success)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS telescope;
+CREATE TABLE telescope (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  online TINYINT(1) DEFAULT '1',
+
+  PRIMARY KEY (id),
+  KEY online_idx(online)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS user;
 CREATE TABLE user (
   id INT(11) NOT NULL AUTO_INCREMENT,
@@ -26,7 +67,7 @@ DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11) NOT NULL,
-  role ENUM('Guest', 'Student', 'Researcher', 'Member', 'Admin'),
+  role ENUM('User', 'Guest', 'Student', 'Researcher', 'Member', 'Admin'),
   approved TINYINT(1) DEFAULT '0',
   
   PRIMARY KEY (id),

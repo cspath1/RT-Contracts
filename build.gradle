@@ -10,10 +10,12 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+		classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}"
 	}
 }
 
 apply plugin: 'kotlin'
+apply plugin: 'kotlin-jpa'
 apply plugin: 'kotlin-spring'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -22,7 +24,7 @@ apply plugin: 'jacoco'
 
 group = 'com.radiotelescope'
 
-version = '0.0.4'
+version = '0.1.0'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -45,13 +47,19 @@ processResources {
 
 	copy {
 		from "src/main/resources/properties/application_${profile}.properties"
-		into "build/resources/main/"
+		into 'build/resources/main/'
 		rename {
 			'application.properties'
 		}
 	}
-
-	exclude("**/properties")
+	copy {
+		from 'src/main/resources/sql/schema-h2.sql'
+		into 'build/resources'
+	}
+	copy {
+		from 'src/main/resources/sql/seedTelescope.sql'
+		into 'build/resources'
+	}
 }
 
 repositories {
@@ -101,6 +109,7 @@ dependencies {
 	compile('com.fasterxml.jackson.module:jackson-module-kotlin')
 
 	compile group: 'com.google.guava', name: 'guava', version: '19.0'
+	compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
 
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compile("org.jetbrains.kotlin:kotlin-reflect")
@@ -110,4 +119,5 @@ dependencies {
 	testCompile("com.h2database:h2")
 
 	runtime('mysql:mysql-connector-java')
+	runtime group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
 }

@@ -9,14 +9,16 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
+@ActiveProfiles(value = ["test"])
 internal class BaseUserFactoryTest {
 
     @Autowired
-    private lateinit var userRepo:IUserRepository
+    private lateinit var userRepo: IUserRepository
 
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
@@ -46,6 +48,31 @@ internal class BaseUserFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is Register)
+    }
+
+    @Test
+    fun authenticate() {
+        // Call the factory method
+        val cmd = factory.authenticate(
+                request = Authenticate.Request(
+                        email = "cspath1@ycp.edu",
+                        password = "Password"
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Authenticate)
+    }
+
+    @Test
+    fun retrieve() {
+        // Call the factory
+        val cmd = factory.retrieve(
+                id = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Retrieve)
     }
 
     @Test

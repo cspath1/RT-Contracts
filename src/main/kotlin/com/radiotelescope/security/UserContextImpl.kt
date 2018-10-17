@@ -3,16 +3,27 @@ package com.radiotelescope.security
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SecuredAction
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Component
 
 /**
  * Concrete implementation of [UserContext] interface that uses Spring Security to validate
  * if a user has the ability to execute an action or not
+ *
+ * This is declared as a Component with a Bean value of "UserContext" so that it
+ * can be autowired by Spring when the application runs, allowing for the [Logger]
+ * service to be instantiated automatically. This is very important because it allows
+ * us to use the [FakeUserContext] with the [Logger] so it can still be tested
+ *
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository]
  */
+@Component(value = "UserContext")
 class UserContextImpl(
         private var userRepo: IUserRepository,
         private var userRoleRepo: IUserRoleRepository
@@ -59,7 +70,7 @@ class UserContextImpl(
         }
         // Otherwise, they are not logged in
         else
-            missingRoles?.add(UserRole.Role.GUEST)
+            missingRoles?.add(UserRole.Role.USER)
 
         // If the missing roles list is empty
         // they have passed authentication
@@ -70,7 +81,7 @@ class UserContextImpl(
             override fun execute(withAccess: (result: SimpleResult<S, E>) -> Unit): AccessReport? {
                 // Either return an AccessReport of the missing roles, or call the success command
                 return missingRoles?.let { AccessReport(it) } ?: let {
-                    successCommand.execute()
+                    withAccess(successCommand.execute())
                     null
                 }
             }
@@ -120,7 +131,7 @@ class UserContextImpl(
                 // If hasAnyRole is true, call the success command
                 // and return null
                 return if (hasAnyRole) {
-                    successCommand.execute()
+                    withAccess(successCommand.execute())
                     null
                 } else
                     // Otherwise return the requireRoles list

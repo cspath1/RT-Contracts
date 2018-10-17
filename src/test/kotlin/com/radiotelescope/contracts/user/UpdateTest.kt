@@ -9,11 +9,11 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
-
+/*
 @DataJpaTest
-@RunWith(SpringRunner::class)
+@RunWith(SpringRunner::class)*/
 internal class UpdateTest {
-
+/*
     @Autowired
     private lateinit var userRepo: IUserRepository
 
@@ -30,8 +30,8 @@ internal class UpdateTest {
             company = "York College of Pennsylvania",
             categoryOfService = UserRole.Role.GUEST
     )
-
-
+*/
+/*
     @Test
     fun testValidConstraints_OptionalFields_Success() {
         // Execute Register Command
@@ -605,5 +605,6 @@ internal class UpdateTest {
         assertEquals(1, roles.size)
         assertEquals(UserRole.Role.GUEST, roles[0].role)
     }
+    */
 }
 

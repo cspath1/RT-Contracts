@@ -8,12 +8,14 @@ import com.radiotelescope.toStringMap
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import java.util.logging.Logger
 
 
 @RestController
-class UserUpdateController(
-        private val userWrapper: UserUserWrapper
-) : BaseRestController() {
+class UserUpdateController(){}/*(
+        private val userWrapper: UserUserWrapper,
+        private logger: Logger
+) : BaseRestController(logger) {
     @PostMapping(value = ["/users/{userId}/update"])
     fun execute(@RequestBody form: UpdateForm): Result {
         form.validateRequest()?.let {
@@ -30,3 +32,4 @@ class UserUpdateController(
         return result
     }
 }
+*/

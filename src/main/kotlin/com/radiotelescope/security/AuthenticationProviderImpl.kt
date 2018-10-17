@@ -1,6 +1,8 @@
 package com.radiotelescope.security
 
+import com.radiotelescope.contracts.user.Authenticate
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.security.service.UserDetailsImpl
 import com.radiotelescope.security.service.UserDetailsServiceImpl
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
@@ -31,13 +33,23 @@ class AuthenticationProviderImpl(
 
         if (context.authentication != null && authentication?.name == context.authentication.name)
             return context.authentication
-        else
-            // TODO - Remove this else statement once authentication service is implemented
+
+        val userDetails = userDetailsService.loadUserByUsername(authentication?.name) as UserDetailsImpl
+
+        val verified = execute(
+                email = userDetails.username,
+                password = userDetails.password
+        )
+
+        if (!verified)
             throw AuthenticationCredentialsNotFoundException("Invalid Email or Password")
 
-        // TODO - Add authentication service here once implemented
-
-
+        return AuthenticatedUserToken(
+                userId = userDetails.id,
+                authorities = userDetails.authorities,
+                password = userDetails.password,
+                email = userDetails.username
+        )
     }
 
     /**
@@ -48,4 +60,15 @@ class AuthenticationProviderImpl(
         return UsernamePasswordAuthenticationToken::class.java.isAssignableFrom(authentication)
     }
 
+    private fun execute(email: String, password: String): Boolean {
+        val simpleResult = Authenticate(
+                request = Authenticate.Request(
+                        email = email,
+                        password = password
+                ),
+                userRepo = userRepo
+        ).execute()
+
+        return simpleResult.success != null
+    }
 }

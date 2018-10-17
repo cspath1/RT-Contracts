@@ -11,6 +11,13 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 
+/**
+ * Override of the [Command] interface method used for User registration
+ *
+ * @param request the [Request] object
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ */
 class Register(
         private val request: Request,
         private val userRepo: IUserRepository,
@@ -24,18 +31,17 @@ class Register(
      * the [UserRole] associated with it. It will then return a [SimpleResult]
      * object with the [User] id and a null errors field.
      *
-     * If validation fields, it will return a [SimpleResult] with the errors and a
+     * If validation fails, it will return a [SimpleResult] with the errors and a
      * null success field
      */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
-        val errors = validateRequest()
-
-        if (!errors.isEmpty)
-            return SimpleResult(null, errors)
-
-        val newUser = userRepo.save(request.toEntity())
-        generateUserRole(newUser)
-        return SimpleResult(newUser.id, null)
+        // If there is a value returned with the validateRequest call, there were errors
+        // Otherwise we can persist the entity
+        validateRequest()?.let { return SimpleResult(null, it) } ?: let {
+            val newUser = userRepo.save(request.toEntity())
+            generateUserRoles(newUser)
+            return SimpleResult(newUser.id, null)
+        }
     }
 
     /**
@@ -45,7 +51,7 @@ class Register(
      * is not already in use and that the password is not blank and matches the
      * password confirm field
      */
-    private fun validateRequest(): Multimap<ErrorTag, String> {
+    private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
@@ -71,22 +77,35 @@ class Register(
                 errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
         }
 
-        return errors
+        return if (errors.isEmpty) null else errors
     }
 
     /**
-     * Private method to generate and save a [UserRole]
+     * Private method to generate and save a base [UserRole] of type
+     * USER as well as the category of service entered in the [Request]
+     * data class
      */
-    private fun generateUserRole(user: User) {
+    private fun generateUserRoles(user: User) {
+        // Generate the basic user UserRole
         val role = UserRole(
+                role = UserRole.Role.USER,
+                userId = user.id
+        )
+
+        role.approved = true
+
+        userRoleRepo.save(role)
+
+        // Generate the categoryOfService UserRole
+        val categoryRole = UserRole(
                 role = request.categoryOfService,
                 userId = user.id
         )
 
-        // TODO: Change the accepted field to false once the admin can accept/decline a user's role
-        role.approved = true
+        categoryRole.approved = request.categoryOfService == UserRole.Role.GUEST
 
-        userRoleRepo.save(role)
+
+        userRoleRepo.save(categoryRole)
     }
 
     /**
@@ -106,8 +125,8 @@ class Register(
     ) : BaseCreateRequest<User> {
         override fun toEntity(): User {
             // Uses SHA-1 by default. Adds the salt value (secret)
-            // to the password and encrypts it 50 times, resulting
-            // in a hash size of 256
+            // to the password and encrypts it 50 times, specifying
+            // a hash size of 256
             val passwordEncoder = Pbkdf2PasswordEncoder(
                    "YCAS2018",
                     50,

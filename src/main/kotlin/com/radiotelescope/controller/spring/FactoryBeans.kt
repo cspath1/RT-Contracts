@@ -1,5 +1,7 @@
 package com.radiotelescope.controller.spring
 
+import com.radiotelescope.contracts.role.BaseUserRoleFactory
+import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.security.UserContextImpl
@@ -7,7 +9,11 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 /**
- * Concrete implementation of the [FactoryProvider] interface
+ * Concrete implementation of the [FactoryProvider] interface. It is in charge
+ * of making sure the UserWrappers are able to be autowired by Spring when the
+ * server is started
+ *
+ * @param repositories the [RepositoryBeans] Spring component
  */
 @Configuration
 class FactoryBeans(
@@ -26,6 +32,19 @@ class FactoryBeans(
         return UserUserWrapper(
                 context = userContext,
                 factory = BaseUserFactory(
+                        userRepo = repositories.userRepo,
+                        userRoleRepo = repositories.userRoleRepo
+                ),
+                userRepo = repositories.userRepo,
+                userRoleRepo = repositories.userRoleRepo
+        )
+    }
+
+    @Bean
+    override fun getUserRoleWrapper(): UserUserRoleWrapper {
+        return UserUserRoleWrapper(
+                context = userContext,
+                factory = BaseUserRoleFactory(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo
                 ),

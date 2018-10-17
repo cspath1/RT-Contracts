@@ -1,10 +1,19 @@
 package com.radiotelescope.controller.spring
 
+import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
 
 /**
  * Interface to get instantiations of all User Wrappers
  */
 interface FactoryProvider {
+    /**
+     * Abstract method to return the [UserUserWrapper] class
+     */
     fun getUserWrapper(): UserUserWrapper
+
+    /**
+     * Abstract method to return the [UserUserRoleWrapper] class
+     */
+    fun getUserRoleWrapper(): UserUserRoleWrapper
 }
