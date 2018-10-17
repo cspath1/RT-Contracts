@@ -64,12 +64,13 @@ class BaseAppointmentFactory(
     }
 
 
-    override fun update(appt_id: Long, newStartTime:Date, newEndTime:Date): Command<Long, Multimap<ErrorTag, String>>  {
+    override fun update(appt_id: Long, newStartTime:Date, newEndTime:Date, tele_id:Long): Command<Long, Multimap<ErrorTag, String>>  {
         return Update(
                 a_id = appt_id,
                 apptRepo = appointmentRepo,
                 newStartTime = newStartTime,
-                newEndTime = newEndTime
+                newEndTime = newEndTime,
+                telescopeId = tele_id
         )
     }
 

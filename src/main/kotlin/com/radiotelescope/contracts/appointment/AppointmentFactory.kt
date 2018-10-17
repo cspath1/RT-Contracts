@@ -35,7 +35,7 @@ interface AppointmentFactory
 
     fun retrieveList(u: User, pageRequest:PageRequest):Command <Long, Multimap<ErrorTag,String>>
 
-    fun update(appt_id: Long, newStartTime: Date, newEndTime: Date):Command<Long, Multimap<ErrorTag, String>>
+    fun update(appt_id: Long, newStartTime: Date, newEndTime: Date, tele_id:Long):Command<Long, Multimap<ErrorTag, String>>
 
     fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest, user_id: Long): Command<Long, Multimap<ErrorTag, String>>
 

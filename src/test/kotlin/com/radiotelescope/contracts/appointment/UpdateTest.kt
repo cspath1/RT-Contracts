@@ -31,44 +31,40 @@ internal class UpdateTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private val createReq = Create.Request(
+    private val updateReq = Update.Request(
+            id = 1,
+            telescope_id = 1,
             startTime=Date(),
-            endTime = Date(Date().time+100000),
-            isPublic = true,
-            telescopeId = 1,
-            userId = 50
+            endTime = Date(Date().time+100000)
     )
 
-    private val createReq2 = Create.Request(
+    private val updateReq2 = Update.Request(
+            id = 2,
             startTime=Date(),
             endTime = Date(Date().time+50),
-            isPublic = true,
-            telescopeId = 2,
-            userId = 51
+            telescope_id = 2
     )
 
-    private val createReq3 = Create.Request(
+    private val updateReq3 = Update.Request(
+            id = 3,
             startTime=Date(Date().time+51),
             endTime = Date(Date().time+100),
-            isPublic = true,
-            telescopeId = 3,
-            userId = 52
+            telescope_id = 3
+
     )
 
-    private val createReq4 = Create.Request(
+    private val updateReq4 = Update.Request(
+            id = 4,
             startTime=Date(Date().time+101),
             endTime = Date(Date().time+150),
-            isPublic = true,
-            telescopeId = 4,
-            userId = 53
+            telescope_id = 4
     )
 
-    private val createReq5 = Create.Request(
+    private val updateReq5 = Update.Request(
+            id = 5,
             startTime=Date(Date().time+151),
             endTime = Date(Date().time+200),
-            isPublic = true,
-            telescopeId = 4,
-            userId = 53
+            telescope_id = 5
     )
 
     private var globalApptId1:Long = 0
@@ -83,12 +79,12 @@ internal class UpdateTest {
         // Persist a user
         val user = testUtil.createUser("spathcody@gmail.com")
         //Persist appointments
-        val appointment = testUtil.createAppointment(user = user, telescopeId = createReq.telescopeId, status = Appointment.Status.Scheduled, startTime = createReq.startTime, endTime = createReq.endTime, isPublic = createReq.isPublic)
-        val appointment2 = testUtil.createAppointment(user = user, telescopeId = createReq2.telescopeId, status = Appointment.Status.Scheduled, startTime = createReq2.startTime, endTime = createReq2.endTime, isPublic = createReq2.isPublic)
-        val appointment3 = testUtil.createAppointment(user = user, telescopeId = createReq3.telescopeId, status = Appointment.Status.Scheduled, startTime = createReq3.startTime, endTime = createReq3.endTime, isPublic = createReq3.isPublic)
+        val appointment = testUtil.createAppointment(user = user, telescopeId = updateReq.telescope_id, status = Appointment.Status.Scheduled, startTime = updateReq.startTime, endTime = updateReq.endTime, isPublic = true)
+        val appointment2 = testUtil.createAppointment(user = user, telescopeId = updateReq2.telescope_id, status = Appointment.Status.Scheduled, startTime = updateReq2.startTime, endTime = updateReq2.endTime, isPublic = true)
+        val appointment3 = testUtil.createAppointment(user = user, telescopeId = updateReq3.telescope_id, status = Appointment.Status.Scheduled, startTime = updateReq3.startTime, endTime = updateReq3.endTime, isPublic = true)
 
-        val appointment4 = testUtil.createAppointment(user = user, telescopeId = createReq4.telescopeId, status = Appointment.Status.Scheduled, startTime = createReq4.startTime, endTime = createReq4.endTime, isPublic = createReq4.isPublic)
-        val appointment5 = testUtil.createAppointment(user = user, telescopeId = createReq5.telescopeId, status = Appointment.Status.Scheduled, startTime = createReq5.startTime, endTime = createReq5.endTime, isPublic = createReq5.isPublic)
+        val appointment4 = testUtil.createAppointment(user = user, telescopeId = updateReq4.telescope_id, status = Appointment.Status.Scheduled, startTime = updateReq4.startTime, endTime = updateReq4.endTime, isPublic = true)
+        val appointment5 = testUtil.createAppointment(user = user, telescopeId = updateReq5.telescope_id, status = Appointment.Status.Scheduled, startTime = updateReq5.startTime, endTime = updateReq5.endTime, isPublic = true)
 
         globalApptId1 = appointment.id
         globalApptId2 = appointment2.id
@@ -107,14 +103,14 @@ internal class UpdateTest {
     @Test
     fun updateTest()
     {
-        if (Update(globalApptId1,  appointmentRepo, Date(Date().time+500000), Date(Date().time + 700000 )).execute().success == null)
+        if (Update(globalApptId1,  appointmentRepo, Date(Date().time+500000), Date(Date().time + 700000 ), updateReq.telescope_id).execute().success == null)
             fail()
     }
 
     @Test
     fun invalidAppointmentId()
     {
-        if (Update(-500,  appointmentRepo, Date(Date().time+500000), Date(Date().time + 700000 )).execute().error == null)
+        if (Update(-500,  appointmentRepo, Date(Date().time+500000), Date(Date().time + 700000 ), 100).execute().error == null)
             fail()
     }
 
@@ -122,30 +118,30 @@ internal class UpdateTest {
     fun UpdateToNoChange()
     {
 
-        if (Update(globalApptId2,  appointmentRepo, Date(), Date(Date().time+50)).execute().error == null)
+        if (Update(globalApptId2,  appointmentRepo, Date(), Date(Date().time+50), updateReq2.telescope_id).execute().error == null)
             fail()
     }
 
     @Test
     fun StartTimeGreaterThanEndTime()
     {
-        if (Update(globalApptId3,  appointmentRepo, Date( Date().time+50 ), Date(Date().time+ 25) ).execute().error == null)
+        if (Update(globalApptId3,  appointmentRepo, Date( Date().time+50 ), Date(Date().time+ 25), updateReq3.telescope_id ).execute().error == null)
             fail()
     }
 
     @Test
     fun startTimeInPast()
     {
-        if (Update(globalApptId4, appointmentRepo, Date(Date().time - 10000), Date()  ).execute().error == null)
+        if (Update(globalApptId4, appointmentRepo, Date(Date().time - 10000), Date() , updateReq4.telescope_id ).execute().error == null)
         {
-fail()
+        fail()
         }
     }
 
     @Test
     fun endTimeInPast()
     {
-        if (Update(globalApptId5, appointmentRepo, Date(Date().time - 10000), Date(Date().time - 5000)  ).execute().error == null)
+        if (Update(globalApptId5, appointmentRepo, Date(Date().time - 10000), Date(Date().time - 5000) , updateReq5.telescope_id ).execute().error == null)
         {
             fail()
         }
