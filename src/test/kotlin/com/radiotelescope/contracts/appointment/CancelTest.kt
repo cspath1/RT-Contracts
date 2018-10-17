@@ -47,12 +47,19 @@ internal class CancelTest {
     private var appointmentRequest3 = Create.Request(startTime = Date(Date().time + 12500) ,
             endTime = Date(Date().time + 15000),
             isPublic = true,
-            telescopeId = 512,
-            userId = 54)
+            telescopeId = 513,
+            userId = 55)
+
+    private var appointmentRequest4 = Create.Request(startTime = Date(Date().time + 16000) ,
+            endTime = Date(Date().time + 17000),
+            isPublic = true,
+            telescopeId = 514,
+            userId = 56)
 
     var globalId1:Long = 0
     var globalId2:Long = 0
     var globalId3:Long = 0
+    var globalId4:Long = 0
 
     @Before
     fun setUp() {
@@ -84,9 +91,17 @@ internal class CancelTest {
                 endTime = appointmentRequest3.endTime,
                 isPublic = appointmentRequest3.isPublic)
 
+        var appt4 =   testUtil.createAppointment(user = user,
+                telescopeId = appointmentRequest4.telescopeId,
+                status = Appointment.Status.Completed,
+                startTime = appointmentRequest4.startTime,
+                endTime = appointmentRequest4.endTime,
+                isPublic = appointmentRequest4.isPublic)
+
         globalId1 = appt1.id
         globalId2 = appt2.id
         globalId3 = appt3.id
+        globalId4 = appt4.id
     }
 
 @Test
@@ -113,13 +128,23 @@ fun CanceledToCanceled()
         fail()
 
 }
+    @Test
+//an attempt to Cancel an already Canceled appointment should result in an error-- see Cancel.kt
+    fun CompletedToCanceled()
+    {
+        val cancelObject4: Cancel = Cancel(globalId4, appointmentRepo)
+
+        //to fail, error should be null, because in this test case, upon execute(), error will be populated
+        if (cancelObject4.execute().error == null)
+            fail()
+    }
 
 @Test
 //should cause an error, so fail if error is null
 fun NonexistentAppointmentId()
 {
-    val cancelObject4: Cancel = Cancel(-500, appointmentRepo)
-    if (cancelObject4.execute().error == null)
+    val cancelObject5: Cancel = Cancel(-500, appointmentRepo)
+    if (cancelObject5.execute().error == null)
         fail()
 }
 }
