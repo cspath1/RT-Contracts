@@ -12,6 +12,17 @@ internal class ValidateFormTest {
     )
 
     @Test
+    fun testToEntity() {
+        // First, make sure there are no errors
+        assertNull(baseForm.validateRequest())
+
+        val theRequest = baseForm.toRequest()
+
+        assertEquals(theRequest.role, baseForm.role!!)
+        assertEquals(theRequest.id, baseForm.id!!)
+    }
+
+    @Test
     fun testValidConstraints_Success() {
         // Call the validate request method
         val errors = baseForm.validateRequest()

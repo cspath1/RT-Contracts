@@ -15,6 +15,20 @@ internal class CreateFormTest {
     )
 
     @Test
+    fun testToRequest() {
+        // First, make sure there are no errors
+        assertNull(baseForm.validateRequest())
+
+        val theRequest = baseForm.toRequest()
+
+        assertEquals(theRequest.userId, baseForm.userId!!)
+        assertEquals(theRequest.telescopeId, baseForm.telescopeId!!)
+        assertEquals(theRequest.endTime, baseForm.endTime!!)
+        assertEquals(theRequest.startTime, baseForm.startTime!!)
+        assertEquals(theRequest.isPublic, baseForm.isPublic!!)
+    }
+
+    @Test
     fun testValidConstraints_Success() {
         // Call the validate request method
         val errors = baseForm.validateRequest()
