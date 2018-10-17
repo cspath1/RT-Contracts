@@ -51,4 +51,14 @@ internal class RetrieveListTest {
         if ( RetrieveList(appointmentRepo, user_id, userRepo, PageRequest.of(0, 10)).execute().success  == null)
             fail()
     }
+
+    @Test
+    fun invalidUserId()
+    {
+        if ( RetrieveList(appointmentRepo, -500, userRepo, PageRequest.of(0, 10)).execute().error  == null)
+            fail()
+    }
+
+
+
 }
