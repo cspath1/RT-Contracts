@@ -37,7 +37,7 @@ interface AppointmentFactory
 
     fun update(appt_id: Long, newStartTime: Date, newEndTime: Date, tele_id:Long):Command<Long, Multimap<ErrorTag, String>>
 
-    fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest, user_id: Long): Command<Long, Multimap<ErrorTag, String>>
+    fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest, user_id: Long): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to retrieve a user's future appointments

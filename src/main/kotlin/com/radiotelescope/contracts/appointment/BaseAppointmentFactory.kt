@@ -75,7 +75,6 @@ class BaseAppointmentFactory(
         )
     }
 
-
     //Cancel appt
     override fun cancel(a: Appointment, apptRepo: IAppointmentRepository, apptId: Long): Command<Long, Multimap<ErrorTag, String>>  {
         return Cancel(
@@ -84,17 +83,15 @@ class BaseAppointmentFactory(
         )
     }
 
-
-    override fun retrieveByTelescopeId(id: Long, pageRequest: PageRequest, user_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
+    override fun retrieveByTelescopeId(id: Long, pageRequest: PageRequest, user_id: Long): Command <Page<AppointmentInfo>, Multimap<ErrorTag, String>>  {
         return RetrieveByTelescopeId(
                 apptRepo = appointmentRepo,
-               teleId = id,
+                teleId = id,
                 pageRequest = pageRequest,
                 userRepo = userRepo,
                 userId = user_id,
                 teleRepo = telescopeRepo)
     }
-
 
     /**
      * Override of the [AppointmentFactory.getFutureAppointmentsForUser] method that will

@@ -32,4 +32,9 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
     @Query(value ="SELECT * FROM appointment WHERE telescope_id = ?1",
             nativeQuery = true)
     fun retrieveAppointmentsByTelescopeId(tele_id: Long, pageable:Pageable): Page<Appointment>
+
+
+    @Query(value= "SELECT * FROM appointment WHERE telescope_id = ?1 AND start_time > CURRENT_TIMESTAMP AND status <> 'Canceled'  ", nativeQuery = true)
+    fun retrieveFutureAppointmentsByTelescopeId():Page<Appointment>
+
 }
