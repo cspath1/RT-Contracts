@@ -24,8 +24,8 @@ class Cancel
         else
         {
             val appt:Appointment = apptRepo.findById(apptId).get()
-            // TODO - Needed to get rid of this query to get the application to work. Please fix ASAP
-            // apptRepo.cancel(appt, apptRepo, apptId)
+            appt.status = Appointment.Status.Canceled
+            apptRepo.save(appt)
             return SimpleResult(apptId, null)
         }
     }
