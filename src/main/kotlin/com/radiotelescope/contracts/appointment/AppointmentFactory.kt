@@ -8,6 +8,7 @@ import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import java.util.*
+import org.springframework.data.domain.Pageable
 
 /**
  * Abstract factory interface with methods for all [Appointment] CRUD operations
@@ -38,6 +39,14 @@ interface AppointmentFactory
 
     fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest, user_id: Long): Command<Long, Multimap<ErrorTag, String>>
 
-    fun getFutureAppointmentsForUser(userId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
+    /**
+     * Abstract command used to retrieve a user's future appointments
+     *
+     * @param userId the User's id
+     * @param pageable the [Pageable] interface
+     * @return a [Command] object
+     */
+    fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
+
 
 }

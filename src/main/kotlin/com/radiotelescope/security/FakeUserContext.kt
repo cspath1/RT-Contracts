@@ -97,17 +97,4 @@ class FakeUserContext : UserContext {
         currentUserId = -1
         currentRoles.clear()
     }
-
-    override fun currentUserRole(): MutableList<UserRole.Role>? {
-        /**
-         * Test implementation of the [UserContext.currentUserRole] method that will return the [currentUserRole]
-         * which is a list of all the UserRole of a User
-         */
-        return if(currentRoles.isNotEmpty()){
-            currentRoles
-        }
-        else{
-            null
-        }
-    }
 }

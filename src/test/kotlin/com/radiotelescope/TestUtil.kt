@@ -34,7 +34,10 @@ internal class TestUtil {
         return userRepo.save(user)
     }
 
-    fun createUserWithEncodedPassword(email: String, password: String): User {
+    fun createUserWithEncodedPassword(
+            email: String,
+            password: String
+    ): User {
         val user = User(
                 firstName = "First Name",
                 lastName = "Last Name",
@@ -47,7 +50,11 @@ internal class TestUtil {
         return userRepo.save(user)
     }
 
-    fun createUserRolesForUser(userId: Long, role: UserRole.Role, isApproved: Boolean): List<UserRole> {
+    fun createUserRolesForUser(
+            userId: Long,
+            role: UserRole.Role,
+            isApproved: Boolean
+    ): List<UserRole> {
         // Creates a User UserRole by default
         val userRole = UserRole(
                 userId = userId,

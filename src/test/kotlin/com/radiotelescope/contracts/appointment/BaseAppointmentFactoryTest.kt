@@ -10,7 +10,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
@@ -53,6 +52,7 @@ internal class BaseAppointmentFactoryTest {
                         telescopeId = 1L
                 )
         )
+
         // Ensure it is the correct command
         assertTrue(cmd is Create)
     }
@@ -72,9 +72,10 @@ internal class BaseAppointmentFactoryTest {
         // Call the factory method
         val cmd = factory.getFutureAppointmentsForUser(
                 userId = 123456789123456,
-                pageRequest = PageRequest.of(0,10)
+                pageable = PageRequest.of(0,10)
         )
         //Ensure it is the correct command
         assertTrue(cmd is ListFutureAppointmentByUser)
     }
+
 }

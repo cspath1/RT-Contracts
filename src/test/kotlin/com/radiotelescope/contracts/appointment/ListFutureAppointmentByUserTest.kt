@@ -22,7 +22,6 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 class ListFutureAppointmentByUserTest {
-
     @TestConfiguration
     internal class UtilTestContextConfiguration {
         @Bean
@@ -36,7 +35,7 @@ class ListFutureAppointmentByUserTest {
     private lateinit var userRepo: IUserRepository
 
     @Autowired
-    private lateinit var apptRepo: IAppointmentRepository
+    private lateinit var appointmentRepo: IAppointmentRepository
 
     private val futureApptCreateRequest = Create.Request(
             startTime=Date(12012019120000),
@@ -46,8 +45,8 @@ class ListFutureAppointmentByUserTest {
             userId = -1L
     )
 
-    private var user1 = User("", "", "", "")
-    private var user2 = User("", "", "", "")
+    private lateinit var user1: User
+    private lateinit var user2: User
     private var user1Id = -1L
     private var user2Id = -1L
 
@@ -77,10 +76,10 @@ class ListFutureAppointmentByUserTest {
 
     @Test
     fun testValid_UserHasOneFutureAppointment_Success(){
-        var (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = ListFutureAppointmentByUser(
                 userId = user1Id,
-                pageRequest = PageRequest.of(0, 10),
-                apptRepo = apptRepo,
+                pageable = PageRequest.of(0, 10),
+                appointmentRepo = appointmentRepo,
                 userRepo = userRepo
         ).execute()
 
@@ -95,10 +94,10 @@ class ListFutureAppointmentByUserTest {
     // Should only grab the future appointment
     @Test
     fun testValid_UserHasOneFutureAndOnePastAppointment_Success(){
-        var (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = ListFutureAppointmentByUser(
                 userId = user1Id,
-                pageRequest = PageRequest.of(0, 10),
-                apptRepo = apptRepo,
+                pageable = PageRequest.of(0, 10),
+                appointmentRepo = appointmentRepo,
                 userRepo = userRepo
         ).execute()
 
@@ -116,10 +115,10 @@ class ListFutureAppointmentByUserTest {
 
     @Test
     fun testInvalid_NoApptWithSpecifiedUserId_Success(){
-        var (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = ListFutureAppointmentByUser(
                 userId = user2Id,
-                pageRequest = PageRequest.of(1, 10),
-                apptRepo = apptRepo,
+                pageable = PageRequest.of(1, 10),
+                appointmentRepo = appointmentRepo,
                 userRepo = userRepo
         ).execute()
 
@@ -127,16 +126,16 @@ class ListFutureAppointmentByUserTest {
         assertNull(error)
         assertNotNull(infoPage)
 
-        // Ensure it doesnot have any content
+        // Ensure it does not have any content
         assertFalse(infoPage!!.hasContent())
     }
 
     @Test
     fun testInvalid_NoUserWithSpecifiedUserId_Failure(){
-        var (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = ListFutureAppointmentByUser(
                 userId = 123456789,
-                pageRequest = PageRequest.of(1, 10),
-                apptRepo = apptRepo,
+                pageable = PageRequest.of(1, 10),
+                appointmentRepo = appointmentRepo,
                 userRepo = userRepo
         ).execute()
 
@@ -147,12 +146,4 @@ class ListFutureAppointmentByUserTest {
         // Ensure it failed because of the userId
         assertTrue(error!![ErrorTag.USER_ID].isNotEmpty())
     }
-
-
-    /**
-     * Cannot test if pageSize is less than or equal to 0
-     * OR if pageNumber is less than 0
-     * If you try to make a PageRequest any combination of those
-     * 2, exception will be thrown.
-     */
 }

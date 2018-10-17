@@ -94,7 +94,14 @@ class BaseAppointmentFactory(
     }
 
 
-    override fun getFutureAppointmentsForUser(userId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    /**
+     * Override of the [AppointmentFactory.getFutureAppointmentsForUser] method that will
+     * return a [ListFutureAppointmentByUser] command object
+     *
+     * @param userId the User id
+     * @param pageable the [Pageable] interface
+     */
+    override fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return ListFutureAppointmentByUser(
                 userId = userId,
                 pageRequest = pageRequest,
