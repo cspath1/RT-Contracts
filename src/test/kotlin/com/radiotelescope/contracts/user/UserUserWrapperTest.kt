@@ -239,4 +239,80 @@ internal class UserUserWrapperTest {
         assertNotNull(error)
         assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
     }
+
+    @Test
+    fun updateValidUpdate_UserIsOwner_Success(){
+        // Simulate a login
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        var Id = -1L
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = userId,
+                        firstName = "Rathana",
+                        lastName = "Pim",
+                        email = "rpim@ycp.edu",
+                        phoneNumber = "717-555-1111",
+                        company = "York College of Pennsylvania"
+                )
+        ){
+            Id = it.success!!
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+        assertEquals(userId, Id)
+    }
+
+    @Test
+    fun testValidUpdate_UserIsAdmin_Success(){
+        // Simulate a login
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        var Id = -1L
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = userId,
+                        firstName = "Rathana",
+                        lastName = "Pim",
+                        email = "rpim@ycp.edu",
+                        phoneNumber = "717-555-1111",
+                        company = "York College of Pennsylvania"
+                )
+        ){
+            Id = it.success!!
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+        assertEquals(userId, Id)
+    }
+
+    @Test
+    fun testInvalidUpdate_NotOwner_Failure(){
+        // Simulate a login
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        var Id = -1L
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = userId,
+                        firstName = "Rathana",
+                        lastName = "Pim",
+                        email = "rpim@ycp.edu",
+                        phoneNumber = "717-555-1111",
+                        company = "York College of Pennsylvania"
+                )
+        ){
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+    }
+
+
 }
