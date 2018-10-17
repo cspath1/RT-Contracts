@@ -35,19 +35,20 @@ internal class AppointmentTest {
     private lateinit var user: User
     private lateinit var futureAppointment: Appointment
     private lateinit var pastAppointment: Appointment
+    private lateinit var futureCanceledAppointment: Appointment
 
     @Before
     fun setUp() {
         // Persist a user
         user = testUtil.createUser("cspath1@ycp.edu")
 
-        // Persist a past and future appointment
+        // Persist a past appointment, future appointment, and canceled future appointment
         futureAppointment = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.Scheduled,
-                startTime = Date(System.currentTimeMillis() + 10000),
-                endTime = Date(System.currentTimeMillis() + 30000),
+                startTime = Date(System.currentTimeMillis() + 10000L),
+                endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true
         )
 
@@ -57,6 +58,15 @@ internal class AppointmentTest {
                 status = Appointment.Status.Completed,
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 10000L),
+                isPublic = true
+        )
+
+        futureCanceledAppointment = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Canceled,
+                startTime = Date(System.currentTimeMillis() + 10000L),
+                endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true
         )
     }

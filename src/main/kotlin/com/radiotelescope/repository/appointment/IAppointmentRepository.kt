@@ -11,13 +11,14 @@ Spring Repository Interface for the Appointment Entity
  */
 @Repository
 interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long> {
-//Find an appointment by user id (AFTER the current time)
     @Query(value = "SELECT * " +
             "FROM appointment " +
-            "WHERE user_id=?1 AND end_time > CURRENT_TIMESTAMP()",
+            "WHERE user_id=?1 AND end_time > CURRENT_TIMESTAMP() " +
+            "AND status <> 'Canceled'",
             countQuery = "SELECT COUNT(*) " +
                     "FROM appointment " +
-                    "WHERE user_id=?1 AND end_time > CURRENT_TIMESTAMP()",
+                    "WHERE user_id=?1 AND end_time > CURRENT_TIMESTAMP() " +
+                    "AND status <> 'Canceled'",
             nativeQuery = true)
     fun findFutureAppointmentsByUser(userId: Long, pageable: Pageable): Page<Appointment>
 
