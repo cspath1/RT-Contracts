@@ -22,8 +22,8 @@ data class RFDataInfo(
      * @param rfData the RFData
      */
     constructor(rfData: RFData) : this(
-            id = rfData.id,
-            appointmentId = rfData.appointment!!.id,
-            intensity = rfData.intensity!!
+            id = rfData.getId(),
+            appointmentId = rfData.getAppointment()!!.id,
+            intensity = rfData.getIntensity()!!
     )
 }
