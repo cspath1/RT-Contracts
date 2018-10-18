@@ -25,7 +25,7 @@ class UserUpdateController(
         logger: Logger
 ) : BaseRestController(logger){
 
-    @GetMapping(value = ["/users/{userId}/update"])
+    @PutMapping(value = ["/users/{userId}/update"])
     fun execute(@PathVariable("userId") userId: Long,
                 @RequestBody form: UpdateForm
     ): Result{
