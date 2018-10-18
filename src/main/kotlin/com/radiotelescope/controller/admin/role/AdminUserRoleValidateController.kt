@@ -15,6 +15,9 @@ import java.util.*
 
 /**
  * REST controller to handle validate a user's category of service
+ *
+ * @param roleWrapper the [UserUserRoleWrapper] interface
+ * @param logger the [Logger] service
  */
 @RestController
 class AdminUserRoleValidateController(

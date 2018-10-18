@@ -44,6 +44,9 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserUserRoleWrapper] object
+     */
     @Bean
     override fun getUserRoleWrapper(): UserUserRoleWrapper {
         return UserUserRoleWrapper(
@@ -57,6 +60,9 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserAppointmentWrapper] object
+     */
     @Bean
     override fun getAppointmentWrapper(): UserAppointmentWrapper {
         return UserAppointmentWrapper(
@@ -70,6 +76,9 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserRFDataWrapper] object
+     */
     @Bean
     override fun getRFDataWrapper(): UserRFDataWrapper {
         return UserRFDataWrapper(

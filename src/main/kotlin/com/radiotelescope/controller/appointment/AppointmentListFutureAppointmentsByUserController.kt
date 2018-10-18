@@ -104,6 +104,10 @@ class AppointmentListFutureAppointmentsByUserController (
         }
     }
 
+    /**
+     * Private method to return a [HashMultimap] of errors in the event
+     * that the page size and page number are invalid
+     */
     private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")

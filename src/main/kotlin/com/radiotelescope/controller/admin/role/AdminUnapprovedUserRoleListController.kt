@@ -18,6 +18,9 @@ import java.util.*
 
 /**
  * REST controller to handle retrieving a [Page] of unapproved user roles
+ *
+ * @param roleWrapper the [UserUserRoleWrapper] interface
+ * @param logger the [Logger] service
  */
 @RestController
 class AdminUnapprovedUserRoleListController(

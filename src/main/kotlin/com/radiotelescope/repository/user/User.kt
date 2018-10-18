@@ -1,9 +1,7 @@
 package com.radiotelescope.repository.user
 
-import com.radiotelescope.repository.role.UserRole
 import java.util.regex.Pattern
 import javax.persistence.*
-import com.google.common.collect.Multimap
 /**
  * Entity Class representing a User for the web-application
  *

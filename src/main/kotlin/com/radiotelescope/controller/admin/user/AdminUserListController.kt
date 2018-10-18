@@ -3,10 +3,12 @@ package com.radiotelescope.controller.admin.user
 import com.google.common.collect.HashMultimap
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.user.List
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -17,12 +19,27 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * REST controller to handle retrieving a [Page] of users
+ *
+ * @param userWrapper the [UserUserWrapper] interface
+ * @param logger the [Logger] service
  */
 @RestController
 class AdminUserListController(
         private val userWrapper: UserUserWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of using the [pageNumber]
+     * and [pageSize] request parameters to create a [PageRequest]
+     * so the [UserUserWrapper.pageable] method can be called.
+     *
+     * If this method returns an [AccessReport], this means the user
+     * accessing the endpoint did not pass authentication.
+     *
+     * Otherwise, the [List] command was executed, and the controller
+     * should respond based on whether the command was a success or
+     * failure
+     */
     @GetMapping(value = ["/users/list"])
     fun execute(@RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?) {
@@ -88,6 +105,10 @@ class AdminUserListController(
         }
     }
 
+    /**
+     * Private method to return a [HashMultimap] of errors in the event
+     * that the page size and page number are invalid
+     */
     private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")

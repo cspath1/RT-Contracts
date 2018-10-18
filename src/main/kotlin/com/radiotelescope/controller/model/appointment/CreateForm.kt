@@ -7,6 +7,16 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.controller.model.BaseForm
 import java.util.*
 
+/**
+ * Create form that takes nullable versions of the [Create.Request] object.
+ * It is in charge of making sure these values are not null before adapting it
+ * to a [Create.Request] object
+ *
+ * @param userId the User id
+ * @param startTime the Appointment start time
+ * @param endTime the Appointment end time
+ * @param telescopeId the Appointment's telescope
+ */
 data class CreateForm(
         val userId: Long?,
         val startTime: Date?,
@@ -14,6 +24,12 @@ data class CreateForm(
         val telescopeId: Long?,
         val isPublic: Boolean?
 ) : BaseForm<Create.Request> {
+    /**
+     * Override of the [BaseForm.toRequest] method that
+     * adapts the form into a [Create.Request] object
+     *
+     * @return the [Create.Request] object
+     */
     override fun toRequest(): Create.Request {
         return Create.Request(
                 userId = userId!!,
@@ -24,6 +40,11 @@ data class CreateForm(
         )
     }
 
+    /**
+     * Makes sure the required fields are not null
+     *
+     * @return a [HashMultimap] of errors or null
+     */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
         if (userId == null)

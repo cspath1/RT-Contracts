@@ -32,7 +32,8 @@ class AdminRetrieveUserRoleController(
      * method. If this method returns an [AccessReport], that means the user
      * did not pass authentication.
      *
-     * Otherwise, the
+     * Otherwise, the command was executed and the controller should respond
+     * back to the client accordingly based on if it was a success or an error
      */
     @GetMapping(value = ["/users/roles/{id}/retrieve"])
     fun execute(@PathVariable("id") id: Long?): Result {

@@ -15,6 +15,11 @@ import org.springframework.stereotype.Component
  *
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param logRepo the [ILogRepository] interface
+ * @param errorRepo the [IErrorRepository] interface
+ * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param rfDataRepo the [IRFDataRepository] interface
  */
 @Component
 @Configuration
