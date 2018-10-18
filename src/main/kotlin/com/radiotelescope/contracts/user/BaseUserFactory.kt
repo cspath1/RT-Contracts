@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable
 /**
  * Base concrete implementation of the [UserFactory] interface
  *
- * @param userRepo the [IUserRepository]
- * @param userRoleRepo the [IUserRoleRepository]
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
  */
 class BaseUserFactory(
         private val userRepo: IUserRepository,

@@ -23,11 +23,15 @@ internal class BaseUserFactoryTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
-    lateinit var factory: UserFactory
+    private lateinit var factory: UserFactory
 
     @Before
     fun init() {
-        factory = BaseUserFactory(userRepo, userRoleRepo)
+        // Instantiate the factory
+        factory = BaseUserFactory(
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        )
     }
 
     @Test
@@ -66,7 +70,7 @@ internal class BaseUserFactoryTest {
 
     @Test
     fun retrieve() {
-        // Call the factory
+        // Call the factory method
         val cmd = factory.retrieve(
                 id = 1L
         )

@@ -8,10 +8,10 @@ import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
 
 /**
  * REST Controller to handle User Registration
@@ -29,12 +29,13 @@ class UserRegisterController(
      * [RegisterForm] object and seeing if it can be adapted to a
      * [Register.Request] object.
      *
-     * If so, it will be adapted and the execute methof ror the
+     * If so, it will be adapted and the execute method for the
      * respective command will be called.
      *
      * @param form the [RegisterForm]
      */
-    @PostMapping(value = ["/users/register"])
+    @CrossOrigin(value = ["http://localhost:8081"])
+    @PostMapping(value = ["/api/users"])
     fun execute(@RequestBody form: RegisterForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {

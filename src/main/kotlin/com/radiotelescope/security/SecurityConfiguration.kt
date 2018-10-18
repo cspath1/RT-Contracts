@@ -20,9 +20,14 @@ class SecurityConfiguration(
 
             http.cors().and()
                     .authorizeRequests().antMatchers("/login**").permitAll()
+                    .and()
+                    .formLogin()
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .loginPage("/api/login")
 
             http.cors().and()
-                    .authorizeRequests().antMatchers(HttpMethod.POST, "/users/registrer").permitAll()
+                    .authorizeRequests().antMatchers(HttpMethod.POST, "/users/register").permitAll()
         }
     }
 

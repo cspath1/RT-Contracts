@@ -1,5 +1,9 @@
 package com.radiotelescope.controller.spring
 
+import com.radiotelescope.contracts.appointment.BaseAppointmentFactory
+import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.rfdata.BaseRFDataFactory
+import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.BaseUserRoleFactory
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
@@ -40,6 +44,9 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserUserRoleWrapper] object
+     */
     @Bean
     override fun getUserRoleWrapper(): UserUserRoleWrapper {
         return UserUserRoleWrapper(
@@ -50,6 +57,37 @@ class FactoryBeans(
                 ),
                 userRepo = repositories.userRepo,
                 userRoleRepo = repositories.userRoleRepo
+        )
+    }
+
+    /**
+     * Returns a [UserAppointmentWrapper] object
+     */
+    @Bean
+    override fun getAppointmentWrapper(): UserAppointmentWrapper {
+        return UserAppointmentWrapper(
+                context = userContext,
+                factory = BaseAppointmentFactory(
+                        userRepo = repositories.userRepo,
+                        appointmentRepo = repositories.appointmentRepo,
+                        telescopeRepo = repositories.telescopeRepo
+                ),
+                appointmentRepo = repositories.appointmentRepo
+        )
+    }
+
+    /**
+     * Returns a [UserRFDataWrapper] object
+     */
+    @Bean
+    override fun getRFDataWrapper(): UserRFDataWrapper {
+        return UserRFDataWrapper(
+                context = userContext,
+                factory = BaseRFDataFactory(
+                        appointmentRepo = repositories.appointmentRepo,
+                        rfDataRepo = repositories.rfDataRepo
+                ),
+                appointmentRepo = repositories.appointmentRepo
         )
     }
 }

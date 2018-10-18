@@ -1,7 +1,7 @@
 package com.radiotelescope.contracts.user
 
 /**
- * Enum representing field validation failures
+ * Enum representing field validation failures for the User Entity
  */
 enum class ErrorTag {
     ID,

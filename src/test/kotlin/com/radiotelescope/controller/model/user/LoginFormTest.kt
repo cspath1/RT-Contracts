@@ -11,6 +11,17 @@ internal class LoginFormTest {
     )
 
     @Test
+    fun testToRequest() {
+        // First, make sure there are no errors
+        assertNull(baseForm.validateRequest())
+
+        val theRequest = baseForm.toRequest()
+
+        assertEquals(theRequest.email, baseForm.email!!)
+        assertEquals(theRequest.password, baseForm.password!!)
+    }
+
+    @Test
     fun testValidConstraints_NoErrors() {
         // Call the validate request method
         val errors = baseForm.validateRequest()

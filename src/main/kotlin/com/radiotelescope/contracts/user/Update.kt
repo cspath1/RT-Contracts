@@ -5,12 +5,16 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 
+/**
+ * Override of the [Command] interface method used for User registration
+ *
+ * @param request the [Request] object
+ * @param userRepo the [IUserRepository]
+ */
 class Update(
         private val request: Update.Request,
         private val userRepo: IUserRepository
@@ -63,7 +67,7 @@ class Update(
                     errors.put(ErrorTag.EMAIL, "Invalid Email Address")
                 if (userRepo.existsByEmail(email) && userRepo.findByEmail(email)!!.email == email)
                     errors.put(ErrorTag.EMAIL, "Email Address is already in use")
-            }else{
+            } else {
                 errors.put(ErrorTag.ID, "No User was found with specified Id")
                 return errors
             }
@@ -87,7 +91,7 @@ class Update(
             val company: String?
     ) : BaseUpdateRequest<User> {
         override fun updateEntity(user: User): User {
-            //Find the existing user from the repository and update its' information
+            // Find the existing user from the repository and update it's information
             user.firstName = firstName
             user.lastName = lastName
             user.email = email

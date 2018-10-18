@@ -11,13 +11,16 @@ import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
 
 /**
  * REST controller to handle retrieving a [Page] of unapproved user roles
+ *
+ * @param roleWrapper the [UserUserRoleWrapper] interface
+ * @param logger the [Logger] service
  */
 @RestController
 class AdminUnapprovedUserRoleListController(
@@ -34,7 +37,8 @@ class AdminUnapprovedUserRoleListController(
      * @param pageNumber the Page Number
      * @param pageSize the Page Size
      */
-    @GetMapping(value = ["/users/roles/unapproved"])
+    @CrossOrigin(value = ["http://localhost:8081"])
+    @GetMapping(value = ["/api/roles/unapproved"])
     fun execute(@RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?): Result {
         // If any of the request params are null, respond with errors

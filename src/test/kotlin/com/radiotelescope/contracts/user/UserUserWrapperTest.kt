@@ -18,10 +18,12 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
+@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 @ActiveProfiles(value = ["test"])
 internal class UserUserWrapperTest {
     @TestConfiguration
@@ -50,9 +52,9 @@ internal class UserUserWrapperTest {
             categoryOfService = UserRole.Role.GUEST
     )
 
-    val context = FakeUserContext()
-    lateinit var factory: BaseUserFactory
-    lateinit var wrapper: UserUserWrapper
+    private val context = FakeUserContext()
+    private lateinit var factory: BaseUserFactory
+    private lateinit var wrapper: UserUserWrapper
 
     private var userId = -1L
     private var otherUserId = -1L

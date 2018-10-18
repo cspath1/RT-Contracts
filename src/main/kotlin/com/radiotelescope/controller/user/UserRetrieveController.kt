@@ -11,10 +11,10 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
 
 /**
  * REST Controller to handle retrieve User information
@@ -38,7 +38,8 @@ class UserRetrieveController(
      *
      * @param id the User's id
      */
-    @GetMapping(value = ["/users/{id}/retrieve"])
+    @GetMapping(value = ["/users/{id}"])
+    @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@PathVariable("id") id: Long?): Result {
         // If the supplied path variable is not null, call the
         // retrieve

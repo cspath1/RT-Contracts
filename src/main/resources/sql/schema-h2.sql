@@ -1,3 +1,17 @@
+CREATE TABLE appointment(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  start_time DATETIME NOT NULL,
+  end_time DATETIME NOT NULL,
+  status ENUM('Requested',
+              'Scheduled',
+              'InProgress',
+              'Completed',
+              'Canceled'),
+  telescope_id INT(11) NOT NULL,
+  public TINYINT(1) DEFAULT 1
+);
+
 CREATE TABLE error (
   id        INT(11)      NOT NULL AUTO_INCREMENT,
   log_id    INT(11)      NOT NULL,

@@ -5,7 +5,7 @@ import com.radiotelescope.repository.role.UserRole
 import org.junit.Assert.*
 import org.junit.Test
 
-class RegisterFormTest {
+internal class RegisterFormTest {
     private val baseForm = RegisterForm(
             firstName = "Cody",
             lastName = "Spath",
@@ -16,6 +16,23 @@ class RegisterFormTest {
             company = "York College of PA",
             categoryOfService = UserRole.Role.GUEST
     )
+
+    @Test
+    fun testToRequest() {
+        // First, make sure there are no errors
+        assertNull(baseForm.validateRequest())
+
+        val theRequest = baseForm.toRequest()
+
+        assertEquals(theRequest.categoryOfService, baseForm.categoryOfService!!)
+        assertEquals(theRequest.company, baseForm.company)
+        assertEquals(theRequest.email, baseForm.email!!)
+        assertEquals(theRequest.firstName, baseForm.firstName!!)
+        assertEquals(theRequest.lastName, baseForm.lastName!!)
+        assertEquals(theRequest.password, baseForm.password!!)
+        assertEquals(theRequest.passwordConfirm, baseForm.passwordConfirm!!)
+        assertEquals(theRequest.phoneNumber, baseForm.phoneNumber)
+    }
 
     @Test
     fun testValidConstraints_NoErrors() {

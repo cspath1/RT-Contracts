@@ -8,6 +8,9 @@ import com.radiotelescope.controller.spring.Logger
  * that takes a [Logger] as a parameter so we can handle
  * logging successes and errors. It also has a [Result]
  * object that is used to return information to the client
+ *
+ * @param logger the [Logger] service
+ * @property result the [Result] object
  */
 abstract class BaseRestController(
         val logger: Logger

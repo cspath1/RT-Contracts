@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS radio_telescope;
 USE radio_telescope;
 
 DROP TABLE IF EXISTS error;
@@ -17,7 +18,7 @@ DROP TABLE IF EXISTS log;
 CREATE TABLE log(
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11),
-  affected_table ENUM('USER', 'APPOINTMENT', 'USER_ROLE') NOT NULL,
+  affected_table ENUM('USER', 'APPOINTMENT', 'USER_ROLE', 'RF_DATA') NOT NULL,
   action ENUM('CREATE', 'RETRIEVE', 'UPDATE', 'DELETE', 'LOG_IN') NOT NULL,
   timestamp DATETIME NOT NULL,
   affected_record_id INT(11),
@@ -30,6 +31,17 @@ CREATE TABLE log(
   KEY timestamp_idx (timestamp),
   KEY affected_record_id_idx (affected_record_id),
   KEY success_idx (success)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS rf_data;
+CREATE TABLE rf_data (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  appointment_id INT(11) NOT NULL,
+  intensity INT(11) NOT NULL,
+
+  PRIMARY KEY (id),
+  KEY appointment_id_idx (appointment_id),
+  KEY intensity_idx (intensity)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS telescope;
@@ -74,4 +86,27 @@ CREATE TABLE user_role (
   KEY user_id_idx (user_id),
   KEY role_idx (role),
   KEY approved_idx (approved)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS appointment;
+CREATE TABLE appointment(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  start_time DATETIME NOT NULL,
+  end_time DATETIME NOT NULL,
+  status ENUM('Requested',
+        'Scheduled',
+        'InProgress',
+        'Completed',
+        'Canceled'),
+  telescope_id INT(11) NOT NULL,
+  public TINYINT(1) DEFAULT '1',
+  PRIMARY KEY (id),
+  KEY user_id_idx (user_id),
+  KEY start_time_idx (start_time),
+  KEY end_time_idx (end_time),
+  KEY status_idx (status),
+  KEY telescope_id_idx (telescope_id),
+  KEY public_idx (public)
+
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
