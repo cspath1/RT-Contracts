@@ -8,6 +8,7 @@ import com.radiotelescope.controller.model.user.LoginForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -34,7 +35,8 @@ class UserLoginController(
      *
      * @param form the [LoginForm]
      */
-    @PostMapping(value = ["/login"])
+    @CrossOrigin(value = ["http://localhost:8081"])
+    @PostMapping(value = ["/api/login"])
     fun execute(@RequestBody form: LoginForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {

@@ -93,7 +93,7 @@ class UserAppointmentWrapper(
                 ).execute(withAccess)
             }
         }
+
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
-
 }
