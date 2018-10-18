@@ -296,7 +296,6 @@ internal class UserUserWrapperTest {
         context.login(otherUserId)
         context.currentRoles.add(UserRole.Role.USER)
 
-        var Id = -1L
         val error = wrapper.update(
                 request = Update.Request(
                         id = userId,

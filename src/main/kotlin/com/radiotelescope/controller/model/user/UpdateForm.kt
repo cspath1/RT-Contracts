@@ -28,7 +28,7 @@ data class UpdateForm(
 
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
-        if(id == null)
+        if(id == null || id <= 0 )
             errors.put(ErrorTag.ID, "ID may not be blank")
         if (firstName.isNullOrBlank())
             errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")

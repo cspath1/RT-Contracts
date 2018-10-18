@@ -46,4 +46,5 @@ interface UserFactory {
      * @param request the [Update.Request] request
      */
     fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
+
 }
