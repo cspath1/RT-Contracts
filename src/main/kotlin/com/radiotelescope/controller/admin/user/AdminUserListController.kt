@@ -13,6 +13,7 @@ import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -40,11 +41,12 @@ class AdminUserListController(
      * should respond based on whether the command was a success or
      * failure
      */
-    @GetMapping(value = ["/users/list"])
+    @CrossOrigin(value = ["http://localhost:8081"])
+    @GetMapping(value = ["/api/users"])
     fun execute(@RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?) {
         // If any of the request params are null, respond with errors
-        if (pageNumber == null || pageSize == null) {
+        if ((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
             val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(

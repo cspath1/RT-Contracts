@@ -8,10 +8,7 @@ import com.radiotelescope.controller.model.role.ValidateForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
-import java.util.*
+import org.springframework.web.bind.annotation.*
 
 /**
  * REST controller to handle validate a user's category of service
@@ -34,7 +31,8 @@ class AdminUserRoleValidateController(
      *
      * @param validateForm the [ValidateForm] object
      */
-    @PostMapping(value = ["/users/roles/validate"])
+    @CrossOrigin(value = ["http://localhost:8081"])
+    @PutMapping(value = ["/roles/validate"])
     fun execute(@RequestBody validateForm: ValidateForm): Result {
         validateForm.validateRequest()?.let { errors -> 
             // Create error logs

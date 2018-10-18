@@ -36,7 +36,7 @@ class UserRegisterController(
      * @param form the [RegisterForm]
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/users/register"])
+    @PostMapping(value = ["/api/users"])
     fun execute(@RequestBody form: RegisterForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {

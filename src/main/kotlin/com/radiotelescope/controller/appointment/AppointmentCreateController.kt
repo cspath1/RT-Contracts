@@ -10,6 +10,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -33,7 +34,8 @@ class AppointmentCreateController(
      * Otherwise, it will execute the [UserAppointmentWrapper.create] method.
      * If this method returns an [AccessReport]
      */
-    @PostMapping(value = ["/appointments/schedule"])
+    @CrossOrigin(value = ["http://localhost:8081"])
+    @PostMapping(value = ["/api/appointments/schedule"])
     fun execute(@RequestBody form: CreateForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {

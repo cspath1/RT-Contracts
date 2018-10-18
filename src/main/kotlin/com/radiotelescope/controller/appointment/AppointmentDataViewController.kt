@@ -34,7 +34,7 @@ class AppointmentDataViewController(
      * controller will check whether or not this command was a success or not, and
      * respond accordingly
      */
-    @GetMapping(value = ["users/appointments/{appointmentId}/viewData"])
+    @GetMapping(value = ["/api/appointments/{appointmentId}/rf-data"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long): Result {
         rfDataWrapper.retrieveAppointmentData(appointmentId) { it ->
             // If the command was a success
