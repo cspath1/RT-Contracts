@@ -6,7 +6,6 @@ import com.radiotelescope.contracts.rfdata.RFDataInfo
 import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.rfdata.RFData
-import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
 import org.springframework.data.domain.Page
