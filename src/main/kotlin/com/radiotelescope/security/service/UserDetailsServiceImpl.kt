@@ -45,7 +45,7 @@ class UserDetailsServiceImpl(
         var grantedAuths: Set<GrantedAuthority> = HashSet()
 
         roles.forEach {
-            grantedAuths = grantedAuths.plus(SimpleGrantedAuthority(it.role.name))
+            grantedAuths = grantedAuths.plus(SimpleGrantedAuthority("ROLE_${it.role.name.toUpperCase()}"))
         }
 
         return UserDetailsImpl(user, grantedAuths)
