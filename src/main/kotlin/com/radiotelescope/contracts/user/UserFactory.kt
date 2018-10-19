@@ -49,4 +49,11 @@ interface UserFactory {
      */
     fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
 
+    /**
+     * Abstract command used to "delete" a user's account
+     *
+     * @param id the User id
+     */
+    fun delete(id: Long): Command<Long, Multimap<ErrorTag, String>>
+
 }

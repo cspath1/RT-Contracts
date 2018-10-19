@@ -79,4 +79,11 @@ class BaseUserFactory(
                 userRepo = userRepo
         )
     }
+
+    override fun delete(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return Delete(
+                id = id,
+                userRepo = userRepo
+        )
+    }
 }
