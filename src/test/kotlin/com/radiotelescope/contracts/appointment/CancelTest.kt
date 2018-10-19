@@ -31,7 +31,7 @@ internal class CancelTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private var appointmentRequest = Create.Request(startTime = Date(Date().time+ 5000),
+    private var appointmentRequest = Create.Request(startTime = Date(Date().time + 5000),
             endTime = Date(Date().time + 10000),
             isPublic = true,
             telescopeId = 456,

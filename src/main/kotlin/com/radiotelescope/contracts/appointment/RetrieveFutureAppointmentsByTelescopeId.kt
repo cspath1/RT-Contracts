@@ -47,10 +47,8 @@ class RetrieveFutureAppointmentsByTelescopeId(
             return SimpleResult(null, errors)
         }
         val infoPage = apptPages.toAppointmentInfoPage()
-        apptPages.forEach()
-        {
-            val info =  AppointmentInfo(it)
-        }
+
+
         //success
         return SimpleResult(infoPage, null)
     }
