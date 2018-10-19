@@ -88,8 +88,6 @@ class BaseAppointmentFactory(
                 apptRepo = appointmentRepo,
                 teleId = id,
                 pageRequest = pageRequest,
-                userRepo = userRepo,
-                userId = user_id,
                 teleRepo = telescopeRepo)
     }
 

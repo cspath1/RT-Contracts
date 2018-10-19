@@ -22,6 +22,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import java.util.*
 
+
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
@@ -41,10 +42,6 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
 
         @Autowired
         private lateinit var apptRepo: IAppointmentRepository
-
-        @Autowired
-        private lateinit var userRepo: IUserRepository
-
         @Autowired
         private lateinit var teleRepo: ITelescopeRepository
 
@@ -66,7 +63,7 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
         {
             println("This is user id:" + globalUserId)
             assertEquals(1, teleRepo.count())
-            val page: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag,String>> =   RetrieveFutureAppointmentsByTelescopeId(apptRepo,10 , PageRequest.of(0, 10), userRepo, globalUserId, teleRepo).execute()
+            val page: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag,String>> =   RetrieveFutureAppointmentsByTelescopeId(apptRepo,10 , PageRequest.of(0, 10), teleRepo).execute()
             val pageS:Page<AppointmentInfo>? = page.success
             val pageE:Multimap<ErrorTag, String>? = page.error
           if (pageS == null)

@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * REST controller to handle retrieving a [Page] of users
+ *
+ * @param userWrapper a userWrapper object on which to call the pageable method
+ * @param logger to log successes and errors
  */
 @RestController
 class AdminUserListController(

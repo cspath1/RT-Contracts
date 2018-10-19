@@ -50,9 +50,6 @@ internal class RetrieveByTelescopeIdTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    @Autowired
-    private lateinit var userRepo: IUserRepository
-
     private var user_id: Long = 0
     private var appt_id: Long = 0
 
@@ -96,7 +93,7 @@ internal class RetrieveByTelescopeIdTest {
     fun retrieveByTelescopeIdTest() {
 
         var telescope = telescopeRepo.findById(2)
-        if (RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), userRepo, user_id, telescopeRepo).execute().success == null)
+        if (RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), telescopeRepo).execute().success == null)
             //What I could do even further is test to make sure I can get the actual appointment details in Kotlin
             fail()
 
@@ -107,18 +104,11 @@ internal class RetrieveByTelescopeIdTest {
 
     }
 
-
     @Test
     fun invalidTelescopeId()
     {
-       if (RetrieveByTelescopeId(appointmentRepo, -600, PageRequest.of(0, 10), userRepo, user_id, telescopeRepo).execute().error == null)
+       if (RetrieveByTelescopeId(appointmentRepo, -600, PageRequest.of(0, 10), telescopeRepo).execute().error == null)
            fail()
     }
-    @Test
-    fun invalidUserId()
-    {
-        var telescope = telescopeRepo.findById(2)
-        if (RetrieveByTelescopeId(appointmentRepo, telescope.get().getId(), PageRequest.of(0, 10), userRepo, -700, telescopeRepo).execute().error == null)
-            fail()
-    }
+
 }
