@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable
  *
  * @property context the [UserContext] interface
  * @property factory the [AppointmentFactory] factory interface
+ * @property appointmentRepo the [IAppointmentRepository] interface
  */
 class UserAppointmentWrapper(
         private val context: UserContext,
