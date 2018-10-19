@@ -19,12 +19,12 @@ class SecurityConfiguration(
             http.csrf().disable()
 
             http.cors().and()
-                    .authorizeRequests().antMatchers("/login**").permitAll()
+                    .authorizeRequests().antMatchers("/api/login**").permitAll()
                     .and()
                     .formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .loginPage("/api/login")
+                    .loginProcessingUrl("/api/login")
 
             http.cors().and()
                     .authorizeRequests().antMatchers(HttpMethod.POST, "/users/register").permitAll()

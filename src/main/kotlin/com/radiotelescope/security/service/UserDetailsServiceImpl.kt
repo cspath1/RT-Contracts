@@ -36,7 +36,8 @@ class UserDetailsServiceImpl(
             throw UsernameNotFoundException("Invalid email address")
         }
 
-        val user = userRepo.findByEmail(email = username) ?: throw UsernameNotFoundException("Invalid username or email")
+        println(username)
+        val user = userRepo.findByEmail(email = username) ?: throw UsernameNotFoundException("Invalid thiccness")
         val roles = userRoleRepo.findAllByUserId(user.id)
 
         if (roles.isEmpty())
