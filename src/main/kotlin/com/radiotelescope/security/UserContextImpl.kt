@@ -148,4 +148,6 @@ class UserContextImpl(
     override fun currentUserId(): Long? {
         return (authentication as? AuthenticatedUserToken)?.userId
     }
+
+
 }
