@@ -42,5 +42,4 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             countQuery = "SELECT count(*) FROM appointment WHERE telescope_id=?1 AND end_time > CURRENT_TIMESTAMP AND status <> 'Canceled'" ,
  nativeQuery = true)
     fun retrieveFutureAppointmentsByTelescopeId(tele_id:Long, pageable:Pageable):Page<Appointment>
-
 }
