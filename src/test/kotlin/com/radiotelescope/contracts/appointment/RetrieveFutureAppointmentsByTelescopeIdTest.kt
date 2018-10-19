@@ -82,6 +82,7 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
           {
               assertTrue(pageS.first().id == globalApptId)
               assertTrue(pageS.first().startTime == globalstartTime)
+              assertTrue(pageS.hasContent())
           }
           }
         }
