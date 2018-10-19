@@ -315,5 +315,64 @@ internal class UserUserWrapperTest {
         assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
     }
 
+    @Test
+    fun testDeleteValid_Owner_Failure() {
+        // Simulate a login
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.USER)
 
+        val error = wrapper.delete(
+                id = userId
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testDelete_NotLoggedIn_Failure() {
+        // Do not log the user
+        val error = wrapper.delete(
+                id = userId
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testDelete_NotAdmin_Failure() {
+        // Log the user in as a different user (not admin)
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.delete(
+                id = userId
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testDelete_Admin_Success() {
+        // Log the user in as admin
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.delete(
+                id = userId
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
 }
