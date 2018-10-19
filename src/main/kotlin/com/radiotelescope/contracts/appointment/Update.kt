@@ -10,13 +10,19 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import java.util.*
 
-//To edit the start and end time of an Appointment
+/**
+ * Command class for editing an appointment
+ * @param a_id of type [Long]
+ * @param apptRepo of type [IAppointmentRepository]
+ * @param updateRequest of type [Update.Request]
+ * @param teleRepo of type [ITelescopeRepository]
+ *
+ */
 class Update(private val a_id: Long,
              private val apptRepo: IAppointmentRepository,
-             private val newStartTime: Date,
-             private val newEndTime:Date,
-             private val telescopeId:Long,
-             private val teleRepo: ITelescopeRepository
+             private val updateRequest: Request,
+             private val teleRepo: ITelescopeRepository,
+             private val newStatus: Appointment.Status
              ):  Command<Long, Multimap<ErrorTag,String>>
 {
 override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
@@ -29,47 +35,52 @@ override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
         //TODO: Add conflict scheduling avoidance algorithm, as in Create.kt
 
-        if (appointment.startTime.time == newStartTime.time && appointment.endTime.time == newEndTime.time) {
-            errors.put(ErrorTag.START_TIME, "Cannot update the start and end times to be exactly the same")
-            return SimpleResult(null, errors)
-        } else if (newStartTime >= newEndTime) {
-            errors.put(ErrorTag.START_TIME, "New start time cannot be greater than or equal to the new end time")
-            return SimpleResult(null, errors)
-        } else if (newStartTime < Date() || newEndTime < Date())
+        with (updateRequest)
         {
-            errors.put(ErrorTag.START_TIME, "Cannot edit the new startTime or the new endTime to be in the past")
-            return SimpleResult(null, errors)
-        }
-        else if (!teleRepo.existsById(telescopeId) )
-        {
-            errors.put(ErrorTag.TELESCOPE_ID, "Cannot change telescopeId to a telescopeId that does not exist, which is $telescopeId")
-            return SimpleResult(null, errors)
-        }
-        else
-        {
-            appointment.startTime = newStartTime
-            appointment.endTime = newEndTime
-            appointment.telescopeId = telescopeId
-            apptRepo.save(appointment)
-            return SimpleResult(a_id, null)
+            if (appointment.startTime.time == newStartTime.time && appointment.endTime.time == newEndTime.time) {
+                errors.put(ErrorTag.START_TIME, "Cannot update the start and end times to be exactly the same")
+                return SimpleResult(null, errors)
+            } else if (newStartTime >= newEndTime) {
+                errors.put(ErrorTag.START_TIME, "New start time cannot be greater than or equal to the new end time")
+                return SimpleResult(null, errors)
+            } else if (newStartTime < Date() || newEndTime < Date()) {
+                errors.put(ErrorTag.START_TIME, "Cannot edit the new startTime or the new endTime to be in the past")
+                return SimpleResult(null, errors)
+            } else if (!teleRepo.existsById(telescopeId)) {
+                errors.put(ErrorTag.TELESCOPE_ID, "Cannot change telescopeId to a telescopeId that does not exist, which is $telescopeId")
+                return SimpleResult(null, errors)
+            } else if (appointment.status == Appointment.Status.Completed) {
+                    errors.put(ErrorTag.STATUS, "Cannot change the appointment status of a Completed appointment")
+                return SimpleResult(null, errors)
+            }
+            else {
+                appointment.startTime = newStartTime
+                appointment.endTime = newEndTime
+                appointment.telescopeId = telescopeId
+                appointment.status = newStatus
+                apptRepo.save(appointment)
+                return SimpleResult(a_id, null)
+            }
         }
     }
 }
 
-
     data class Request(
             val id:Long,
-            val telescope_id:Long,
-            val startTime:Date,
-            val endTime:Date
+            val telescopeId:Long,
+            val newStartTime:Date,
+            val newEndTime:Date,
+            //with status, I guess could update separately
+            val status:Appointment.Status
     ): BaseUpdateRequest<Appointment>
     {
         override fun toEntity(): Appointment
         {
+            //This is the appointment that is updated
         return Appointment(
-                startTime = startTime,
-                endTime = endTime,
-                telescopeId = telescope_id,
+                startTime = newStartTime,
+                endTime = newEndTime,
+                telescopeId = telescopeId,
                 isPublic = true
         )
         }
