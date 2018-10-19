@@ -7,12 +7,26 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 
-//Cancel an appointment
+/**
+ * Override of the [Command] interface method used for Assignment canceling
+ *
+ * @param apptId the appointment ID
+ * @param apptRepo the [IAppointmentRepository] interface
+ */
 class Cancel
 (private var apptId:Long,
  private val apptRepo: IAppointmentRepository
 ): Command<Long, Multimap<ErrorTag, String>>
 {
+    /**
+     * Override of the [Command] execute method. Checks if the user exists.
+     *
+     * If user exists, it will retrieve past appointments by user id then it will return a [SimpleResult]
+     * object with the [Appointment] id and a null errors field.
+     *
+     * If the user does not exist, it will return a [SimpleResult] with the errors and a
+     * null success field
+     */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         //Failure case: Appointment does not exist
         val errors = HashMultimap.create<ErrorTag, String>()
