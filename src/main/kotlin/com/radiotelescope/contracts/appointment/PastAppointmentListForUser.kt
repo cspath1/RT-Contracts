@@ -53,6 +53,7 @@ class PastAppointmentListForUser(
 //                val apptInfo = AppointmentInfo(appt)
 //            }
             return SimpleResult(infoPage, null)
+
         }
     }
 }
