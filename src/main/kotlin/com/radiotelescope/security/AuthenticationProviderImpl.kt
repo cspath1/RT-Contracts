@@ -38,7 +38,7 @@ class AuthenticationProviderImpl(
 
         val verified = execute(
                 email = userDetails.username,
-                password = userDetails.password
+                password = authentication!!.credentials.toString()
         )
 
         if (!verified)
