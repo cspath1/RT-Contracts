@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle retrieve User information
+ * REST Controller to handle retrieving User information
  *
  * @param userWrapper the [UserUserWrapper]
  * @param logger the [Logger] service
