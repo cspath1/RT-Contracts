@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository
 /*
 Spring Repository Interface for the Appointment Entity
  */
+
+/**
+
+*/
 @Repository
 interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long> {
     @Query(value = "SELECT * " +
