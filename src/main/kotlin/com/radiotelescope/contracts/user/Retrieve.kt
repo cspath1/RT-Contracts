@@ -32,12 +32,13 @@ class Retrieve(
         if(!userRepo.existsById(id)){
             val errors = HashMultimap.create<ErrorTag,String>()
             errors.put(ErrorTag.ID, "User id $id not found")
-            return SimpleResult(null,errors)
+            return SimpleResult(null, errors)
         }
 
         val theUser = userRepo.findById(id).get()
         val theUserRole = userRoleRepo.findMembershipRoleByUserId(theUser.id)
         val theRole = theUserRole?.role
+
         return SimpleResult(UserInfo(theUser, theRole?.label), null)
     }
 }

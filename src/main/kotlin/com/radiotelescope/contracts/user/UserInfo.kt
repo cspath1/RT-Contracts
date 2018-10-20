@@ -1,6 +1,5 @@
 package com.radiotelescope.contracts.user
 
-import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
 
 /**
@@ -15,6 +14,8 @@ import com.radiotelescope.repository.user.User
  * @param phoneNumber the User's phone number
  * @param active the User's active status
  * @param status the User's status
+ * @param membershipRole the User's membership role (i.e not the base USER role),
+ * given that it has been accepted by an admin
  */
 data class UserInfo(
         val id: Long,
