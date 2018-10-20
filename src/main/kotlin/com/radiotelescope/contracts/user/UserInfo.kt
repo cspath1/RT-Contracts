@@ -25,13 +25,13 @@ data class UserInfo(
         val phoneNumber: String?,
         val active: Boolean,
         val status: User.Status,
-        val membershipRole: UserRole.Role?
+        val membershipRole: String?
 ) {
      /**
       * Secondary constructor that takes a user object to set
       * all fields
       */
-     constructor(user: User, userRole: UserRole.Role?) : this(
+     constructor(user: User, userRoleLabel: String?) : this(
              id = user.id,
              firstName = user.firstName,
              lastName =  user.lastName,
@@ -40,7 +40,7 @@ data class UserInfo(
              phoneNumber = user.phoneNumber,
              active = user.active,
              status = user.status,
-             membershipRole = userRole
+             membershipRole = userRoleLabel
      )
 
 }

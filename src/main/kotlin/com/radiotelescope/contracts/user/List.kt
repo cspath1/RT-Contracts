@@ -32,7 +32,7 @@ class List(
         userPage.forEach {
             val theUserRole = userRoleRepo.findMembershipRoleByUserId(it.id)
             val theRole = theUserRole?.role
-            infoList.add(UserInfo(it, theRole))
+            infoList.add(UserInfo(it, theRole?.label))
         }
 
         val infoPage = PageImpl(infoList, userPage.pageable, userPage.totalElements)

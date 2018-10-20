@@ -27,7 +27,7 @@ internal class UserRoleInfoTest {
 
         userInfo = UserInfo(
                 user = user,
-                userRole = UserRole.Role.GUEST
+                userRoleLabel = UserRole.Role.GUEST.label
         )
     }
 

@@ -37,7 +37,7 @@ class Authenticate(
         val theUserRole = userRoleRepo.findMembershipRoleByUserId(theUser!!.id)
         val theRole = theUserRole?.role
 
-        return SimpleResult(UserInfo(theUser, theRole), null)
+        return SimpleResult(UserInfo(theUser, theRole?.label), null)
     }
 
     /**
