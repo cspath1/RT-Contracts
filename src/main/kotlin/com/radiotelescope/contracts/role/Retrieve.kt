@@ -33,7 +33,7 @@ class Retrieve(
     override fun execute(): SimpleResult<UserRoleInfo, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theRole = userRoleRepo.findById(roleId).get()
-            val userInfo = UserInfo(userRepo.findById(theRole.userId!!).get())
+            val userInfo = UserInfo(userRepo.findById(theRole.userId!!).get(), null)
             val roleInfo = UserRoleInfo(
                     userInfo = userInfo,
                     userRole = theRole

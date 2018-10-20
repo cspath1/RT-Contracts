@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.user
 
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
 
 /**
@@ -23,13 +24,14 @@ data class UserInfo(
         val company: String?,
         val phoneNumber: String?,
         val active: Boolean,
-        val status: User.Status
+        val status: User.Status,
+        val membershipRole: UserRole.Role?
 ) {
      /**
       * Secondary constructor that takes a user object to set
       * all fields
       */
-     constructor(user: User) : this(
+     constructor(user: User, userRole: UserRole.Role?) : this(
              id = user.id,
              firstName = user.firstName,
              lastName =  user.lastName,
@@ -37,7 +39,8 @@ data class UserInfo(
              company = user.company,
              phoneNumber = user.phoneNumber,
              active = user.active,
-             status = user.status
+             status = user.status,
+             membershipRole = userRole
      )
 
 }

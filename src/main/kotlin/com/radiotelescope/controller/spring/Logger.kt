@@ -19,25 +19,13 @@ import java.util.*
  *
  * @param logRepo the [ILogRepository] interface
  * @param errorRepo the [IErrorRepository] interface
- * @param userRoleRepo the [IUserRoleRepository] interface
- * @param userRepo the [IUserRepository] interface
- * @param retrieveAuthService the [RetrieveAuthService] service
  */
 @Service
 class Logger(
         private var logRepo: ILogRepository,
         private var errorRepo: IErrorRepository,
-        userRoleRepo: IUserRoleRepository,
-        userRepo: IUserRepository,
-        retrieveAuthService: RetrieveAuthService
+        private var userContext: UserContext
 ) {
-
-    private val userContext = UserContextImpl(
-            userRepo = userRepo,
-            userRoleRepo = userRoleRepo,
-            retrieveAuthService = retrieveAuthService
-    )
-
     /**
      * Used in REST controllers to log a successful action
      */

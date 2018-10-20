@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 
@@ -16,7 +17,8 @@ import com.radiotelescope.repository.user.User
  */
 class Retrieve(
         private val id: Long,
-        private val userRepo: IUserRepository
+        private val userRepo: IUserRepository,
+        private val userRoleRepo: IUserRoleRepository
 ) : Command<UserInfo, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. It checks to see if
@@ -34,6 +36,8 @@ class Retrieve(
         }
 
         val theUser = userRepo.findById(id).get()
-        return SimpleResult(UserInfo(theUser), null)
+        val theUserRole = userRoleRepo.findMembershipRoleByUserId(theUser.id)
+        val theRole = theUserRole?.role
+        return SimpleResult(UserInfo(theUser, theRole), null)
     }
 }

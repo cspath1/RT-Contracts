@@ -35,7 +35,7 @@ class UnapprovedList(
         val roleInfos = arrayListOf<UserRoleInfo>()
         unapprovedRoles.forEach {
             if (it.userId != null) {
-                val userInfo = UserInfo(userRepo.findById(it.userId!!).get())
+                val userInfo = UserInfo(userRepo.findById(it.userId!!).get(), null)
                 roleInfos.add(UserRoleInfo(
                         userRole = it,
                         userInfo = userInfo

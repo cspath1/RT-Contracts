@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.FakeUserContext
 import com.radiotelescope.toStringMap
 import org.junit.Assert.*

@@ -9,6 +9,7 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.service.RetrieveAuthService
 import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.stereotype.Component
 
 /**
  * Concrete implementation of [UserContext] interface that uses Spring Security to validate
@@ -22,6 +23,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository]
  */
+@Component("userContext")
 class UserContextImpl(
         private var userRepo: IUserRepository,
         private var userRoleRepo: IUserRoleRepository,
