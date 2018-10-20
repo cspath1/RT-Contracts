@@ -63,7 +63,7 @@ CREATE TABLE user (
   phone_number VARCHAR(25),
   password VARCHAR(256),
   active TINYINT(1) DEFAULT '0',
-  status ENUM('INACTIVE', 'ACTIVE', 'BANNED', 'DELETED'),
+  status ENUM('Inactive', 'Active', 'Banned', 'Deleted'),
 
   PRIMARY KEY (id),
   UNIQUE KEY email_address (email_address),
@@ -79,7 +79,7 @@ DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11) NOT NULL,
-  role ENUM('User', 'Guest', 'Student', 'Researcher', 'Member', 'Admin'),
+  role ENUM('USER', 'GUEST', 'STUDENT', 'RESEARCHER', 'MEMBER', 'ADMIN'),
   approved TINYINT(1) DEFAULT '0',
   
   PRIMARY KEY (id),
