@@ -5,7 +5,11 @@ import com.radiotelescope.repository.error.Error
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.UserContext
+import com.radiotelescope.security.UserContextImpl
+import com.radiotelescope.security.service.RetrieveAuthService
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -15,14 +19,24 @@ import java.util.*
  *
  * @param logRepo the [ILogRepository] interface
  * @param errorRepo the [IErrorRepository] interface
- * @param userContext the [UserContext] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param userRepo the [IUserRepository] interface
+ * @param retrieveAuthService the [RetrieveAuthService] service
  */
 @Service
 class Logger(
         private var logRepo: ILogRepository,
         private var errorRepo: IErrorRepository,
-        private var userContext: UserContext
+        userRoleRepo: IUserRoleRepository,
+        userRepo: IUserRepository,
+        retrieveAuthService: RetrieveAuthService
 ) {
+
+    private val userContext = UserContextImpl(
+            userRepo = userRepo,
+            userRoleRepo = userRoleRepo,
+            retrieveAuthService = retrieveAuthService
+    )
 
     /**
      * Used in REST controllers to log a successful action

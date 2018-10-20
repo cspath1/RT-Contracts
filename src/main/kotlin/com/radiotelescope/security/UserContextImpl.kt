@@ -7,9 +7,8 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.security.service.RetrieveAuthService
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.stereotype.Component
 
 /**
  * Concrete implementation of [UserContext] interface that uses Spring Security to validate
@@ -23,12 +22,11 @@ import org.springframework.stereotype.Component
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository]
  */
-@Component(value = "UserContext")
 class UserContextImpl(
         private var userRepo: IUserRepository,
-        private var userRoleRepo: IUserRoleRepository
+        private var userRoleRepo: IUserRoleRepository,
+        private var retrieveAuthService: RetrieveAuthService
 ) : UserContext {
-    private val authentication = SecurityContextHolder.getContext().authentication
 
     /**
      * Override of the [UserContext.require] method that uses Spring Security to check if a user has
@@ -38,24 +36,25 @@ class UserContextImpl(
     override fun <S, E> require(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>): SecuredAction<S, E> {
         var missingRoles: MutableList<UserRole.Role>? = mutableListOf()
 
+        val (session, _) = retrieveAuthService.execute()
+
         // If the authentication object exists, we can check the user's roles
-        if (authentication != null && authentication is AuthenticatedUserToken) {
+        if (session != null) {
             val authorities = arrayListOf<SimpleGrantedAuthority>()
 
             // Add all of the user's roles to the list
-            authentication.authorities.forEach {
+            session.roles.forEach {
                 authorities.add(SimpleGrantedAuthority(it.authority))
             }
 
-            val token = authentication
 
             // Check if the token's user id is null or refers to a non-existent user
-            if (token.userId == null || !userRepo.existsById(token.userId))
+            if (!userRepo.existsById(session.userId))
                 missingRoles?.add(UserRole.Role.GUEST)
             // Otherwise, we can check if the proper roles
             else {
                 // Grab all of the roles and check them agains the required list
-                val userRoles = userRoleRepo.findAllByUserId(token.userId)
+                val userRoles = userRoleRepo.findAllByUserId(session.userId)
                 if (!requiredRoles.isEmpty()) {
                     requiredRoles.forEach { role: UserRole.Role ->
                         val hasThisRole = userRoles.any {
@@ -96,20 +95,20 @@ class UserContextImpl(
     override fun <S, E> requireAny(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>): SecuredAction<S, E> {
         var hasAnyRole = false
 
+        val (session, _) = retrieveAuthService.execute()
+
         // If the authentication object exists, we can actually check the roles
-        if (authentication != null && authentication is AuthenticatedUserToken) {
+        if (session != null) {
             val authorities = arrayListOf<SimpleGrantedAuthority>()
 
             // Add all of the user's roles to the list
-            authentication.authorities.forEach {
+            session.roles.forEach {
                 authorities.add(SimpleGrantedAuthority(it.authority))
             }
 
-            val token = authentication
-
             // If the user id exists and refers to an existing user, we can grab their roles
-            if (token.userId != null && userRepo.existsById(token.userId)) {
-                val roles = userRoleRepo.findAllByUserId(token.userId)
+            if (userRepo.existsById(session.userId)) {
+                val roles = userRoleRepo.findAllByUserId(session.userId)
 
                 // If anything in the roles list matches anything in the require roles
                 // list, set the variable to true. If the required role list is empty,
@@ -146,7 +145,9 @@ class UserContextImpl(
      * token if it exists and return the userId, otherwise it will return null
      */
     override fun currentUserId(): Long? {
-        return (authentication as? AuthenticatedUserToken)?.userId
+        val (session, _) = retrieveAuthService.execute()
+
+        return session?.userId
     }
 
 
