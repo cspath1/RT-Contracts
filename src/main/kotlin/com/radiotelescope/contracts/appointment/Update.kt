@@ -21,8 +21,7 @@ import java.util.*
 class Update(private val a_id: Long,
              private val apptRepo: IAppointmentRepository,
              private val updateRequest: Request,
-             private val teleRepo: ITelescopeRepository,
-             private val newStatus: Appointment.Status
+             private val teleRepo: ITelescopeRepository
              ):  Command<Long, Multimap<ErrorTag,String>>
 {
 override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
@@ -49,15 +48,11 @@ override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
             } else if (!teleRepo.existsById(telescopeId)) {
                 errors.put(ErrorTag.TELESCOPE_ID, "Cannot change telescopeId to a telescopeId that does not exist, which is $telescopeId")
                 return SimpleResult(null, errors)
-            } else if (appointment.status == Appointment.Status.Completed) {
-                    errors.put(ErrorTag.STATUS, "Cannot change the appointment status of a Completed appointment")
-                return SimpleResult(null, errors)
             }
             else {
                 appointment.startTime = newStartTime
                 appointment.endTime = newEndTime
                 appointment.telescopeId = telescopeId
-                appointment.status = newStatus
                 apptRepo.save(appointment)
                 return SimpleResult(a_id, null)
             }
@@ -69,9 +64,7 @@ override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
             val id:Long,
             val telescopeId:Long,
             val newStartTime:Date,
-            val newEndTime:Date,
-            //with status, I guess could update separately
-            val status:Appointment.Status
+            val newEndTime:Date
     ): BaseUpdateRequest<Appointment>
     {
         override fun toEntity(): Appointment

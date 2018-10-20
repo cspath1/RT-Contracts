@@ -17,7 +17,6 @@ interface AppointmentFactory
 {
     /**
      * Abstract command used to schedule an appointment
-     *
      * @param request the [Create.Request] request
      * @return a [Command] object
      */
@@ -35,9 +34,9 @@ interface AppointmentFactory
 
     fun pastAppointmentListForUser(u: User, pageRequest:PageRequest):Command <Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
-    fun update(appt_id: Long, newStartTime: Date, newEndTime: Date, tele_id:Long):Command<Long, Multimap<ErrorTag, String>>
+    fun update(updateReq:Update.Request, appt_id: Long): Command<Long, Multimap<ErrorTag, String>>
 
-    fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest, user_id: Long): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+    fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to retrieve a user's future appointments
@@ -47,6 +46,5 @@ interface AppointmentFactory
      * @return a [Command] object
      */
     fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
-
 
 }

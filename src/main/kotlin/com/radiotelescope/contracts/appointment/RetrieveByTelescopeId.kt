@@ -13,10 +13,10 @@ import org.springframework.data.domain.PageRequest
 
 /**
  * Command class to retrieve ALL appointments (past/present/future) from a telescope
- * @param apptRepo  the repository holding the appointments
- * @param teleId the id of the telescope from which you will retrieve its appointments
- * @pageRequest the pageRequest specifying a page(s) of appointments from this telescope
- * @teleRepo   the repository of telescopes
+ * @param apptRepo the [IAppointmentRepository] the repository holding the appointments
+ * @param teleId of type[Long] id of the telescope from which you will retrieve its appointments
+ * @param pageRequest of type [PageRequest] the pageRequest specifying a page(s) of appointments from this telescope
+ * @param teleRepo of type [ITelescopeRepository] the repository of telescopes
  */
 class RetrieveByTelescopeId(
         private var apptRepo: IAppointmentRepository,

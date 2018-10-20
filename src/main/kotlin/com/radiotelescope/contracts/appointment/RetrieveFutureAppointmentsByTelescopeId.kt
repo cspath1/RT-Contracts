@@ -14,10 +14,10 @@ import org.springframework.data.domain.PageRequest
 /**
  * Command class which calls IAppointmentRepository method to retrieve a page of future appointments by a telescope ID
  *
- * @param apptRepo The repository of appointments
- * @param teleId The id of the telescope from which to retrieve appointments
- * @param pageRequest the pageRequest specifying a page(s) of appointments from this telescope
- * @param teleRepo The repository of telescopes
+ * @param apptRepo of type [IAppointmentRepository] The repository of appointments
+ * @param teleId of type [Long] The id of the telescope from which to retrieve appointments
+ * @param pageRequest of type [PageRequest]  the pageRequest specifying a page(s) of appointments from this telescope
+ * @param teleRepo of type  [ITelescopeRepository] The repository of telescopes
  *
  */
 
