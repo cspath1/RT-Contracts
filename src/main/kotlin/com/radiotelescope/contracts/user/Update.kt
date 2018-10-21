@@ -65,7 +65,7 @@ class Update(
                     errors.put(ErrorTag.EMAIL, "Email Address may not be blank")
                 if (!User.isEmailValid(email))
                     errors.put(ErrorTag.EMAIL, "Invalid Email Address")
-                if (userRepo.existsByEmail(email) && userRepo.findByEmail(email)!!.email == email)
+                if (userRepo.existsByEmail(email) && userRepo.findById(id).get().email != email)
                     errors.put(ErrorTag.EMAIL, "Email Address is already in use")
             } else {
                 errors.put(ErrorTag.ID, "No User was found with specified Id")

@@ -1,8 +1,5 @@
 package com.radiotelescope.controller.user
 
-import com.google.common.collect.HashMultimap
-import com.radiotelescope.contracts.user.ErrorTag
-import com.radiotelescope.contracts.user.Update
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.user.UpdateForm
@@ -24,10 +21,10 @@ class UserUpdateController(
         private val userWrapper: UserUserWrapper,
         logger: Logger
 ) : BaseRestController(logger){
-    @PutMapping(value = ["/users/{userId}/update"])
+    @CrossOrigin(value = ["http://localhost:8081"])
+    @PutMapping(value = ["/api/users/{userId}"])
     fun execute(@PathVariable("userId") userId: Long,
-                @RequestBody form: UpdateForm
-    ): Result{
+                @RequestBody form: UpdateForm): Result{
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
             // Create error logs
@@ -39,12 +36,14 @@ class UserUpdateController(
                     ),
                     errors = it.toStringMap()
             )
+
             result = Result(errors = it.toStringMap())
-        } ?: let{ _ ->
+        } ?: let { _ ->
             // Otherwise call the factory command
             userWrapper.update(
                     request = form.toRequest()
-            ){ it ->
+            ) { it ->
+                // If the command was a success
                 it.success?.let{
                     result = Result(
                             data = it
@@ -58,6 +57,7 @@ class UserUpdateController(
                             )
                     )
                 }
+                // Otherwise, it was a failure
                 it.error?.let{
                     // Create error logs
                     logger.createErrorLogs(
@@ -72,10 +72,22 @@ class UserUpdateController(
                             errors = it.toStringMap()
                     )
                 }
+            }?.let {
+                // If we get here, that means the user was not authenticated
+                // Create error logs
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.USER,
+                                action = Log.Action.UPDATE,
+                                affectedRecordId = null
+                        ),
+                        errors = it.toStringMap()
+                )
+
+                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
-
-
         }
+
         return result
     }
 }
