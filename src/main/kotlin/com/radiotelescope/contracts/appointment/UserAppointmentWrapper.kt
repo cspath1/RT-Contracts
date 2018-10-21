@@ -98,4 +98,34 @@ class UserAppointmentWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
 
+    /**
+     * Wrapper method for the [AppointmentFactory.update] method that adds Spring
+     * Security authentication to the [Update] command object.
+     *
+     * @param request the user Id of the appointment
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
+        if(context.currentUserId() != null) {
+            if (context.currentUserId() == appointmentRepo.findById(request.id).get().user!!.id) {
+                return context.require(
+                        requiredRoles = listOf(UserRole.Role.USER),
+                        successCommand = factory.update(
+                                request = request
+                        )
+                ).execute(withAccess)
+            }
+            // Otherwise, they need to be an admin
+            else {
+                return context.require(
+                        requiredRoles = listOf(UserRole.Role.ADMIN),
+                        successCommand = factory.update(
+                                request = request
+                        )
+                ).execute(withAccess)
+            }
+        }
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+    }
+
 }

@@ -393,4 +393,179 @@ internal class UserAppointmentWrapperTest {
         assertNotNull(error)
         assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
     }
+
+    @Test
+    fun testValidUpdate_UserIsOwner_Success(){
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId
+                )
+
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testValidUpdate_Admin_Success(){
+        // Simulate a login
+        context.login(admin.id)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId
+                )
+
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testInvalidUpdate_NoUserRole_Failure(){
+        // Simulate a login
+        context.login(user.id)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId
+                )
+
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidUpdate_NotLoggedIn_Failure(){
+        // Don't simulate a log in
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId
+                )
+
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidUpdate_NotOwner_Failure(){
+        // Simulate a login
+        context.login(user2.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId
+                )
+
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testInvalidUpdate_NotAdminYet_Failure(){
+        // Simulate a login
+        context.login(notAdminYet.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId
+                )
+
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+    }
 }
