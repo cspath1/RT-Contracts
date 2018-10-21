@@ -109,7 +109,6 @@ class ListFutureAppointmentByUserTest {
         assertEquals(infoPage!!.content.size, 1)
 
         // should be the future appointment
-        assertTrue(Date().before(infoPage.content.get(0).startTime))
         assertTrue(Date().before(infoPage.content.get(0).endTime))
     }
 
