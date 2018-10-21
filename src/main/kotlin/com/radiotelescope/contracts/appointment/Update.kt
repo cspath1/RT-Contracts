@@ -12,10 +12,9 @@ import java.util.*
 
 /**
  * Command class for editing an appointment
- * @param a_id of type [Long]
- * @param apptRepo of type [IAppointmentRepository]
- * @param updateRequest of type [Update.Request]
- * @param teleRepo of type [ITelescopeRepository]
+ * @param request of type [Update.Request]
+ * @param appointmentRepo of type [IAppointmentRepository]
+ * @param telescopeRepo of type [ITelescopeRepository]
  *
  */
 class Update(
