@@ -82,12 +82,14 @@ class Update(
             val id: Long,
             val telescopeId: Long,
             val startTime: Date,
-            val endTime: Date
+            val endTime: Date,
+            val isPublic: Boolean
     ): BaseUpdateRequest<Appointment> {
         override fun updateEntity(appointment: Appointment): Appointment {
             appointment.telescopeId = telescopeId
             appointment.startTime = startTime
             appointment.endTime = endTime
+            appointment.isPublic
 
             return appointment
         }

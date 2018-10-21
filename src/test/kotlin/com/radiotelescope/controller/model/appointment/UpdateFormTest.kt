@@ -10,7 +10,8 @@ internal class UpdateFormTest {
             appointmentId = 1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
-            telescopeId = 1L
+            telescopeId = 1L,
+            isPublic = false
     )
 
     @Test
@@ -31,7 +32,7 @@ internal class UpdateFormTest {
         // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure there were no errors
+        // Make sure there were errors
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.ID].isNotEmpty())
     }
@@ -45,7 +46,7 @@ internal class UpdateFormTest {
         // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure there were no errors
+        // Make sure there were errors
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.START_TIME].isNotEmpty())
     }
@@ -59,7 +60,7 @@ internal class UpdateFormTest {
         // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure there were no errors
+        // Make sure there were errors
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.END_TIME].isNotEmpty())
     }
@@ -73,8 +74,22 @@ internal class UpdateFormTest {
         // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure there were no errors
+        // Make sure there were errors
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.TELESCOPE_ID].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_NullIsPublic_Failure(){
+        // Create a copy of the form with a null appointmentId
+        val baseFormCopy = baseForm.copy(
+                isPublic = null
+        )
+        // Call the validateRequest method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure there were errors
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.PUBLIC].isNotEmpty())
     }
 }

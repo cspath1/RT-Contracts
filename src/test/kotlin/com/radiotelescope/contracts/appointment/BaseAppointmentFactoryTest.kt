@@ -86,7 +86,8 @@ internal class BaseAppointmentFactoryTest {
                         id = 123456789,
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 40000L),
-                        telescopeId = 123456789
+                        telescopeId = 123456789,
+                        isPublic = false
                 )
         )
 

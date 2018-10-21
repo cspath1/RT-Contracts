@@ -11,14 +11,16 @@ data class UpdateForm (
         val appointmentId: Long?,
         val startTime: Date?,
         val endTime: Date?,
-        val telescopeId: Long?
+        val telescopeId: Long?,
+        val isPublic: Boolean?
 ) : BaseForm<Update.Request> {
     override fun toRequest(): Update.Request {
         return Update.Request(
                 id = appointmentId!!,
                 startTime = startTime!!,
                 endTime = endTime!!,
-                telescopeId = telescopeId!!
+                telescopeId = telescopeId!!,
+                isPublic = isPublic!!
         )
     }
 
@@ -32,6 +34,8 @@ data class UpdateForm (
             errors.put(ErrorTag.END_TIME, "Required field")
         if (telescopeId == null)
             errors.put(ErrorTag.TELESCOPE_ID, "Required field")
+        if(isPublic == null)
+            errors.put(ErrorTag.PUBLIC, "Required field")
 
         return if (errors.isEmpty) null else errors
     }

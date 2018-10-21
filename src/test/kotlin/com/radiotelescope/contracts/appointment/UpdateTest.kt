@@ -81,7 +81,8 @@ internal class UpdateTest {
                         id = appointmentId,
                         startTime = Date(appointment.endTime.time + 10000L),
                         endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = telescopeId
+                        telescopeId = telescopeId,
+                        isPublic = false
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo
@@ -101,7 +102,9 @@ internal class UpdateTest {
                         id = 123456789,
                         startTime = Date(appointment.endTime.time + 10000L),
                         endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = telescopeId
+                        telescopeId = telescopeId,
+                        isPublic = appointment.isPublic
+
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo
@@ -124,7 +127,9 @@ internal class UpdateTest {
                         id = appointmentId,
                         startTime = Date(appointment.endTime.time + 40000L),
                         endTime = Date(appointment.endTime.time + 10000L),
-                        telescopeId = telescopeId
+                        telescopeId = telescopeId,
+                        isPublic = appointment.isPublic
+
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo
@@ -146,7 +151,8 @@ internal class UpdateTest {
                         id = appointmentId,
                         startTime = Date(System.currentTimeMillis() - 10000L),
                         endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = telescopeId
+                        telescopeId = telescopeId,
+                        isPublic = appointment.isPublic
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo
@@ -169,7 +175,8 @@ internal class UpdateTest {
                         id = appointmentId,
                         startTime = Date(appointment.endTime.time + 10000L),
                         endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = 123456789
+                        telescopeId = 123456789,
+                        isPublic = appointment.isPublic
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo
