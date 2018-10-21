@@ -18,64 +18,79 @@ import java.util.*
  * @param teleRepo of type [ITelescopeRepository]
  *
  */
-class Update(private val a_id: Long,
-             private val apptRepo: IAppointmentRepository,
-             private val updateRequest: Request,
-             private val teleRepo: ITelescopeRepository
-             ):  Command<Long, Multimap<ErrorTag,String>>
-{
-override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
-    val errors = HashMultimap.create<ErrorTag, String>()
-    if (!apptRepo.existsById(a_id)) {
-        errors.put(ErrorTag.ID, "Attempted to update appointment with id {$a_id} that does not exist")
-        return SimpleResult(null, errors)
-    } else {
-        var appointment: Appointment = apptRepo.findById(a_id).get()
+class Update(
+        private val request: Update.Request,
+        private val appointmentRepo: IAppointmentRepository,
+        private val telescopeRepo: ITelescopeRepository
+):  Command<Long, Multimap<ErrorTag,String>> {
+    /**
+     * Override of the [Command.execute] method. Calls the [validateRequest] method
+     * that will handle all constraint checking and validation.
+     *
+     * If validation passes, it will update and persist the [Appointment] object and
+     * return the id in the [SimpleResult] object.
+     *
+     * If validation fails, it will return a [SimpleResult] with the errors
+     */
+    override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
+        val errors = validateRequest()
 
-        //TODO: Add conflict scheduling avoidance algorithm, as in Create.kt
+        if (!errors.isEmpty)
+            return SimpleResult(null, errors)
 
-        with (updateRequest)
-        {
-            if (appointment.startTime.time == newStartTime.time && appointment.endTime.time == newEndTime.time) {
-                errors.put(ErrorTag.START_TIME, "Cannot update the start and end times to be exactly the same")
-                return SimpleResult(null, errors)
-            } else if (newStartTime >= newEndTime) {
-                errors.put(ErrorTag.START_TIME, "New start time cannot be greater than or equal to the new end time")
-                return SimpleResult(null, errors)
-            } else if (newStartTime < Date() || newEndTime < Date()) {
-                errors.put(ErrorTag.START_TIME, "Cannot edit the new startTime or the new endTime to be in the past")
-                return SimpleResult(null, errors)
-            } else if (!teleRepo.existsById(telescopeId)) {
-                errors.put(ErrorTag.TELESCOPE_ID, "Cannot change telescopeId to a telescopeId that does not exist, which is $telescopeId")
-                return SimpleResult(null, errors)
-            }
-            else {
-                appointment.startTime = newStartTime
-                appointment.endTime = newEndTime
-                appointment.telescopeId = telescopeId
-                apptRepo.save(appointment)
-                return SimpleResult(a_id, null)
+        val appointment = appointmentRepo.findById(request.id).get()
+        val updatedAppointment = appointmentRepo.save(request.updateEntity(appointment))
+        return SimpleResult(updatedAppointment.id, null)
+    }
+
+    /**
+     * Method responsible for constraint checking and validations for the appointment
+     * update request. It will ensure the appointment and telescope exist.
+     * It will ensure that the startTime is after the current time and
+     * endTime is after the startTime.
+     */
+    private fun validateRequest(): Multimap<ErrorTag, String> {
+        val errors = HashMultimap.create<ErrorTag, String>()
+
+        with(request) {
+            if (appointmentRepo.existsById(id)) {
+                if(telescopeRepo.existsById(telescopeId)) {
+                    // TODO: Check for scheduling conflict later on
+                    if (startTime.before(Date()))
+                        errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
+                    if (endTime.before(startTime) || endTime == startTime)
+                        errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
+                }
+                else{
+                    errors.put(ErrorTag.TELESCOPE_ID, "No Telescope was found with specified telescope Id: {$telescopeId}")
+                    return errors
+                }
+            } else {
+                errors.put(ErrorTag.ID, "No Appointment was found with specified Id: {$id}")
+                return errors
             }
         }
-    }
-}
 
+        return errors
+    }
+
+    /**
+     * Data class containing all fields necessary for appointment update. Implements the
+     * [BaseUpdateRequest] interface and overrides the [BaseUpdateRequest.updateEntity]
+     * method
+     */
     data class Request(
-            val id:Long,
-            val telescopeId:Long,
-            val newStartTime:Date,
-            val newEndTime:Date
-    ): BaseUpdateRequest<Appointment>
-    {
-        override fun toEntity(): Appointment
-        {
-            //This is the appointment that is updated
-        return Appointment(
-                startTime = newStartTime,
-                endTime = newEndTime,
-                telescopeId = telescopeId,
-                isPublic = true
-        )
+            val id: Long,
+            val telescopeId: Long,
+            val startTime: Date,
+            val endTime: Date
+    ): BaseUpdateRequest<Appointment> {
+        override fun updateEntity(appointment: Appointment): Appointment {
+            appointment.telescopeId = telescopeId
+            appointment.startTime = startTime
+            appointment.endTime = endTime
+
+            return appointment
         }
     }
 }
