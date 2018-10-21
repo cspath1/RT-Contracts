@@ -34,7 +34,12 @@ interface AppointmentFactory
 
     fun pastAppointmentListForUser(u: User, pageRequest:PageRequest):Command <Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
-    fun update(updateReq:Update.Request, appt_id: Long): Command<Long, Multimap<ErrorTag, String>>
+    /**
+     * Abstract command used to update an appointment
+     * @param request the [Update.Request]
+     * @return [Update] [Command] object
+     */
+    fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
 
     fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 

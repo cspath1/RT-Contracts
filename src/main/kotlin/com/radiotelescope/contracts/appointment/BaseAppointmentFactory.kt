@@ -80,12 +80,11 @@ class BaseAppointmentFactory(
      * @return a [Update] command object
      */
 
-    override fun update(updateReq:Update.Request, appt_id: Long): Command<Long, Multimap<ErrorTag, String>>  {
+    override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>  {
         return Update(
-                a_id = appt_id,
-                apptRepo = appointmentRepo,
-                updateRequest = updateReq,
-                teleRepo = telescopeRepo
+                request = request,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo
         )
     }
 

@@ -78,4 +78,20 @@ internal class BaseAppointmentFactoryTest {
         assertTrue(cmd is ListFutureAppointmentByUser)
     }
 
+    @Test
+    fun update(){
+        // Call the factory method
+        val cmd = factory.update(
+                request = Update.Request(
+                        id = 123456789,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 40000L),
+                        telescopeId = 123456789
+                )
+        )
+
+        //Ensure it is the correct command
+        assertTrue(cmd is Update)
+    }
+
 }
