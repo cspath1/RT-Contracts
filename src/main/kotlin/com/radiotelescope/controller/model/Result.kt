@@ -15,7 +15,6 @@ class Result(
         var status: HttpStatus? = null
 ) {
     init {
-        //
         if (status == null) status = if (errors == null) HttpStatus.OK
         else HttpStatus.BAD_REQUEST
     }

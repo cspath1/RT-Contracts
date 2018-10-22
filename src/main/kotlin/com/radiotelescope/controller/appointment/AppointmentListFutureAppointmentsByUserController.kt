@@ -7,14 +7,11 @@ import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.*
 
 
 /**
@@ -40,7 +37,8 @@ class AppointmentListFutureAppointmentsByUserController (
      * If not, the command object was executed, and was either a success or failure,
      * and the method should respond accordingly based on each scenario.
      */
-    @GetMapping(value = ["/users/{userId}/appointments/futureList"])
+    @GetMapping(value = ["/api/users/{userId}/appointments/futureList"])
+    @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@PathVariable("userId") userId: Long,
                 @RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?) {
@@ -104,6 +102,10 @@ class AppointmentListFutureAppointmentsByUserController (
         }
     }
 
+    /**
+     * Private method to return a [HashMultimap] of errors in the event
+     * that the page size and page number are invalid
+     */
     private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")

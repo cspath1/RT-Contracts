@@ -18,6 +18,23 @@ internal class RegisterFormTest {
     )
 
     @Test
+    fun testToRequest() {
+        // First, make sure there are no errors
+        assertNull(baseForm.validateRequest())
+
+        val theRequest = baseForm.toRequest()
+
+        assertEquals(theRequest.categoryOfService, baseForm.categoryOfService!!)
+        assertEquals(theRequest.company, baseForm.company)
+        assertEquals(theRequest.email, baseForm.email!!)
+        assertEquals(theRequest.firstName, baseForm.firstName!!)
+        assertEquals(theRequest.lastName, baseForm.lastName!!)
+        assertEquals(theRequest.password, baseForm.password!!)
+        assertEquals(theRequest.passwordConfirm, baseForm.passwordConfirm!!)
+        assertEquals(theRequest.phoneNumber, baseForm.phoneNumber)
+    }
+
+    @Test
     fun testValidConstraints_NoErrors() {
         // Call the validate request method
         val errors = baseForm.validateRequest()

@@ -43,7 +43,8 @@ data class Log(
     enum class AffectedTable {
         USER,
         USER_ROLE,
-        APPOINTMENT
+        APPOINTMENT,
+        RF_DATA
     }
 
     enum class Action {

@@ -41,4 +41,12 @@ interface UserFactory {
      * @return a [Command] object
      */
     fun list(pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to update the user's information
+     *
+     * @param request the [Update.Request] request
+     */
+    fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
+
 }

@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS log;
 CREATE TABLE log(
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11),
-  affected_table ENUM('USER', 'APPOINTMENT', 'USER_ROLE') NOT NULL,
+  affected_table ENUM('USER', 'APPOINTMENT', 'USER_ROLE', 'RF_DATA') NOT NULL,
   action ENUM('CREATE', 'RETRIEVE', 'UPDATE', 'DELETE', 'LOG_IN') NOT NULL,
   timestamp DATETIME NOT NULL,
   affected_record_id INT(11),
@@ -31,6 +31,17 @@ CREATE TABLE log(
   KEY timestamp_idx (timestamp),
   KEY affected_record_id_idx (affected_record_id),
   KEY success_idx (success)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS rf_data;
+CREATE TABLE rf_data (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  appointment_id INT(11) NOT NULL,
+  intensity INT(11) NOT NULL,
+
+  PRIMARY KEY (id),
+  KEY appointment_id_idx (appointment_id),
+  KEY intensity_idx (intensity)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS telescope;
@@ -89,8 +100,6 @@ CREATE TABLE appointment(
         'Completed',
         'Canceled'),
   telescope_id INT(11) NOT NULL,
-  celestial_body_id INT(11) NOT NULL,
-  orientation_id INT(11) NOT NULL,
   public TINYINT(1) DEFAULT '1',
   PRIMARY KEY (id),
   KEY user_id_idx (user_id),
@@ -98,18 +107,6 @@ CREATE TABLE appointment(
   KEY end_time_idx (end_time),
   KEY status_idx (status),
   KEY telescope_id_idx (telescope_id),
-  KEY celestial_body_id_idx (celestial_body_id),
-  KEY orientation_id_idx (orientation_id),
   KEY public_idx (public)
-
-) ENGINE = InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE orientation(
-appt_id INT NOT NULL,
-azimuth INT NOT NULL,
-elevation INT NOT NULL,
-
-KEY azimuth_idx (azimuth),
-KEY elevation_idx (elevation)
 
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;

@@ -8,7 +8,7 @@ import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.repository.role.UserRole
 
 /**
- * Validate for that takes nullable versions of the [Validate.Request] object.
+ * Validate form that takes nullable versions of the [Validate.Request] object.
  * It is in charge of making sure these values are not null before adapting it
  * to a [Validate.Request] object
  *
@@ -33,7 +33,7 @@ data class ValidateForm(
     }
 
     /**
-     * Makes sure the for's id and role are not null
+     * Makes sure the form's id and role are not null
      *
      * @return a [HashMultimap] of errors or null
      */

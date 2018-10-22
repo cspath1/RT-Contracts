@@ -27,8 +27,7 @@ data class AppointmentInfo(
         val userFirstName: String,
         val userLastName: String,
         val status: Appointment.Status
-)
-{
+) {
     /**
      * Secondary constructor that takes an appointment object
      * to set all fields

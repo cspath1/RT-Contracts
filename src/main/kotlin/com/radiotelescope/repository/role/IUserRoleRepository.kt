@@ -11,14 +11,28 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface IUserRoleRepository : PagingAndSortingRepository<UserRole, Long> {
+    /**
+     * Spring Repository method that will find all [UserRole] records for
+     * a user
+     *
+     * @param userId the User id
+     * @return a [List] of [UserRole] objects
+     */
     fun findAllByUserId(userId: Long): List<UserRole>
 
+    /**
+     * Spring Repository method that will find all a [Page] of [UserRole]
+     * that needs approval
+     *
+     * @param pageable the [Pageable] interface
+     * @return a [Page] of [UserRole] objects
+     */
     @Query(value = "SELECT * " +
             "FROM user_role " +
             "WHERE approved = '0'",
             countQuery = "SELECT COUNT(*) " +
                     "FROM user_role " +
-                    "WHERE approved = '0' \\n#pageable\\n",
+                    "WHERE approved = '0'",
             nativeQuery = true)
     fun findNeedsApprovedUserRoles(pageable: Pageable): Page<UserRole>
 }

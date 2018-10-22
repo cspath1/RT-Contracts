@@ -27,6 +27,7 @@ internal class BaseUserFactoryTest {
 
     @Before
     fun init() {
+        // Instantiate the factory
         factory = BaseUserFactory(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
@@ -76,5 +77,23 @@ internal class BaseUserFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is Retrieve)
+    }
+
+    @Test
+    fun update(){
+        // Call the factory method
+        val cmd = factory.update(
+                request = Update.Request(
+                        id = 123456789,
+                        firstName = "Cody",
+                        lastName = "Spath",
+                        email = "cspath1@ycp.edu",
+                        phoneNumber = "717-823-2216",
+                        company = "York College of Pennsylvania"
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Update)
     }
 }

@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
 
@@ -22,4 +23,9 @@ interface FactoryProvider {
      * Abstract method to return the [UserAppointmentWrapper] class
      */
     fun getAppointmentWrapper(): UserAppointmentWrapper
+
+    /**
+     * Abstract method to return the [UserRFDataWrapper] class
+     */
+    fun getRFDataWrapper(): UserRFDataWrapper
 }

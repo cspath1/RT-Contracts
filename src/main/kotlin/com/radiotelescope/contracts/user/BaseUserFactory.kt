@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable
 /**
  * Base concrete implementation of the [UserFactory] interface
  *
- * @param userRepo the [IUserRepository]
- * @param userRoleRepo the [IUserRoleRepository]
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
  */
 class BaseUserFactory(
         private val userRepo: IUserRepository,
@@ -66,6 +66,16 @@ class BaseUserFactory(
     override fun list(pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
         return List(
                 pageable = pageable,
+                userRepo = userRepo
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.update] method that will return a [Update] command object
+     */
+    override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return Update(
+                request = request,
                 userRepo = userRepo
         )
     }

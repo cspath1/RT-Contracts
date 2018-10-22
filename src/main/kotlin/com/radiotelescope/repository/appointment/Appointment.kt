@@ -13,13 +13,13 @@ import javax.persistence.*
 @Entity
 @Table(name = "appointment")
 data class Appointment(
-        @Column(name = "type", nullable = false)
+        @Column(name = "start_time", nullable = false)
         var startTime: Date,
         @Column(name = "end_time", nullable = false, unique = true)
         var endTime: Date,
         @Column(name = "telescope_id", nullable = false)
         var telescopeId: Long,
-        @Column(name = "isPublic", nullable = false)
+        @Column(name = "public", nullable = false)
         var isPublic: Boolean
 ) {
     @Id

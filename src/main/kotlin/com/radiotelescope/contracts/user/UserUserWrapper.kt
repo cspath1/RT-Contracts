@@ -8,10 +8,12 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
+import com.radiotelescope.security.crud.UserUpdatable
 import com.radiotelescope.security.crud.UserPageable
 import com.radiotelescope.security.crud.UserRetrievable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import kotlin.collections.List
 
 /**
  * Wrapper that takes a [UserFactory] and is responsible for all
@@ -28,7 +30,8 @@ class UserUserWrapper(
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository
 ) : UserRetrievable<Long, SimpleResult<UserInfo, Multimap<ErrorTag, String>>>,
-UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>{
+UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>,
+UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
     /**
      * Register function that will return a [Register] command object. This does not need any
      * user role authentication since the user will not be signed in at the time
@@ -107,4 +110,34 @@ UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>
         return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
     }
 
+    /**
+     * Concrete implementation of the [UserUpdatable] interface used to add Spring Security
+     * authentication to the [Update] command object
+     *
+     * @param request the [Update.Request] object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    override fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        // If the user is logged in
+        if (context.currentUserId() != null) {
+            val theUser = userRepo.findById(context.currentUserId()!!)
+
+            // If the user exists, they must either be the owner or an admin
+            if (theUser.isPresent) {
+                return if (theUser.isPresent && theUser.get().id == request.id) {
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.USER),
+                            successCommand = factory.update(request)
+                    ).execute(withAccess)
+                } else {
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.ADMIN),
+                            successCommand = factory.update(request)
+                    ).execute(withAccess)
+                }
+            }
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+    }
 }
