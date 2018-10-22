@@ -96,7 +96,6 @@ class Update(
             user.lastName = lastName
             user.email = email
 
-
             if (!phoneNumber.isNullOrBlank())
                 user.phoneNumber = phoneNumber
             if (!company.isNullOrBlank())

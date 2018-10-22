@@ -19,6 +19,7 @@ import java.util.*
  *
  * @param logRepo the [ILogRepository] interface
  * @param errorRepo the [IErrorRepository] interface
+ * @param userContext the [UserContext] interface
  */
 @Service
 class Logger(

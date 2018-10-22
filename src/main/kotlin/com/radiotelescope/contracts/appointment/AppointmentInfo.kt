@@ -16,6 +16,7 @@ import java.util.*
  * @param userId the Appointment's associated user id
  * @param userFirstName the Appointment owner's first name
  * @param userLastName the Appointment owner's last name
+ * @param status the Appointment's Status
  */
 data class AppointmentInfo(
         val id: Long,

@@ -8,7 +8,7 @@ import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.repository.role.UserRole
 
 /**
- * Register for that takes nullable versions of the [Register.Request] object.
+ * Register form that takes nullable versions of the [Register.Request] object.
  * It is in charge of making sure these values are not null before adapting it
  * into a [Register.Request] object
  *

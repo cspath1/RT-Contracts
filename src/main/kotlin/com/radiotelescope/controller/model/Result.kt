@@ -7,7 +7,8 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer
 import org.springframework.http.HttpStatus
 
 /**
- * Class used to send information back to the client
+ * Class used to send information back to the client. Implements the
+ * [JsonSerializable] class
  *
  * @property data the data returned on success
  * @property errors a map of any errors
@@ -23,6 +24,10 @@ class Result(
         else HttpStatus.BAD_REQUEST
     }
 
+    /**
+     * Override of the [JsonSerializable.serialize] method that defines
+     * how the [Result] object is serialized
+     */
     override fun serialize(gen: JsonGenerator?, serializers: SerializerProvider?) {
         if (gen != null) {
             gen.writeStartObject()
@@ -41,6 +46,10 @@ class Result(
         }
     }
 
+    /**
+     * Override of the [JsonSerializable.serializeWithType] method that
+     * serializes the [Result] object
+     */
     override fun serializeWithType(gen: JsonGenerator?, serializers: SerializerProvider?, typeSer: TypeSerializer?) {
         serialize(gen, serializers)
     }

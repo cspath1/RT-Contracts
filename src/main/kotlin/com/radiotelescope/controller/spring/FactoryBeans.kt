@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration
  * server is started
  *
  * @param repositories the [RepositoryBeans] Spring component
+ * @param retrieveAuthService the [RetrieveAuthService] service
  */
 @Configuration
 class FactoryBeans(

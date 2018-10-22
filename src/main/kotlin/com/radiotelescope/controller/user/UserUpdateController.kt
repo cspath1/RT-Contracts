@@ -1,11 +1,13 @@
 package com.radiotelescope.controller.user
 
 import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.user.Update
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.user.UpdateForm
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.toStringMap
 import com.radiotelescope.controller.spring.Logger
+import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -21,6 +23,19 @@ class UserUpdateController(
         private val userWrapper: UserUserWrapper,
         logger: Logger
 ) : BaseRestController(logger){
+    /**
+     * Execute method that is in charge of taking the [UpdateForm]
+     * and adapting it to the a [Update.Request] if possible.
+     * If it is not able to, it will respond with errors.
+     *
+     * Otherwise, it will execute the [UserUserWrapper.update] method. If
+     * this method returns an [AccessReport] respond with errors. If not,
+     * this means the [Update] command was executed, check if the method
+     * was a success or not
+     *
+     * @param userId the User's id
+     * @param form the [UpdateForm] object
+     */
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["/api/users/{userId}"])
     fun execute(@PathVariable("userId") userId: Long,

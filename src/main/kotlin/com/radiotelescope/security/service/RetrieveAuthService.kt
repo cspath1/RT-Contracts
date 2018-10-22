@@ -11,10 +11,20 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
+/**
+ * Service used to retrieve user authentication information
+ *
+ * @param userRepo the [IUserRepository]
+ */
 @Service
 class RetrieveAuthService(
         private val userRepo: IUserRepository
 ) {
+    /**
+     * Execute method that will the [SecurityContextHolder] authentication token and,
+     * if it is not null, will grab pertinent information and return a [UserSession]
+     * object. Otherwise, it will return an error
+     */
     fun execute(): SimpleResult<UserSession, Multimap<ErrorTag, String>> {
         val authentication = SecurityContextHolder.getContext().authentication
 

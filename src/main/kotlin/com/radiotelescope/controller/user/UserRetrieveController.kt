@@ -1,7 +1,5 @@
 package com.radiotelescope.controller.user
 
-import com.google.common.collect.HashMultimap
-import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.contracts.user.Retrieve
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestController
@@ -33,8 +31,8 @@ class UserRetrieveController(
      *
      * Otherwise, execute the [UserUserWrapper.retrieve] method. If this
      * method returns an [AccessReport] respond with the errors. If not,
-     * this means the [Retrieve] command was executed, and the execute
-     * method should check if this was a success or not
+     * this means the [Retrieve] command was executed, check if the
+     * method was a success or not
      *
      * @param id the User's id
      */
