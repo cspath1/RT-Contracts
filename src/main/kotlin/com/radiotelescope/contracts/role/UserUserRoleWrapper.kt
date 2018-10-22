@@ -39,7 +39,7 @@ class UserUserRoleWrapper(
                     successCommand = factory.unapprovedList(pageable)
             ).execute(withAccess)
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN), invalidResourceId = null)
     }
 
     /**
@@ -57,7 +57,7 @@ class UserUserRoleWrapper(
             ).execute(withAccess)
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN), invalidResourceId = null)
     }
 
     /**
@@ -75,6 +75,6 @@ class UserUserRoleWrapper(
             ).execute(withAccess)
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN), invalidResourceId = null)
     }
 }

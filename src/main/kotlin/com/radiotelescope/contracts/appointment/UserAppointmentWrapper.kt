@@ -1,11 +1,13 @@
 package com.radiotelescope.contracts.appointment
 
+import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
+import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -51,7 +53,12 @@ class UserAppointmentWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun retrieve(id: Long, withAccess: (result: SimpleResult<AppointmentInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (!appointmentRepo.existsById(id)) {
+            return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(id))
+        }
+
         val theAppointment = appointmentRepo.findById(id).get()
+
         if (context.currentUserId() != null &&
                 context.currentUserId() == theAppointment.user!!.id) {
             return context.require(
@@ -60,7 +67,7 @@ class UserAppointmentWrapper(
             ).execute(withAccess)
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
     /**
@@ -94,6 +101,12 @@ class UserAppointmentWrapper(
             }
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {
+        val errors = HashMultimap.create<ErrorTag, String>()
+        errors.put(ErrorTag.ID, "Appointment Id #$id could not be found")
+        return errors.toStringMap()
     }
 }

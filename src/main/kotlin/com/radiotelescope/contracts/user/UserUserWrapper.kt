@@ -90,7 +90,7 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
             }
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
     /**
@@ -108,7 +108,7 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
             ).execute(withAccess)
 
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN), invalidResourceId = null)
     }
 
     /**
@@ -139,6 +139,6 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
             }
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 }

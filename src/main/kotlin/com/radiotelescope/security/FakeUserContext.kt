@@ -35,7 +35,7 @@ class FakeUserContext : UserContext {
                 }
 
                 if (failure) {
-                    return AccessReport(missingRoles = missingRoles.toList())
+                    return AccessReport(missingRoles = missingRoles.toList(), invalidResourceId = null)
                 }
 
                 withAccess(successCommand.execute())
@@ -63,7 +63,7 @@ class FakeUserContext : UserContext {
                     }
                 }
 
-                return AccessReport(missingRoles = missingRoles.toList())
+                return AccessReport(missingRoles = missingRoles.toList(), invalidResourceId = null)
             }
         }
     }

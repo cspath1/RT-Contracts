@@ -131,7 +131,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -175,7 +175,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.RESEARCHER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
     }
 
     @Test
@@ -212,7 +212,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -230,7 +230,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -247,6 +247,19 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNull(error)
+    }
+
+    @Test
+    fun testRetrieve_NonExistent_Failure() {
+        val error = wrapper.retrieve(
+                id = 311L
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertNull(error!!.missingRoles)
+        assertNotNull(error.invalidResourceId)
     }
 
     @Test
@@ -318,7 +331,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -341,7 +354,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -366,7 +379,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -391,6 +404,6 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 }

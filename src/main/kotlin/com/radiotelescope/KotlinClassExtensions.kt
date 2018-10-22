@@ -17,7 +17,7 @@ fun <T: Enum<T>> Multimap<T, String>.toStringMap(): Map<String, Collection<Strin
 
 fun AccessReport.toStringMap(): Map<String, Collection<String>> {
     val map = kotlin.collections.mutableMapOf<String, Collection<String>>()
-    map["MISSING_ROLES"] = this.missingRoles.map { it.name }
+    map["MISSING_ROLES"] = this.missingRoles!!.map { it.name }
     return map
 }
 

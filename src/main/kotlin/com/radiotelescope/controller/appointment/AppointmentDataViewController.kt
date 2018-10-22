@@ -68,16 +68,23 @@ class AppointmentDataViewController(
             }
         }?.let {
             // If we get here, that means the User did not pass authentication
+
+            // Set the errors depending on if the user was not authenticated or the
+            // record did not exists
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.RF_DATA,
                             action = Log.Action.RETRIEVE,
                             affectedRecordId = null
                     ),
-                    errors = it.toStringMap()
+                    errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
             )
 
-            result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+            result = if (it.missingRoles != null) {
+                Result(errors = it.toStringMap(), status = HttpStatus.NOT_FOUND)
+            } else {
+                Result(errors = it.invalidResourceId!!, status = HttpStatus.FORBIDDEN)
+            }
         }
 
         return result
