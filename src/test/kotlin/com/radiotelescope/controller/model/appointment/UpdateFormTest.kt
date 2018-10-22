@@ -7,7 +7,6 @@ import java.util.*
 
 internal class UpdateFormTest {
     private val baseForm = UpdateForm(
-            appointmentId = 1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
@@ -23,19 +22,6 @@ internal class UpdateFormTest {
         assertNull(errors)
     }
 
-    @Test
-    fun testInvalid_NullAppointmentId_Failure(){
-        // Create a copy of the form with a null appointmentId
-        val baseFormCopy = baseForm.copy(
-                appointmentId = null
-        )
-        // Call the validateRequest method
-        val errors = baseFormCopy.validateRequest()
-
-        // Make sure there were errors
-        assertNotNull(errors)
-        assertTrue(errors!![ErrorTag.ID].isNotEmpty())
-    }
 
     @Test
     fun testInvalid_NullStartTime_Failure(){

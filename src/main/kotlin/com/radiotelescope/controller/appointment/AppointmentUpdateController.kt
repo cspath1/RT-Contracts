@@ -8,6 +8,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -32,7 +33,10 @@ class AppointmentUpdateController (
      * If this method returns an [AccessReport]
      */
     @PutMapping(value = ["/api/appointments/{appointmentId}"])
-    fun execute(@RequestBody form: UpdateForm): Result {
+    fun execute(
+            @PathVariable("appointmentId") appointmentId: Long,
+            @RequestBody form: UpdateForm
+    ): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
             // Create error logs
@@ -47,8 +51,13 @@ class AppointmentUpdateController (
             result = Result(errors = it.toStringMap())
         }?: let{ _ ->
             // Otherwise call the factory command
+            var request = form.toRequest()
+
+            // Setting the appointmentId for the request
+            request.id = appointmentId
+
             appointmentWrapper.update(
-                    request = form.toRequest()
+                    request = request
             ){ it ->
                 it.success?.let{
                     result = Result(

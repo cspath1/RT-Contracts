@@ -79,7 +79,7 @@ class Update(
      * method
      */
     data class Request(
-            val id: Long,
+            var id: Long,
             val telescopeId: Long,
             val startTime: Date,
             val endTime: Date,

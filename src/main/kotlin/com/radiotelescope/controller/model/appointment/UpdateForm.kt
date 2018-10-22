@@ -8,7 +8,6 @@ import com.radiotelescope.controller.model.BaseForm
 import java.util.*
 
 data class UpdateForm (
-        val appointmentId: Long?,
         val startTime: Date?,
         val endTime: Date?,
         val telescopeId: Long?,
@@ -16,7 +15,7 @@ data class UpdateForm (
 ) : BaseForm<Update.Request> {
     override fun toRequest(): Update.Request {
         return Update.Request(
-                id = appointmentId!!,
+                id = -1L,
                 startTime = startTime!!,
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
@@ -26,8 +25,7 @@ data class UpdateForm (
 
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
-        if (appointmentId == null)
-            errors.put(ErrorTag.ID, "Invalid appointment id")
+
         if (startTime == null)
             errors.put(ErrorTag.START_TIME, "Required field")
         if (endTime == null)
