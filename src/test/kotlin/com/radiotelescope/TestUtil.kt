@@ -95,4 +95,12 @@ internal class TestUtil {
 
         return appointmentRepo.save(theAppointment)
     }
+
+    fun setInactiveStatus(
+            user: User
+    ):User{
+        user.active = false
+        user.status = User.Status.Inactive
+        return userRepo.save(user)
+    }
 }
