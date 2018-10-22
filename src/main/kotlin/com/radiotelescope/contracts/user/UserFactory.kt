@@ -56,4 +56,11 @@ interface UserFactory {
      */
     fun delete(id: Long): Command<Long, Multimap<ErrorTag, String>>
 
+    /**
+     * Abstract command used to unban a user's account
+     *
+     * @param id the User id
+     */
+    fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>>
+
 }

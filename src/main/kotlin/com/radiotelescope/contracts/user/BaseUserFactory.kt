@@ -86,4 +86,17 @@ class BaseUserFactory(
                 userRepo = userRepo
         )
     }
+
+    /**
+     * Override of the [UserFactory.unban] method that will return a [Unban] command object
+     * @param id the user ID
+     * @return an [Unban] command object
+     */
+
+    override fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return Unban(
+                id = id,
+                userRepo = userRepo
+        )
+    }
 }
