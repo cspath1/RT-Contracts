@@ -48,12 +48,7 @@ class PastAppointmentListForUser(
         } else {
            val apptList = apptRepo.findPreviousAppointmentsByUser(userId, pageRequest)
             val infoPage = apptList.toAppointmentInfoPage()
-            //unused
-//            for (appt: Appointment in apptList) {
-//                val apptInfo = AppointmentInfo(appt)
-//            }
             return SimpleResult(infoPage, null)
-
         }
     }
 }

@@ -22,6 +22,14 @@ interface AppointmentFactory
      */
     fun create(request: Create.Request): Command<Long, Multimap<ErrorTag, String>>
 
+    /**
+     * Abstract command used to cancel an appointment
+     * @param a the [Appointment]
+     * @param apptRepo the [IAppointmentRepository]
+     * @param apptId the  id of the appointment to be canceled, a [Long]
+     * @return a [Command] object
+     */
+
     fun cancel(a: Appointment, apptRepo: IAppointmentRepository, apptId: Long):Command<Long, Multimap<ErrorTag,String>>
 
     /**
@@ -32,6 +40,13 @@ interface AppointmentFactory
      */
     fun retrieve(id: Long): Command<AppointmentInfo, Multimap<ErrorTag,String>>
 
+    /**
+     * Abstract command to get the PAST appointments from a user
+     *  @param u a [User]
+     *  @param pageRequest a [PageRequest]
+     *  @return a [Command] object
+     */
+
     fun pastAppointmentListForUser(u: User, pageRequest:PageRequest):Command <Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
     /**
@@ -40,6 +55,14 @@ interface AppointmentFactory
      * @return [Update] [Command] object
      */
     fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to get ALL appointments from a telescope
+     * @param id a [Long], the id of the telescope
+     * @param pageRequest, a [PageRequest]
+     * @return a [Command] object
+     *
+     */
 
     fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 
