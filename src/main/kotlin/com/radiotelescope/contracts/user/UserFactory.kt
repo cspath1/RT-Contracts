@@ -49,4 +49,7 @@ interface UserFactory {
      */
     fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
 
+
+    fun ban(user_id: Long): Command<Long, Multimap<ErrorTag, String>>
+
 }

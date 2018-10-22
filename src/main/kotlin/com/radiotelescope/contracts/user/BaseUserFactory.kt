@@ -79,4 +79,12 @@ class BaseUserFactory(
                 userRepo = userRepo
         )
     }
+
+    override fun ban(user_id: Long):Command<Long, Multimap<ErrorTag, String>>
+    {
+        return Ban(
+                userRepo = userRepo,
+                user_id = user_id
+        )
+    }
 }
