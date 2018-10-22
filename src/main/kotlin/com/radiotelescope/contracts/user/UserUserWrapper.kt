@@ -172,4 +172,23 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
-}
+
+    fun unban(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        // If the user is logged in
+        if (context.currentUserId() != null) {
+            val theUser = userRepo.findById(context.currentUserId()!!)
+
+            // If the user exists, they must be an admin
+            if (theUser.isPresent) {
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.ADMIN),
+                            successCommand = factory.delete(id)
+                    ).execute(withAccess)
+
+            }
+        }
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+
+    }
+
+    }
