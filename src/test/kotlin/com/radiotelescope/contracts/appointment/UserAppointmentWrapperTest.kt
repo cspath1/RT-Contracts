@@ -574,4 +574,35 @@ internal class UserAppointmentWrapperTest {
         assertNotNull(error)
         assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
     }
+
+    @Test
+    fun testInvalid_PrivateAppointmentNotResearcher_Failure() {
+        // Simulate a login, but do not make them a researcher
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Initialize the rapper with the context
+        wrapper = UserAppointmentWrapper(
+                appointmentRepo = appointmentRepo,
+                context = context,
+                factory = factory
+        )
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId,
+                        isPublic = false
+                )
+
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.RESEARCHER))
+    }
 }

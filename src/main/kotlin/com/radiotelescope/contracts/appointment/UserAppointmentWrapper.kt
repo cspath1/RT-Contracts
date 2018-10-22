@@ -108,12 +108,22 @@ class UserAppointmentWrapper(
     fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
         if(context.currentUserId() != null) {
             if (context.currentUserId() == appointmentRepo.findById(request.id).get().user!!.id) {
-                return context.require(
-                        requiredRoles = listOf(UserRole.Role.USER),
-                        successCommand = factory.update(
-                                request = request
-                        )
-                ).execute(withAccess)
+                // If public, they only need to be a base user
+                return if (request.isPublic)
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.USER),
+                            successCommand = factory.update(
+                                    request = request
+                            )
+                    ).execute(withAccess)
+                // Otherwise, they need to be a researcher
+                else
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                            successCommand = factory.update(
+                                    request = request
+                            )
+                    ).execute(withAccess)
             }
             // Otherwise, they need to be an admin
             else {
