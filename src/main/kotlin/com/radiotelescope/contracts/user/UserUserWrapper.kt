@@ -173,6 +173,13 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
 
+    /**
+     *  Wrapper method for the [UserFactory.unban] method that adds Spring
+     *  Security authentication to the [Unban] command object
+     *
+     *  @param id the User id
+     *  @return An [AccessReport] if authentication fails, null otherwise
+     */
     fun unban(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
         if (context.currentUserId() != null) {
