@@ -61,6 +61,9 @@ internal class AppointmentTest {
                 isPublic = true
         )
 
+        /*
+        Currently unused
+
         futureCanceledAppointment = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
@@ -68,7 +71,9 @@ internal class AppointmentTest {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true
+
         )
+        */
     }
 
     @Test

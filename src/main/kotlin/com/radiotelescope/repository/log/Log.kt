@@ -53,6 +53,7 @@ data class Log(
         UPDATE,
         DELETE,
         LOG_IN,
-        LIST_FUTURE_APPOINTMENT_BY_USER
+        LIST_FUTURE_APPOINTMENT_BY_USER,
+        LIST
     }
 }

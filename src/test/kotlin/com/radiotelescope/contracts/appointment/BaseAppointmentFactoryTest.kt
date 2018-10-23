@@ -80,4 +80,68 @@ internal class BaseAppointmentFactoryTest {
         assertTrue(cmd is ListFutureAppointmentByUser)
     }
 
+    @Test
+    fun pastAppointmentListForUser() {
+        // Call the factory method
+        val cmd = factory.pastAppointmentListForUser(
+                userId = 1L,
+                pageRequest = PageRequest.of(0, 20)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is PastAppointmentListForUser)
+    }
+
+    @Test
+    fun cancel() {
+        // Call the factory method
+        val cmd = factory.cancel(
+                appointmentId = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Cancel)
+    }
+
+    @Test
+    fun retrieveByTelescopeId() {
+        // Call the factory method
+        val cmd = factory.retrieveByTelescopeId(
+                telescopeId = 1L,
+                pageRequest = PageRequest.of(0, 20)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is RetrieveByTelescopeId)
+    }
+
+    @Test
+    fun retrieveFutureAppointmentsByTelescopeId() {
+        // Call the factory method
+        val cmd = factory.retrieveFutureAppointmentsByTelescopeId(
+                telescopeId = 1L,
+                pageRequest = PageRequest.of(0, 20)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is RetrieveFutureAppointmentsByTelescopeId)
+    }
+
+    @Test
+    fun update(){
+        // Call the factory method
+        val cmd = factory.update(
+                request = Update.Request(
+                        id = 123456789,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 40000L),
+                        telescopeId = 123456789,
+                        isPublic = false
+                )
+        )
+
+        //Ensure it is the correct command
+        assertTrue(cmd is Update)
+    }
+
 }
