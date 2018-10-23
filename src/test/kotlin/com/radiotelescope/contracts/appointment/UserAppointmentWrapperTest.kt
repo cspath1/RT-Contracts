@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
@@ -262,7 +261,7 @@ internal class UserAppointmentWrapperTest {
                 factory = factory
         )
 
-        val error = wrapper.getFutureAppointmentsForUser(
+        val error = wrapper.userFutureList(
                 pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
@@ -279,7 +278,7 @@ internal class UserAppointmentWrapperTest {
         context.login(admin.id)
         context.currentRoles.add(UserRole.Role.ADMIN)
 
-        val error = wrapper.getFutureAppointmentsForUser(
+        val error = wrapper.userFutureList(
                 pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
@@ -295,7 +294,7 @@ internal class UserAppointmentWrapperTest {
         // Simulate a login
         context.login(user.id)
 
-        val error = wrapper.getFutureAppointmentsForUser(
+        val error = wrapper.userFutureList(
                 pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
@@ -311,7 +310,7 @@ internal class UserAppointmentWrapperTest {
     fun testInvalidGetFutureAppointmentsForUser_NotLoggedIn_Failure(){
         // Do not log the user in
 
-        val error = wrapper.getFutureAppointmentsForUser(
+        val error = wrapper.userFutureList(
                 pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
@@ -329,7 +328,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user2.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        val error = wrapper.getFutureAppointmentsForUser(
+        val error = wrapper.userFutureList(
                 pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
@@ -354,7 +353,7 @@ internal class UserAppointmentWrapperTest {
                 factory = factory
         )
 
-        val error = wrapper.getFutureAppointmentsForUser(
+        val error = wrapper.userFutureList(
                 pageable = PageRequest.of(0, 10),
                 userId = user.id
         ) {
@@ -369,7 +368,7 @@ internal class UserAppointmentWrapperTest {
     @Test
     fun testPastAppointmentForUserList_NotLoggedIn_Failure() {
         // Do not log the user in
-        val error = wrapper.pastAppointmentListForUser(
+        val error = wrapper.userCompleteList(
                 userId = user.id,
                 pageRequest = PageRequest.of(0, 30)
         ) {
@@ -386,7 +385,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user2.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        val error = wrapper.pastAppointmentListForUser(
+        val error = wrapper.userCompleteList(
                 userId = user.id,
                 pageRequest = PageRequest.of(0, 30)
         ) {
@@ -403,7 +402,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user2.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
 
-        val error = wrapper.pastAppointmentListForUser(
+        val error = wrapper.userCompleteList(
                 userId = user.id,
                 pageRequest = PageRequest.of(0, 20)
         ) {
@@ -420,7 +419,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        val error = wrapper.pastAppointmentListForUser(
+        val error = wrapper.userCompleteList(
                 userId = user.id,
                 pageRequest = PageRequest.of(0, 20)
         ) {

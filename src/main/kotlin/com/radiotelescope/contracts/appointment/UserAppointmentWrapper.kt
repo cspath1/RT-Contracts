@@ -73,7 +73,7 @@ class UserAppointmentWrapper(
      * @param pageable contains the pageSize and pageNumber
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun userFutureList(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if(context.currentUserId() != null) {
             if (context.currentUserId() == userId) {
                 return context.require(
@@ -99,7 +99,7 @@ class UserAppointmentWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
 
-    fun pastAppointmentListForUser(userId: Long, pageRequest: PageRequest, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun userCompleteList(userId: Long, pageRequest: PageRequest, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null) {
             return if (context.currentUserId() == userId) {
                 context.require(
