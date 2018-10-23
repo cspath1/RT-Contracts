@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 
-
 /**
  * Controller class for banning a user.
  * @param userWrapper of type [UserUserWrapper]
@@ -35,7 +34,6 @@ class AdminUserBanController(
              * Also populates the Logs
              * @return [Unit]
              */
-
 
 fun execute(@PathVariable(value="userId") userId:Long?) {
         //error case
