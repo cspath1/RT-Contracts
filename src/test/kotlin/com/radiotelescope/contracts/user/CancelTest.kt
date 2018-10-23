@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.user
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import junit.framework.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,28 +30,40 @@ internal class CancelTest
         }
     }
 
-
     @Autowired
     private lateinit var userRepo: IUserRepository
 
     @Autowired
     private lateinit var testUtil:TestUtil
 
-
-
+    var globalId:Long = 0
 
 
     @Before
     fun setUp()
     {
-      var u: User = testUtil.createUser("jamoros@ycp.edu")
-              u.id
-    }
+        val u:User = testUtil.createUser("jamoros@ycp.edu")
 
+        globalId = u.id
+
+    }
     @Test
     fun CancelTest()
     {
-        userRepo
+       val r = Cancel(userRepo, globalId)
+        val successResult = r.execute().success
+       if (successResult  == null)
+       {
+       for (e:ErrorTag in ErrorTag.values()) {
+           if (e.toString().isNotEmpty())
+           println(r.execute().error?.get(e))
+       }
+           fail()
+       }
+        else
+        {
+            assert(successResult == globalId)
+        }
     }
 }
 
