@@ -133,6 +133,17 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo
         )
+
+
+    }
+
+    override fun retrieveFutureAppointmentsByTelescopeId(tele_id:Long, pageable:Pageable):Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+    {
+        return RetrieveFutureAppointmentsByTelescopeId(
+        appointmentRepo,
+        tele_id,
+        pageable,
+        telescopeRepo)
     }
 }
 

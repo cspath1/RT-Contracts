@@ -66,6 +66,8 @@ interface AppointmentFactory
 
     fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 
+    fun retrieveFutureAppointmentsByTelescopeId(tele_id:Long, pageable:Pageable):Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+
     /**
      * Abstract command used to retrieve a user's future appointments
      *
@@ -74,5 +76,4 @@ interface AppointmentFactory
      * @return a [Command] object
      */
     fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
-
 }
