@@ -35,6 +35,9 @@ class Unban(
             if (userRepo.findById(id).get().status == User.Status.Active){
                 errors.put(ErrorTag.ID, "User found by Id #$id is not banned")
             }
+            if (userRepo.findById(id).get().active){
+                errors.put(ErrorTag.ID, "User found by id #$id is already active")
+            }
         }
         return if (errors.isEmpty) null else errors
     }

@@ -81,7 +81,7 @@ internal class UnbanTest {
     }
 
     @Test
-    fun unbanActiveUserTest(){
+    fun unbanNotBannedUserTest(){
         val (id, errors) = Unban(
                 id = userId2,
                 userRepo = userRepo
@@ -90,5 +90,16 @@ internal class UnbanTest {
         assertTrue(errors != null)
         assertTrue(id == null)
     }
+
+    @Test
+    fun unbanActiveUserTest(){
+        val (id, errors) = Unban(
+                id = userId2,
+                userRepo = userRepo
+        ).execute()
+
+        assertTrue(errors != null)
+        assertTrue(id == null)
+        }
 
 }
