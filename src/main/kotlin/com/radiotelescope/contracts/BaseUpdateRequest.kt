@@ -7,5 +7,5 @@ import com.radiotelescope.repository.user.User
  * and adapt it into an updated version of the persisted entity
  */
 internal interface BaseUpdateRequest<ENTITY> {
-    fun updateEntity(user: User): ENTITY
+    fun updateEntity(entity: ENTITY): ENTITY
 }

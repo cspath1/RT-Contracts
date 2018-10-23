@@ -10,7 +10,6 @@ import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import java.util.*
 
 /**
  * Base concrete implementation of the [AppointmentFactory] interface
@@ -80,7 +79,6 @@ class BaseAppointmentFactory(
      * @param teleId of type [Long], the new telescopeId you wish to give to this appointment
      * @return a [Update] command object
      */
-
     override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>  {
         return Update(
                 request = request,

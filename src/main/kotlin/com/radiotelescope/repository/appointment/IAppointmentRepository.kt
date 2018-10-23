@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository
 /**
  * Spring Repository for the [Appointment] Entity
  */
-
 @Repository
 interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long> {
     /**
