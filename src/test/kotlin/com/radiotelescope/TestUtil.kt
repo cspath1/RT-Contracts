@@ -2,6 +2,8 @@ package com.radiotelescope
 
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
+import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -20,6 +22,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Autowired
+    private lateinit var resetPasswordTokenRepo: IResetPasswordTokenRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -94,5 +99,18 @@ internal class TestUtil {
         theAppointment.user = user
 
         return appointmentRepo.save(theAppointment)
+    }
+
+    fun createResetPasswordToken(
+            user: User
+    ) : ResetPasswordToken {
+        val theResetPasswordToken = ResetPasswordToken(
+            token = "someToken",
+            expiryDate = Date(System.currentTimeMillis() + 10000L)
+        )
+
+        theResetPasswordToken.user = user
+
+        return resetPasswordTokenRepo.save(theResetPasswordToken)
     }
 }
