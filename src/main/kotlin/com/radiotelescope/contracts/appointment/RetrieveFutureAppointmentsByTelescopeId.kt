@@ -10,6 +10,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.toAppointmentInfoPage
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 
 /**
  * Command class which calls IAppointmentRepository method to retrieve a page of future appointments by a telescope ID
@@ -23,11 +24,11 @@ import org.springframework.data.domain.PageRequest
 class RetrieveFutureAppointmentsByTelescopeId(
         private var appointmentRepo: IAppointmentRepository,
         private var telescopeId: Long,
-        private var pageRequest: PageRequest,
+        private var pageable: Pageable,
         private var telescopeRepo: ITelescopeRepository
 ): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
     override fun execute(): SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
-        val apptPages: Page<Appointment> = appointmentRepo.retrieveFutureAppointmentsByTelescopeId(telescopeId, pageRequest)
+        val apptPages: Page<Appointment> = appointmentRepo.retrieveFutureAppointmentsByTelescopeId(telescopeId, pageable)
         val errors = HashMultimap.create<ErrorTag, String>()
 
         if (!telescopeRepo.existsById(telescopeId)) {

@@ -26,7 +26,7 @@ class PastAppointmentListForUser(
         private val appointmentRepo: IAppointmentRepository,
         private val userId: Long,
         private val userRepo: IUserRepository,
-        private val pageRequest: PageRequest
+        private val pageable: Pageable
 ):Command <Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Checks if the user exists by user id.
@@ -44,7 +44,7 @@ class PastAppointmentListForUser(
             errors.put(ErrorTag.USER_ID, "User with id $userId does not exist")
             SimpleResult(null, errors)
         } else {
-            val appointmentPage = appointmentRepo.findPreviousAppointmentsByUser(userId, pageRequest)
+            val appointmentPage = appointmentRepo.findPreviousAppointmentsByUser(userId, pageable)
             val infoPage = appointmentPage.toAppointmentInfoPage()
             SimpleResult(infoPage, null)
         }

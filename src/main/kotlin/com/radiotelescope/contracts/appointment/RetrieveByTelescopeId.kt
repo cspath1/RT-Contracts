@@ -9,24 +9,24 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.toAppointmentInfoPage
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 
 /**
  * Command class to retrieve ALL appointments (past/present/future) from a telescope
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param telescopeId the Telescope id
- * @param pageRequest the [PageRequest]
+ * @param pageable the [Pageable] interface
  * @param telescopeRepo the [ITelescopeRepository] interface
  */
 class RetrieveByTelescopeId(
         private var appointmentRepo: IAppointmentRepository,
         private var telescopeId: Long,
-        private var pageRequest: PageRequest,
+        private var pageable: Pageable,
         private var telescopeRepo: ITelescopeRepository
 ): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
     override fun execute(): SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
 
-        val apptPages: Page<Appointment> = appointmentRepo.retrieveAppointmentsByTelescopeId(telescopeId, pageRequest)
+        val apptPages: Page<Appointment> = appointmentRepo.retrieveAppointmentsByTelescopeId(telescopeId, pageable)
         val errors = HashMultimap.create<ErrorTag, String>()
 
         if (!telescopeRepo.existsById(telescopeId)) {

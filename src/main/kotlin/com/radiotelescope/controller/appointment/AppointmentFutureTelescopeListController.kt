@@ -51,7 +51,7 @@ class AppointmentFutureTelescopeListController(
             ) {
                 // If the command was a success
                 it.success?.let { page ->
-                    page.content.forEach {
+                    page.content.forEach { it ->
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.APPOINTMENT,

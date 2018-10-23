@@ -41,7 +41,7 @@ interface AppointmentFactory {
      * @param userId the User id
      * @return a [Command] object
      */
-    fun pastAppointmentListForUser(userId: Long, pageRequest: PageRequest): Command <Page<AppointmentInfo>, Multimap<ErrorTag,String>>
+    fun pastAppointmentListForUser(userId: Long, pageable: Pageable): Command <Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
     /**
      * Abstract command used to update an appointment
@@ -56,9 +56,9 @@ interface AppointmentFactory {
      * @param telescopeId the Telescope id
      * @return a [Command] object
      */
-    fun retrieveByTelescopeId(telescopeId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+    fun retrieveByTelescopeId(telescopeId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 
-    fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+    fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to retrieve a user's future appointments

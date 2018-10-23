@@ -85,7 +85,7 @@ internal class BaseAppointmentFactoryTest {
         // Call the factory method
         val cmd = factory.pastAppointmentListForUser(
                 userId = 1L,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         )
 
         // Ensure it is the correct command
@@ -108,7 +108,7 @@ internal class BaseAppointmentFactoryTest {
         // Call the factory method
         val cmd = factory.retrieveByTelescopeId(
                 telescopeId = 1L,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         )
 
         // Ensure it is the correct command
@@ -120,7 +120,7 @@ internal class BaseAppointmentFactoryTest {
         // Call the factory method
         val cmd = factory.retrieveFutureAppointmentsByTelescopeId(
                 telescopeId = 1L,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         )
 
         // Ensure it is the correct command

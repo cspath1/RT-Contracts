@@ -45,12 +45,12 @@ class BaseAppointmentFactory(
      * @return a [PastAppointmentListForUser] command object
      */
 
-    override fun pastAppointmentListForUser(userId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>,Multimap<ErrorTag, String>> {
+    override fun pastAppointmentListForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>,Multimap<ErrorTag, String>> {
         return PastAppointmentListForUser(
                 appointmentRepo = appointmentRepo,
                 userId = userId,
                 userRepo = userRepo,
-                pageRequest = pageRequest
+                pageable = pageable
         )
     }
 
@@ -106,11 +106,11 @@ class BaseAppointmentFactory(
      * @param pageRequest the [PageRequest] object
      * @return a [RetrieveByTelescopeId] command object
      */
-    override fun retrieveByTelescopeId(telescopeId: Long, pageRequest: PageRequest): Command <Page<AppointmentInfo>, Multimap<ErrorTag, String>>  {
+    override fun retrieveByTelescopeId(telescopeId: Long, pageable: Pageable): Command <Page<AppointmentInfo>, Multimap<ErrorTag, String>>  {
         return RetrieveByTelescopeId(
                 appointmentRepo = appointmentRepo,
                 telescopeId = telescopeId,
-                pageRequest = pageRequest,
+                pageable = pageable,
                 telescopeRepo = telescopeRepo
         )
     }
@@ -132,11 +132,11 @@ class BaseAppointmentFactory(
         )
     }
 
-    override fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageRequest: PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    override fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return RetrieveFutureAppointmentsByTelescopeId(
                 appointmentRepo = appointmentRepo,
                 telescopeId = telescopeId,
-                pageRequest = pageRequest,
+                pageable = pageable,
                 telescopeRepo = telescopeRepo
         )
     }

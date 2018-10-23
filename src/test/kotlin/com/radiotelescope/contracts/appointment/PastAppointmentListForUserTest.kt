@@ -65,7 +65,7 @@ internal class PastAppointmentListForUserTest {
                 appointmentRepo = appointmentRepo,
                 userId = secondUserId,
                 userRepo = userRepo,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         ).execute()
 
         assertNotNull(page)
@@ -80,7 +80,7 @@ internal class PastAppointmentListForUserTest {
                 appointmentRepo = appointmentRepo,
                 userId = firstUserId,
                 userRepo = userRepo,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         ).execute()
 
         assertNotNull(page)
@@ -95,7 +95,7 @@ internal class PastAppointmentListForUserTest {
                 appointmentRepo = appointmentRepo,
                 userId = 311L,
                 userRepo = userRepo,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         ).execute()
 
         assertNotNull(error)

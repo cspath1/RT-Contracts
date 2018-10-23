@@ -80,7 +80,7 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
         val (page, error) = RetrieveFutureAppointmentsByTelescopeId(
                 appointmentRepo = appointmentRepo,
                 telescopeId = 1L,
-                pageRequest = PageRequest.of(0, 2),
+                pageable = PageRequest.of(0, 2),
                 telescopeRepo = telescopeRepo
         ).execute()
 
@@ -95,7 +95,7 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
         val (page, error) = RetrieveFutureAppointmentsByTelescopeId(
                 appointmentRepo = appointmentRepo,
                 telescopeId = 311L,
-                pageRequest = PageRequest.of(0, 30),
+                pageable = PageRequest.of(0, 30),
                 telescopeRepo = telescopeRepo
         ).execute()
 

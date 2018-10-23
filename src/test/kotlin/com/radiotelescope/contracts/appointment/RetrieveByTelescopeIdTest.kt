@@ -77,7 +77,7 @@ internal class RetrieveByTelescopeIdTest {
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 telescopeId = 1L,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         ).execute()
 
         assertNotNull(page)
@@ -92,7 +92,7 @@ internal class RetrieveByTelescopeIdTest {
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 telescopeId = 311L,
-                pageRequest = PageRequest.of(0, 30)
+                pageable = PageRequest.of(0, 30)
         ).execute()
 
         assertNotNull(error)

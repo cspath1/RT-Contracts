@@ -106,7 +106,7 @@ class UserAppointmentWrapper(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.pastAppointmentListForUser(
                                 userId = userId,
-                                pageRequest = pageRequest
+                                pageable = pageRequest
                         )
                 ).execute(withAccess)
             } else {
@@ -114,7 +114,7 @@ class UserAppointmentWrapper(
                         requiredRoles = listOf(UserRole.Role.ADMIN),
                         successCommand = factory.pastAppointmentListForUser(
                                 userId = userId,
-                                pageRequest = pageRequest
+                                pageable = pageRequest
                         )
                 ).execute(withAccess)
             }
@@ -152,7 +152,7 @@ class UserAppointmentWrapper(
                 requiredRoles = listOf(UserRole.Role.ADMIN),
                 successCommand = factory.retrieveByTelescopeId(
                         telescopeId = telescopeId,
-                        pageRequest = pageRequest
+                        pageable = pageRequest
                 )
         ).execute(withAccess)
     }
@@ -162,7 +162,7 @@ class UserAppointmentWrapper(
                 requiredRoles = listOf(UserRole.Role.USER),
                 successCommand = factory.retrieveFutureAppointmentsByTelescopeId(
                         telescopeId = telescopeId,
-                        pageRequest = pageRequest
+                        pageable = pageRequest
                 )
         ).execute(withAccess)
     }
