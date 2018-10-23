@@ -9,6 +9,7 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -36,7 +37,11 @@ class UserUnbanController(
      *
      * @param id the User id
      */
-    @PutMapping(value = ["/users/{userId}/unban"])
+
+    // TODO: verify what the correct mapping should be
+    @PutMapping(value = ["/api/unban"])
+    @CrossOrigin(value = ["http://localhost:8081"])
+
     fun execute(@PathVariable("userId") id: Long): Result {
         userWrapper.unban(id) { it ->
             // If the command called after successful validation
