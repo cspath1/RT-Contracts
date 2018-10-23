@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentUpdateController (
+class AppointmentUpdateController(
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ): BaseRestController(logger){
@@ -33,9 +33,8 @@ class AppointmentUpdateController (
      * If this method returns an [AccessReport]
      */
     @PutMapping(value = ["/api/appointments/{appointmentId}"])
-    fun execute(
-            @PathVariable("appointmentId") appointmentId: Long,
-            @RequestBody form: UpdateForm
+    fun execute(@PathVariable("appointmentId") appointmentId: Long,
+                @RequestBody form: UpdateForm
     ): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
@@ -51,14 +50,14 @@ class AppointmentUpdateController (
             result = Result(errors = it.toStringMap())
         }?: let{ _ ->
             // Otherwise call the factory command
-            var request = form.toRequest()
+            val request = form.toRequest()
 
             // Setting the appointmentId for the request
             request.id = appointmentId
 
             appointmentWrapper.update(
                     request = request
-            ){ it ->
+            ) { it ->
                 it.success?.let{
                     result = Result(
                             data = it
