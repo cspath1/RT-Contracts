@@ -31,14 +31,18 @@ internal class UnbanTest {
     private lateinit var userRepo: IUserRepository
 
     private var userId = -1L
+    private var userId2 = -2L
 
     @Before
     fun setUp() {
         // Persist a user
         val theUser = testUtil.createUser("cspath1@ycp.edu")
+        val theUser2 = testUtil.createUser("testemail@ycp.edu")
 
         userId = theUser.id
         testUtil.setInactiveStatus(theUser)
+
+        userId2 = theUser2.id
     }
 
     @Test
@@ -46,7 +50,7 @@ internal class UnbanTest {
         val theUser = userRepo.findById(userId)
 
         assertTrue(theUser.get().status == User.Status.Inactive)
-        assertTrue(theUser.get().active == false)
+        assertTrue(!theUser.get().active)
     }
 
     @Test
@@ -61,7 +65,7 @@ internal class UnbanTest {
         assertTrue(id == userId)
 
         assertTrue(theUser.get().status == User.Status.Active)
-        assertTrue(theUser.get().active == true)
+        assertTrue(theUser.get().active)
 
     }
 
@@ -74,6 +78,17 @@ internal class UnbanTest {
 
         assertTrue(id == null)
         assertFalse(errors == null)
+    }
+
+    @Test
+    fun unbanActiveUserTest(){
+        val (id, errors) = Unban(
+                id = userId2,
+                userRepo = userRepo
+        ).execute()
+
+        assertTrue(errors != null)
+        assertTrue(id == null)
     }
 
 }

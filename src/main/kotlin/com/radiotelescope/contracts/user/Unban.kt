@@ -27,10 +27,15 @@ class Unban(
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
+        //user does not exist
         if (!userRepo.existsById(id)) {
             errors.put(ErrorTag.ID, "User Id #$id not found")
+        } //user exists
+        else{
+            if (userRepo.findById(id).get().status == User.Status.Active){
+                errors.put(ErrorTag.ID, "User found by Id #$id is not banned")
+            }
         }
-
         return if (errors.isEmpty) null else errors
     }
 }
