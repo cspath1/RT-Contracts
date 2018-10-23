@@ -31,7 +31,7 @@ class UserUserWrapper(
         private val userRoleRepo: IUserRoleRepository
 ) : UserRetrievable<Long, SimpleResult<UserInfo, Multimap<ErrorTag, String>>>,
 UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>,
-UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
+UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>> {
     /**
      * Register function that will return a [Register] command object. This does not need any
      * user role authentication since the user will not be signed in at the time
@@ -139,5 +139,23 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
         }
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+    }
+
+    /**
+     * Implementation of the
+     *
+     * @param userId, a [Long] the id of the user to ban
+     * @return an [AccessReport] if the user doing the command is not logged in, null otherwise
+     */
+
+    fun ban(userId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (context.currentUserId() != null) {
+            val user = userRepo.findById(userId)
+            context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.ban(userId)
+            ).execute(withAccess)
+        }
+        return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN))
     }
 }
