@@ -2,8 +2,10 @@ package com.radiotelescope.contracts.appointment
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import org.springframework.data.domain.Page
@@ -22,6 +24,7 @@ class UserAppointmentWrapper(
         private val context: UserContext,
         private val factory: AppointmentFactory,
         private val appointmentRepo: IAppointmentRepository
+
 ) {
     /**
      * Wrapper method for the [AppointmentFactory.create] method that adds Spring
@@ -128,4 +131,17 @@ class UserAppointmentWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
 
+
+    fun retrieveFutureAppointmentsByTelescopeId(teleid: Long, pageable:Pageable, withAccess: (result:SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) ->Unit):AccessReport?
+    {
+        if (context.currentUserId() != null)
+        {
+                return context.requireAny(
+                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.USER),
+                        successCommand = factory.retrieveFutureAppointmentsByTelescopeId(teleid, pageable)
+                ).execute(withAccess)
+        }
+        //Change?
+        return AccessReport(missingRoles = listOf())
+    }
 }
