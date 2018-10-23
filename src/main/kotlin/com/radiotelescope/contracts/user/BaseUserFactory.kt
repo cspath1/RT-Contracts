@@ -87,4 +87,10 @@ class BaseUserFactory(
                 user_id = user_id
         )
     }
+
+    override fun cancel(user_id: Long): Command<Long, Multimap<ErrorTag, String>>
+    {
+        return Cancel(userRepo, user_id)
+    }
+
 }
