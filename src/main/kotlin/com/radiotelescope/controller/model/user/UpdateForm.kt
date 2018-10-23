@@ -7,6 +7,18 @@ import com.radiotelescope.contracts.user.Update
 import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.repository.role.UserRole
 
+/**
+ * Update form that takes nullable versions of the [Update.Request] object.
+ * It is in charge of making sure these values are not null befor adapting
+ * it into a [Update.Request] object
+ *
+ * @param id the User's id
+ * @param firstName the User's new first name
+ * @param lastName the User's new last name
+ * @param email the User's new email address
+ * @param phoneNumber the User's new phone number
+ * @param company the User's new company
+ */
 data class UpdateForm(
         val id: Long?,
         val firstName: String?,
@@ -15,6 +27,10 @@ data class UpdateForm(
         val phoneNumber: String?,
         val company: String?
 ) : BaseForm<Update.Request> {
+    /**
+     * Override of the [BaseForm.toRequest] method that adapts
+     * the form into [Update.Request] object
+     */
     override fun toRequest(): Update.Request {
         return Update.Request(
                 id = id!!,
@@ -26,6 +42,11 @@ data class UpdateForm(
         )
     }
 
+    /**
+     * Makes sure all of the required fields are not null or blank
+     *
+     * @return a [HashMultimap] of errors or null
+     */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
         if(id == null || id <= 0 )

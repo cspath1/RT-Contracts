@@ -40,7 +40,8 @@ class BaseUserFactory(
     override fun authenticate(request: Authenticate.Request): Command<UserInfo, Multimap<ErrorTag, String>> {
         return Authenticate(
                 request = request,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 
@@ -53,7 +54,8 @@ class BaseUserFactory(
     override fun retrieve(id: Long): Command<UserInfo, Multimap<ErrorTag, String>> {
         return Retrieve(
                 id = id,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 
@@ -66,7 +68,8 @@ class BaseUserFactory(
     override fun list(pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
         return List(
                 pageable = pageable,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 

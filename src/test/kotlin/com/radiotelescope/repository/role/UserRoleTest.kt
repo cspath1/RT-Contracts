@@ -1,6 +1,8 @@
 package com.radiotelescope.repository.role
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -29,10 +31,12 @@ internal class UserRoleTest {
 
     private val nonApprovedRoles = arrayListOf<UserRole>()
 
+    private lateinit var firstUser: User
+
     @Before
     fun setUp() {
         // Create two users and roles for those users
-        val firstUser = testUtil.createUser("cspath1@ycp.edu")
+        firstUser = testUtil.createUser("cspath1@ycp.edu")
         val secondUser = testUtil.createUser("spathcody@gmail.com")
 
         val firstRoles = testUtil.createUserRolesForUser(
@@ -78,5 +82,21 @@ internal class UserRoleTest {
 
             assertTrue(sameRole)
         }
+    }
+
+    @Test
+    fun testFindMembershipRole() {
+        val roles = userRoleRepo.findAllByUserId(firstUser.id)
+
+        roles.forEach {
+            it.approved = true
+            userRoleRepo.save(it)
+        }
+
+        val role = userRoleRepo.findMembershipRoleByUserId(firstUser.id)
+
+        assertNotNull(role)
+        assertTrue(role!!.approved)
+        assertEquals(UserRole.Role.STUDENT, role.role)
     }
 }

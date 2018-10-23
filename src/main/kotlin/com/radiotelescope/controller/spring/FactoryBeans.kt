@@ -9,6 +9,7 @@ import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.security.UserContextImpl
+import com.radiotelescope.security.service.RetrieveAuthService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -18,14 +19,17 @@ import org.springframework.context.annotation.Configuration
  * server is started
  *
  * @param repositories the [RepositoryBeans] Spring component
+ * @param retrieveAuthService the [RetrieveAuthService] service
  */
 @Configuration
 class FactoryBeans(
-        private var repositories: RepositoryBeans
+        private var repositories: RepositoryBeans,
+        retrieveAuthService: RetrieveAuthService
 ) : FactoryProvider {
     private val userContext = UserContextImpl(
             userRepo = repositories.userRepo,
-            userRoleRepo = repositories.userRoleRepo
+            userRoleRepo = repositories.userRoleRepo,
+            retrieveAuthService = retrieveAuthService
     )
 
     /**

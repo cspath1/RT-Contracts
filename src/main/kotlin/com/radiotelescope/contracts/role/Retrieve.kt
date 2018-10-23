@@ -33,7 +33,10 @@ class Retrieve(
     override fun execute(): SimpleResult<UserRoleInfo, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theRole = userRoleRepo.findById(roleId).get()
-            val userInfo = UserInfo(userRepo.findById(theRole.userId!!).get())
+            // Since this is used to retrieve an unapproved role, the userRoleLabel field will
+            // always be null
+            val userInfo = UserInfo(userRepo.findById(theRole.userId!!).get(), null)
+
             val roleInfo = UserRoleInfo(
                     userInfo = userInfo,
                     userRole = theRole

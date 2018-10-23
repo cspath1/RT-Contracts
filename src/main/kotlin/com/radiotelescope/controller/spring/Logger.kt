@@ -5,7 +5,11 @@ import com.radiotelescope.repository.error.Error
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.UserContext
+import com.radiotelescope.security.UserContextImpl
+import com.radiotelescope.security.service.RetrieveAuthService
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -23,7 +27,6 @@ class Logger(
         private var errorRepo: IErrorRepository,
         private var userContext: UserContext
 ) {
-
     /**
      * Used in REST controllers to log a successful action
      */

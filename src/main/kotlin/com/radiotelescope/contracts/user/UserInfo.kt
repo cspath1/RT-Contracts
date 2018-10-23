@@ -14,6 +14,8 @@ import com.radiotelescope.repository.user.User
  * @param phoneNumber the User's phone number
  * @param active the User's active status
  * @param status the User's status
+ * @param membershipRole the User's membership role (i.e not the base USER role),
+ * given that it has been accepted by an admin
  */
 data class UserInfo(
         val id: Long,
@@ -23,13 +25,14 @@ data class UserInfo(
         val company: String?,
         val phoneNumber: String?,
         val active: Boolean,
-        val status: User.Status
+        val status: User.Status,
+        val membershipRole: String?
 ) {
      /**
       * Secondary constructor that takes a user object to set
       * all fields
       */
-     constructor(user: User) : this(
+     constructor(user: User, userRoleLabel: String?) : this(
              id = user.id,
              firstName = user.firstName,
              lastName =  user.lastName,
@@ -37,7 +40,8 @@ data class UserInfo(
              company = user.company,
              phoneNumber = user.phoneNumber,
              active = user.active,
-             status = user.status
+             status = user.status,
+             membershipRole = userRoleLabel
      )
 
 }
