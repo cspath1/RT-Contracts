@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 
 
+/**
+ * Controller class for banning a user.
+ * @param userWrapper of type [UserUserWrapper]
+ * @return of type [BaseRestController]
+ */
+
 class AdminUserBanController(
 
         private val userWrapper: UserUserWrapper,
@@ -23,6 +29,13 @@ class AdminUserBanController(
 {
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["/users/list/{userId}"])
+
+            /**
+             * Execute function which calls the ban method on userWrapper, passing in the userId using the RESTful API.
+             * Also populates the Logs
+             * @return [Unit]
+             */
+
 
 fun execute(@PathVariable(value="userId") userId:Long?) {
         //error case
@@ -37,42 +50,34 @@ fun execute(@PathVariable(value="userId") userId:Long?) {
              errors = errors.toStringMap()
              )
         }
-
         userWrapper.ban(userId)
         {
 
-
-            //success case
         if (it.error == null)
         {
             logger.createSuccessLog(info = Logger.createInfo(affectedTable = Log.AffectedTable.USER,
                     action = Log.Action.BAN,
                     affectedRecordId = userId
             ))
-            //then the success is populated
             result = Result(data = it )
         }
-        else //fail case
+        else
         {
             logger.createErrorLogs(info = Logger.createInfo(affectedTable = Log.AffectedTable.USER,
                     action = Log.Action.BAN,
                     affectedRecordId = userId
             ), errors = errors.toStringMap())
 
-            //then errors are populated1
             result = Result(errors = errors.toStringMap())
         }
         }?.let {
-            //if we reach here, user did not pass validation
-            //do a result and an Log
-
+            //If we reach here, user did not pass validation
         logger.createErrorLogs(info = Logger.createInfo(Log.AffectedTable.USER, action = Log.Action.BAN, affectedRecordId = userId),
                 errors = errors.toStringMap()
         )
            result = Result(errors = it.toStringMap())
         }
     }
-
     private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")
