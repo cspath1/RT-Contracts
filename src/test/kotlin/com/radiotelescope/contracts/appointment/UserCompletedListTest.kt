@@ -14,14 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Page
 import org.springframework.test.context.ActiveProfiles
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class PastAppointmentListForUserTest {
+internal class UserCompletedListTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -61,7 +60,7 @@ internal class PastAppointmentListForUserTest {
 
     @Test
     fun testValidConstraints_EmptyList_Success() {
-        val (page, error) = PastAppointmentListForUser(
+        val (page, error) = UserCompletedList(
                 appointmentRepo = appointmentRepo,
                 userId = secondUserId,
                 userRepo = userRepo,
@@ -76,7 +75,7 @@ internal class PastAppointmentListForUserTest {
 
     @Test
     fun nonEmptyListTest() {
-        val (page, error) = PastAppointmentListForUser(
+        val (page, error) = UserCompletedList(
                 appointmentRepo = appointmentRepo,
                 userId = firstUserId,
                 userRepo = userRepo,
@@ -91,7 +90,7 @@ internal class PastAppointmentListForUserTest {
 
     @Test
     fun invalidUserId() {
-        val (page, error) = PastAppointmentListForUser(
+        val (page, error) = UserCompletedList(
                 appointmentRepo = appointmentRepo,
                 userId = 311L,
                 userRepo = userRepo,

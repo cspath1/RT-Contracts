@@ -1,6 +1,6 @@
 package com.radiotelescope.contracts.appointment
-import com.radiotelescope.repository.telescope.ITelescopeRepository
 
+import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.appointment.Appointment

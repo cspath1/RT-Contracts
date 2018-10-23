@@ -66,8 +66,8 @@ class UserAppointmentWrapper(
     }
 
     /**
-     * Wrapper method for the [AppointmentFactory.getFutureAppointmentsForUser] method that adds Spring
-     * Security authentication to the [ListFutureAppointmentByUser] command object.
+     * Wrapper method for the [AppointmentFactory.userFutureList] method that adds Spring
+     * Security authentication to the [UserFutureList] command object.
      *
      * @param userId the user Id of the appointment
      * @param pageable contains the pageSize and pageNumber
@@ -78,7 +78,7 @@ class UserAppointmentWrapper(
             if (context.currentUserId() == userId) {
                 return context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
-                        successCommand = factory.getFutureAppointmentsForUser(
+                        successCommand = factory.userFutureList(
                                 userId = userId,
                                 pageable = pageable
                         )
@@ -88,7 +88,7 @@ class UserAppointmentWrapper(
             else {
                 return context.require(
                         requiredRoles = listOf(UserRole.Role.ADMIN),
-                        successCommand = factory.getFutureAppointmentsForUser(
+                        successCommand = factory.userFutureList(
                                 userId = userId,
                                 pageable = pageable
                         )
@@ -104,7 +104,7 @@ class UserAppointmentWrapper(
             return if (context.currentUserId() == userId) {
                 context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
-                        successCommand = factory.pastAppointmentListForUser(
+                        successCommand = factory.userCompletedList(
                                 userId = userId,
                                 pageable = pageRequest
                         )
@@ -112,7 +112,7 @@ class UserAppointmentWrapper(
             } else {
                 context.require(
                         requiredRoles = listOf(UserRole.Role.ADMIN),
-                        successCommand = factory.pastAppointmentListForUser(
+                        successCommand = factory.userCompletedList(
                                 userId = userId,
                                 pageable = pageRequest
                         )

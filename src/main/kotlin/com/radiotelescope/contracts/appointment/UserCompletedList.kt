@@ -3,13 +3,11 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.toAppointmentInfoPage
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 /**
@@ -22,7 +20,7 @@ import org.springframework.data.domain.Pageable
 
  */
 
-class PastAppointmentListForUser(
+class UserCompletedList(
         private val appointmentRepo: IAppointmentRepository,
         private val userId: Long,
         private val userRepo: IUserRepository,

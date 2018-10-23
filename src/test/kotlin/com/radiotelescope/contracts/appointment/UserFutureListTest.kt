@@ -22,7 +22,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-class ListFutureAppointmentByUserTest {
+class UserFutureListTest {
     @TestConfiguration
     internal class UtilTestContextConfiguration {
         @Bean
@@ -77,7 +77,7 @@ class ListFutureAppointmentByUserTest {
 
     @Test
     fun testValid_UserHasOneFutureAppointment_Success(){
-        val (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = UserFutureList(
                 userId = user1Id,
                 pageable = PageRequest.of(0, 10),
                 appointmentRepo = appointmentRepo,
@@ -95,7 +95,7 @@ class ListFutureAppointmentByUserTest {
     // Should only grab the future appointment
     @Test
     fun testValid_UserHasOneFutureAndOnePastAppointment_Success(){
-        val (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = UserFutureList(
                 userId = user1Id,
                 pageable = PageRequest.of(0, 10),
                 appointmentRepo = appointmentRepo,
@@ -116,7 +116,7 @@ class ListFutureAppointmentByUserTest {
 
     @Test
     fun testInvalid_NoApptWithSpecifiedUserId_Success(){
-        val (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = UserFutureList(
                 userId = user2Id,
                 pageable = PageRequest.of(1, 10),
                 appointmentRepo = appointmentRepo,
@@ -133,7 +133,7 @@ class ListFutureAppointmentByUserTest {
 
     @Test
     fun testInvalid_NoUserWithSpecifiedUserId_Failure(){
-        val (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = UserFutureList(
                 userId = 123456789,
                 pageable = PageRequest.of(1, 10),
                 appointmentRepo = appointmentRepo,
@@ -151,7 +151,7 @@ class ListFutureAppointmentByUserTest {
 
     @Test
     fun getInfo() {
-        var page: Page<AppointmentInfo> = ListFutureAppointmentByUser(user1Id, PageRequest.of(1, 10), appointmentRepo, userRepo).execute().success!!
+        var page: Page<AppointmentInfo> = UserFutureList(user1Id, PageRequest.of(1, 10), appointmentRepo, userRepo).execute().success!!
 
         if (page.hasContent())
             println("page has content")

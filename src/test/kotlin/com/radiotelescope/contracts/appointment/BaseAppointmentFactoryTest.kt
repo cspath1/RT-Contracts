@@ -71,25 +71,25 @@ internal class BaseAppointmentFactoryTest {
     @Test
     fun getFutureAppointmentsForUser(){
         // Call the factory method
-        val cmd = factory.getFutureAppointmentsForUser(
+        val cmd = factory.userFutureList(
                 userId = 123456789123456,
                 pageable = PageRequest.of(0,10)
         )
 
         //Ensure it is the correct command
-        assertTrue(cmd is ListFutureAppointmentByUser)
+        assertTrue(cmd is UserFutureList)
     }
 
     @Test
     fun pastAppointmentListForUser() {
         // Call the factory method
-        val cmd = factory.pastAppointmentListForUser(
+        val cmd = factory.userCompletedList(
                 userId = 1L,
                 pageable = PageRequest.of(0, 20)
         )
 
         // Ensure it is the correct command
-        assertTrue(cmd is PastAppointmentListForUser)
+        assertTrue(cmd is UserCompletedList)
     }
 
     @Test

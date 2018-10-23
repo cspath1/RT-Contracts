@@ -8,7 +8,6 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 /**
@@ -38,15 +37,15 @@ class BaseAppointmentFactory(
     }
 
     /**
-     * Override of the [AppointmentFactory.pastAppointmentListForUser] method that will return a [PastAppointmentListForUser] command object
+     * Override of the [AppointmentFactory.userCompletedList] method that will return a [UserCompletedList] command object
      *
      * @param userId the [User] id
-     * @param pageRequest the [PageRequest]
-     * @return a [PastAppointmentListForUser] command object
+     * @param pageable the [Pageable] interface
+     * @return a [UserCompletedList] command object
      */
 
-    override fun pastAppointmentListForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>,Multimap<ErrorTag, String>> {
-        return PastAppointmentListForUser(
+    override fun userCompletedList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>,Multimap<ErrorTag, String>> {
+        return UserCompletedList(
                 appointmentRepo = appointmentRepo,
                 userId = userId,
                 userRepo = userRepo,
@@ -73,10 +72,7 @@ class BaseAppointmentFactory(
     /**
      * Override of the [AppointmentFactory.update] method that will return a [Update] command object
      *
-     * @param appt_id of type [Long], the id of the appointment which you want to update
-     * @param newStartTime of type [Date] , the new start Time you wish to give to this appointment
-     * @param newEndTime of type [Date], the new endTime you wish to give to this appointment
-     * @param teleId of type [Long], the new telescopeId you wish to give to this appointment
+     * @param request the [Update.Request]
      * @return a [Update] command object
      */
     override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>  {
@@ -103,7 +99,7 @@ class BaseAppointmentFactory(
      * Override of the [AppointmentFactory.retrieveByTelescopeId] method that will return a [RetrieveByTelescopeId] command object
      *
      * @param telescopeId the Telescope id
-     * @param pageRequest the [PageRequest] object
+     * @param pageable the [Pageable] interface
      * @return a [RetrieveByTelescopeId] command object
      */
     override fun retrieveByTelescopeId(telescopeId: Long, pageable: Pageable): Command <Page<AppointmentInfo>, Multimap<ErrorTag, String>>  {
@@ -116,15 +112,15 @@ class BaseAppointmentFactory(
     }
 
     /**
-     * Override of the [AppointmentFactory.getFutureAppointmentsForUser] method that will
-     * return a [ListFutureAppointmentByUser] command object
+     * Override of the [AppointmentFactory.userFutureList] method that will
+     * return a [UserFutureList] command object
      *
      * @param userId the User id
      * @param pageable the [Pageable] interface
-     * @return the [ListFutureAppointmentByUser] command object
+     * @return the [UserFutureList] command object
      */
-    override fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
-        return ListFutureAppointmentByUser(
+    override fun userFutureList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        return UserFutureList(
                 userId = userId,
                 pageable = pageable,
                 appointmentRepo = appointmentRepo,
@@ -132,6 +128,14 @@ class BaseAppointmentFactory(
         )
     }
 
+    /**
+     * Override of the [AppointmentFactory.retrieveFutureAppointmentsByTelescopeId] method
+     * that will return a [RetrieveFutureAppointmentsByTelescopeId] command object
+     *
+     * @param telescopeId the Telescope id
+     * @param pageable the [Pageable] interface
+     * @return the [RetrieveFutureAppointmentsByTelescopeId] command object
+     */
     override fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return RetrieveFutureAppointmentsByTelescopeId(
                 appointmentRepo = appointmentRepo,
