@@ -148,9 +148,10 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>> {
      * @return an [AccessReport] if the user doing the command is not logged in, null otherwise
      */
 
-    fun ban(userId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun ban(userId: Long?, withAccess: (result: SimpleResult<Long?, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null) {
-            val user = userRepo.findById(userId)
+
+            val user = userRepo.findById(userId!!)
             context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
                     successCommand = factory.ban(userId)

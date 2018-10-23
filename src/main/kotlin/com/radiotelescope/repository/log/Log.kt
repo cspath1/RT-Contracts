@@ -54,6 +54,7 @@ data class Log(
         DELETE,
         LOG_IN,
         LIST_FUTURE_APPOINTMENT_BY_USER,
-        LIST_FUTURE_APPOINTMENT_BY_TELESCOPE_ID
+        LIST_FUTURE_APPOINTMENT_BY_TELESCOPE_ID,
+        BAN
     }
 }

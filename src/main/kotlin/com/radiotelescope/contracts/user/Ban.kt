@@ -23,17 +23,15 @@ class Ban(
 
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>>
     {
-        var errors = HashMultimap.create<ErrorTag,String>()
+        val errors = HashMultimap.create<ErrorTag,String>()
 
         if (!userRepo.existsById(user_id))
         {
             errors.put(ErrorTag.ID, "User $user_id does not exist by id")
             return SimpleResult(null, errors)
         }
-        //success case: Admin bans a user
         val u: User = userRepo.findById(user_id).get()
-        //So when a user gets banned BY an admin--
-        //this happens
+
             u.status = User.Status.Banned
             userRepo.save(u)
             return SimpleResult(user_id, null)
