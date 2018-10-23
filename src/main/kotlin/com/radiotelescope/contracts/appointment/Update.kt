@@ -12,6 +12,7 @@ import java.util.*
 
 /**
  * Command class for editing an appointment
+ *
  * @param request of type [Update.Request]
  * @param appointmentRepo of type [IAppointmentRepository]
  * @param telescopeRepo of type [ITelescopeRepository]

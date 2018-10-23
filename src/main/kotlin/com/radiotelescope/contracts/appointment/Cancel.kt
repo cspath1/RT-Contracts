@@ -13,8 +13,9 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
  * @param appointmentId the Appointment Id
  * @param appointmentRepo the [IAppointmentRepository] interface
  */
-class Cancel(private val appointmentId: Long,
-             private val appointmentRepo: IAppointmentRepository
+class Cancel(
+        private val appointmentId: Long,
+        private val appointmentRepo: IAppointmentRepository
 ): Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Checks if the user exists.
@@ -34,6 +35,9 @@ class Cancel(private val appointmentId: Long,
         }
     }
 
+    /**
+     * Method in charge of handle error constraints and validation
+     */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
@@ -41,6 +45,8 @@ class Cancel(private val appointmentId: Long,
             errors.put(ErrorTag.ID, "Appointment #$appointmentId was not found")
         } else {
             val theAppointment = appointmentRepo.findById(appointmentId).get()
+
+            // If the appointment's status is either canceled or completed
             if (theAppointment.status == Appointment.Status.Canceled) {
                 errors.put(ErrorTag.STATUS, "Appointment #$appointmentId is already canceled")
             } else if (theAppointment.status == Appointment.Status.Completed) {

@@ -15,10 +15,10 @@ import org.springframework.data.domain.Pageable
 /**
  * Override of the [Command] interface used to retrieve a User's
  * future appointments.
- * @param apptRepo the [IAppointmentRepository] interface
+ * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userId the user ID
  * @param userRepo the [IUserRepository] interface
- * @param pageRequest the [pageRequest] interface
+ * @param pageable the [Pageable] interface
 
  */
 

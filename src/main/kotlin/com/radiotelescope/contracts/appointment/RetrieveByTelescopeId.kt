@@ -24,9 +24,16 @@ class RetrieveByTelescopeId(
         private var pageable: Pageable,
         private var telescopeRepo: ITelescopeRepository
 ): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    /**
+     * Override of the [Command.execute] method. If the telescope exists, it will
+     * retrieve a [Page] of future appointments, adapt it into a [Page] of
+     * [AppointmentInfo] objects, and respond with it in the [SimpleResult].
+     *
+     * Otherwise, it will return an error in the [SimpleResult] that the id coudl
+     * not be found.
+     */
     override fun execute(): SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
-
-        val apptPages: Page<Appointment> = appointmentRepo.retrieveAppointmentsByTelescopeId(telescopeId, pageable)
+        val appointmentPage: Page<Appointment> = appointmentRepo.retrieveAppointmentsByTelescopeId(telescopeId, pageable)
         val errors = HashMultimap.create<ErrorTag, String>()
 
         if (!telescopeRepo.existsById(telescopeId)) {
@@ -34,7 +41,7 @@ class RetrieveByTelescopeId(
             return SimpleResult(null, errors)
         }
 
-        val infoPage = apptPages.toAppointmentInfoPage()
+        val infoPage = appointmentPage.toAppointmentInfoPage()
         return SimpleResult(infoPage, null)
     }
 }
