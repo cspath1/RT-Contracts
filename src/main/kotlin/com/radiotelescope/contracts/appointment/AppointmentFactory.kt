@@ -50,15 +50,6 @@ interface AppointmentFactory {
     fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
-     * Abstract command used to retrieve all appointments for a telescope
-     *
-     * @param telescopeId the Telescope id
-     * @param pageable the [Pageable] interface
-     * @return a [Command] object
-     */
-    fun retrieveByTelescopeId(telescopeId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
-
-    /**
      * Abstract command used to retrieve all future appointments for a telescope
      *
      * @param telescopeId the Telescope id

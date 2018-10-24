@@ -95,21 +95,6 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo
         )
     }
-    /**
-     * Override of the [AppointmentFactory.retrieveByTelescopeId] method that will return a [RetrieveByTelescopeId] command object
-     *
-     * @param telescopeId the Telescope id
-     * @param pageable the [Pageable] interface
-     * @return a [RetrieveByTelescopeId] command object
-     */
-    override fun retrieveByTelescopeId(telescopeId: Long, pageable: Pageable): Command <Page<AppointmentInfo>, Multimap<ErrorTag, String>>  {
-        return RetrieveByTelescopeId(
-                appointmentRepo = appointmentRepo,
-                telescopeId = telescopeId,
-                pageable = pageable,
-                telescopeRepo = telescopeRepo
-        )
-    }
 
     /**
      * Override of the [AppointmentFactory.userFutureList] method that will

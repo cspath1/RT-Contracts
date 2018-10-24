@@ -104,18 +104,6 @@ internal class BaseAppointmentFactoryTest {
     }
 
     @Test
-    fun retrieveByTelescopeId() {
-        // Call the factory method
-        val cmd = factory.retrieveByTelescopeId(
-                telescopeId = 1L,
-                pageable = PageRequest.of(0, 20)
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is RetrieveByTelescopeId)
-    }
-
-    @Test
     fun retrieveFutureAppointmentsByTelescopeId() {
         // Call the factory method
         val cmd = factory.retrieveFutureAppointmentsByTelescopeId(

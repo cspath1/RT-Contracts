@@ -147,16 +147,6 @@ class UserAppointmentWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
 
-    fun retrieveByTelescopeId(telescopeId: Long, pageRequest: PageRequest, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        return context.require(
-                requiredRoles = listOf(UserRole.Role.ADMIN),
-                successCommand = factory.retrieveByTelescopeId(
-                        telescopeId = telescopeId,
-                        pageable = pageRequest
-                )
-        ).execute(withAccess)
-    }
-
     fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageRequest: PageRequest, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),

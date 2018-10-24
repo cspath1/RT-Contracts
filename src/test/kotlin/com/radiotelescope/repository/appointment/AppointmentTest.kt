@@ -61,10 +61,8 @@ internal class AppointmentTest {
                 isPublic = true
         )
 
-        /*
-        Currently unused
-
-        futureCanceledAppointment = testUtil.createAppointment(
+        // Make a future canceled appointment to ensure it is not retrieved
+        testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.Canceled,
@@ -73,7 +71,6 @@ internal class AppointmentTest {
                 isPublic = true
 
         )
-        */
     }
 
     @Test

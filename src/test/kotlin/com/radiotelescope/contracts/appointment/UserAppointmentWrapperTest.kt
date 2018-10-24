@@ -491,53 +491,6 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
-    fun testRetrieveByTelescopeId_NotLoggedIn_Failure() {
-        val error = wrapper.retrieveByTelescopeId(
-                telescopeId = 1L,
-                pageRequest = PageRequest.of(0, 20)
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
-    }
-
-    @Test
-    fun testRetrieveByTelescopeId_NotAdmin_Failure() {
-        // Log the user in
-        context.login(user.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        val error = wrapper.retrieveByTelescopeId(
-                telescopeId = 1L,
-                pageRequest = PageRequest.of(0, 25)
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
-    }
-
-    @Test
-    fun testRetrieveByTelescopeId_Admin_Failure() {
-        // Log the user in as an admin
-        context.login(user.id)
-        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
-
-        val error = wrapper.retrieveByTelescopeId(
-                telescopeId = 1L,
-                pageRequest = PageRequest.of(0, 20)
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
-    }
-
-    @Test
     fun testRetrieveFutureAppointmentsByTelescopeId_NotLoggedIn_Failure() {
         val error = wrapper.retrieveFutureAppointmentsByTelescopeId(
                 telescopeId = 1L,
