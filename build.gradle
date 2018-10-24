@@ -5,6 +5,7 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		maven { url 'https://maven.google.com' }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -39,6 +40,12 @@ compileTestKotlin {
 	kotlinOptions {
 		freeCompilerArgs = ["-Xjsr305=strict"]
 		jvmTarget = "1.8"
+	}
+}
+
+dependencyManagement {
+	imports {
+		mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.330'
 	}
 }
 
@@ -115,6 +122,9 @@ dependencies {
 
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compile("org.jetbrains.kotlin:kotlin-reflect")
+
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-ses'
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-s3'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
