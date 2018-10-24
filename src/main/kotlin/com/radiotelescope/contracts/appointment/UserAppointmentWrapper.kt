@@ -60,9 +60,17 @@ class UserAppointmentWrapper(
                     requiredRoles = listOf(UserRole.Role.USER),
                     successCommand = factory.retrieve(id)
             ).execute(withAccess)
+        } else if (theAppointment.isPublic) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.USER),
+                    successCommand = factory.retrieve(id)
+            ).execute(withAccess)
+        } else {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.retrieve(id)
+            ).execute(withAccess)
         }
-
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
 
     /**

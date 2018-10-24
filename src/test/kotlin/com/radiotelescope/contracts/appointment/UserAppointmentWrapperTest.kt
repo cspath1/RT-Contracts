@@ -215,7 +215,47 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
-    fun testRetrieve_NotOwner_Failure() {
+    fun testRetrieve_NotOwner_Private_Failure() {
+        // Persist a new user, and attempt to access
+        // the appointment as this user
+        val newUser = testUtil.createUser("michaelscott@dundermifflin.com")
+        context.login(newUser.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Set the appointment to private
+        appointment.isPublic = false
+        appointmentRepo.save(appointment)
+
+        val error = wrapper.retrieve(
+                id = appointment.id
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testRetrieve_Admin_Private_Success() {
+        // Persist a new user, and attempt to access
+        // the appointment as this user
+        val newUser = testUtil.createUser("michaelscott@dundermifflin.com")
+        context.login(newUser.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        val error = wrapper.retrieve(
+                id = appointment.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testRetrieve_NotOwner_Public_Success() {
         // Persist a new user, and attempt to access
         // the appointment as this user
         val newUser = testUtil.createUser("michaelscott@dundermifflin.com")
@@ -225,11 +265,11 @@ internal class UserAppointmentWrapperTest {
         val error = wrapper.retrieve(
                 id = appointment.id
         ) {
-            fail("Should fail on precondition")
+            assertNotNull(it.success)
+            assertNull(it.error)
         }
 
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertNull(error)
     }
 
     @Test
