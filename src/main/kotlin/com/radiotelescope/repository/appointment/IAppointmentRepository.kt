@@ -52,19 +52,6 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
     fun findPreviousAppointmentsByUser(userId: Long, pageable:Pageable): Page<Appointment>
 
     /**
-     * Spring repository method to retrieve appointments for a give telescope id
-     *
-     * @param telescopeId the TelescopeId
-     * @param pageable the [Pageable] interface
-     * @return a [Page] of [Appointment] objects
-     */
-    @Query(value ="SELECT * " +
-            "FROM appointment " +
-            "WHERE telescope_id = ?1",
-            nativeQuery = true)
-    fun retrieveAppointmentsByTelescopeId(telescopeId: Long, pageable:Pageable): Page<Appointment>
-
-    /**
      * Spring repository method that retrieves all future appointments by telescope id
      *
      * @param telescopeId the Telescope id

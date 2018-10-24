@@ -44,7 +44,7 @@ class AdminUserListController(
     @CrossOrigin(value = ["http://localhost:8081"])
     @GetMapping(value = ["/api/users"])
     fun execute(@RequestParam("page") pageNumber: Int?,
-                @RequestParam("size") pageSize: Int?) {
+                @RequestParam("size") pageSize: Int?): Result {
         // If any of the request params are null, respond with errors
         if ((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
             val errors = pageErrors()
@@ -75,7 +75,7 @@ class AdminUserListController(
                         )
                     }
 
-                    result = Result(data = it)
+                    result = Result(data = page)
                 }
                 // If the command was a failure
                 it.error?.let { errors ->
@@ -105,6 +105,8 @@ class AdminUserListController(
                 result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
+
+        return result
     }
 
     /**
