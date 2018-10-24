@@ -7,6 +7,7 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable
  *
  * @property context the [UserContext] interface
  * @property factory the [AppointmentFactory] factory interface
+ * @property appointmentRepo the [IAppointmentRepository] interface
  */
 class UserAppointmentWrapper(
         private val context: UserContext,
@@ -64,19 +66,19 @@ class UserAppointmentWrapper(
     }
 
     /**
-     * Wrapper method for the [AppointmentFactory.getFutureAppointmentsForUser] method that adds Spring
-     * Security authentication to the [ListFutureAppointmentByUser] command object.
+     * Wrapper method for the [AppointmentFactory.userFutureList] method that adds Spring
+     * Security authentication to the [UserFutureList] command object.
      *
      * @param userId the user Id of the appointment
      * @param pageable contains the pageSize and pageNumber
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun userFutureList(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if(context.currentUserId() != null) {
             if (context.currentUserId() == userId) {
                 return context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
-                        successCommand = factory.getFutureAppointmentsForUser(
+                        successCommand = factory.userFutureList(
                                 userId = userId,
                                 pageable = pageable
                         )
@@ -86,7 +88,7 @@ class UserAppointmentWrapper(
             else {
                 return context.require(
                         requiredRoles = listOf(UserRole.Role.ADMIN),
-                        successCommand = factory.getFutureAppointmentsForUser(
+                        successCommand = factory.userFutureList(
                                 userId = userId,
                                 pageable = pageable
                         )
@@ -96,4 +98,103 @@ class UserAppointmentWrapper(
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
+
+    fun userCompleteList(userId: Long, pageRequest: PageRequest, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (context.currentUserId() != null) {
+            return if (context.currentUserId() == userId) {
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.USER),
+                        successCommand = factory.userCompletedList(
+                                userId = userId,
+                                pageable = pageRequest
+                        )
+                ).execute(withAccess)
+            } else {
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.ADMIN),
+                        successCommand = factory.userCompletedList(
+                                userId = userId,
+                                pageable = pageRequest
+                        )
+                ).execute(withAccess)
+            }
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+    }
+
+    fun cancel(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        val theAppointment = appointmentRepo.findById(appointmentId).get()
+
+        if (context.currentUserId() != null) {
+            return if (context.currentUserId() == theAppointment.user!!.id) {
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.USER),
+                        successCommand = factory.cancel(
+                                appointmentId = appointmentId
+                        )
+                ).execute(withAccess)
+            } else {
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.ADMIN),
+                        successCommand = factory.cancel(
+                                appointmentId = appointmentId
+                        )
+                ).execute(withAccess)
+            }
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+    }
+
+    fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageRequest: PageRequest, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.USER),
+                successCommand = factory.retrieveFutureAppointmentsByTelescopeId(
+                        telescopeId = telescopeId,
+                        pageable = pageRequest
+                )
+        ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for the [AppointmentFactory.update] method that adds Spring
+     * Security authentication to the [Update] command object.
+     *
+     * @param request the user Id of the appointment
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
+        if(context.currentUserId() != null) {
+            if (context.currentUserId() == appointmentRepo.findById(request.id).get().user!!.id) {
+                // If public, they only need to be a base user
+                return if (request.isPublic)
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.USER),
+                            successCommand = factory.update(
+                                    request = request
+                            )
+                    ).execute(withAccess)
+                // Otherwise, they need to be a researcher
+                else
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                            successCommand = factory.update(
+                                    request = request
+                            )
+                    ).execute(withAccess)
+            }
+            // Otherwise, they need to be an admin
+            else {
+                return context.require(
+                        requiredRoles = listOf(UserRole.Role.ADMIN),
+                        successCommand = factory.update(
+                                request = request
+                        )
+                ).execute(withAccess)
+            }
+        }
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+    }
+
 }
