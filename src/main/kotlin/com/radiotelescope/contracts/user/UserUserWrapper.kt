@@ -159,4 +159,17 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>> {
         }
         return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN))
     }
+
+    fun cancel(userId: Long?, withAccess: (result: SimpleResult<Long?, Multimap<ErrorTag, String>>) -> Unit): AccessReport?
+    {
+        if (context.currentUserId() != null) {
+            val user = userRepo.findById(userId!!)
+            context.requireAny(
+                    requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.USER),
+                    successCommand = factory.cancel(userId)
+
+            ).execute(withAccess)
+        }
+        return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
+    }
 }

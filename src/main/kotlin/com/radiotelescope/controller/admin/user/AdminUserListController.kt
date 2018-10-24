@@ -26,7 +26,7 @@ class AdminUserListController(
         private val userWrapper: UserUserWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
-    @GetMapping(value = ["/users/list"])
+    @GetMapping(value = ["api/users/list"])
     fun execute( @RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?) {
         // If any of the request params are null, respond with errors

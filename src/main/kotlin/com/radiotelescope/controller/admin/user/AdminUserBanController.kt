@@ -27,7 +27,7 @@ class AdminUserBanController(
         ): BaseRestController(logger)
 {
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PutMapping(value = ["/users/list/{userId}"])
+    @PutMapping(value = ["api/users/list/{userId}"])
 
             /**
              * Execute function which calls the ban method on userWrapper, passing in the userId using the RESTful API.
