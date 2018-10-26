@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -21,15 +22,19 @@ internal class RFDataInfoTest {
 
     @Test
     fun testPrimaryConstructor() {
+        val date = Date()
+
         val rfDataInfo = RFDataInfo(
                 id = 1L,
                 appointmentId = 1L,
-                intensity = 45762L
+                intensity = 45762L,
+                timeCaptured = date
         )
 
         assertEquals(1L, rfDataInfo.id)
         assertEquals(1L, rfDataInfo.appointmentId)
         assertEquals(45762L, rfDataInfo.intensity)
+        assertEquals(date, rfDataInfo.timeCaptured)
     }
 
     @Test
@@ -45,5 +50,6 @@ internal class RFDataInfoTest {
         assertEquals(rfDataInfo.id, rfData.get().getId())
         assertEquals(rfDataInfo.appointmentId, rfData.get().getAppointment()!!.id)
         assertEquals(rfDataInfo.intensity, rfData.get().getIntensity()!!)
+        assertEquals(rfDataInfo.timeCaptured, rfData.get().getTimeCaptured())
     }
 }

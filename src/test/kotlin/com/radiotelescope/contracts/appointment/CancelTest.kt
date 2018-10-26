@@ -31,120 +31,155 @@ internal class CancelTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private var appointmentRequest = Create.Request(startTime = Date(Date().time + 5000),
+    private var appointmentRequest = Create.Request(
+            startTime = Date(Date().time + 5000),
             endTime = Date(Date().time + 10000),
             isPublic = true,
             telescopeId = 456,
-            userId = 23)
+            userId = 23
+    )
 
-    private var appointmentRequest2 = Create.Request(startTime = Date(),
+    private var appointmentRequest2 = Create.Request(
+            startTime = Date(),
             endTime = Date(Date().time + 2500),
             isPublic = true,
             telescopeId = 512,
-            userId = 54)
+            userId = 54
+    )
 
-
-    private var appointmentRequest3 = Create.Request(startTime = Date(Date().time + 12500) ,
+    private var appointmentRequest3 = Create.Request(
+            startTime = Date(Date().time + 12500) ,
             endTime = Date(Date().time + 15000),
             isPublic = true,
             telescopeId = 513,
-            userId = 55)
+            userId = 55
+    )
 
-    private var appointmentRequest4 = Create.Request(startTime = Date(Date().time + 16000) ,
+    private var appointmentRequest4 = Create.Request(
+            startTime = Date(Date().time + 16000) ,
             endTime = Date(Date().time + 17000),
             isPublic = true,
             telescopeId = 514,
-            userId = 56)
+            userId = 56
+    )
 
-    var globalId1:Long = 0
-    var globalId2:Long = 0
-    var globalId3:Long = 0
-    var globalId4:Long = 0
+    var scheduledAppointmentId:Long = 0
+    var inProgressAppointmentId:Long = 0
+    var canceledAppointmentId:Long = 0
+    var completedAppointmentId:Long = 0
 
     @Before
     fun setUp() {
         // Persist a user
         val user = testUtil.createUser("spathcody@gmail.com")
 
-        //Scheduled to Canceled
-      var appt1 =  testUtil.createAppointment(user = user,
+        // Scheduled to Canceled
+        val appt1 = testUtil.createAppointment(user = user,
                 telescopeId = appointmentRequest.telescopeId,
                 status = Appointment.Status.Scheduled,
                 startTime = appointmentRequest.startTime,
                 endTime = appointmentRequest.endTime,
                 isPublic = appointmentRequest.isPublic
-                )
+        )
 
-        //InProgress to Canceled
-      var appt2 =  testUtil.createAppointment(user = user,
+        // In Progress to Canceled
+        val appt2 = testUtil.createAppointment(user = user,
                 telescopeId = appointmentRequest2.telescopeId,
                 status = Appointment.Status.InProgress,
                 startTime = appointmentRequest2.startTime,
                 endTime = appointmentRequest2.endTime,
                 isPublic = appointmentRequest2.isPublic
         )
-        //Should result in error: Canceled to Canceled
-     var appt3 =   testUtil.createAppointment(user = user,
+        // Should result in error: Canceled to Canceled
+        val appt3 = testUtil.createAppointment(user = user,
                 telescopeId = appointmentRequest3.telescopeId,
                 status = Appointment.Status.Canceled,
                 startTime = appointmentRequest3.startTime,
                 endTime = appointmentRequest3.endTime,
                 isPublic = appointmentRequest3.isPublic)
 
-        var appt4 =   testUtil.createAppointment(user = user,
+        // Already completed appointments cannot be canceled
+        val appt4 = testUtil.createAppointment(user = user,
                 telescopeId = appointmentRequest4.telescopeId,
                 status = Appointment.Status.Completed,
                 startTime = appointmentRequest4.startTime,
                 endTime = appointmentRequest4.endTime,
                 isPublic = appointmentRequest4.isPublic)
 
-        globalId1 = appt1.id
-        globalId2 = appt2.id
-        globalId3 = appt3.id
-        globalId4 = appt4.id
+        scheduledAppointmentId = appt1.id
+        inProgressAppointmentId = appt2.id
+        canceledAppointmentId = appt3.id
+        completedAppointmentId = appt4.id
     }
 
-@Test
-fun CancelExecuteTest()
-{
-    var cancelObject: Cancel = Cancel(globalId1, appointmentRepo)
-    var cancelObject2: Cancel = Cancel(globalId2, appointmentRepo)
-
-    if (cancelObject.execute().success == null)
-        fail()
-
-    if (cancelObject2.execute().success == null)
-        fail()
-}
-
-@Test
-//an attempt to Cancel an already Canceled appointment should result in an error-- see Cancel.kt
-fun CanceledToCanceled()
-{
-    val cancelObject3: Cancel = Cancel(globalId3, appointmentRepo)
-
-    //to fail, error should be null, because in this test case, upon execute(), error will be populated
-    if (cancelObject3.execute().error == null)
-        fail()
-
-}
     @Test
-//an attempt to Cancel an already Canceled appointment should result in an error-- see Cancel.kt
-    fun CompletedToCanceled()
-    {
-        val cancelObject4: Cancel = Cancel(globalId4, appointmentRepo)
+    fun testValidConstraints_Success() {
+        // Test the Scheduled cleaning
+        val (id1, errors1) = Cancel(
+                appointmentId = scheduledAppointmentId,
+                appointmentRepo = appointmentRepo
+        ).execute()
 
-        //to fail, error should be null, because in this test case, upon execute(), error will be populated
-        if (cancelObject4.execute().error == null)
-            fail()
+        assertNull(errors1)
+        assertNotNull(id1)
+
+        val theFirstAppointment = appointmentRepo.findById(id1!!).get()
+        assertEquals(theFirstAppointment.status, Appointment.Status.Canceled)
+
+        // Test the In Progress Cleaning
+        val (id2, errors2) = Cancel(
+                appointmentId = inProgressAppointmentId,
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        assertNull(errors2)
+        assertNotNull(id2)
+
+        val theSecondAppointment = appointmentRepo.findById(id2!!).get()
+        assertEquals(theSecondAppointment.status, Appointment.Status.Canceled)
     }
 
-@Test
-//should cause an error, so fail if error is null
-fun NonexistentAppointmentId()
-{
-    val cancelObject5: Cancel = Cancel(-500, appointmentRepo)
-    if (cancelObject5.execute().error == null)
-        fail()
-}
+    @Test
+    fun testInvalidStatus_AlreadyCanceled_Failure() {
+        // Execute the command on the already canceled cleaning
+        val (id, error) = Cancel(
+                appointmentId = canceledAppointmentId,
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        assertNotNull(error)
+        assertNull(id)
+
+        assertEquals(1, error!!.size())
+        assertTrue(error[ErrorTag.STATUS].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidStatus_Completed_Failure() {
+        // Execute the command on the already completed cleaning
+        val (id, error) = Cancel(
+                appointmentId = completedAppointmentId,
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        assertNotNull(error)
+        assertNull(id)
+
+        assertEquals(1, error!!.size())
+        assertTrue(error[ErrorTag.STATUS].isNotEmpty())
+    }
+
+    @Test
+    fun testNonExistentAppointment_Failure() {
+        val (id, error) = Cancel(
+                appointmentId = 311L,
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        assertNotNull(error)
+        assertNull(id)
+
+        assertEquals(1, error!!.size())
+        assertTrue(error[ErrorTag.ID].isNotEmpty())
+    }
 }

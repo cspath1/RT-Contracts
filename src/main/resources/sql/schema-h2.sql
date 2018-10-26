@@ -29,6 +29,13 @@ CREATE TABLE log(
   success TINYINT(1) DEFAULT '1'
 );
 
+CREATE TABLE rf_data (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  appointment_id INT(11) NOT NULL,
+  intensity INT(11) NOT NULL,
+  time_captured DATETIME NOT NULL
+);
+
 CREATE TABLE telescope (
   id INT(11) NOT NULL AUTO_INCREMENT,
   online TINYINT(1) DEFAULT '1'

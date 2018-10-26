@@ -24,7 +24,7 @@ apply plugin: 'jacoco'
 
 group = 'com.radiotelescope'
 
-version = '0.3.0'
+version = '0.3.1'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8

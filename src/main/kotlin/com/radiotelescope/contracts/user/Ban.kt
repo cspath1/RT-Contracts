@@ -9,31 +9,34 @@ import com.radiotelescope.repository.user.User
 
 
 /**
- * Command class which takes a
- * userRepo of type [IUserRepository],
- * and user_id of type [Long]
+ * Override of the [Command] interface for an admin to ban a User
  *
+ * @param id the [User] id
+ * @param userRepo the [IUserRepository] interface
  */
 class Ban(
-
-        private var userRepo: IUserRepository,
-        private var user_id: Long
-
+        private var id: Long,
+        private var userRepo: IUserRepository
 ): Command<Long, Multimap<ErrorTag, String>> {
-
-    override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>>
-    {
+    /**
+     * Override of the [Command] execute method. It checks to see if
+     * the supplied id refers to an existing [User] Entity, and if so,
+     * it will set their status to banned and respond with the user id
+     */
+    override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         val errors = HashMultimap.create<ErrorTag,String>()
 
-        if (!userRepo.existsById(user_id))
-        {
-            errors.put(ErrorTag.ID, "User $user_id does not exist by id")
+        if (!userRepo.existsById(id)) {
+            errors.put(ErrorTag.ID, "User #$id could not be found")
             return SimpleResult(null, errors)
         }
-        val u: User = userRepo.findById(user_id).get()
 
-            u.status = User.Status.Banned
-            userRepo.save(u)
-            return SimpleResult(user_id, null)
+        val theUser = userRepo.findById(id).get()
+
+        theUser.status = User.Status.Banned
+        theUser.active = false
+        userRepo.save(theUser)
+
+        return SimpleResult(id, null)
     }
 }

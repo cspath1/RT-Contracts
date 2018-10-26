@@ -17,14 +17,11 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class BanTest {
-
+internal class DeleteTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
-        fun utilService(): TestUtil {
-            return TestUtil()
-        }
+        fun utilService(): TestUtil { return TestUtil() }
     }
 
     @Autowired
@@ -46,12 +43,13 @@ internal class BanTest {
     @Test
     fun testValidConstraints_Success() {
         // Execute the command
-        val (id, errors) = Ban(
+        val (id, errors) = Delete(
                 id = userId,
                 userRepo = userRepo
         ).execute()
 
-        // The success data type should not be null
+        // The success data type should not
+        // be null
         assertNotNull(id)
 
         // The errors should be though
@@ -61,14 +59,14 @@ internal class BanTest {
 
         assertTrue(theUser.isPresent)
 
-        assertEquals(User.Status.Banned, theUser.get().status)
+        assertEquals(User.Status.Deleted, theUser.get().status)
         assertFalse(theUser.get().active)
     }
 
     @Test
     fun testInvalidUserId_Failure() {
         // Execute the command
-        val (id, errors) = Ban(
+        val (id, errors) = Delete(
                 id = 311L,
                 userRepo = userRepo
         ).execute()

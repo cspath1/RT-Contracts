@@ -48,13 +48,13 @@ data class Log(
     }
 
     enum class Action {
+        BAN,
         CREATE,
         RETRIEVE,
         UPDATE,
         DELETE,
         LOG_IN,
         LIST_FUTURE_APPOINTMENT_BY_USER,
-        LIST_FUTURE_APPOINTMENT_BY_TELESCOPE_ID,
-        BAN
+        LIST
     }
 }

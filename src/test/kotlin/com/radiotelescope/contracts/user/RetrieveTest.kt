@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert
 import org.junit.Assert.*
@@ -29,6 +30,10 @@ internal class RetrieveTest {
 
     @Autowired
     private lateinit var userRepo: IUserRepository
+
+    @Autowired
+    private lateinit var userRoleRepo: IUserRoleRepository
+
     private var id: Long = 0
 
 
@@ -51,7 +56,8 @@ internal class RetrieveTest {
     fun validRetrieveTest(){
        val (info, error) = Retrieve(
                id = id,
-               userRepo = userRepo
+               userRepo = userRepo,
+               userRoleRepo = userRoleRepo
        ).execute()
         //error should be null, because id belongs to a valid user
         assertNull(error)
@@ -64,7 +70,8 @@ internal class RetrieveTest {
         //executes retrieve method and passes return values into info and error
         val (info, error) = Retrieve(
                 id = 311,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
         //info should be null because id 311 does not exist
         assertNull(info)

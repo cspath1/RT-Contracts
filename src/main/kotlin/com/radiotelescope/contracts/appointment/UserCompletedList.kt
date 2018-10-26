@@ -3,31 +3,28 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.toAppointmentInfoPage
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 /**
  * Override of the [Command] interface used to retrieve a User's
  * future appointments.
- * @param apptRepo the [IAppointmentRepository] interface
+ *
+ * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userId the user ID
  * @param userRepo the [IUserRepository] interface
- * @param pageRequest the [pageRequest] interface
-
+ * @param pageable the [Pageable] interface
  */
-
-class PastAppointmentListForUser(
-        private val apptRepo: IAppointmentRepository,
-        private val userId:Long,
+class UserCompletedList(
+        private val appointmentRepo: IAppointmentRepository,
+        private val userId: Long,
         private val userRepo: IUserRepository,
-        private val pageRequest: PageRequest
-        ):Command <Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        private val pageable: Pageable
+):Command <Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Checks if the user exists by user id.
      *
@@ -40,15 +37,13 @@ class PastAppointmentListForUser(
     override fun execute(): SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        //check if the user exists
-        if (!userRepo.existsById(userId)) {
-            errors.put(ErrorTag.USER_ID, "User with id ${userId} does not exist")
-            return SimpleResult(null, errors)
-            //Success case
+        return if (!userRepo.existsById(userId)) {
+            errors.put(ErrorTag.USER_ID, "User with id $userId does not exist")
+            SimpleResult(null, errors)
         } else {
-           val apptList = apptRepo.findPreviousAppointmentsByUser(userId, pageRequest)
-            val infoPage = apptList.toAppointmentInfoPage()
-            return SimpleResult(infoPage, null)
+            val appointmentPage = appointmentRepo.findPreviousAppointmentsByUser(userId, pageable)
+            val infoPage = appointmentPage.toAppointmentInfoPage()
+            SimpleResult(infoPage, null)
         }
     }
 }

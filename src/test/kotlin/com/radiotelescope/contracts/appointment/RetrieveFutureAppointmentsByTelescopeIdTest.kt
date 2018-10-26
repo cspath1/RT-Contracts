@@ -26,8 +26,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescopeForRetrieveFutureAppointmentsByTelescopeIdTest.sql"])
-
+@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 internal class RetrieveFutureAppointmentsByTelescopeIdTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
@@ -37,49 +36,73 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
         }
     }
 
-        @Autowired
-        private lateinit var testUtil: TestUtil
+    @Autowired
+    private lateinit var testUtil: TestUtil
 
-        @Autowired
-        private lateinit var apptRepo: IAppointmentRepository
-        @Autowired
-        private lateinit var teleRepo: ITelescopeRepository
+    @Autowired
+    private lateinit var appointmentRepo: IAppointmentRepository
+    @Autowired
+    private lateinit var telescopeRepo: ITelescopeRepository
 
-        private var globalUserId:Long = 0
-        private var globalApptId:Long = 0
-        private var globalstartTime:Date = Date()
-        @Before
-        fun setUp()
-        {   //persist a user
-            val user = testUtil.createUser("jamoros@ycp.edu")
-            //persist an appointment
-            val appt = testUtil.createAppointment(user, 10, Appointment.Status.Scheduled, Date(), Date(Date().time+9999999), true)
-            globalstartTime = appt.startTime
-            globalApptId = appt.id
-            globalUserId = user.id
-        }
-        @Test
-        fun retrieveFutureAppointmentsByTelescopeIdTest()
-        {
-            println("This is user id:" + globalUserId)
-            assertEquals(1, teleRepo.count())
-            val page: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag,String>> =   RetrieveFutureAppointmentsByTelescopeId(apptRepo,10 , PageRequest.of(0, 10), teleRepo).execute()
-            val pageS:Page<AppointmentInfo>? = page.success
-            val pageE:Multimap<ErrorTag, String>? = page.error
-          if (pageS == null)
-          {
-              println("This is the pageE get: " + pageE?.get(ErrorTag.ID))
-              for (e in ErrorTag.values())
-              {
-                println("error tag:" + pageE?.get(e))
-              }
-              fail()
-          }
-          else
-          {
-              assertTrue(pageS.first().id == globalApptId)
-              assertTrue(pageS.first().startTime == globalstartTime)
-              assertTrue(pageS.hasContent())
-          }
-          }
-        }
+    private var userId: Long = 0
+
+    @Before
+    fun setUp() {
+        // Ensure the sql script was executed
+        assertEquals(1, telescopeRepo.count())
+
+        // persist a user
+        val user = testUtil.createUser("jamoros@ycp.edu")
+        userId = user.id
+
+        // persist two future appointment
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(System.currentTimeMillis() + 100000L),
+                endTime = Date(Date().time + 200000L),
+                isPublic = true
+        )
+
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(System.currentTimeMillis() + 300000L),
+                endTime = Date(System.currentTimeMillis() + 400000L),
+                isPublic = true
+        )
+    }
+
+    @Test
+    fun testValidConstraints_Success() {
+        val (page, error) = RetrieveFutureAppointmentsByTelescopeId(
+                appointmentRepo = appointmentRepo,
+                telescopeId = 1L,
+                pageable = PageRequest.of(0, 2),
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        assertNotNull(page)
+        assertNull(error)
+
+        assertEquals(2, page!!.content.size)
+    }
+
+    @Test
+    fun testNonExistentTelescopeId_Failure() {
+        val (page, error) = RetrieveFutureAppointmentsByTelescopeId(
+                appointmentRepo = appointmentRepo,
+                telescopeId = 311L,
+                pageable = PageRequest.of(0, 30),
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        assertNotNull(error)
+        assertNull(page)
+
+        assertEquals(1, error!!.size())
+        assertTrue(error[ErrorTag.TELESCOPE_ID].isNotEmpty())
+    }
+}

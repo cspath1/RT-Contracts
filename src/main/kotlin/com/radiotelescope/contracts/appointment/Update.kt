@@ -12,6 +12,7 @@ import java.util.*
 
 /**
  * Command class for editing an appointment
+ *
  * @param request of type [Update.Request]
  * @param appointmentRepo of type [IAppointmentRepository]
  * @param telescopeRepo of type [ITelescopeRepository]
@@ -79,19 +80,19 @@ class Update(
      * method
      */
     data class Request(
-            val id: Long,
+            var id: Long,
             val telescopeId: Long,
             val startTime: Date,
             val endTime: Date,
             val isPublic: Boolean
     ): BaseUpdateRequest<Appointment> {
-        override fun updateEntity(appointment: Appointment): Appointment {
-            appointment.telescopeId = telescopeId
-            appointment.startTime = startTime
-            appointment.endTime = endTime
-            appointment.isPublic
+        override fun updateEntity(entity: Appointment): Appointment {
+            entity.telescopeId = telescopeId
+            entity.startTime = startTime
+            entity.endTime = endTime
+            entity.isPublic
 
-            return appointment
+            return entity
         }
     }
 }

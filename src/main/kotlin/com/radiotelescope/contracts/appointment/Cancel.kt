@@ -10,14 +10,13 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 /**
  * Override of the [Command] interface method used for Assignment canceling
  *
- * @param apptId the appointment ID
- * @param apptRepo the [IAppointmentRepository] interface
+ * @param appointmentId the Appointment Id
+ * @param appointmentRepo the [IAppointmentRepository] interface
  */
-class Cancel
-(private var apptId:Long,
- private val apptRepo: IAppointmentRepository
-): Command<Long, Multimap<ErrorTag, String>>
-{
+class Cancel(
+        private val appointmentId: Long,
+        private val appointmentRepo: IAppointmentRepository
+): Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Checks if the user exists.
      *
@@ -28,27 +27,33 @@ class Cancel
      * null success field
      */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
-        //Failure case: Appointment does not exist
+        validateRequest()?.let { return SimpleResult(null, it) } ?: let {
+            val theAppointment = appointmentRepo.findById(appointmentId).get()
+            theAppointment.status = Appointment.Status.Canceled
+            appointmentRepo.save(theAppointment)
+            return SimpleResult(theAppointment.id, null)
+        }
+    }
+
+    /**
+     * Method in charge of handle error constraints and validation
+     */
+    private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
-        if (!apptRepo.existsById(apptId))
-        {
-            errors.put(ErrorTag.ID, "appt with ID $apptId does not exist (attempted cancellation)")
-            return SimpleResult(null, errors)
-        }
-        //Success case: Found appointment to cancel
-        else
-        {
-            val appt:Appointment = apptRepo.findById(apptId).get()
 
-            if (appt.status != Appointment.Status.Canceled && appt.status != Appointment.Status.Completed)
-            appt.status = Appointment.Status.Canceled
-            else {
-                errors.put(ErrorTag.STATUS, "Cannot cancel an already canceled or completed appointment: appointment id is $apptId")
-                return SimpleResult(null, errors)
+        if (!appointmentRepo.existsById(appointmentId)) {
+            errors.put(ErrorTag.ID, "Appointment #$appointmentId was not found")
+        } else {
+            val theAppointment = appointmentRepo.findById(appointmentId).get()
+
+            // If the appointment's status is either canceled or completed
+            if (theAppointment.status == Appointment.Status.Canceled) {
+                errors.put(ErrorTag.STATUS, "Appointment #$appointmentId is already canceled")
+            } else if (theAppointment.status == Appointment.Status.Completed) {
+                errors.put(ErrorTag.STATUS, "Appointment #$appointmentId is already completed")
             }
-
-            apptRepo.save(appt)
-            return SimpleResult(apptId, null)
         }
+
+        return if (errors.isEmpty) null else errors
     }
 }

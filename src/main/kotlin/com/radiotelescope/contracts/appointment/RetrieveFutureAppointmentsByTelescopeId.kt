@@ -1,6 +1,6 @@
 package com.radiotelescope.contracts.appointment
-import com.radiotelescope.repository.telescope.ITelescopeRepository
 
+import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.appointment.Appointment
@@ -9,38 +9,42 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.toAppointmentInfoPage
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 /**
- * Command class which calls IAppointmentRepository method to retrieve a page of future appointments by a telescope ID
+ * Command class which calls IAppointmentRepository method to retrieve
+ * a page of future appointments by a telescope ID
  *
- * @param apptRepo of type [IAppointmentRepository] The repository of appointments
- * @param teleId of type [Long] The id of the telescope from which to retrieve appointments
- * @param pageRequest of type [PageRequest]  the pageRequest specifying a page(s) of appointments from this telescope
- * @param teleRepo of type  [ITelescopeRepository] The repository of telescopes
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param telescopeId the Telescope id
+ * @param pageable the [Pageable] interface
+ * @param telescopeRepo the [ITelescopeRepository] interface
  *
  */
-
 class RetrieveFutureAppointmentsByTelescopeId(
-
-        private var apptRepo: IAppointmentRepository,
-        private var teleId: Long,
+        private var appointmentRepo: IAppointmentRepository,
+        private var telescopeId: Long,
         private var pageable: Pageable,
-        private var teleRepo: ITelescopeRepository
-
-): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
-{
-
+        private var telescopeRepo: ITelescopeRepository
+): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    /**
+     * Override of the [Command.execute] method. If the telescope exists, it will
+     * retrieve a [Page] of future appointments, adapt it into a [Page] of
+     * [AppointmentInfo] objects, and respond with it in the [SimpleResult].
+     *
+     * Otherwise, it will return an error in the [SimpleResult] that the
+     * id could not be found.
+     */
     override fun execute(): SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
-        val apptPages: Page<Appointment> = apptRepo.retrieveFutureAppointmentsByTelescopeId(teleId, pageable)
+        val appointmentPage: Page<Appointment> = appointmentRepo.retrieveFutureAppointmentsByTelescopeId(telescopeId, pageable)
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        if (!teleRepo.existsById(teleId)) {
-            errors.put(ErrorTag.TELESCOPE_ID, "Telescope id $teleId not found")
+        if (!telescopeRepo.existsById(telescopeId)) {
+            errors.put(ErrorTag.TELESCOPE_ID, "Telescope id $telescopeId not found")
             return SimpleResult(null, errors)
         }
-        val infoPage = apptPages.toAppointmentInfoPage()
+
+        val infoPage = appointmentPage.toAppointmentInfoPage()
         return SimpleResult(infoPage, null)
     }
 }

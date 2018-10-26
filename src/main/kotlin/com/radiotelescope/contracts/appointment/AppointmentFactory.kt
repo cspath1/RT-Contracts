@@ -3,20 +3,16 @@ package com.radiotelescope.contracts.appointment
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.Appointment
-import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import java.util.*
 import org.springframework.data.domain.Pageable
 
 /**
  * Abstract factory interface with methods for all [Appointment] CRUD operations
  */
-interface AppointmentFactory
-{
+interface AppointmentFactory {
     /**
      * Abstract command used to schedule an appointment
+     *
      * @param request the [Create.Request] request
      * @return a [Command] object
      */
@@ -24,13 +20,11 @@ interface AppointmentFactory
 
     /**
      * Abstract command used to cancel an appointment
-     * @param a the [Appointment]
-     * @param apptRepo the [IAppointmentRepository]
-     * @param apptId the  id of the appointment to be canceled, a [Long]
+     *
+     * @param appointmentId the Appointment id
      * @return a [Command] object
      */
-
-    fun cancel(a: Appointment, apptRepo: IAppointmentRepository, apptId: Long):Command<Long, Multimap<ErrorTag,String>>
+    fun cancel(appointmentId: Long): Command<Long, Multimap<ErrorTag,String>>
 
     /**
      * Abstract command used to retrieve appointment information
@@ -41,32 +35,29 @@ interface AppointmentFactory
     fun retrieve(id: Long): Command<AppointmentInfo, Multimap<ErrorTag,String>>
 
     /**
-     * Abstract command to get the PAST appointments from a user
-     *  @param u a [User]
-     *  @param pageRequest a [PageRequest]
-     *  @return a [Command] object
+     * Abstract command user to retrieve completed appointments for a user
+     *
+     * @param userId the User id
+     * @return a [Command] object
      */
-
-    fun pastAppointmentListForUser(u: User, pageRequest:PageRequest):Command <Page<AppointmentInfo>, Multimap<ErrorTag,String>>
+    fun userCompletedList(userId: Long, pageable: Pageable): Command <Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
     /**
      * Abstract command used to update an appointment
+     *
      * @param request the [Update.Request]
      * @return [Update] [Command] object
      */
     fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
-     * Abstract command used to get ALL appointments from a telescope
-     * @param id a [Long], the id of the telescope
-     * @param pageRequest, a [PageRequest]
-     * @return a [Command] object
+     * Abstract command used to retrieve all future appointments for a telescope
      *
+     * @param telescopeId the Telescope id
+     * @param pageable the [Pageable] interface
+     * @return a [Command] object
      */
-
-    fun retrieveByTelescopeId(id: Long, pageRequest:PageRequest): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
-
-    fun retrieveFutureAppointmentsByTelescopeId(tele_id:Long, pageable:Pageable):Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+    fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to retrieve a user's future appointments
@@ -75,5 +66,6 @@ interface AppointmentFactory
      * @param pageable the [Pageable] interface
      * @return a [Command] object
      */
-    fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
+    fun userFutureList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
+
 }

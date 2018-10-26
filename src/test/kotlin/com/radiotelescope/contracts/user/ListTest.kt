@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert
 import org.junit.Before
@@ -30,6 +31,9 @@ internal class ListTest {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
+    @Autowired
+    private lateinit var userRoleRepo: IUserRoleRepository
+
     private var pageable = PageRequest.of(0, 5)
 
     @Before
@@ -44,7 +48,8 @@ internal class ListTest {
     fun testPopulatedRepo_Success() {
         val (page, errors) = List(
                 pageable = pageable,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         Assert.assertNull(errors)
@@ -58,7 +63,8 @@ internal class ListTest {
 
         val (page, errors) = List(
                 pageable = pageable,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         Assert.assertNotNull(page)

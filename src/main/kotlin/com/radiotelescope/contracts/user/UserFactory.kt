@@ -46,12 +46,23 @@ interface UserFactory {
      * Abstract command used to update the user's information
      *
      * @param request the [Update.Request] request
+     * @return a [Command] object
      */
     fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
 
+    /**
+     * Abstract command used to "delete" a user's account
+     *
+     * @param id the User id
+     * @return a [Command] object
+     */
+    fun delete(id: Long): Command<Long, Multimap<ErrorTag, String>>
 
-    fun ban(user_id: Long): Command<Long, Multimap<ErrorTag, String>>
-
-    fun cancel(user_id:Long): Command<Long,Multimap<ErrorTag, String>>
-
+    /**
+     * Abstract command used to ba a user's account
+     *
+     * @param id the User id
+     * @return a [Command] objects
+     */
+    fun ban(id: Long): Command<Long, Multimap<ErrorTag, String>>
 }
