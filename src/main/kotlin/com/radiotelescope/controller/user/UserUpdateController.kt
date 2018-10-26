@@ -46,7 +46,7 @@ class UserUpdateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.UPDATE,
+                            action = "User Update",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()
@@ -67,7 +67,7 @@ class UserUpdateController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
-                                    action = Log.Action.UPDATE,
+                                    action = "User Update",
                                     affectedRecordId = it
                             )
                     )
@@ -78,7 +78,7 @@ class UserUpdateController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
-                                    action = Log.Action.UPDATE,
+                                    action = "User Update",
                                     affectedRecordId = null
                             ),
                             errors = it.toStringMap()
@@ -93,7 +93,7 @@ class UserUpdateController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.UPDATE,
+                                action = "User Update",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

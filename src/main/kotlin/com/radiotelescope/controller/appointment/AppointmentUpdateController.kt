@@ -8,6 +8,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -42,7 +43,7 @@ class AppointmentUpdateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = Log.Action.UPDATE,
+                            action = "Appointment Update",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()
@@ -66,7 +67,7 @@ class AppointmentUpdateController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = Log.Action.UPDATE,
+                                    action = "Appointment Update",
                                     affectedRecordId = it
                             )
                     )
@@ -76,7 +77,7 @@ class AppointmentUpdateController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = Log.Action.UPDATE,
+                                    action = "Appointment Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = it.toStringMap()
@@ -85,13 +86,32 @@ class AppointmentUpdateController(
                             errors = it.toStringMap()
                     )
                 }
+            }?.let {
+                // If we get here, that means the User did not pass authentication
+
+                // Set the errors depending on if the user was not authenticated or the
+                // record did not exists
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.APPOINTMENT,
+                                action = "Appointment Update",
+                                affectedRecordId = null
+                        ),
+                        errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
+                )
+
+                // Set the errors depending on if the user was not authenticated or the
+                // record did not exists
+                result = if (it.missingRoles != null) {
+                    Result(errors = it.toStringMap(), status = HttpStatus.NOT_FOUND)
+                }
+                // user did not have access to the resource
+                else {
+                    Result(errors = it.invalidResourceId!!, status = HttpStatus.FORBIDDEN)
+                }
             }
-
-
         }
 
         return result
     }
-
-
 }

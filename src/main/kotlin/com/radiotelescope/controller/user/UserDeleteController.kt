@@ -48,7 +48,7 @@ class UserDeleteController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.DELETE,
+                                action = "User Delete",
                                 affectedRecordId = it
                         )
                 )
@@ -61,7 +61,7 @@ class UserDeleteController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.DELETE,
+                                action = "User Delete",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -75,7 +75,7 @@ class UserDeleteController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.DELETE,
+                            action = "User Delete",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()

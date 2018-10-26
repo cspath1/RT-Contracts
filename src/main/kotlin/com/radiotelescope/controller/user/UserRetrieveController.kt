@@ -49,7 +49,7 @@ class UserRetrieveController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.RETRIEVE,
+                                action = "User Retrieval",
                                 affectedRecordId = it.id
                         )
                 )
@@ -62,7 +62,7 @@ class UserRetrieveController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.RETRIEVE,
+                                action = "User Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -76,7 +76,7 @@ class UserRetrieveController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.RETRIEVE,
+                            action = "User Retrieval",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()

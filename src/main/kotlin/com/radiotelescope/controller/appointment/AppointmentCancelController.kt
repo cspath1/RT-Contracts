@@ -25,7 +25,7 @@ class AppointmentCancelController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = Log.Action.UPDATE,
+                                action = "Appointment Cancellation",
                                 affectedRecordId = id
                         )
                 )
@@ -38,7 +38,7 @@ class AppointmentCancelController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = Log.Action.LIST,
+                                action = "Appointment Cancellation",
                                 affectedRecordId = null
                         ),
                         errors = error.toStringMap()
@@ -52,7 +52,7 @@ class AppointmentCancelController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = Log.Action.LIST,
+                            action = "Appointment Cancellation",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()

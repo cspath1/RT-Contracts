@@ -43,7 +43,7 @@ class AppointmentRetrieveController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = Log.Action.RETRIEVE,
+                                action = "Appointment Retrieval",
                                 affectedRecordId = it.id
                         )
                 )
@@ -56,7 +56,7 @@ class AppointmentRetrieveController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 Log.AffectedTable.APPOINTMENT,
-                                action = Log.Action.RETRIEVE,
+                                action = "Appointment Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -72,7 +72,7 @@ class AppointmentRetrieveController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = Log.Action.RETRIEVE,
+                            action = "Appointment Retrieval",
                             affectedRecordId = null
                     ),
                     errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!

@@ -23,7 +23,7 @@ CREATE TABLE log(
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11),
   affected_table ENUM('USER', 'APPOINTMENT', 'USER_ROLE') NOT NULL,
-  action ENUM('CREATE', 'RETRIEVE', 'UPDATE', 'DELETE', 'LOG_IN') NOT NULL,
+  action VARCHAR(100) NOT NULL,
   timestamp DATETIME NOT NULL,
   affected_record_id INT(11),
   success TINYINT(1) DEFAULT '1'

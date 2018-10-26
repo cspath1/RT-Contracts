@@ -45,7 +45,7 @@ class AdminUserBanController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.BAN,
+                                action = "User Ban",
                                 affectedRecordId = id
                         )
                 )
@@ -58,7 +58,7 @@ class AdminUserBanController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.BAN,
+                                action = "User Ban",
                                 affectedRecordId = null
                         ),
                         errors = errors.toStringMap()
@@ -72,7 +72,7 @@ class AdminUserBanController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.BAN,
+                            action = "User Ban",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()

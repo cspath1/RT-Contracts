@@ -43,7 +43,7 @@ class UserRegisterController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.CREATE,
+                            action = "User Registration",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()
@@ -65,7 +65,7 @@ class UserRegisterController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.CREATE,
+                                action = "User Registration",
                                 affectedRecordId = it
                         )
                 )
@@ -76,7 +76,7 @@ class UserRegisterController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.CREATE,
+                                action = "User Registration",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

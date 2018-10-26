@@ -49,7 +49,7 @@ class AppointmentListFutureAppointmentsByUserController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = Log.Action.LIST_FUTURE_APPOINTMENT_BY_USER,
+                            action = "User Future Appointment List Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -65,7 +65,7 @@ class AppointmentListFutureAppointmentsByUserController(
                     page.content.forEach{
                         logger.createSuccessLog(
                                 info = Logger.createInfo(Log.AffectedTable.APPOINTMENT,
-                                        action = Log.Action.LIST_FUTURE_APPOINTMENT_BY_USER,
+                                        action = "User Future Appointment List Retrieval",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -77,7 +77,7 @@ class AppointmentListFutureAppointmentsByUserController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = Log.Action.LIST_FUTURE_APPOINTMENT_BY_USER,
+                                    action = "User Future Appointment List Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -91,7 +91,7 @@ class AppointmentListFutureAppointmentsByUserController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = Log.Action.LIST_FUTURE_APPOINTMENT_BY_USER,
+                                action = "User Future Appointment List Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

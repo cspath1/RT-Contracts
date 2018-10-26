@@ -44,7 +44,7 @@ class AppointmentDataViewController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.RF_DATA,
-                                    action = Log.Action.RETRIEVE,
+                                    action = "Appointment RF Data Retrieval",
                                     affectedRecordId = it.id
                             )
                     )
@@ -58,7 +58,7 @@ class AppointmentDataViewController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.RF_DATA,
-                                action = Log.Action.RETRIEVE,
+                                action = "Appointment RF Data Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -74,7 +74,7 @@ class AppointmentDataViewController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.RF_DATA,
-                            action = Log.Action.RETRIEVE,
+                            action = "Appointment RF Data Retrieval",
                             affectedRecordId = null
                     ),
                     errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
