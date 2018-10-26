@@ -4,6 +4,8 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.Telescope
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,6 +22,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Autowired
+    private lateinit var telescopeRepo: ITelescopeRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -94,5 +99,10 @@ internal class TestUtil {
         theAppointment.user = user
 
         return appointmentRepo.save(theAppointment)
+    }
+
+    fun createTelescope(): Telescope {
+        val theTelescope = Telescope()
+        return telescopeRepo.save(theTelescope)
     }
 }

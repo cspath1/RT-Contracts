@@ -1,49 +1,26 @@
-package com.radiotelescope.controller.admin.user
+package com.radiotelescope.controller.appointment
 
 import com.google.common.collect.HashMultimap
+import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.user.ErrorTag
-import com.radiotelescope.contracts.user.UserUserWrapper
-import com.radiotelescope.contracts.user.List
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
-import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
-/**
- * REST controller to handle retrieving a [Page] of users
- *
- * @param userWrapper the [UserUserWrapper] interface
- * @param logger the [Logger] service
- */
 @RestController
-class AdminUserListController(
-        private val userWrapper: UserUserWrapper,
+class AppointmentCompletedUserListController(
+        private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
-    /**
-     * Execute method that is in charge of using the [pageNumber]
-     * and [pageSize] request parameters to create a [PageRequest]
-     * so the [UserUserWrapper.pageable] method can be called.
-     *
-     * If this method returns an [AccessReport], this means the user
-     * accessing the endpoint did not pass authentication.
-     *
-     * Otherwise, the [List] command was executed, and the controller
-     * should respond based on whether the command was a success or
-     * failure
-     */
+    @GetMapping(value = ["/api/users/{userId}/appointments/completedList"])
     @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/users"])
-    fun execute(@RequestParam("page") pageNumber: Int?,
+    fun execute(@PathVariable("userId") userId: Long,
+                @RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?): Result {
         // If any of the request params are null, respond with errors
         if ((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
@@ -51,8 +28,8 @@ class AdminUserListController(
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.RETRIEVE,
+                            affectedTable = Log.AffectedTable.APPOINTMENT,
+                            action = Log.Action.LIST,
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -62,14 +39,18 @@ class AdminUserListController(
         }
         // Otherwise, call the wrapper method
         else {
-            userWrapper.pageable(PageRequest.of(pageNumber, pageSize)) { it ->
+            appointmentWrapper.userCompleteList(
+                    userId = userId,
+                    pageRequest = PageRequest.of(pageNumber, pageSize)
+            ) {
                 // If the command was a success
                 it.success?.let { page ->
                     // Create success logs
-                    page.content.forEach {
+                    page.content.forEach { it ->
                         logger.createSuccessLog(
-                                info = Logger.createInfo(Log.AffectedTable.USER,
-                                        action = Log.Action.RETRIEVE,
+                                info = Logger.createInfo(
+                                        affectedTable = Log.AffectedTable.APPOINTMENT,
+                                        action = Log.Action.LIST,
                                         affectedRecordId = it.id
                                 )
                         )
@@ -77,26 +58,27 @@ class AdminUserListController(
 
                     result = Result(data = page)
                 }
-                // If the command was a failure
-                it.error?.let { errors ->
+                // Otherwise, it was a failure
+                it.error?.let { error ->
+                    // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
-                                    affectedTable = Log.AffectedTable.USER,
-                                    action = Log.Action.RETRIEVE,
+                                    affectedTable = Log.AffectedTable.APPOINTMENT,
+                                    action = Log.Action.LIST,
                                     affectedRecordId = null
                             ),
-                            errors = errors.toStringMap()
+                            errors = error.toStringMap()
                     )
 
-                    result = Result(errors = errors.toStringMap())
+                    result = Result(errors = error.toStringMap())
                 }
             }?.let {
                 // If we get here, this means the User did not pass validation
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.RETRIEVE,
+                                affectedTable = Log.AffectedTable.APPOINTMENT,
+                                action = Log.Action.LIST,
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

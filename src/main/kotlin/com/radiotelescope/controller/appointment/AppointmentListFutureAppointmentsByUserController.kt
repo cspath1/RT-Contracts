@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentListFutureAppointmentsByUserController (
+class AppointmentListFutureAppointmentsByUserController(
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
@@ -29,7 +29,7 @@ class AppointmentListFutureAppointmentsByUserController (
      * Execute method that is in charge of returning a user's future appointments.
      *
      * If the [pageNumber] or [pageSize] request parameters are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.getFutureAppointmentsForUser]
+     * respond with errors. Otherwise, call the [UserAppointmentWrapper.userFutureList]
      * method. If this method returns an [AccessReport], this means that user authentication
      * failed and the method should respond with errors, setting the [Result]'s
      * [HttpStatus] to [HttpStatus.FORBIDDEN].
@@ -41,9 +41,9 @@ class AppointmentListFutureAppointmentsByUserController (
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@PathVariable("userId") userId: Long,
                 @RequestParam("page") pageNumber: Int?,
-                @RequestParam("size") pageSize: Int?) {
-        //If any of the request params are null, respond with errors
-        if((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)){
+                @RequestParam("size") pageSize: Int?): Result {
+        // If any of the request params are null, respond with errors
+        if((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
             val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(
@@ -58,7 +58,7 @@ class AppointmentListFutureAppointmentsByUserController (
         }
         // Otherwise, call the wrapper method
         else {
-            appointmentWrapper.getFutureAppointmentsForUser(userId, PageRequest.of(pageNumber, pageSize)) { it ->
+            appointmentWrapper.userFutureList(userId, PageRequest.of(pageNumber, pageSize)) { it ->
                 //If the command was a success
                 it.success?.let{ page ->
                     // Create success logs
@@ -100,6 +100,8 @@ class AppointmentListFutureAppointmentsByUserController (
                 result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
+
+        return result
     }
 
     /**

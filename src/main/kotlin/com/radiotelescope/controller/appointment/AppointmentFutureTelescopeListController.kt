@@ -1,75 +1,61 @@
-package com.radiotelescope.controller.admin.user
+package com.radiotelescope.controller.appointment
 
 import com.google.common.collect.HashMultimap
+import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.user.ErrorTag
-import com.radiotelescope.contracts.user.UserUserWrapper
-import com.radiotelescope.contracts.user.List
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
-import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST controller to handle retrieving a [Page] of users
+ * Rest Controller to handle retrieving list of future appointments
+ * for a telescope
  *
- * @param userWrapper the [UserUserWrapper] interface
- * @param logger the [Logger] service
+ * @param
  */
 @RestController
-class AdminUserListController(
-        private val userWrapper: UserUserWrapper,
+class AppointmentFutureTelescopeListController(
+        private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
-    /**
-     * Execute method that is in charge of using the [pageNumber]
-     * and [pageSize] request parameters to create a [PageRequest]
-     * so the [UserUserWrapper.pageable] method can be called.
-     *
-     * If this method returns an [AccessReport], this means the user
-     * accessing the endpoint did not pass authentication.
-     *
-     * Otherwise, the [List] command was executed, and the controller
-     * should respond based on whether the command was a success or
-     * failure
-     */
-    @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/users"])
-    fun execute(@RequestParam("page") pageNumber: Int?,
+    @GetMapping(value = ["/api/appointments/telescopes/{telescopeId}/futureList"])
+    fun execute(@PathVariable("telescopeId") telescopeId: Long,
+                @RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?): Result {
-        // If any of the request params are null, respond with errors
         if ((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
             val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.RETRIEVE,
+                            affectedTable = Log.AffectedTable.APPOINTMENT,
+                            action = Log.Action.LIST,
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
             )
-
             result = Result(errors = errors.toStringMap())
         }
-        // Otherwise, call the wrapper method
         else {
-            userWrapper.pageable(PageRequest.of(pageNumber, pageSize)) { it ->
+            // Otherwise, call the wrapper method
+            appointmentWrapper.retrieveFutureAppointmentsByTelescopeId(
+                    telescopeId = telescopeId,
+                    pageRequest = PageRequest.of(pageNumber, pageSize)
+            ) {
                 // If the command was a success
                 it.success?.let { page ->
-                    // Create success logs
-                    page.content.forEach {
+                    page.content.forEach { it ->
                         logger.createSuccessLog(
-                                info = Logger.createInfo(Log.AffectedTable.USER,
-                                        action = Log.Action.RETRIEVE,
+                                info = Logger.createInfo(
+                                        affectedTable = Log.AffectedTable.APPOINTMENT,
+                                        action = Log.Action.LIST,
                                         affectedRecordId = it.id
                                 )
                         )
@@ -81,8 +67,8 @@ class AdminUserListController(
                 it.error?.let { errors ->
                     logger.createErrorLogs(
                             info = Logger.createInfo(
-                                    affectedTable = Log.AffectedTable.USER,
-                                    action = Log.Action.RETRIEVE,
+                                    affectedTable = Log.AffectedTable.APPOINTMENT,
+                                    action = Log.Action.LIST,
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -95,8 +81,8 @@ class AdminUserListController(
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.RETRIEVE,
+                                affectedTable = Log.AffectedTable.APPOINTMENT,
+                                action = Log.Action.LIST,
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -109,10 +95,6 @@ class AdminUserListController(
         return result
     }
 
-    /**
-     * Private method to return a [HashMultimap] of errors in the event
-     * that the page size and page number are invalid
-     */
     private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")

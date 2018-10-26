@@ -19,6 +19,14 @@ interface AppointmentFactory {
     fun create(request: Create.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
+     * Abstract command used to cancel an appointment
+     *
+     * @param appointmentId the Appointment id
+     * @return a [Command] object
+     */
+    fun cancel(appointmentId: Long): Command<Long, Multimap<ErrorTag,String>>
+
+    /**
      * Abstract command used to retrieve appointment information
      *
      * @param id the Appointment's id
@@ -27,13 +35,36 @@ interface AppointmentFactory {
     fun retrieve(id: Long): Command<AppointmentInfo, Multimap<ErrorTag,String>>
 
     /**
+     * Abstract command user to retrieve completed appointments for a user
+     *
+     * @param userId the User id
+     * @return a [Command] object
+     */
+    fun userCompletedList(userId: Long, pageable: Pageable): Command <Page<AppointmentInfo>, Multimap<ErrorTag,String>>
+
+    /**
+     * Abstract command used to update an appointment
+     * @param request the [Update.Request]
+     * @return [Update] [Command] object
+     */
+    fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve all future appointments for a telescope
+     *
+     * @param telescopeId the Telescope id
+     * @param pageable the [Pageable] interface
+     * @return a [Command] object
+     */
+    fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+
+    /**
      * Abstract command used to retrieve a user's future appointments
      *
      * @param userId the User's id
      * @param pageable the [Pageable] interface
      * @return a [Command] object
      */
-    fun getFutureAppointmentsForUser(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
-
+    fun userFutureList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
 }
