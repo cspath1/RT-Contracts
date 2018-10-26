@@ -1,8 +1,0 @@
-INSERT INTO telescope VALUES(1, 1)
-INSERT INTO telescope VALUES(2, 1)
-INSERT INTO telescope VALUES(3, 1)
-INSERT INTO telescope VALUES(4, 1)
-INSERT INTO telescope VALUES(5, 1)
-INSERT INTO telescope VALUES(6, 1)
-INSERT INTO telescope VALUES(7, 1)
-INSERT INTO telescope VALUES(8, 1)
