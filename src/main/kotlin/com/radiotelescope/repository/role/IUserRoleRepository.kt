@@ -39,6 +39,7 @@ interface IUserRoleRepository : PagingAndSortingRepository<UserRole, Long> {
     @Query(value = "SELECT * " +
             "FROM user_role " +
             "WHERE approved = '1' AND role NOT IN ('USER') " +
+            "AND user_id = ?1 " +
             "LIMIT 1",
             nativeQuery = true)
     fun findMembershipRoleByUserId(userId: Long): UserRole?

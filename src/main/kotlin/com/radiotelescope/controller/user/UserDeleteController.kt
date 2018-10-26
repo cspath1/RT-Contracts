@@ -1,56 +1,55 @@
 package com.radiotelescope.controller.user
 
-import com.radiotelescope.contracts.user.Retrieve
 import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.user.Delete
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
-import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle retrieving User information
+ * REST Controller to handle "deleting" a User
  *
  * @param userWrapper the [UserUserWrapper]
  * @param logger the [Logger] service
  */
 @RestController
-class UserRetrieveController(
+class UserDeleteController(
         private val userWrapper: UserUserWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of taking the id [PathVariable]
-     * and making sure it is not null. If it is, respond with and error.
+     * Execute method that is in charge of taking the [PathVariable]
+     * id and calling the [UserUserWrapper.delete] method. If this method
+     * returns an [AccessReport] this means the user did not pass authentication
+     * and the controller should respond accordingly.
      *
-     * Otherwise, execute the [UserUserWrapper.retrieve] method. If this
-     * method returns an [AccessReport] respond with the errors. If not,
-     * this means the [Retrieve] command was executed, check if the
-     * method was a success or not
+     * Otherwise, the [Delete] command object was executed, and the
+     * controller should respond based on whether the command was a
+     * success or not
      *
-     * @param id the User's id
+     * @param id the User id
      */
-    @GetMapping(value = ["/api/users/{id}"])
+    @DeleteMapping(value = ["/users/{userId}"])
     @CrossOrigin(value = ["http://localhost:8081"])
-    fun execute(@PathVariable("id") id: Long): Result {
-        // If the supplied path variable is not null, call the
-        // retrieve
-        userWrapper.retrieve(id) { it ->
-            // If the command called after successful validation is a
-            // success
+    fun execute(@PathVariable("userId") id: Long): Result {
+        userWrapper.delete(id) { it ->
+            // If the command called after successful validation
+            // is a success
             it.success?.let {
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.RETRIEVE,
-                                affectedRecordId = it.id
+                                action = Log.Action.DELETE,
+                                affectedRecordId = it
                         )
                 )
 
@@ -62,7 +61,7 @@ class UserRetrieveController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.RETRIEVE,
+                                action = Log.Action.DELETE,
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -76,7 +75,7 @@ class UserRetrieveController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.RETRIEVE,
+                            action = Log.Action.DELETE,
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()

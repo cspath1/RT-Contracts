@@ -6,84 +6,71 @@ import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
-import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
-
-/**
- * Rest Controller to handle listing future appointments for a user
- *
- * @param appointmentWrapper the [UserAppointmentWrapper]
- * @param logger the [Logger] service
- */
 @RestController
-class AppointmentListFutureAppointmentsByUserController(
+class AppointmentCompletedUserListController(
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
-    /**
-     * Execute method that is in charge of returning a user's future appointments.
-     *
-     * If the [pageNumber] or [pageSize] request parameters are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.userFutureList]
-     * method. If this method returns an [AccessReport], this means that user authentication
-     * failed and the method should respond with errors, setting the [Result]'s
-     * [HttpStatus] to [HttpStatus.FORBIDDEN].
-     *
-     * If not, the command object was executed, and was either a success or failure,
-     * and the method should respond accordingly based on each scenario.
-     */
-    @GetMapping(value = ["/api/users/{userId}/appointments/futureList"])
+    @GetMapping(value = ["/api/users/{userId}/appointments/completedList"])
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@PathVariable("userId") userId: Long,
                 @RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?): Result {
         // If any of the request params are null, respond with errors
-        if((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
+        if ((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
             val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = Log.Action.LIST_FUTURE_APPOINTMENT_BY_USER,
+                            action = Log.Action.LIST,
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
             )
+
             result = Result(errors = errors.toStringMap())
         }
         // Otherwise, call the wrapper method
         else {
-            appointmentWrapper.userFutureList(userId, PageRequest.of(pageNumber, pageSize)) { it ->
-                //If the command was a success
-                it.success?.let{ page ->
+            appointmentWrapper.userCompleteList(
+                    userId = userId,
+                    pageable = PageRequest.of(pageNumber, pageSize)
+            ) {
+                // If the command was a success
+                it.success?.let { page ->
                     // Create success logs
-                    page.content.forEach{
+                    page.content.forEach { it ->
                         logger.createSuccessLog(
-                                info = Logger.createInfo(Log.AffectedTable.APPOINTMENT,
-                                        action = Log.Action.LIST_FUTURE_APPOINTMENT_BY_USER,
+                                info = Logger.createInfo(
+                                        affectedTable = Log.AffectedTable.APPOINTMENT,
+                                        action = Log.Action.LIST,
                                         affectedRecordId = it.id
                                 )
                         )
                     }
-                    result = Result(data = it)
+
+                    result = Result(data = page)
                 }
-                // If the command was a failure
-                it.error?.let{ errors ->
+                // Otherwise, it was a failure
+                it.error?.let { error ->
+                    // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = Log.Action.LIST_FUTURE_APPOINTMENT_BY_USER,
+                                    action = Log.Action.LIST,
                                     affectedRecordId = null
                             ),
-                            errors = errors.toStringMap()
+                            errors = error.toStringMap()
                     )
 
-                    result = Result(errors = errors.toStringMap())
+                    result = Result(errors = error.toStringMap())
                 }
             }?.let {
                 // If we get here, this means the User did not pass validation
@@ -91,7 +78,7 @@ class AppointmentListFutureAppointmentsByUserController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = Log.Action.LIST_FUTURE_APPOINTMENT_BY_USER,
+                                action = Log.Action.LIST,
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
