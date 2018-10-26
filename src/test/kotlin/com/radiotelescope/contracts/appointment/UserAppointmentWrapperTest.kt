@@ -477,6 +477,18 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
+    fun testCancel_NonexistentRecord_Failure() {
+        val error = wrapper.cancel(
+                appointmentId = 311L
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId!!.isNotEmpty())
+    }
+
+    @Test
     fun testCancel_NotLoggedIn_Failure() {
         val error = wrapper.cancel(
                 appointmentId = appointment.id
@@ -608,6 +620,28 @@ internal class UserAppointmentWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidUpdate_Private_NotResearcher_Failure() {
+        // Simulate a log in to a guest account
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.GUEST))
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId,
+                        isPublic = false
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
     }
 
     @Test

@@ -138,6 +138,10 @@ class UserAppointmentWrapper(
     }
 
     fun cancel(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (!appointmentRepo.existsById(appointmentId)) {
+            return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(appointmentId))
+        }
+
         val theAppointment = appointmentRepo.findById(appointmentId).get()
 
         if (context.currentUserId() != null) {
