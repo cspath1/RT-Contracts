@@ -2,6 +2,8 @@ package com.radiotelescope
 
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.log.ILogRepository
+import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -24,7 +26,7 @@ internal class TestUtil {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var logRepo: ILogRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -101,8 +103,24 @@ internal class TestUtil {
         return appointmentRepo.save(theAppointment)
     }
 
-    fun createTelescope(): Telescope {
-        val theTelescope = Telescope()
-        return telescopeRepo.save(theTelescope)
+    fun createLog(
+            userId: Long?,
+            affectedRecordId: Long?,
+            affectedTable: Log.AffectedTable,
+            action: String,
+            timestamp: Date,
+            isSuccess: Boolean
+    ): Log {
+        val theLog = Log(
+                affectedTable = affectedTable,
+                action = action,
+                timestamp = timestamp,
+                affectedRecordId = null
+        )
+
+        theLog.userId = userId
+        theLog.isSuccess = true
+
+        return logRepo.save(theLog)
     }
 }
