@@ -15,8 +15,8 @@ import javax.persistence.*
 data class ResetPasswordToken (
         @Column(name = "token", unique = true, nullable = false)
         var token: String,
-        @Column(name = "expiry_date", nullable = false)
-        var expiryDate: Date
+        @Column(name = "expiration_date", nullable = false)
+        var expirationDate: Date
 ){
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -116,7 +116,7 @@ internal class TestUtil {
     ) : ResetPasswordToken {
         val theResetPasswordToken = ResetPasswordToken(
             token = "someToken",
-            expiryDate = Date(System.currentTimeMillis() + 10000L)
+            expirationDate = Date(System.currentTimeMillis() + 10000L)
         )
 
         theResetPasswordToken.user = user
