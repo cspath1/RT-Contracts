@@ -22,7 +22,7 @@ class AdminLogWrapper(
 ) {
     /**
      * Wrapper method for the [LogFactory.list] method that adds Spring Security
-     * authentication to the [List] command object.
+     * authentication to the [LogList] command object.
      *
      * @param pageable the [Pageable] interface
      * @return An [AccessReport]

@@ -10,13 +10,13 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 
 /**
- * Override of the [Command] interface method user for Log List retrieval
+ * Override of the [Command] interface method user for Log LogList retrieval
  *
  * @param pageable the [Pageable] interface
  * @param logRepo the [ILogRepository] interface
  * @param userRepo the [IUserRepository] interface
  */
-class List(
+class LogList(
         private val pageable: Pageable,
         private val logRepo: ILogRepository,
         private val userRepo: IUserRepository

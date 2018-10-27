@@ -60,6 +60,7 @@ class Logger(
                             message = error
                     )
 
+                    errorRepo.save(err)
                     log.errors.add(err)
                 }
             }

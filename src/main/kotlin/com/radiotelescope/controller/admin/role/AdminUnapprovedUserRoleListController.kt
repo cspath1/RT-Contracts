@@ -48,7 +48,7 @@ class AdminUnapprovedUserRoleListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER_ROLE,
-                            action = "Retrieve Unapproved Role List",
+                            action = "Retrieve Unapproved Role LogList",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -65,7 +65,7 @@ class AdminUnapprovedUserRoleListController(
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.USER_ROLE,
-                                        action = "Retrieve Unapproved Role List",
+                                        action = "Retrieve Unapproved Role LogList",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -78,7 +78,7 @@ class AdminUnapprovedUserRoleListController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER_ROLE,
-                                    action = "Retrieve Unapproved Role List",
+                                    action = "Retrieve Unapproved Role LogList",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -92,7 +92,7 @@ class AdminUnapprovedUserRoleListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
-                                action = "Retrieve Unapproved Role List",
+                                action = "Retrieve Unapproved Role LogList",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

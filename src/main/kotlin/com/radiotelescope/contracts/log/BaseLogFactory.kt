@@ -18,14 +18,14 @@ class BaseLogFactory(
         private val userRepo: IUserRepository
 ) : LogFactory {
     /**
-     * Override of the [LogFactory.list] method that will return a [List]
+     * Override of the [LogFactory.list] method that will return a [LogList]
      * command object
      *
      * @param pageable the [Pageable] interface
-     * @return a [List] command object
+     * @return a [LogList] command object
      */
     override fun list(pageable: Pageable): Command<Page<LogInfo>, Multimap<ErrorTag, String>> {
-        return List(
+        return LogList(
                 pageable = pageable,
                 logRepo = logRepo,
                 userRepo = userRepo

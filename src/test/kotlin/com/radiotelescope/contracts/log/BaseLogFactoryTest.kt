@@ -40,6 +40,6 @@ class BaseLogFactoryTest {
         )
 
         // Ensure it is the correct command
-        assertTrue(cmd is List)
+        assertTrue(cmd is LogList)
     }
 }

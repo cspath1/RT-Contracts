@@ -29,7 +29,7 @@ class AppointmentCompletedUserListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "User Completed Appointment List",
+                            action = "User Completed Appointment LogList",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -50,7 +50,7 @@ class AppointmentCompletedUserListController(
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.APPOINTMENT,
-                                        action = "User Completed Appointment List",
+                                        action = "User Completed Appointment LogList",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -64,7 +64,7 @@ class AppointmentCompletedUserListController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "User Completed Appointment List",
+                                    action = "User Completed Appointment LogList",
                                     affectedRecordId = null
                             ),
                             errors = error.toStringMap()
@@ -78,7 +78,7 @@ class AppointmentCompletedUserListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "User Completed Appointment List",
+                                action = "User Completed Appointment LogList",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

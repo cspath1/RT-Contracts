@@ -36,7 +36,7 @@ class AppointmentFutureTelescopeListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Future Telescope Appointments List Retrieval",
+                            action = "Future Telescope Appointments LogList Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -55,7 +55,7 @@ class AppointmentFutureTelescopeListController(
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.APPOINTMENT,
-                                        action = "Future Telescope Appointments List Retrieval",
+                                        action = "Future Telescope Appointments LogList Retrieval",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -68,7 +68,7 @@ class AppointmentFutureTelescopeListController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Future Telescope Appointments List Retrieval",
+                                    action = "Future Telescope Appointments LogList Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -82,7 +82,7 @@ class AppointmentFutureTelescopeListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Future Telescope Appointments List Retrieval",
+                                action = "Future Telescope Appointments LogList Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

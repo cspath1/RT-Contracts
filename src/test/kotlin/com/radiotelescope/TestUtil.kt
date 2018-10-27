@@ -2,6 +2,8 @@ package com.radiotelescope
 
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.error.Error
+import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -24,6 +26,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Autowired
+    private lateinit var errorRepo: IErrorRepository
 
     @Autowired
     private lateinit var logRepo: ILogRepository
@@ -119,7 +124,44 @@ internal class TestUtil {
         )
 
         theLog.userId = userId
-        theLog.isSuccess = true
+        theLog.isSuccess = isSuccess
+
+        return logRepo.save(theLog)
+    }
+
+    fun createErrorLog(
+            userId: Long?,
+            affectedRecordId: Long?,
+            affectedTable: Log.AffectedTable,
+            action: String,
+            timestamp: Date,
+            isSuccess: Boolean,
+            errors: Map<String, Collection<String>>
+    ): Log {
+        val theLog = createLog(
+                userId = userId,
+                affectedRecordId = affectedRecordId,
+                affectedTable = affectedTable,
+                action = action,
+                timestamp = timestamp,
+                isSuccess = isSuccess
+        )
+
+        errors.keys.forEach { it ->
+            val errorList = errors[it]
+            if (errorList != null && errorList.isNotEmpty()) {
+                errorList.forEach { error ->
+                    val err = Error(
+                            log = theLog,
+                            field = it,
+                            message = error
+                    )
+
+                    errorRepo.save(err)
+                    theLog.errors.add(err)
+                }
+            }
+        }
 
         return logRepo.save(theLog)
     }

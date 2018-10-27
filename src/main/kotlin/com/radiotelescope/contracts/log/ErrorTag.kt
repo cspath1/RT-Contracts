@@ -1,5 +1,7 @@
 package com.radiotelescope.contracts.log
 
 enum class ErrorTag {
-    PAGE_PARAMS
+    PAGE_PARAMS,
+    SUCCESS,
+    ID
 }

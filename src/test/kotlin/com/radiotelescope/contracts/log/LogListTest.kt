@@ -20,7 +20,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class ListTest {
+internal class LogListTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -70,7 +70,7 @@ internal class ListTest {
 
     @Test
     fun testPopulatedRepo_Success() {
-        val (page, errors) = List(
+        val (page, errors) = LogList(
                 pageable = pageable,
                 logRepo = logRepo,
                 userRepo = userRepo
@@ -85,7 +85,7 @@ internal class ListTest {
     fun testEmptyRepo_Success() {
         logRepo.deleteAll()
 
-        val (page, errors) = List(
+        val (page, errors) = LogList(
                 pageable = pageable,
                 logRepo = logRepo,
                 userRepo = userRepo
