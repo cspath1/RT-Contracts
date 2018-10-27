@@ -31,4 +31,18 @@ class BaseLogFactory(
                 userRepo = userRepo
         )
     }
+
+    /**
+     * Override of the [LogFactory.retrieveErrors] method that will return a [RetrieveErrors]
+     * command object
+     *
+     * @param logId the Log id
+     * @return a [RetrieveErrors]
+     */
+    override fun retrieveErrors(logId: Long): Command<List<ErrorInfo>, Multimap<ErrorTag, String>> {
+        return RetrieveErrors(
+                logId = logId,
+                logRepo = logRepo
+        )
+    }
 }

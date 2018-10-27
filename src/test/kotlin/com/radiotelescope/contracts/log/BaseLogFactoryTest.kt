@@ -42,4 +42,15 @@ class BaseLogFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is LogList)
     }
+
+    @Test
+    fun retrieveErrors() {
+        // Call the factory method
+        val cmd = factory.retrieveErrors(
+                logId = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is RetrieveErrors)
+    }
 }

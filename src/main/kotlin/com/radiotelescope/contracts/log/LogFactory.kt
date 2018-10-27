@@ -17,4 +17,13 @@ interface LogFactory {
      * @return a [Command] object
      */
     fun list(pageable: Pageable): Command<Page<LogInfo>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve a list of error messages
+     * for a given log
+     *
+     * @param logId the Log id
+     * @return a [Command] object
+     */
+    fun retrieveErrors(logId: Long): Command<List<ErrorInfo>, Multimap<ErrorTag, String>>
 }
