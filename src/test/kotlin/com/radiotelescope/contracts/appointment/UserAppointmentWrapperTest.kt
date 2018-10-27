@@ -105,11 +105,7 @@ internal class UserAppointmentWrapperTest {
 
         wrapper = UserAppointmentWrapper(
                 context = context,
-                factory = BaseAppointmentFactory(
-                        appointmentRepo = appointmentRepo,
-                        userRepo = userRepo,
-                        telescopeRepo = telescopeRepo
-                ),
+                factory = factory,
                 appointmentRepo = appointmentRepo
         )
     }

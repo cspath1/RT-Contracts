@@ -14,6 +14,13 @@ import org.springframework.data.domain.Pageable
 class BaseLogFactory(
         private val logRepo: ILogRepository
 ) : LogFactory {
+    /**
+     * Override of the [LogFactory.list] method that will return a [List]
+     * command object
+     *
+     * @param pageable the [Pageable] interface
+     * @return a [List] command object
+     */
     override fun list(pageable: Pageable): Command<Page<LogInfo>, Multimap<ErrorTag, String>> {
         return List(
                 pageable = pageable,
