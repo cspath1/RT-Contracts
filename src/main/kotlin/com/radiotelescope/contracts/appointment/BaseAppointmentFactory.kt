@@ -13,9 +13,9 @@ import org.springframework.data.domain.Pageable
 /**
  * Base concrete implementation of the [AppointmentFactory] interface
  *
- * @param appointmentRepo the [IAppointmentRepository]
- * @param userRepo the [IUserRepository]
- * @param telescopeRepo the [ITelescopeRepository]
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param userRepo the [IUserRepository] interface
+ * @param telescopeRepo the [ITelescopeRepository] interface
  */
 class BaseAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,

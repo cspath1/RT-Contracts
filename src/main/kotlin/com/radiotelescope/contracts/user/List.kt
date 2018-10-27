@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable
  *
  * @param pageable the [Pageable] interface
  * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
  */
 class List(
         private val pageable: Pageable,
