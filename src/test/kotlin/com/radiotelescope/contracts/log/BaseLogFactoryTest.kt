@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.log
 
 import com.radiotelescope.repository.log.ILogRepository
+import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -18,12 +19,16 @@ class BaseLogFactoryTest {
     @Autowired
     private lateinit var logRepo: ILogRepository
 
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
     private lateinit var factory: LogFactory
 
     @Before
     fun init() {
         factory = BaseLogFactory(
-                logRepo = logRepo
+                logRepo = logRepo,
+                userRepo = userRepo
         )
     }
 

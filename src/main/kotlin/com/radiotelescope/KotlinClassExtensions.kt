@@ -32,15 +32,6 @@ fun Page<Appointment>.toAppointmentInfoPage(): Page<AppointmentInfo> {
     return PageImpl(infoList, pageable, totalElements)
 }
 
-fun Page<Log>.toLogInfoPage(): Page<LogInfo> {
-    val infoList = arrayListOf<LogInfo>()
-    content.forEach {
-        infoList.add(LogInfo(it))
-    }
-
-    return PageImpl(infoList, pageable, totalElements)
-}
-
 fun List<RFData>.toInfoList(): List<RFDataInfo> {
     val infoList = arrayListOf<RFDataInfo>()
     forEach { infoList.add(RFDataInfo(it)) }

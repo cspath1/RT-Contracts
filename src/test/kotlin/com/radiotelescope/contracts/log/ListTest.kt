@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.log
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -32,17 +33,35 @@ internal class ListTest {
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private var pageable = PageRequest.of(0, 10)
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
+    private var pageable = PageRequest.of(0, 30)
 
     @Before
     fun setUp() {
-        // Create a few logs
-        for (i in 0..10) {
+        // Persist a user
+        val theUser = testUtil.createUser("cspath1@ycp.edu")
+
+        // Create a few logs without user ids
+        for (i in 0..9) {
             testUtil.createLog(
                     userId = null,
                     affectedRecordId = i.toLong(),
                     affectedTable = Log.AffectedTable.USER,
                     action = "User Registration",
+                    timestamp = Date(),
+                    isSuccess = true
+            )
+        }
+
+        // Create a few logs with user ids
+        for (i in 0..9) {
+            testUtil.createLog(
+                    userId = theUser.id,
+                    affectedRecordId = i.toLong(),
+                    affectedTable = Log.AffectedTable.APPOINTMENT,
+                    action = "Appointment Creation",
                     timestamp = Date(),
                     isSuccess = true
             )
@@ -53,12 +72,13 @@ internal class ListTest {
     fun testPopulatedRepo_Success() {
         val (page, errors) = List(
                 pageable = pageable,
-                logRepo = logRepo
+                logRepo = logRepo,
+                userRepo = userRepo
         ).execute()
 
         assertNull(errors)
         assertNotNull(page)
-        assertEquals(10, page!!.content.size)
+        assertEquals(20, page!!.content.size)
     }
 
     @Test
@@ -67,7 +87,8 @@ internal class ListTest {
 
         val (page, errors) = List(
                 pageable = pageable,
-                logRepo = logRepo
+                logRepo = logRepo,
+                userRepo = userRepo
         ).execute()
 
         assertNull(errors)

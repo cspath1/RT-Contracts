@@ -4,6 +4,7 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Assert.*
@@ -37,6 +38,9 @@ internal class AdminLogWrapperTest {
     @Autowired
     private lateinit var logRepo: ILogRepository
 
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
     private lateinit var user: User
 
     private val context = FakeUserContext()
@@ -59,7 +63,8 @@ internal class AdminLogWrapperTest {
         )
 
         factory = BaseLogFactory(
-                logRepo = logRepo
+                logRepo = logRepo,
+                userRepo = userRepo
         )
 
         wrapper = AdminLogWrapper(
