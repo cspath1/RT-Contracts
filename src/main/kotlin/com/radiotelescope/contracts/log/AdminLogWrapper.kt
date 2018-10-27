@@ -35,4 +35,13 @@ class AdminLogWrapper(
                 )
         ).execute(withAccess)
     }
+
+    fun retrieveErrors(logId: Long, withAccess: (result: SimpleResult<List<ErrorInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN),
+                successCommand = factory.retrieveErrors(
+                        logId = logId
+                )
+        ).execute(withAccess)
+    }
 }
