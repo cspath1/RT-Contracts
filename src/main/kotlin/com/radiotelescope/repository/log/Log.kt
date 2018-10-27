@@ -43,6 +43,8 @@ data class Log(
         USER,
         USER_ROLE,
         APPOINTMENT,
-        RF_DATA
+        RF_DATA,
+        LOG,
+        ERROR
     }
 }
