@@ -61,13 +61,15 @@ internal class AppointmentTest {
                 isPublic = true
         )
 
-        futureCanceledAppointment = testUtil.createAppointment(
+        // Make a future canceled appointment to ensure it is not retrieved
+        testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.Canceled,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true
+
         )
     }
 

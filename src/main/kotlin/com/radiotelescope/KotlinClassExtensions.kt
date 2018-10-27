@@ -17,17 +17,8 @@ fun <T: Enum<T>> Multimap<T, String>.toStringMap(): Map<String, Collection<Strin
 
 fun AccessReport.toStringMap(): Map<String, Collection<String>> {
     val map = kotlin.collections.mutableMapOf<String, Collection<String>>()
-    map["MISSING_ROLES"] = this.missingRoles.map { it.name }
+    map["MISSING_ROLES"] = this.missingRoles!!.map { it.name }
     return map
-}
-
-fun Page<User>.toUserInfoPage(): Page<UserInfo> {
-    val infoList = arrayListOf<UserInfo>()
-    forEach {
-        infoList.add(UserInfo(it))
-    }
-
-    return PageImpl<UserInfo>(infoList, pageable, totalElements)
 }
 
 fun Page<Appointment>.toAppointmentInfoPage(): Page<AppointmentInfo> {

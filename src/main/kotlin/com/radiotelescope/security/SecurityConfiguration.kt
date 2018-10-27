@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 @EnableWebSecurity
 @Configuration
@@ -19,12 +20,16 @@ class SecurityConfiguration(
             http.csrf().disable()
 
             http.cors().and()
-                    .authorizeRequests().antMatchers("/login**").permitAll()
+                    .authorizeRequests().antMatchers("/api/login**").permitAll()
                     .and()
                     .formLogin()
-                    .usernameParameter("email")
-                    .passwordParameter("password")
-                    .loginPage("/api/login")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
+                        .loginProcessingUrl("/api/login")
+                    .and()
+                    .logout()
+                        .logoutSuccessUrl("/")
+                        .logoutRequestMatcher(AntPathRequestMatcher("/logout"))
 
             http.cors().and()
                     .authorizeRequests().antMatchers(HttpMethod.POST, "/users/register").permitAll()

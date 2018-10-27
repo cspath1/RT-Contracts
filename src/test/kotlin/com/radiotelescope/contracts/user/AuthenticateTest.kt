@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.*
 import org.junit.Before
@@ -29,6 +30,9 @@ internal class AuthenticateTest {
 
     @Autowired
     private lateinit var userRepo: IUserRepository
+
+    @Autowired
+    private lateinit var userRoleRepo: IUserRoleRepository
 
     private val baseRequest = Authenticate.Request(
             email = "cspath1@ycp.edu",
@@ -61,7 +65,8 @@ internal class AuthenticateTest {
         // Execute the command
         val (info, errors) = Authenticate(
                 request = baseRequest,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // The info class should not be null
@@ -81,7 +86,8 @@ internal class AuthenticateTest {
         // Execute the command
         val (info, errors) = Authenticate(
                 request = requestCopy,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // The errors should not be null
@@ -101,7 +107,8 @@ internal class AuthenticateTest {
         // Execute the command
         val (info, errors) = Authenticate(
                 request = requestCopy,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // The errors should not be null
@@ -121,7 +128,8 @@ internal class AuthenticateTest {
         // Execute the command
         val (info, errors) = Authenticate(
                 request = requestCopy,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // The errors should not be null
@@ -141,7 +149,8 @@ internal class AuthenticateTest {
         // Execute the command
         val (info, errors) = Authenticate(
                 request = requestCopy,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // The errors should not be null

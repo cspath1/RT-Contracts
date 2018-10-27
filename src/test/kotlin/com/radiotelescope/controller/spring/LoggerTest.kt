@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.FakeUserContext
 import com.radiotelescope.toStringMap
 import org.junit.Assert.*
@@ -47,7 +48,7 @@ internal class LoggerTest {
         logger.createSuccessLog(
                 info = Logger.Info(
                         affectedTable = Log.AffectedTable.USER,
-                        action = Log.Action.CREATE,
+                        action = "User Registration",
                         timestamp = Date(),
                         affectedRecordId = null
                 )
@@ -59,7 +60,7 @@ internal class LoggerTest {
         iterable.forEach {
             assertTrue(it.isSuccess)
             assertEquals(Log.AffectedTable.USER, it.affectedTable)
-            assertEquals(Log.Action.CREATE, it.action)
+            assertEquals("User Registration", it.action)
             assertNull(it.affectedRecordId)
             assertNull(it.userId)
             assertEquals(0, it.errors.size)
@@ -76,7 +77,7 @@ internal class LoggerTest {
         logger.createSuccessLog(
                 info = Logger.Info(
                         affectedTable = Log.AffectedTable.APPOINTMENT,
-                        action = Log.Action.CREATE,
+                        action = "User Registration",
                         timestamp = Date(),
                         affectedRecordId = null
                 )
@@ -88,7 +89,7 @@ internal class LoggerTest {
         iterable.forEach {
             assertTrue(it.isSuccess)
             assertEquals(Log.AffectedTable.APPOINTMENT, it.affectedTable)
-            assertEquals(Log.Action.CREATE, it.action)
+            assertEquals("User Registration", it.action)
             assertNull(it.affectedRecordId)
             assertEquals(userContext.currentUserId(), it.userId)
             assertEquals(0, it.errors.size)
@@ -107,7 +108,7 @@ internal class LoggerTest {
         logger.createErrorLogs(
                 info = Logger.Info(
                         affectedTable = Log.AffectedTable.USER,
-                        action = Log.Action.CREATE,
+                        action = "Appointment Creation",
                         timestamp = Date(),
                         affectedRecordId = null
                 ),
@@ -122,7 +123,7 @@ internal class LoggerTest {
         iterableLogs.forEach {
             assertFalse(it.isSuccess)
             assertEquals(Log.AffectedTable.USER, it.affectedTable)
-            assertEquals(Log.Action.CREATE, it.action)
+            assertEquals("Appointment Creation", it.action)
             assertNull(it.affectedRecordId)
             assertNull(it.userId)
             assertEquals(2, it.errors.size)
@@ -149,7 +150,7 @@ internal class LoggerTest {
         logger.createErrorLogs(
                 info = Logger.Info(
                         affectedTable = Log.AffectedTable.USER,
-                        action = Log.Action.CREATE,
+                        action = "User Registration",
                         timestamp = Date(),
                         affectedRecordId = null
                 ),
@@ -164,7 +165,7 @@ internal class LoggerTest {
         iterableLogs.forEach {
             assertFalse(it.isSuccess)
             assertEquals(Log.AffectedTable.USER, it.affectedTable)
-            assertEquals(Log.Action.CREATE, it.action)
+            assertEquals("User Registration", it.action)
             assertNull(it.affectedRecordId)
             assertEquals(userContext.currentUserId(), it.userId)
             assertEquals(2, it.errors.size)

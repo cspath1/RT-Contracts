@@ -43,7 +43,7 @@ class UserLoginController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.LOG_IN,
+                            action = "User Login",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()
@@ -64,7 +64,7 @@ class UserLoginController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.LOG_IN,
+                                action = "User Login",
                                 affectedRecordId = it.id
                         )
                 )
@@ -75,7 +75,7 @@ class UserLoginController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.LOG_IN,
+                                action = "User Login",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

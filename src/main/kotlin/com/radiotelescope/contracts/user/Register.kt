@@ -22,7 +22,7 @@ class Register(
         private val request: Request,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository
-) : Command<Long, Multimap<ErrorTag, String>>{
+) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
      * that will handle all constraint checking and validations.

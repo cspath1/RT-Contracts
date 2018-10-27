@@ -33,13 +33,13 @@ data class UserRole(
         this.userId = userId
     }
 
-    enum class Role {
-        USER,
-        GUEST,
-        STUDENT,
-        RESEARCHER,
-        MEMBER,
-        ADMIN
+    enum class Role(val label: String){
+        USER("User"),
+        GUEST("Guest"),
+        STUDENT("Student"),
+        RESEARCHER("Researcher"),
+        MEMBER("Member"),
+        ADMIN("Admin")
     }
 
 

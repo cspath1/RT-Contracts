@@ -1,6 +1,7 @@
 package com.radiotelescope.security
 
 import com.radiotelescope.contracts.user.Authenticate
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.service.UserDetailsImpl
 import com.radiotelescope.security.service.UserDetailsServiceImpl
@@ -23,7 +24,8 @@ import org.springframework.stereotype.Component
 class AuthenticationProviderImpl(
         @Qualifier("UserDetailsService")
         private var userDetailsService: UserDetailsService,
-        private var userRepo: IUserRepository
+        private var userRepo: IUserRepository,
+        private var userRoleRepo: IUserRoleRepository
 ) : AuthenticationProvider {
     /**
      * Performs the user authentication using Spring Security
@@ -38,7 +40,7 @@ class AuthenticationProviderImpl(
 
         val verified = execute(
                 email = userDetails.username,
-                password = userDetails.password
+                password = authentication!!.credentials.toString()
         )
 
         if (!verified)
@@ -66,7 +68,8 @@ class AuthenticationProviderImpl(
                         email = email,
                         password = password
                 ),
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         return simpleResult.success != null

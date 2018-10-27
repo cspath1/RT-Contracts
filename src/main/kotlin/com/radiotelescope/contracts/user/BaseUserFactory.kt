@@ -40,7 +40,8 @@ class BaseUserFactory(
     override fun authenticate(request: Authenticate.Request): Command<UserInfo, Multimap<ErrorTag, String>> {
         return Authenticate(
                 request = request,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 
@@ -53,7 +54,8 @@ class BaseUserFactory(
     override fun retrieve(id: Long): Command<UserInfo, Multimap<ErrorTag, String>> {
         return Retrieve(
                 id = id,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 
@@ -66,17 +68,47 @@ class BaseUserFactory(
     override fun list(pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
         return List(
                 pageable = pageable,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 
     /**
      * Override of the [UserFactory.update] method that will return a [Update] command object
+     *
+     * @param request the [Update.Request] object
+     * @return a [Update] command object
      */
     override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>> {
         return Update(
                 request = request,
                 userRepo = userRepo
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.delete] method that will return a [Delete] command object
+     *
+     * @param id the User id
+     * @return a [Delete] command object
+     */
+    override fun delete(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return Delete(
+                id = id,
+                userRepo = userRepo
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.ban] method that will return a [Ban] command object
+     *
+     * @param id the User id
+     * @return a [Ban] command object
+     */
+    override fun ban(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return Ban(
+                userRepo = userRepo,
+                id = id
         )
     }
 }

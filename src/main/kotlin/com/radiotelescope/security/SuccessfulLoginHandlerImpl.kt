@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse
 /**
  * Concrete implementation of the [AuthenticationSuccessHandler] interface
  */
-class LoginHandlerImpl : AuthenticationSuccessHandler {
+class SuccessfulLoginHandlerImpl : AuthenticationSuccessHandler {
     /**
      * Override of the [AuthenticationSuccessHandler.onAuthenticationSuccess] method
      * that sets the session to be 10 days

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
@@ -21,7 +22,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-class ListFutureAppointmentByUserTest {
+class UserFutureListTest {
     @TestConfiguration
     internal class UtilTestContextConfiguration {
         @Bean
@@ -76,7 +77,7 @@ class ListFutureAppointmentByUserTest {
 
     @Test
     fun testValid_UserHasOneFutureAppointment_Success(){
-        val (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = UserFutureList(
                 userId = user1Id,
                 pageable = PageRequest.of(0, 10),
                 appointmentRepo = appointmentRepo,
@@ -94,7 +95,7 @@ class ListFutureAppointmentByUserTest {
     // Should only grab the future appointment
     @Test
     fun testValid_UserHasOneFutureAndOnePastAppointment_Success(){
-        val (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = UserFutureList(
                 userId = user1Id,
                 pageable = PageRequest.of(0, 10),
                 appointmentRepo = appointmentRepo,
@@ -109,13 +110,12 @@ class ListFutureAppointmentByUserTest {
         assertEquals(infoPage!!.content.size, 1)
 
         // should be the future appointment
-        assertTrue(Date().before(infoPage.content.get(0).startTime))
         assertTrue(Date().before(infoPage.content.get(0).endTime))
     }
 
     @Test
     fun testInvalid_NoApptWithSpecifiedUserId_Success(){
-        val (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = UserFutureList(
                 userId = user2Id,
                 pageable = PageRequest.of(1, 10),
                 appointmentRepo = appointmentRepo,
@@ -132,7 +132,7 @@ class ListFutureAppointmentByUserTest {
 
     @Test
     fun testInvalid_NoUserWithSpecifiedUserId_Failure(){
-        val (infoPage, error) = ListFutureAppointmentByUser(
+        val (infoPage, error) = UserFutureList(
                 userId = 123456789,
                 pageable = PageRequest.of(1, 10),
                 appointmentRepo = appointmentRepo,
@@ -146,4 +146,23 @@ class ListFutureAppointmentByUserTest {
         // Ensure it failed because of the userId
         assertTrue(error!![ErrorTag.USER_ID].isNotEmpty())
     }
+
+
+    @Test
+    fun getInfo() {
+        var page: Page<AppointmentInfo> = UserFutureList(user1Id, PageRequest.of(1, 10), appointmentRepo, userRepo).execute().success!!
+
+        if (page.hasContent())
+            println("page has content")
+        else println("page does not have content")
+
+
+        for (a in page)
+        {
+         println("startTime is: " +a.startTime)
+        }
+
+
+    }
+
 }

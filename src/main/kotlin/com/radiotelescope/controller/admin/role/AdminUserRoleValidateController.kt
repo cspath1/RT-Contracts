@@ -8,6 +8,7 @@ import com.radiotelescope.controller.model.role.ValidateForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -39,7 +40,7 @@ class AdminUserRoleValidateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER_ROLE,
-                            action = Log.Action.UPDATE,
+                            action = "User Role Validation",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -57,7 +58,7 @@ class AdminUserRoleValidateController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER_ROLE,
-                                    action = Log.Action.UPDATE,
+                                    action = "User Role Validation",
                                     affectedRecordId = id
                             )
                     )
@@ -70,7 +71,7 @@ class AdminUserRoleValidateController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER_ROLE,
-                                    action = Log.Action.UPDATE,
+                                    action = "User Role Validation",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -84,11 +85,13 @@ class AdminUserRoleValidateController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
-                                action = Log.Action.UPDATE,
+                                action = "User Role Validation",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
                 )
+
+                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
 

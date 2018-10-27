@@ -47,4 +47,4 @@ interface UserContext {
  *
  * @param missingRoles a [List] of missing [UserRole.Role] values
  */
-data class AccessReport(val missingRoles: List<UserRole.Role>)
+data class AccessReport(val missingRoles: List<UserRole.Role>?, val invalidResourceId: Map<String, Collection<String>>?)

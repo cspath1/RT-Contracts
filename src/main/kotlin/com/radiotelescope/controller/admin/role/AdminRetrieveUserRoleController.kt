@@ -43,7 +43,7 @@ class AdminRetrieveUserRoleController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
-                                action = Log.Action.RETRIEVE,
+                                action = "Retrieve",
                                 affectedRecordId = it.id
                         )
                 )
@@ -56,7 +56,7 @@ class AdminRetrieveUserRoleController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
-                                action = Log.Action.RETRIEVE,
+                                action = "Retrieve",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -70,7 +70,7 @@ class AdminRetrieveUserRoleController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER_ROLE,
-                            action = Log.Action.RETRIEVE,
+                            action = "Retrieve",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()

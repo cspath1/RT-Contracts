@@ -80,7 +80,7 @@ internal class BaseUserFactoryTest {
     }
 
     @Test
-    fun update(){
+    fun update() {
         // Call the factory method
         val cmd = factory.update(
                 request = Update.Request(
@@ -95,5 +95,27 @@ internal class BaseUserFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is Update)
+    }
+
+    @Test
+    fun delete() {
+        // Call the factory method
+        val cmd = factory.delete(
+                id = 311L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Delete)
+    }
+
+    @Test
+    fun ban() {
+        // Call the factory method
+        val cmd = factory.ban(
+                id = 311L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Ban)
     }
 }
