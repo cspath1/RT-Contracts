@@ -6,25 +6,22 @@ import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
-import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class AdminLogListController(
+class AdminLogErrorListController(
         private val logWrapper: AdminLogWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/logs"])
-    fun execute(@RequestParam("pageNumber") pageNumber: Int,
-                @RequestParam("pageSize") pageSize: Int): Result {
-        val pageRequest = PageRequest.of(pageNumber, pageSize)
-        logWrapper.list(
-                pageable = pageRequest
+    @GetMapping(value = ["/api/logs/{logId}/errors"])
+    fun execute(@PathVariable("logId") logId: Long): Result {
+        logWrapper.retrieveErrors(
+                logId = logId
         ) { it ->
             // If the command was a success
             it.success?.let {
@@ -40,7 +37,7 @@ class AdminLogListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.LOG,
-                            action = "Log List Retrieval",
+                            action = "Log Error List Retrieval",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()
