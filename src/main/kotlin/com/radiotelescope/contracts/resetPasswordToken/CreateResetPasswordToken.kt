@@ -39,7 +39,7 @@ class CreateResetPasswordToken (
         var token = UUID.randomUUID().toString()
         while(resetPasswordTokenRepo.existsByToken(token))
             token = UUID.randomUUID().toString()
-
+        token.replace("-", "", ignoreCase = false)
         val theResetPasswordToken = ResetPasswordToken(
                 token = token,
                 expirationDate = Date(System.currentTimeMillis() + (1 * 24 * 60 * 60 *1000))
