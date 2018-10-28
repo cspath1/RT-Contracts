@@ -20,7 +20,7 @@ interface IResetPasswordTokenRepository : CrudRepository<ResetPasswordToken, Lon
 
 
     /**
-     * Spring Repository method that will grab a [ResetPasswordToken] by the email field
+     * Spring Repository method that will grab a [ResetPasswordToken] by the token field
      *
      * @param token the token
      * @return a [ResetPasswordToken]

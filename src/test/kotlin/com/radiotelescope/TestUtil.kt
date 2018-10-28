@@ -1,5 +1,7 @@
 package com.radiotelescope
 
+import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.error.Error
@@ -37,6 +39,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var logRepo: ILogRepository
+
+    @Autowired
+    private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -190,5 +195,19 @@ internal class TestUtil {
         theResetPasswordToken.user = user
 
         return resetPasswordTokenRepo.save(theResetPasswordToken)
+    }
+
+    fun createAccountActivateToken(
+            user: User,
+            token: String
+    ) : AccountActivateToken {
+        val theAccountActivateToken = AccountActivateToken(
+                token = token,
+                expirationDate = Date(System.currentTimeMillis() + (1 * 24 * 60 * 60 * 1000))
+        )
+
+        theAccountActivateToken.user = user
+
+        return accountActivateTokenRepo.save(theAccountActivateToken)
     }
 }
