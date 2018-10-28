@@ -74,7 +74,7 @@ class Create(
             if (!errors.isEmpty)
                 return errors
 
-            errors = validateAvailableTime()
+            errors = validateAvailableAllottedTime()
 
         }
 
@@ -83,9 +83,9 @@ class Create(
 
     /**
      * Method responsible for checking if a user has enough available time
-     * to schedule the new observation
+     * to schedule the new observation, as well as having a membership role
      */
-    private fun validateAvailableTime(): HashMultimap<ErrorTag, String>? {
+    private fun validateAvailableAllottedTime(): HashMultimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
@@ -99,10 +99,12 @@ class Create(
             }
 
             when (theUserRole.role) {
+                // Guest -> 5 hours
                 UserRole.Role.GUEST -> {
                     if ((totalTime + newAppointmentTime) > Appointment.GUEST_APPOINTMENT_TIME_CAP)
                         errors.put(ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
                 }
+                // Everyone else -> 50 hours
                 else -> {
                     if ((totalTime + newAppointmentTime) > Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP)
                         errors.put(ErrorTag.ALLOTTED_TIME, "Max allotted observation time is 50 hours at any given time")

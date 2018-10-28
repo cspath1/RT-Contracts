@@ -78,12 +78,16 @@ class Update(
         if (!errors.isEmpty)
             return errors
 
-        errors = validateAvailableTime()
+        errors = validateAvailableAllottedTime()
 
         return errors
     }
 
-    private fun validateAvailableTime(): HashMultimap<ErrorTag, String> {
+    /**
+     * Method responsible for checking if a user has enough available time
+     * to schedule the new observation, as well as having a membership role
+     */
+    private fun validateAvailableAllottedTime(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
@@ -116,7 +120,12 @@ class Update(
     }
 
     /**
-     * Determine the amount of allotted time currently being used by the user
+     * Determine the amount of allotted time currently being used by the user.
+     * This more or less just frees up the allotted time for the database record
+     * so it can check against the new (or same) time that was passed in with the
+     * request
+     *
+     * @param theAppointment the [Appointment]
      */
     private fun determineCurrentUsedTime(theAppointment: Appointment): Long {
         var totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(theAppointment.user!!.id) ?: 0
