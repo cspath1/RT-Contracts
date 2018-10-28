@@ -129,12 +129,9 @@ class Register(
             // Uses SHA-1 by default. Adds the salt value (secret)
             // to the password and encrypts it 50 times, specifying
             // a hash size of 256
-            val passwordEncoder = Pbkdf2PasswordEncoder(
-                   "YCAS2018",
-                    50,
-                    256
-            )
+            val passwordEncoder = User.rtPasswordEncoder
             val encryptedPassword = passwordEncoder.encode(password)
+
             val user = User(
                     firstName = firstName,
                     lastName = lastName,

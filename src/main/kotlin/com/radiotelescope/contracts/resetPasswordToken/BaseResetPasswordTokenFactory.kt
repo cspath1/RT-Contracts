@@ -19,13 +19,13 @@ class BaseResetPasswordTokenFactory (
 ) : ResetPasswordTokenFactory {
 
     /**
-     * Override of the [ResetPasswordTokenFactory.resetPasswordToken] method that will return a
+     * Override of the [ResetPasswordTokenFactory.requestPasswordReset] method that will return a
      * [CreateResetPasswordToken] command object
      *
      * @param email the [User] email
      * @return a [CreateResetPasswordToken] command object
      */
-    override fun resetPasswordToken(email: String): Command<String, Multimap<ErrorTag, String>> {
+    override fun requestPasswordReset(email: String): Command<String, Multimap<ErrorTag, String>> {
         return CreateResetPasswordToken(
                 email = email,
                 resetPasswordTokenRepo = resetPasswordTokenRepo,

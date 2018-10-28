@@ -12,7 +12,7 @@ import java.util.*
 /**
  * Override of the [Command] interface method used for Appointment creation
  *
- * @param userId the User Id
+ * @param email the User's email
  * @param resetPasswordTokenRepo the [IResetPasswordTokenRepository] interface
  * @param userRepo the [IUserRepository] interface
  */
@@ -39,14 +39,16 @@ class CreateResetPasswordToken (
         var token = UUID.randomUUID().toString().replace("-", "", false)
         while(resetPasswordTokenRepo.existsByToken(token))
             token = UUID.randomUUID().toString().replace("-", "", false)
+
         val theResetPasswordToken = ResetPasswordToken(
                 token = token,
                 expirationDate = Date(System.currentTimeMillis() + (1 * 24 * 60 * 60 *1000))
         )
+
         theResetPasswordToken.user = userRepo.findByEmail(email)
         resetPasswordTokenRepo.save(theResetPasswordToken)
-        return SimpleResult(theResetPasswordToken.token, null)
 
+        return SimpleResult(theResetPasswordToken.token, null)
     }
 
     /**

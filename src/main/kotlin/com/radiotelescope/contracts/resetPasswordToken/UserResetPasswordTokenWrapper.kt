@@ -16,7 +16,7 @@ import com.radiotelescope.repository.user.IUserRepository
 class UserResetPasswordTokenWrapper (
         private val resetPasswordTokenRepo: IResetPasswordTokenRepository,
         private val userRepo: IUserRepository
-){
+) {
 
     /**
      * Reset Password Token function that will return a [CreateResetPasswordToken] command object.
@@ -25,7 +25,7 @@ class UserResetPasswordTokenWrapper (
      * @param email the User email
      * @return a [CreateResetPasswordToken] command object
      */
-    fun resetPasswordToken(email: String): Command<String, Multimap<ErrorTag, String>> {
+    fun requestPasswordReset(email: String): Command<String, Multimap<ErrorTag, String>> {
         return CreateResetPasswordToken(
                 email = email,
                 resetPasswordTokenRepo = resetPasswordTokenRepo,

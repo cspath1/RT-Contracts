@@ -11,7 +11,7 @@ interface ResetPasswordTokenFactory {
      * @param email the user email
      * @return a [Command] object
      */
-    fun resetPasswordToken(email: String) : Command<String, Multimap<ErrorTag, String>>
+    fun requestPasswordReset(email: String) : Command<String, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command use to resetPassword for a user

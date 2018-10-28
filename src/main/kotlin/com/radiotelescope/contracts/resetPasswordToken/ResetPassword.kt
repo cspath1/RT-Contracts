@@ -65,6 +65,7 @@ class ResetPassword (
 
         return errors
     }
+
     /**
      * Data class containing all fields necessary for user reset password. Implements the
      * [BaseUpdateRequest] interface and overrides the [BaseUpdateRequest.updateEntity]
@@ -78,11 +79,7 @@ class ResetPassword (
             // Uses SHA-1 by default. Adds the salt value (secret)
             // to the password and encrypts it 50 times, specifying
             // a hash size of 256
-            val passwordEncoder = Pbkdf2PasswordEncoder(
-                    "YCAS2018",
-                    50,
-                    256
-            )
+            val passwordEncoder = User.rtPasswordEncoder
             entity.password = passwordEncoder.encode(password)
 
             return entity

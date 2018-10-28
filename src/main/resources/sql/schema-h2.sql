@@ -58,4 +58,11 @@ CREATE TABLE user_role (
   user_id INT(11) NOT NULL,
   role ENUM('User', 'Guest', 'Student', 'Researcher', 'Member', 'Admin'),
   approved TINYINT(1) DEFAULT '0'
+);
+
+CREATE TABLE reset_password_token (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  token VARCHAR(100) NOT NULL,
+  expiration_date DATETIME NOT NULL
 )

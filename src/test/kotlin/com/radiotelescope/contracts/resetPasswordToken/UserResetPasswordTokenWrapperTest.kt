@@ -52,7 +52,7 @@ internal class UserResetPasswordTokenWrapperTest {
 
     @Test
     fun testValid_CreateResetPasswordToken_Success(){
-        val (token, error) = wrapper.resetPasswordToken(
+        val (token, error) = wrapper.requestPasswordReset(
                 email = user.email
         ).execute()
 
@@ -73,5 +73,4 @@ internal class UserResetPasswordTokenWrapperTest {
         assertNotNull(id)
         assertNull(error)
     }
-
 }

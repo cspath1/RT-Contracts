@@ -43,7 +43,7 @@ data class UpdateForm(
             errors.put(ErrorTag.PASSWORD, "Password may not be blank")
         if (password != passwordConfirm)
             errors.put(ErrorTag.PASSWORD_CONFIRM, "Passwords do not match")
-        if (!password!!.matches(User.passwordRegex))
+        if (!password.matches(User.passwordRegex))
             errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
 
         return if (errors.isEmpty) null else errors

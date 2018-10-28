@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.resetPasswordToken
 
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
+import com.radiotelescope.contracts.resetPasswordToken.ResetPassword
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.resetPasswordToken.UpdateForm
@@ -20,7 +21,6 @@ class UserResetPasswordController (
         private val resetPasswordTokenWrapper: UserResetPasswordTokenWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
-
     /**
      * Execute method that is in charge of taking the [UpdateForm]
      * and adapting it to the a [ResetPassword.Request] if possible.
@@ -34,8 +34,8 @@ class UserResetPasswordController (
      * @param form the [UpdateForm] object
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/users/resetPassword/{token}"])
-    fun execute(@PathVariable("token") token: String,
+    @PostMapping(value = ["/api/users/resetPassword"])
+    fun execute(@RequestParam("token") token: String,
                 @RequestBody form: UpdateForm
     ): Result {
         // If the form validation fails, respond with errors
@@ -45,7 +45,7 @@ class UserResetPasswordController (
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = "User Reset Password",
+                            action = "User Password Reset",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()
@@ -68,7 +68,7 @@ class UserResetPasswordController (
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = "User Reset Password",
+                                action = "User Password Reset",
                                 affectedRecordId = it
                         )
                 )
@@ -77,7 +77,7 @@ class UserResetPasswordController (
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = "User Reset Password",
+                                action = "User Password Reset",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

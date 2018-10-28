@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 
 /**
@@ -62,11 +63,7 @@ class Authenticate(
             return errors
 
         val theUser = userRepo.findByEmail(request.email)
-        val passwordEncoder = Pbkdf2PasswordEncoder(
-                "YCAS2018",
-                50,
-                256
-        )
+        val passwordEncoder = User.rtPasswordEncoder
 
         if (!passwordEncoder.matches(request.password, theUser?.password))
             errors.put(ErrorTag.PASSWORD, "Invalid Email or Password")

@@ -33,6 +33,19 @@ CREATE TABLE log(
   KEY success_idx (success)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS reset_password_token;
+CREATE TABLE reset_password_token (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  token VARCHAR(100) NOT NULL,
+  expiration_date DATETIME NOT NULL,
+
+  PRIMARY KEY (id),
+  UNIQUE KEY (user_id),
+  UNIQUE KEY (token),
+  KEY expiration_date_idx (expiration_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS rf_data;
 CREATE TABLE rf_data (
   id INT(11) NOT NULL AUTO_INCREMENT,
