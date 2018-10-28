@@ -62,7 +62,15 @@ interface UserFactory {
      * Abstract command used to ba a user's account
      *
      * @param id the User id
-     * @return a [Command] objects
+     * @return a [Command] object
      */
     fun ban(id: Long): Command<Long, Multimap<ErrorTag, String>>
+    /**
+     * Abstract command used to unban a user's account
+     *
+     * @param id the User id
+     * @return a [Command] object
+     */
+    fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>>
+
 }

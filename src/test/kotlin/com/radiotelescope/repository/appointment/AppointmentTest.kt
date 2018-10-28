@@ -47,8 +47,8 @@ internal class AppointmentTest {
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.Scheduled,
-                startTime = Date(System.currentTimeMillis() + 10000L),
-                endTime = Date(System.currentTimeMillis() + 30000L),
+                startTime = Date(System.currentTimeMillis() + 100000L),
+                endTime = Date(System.currentTimeMillis() + 300000L),
                 isPublic = true
         )
 
@@ -93,6 +93,30 @@ internal class AppointmentTest {
 
         assertEquals(1, pageOfAppointments.content.size)
         assertEquals(pastAppointment.id, pageOfAppointments.content[0].id)
+    }
+
+    @Test
+    fun testFindTotalScheduledTimeForUser() {
+        // Test first with the only scheduled appointment
+        var totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(user.id)
+
+        // 300,000 - 100,000
+        assertEquals(200000L, totalTime)
+
+        // Persist a much more longer appointment
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(System.currentTimeMillis() + 15200000L),
+                endTime = Date(System.currentTimeMillis() + 18272500L),
+                isPublic = true
+        )
+
+        totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(user.id)
+
+        // (300,000 - 100,000) + (18,272,500 - 15,200,000)
+        assertEquals(3272500L, totalTime)
     }
 
 }

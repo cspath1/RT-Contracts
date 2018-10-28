@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 
 import com.radiotelescope.repository.user.IUserRepository
@@ -24,6 +25,9 @@ internal class BaseAppointmentFactoryTest {
     private lateinit var userRepo: IUserRepository
 
     @Autowired
+    private lateinit var userRoleRepo: IUserRoleRepository
+
+    @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
@@ -36,7 +40,8 @@ internal class BaseAppointmentFactoryTest {
         factory = BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 

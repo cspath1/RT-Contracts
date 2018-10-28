@@ -30,8 +30,8 @@ class UserUserWrapper(
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository
 ) : UserRetrievable<Long, SimpleResult<UserInfo, Multimap<ErrorTag, String>>>,
-UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>,
-UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
+        UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>,
+        UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
     /**
      * Register function that will return a [Register] command object. This does not need any
      * user role authentication since the user will not be signed in at the time
@@ -186,5 +186,24 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
                 requiredRoles = listOf(UserRole.Role.ADMIN),
                 successCommand = factory.ban(id)
         ).execute(withAccess)
+    }
+
+    /**
+     *  Wrapper method for the [UserFactory.unban] method that adds Spring
+     *  Security authentication to the [Unban] command object
+     *
+     *  @param id the User id
+     *  @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun unban(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        // If the user is logged in
+        if (context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.delete(id)
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 }

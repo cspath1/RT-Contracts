@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 /**
- * Abstract factory interface with methods for all [Appointment] CRUD operations
+ * Abstract factory interface with methods for all [Appointment] Command objects
  */
 interface AppointmentFactory {
     /**

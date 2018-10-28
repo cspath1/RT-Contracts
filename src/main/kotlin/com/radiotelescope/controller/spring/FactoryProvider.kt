@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
@@ -29,6 +30,11 @@ interface FactoryProvider {
      * Abstract method to return the [UserRFDataWrapper] class
      */
     fun getRFDataWrapper(): UserRFDataWrapper
+
+    /**
+     * Abstract method to return the [AdminLogWrapper] class
+     */
+    fun getLogWrapper(): AdminLogWrapper
 
     /**
      * Abstract method to return the [UserResetPasswordTokenWrapper] class

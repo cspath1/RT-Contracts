@@ -407,4 +407,50 @@ internal class UserUserWrapperTest {
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
+
+    @Test
+    fun testUnban_NotLoggedIn_Failure() {
+        // Do not log the user in
+
+        val error = wrapper.unban(
+                id = userId
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testUnban_NotAdmin_Failure() {
+        // Log the user in as something other than an admin
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.STUDENT)
+
+        val error = wrapper.unban(
+                id = userId
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testUnban_Admin_Failure() {
+        // Log the user in as an admin
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.unban(
+                id = userId
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
 }

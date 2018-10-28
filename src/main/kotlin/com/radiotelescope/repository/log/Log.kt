@@ -44,6 +44,8 @@ data class Log(
         USER_ROLE,
         APPOINTMENT,
         RF_DATA,
+        LOG,
+        ERROR,
         RESET_PASSWORD_TOKEN
     }
 }

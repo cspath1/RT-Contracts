@@ -1,6 +1,7 @@
-package com.radiotelescope.controller.admin.role
+package com.radiotelescope.controller.admin.user
 
-import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.user.Unban
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
@@ -9,53 +10,58 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle retrieval of User Roles for an Admin
+ * REST Controller to handle "unbanning" a User
  *
- * @param roleWrapper the [UserUserRoleWrapper]
+ * @param userWrapper the [UserUserWrapper]
  * @param logger the [Logger] service
  */
 @RestController
-class AdminRetrieveUserRoleController(
-        private val roleWrapper: UserUserRoleWrapper,
+class AdminUserUnbanController(
+        private val userWrapper: UserUserWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of taking the incoming
-     * id [PathVariable] and calling the [UserUserRoleWrapper.retrieve]
-     * method. If this method returns an [AccessReport], that means the user
-     * did not pass authentication.
+     * Execute method that is in charge of taking the [PathVariable]
+     * id and calling the [UserUserWrapper.unban] method. If this method
+     * returns an [AccessReport] this means the user did not pass authentication
+     * and the controller should respond accordingly.
      *
-     * Otherwise, the command was executed and the controller should respond
-     * back to the client accordingly based on if it was a success or an error
+     * Otherwise, the [Unban] command object was executed, and the
+     * controller should respond based on whether the command was a
+     * success or not
+     *
+     * @param id the User id
      */
+    @PutMapping(value = ["/api/users/{userId}/unban"])
     @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/roles/{roleId}"])
-    fun execute(@PathVariable("roleId") roleId: Long): Result {
-        roleWrapper.retrieve(roleId) { it ->
-            // If the command was a success
+    fun execute(@PathVariable("userId") id: Long): Result {
+        userWrapper.unban(id) { it ->
+            // If the command called after successful validation
+            // is a success
             it.success?.let {
+                // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.USER_ROLE,
-                                action = "Retrieve",
-                                affectedRecordId = it.id
+                                affectedTable = Log.AffectedTable.USER,
+                                action = "User Unban",
+                                affectedRecordId = it
                         )
                 )
 
                 result = Result(data = it)
             }
-            // Otherwise, it was a failure
+            // Otherwise, it was an error
             it.error?.let {
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.USER_ROLE,
-                                action = "Retrieve",
+                                affectedTable = Log.AffectedTable.USER,
+                                action = "User Unban",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -68,8 +74,8 @@ class AdminRetrieveUserRoleController(
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.USER_ROLE,
-                            action = "Retrieve",
+                            affectedTable = Log.AffectedTable.USER,
+                            action = "User Unban",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()

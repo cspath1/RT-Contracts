@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 /**
- * Wrapper that takes a [AppointmentFactory] and is responsible for all
+ * Wrapper that takes an [AppointmentFactory] and is responsible for all
  * user role validations for endpoints for the Appointment Entity
  *
  * @property context the [UserContext] interface

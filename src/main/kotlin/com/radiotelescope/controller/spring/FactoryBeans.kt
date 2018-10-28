@@ -2,6 +2,8 @@ package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.appointment.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.log.AdminLogWrapper
+import com.radiotelescope.contracts.log.BaseLogFactory
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.BaseRFDataFactory
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
@@ -75,7 +77,8 @@ class FactoryBeans(
                 factory = BaseAppointmentFactory(
                         userRepo = repositories.userRepo,
                         appointmentRepo = repositories.appointmentRepo,
-                        telescopeRepo = repositories.telescopeRepo
+                        telescopeRepo = repositories.telescopeRepo,
+                        userRoleRepo = repositories.userRoleRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo
         )
@@ -93,6 +96,17 @@ class FactoryBeans(
                         rfDataRepo = repositories.rfDataRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo
+        )
+    }
+
+    @Bean
+    override fun getLogWrapper(): AdminLogWrapper {
+        return AdminLogWrapper(
+                context = userContext,
+                factory = BaseLogFactory(
+                        logRepo = repositories.logRepo,
+                        userRepo = repositories.userRepo
+                )
         )
     }
 

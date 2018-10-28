@@ -2,7 +2,10 @@ package com.radiotelescope.contracts.appointment
 
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -37,6 +40,9 @@ internal class CreateTest {
     private lateinit var userRepo: IUserRepository
 
     @Autowired
+    private lateinit var userRoleRepo: IUserRoleRepository
+
+    @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
@@ -52,13 +58,23 @@ internal class CreateTest {
 
     private lateinit var user: User
 
+    private val date = Date()
+    private val twoHours = 2 * 60 * 60 * 1000
+
     @Before
     fun setUp() {
         user = testUtil.createUser("cspath1@ycp.edu")
     }
 
     @Test
-    fun testValidConstraints_Success() {
+    fun testValidConstraintsGuest_EnoughTime_Success() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
         // Create a copy of the baseRequest with the correct
         // user id
         val requestCopy = baseRequest.copy(userId = user.id)
@@ -68,6 +84,7 @@ internal class CreateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo
         ).execute()
 
@@ -88,6 +105,45 @@ internal class CreateTest {
     }
 
     @Test
+    fun test_Researcher_EnoughTime_Success() {
+        // Make the user a researcher
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        // Create an appointment for two hours
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = date,
+                endTime = Date(date.time + twoHours),
+                isPublic = true
+        )
+
+        // 8 hour appointment
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                startTime = Date(date.time + twoHours),
+                endTime = Date(date.time + (twoHours * 5))
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNotNull(id)
+        assertNull(errors)
+    }
+
+    @Test
     fun testInvalidTelescopeId_Failure() {
         // Create a copy of the baseRequest with the correct
         // user id but an invalid telescope id
@@ -100,6 +156,7 @@ internal class CreateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo
         ).execute()
 
@@ -120,6 +177,7 @@ internal class CreateTest {
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo
         ).execute()
 
@@ -147,6 +205,7 @@ internal class CreateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo
         ).execute()
 
@@ -171,6 +230,7 @@ internal class CreateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo
         ).execute()
 
@@ -182,4 +242,96 @@ internal class CreateTest {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.START_TIME].isNotEmpty())
     }
+
+    @Test
+    fun testNotEnoughTime_Guest_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // 8 hour appointment
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                startTime = Date(date.time + twoHours),
+                endTime = Date(date.time + (twoHours * 5))
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.ALLOTTED_TIME].isNotEmpty())
+    }
+
+    @Test
+    fun testNotEnoughTime_Other_Failure() {
+        // Make the user a researcher
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        // 52 hour appointment
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                startTime = Date(date.time + twoHours),
+                endTime = Date(date.time + (twoHours * 27))
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.ALLOTTED_TIME].isNotEmpty())
+    }
+
+    @Test
+    fun testNoMembershipRole_Failure() {
+        // Do not create an approved category of service for the user
+
+        // Create a copy of the baseRequest with the correct
+        // user id
+        val requestCopy = baseRequest.copy(userId = user.id)
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
@@ -33,6 +35,9 @@ internal class BanTest {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
+    @Autowired
+    private lateinit var userRoleRepo: IUserRoleRepository
+
     private var userId = -1L
 
     @Before
@@ -48,7 +53,8 @@ internal class BanTest {
         // Execute the command
         val (id, errors) = Ban(
                 id = userId,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // The success data type should not be null
@@ -70,7 +76,8 @@ internal class BanTest {
         // Execute the command
         val (id, errors) = Ban(
                 id = 311L,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // The success data type should be null
@@ -80,5 +87,29 @@ internal class BanTest {
         assertNotNull(errors)
 
         assertTrue(errors!![ErrorTag.ID].isNotEmpty())
+    }
+
+    @Test
+    fun testUserIsAdmin_Failure() {
+        // Make the user an admin
+        testUtil.createUserRolesForUser(
+                userId = userId,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
+
+        val (id, errors) = Ban(
+                id = userId,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // The success data type should be null
+        assertNull(id)
+
+        // The errors should not be
+        assertNotNull(errors)
+
+        assertTrue(errors!![ErrorTag.ROLES].isNotEmpty())
     }
 }
