@@ -43,6 +43,7 @@ data class Log(
         USER,
         USER_ROLE,
         APPOINTMENT,
-        RF_DATA
+        RF_DATA,
+        RESET_PASSWORD_TOKEN
     }
 }
