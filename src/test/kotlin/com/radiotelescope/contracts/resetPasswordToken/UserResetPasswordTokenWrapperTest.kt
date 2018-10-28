@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.resetPasswordToken
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
+import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.assertNotNull
@@ -37,14 +38,16 @@ internal class UserResetPasswordTokenWrapperTest {
 
     private lateinit var wrapper: UserResetPasswordTokenWrapper
     private lateinit var user: User
+    private lateinit var token: ResetPasswordToken
 
     @Before
     fun init() {
         // Initialize the wrapper
         wrapper = UserResetPasswordTokenWrapper(resetPasswordTokeRepo, userRepo)
 
-        // Persist user
+        // Persist user and token
         user = testUtil.createUser("rpim@ycp.edu")
+        token = testUtil.createResetPasswordToken(user)
     }
 
     @Test
@@ -56,4 +59,19 @@ internal class UserResetPasswordTokenWrapperTest {
         assertNotNull(token)
         assertNull(error)
     }
+
+    @Test
+    fun testValid_ResetPassword_Success(){
+        val (id, error) = wrapper.resetPassword(
+                request = ResetPassword.Request(
+                       password = "ValidPassword1",
+                       passwordConfirm = "ValidPassword1"
+                ),
+                token = token.token
+        ).execute()
+
+        assertNotNull(id)
+        assertNull(error)
+    }
+
 }
