@@ -36,10 +36,9 @@ class CreateResetPasswordToken (
             return SimpleResult(null, errors)
 
         // Create Token and check that the same token string has not been created
-        var token = UUID.randomUUID().toString()
+        var token = UUID.randomUUID().toString().replace("-", "", false)
         while(resetPasswordTokenRepo.existsByToken(token))
-            token = UUID.randomUUID().toString()
-        token.replace("-", "", ignoreCase = false)
+            token = UUID.randomUUID().toString().replace("-", "", false)
         val theResetPasswordToken = ResetPasswordToken(
                 token = token,
                 expirationDate = Date(System.currentTimeMillis() + (1 * 24 * 60 * 60 *1000))
