@@ -34,7 +34,7 @@ class UserResetPasswordController (
      * @param form the [UpdateForm] object
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/users/resetPassword"])
+    @PostMapping(value = ["/api/resetPassword"])
     fun execute(@RequestParam("token") token: String,
                 @RequestBody form: UpdateForm
     ): Result {

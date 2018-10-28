@@ -26,7 +26,7 @@ class UserResetPasswordRequestController (
      * @param email the user email
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/users/resetPasswordRequest"])
+    @PostMapping(value = ["/api/requestPasswordReset"])
     fun execute(@RequestBody email: String): Result {
         let { _ ->
             val simpleResult = resetPasswordTokenWrapper.requestPasswordReset(
