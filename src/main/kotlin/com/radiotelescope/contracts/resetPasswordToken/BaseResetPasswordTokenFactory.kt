@@ -32,4 +32,21 @@ class BaseResetPasswordTokenFactory (
                 userRepo = userRepo
         )
     }
+
+    /**
+     * Override of the [ResetPasswordTokenFactory.resetPassword] method that will return a
+     * [ResetPassword] command object
+     *
+     * @param request the [ResetPassword.Request]
+     * @param token the ResetPasswordToken token
+     * @return a [ResetPassword] command object
+     */
+    override fun resetPassword(request: ResetPassword.Request, token: String): Command<Long, Multimap<ErrorTag, String>> {
+        return ResetPassword(
+                request = request,
+                token = token,
+                resetPasswordTokenRepo = resetPasswordTokenRepo,
+                userRepo = userRepo
+        )
+    }
 }
