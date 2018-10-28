@@ -2,15 +2,18 @@ buildscript {
 	ext {
 		kotlinVersion = '1.2.70'
 		springBootVersion = '2.0.5.RELEASE'
+        dokkaVersion = '0.9.17'
 	}
 	repositories {
 		mavenCentral()
+		jcenter()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 		classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}"
+		classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokkaVersion}"
 	}
 }
 
@@ -21,6 +24,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
+apply plugin: 'org.jetbrains.dokka'
 
 group = 'com.radiotelescope'
 
@@ -67,6 +71,11 @@ processResources {
 repositories {
 	mavenCentral()
 	mavenLocal()
+}
+
+dokka {
+	outputFormat = 'javadoc'
+	outputDirectory = "./docs"
 }
 
 jacocoTestCoverageVerification {

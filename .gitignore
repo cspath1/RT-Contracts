@@ -4,6 +4,7 @@
 gradlew
 gradle
 gradlew.bat
+docs/
 
 **/application_remote.properties
 **/application_local.properties
