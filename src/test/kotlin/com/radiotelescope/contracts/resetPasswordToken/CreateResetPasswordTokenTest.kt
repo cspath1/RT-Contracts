@@ -45,7 +45,7 @@ internal class CreateResetPasswordTokenTest {
     fun testValid_UserExist_Success(){
         // Execute the command
         val (token, errors) = CreateResetPasswordToken(
-                userId = user.id,
+                email = user.email,
                 userRepo = userRepo,
                 resetPasswordTokenRepo = resetPasswordTokenRepo
         ).execute()
@@ -59,7 +59,7 @@ internal class CreateResetPasswordTokenTest {
     fun testValid_UserDoesNotExist_Success(){
         // Execute the command
         val (token, errors) = CreateResetPasswordToken(
-                userId = 123456789,
+                email = "",
                 userRepo = userRepo,
                 resetPasswordTokenRepo = resetPasswordTokenRepo
         ).execute()
@@ -70,6 +70,6 @@ internal class CreateResetPasswordTokenTest {
 
         // Make sure it failed for the correct reason
         assertEquals(1, errors!!.size())
-        assertTrue(errors[ErrorTag.USER_ID].isNotEmpty())
+        assertTrue(errors[ErrorTag.EMAIL].isNotEmpty())
     }
 }

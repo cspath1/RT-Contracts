@@ -17,7 +17,7 @@ import java.util.*
  * @param userRepo the [IUserRepository] interface
  */
 class CreateResetPasswordToken (
-        private val userId: Long,
+        private val email: String,
         private val resetPasswordTokenRepo: IResetPasswordTokenRepository,
         private val userRepo: IUserRepository
 ) : Command<String, Multimap<ErrorTag, String>> {
@@ -44,7 +44,7 @@ class CreateResetPasswordToken (
                 token = token,
                 expirationDate = Date(System.currentTimeMillis() + (1 * 24 * 60 * 60 *1000))
         )
-        theResetPasswordToken.user = userRepo.findById(userId).get()
+        theResetPasswordToken.user = userRepo.findByEmail(email)
         resetPasswordTokenRepo.save(theResetPasswordToken)
         return SimpleResult(theResetPasswordToken.token, null)
 
@@ -58,8 +58,8 @@ class CreateResetPasswordToken (
         val errors = HashMultimap.create<ErrorTag, String>()
 
         // Check to see if user actually exists
-        if (!userRepo.existsById(userId))
-            errors.put(ErrorTag.USER_ID, "No User is found with user Id")
+        if (!userRepo.existsByEmail(email))
+            errors.put(ErrorTag.EMAIL, "No User is found with specified email")
 
         return errors
     }

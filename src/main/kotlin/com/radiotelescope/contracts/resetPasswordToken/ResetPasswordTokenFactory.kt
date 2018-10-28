@@ -8,8 +8,8 @@ interface ResetPasswordTokenFactory {
     /**
      * Abstract command used to create token for resetting user password
      *
-     * @param userId the user Id
+     * @param email the user email
      * @return a [Command] object
      */
-    fun resetPasswordToken(userId: Long) : Command<String, Multimap<ErrorTag, String>>
+    fun resetPasswordToken(email: String) : Command<String, Multimap<ErrorTag, String>>
 }

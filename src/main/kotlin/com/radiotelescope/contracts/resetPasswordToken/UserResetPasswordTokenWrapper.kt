@@ -19,15 +19,15 @@ class UserResetPasswordTokenWrapper (
 ){
 
     /**
-     * Reset Password Token function taht will return a [CreateResetPasswordToken] command object.
+     * Reset Password Token function that will return a [CreateResetPasswordToken] command object.
      * This does not need any user role authentication since the user will not be signed in a the time
      *
-     * @param userId the User Id
+     * @param email the User email
      * @return a [CreateResetPasswordToken] command object
      */
-    fun resetPasswordToken(userId: Long): Command<String, Multimap<ErrorTag, String>> {
+    fun resetPasswordToken(email: String): Command<String, Multimap<ErrorTag, String>> {
         return CreateResetPasswordToken(
-                userId = userId,
+                email = email,
                 resetPasswordTokenRepo = resetPasswordTokenRepo,
                 userRepo = userRepo
         )

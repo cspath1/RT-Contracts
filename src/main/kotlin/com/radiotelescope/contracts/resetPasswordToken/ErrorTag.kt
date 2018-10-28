@@ -6,6 +6,7 @@ package com.radiotelescope.contracts.resetPasswordToken
 enum class ErrorTag {
     ID,
     USER_ID,
+    EMAIL,
     TOKEN,
     EXPIRATION_DATE
 }

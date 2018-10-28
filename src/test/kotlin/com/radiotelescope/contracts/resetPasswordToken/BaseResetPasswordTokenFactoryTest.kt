@@ -36,7 +36,7 @@ internal class BaseResetPasswordTokenFactoryTest {
     fun resetPasswordToken(){
         // Call the factory method
         val cmd = factory.resetPasswordToken(
-                userId = 1L
+                email = ""
         )
 
         // Ensure it is the correct command
