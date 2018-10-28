@@ -8,5 +8,7 @@ enum class ErrorTag {
     USER_ID,
     EMAIL,
     TOKEN,
-    EXPIRATION_DATE
+    EXPIRATION_DATE,
+    PASSWORD,
+    PASSWORD_CONFIRM
 }
