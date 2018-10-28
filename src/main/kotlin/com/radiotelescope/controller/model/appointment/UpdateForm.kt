@@ -7,12 +7,26 @@ import com.radiotelescope.contracts.appointment.Update
 import com.radiotelescope.controller.model.BaseForm
 import java.util.*
 
+/**
+ * Update form that takes nullable versions of the [Update.Request] object.
+ * It is in charge of making sure these values are not null before adapting it
+ * to a [Update.Request] object
+ *
+ * @param startTime the Appointment's new start time
+ * @param endTime the Appointment's new end time
+ * @param telescopeId the Appointment's new telescope id
+ * @param isPublic whether the Appointment is to be public or not
+ */
 data class UpdateForm (
         val startTime: Date?,
         val endTime: Date?,
         val telescopeId: Long?,
         val isPublic: Boolean?
 ) : BaseForm<Update.Request> {
+    /**
+     * Override of the [BaseForm.toRequest] method that
+     * adapts the form into a [Update.Request] object
+     */
     override fun toRequest(): Update.Request {
         return Update.Request(
                 id = -1L,
@@ -23,6 +37,11 @@ data class UpdateForm (
         )
     }
 
+    /**
+     * Makes sure all required fields are not null
+     *
+     * @return a [HashMultimap] of errors or null
+     */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 

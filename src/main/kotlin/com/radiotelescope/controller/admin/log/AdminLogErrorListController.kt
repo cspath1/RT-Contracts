@@ -12,11 +12,24 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Rest Controller used to retrieve a list of errors for an error Log
+ *
+ * @param logWrapper the [AdminLogWrapper]
+ * @param logger the [Logger] service
+ */
 @RestController
 class AdminLogErrorListController(
         private val logWrapper: AdminLogWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that takes the logId [PathVariable] and
+     * calls the [AdminLogWrapper.retrieveErrors] method. It will
+     * then respond to the client based on if the user was authenticated,
+     * the command was executed and was a success, or the command was
+     * executed and it was a failure
+     */
     @CrossOrigin(value = ["http://localhost:8081"])
     @GetMapping(value = ["/api/logs/{logId}/errors"])
     fun execute(@PathVariable("logId") logId: Long): Result {

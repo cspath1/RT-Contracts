@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component
  * @param telescopeRepo the [ITelescopeRepository] interface
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param rfDataRepo the [IRFDataRepository] interface
+ * @param resetPasswordTokenRepo the [IResetPasswordTokenRepository] interface
  */
 @Component
 @Configuration

@@ -2,9 +2,13 @@ package com.radiotelescope.contracts.resetPasswordToken
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 
+/**
+ * Abstract factory interface with methods for all [ResetPasswordToken]
+ * Command objects
+ */
 interface ResetPasswordTokenFactory {
-
     /**
      * Abstract command use to create token for resetting user password
      *

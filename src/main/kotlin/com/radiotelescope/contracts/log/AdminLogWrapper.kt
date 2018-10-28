@@ -25,7 +25,7 @@ class AdminLogWrapper(
      * authentication to the [LogList] command object.
      *
      * @param pageable the [Pageable] interface
-     * @return An [AccessReport]
+     * @return An [AccessReport] if authentication fails or null
      */
     fun list(pageable: Pageable, withAccess: (result: SimpleResult<Page<LogInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
@@ -36,6 +36,13 @@ class AdminLogWrapper(
         ).execute(withAccess)
     }
 
+    /**
+     * Wrapper method for the [LogFactory.retrieveErrors] method that adds Spring Security
+     * authenticaiton to the [RetrieveErrors] command object
+     *
+     * @param logId the Log id
+     * @return An [AccessReport] if authentication fails or null
+     */
     fun retrieveErrors(logId: Long, withAccess: (result: SimpleResult<List<ErrorInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN),

@@ -43,5 +43,4 @@ data class UserInfo(
              status = user.status,
              membershipRole = userRoleLabel
      )
-
 }

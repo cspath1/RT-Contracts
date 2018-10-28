@@ -40,9 +40,11 @@ class CreateResetPasswordToken (
         while(resetPasswordTokenRepo.existsByToken(token))
             token = UUID.randomUUID().toString().replace("-", "", false)
 
+        // Expiration date for token will be 1 day
+        // NOTE: Date objects are set using milliseconds
         val theResetPasswordToken = ResetPasswordToken(
                 token = token,
-                expirationDate = Date(System.currentTimeMillis() + (1 * 24 * 60 * 60 *1000))
+                expirationDate = Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000))
         )
 
         theResetPasswordToken.user = userRepo.findByEmail(email)

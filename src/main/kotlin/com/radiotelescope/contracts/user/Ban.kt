@@ -22,9 +22,8 @@ class Ban(
         private val userRoleRepo: IUserRoleRepository
 ): Command<Long, Multimap<ErrorTag, String>> {
     /**
-     * Override of the [Command] execute method. It checks to see if
-     * the supplied id refers to an existing [User] Entity, and if so,
-     * it will set their status to banned and respond with the user id
+     * Override of the [Command.execute] method that, given the request passes
+     * validation, will set a User's status to banned and set their account to inactive
      */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
@@ -38,6 +37,11 @@ class Ban(
         }
     }
 
+    /**
+     * Method responsible for constraint checking/validation. It ensures
+     * that the given user id refers to an existing entity and that said
+     * entity is not an admin
+     */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 

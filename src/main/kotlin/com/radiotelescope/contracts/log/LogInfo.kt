@@ -4,6 +4,20 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.User
 import java.util.*
 
+/**
+ * Data class representing a read-only model of
+ * the [Log] Entity
+ *
+ * @param id the Log's id
+ * @param userId the Log's user id
+ * @param userFirstName the Log's user's first name
+ * @param userLastName the Log's user's last name
+ * @param affectedRecordId the Log's affected record id
+ * @param affectedTable the Log's affected table
+ * @param action the Log's action
+ * @param timestamp the Log's timestamp
+ * @param isSuccess whether the action was a success or not
+ */
 data class LogInfo(
         val id: Long,
         val userId: Long?,
@@ -15,6 +29,12 @@ data class LogInfo(
         val timestamp: Date,
         val isSuccess: Boolean
 ) {
+    /**
+     * Secondary constructor used when there was no logged
+     * in user making the action
+     *
+     * @param log the [Log]
+     */
     constructor(log: Log): this(
             id = log.id,
             userId = null,
@@ -27,6 +47,13 @@ data class LogInfo(
             isSuccess = log.isSuccess
     )
 
+    /**
+     * Secondary constructor user when there was a logged
+     * in user making the action
+     *
+     * @param log the [Log]
+     * @param user the [User]
+     */
     constructor(log: Log, user: User): this(
             id = log.id,
             userId = log.userId,

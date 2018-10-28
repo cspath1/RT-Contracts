@@ -150,6 +150,11 @@ class Update(
             val endTime: Date,
             val isPublic: Boolean
     ): BaseUpdateRequest<Appointment> {
+        /**
+         * Override of the [BaseUpdateRequest.updateEntity] method that
+         * takes an [Appointment] and will update all of its values to the
+         * values in the request
+         */
         override fun updateEntity(entity: Appointment): Appointment {
             entity.telescopeId = telescopeId
             entity.startTime = startTime

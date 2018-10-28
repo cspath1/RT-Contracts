@@ -99,6 +99,9 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [AdminLogWrapper] object
+     */
     @Bean
     override fun getLogWrapper(): AdminLogWrapper {
         return AdminLogWrapper(
@@ -110,6 +113,9 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserResetPasswordTokenWrapper] object
+     */
     @Bean
     override fun getResetPasswordTokenWrapper(): UserResetPasswordTokenWrapper {
         return UserResetPasswordTokenWrapper(
