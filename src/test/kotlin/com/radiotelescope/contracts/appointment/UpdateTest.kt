@@ -9,6 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.telescope.Telescope
 import com.radiotelescope.repository.user.User
@@ -38,6 +40,9 @@ internal class UpdateTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
+    private lateinit var userRoleRepo: IUserRoleRepository
+
+    @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
 
 
@@ -46,6 +51,9 @@ internal class UpdateTest {
 
     private var appointmentId = -1L
     private var userId = -1L
+
+    private val date = Date()
+    private val twoHours = 2 * 60 * 60 * 1000
 
     @Before
     fun setUp() {
@@ -71,24 +79,59 @@ internal class UpdateTest {
     }
 
     @Test
-    fun testValid_CorrectConstraints_Success(){
+    fun testValid_CorrectConstraints_Guest_Success(){
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
         val (id, errors) = Update(
                 request = Update.Request(
                         id = appointmentId,
-                        startTime = Date(appointment.endTime.time + 10000L),
-                        endTime = Date(appointment.endTime.time + 40000L),
+                        startTime = Date(appointment.endTime.time + twoHours),
+                        endTime = Date(appointment.endTime.time + (twoHours * 2)),
                         telescopeId = 1L,
                         isPublic = false
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
 
         ).execute()
 
         // Make sure it was not error
         assertNotNull(id)
         assertNull(errors)
+    }
 
+    @Test
+    fun testValid_CorrectConstraints_Other_Success() {
+        // Make the user a researcher
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        val (id, errors) = Update(
+                request = Update.Request(
+                        id = appointmentId,
+                        startTime = Date(appointment.endTime.time + twoHours),
+                        endTime = Date(appointment.endTime.time + (twoHours * 25)),
+                        telescopeId = 1L,
+                        isPublic = false
+                ),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+
+        ).execute()
+
+        // Make sure it was not error
+        assertNotNull(id)
+        assertNull(errors)
     }
 
     @Test
@@ -103,8 +146,8 @@ internal class UpdateTest {
 
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
-
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // Make sure it was an error
@@ -127,8 +170,8 @@ internal class UpdateTest {
 
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
-
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // Make sure it was an error
@@ -150,8 +193,8 @@ internal class UpdateTest {
                         isPublic = appointment.isPublic
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
-
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // Make sure it was an error
@@ -173,8 +216,8 @@ internal class UpdateTest {
                         isPublic = appointment.isPublic
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
-
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
         ).execute()
 
         // Make sure it was an error
@@ -184,4 +227,98 @@ internal class UpdateTest {
         // Make sure it failed for the expected reason
         assertTrue(errors!![ErrorTag.TELESCOPE_ID].isNotEmpty())
     }
+
+    @Test
+    fun testInvalid_ExceedAllottedGuestLimit_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        val (id, errors) = Update(
+                request = Update.Request(
+                        id = appointmentId,
+                        startTime = Date(appointment.endTime.time + twoHours),
+                        endTime = Date(appointment.endTime.time + (twoHours * 5)),
+                        telescopeId = 1L,
+                        isPublic = false
+                ),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+
+        ).execute()
+
+        // Make sure it was an error
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it failed for the expected reason
+        assertTrue(errors!![ErrorTag.ALLOTTED_TIME].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_ExceededAllottedOtherLimit_Failure() {
+        // Make the user a researcher
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        val (id, errors) = Update(
+                request = Update.Request(
+                        id = appointmentId,
+                        startTime = Date(appointment.endTime.time + twoHours),
+                        endTime = Date(appointment.endTime.time + (twoHours * 29)),
+                        telescopeId = 1L,
+                        isPublic = false
+                ),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+
+        ).execute()
+
+        // Make sure it was an error
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it failed for the expected reason
+        assertTrue(errors!![ErrorTag.ALLOTTED_TIME].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_NoCategoryOfService_Failure() {
+        // Make the user a researcher
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = false
+        )
+
+        val (id, errors) = Update(
+                request = Update.Request(
+                        id = appointmentId,
+                        startTime = Date(appointment.endTime.time + twoHours),
+                        endTime = Date(appointment.endTime.time + (twoHours * 29)),
+                        telescopeId = 1L,
+                        isPublic = false
+                ),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+
+        ).execute()
+
+        // Make sure it was an error
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it failed for the expected reason
+        assertTrue(errors!![ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
+    }
+
 }

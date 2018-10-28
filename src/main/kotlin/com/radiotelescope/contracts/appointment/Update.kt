@@ -7,6 +7,8 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import java.util.*
 
@@ -21,7 +23,8 @@ import java.util.*
 class Update(
         private val request: Update.Request,
         private val appointmentRepo: IAppointmentRepository,
-        private val telescopeRepo: ITelescopeRepository
+        private val telescopeRepo: ITelescopeRepository,
+        private val userRoleRepo: IUserRoleRepository
 ):  Command<Long, Multimap<ErrorTag,String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -50,7 +53,7 @@ class Update(
      * endTime is after the startTime.
      */
     private fun validateRequest(): Multimap<ErrorTag, String> {
-        val errors = HashMultimap.create<ErrorTag, String>()
+        var errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
             if (appointmentRepo.existsById(id)) {
@@ -60,18 +63,70 @@ class Update(
                         errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
+
                 }
                 else{
-                    errors.put(ErrorTag.TELESCOPE_ID, "No Telescope was found with specified telescope Id: {$telescopeId}")
+                    errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId not found")
                     return errors
                 }
             } else {
-                errors.put(ErrorTag.ID, "No Appointment was found with specified Id: {$id}")
+                errors.put(ErrorTag.ID, "Appointment #$id not found")
                 return errors
             }
         }
 
+        if (!errors.isEmpty)
+            return errors
+
+        errors = validateAvailableTime()
+
         return errors
+    }
+
+    private fun validateAvailableTime(): HashMultimap<ErrorTag, String> {
+        val errors = HashMultimap.create<ErrorTag, String>()
+
+        with(request) {
+            val theAppointment = appointmentRepo.findById(id).get()
+            val newTime = endTime.time - startTime.time
+            val theUserRole = userRoleRepo.findMembershipRoleByUserId(theAppointment.user!!.id)
+
+            if (theUserRole == null) {
+                errors.put(ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
+                return errors
+            }
+
+            // Free up the time associated with this appointment since it
+            // may have changed
+            val totalTime = determineCurrentUsedTime(theAppointment)
+
+            when (theUserRole.role) {
+                UserRole.Role.GUEST -> {
+                    if ((totalTime + newTime) > Appointment.GUEST_APPOINTMENT_TIME_CAP)
+                        errors.put(ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
+                }
+                else -> {
+                    if ((totalTime + newTime) > Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP)
+                        errors.put(ErrorTag.ALLOTTED_TIME, "Max allotted observation time is 50 hours at any given time")
+                }
+            }
+        }
+
+        return errors
+    }
+
+    /**
+     * Determine the amount of allotted time currently being used by the user
+     */
+    private fun determineCurrentUsedTime(theAppointment: Appointment): Long {
+        var totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(theAppointment.user!!.id) ?: 0
+
+        // This could potentially be 0 if the appointment being
+        // updated is a requested appointment and no others exist
+        if (totalTime != 0L)
+            totalTime -= (theAppointment.endTime.time - theAppointment.startTime.time)
+
+        return totalTime
     }
 
     /**

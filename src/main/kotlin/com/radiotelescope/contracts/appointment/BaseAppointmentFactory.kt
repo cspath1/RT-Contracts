@@ -82,7 +82,8 @@ class BaseAppointmentFactory(
         return Update(
                 request = request,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 

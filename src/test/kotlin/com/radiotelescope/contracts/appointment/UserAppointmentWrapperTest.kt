@@ -661,6 +661,13 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testValidUpdate_UserIsOwner_Success(){
+        // Make the user a researcher
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
         // Simulate a login
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
@@ -684,6 +691,13 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testValidUpdate_Admin_Success(){
+        // Make the user a admin
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
+
         // Simulate a login
         context.login(admin.id)
         context.currentRoles.add(UserRole.Role.ADMIN)
