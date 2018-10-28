@@ -30,7 +30,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "AND end_time > CURRENT_TIMESTAMP " +
             "AND status = 'Scheduled') AS scheduled_appointments",
             nativeQuery = true)
-    fun findTotalScheduledAppointmentTimeForUser(userId: Long): Long
+    fun findTotalScheduledAppointmentTimeForUser(userId: Long): Long?
 
     /**
      * Spring Repository method that will return all future [Appointment] records

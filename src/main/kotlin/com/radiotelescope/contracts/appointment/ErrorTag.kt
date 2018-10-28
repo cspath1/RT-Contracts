@@ -11,5 +11,7 @@ enum class ErrorTag{
     STATUS,
     TELESCOPE_ID,
     PUBLIC,
-    PAGE_PARAMS
+    PAGE_PARAMS,
+    CATEGORY_OF_SERVICE,
+    ALLOTTED_TIME
 }

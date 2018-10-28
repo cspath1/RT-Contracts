@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -43,6 +44,9 @@ internal class UserAppointmentWrapperTest {
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Autowired
+    private lateinit var userRoleRepo: IUserRoleRepository
 
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
@@ -100,7 +104,8 @@ internal class UserAppointmentWrapperTest {
         factory = BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
         )
 
         wrapper = UserAppointmentWrapper(
@@ -131,6 +136,13 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testCreatePublic_User_Success() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
         // Simulate a login
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
@@ -175,6 +187,13 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testCreatePrivate_Researcher_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
         // Simulate a login and make the user a researcher
         context.login(user.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))

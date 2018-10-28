@@ -7,6 +7,8 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -23,6 +25,7 @@ class Create(
     private val request: Request,
     private val appointmentRepo: IAppointmentRepository,
     private val userRepo: IUserRepository,
+    private val userRoleRepo: IUserRoleRepository,
     private val telescopeRepo: ITelescopeRepository
 ) : Command<Long, Multimap<ErrorTag,String>> {
     /**
@@ -53,7 +56,7 @@ class Create(
 
         // TODO - Add more validation as more features are implemented
 
-        val errors = HashMultimap.create<ErrorTag,String>()
+        var errors = HashMultimap.create<ErrorTag,String>()
         with(request) {
             if (!userRepo.existsById(userId)) {
                 errors.put(ErrorTag.USER_ID, "User Id #$userId could not be found")
@@ -67,9 +70,47 @@ class Create(
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime.before(Date()))
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
+
+            if (!errors.isEmpty)
+                return errors
+
+            errors = validateAvailableTime()
+
         }
 
       return if (errors.isEmpty) null else errors
+    }
+
+    /**
+     * Method responsible for checking if a user has enough available time
+     * to schedule the new observation
+     */
+    private fun validateAvailableTime(): HashMultimap<ErrorTag, String>? {
+        val errors = HashMultimap.create<ErrorTag, String>()
+
+        with(request) {
+            val newAppointmentTime = endTime.time - startTime.time
+            val totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(userId) ?: 0
+            val theUserRole = userRoleRepo.findMembershipRoleByUserId(userId)
+
+            if (theUserRole == null) {
+                errors.put(ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
+                return errors
+            }
+
+            when (theUserRole.role) {
+                UserRole.Role.GUEST -> {
+                    if ((totalTime + newAppointmentTime) > Appointment.GUEST_APPOINTMENT_TIME_CAP)
+                        errors.put(ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
+                }
+                else -> {
+                    if ((totalTime + newAppointmentTime) > Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP)
+                        errors.put(ErrorTag.ALLOTTED_TIME, "Max allotted observation time is 50 hours at any given time")
+                }
+            }
+        }
+
+        return errors
     }
 
     /**

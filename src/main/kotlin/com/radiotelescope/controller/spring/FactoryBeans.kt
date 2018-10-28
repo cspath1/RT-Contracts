@@ -76,7 +76,8 @@ class FactoryBeans(
                 factory = BaseAppointmentFactory(
                         userRepo = repositories.userRepo,
                         appointmentRepo = repositories.appointmentRepo,
-                        telescopeRepo = repositories.telescopeRepo
+                        telescopeRepo = repositories.telescopeRepo,
+                        userRoleRepo = repositories.userRoleRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo
         )

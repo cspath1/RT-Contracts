@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -20,7 +21,8 @@ import org.springframework.data.domain.Pageable
 class BaseAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val telescopeRepo: ITelescopeRepository
+        private val telescopeRepo: ITelescopeRepository,
+        private val userRoleRepo: IUserRoleRepository
 ) : AppointmentFactory {
     /**
      * Override of the [AppointmentFactory.retrieve] method that will return a [Retrieve]
@@ -65,7 +67,8 @@ class BaseAppointmentFactory(
                 request = request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 
