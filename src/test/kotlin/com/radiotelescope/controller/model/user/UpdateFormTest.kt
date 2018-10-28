@@ -2,6 +2,7 @@ package com.radiotelescope.controller.model.user
 
 import com.radiotelescope.contracts.user.ErrorTag
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
@@ -14,6 +15,18 @@ class UpdateFormTest {
             phoneNumber = "717-555-1111",
             company = "York College of PA"
     )
+
+    @Test
+    fun testToRequest() {
+        val theRequest = baseForm.toRequest()
+
+        assertEquals(baseForm.id!!, theRequest.id)
+        assertEquals(baseForm.firstName!!, theRequest.firstName)
+        assertEquals(baseForm.lastName!!, theRequest.lastName)
+        assertEquals(baseForm.email!!, theRequest.email)
+        assertEquals(baseForm.phoneNumber, theRequest.phoneNumber)
+        assertEquals(baseForm.company, theRequest.company)
+    }
 
     @Test
     fun testValidConstraints_NoErrors(){

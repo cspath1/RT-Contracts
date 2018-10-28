@@ -6,6 +6,19 @@ import org.junit.Test
 
 class UpdateFormTest {
 
+    @Test
+    fun testToRequest() {
+        val baseForm = UpdateForm(
+                password = "ValidPassword1",
+                passwordConfirm = "ValidPassword1"
+        )
+
+        val theRequest = baseForm.toRequest()
+
+        assertEquals(baseForm.password!!, theRequest.password)
+        assertEquals(baseForm.passwordConfirm!!, theRequest.passwordConfirm)
+    }
+
 
     @Test
     fun testValid_CorrectContraints_Success(){
@@ -15,7 +28,7 @@ class UpdateFormTest {
                 passwordConfirm = "ValidPassword1"
         ).validateRequest()
 
-        // Make sure no errors occured
+        // Make sure no errors occurred
         assertNull(errors)
     }
 
