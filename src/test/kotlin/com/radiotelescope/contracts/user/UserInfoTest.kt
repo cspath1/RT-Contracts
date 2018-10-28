@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.user
 
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Test
@@ -15,7 +16,8 @@ internal class UserInfoTest {
                 company = "York College of PA",
                 phoneNumber = "717-823-2216",
                 active = true,
-                status = User.Status.Active
+                status = User.Status.Active,
+                membershipRole = UserRole.Role.GUEST.label
         )
 
         assertEquals("Cody", userInfo.firstName)
@@ -26,6 +28,7 @@ internal class UserInfoTest {
         assertEquals("717-823-2216", userInfo.phoneNumber)
         assertTrue(userInfo.active)
         assertEquals(User.Status.Active, userInfo.status)
+        assertEquals(UserRole.Role.GUEST.label, userInfo.membershipRole)
     }
 
     @Test
@@ -43,7 +46,7 @@ internal class UserInfoTest {
         user.status = User.Status.Active
         user.id = 1L
 
-        val userInfo = UserInfo(user)
+        val userInfo = UserInfo(user, UserRole.Role.GUEST.label)
 
         assertEquals("Cody", userInfo.firstName)
         assertEquals("Spath", userInfo.lastName)
@@ -53,5 +56,6 @@ internal class UserInfoTest {
         assertEquals("717-823-2216", userInfo.phoneNumber)
         assertTrue(userInfo.active)
         assertEquals(User.Status.Active, userInfo.status)
+        assertEquals(UserRole.Role.GUEST.label, userInfo.membershipRole)
     }
 }

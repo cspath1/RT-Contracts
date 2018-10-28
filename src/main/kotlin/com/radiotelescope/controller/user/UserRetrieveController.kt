@@ -1,7 +1,5 @@
 package com.radiotelescope.controller.user
 
-import com.google.common.collect.HashMultimap
-import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.contracts.user.Retrieve
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestController
@@ -33,12 +31,12 @@ class UserRetrieveController(
      *
      * Otherwise, execute the [UserUserWrapper.retrieve] method. If this
      * method returns an [AccessReport] respond with the errors. If not,
-     * this means the [Retrieve] command was executed, and the execute
-     * method should check if this was a success or not
+     * this means the [Retrieve] command was executed, check if the
+     * method was a success or not
      *
      * @param id the User's id
      */
-    @GetMapping(value = ["/users/{id}"])
+    @GetMapping(value = ["/api/users/{id}"])
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@PathVariable("id") id: Long): Result {
         // If the supplied path variable is not null, call the
@@ -51,7 +49,7 @@ class UserRetrieveController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.RETRIEVE,
+                                action = "User Retrieval",
                                 affectedRecordId = it.id
                         )
                 )
@@ -64,7 +62,7 @@ class UserRetrieveController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.RETRIEVE,
+                                action = "User Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -78,7 +76,7 @@ class UserRetrieveController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.RETRIEVE,
+                            action = "User Retrieval",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()

@@ -100,6 +100,6 @@ internal class UnbanTest {
 
         assertTrue(errors != null)
         assertTrue(id == null)
-        }
+    }
 
 }

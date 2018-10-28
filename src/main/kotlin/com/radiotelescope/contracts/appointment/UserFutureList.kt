@@ -19,7 +19,7 @@ import org.springframework.data.domain.Pageable
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
  */
-class ListFutureAppointmentByUser(
+class UserFutureList(
         private val userId : Long,
         private val pageable: Pageable,
         private val appointmentRepo : IAppointmentRepository,

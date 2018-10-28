@@ -43,7 +43,7 @@ class AppointmentCreateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = Log.Action.CREATE,
+                            action = "Appointment Creation",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()
@@ -62,7 +62,7 @@ class AppointmentCreateController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = Log.Action.CREATE,
+                                    action = "Appointment Creation",
                                     affectedRecordId = it
                             )
                     )
@@ -75,7 +75,7 @@ class AppointmentCreateController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = Log.Action.CREATE,
+                                    action ="Appointment Creation",
                                     affectedRecordId = null
                             ),
                             errors = it.toStringMap()
@@ -89,7 +89,7 @@ class AppointmentCreateController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = Log.Action.CREATE,
+                                action = "Appointment Creation",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

@@ -4,6 +4,8 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 
@@ -27,15 +29,17 @@ class Unban(
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        //user does not exist
+        // User does not exist
         if (!userRepo.existsById(id)) {
             errors.put(ErrorTag.ID, "User Id #$id not found")
-        } //user exists
-        else{
-            if (userRepo.findById(id).get().status == User.Status.Active){
+        } // User exists
+        else {
+            val theUser = userRepo.findById(id).get()
+
+            if (theUser.status == User.Status.Active){
                 errors.put(ErrorTag.ID, "User found by Id #$id is not banned")
             }
-            if (userRepo.findById(id).get().active){
+            if (theUser.active){
                 errors.put(ErrorTag.ID, "User found by id #$id is already active")
             }
         }

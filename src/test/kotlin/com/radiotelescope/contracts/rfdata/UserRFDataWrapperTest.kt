@@ -91,7 +91,7 @@ internal class UserRFDataWrapperTest {
     }
 
     @Test
-    fun testValidConstraints_Public_UserIsOwner_Success() {
+    fun testRetrieve_Public_UserIsOwner_Success() {
         // Simulate a login and add the necessary role
         context.login(ownerUser.id)
         context.currentRoles.add(UserRole.Role.USER)
@@ -108,7 +108,7 @@ internal class UserRFDataWrapperTest {
     }
 
     @Test
-    fun testValid_Public_UserNotOwner_Success() {
+    fun testRetrieve_Public_UserNotOwner_Success() {
         // Simulate a login as a different user (not the admin)
         context.login(differentUser.id)
         context.currentRoles.add(UserRole.Role.USER)
@@ -125,7 +125,7 @@ internal class UserRFDataWrapperTest {
     }
 
     @Test
-    fun testValid_Private_Admin_Success() {
+    fun testRetrieve_Private_Admin_Success() {
         // Simulate a login as a different user (not the admin)
         context.login(differentUser.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
@@ -142,7 +142,7 @@ internal class UserRFDataWrapperTest {
     }
 
     @Test
-    fun testInvalid_Private_UserNotOwner_Failure() {
+    fun testRetrieve_Private_UserNotOwner_Failure() {
         // Make the appointment private
         completedAppointment.isPublic = false
         appointmentRepo.save(completedAppointment)
@@ -159,11 +159,11 @@ internal class UserRFDataWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
-    fun testInvalid_NotLoggedIn_Failure() {
+    fun testRetrieve_NotLoggedIn_Failure() {
         // Call the factory method
         val error = wrapper.retrieveAppointmentData(
                 appointmentId = completedAppointment.id
@@ -172,6 +172,20 @@ internal class UserRFDataWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testRetrieve_NonExistentAppointment_Failure() {
+        // Call the factory method with an invalid id
+        val error = wrapper.retrieveAppointmentData(
+                appointmentId = 311L
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertNull(error!!.missingRoles)
+        assertNotNull(error.invalidResourceId)
     }
 }

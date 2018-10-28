@@ -2,8 +2,14 @@ package com.radiotelescope
 
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.error.Error
+import com.radiotelescope.repository.error.IErrorRepository
+import com.radiotelescope.repository.log.ILogRepository
+import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.Telescope
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,6 +26,12 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Autowired
+    private lateinit var errorRepo: IErrorRepository
+
+    @Autowired
+    private lateinit var logRepo: ILogRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -96,9 +108,67 @@ internal class TestUtil {
         return appointmentRepo.save(theAppointment)
     }
 
+    fun createLog(
+            userId: Long?,
+            affectedRecordId: Long?,
+            affectedTable: Log.AffectedTable,
+            action: String,
+            timestamp: Date,
+            isSuccess: Boolean
+    ): Log {
+        val theLog = Log(
+                affectedTable = affectedTable,
+                action = action,
+                timestamp = timestamp,
+                affectedRecordId = null
+        )
+
+        theLog.userId = userId
+        theLog.isSuccess = isSuccess
+
+        return logRepo.save(theLog)
+    }
+
+    fun createErrorLog(
+            userId: Long?,
+            affectedRecordId: Long?,
+            affectedTable: Log.AffectedTable,
+            action: String,
+            timestamp: Date,
+            isSuccess: Boolean,
+            errors: Map<String, Collection<String>>
+    ): Log {
+        val theLog = createLog(
+                userId = userId,
+                affectedRecordId = affectedRecordId,
+                affectedTable = affectedTable,
+                action = action,
+                timestamp = timestamp,
+                isSuccess = isSuccess
+        )
+
+        errors.keys.forEach { it ->
+            val errorList = errors[it]
+            if (errorList != null && errorList.isNotEmpty()) {
+                errorList.forEach { error ->
+                    val err = Error(
+                            log = theLog,
+                            field = it,
+                            message = error
+                    )
+
+                    errorRepo.save(err)
+                    theLog.errors.add(err)
+                }
+            }
+        }
+
+        return logRepo.save(theLog)
+    }
+
     fun setInactiveStatus(
             user: User
-    ):User{
+    ): User{
         user.active = false
         user.status = User.Status.Inactive
         return userRepo.save(user)

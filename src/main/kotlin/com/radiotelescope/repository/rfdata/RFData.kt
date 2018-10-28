@@ -1,6 +1,7 @@
 package com.radiotelescope.repository.rfdata
 
 import com.radiotelescope.repository.appointment.Appointment
+import java.util.*
 import javax.persistence.*
 
 /**
@@ -26,6 +27,9 @@ class RFData {
     @Column(name = "intensity", nullable = false)
     private var intensity: Long? = null
 
+    @Column(name = "time_captured", nullable = false)
+    private var timeCaptured: Date? = null
+
     fun getId(): Long {
         return id
     }
@@ -36,5 +40,9 @@ class RFData {
 
     fun getIntensity(): Long? {
         return intensity!!
+    }
+
+    fun getTimeCaptured(): Date? {
+        return timeCaptured
     }
 }

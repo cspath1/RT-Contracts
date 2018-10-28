@@ -9,6 +9,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
@@ -80,6 +81,17 @@ internal class BaseUserFactoryTest {
     }
 
     @Test
+    fun list() {
+        // Call the factory method
+        val cmd = factory.list(
+                pageable = PageRequest.of(0, 10)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is List)
+    }
+
+    @Test
     fun update() {
         // Call the factory method
         val cmd = factory.update(
@@ -106,5 +118,27 @@ internal class BaseUserFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is Delete)
+    }
+
+    @Test
+    fun ban() {
+        // Call the factory method
+        val cmd = factory.ban(
+                id = 311L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Ban)
+    }
+
+    @Test
+    fun unban() {
+        // Call the factory method
+        val cmd = factory.unban(
+                id = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Unban)
     }
 }

@@ -44,7 +44,7 @@ class AdminUserListController(
     @CrossOrigin(value = ["http://localhost:8081"])
     @GetMapping(value = ["/api/users"])
     fun execute(@RequestParam("page") pageNumber: Int?,
-                @RequestParam("size") pageSize: Int?) {
+                @RequestParam("size") pageSize: Int?): Result {
         // If any of the request params are null, respond with errors
         if ((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
             val errors = pageErrors()
@@ -52,7 +52,7 @@ class AdminUserListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.RETRIEVE,
+                            action = "User LogList Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -68,21 +68,22 @@ class AdminUserListController(
                     // Create success logs
                     page.content.forEach {
                         logger.createSuccessLog(
-                                info = Logger.createInfo(Log.AffectedTable.USER,
-                                        action = Log.Action.RETRIEVE,
+                                info = Logger.createInfo(
+                                        affectedTable = Log.AffectedTable.USER,
+                                        action = "User LogList Retrieval",
                                         affectedRecordId = it.id
                                 )
                         )
                     }
 
-                    result = Result(data = it)
+                    result = Result(data = page)
                 }
                 // If the command was a failure
                 it.error?.let { errors ->
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
-                                    action = Log.Action.RETRIEVE,
+                                    action = "User LogList Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -96,7 +97,7 @@ class AdminUserListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.RETRIEVE,
+                                action = "User LogList Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -105,6 +106,8 @@ class AdminUserListController(
                 result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
+
+        return result
     }
 
     /**

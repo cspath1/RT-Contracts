@@ -17,8 +17,7 @@ data class Log(
         @Enumerated(value = EnumType.STRING)
         var affectedTable: AffectedTable,
         @Column(name = "action")
-        @Enumerated(value = EnumType.STRING)
-        var action: Action,
+        var action: String,
         @Column(name = "timestamp")
         var timestamp: Date,
         @Column(name = "affected_record_id")
@@ -44,15 +43,8 @@ data class Log(
         USER,
         USER_ROLE,
         APPOINTMENT,
-        RF_DATA
-    }
-
-    enum class Action {
-        CREATE,
-        RETRIEVE,
-        UPDATE,
-        DELETE,
-        LOG_IN,
-        LIST_FUTURE_APPOINTMENT_BY_USER
+        RF_DATA,
+        LOG,
+        ERROR
     }
 }

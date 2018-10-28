@@ -1,9 +1,14 @@
 package com.radiotelescope.controller.model
 
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.databind.JsonSerializable
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer
 import org.springframework.http.HttpStatus
 
 /**
- * Class used to send information back to the client
+ * Class used to send information back to the client. Implements the
+ * [JsonSerializable] class
  *
  * @property data the data returned on success
  * @property errors a map of any errors
@@ -13,9 +18,39 @@ class Result(
         var data: Any? = null,
         var errors: Map<String, Collection<String>>? = null,
         var status: HttpStatus? = null
-) {
+) : JsonSerializable {
     init {
         if (status == null) status = if (errors == null) HttpStatus.OK
         else HttpStatus.BAD_REQUEST
+    }
+
+    /**
+     * Override of the [JsonSerializable.serialize] method that defines
+     * how the [Result] object is serialized
+     */
+    override fun serialize(gen: JsonGenerator?, serializers: SerializerProvider?) {
+        if (gen != null) {
+            gen.writeStartObject()
+
+            gen.writeStringField("statusCode", status?.value().toString())
+            gen.writeStringField("statusReason", status?.reasonPhrase)
+
+            if (data != null) {
+                gen.writeObjectField("data", data)
+            }
+
+            if (errors != null && errors!!.isNotEmpty())
+                gen.writeObjectField("errors", errors)
+
+            gen.writeEndObject()
+        }
+    }
+
+    /**
+     * Override of the [JsonSerializable.serializeWithType] method that
+     * serializes the [Result] object
+     */
+    override fun serializeWithType(gen: JsonGenerator?, serializers: SerializerProvider?, typeSer: TypeSerializer?) {
+        serialize(gen, serializers)
     }
 }

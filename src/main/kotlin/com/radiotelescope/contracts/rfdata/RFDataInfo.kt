@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.rfdata
 
 import com.radiotelescope.repository.rfdata.RFData
+import java.util.*
 
 /**
  * Data class representing a read-only model of the
@@ -13,7 +14,8 @@ import com.radiotelescope.repository.rfdata.RFData
 data class RFDataInfo(
         val id: Long,
         val appointmentId: Long,
-        val intensity: Long
+        val intensity: Long,
+        val timeCaptured: Date
 ) {
     /**
      * Secondary constructor that takes an RFData Entity
@@ -24,6 +26,7 @@ data class RFDataInfo(
     constructor(rfData: RFData) : this(
             id = rfData.getId(),
             appointmentId = rfData.getAppointment()!!.id,
-            intensity = rfData.getIntensity()!!
+            intensity = rfData.getIntensity()!!,
+            timeCaptured = rfData.getTimeCaptured()!!
     )
 }

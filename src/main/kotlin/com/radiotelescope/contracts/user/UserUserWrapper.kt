@@ -30,8 +30,8 @@ class UserUserWrapper(
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository
 ) : UserRetrievable<Long, SimpleResult<UserInfo, Multimap<ErrorTag, String>>>,
-UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>,
-UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
+        UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>,
+        UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
     /**
      * Register function that will return a [Register] command object. This does not need any
      * user role authentication since the user will not be signed in at the time
@@ -57,7 +57,8 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
     fun authenticate(request: Authenticate.Request): Command<UserInfo, Multimap<ErrorTag, String>> {
         return Authenticate(
                 request = request,
-                userRepo = userRepo
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 
@@ -89,7 +90,7 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
             }
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
     /**
@@ -107,7 +108,7 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
             ).execute(withAccess)
 
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN), invalidResourceId = null)
     }
 
     /**
@@ -138,7 +139,7 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
             }
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
     /**
@@ -170,7 +171,21 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
             }
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
+     * Wrapper method for the [UserFactory.ban] method that adds Spring
+     * Security authentication to the [Ban] command object
+     *
+     * @param id, a User id
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun ban(id: Long, withAccess: (result: SimpleResult<Long?, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.ADMIN),
+                successCommand = factory.ban(id)
+        ).execute(withAccess)
     }
 
     /**
@@ -183,19 +198,12 @@ UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
     fun unban(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
         if (context.currentUserId() != null) {
-            val theUser = userRepo.findById(context.currentUserId()!!)
-
-            // If the user exists, they must be an admin
-            if (theUser.isPresent) {
-                    context.require(
-                            requiredRoles = listOf(UserRole.Role.ADMIN),
-                            successCommand = factory.delete(id)
-                    ).execute(withAccess)
-
-            }
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.delete(id)
+            ).execute(withAccess)
         }
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
 
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
-
-    }
+}
