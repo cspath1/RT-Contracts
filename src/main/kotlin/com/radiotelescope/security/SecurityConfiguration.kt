@@ -28,7 +28,7 @@ class SecurityConfiguration(
                         .loginProcessingUrl("/api/login")
                     .and()
                     .logout()
-                        .logoutSuccessUrl("/api/login")
+                        .logoutSuccessUrl("/login")
                         .logoutRequestMatcher(AntPathRequestMatcher("/api/logout"))
 
             http.cors().and()
