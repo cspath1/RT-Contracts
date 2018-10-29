@@ -31,8 +31,8 @@ class Register(
      * that will handle all constraint checking and validations.
      *
      * If validation passes, it will create and persist the [User] object and create
-     * the [UserRole] associated with it. It will then return a [SimpleResult]
-     * object with the [User] id and a null errors field.
+     * the [UserRole] and [AccountActivateToken] associated with it. It will then return
+     * a [SimpleResult] object with the [User] id and a null errors field.
      *
      * If validation fails, it will return a [SimpleResult] with the errors and a
      * null success field
@@ -95,6 +95,11 @@ class Register(
         return if (errors.isEmpty) null else errors
     }
 
+    /**
+     * Private method to generate a [AccountActivateToken] object associated with the user.
+     * This token will be emailed to the user as part of a link, and clicking the link will
+     * make the proper API call to activate the account.
+     */
     private fun generateActivateAccountToken(user: User): String {
         var token = UUID.randomUUID().toString().replace("-", "", false)
         while (accountActivateTokenRepo.existsByToken(token)) {

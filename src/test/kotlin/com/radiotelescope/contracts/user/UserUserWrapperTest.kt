@@ -71,8 +71,17 @@ internal class UserUserWrapperTest {
     @Before
     fun init() {
         // Initialize the factory and wrapper
-        factory = BaseUserFactory(userRepo, userRoleRepo, accountActivateTokenRepo)
-        wrapper = UserUserWrapper(context, factory, userRepo, userRoleRepo, accountActivateTokenRepo)
+        factory = BaseUserFactory(
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
+        )
+
+        wrapper = UserUserWrapper(
+                context = context,
+                factory = factory,
+                userRepo = userRepo
+        )
 
         // Create a user for the authentication test
         // We will need to hash the password before persisting

@@ -50,9 +50,7 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         accountActivateTokenRepo = repositories.accountActivateTokenRepo
                 ),
-                userRepo = repositories.userRepo,
-                userRoleRepo = repositories.userRoleRepo,
-                accountActivateTokenRepo = repositories.accountActivateTokenRepo
+                userRepo = repositories.userRepo
         )
     }
 

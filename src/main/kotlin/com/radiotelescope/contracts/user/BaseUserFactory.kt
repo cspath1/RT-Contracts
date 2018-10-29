@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable
  *
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
+ * @property accountActivateTokenRepo the [IAccountActivateTokenRepository] interface
  */
 class BaseUserFactory(
         private val userRepo: IUserRepository,

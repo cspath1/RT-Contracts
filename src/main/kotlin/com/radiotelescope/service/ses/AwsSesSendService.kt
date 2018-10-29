@@ -1,4 +1,4 @@
-package com.radiotelescope.service
+package com.radiotelescope.service.ses
 
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
 import com.amazonaws.services.simpleemail.model.*

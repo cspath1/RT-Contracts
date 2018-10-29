@@ -1,4 +1,4 @@
-package com.radiotelescope.service
+package com.radiotelescope.service.ses
 
 enum class ErrorTag {
     SEND_EMAIL,

@@ -23,14 +23,11 @@ import kotlin.collections.List
  * @property context the [UserContext] interface
  * @property factory the [UserFactory] factory interface
  * @property userRepo the [IUserRepository] interface
- * @property userRoleRepo the [IUserRoleRepository] interface
  */
 class UserUserWrapper(
         private val context: UserContext,
         private val factory: UserFactory,
-        private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository,
-        private val accountActivateTokenRepo: IAccountActivateTokenRepository
+        private val userRepo: IUserRepository
 ) : UserRetrievable<Long, SimpleResult<UserInfo, Multimap<ErrorTag, String>>>,
         UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>,
         UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
@@ -42,12 +39,7 @@ class UserUserWrapper(
      * @return a [Register] command object
      */
     fun register(request: Register.Request): Command<Register.Response, Multimap<ErrorTag, String>> {
-        return Register(
-                request = request,
-                userRepo = userRepo,
-                userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
-        )
+        return factory.register(request)
     }
 
     /**
@@ -58,11 +50,7 @@ class UserUserWrapper(
      * @return a [Authenticate] command object
      */
     fun authenticate(request: Authenticate.Request): Command<UserInfo, Multimap<ErrorTag, String>> {
-        return Authenticate(
-                request = request,
-                userRepo = userRepo,
-                userRoleRepo = userRoleRepo
-        )
+        return factory.authenticate(request)
     }
 
     /**
