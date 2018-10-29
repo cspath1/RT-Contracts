@@ -74,7 +74,7 @@ class UserResetPasswordRequestController (
     }
 
     private fun sendEmail(email: String, token: String) {
-        val resetPasswordLink = AppLink.generate(profile) + "resetPassword?token=" + token
+        val resetPasswordLink = AppLink.generate(profile) + "/resetPassword?token=" + token
 
         val sendForm = SendForm(
                 toAddresses = listOf(email),

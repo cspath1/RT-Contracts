@@ -103,7 +103,7 @@ class UserRegisterController(
     }
 
     private fun sendEmail(email: String, token: String) {
-        val activateAccountLink = AppLink.generate(profile) + "activateAccount?token=" + token
+        val activateAccountLink = AppLink.generate(profile) + "/activateAccount?token=" + token
 
         val sendForm = SendForm(
                 toAddresses = listOf(email),
