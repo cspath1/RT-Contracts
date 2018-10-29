@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.appointment.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.log.BaseLogFactory
+import com.radiotelescope.contracts.resetPasswordToken.BaseResetPasswordTokenFactory
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.BaseRFDataFactory
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
@@ -127,8 +128,10 @@ class FactoryBeans(
     @Bean
     override fun getResetPasswordTokenWrapper(): UserResetPasswordTokenWrapper {
         return UserResetPasswordTokenWrapper(
-                resetPasswordTokenRepo = repositories.resetPasswordTokenRepo,
-                userRepo = repositories.userRepo
+                resetPasswordTokenFactory = BaseResetPasswordTokenFactory(
+                        resetPasswordTokenRepo = repositories.resetPasswordTokenRepo,
+                        userRepo = repositories.userRepo
+                )
         )
     }
 

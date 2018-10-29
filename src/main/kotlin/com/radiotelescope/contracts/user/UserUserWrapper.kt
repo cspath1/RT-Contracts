@@ -3,8 +3,6 @@ package com.radiotelescope.contracts.user
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
-import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.AccessReport

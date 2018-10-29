@@ -37,13 +37,18 @@ internal class UserResetPasswordTokenWrapperTest {
     private lateinit var resetPasswordTokeRepo: IResetPasswordTokenRepository
 
     private lateinit var wrapper: UserResetPasswordTokenWrapper
+    private lateinit var factory: ResetPasswordTokenFactory
     private lateinit var user: User
     private lateinit var token: ResetPasswordToken
 
     @Before
     fun init() {
-        // Initialize the wrapper
-        wrapper = UserResetPasswordTokenWrapper(resetPasswordTokeRepo, userRepo)
+        // Initialize the factory and wrapper
+        factory = BaseResetPasswordTokenFactory(
+                resetPasswordTokenRepo = resetPasswordTokeRepo,
+                userRepo = userRepo
+        )
+        wrapper = UserResetPasswordTokenWrapper(factory)
 
         // Persist user and token
         user = testUtil.createUser("rpim@ycp.edu")
