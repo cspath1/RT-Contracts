@@ -10,8 +10,8 @@ import com.radiotelescope.repository.user.User
 /**
  * Base concrete implementation of the [ResetPasswordTokenFactory] interface
  *
- * @param resetPasswordTokenRepo the [IResetPasswordTokenRepository]
- * @param userRepo the [IUserRepository]
+ * @param resetPasswordTokenRepo the [IResetPasswordTokenRepository] interface
+ * @param userRepo the [IUserRepository] interface
  */
 class BaseResetPasswordTokenFactory (
         private val resetPasswordTokenRepo: IResetPasswordTokenRepository,
