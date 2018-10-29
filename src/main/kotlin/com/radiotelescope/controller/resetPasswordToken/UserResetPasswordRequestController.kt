@@ -79,9 +79,11 @@ class UserResetPasswordRequestController (
         val sendForm = SendForm(
                 toAddresses = listOf(email),
                 fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
-                subject = "Request Password Reset",
+                subject = "Password Reset Requested",
                 htmlBody = "<p>You have request to reset you password</p>" +
-                        "<p>Please <a href='$resetPasswordLink'> here to activate your account</a></p>"
+                        "<p>This link will expire in one day. If it does, you must request another.</p>" +
+                        "<p>Please <a href='$resetPasswordLink'> here to reset your password</a></p>" +
+                        "<p>If you did not request to reset your password, please delete this emails</p>"
         )
 
         awsSesSendService.execute(sendForm)

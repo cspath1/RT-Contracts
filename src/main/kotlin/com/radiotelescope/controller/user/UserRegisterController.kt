@@ -108,8 +108,10 @@ class UserRegisterController(
         val sendForm = SendForm(
                 toAddresses = listOf(email),
                 fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
-                subject = "YCP Radio Telescope Sign Up",
-                htmlBody = "<p>Please click <a href='$activateAccountLink'> here to activate your account</p>"
+                subject = "Account Created",
+                htmlBody = "<p>Thank you for creating an account for the York County Astronomical Society's " +
+                        "Radio Telescope web application!</p>" +
+                        "<p>Please click <a href='$activateAccountLink'> here to activate your account</p>"
         )
 
         awsSesSendService.execute(sendForm)
