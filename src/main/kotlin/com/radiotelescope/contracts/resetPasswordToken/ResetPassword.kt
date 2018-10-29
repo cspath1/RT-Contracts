@@ -25,14 +25,14 @@ class ResetPassword (
         private val userRepo: IUserRepository
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
-     * Override of the [Command] execute mehtod. Calls the [validateRequest] method
+     * Override of the [Command] execute method. Calls the [validateRequest] method
      * that will handle all constraint checking and validations.
      *
      * If validation passes, it will update and persist the [User] object.
      * It will then return a [SimpleResult] object with the [User] id
      * and a null errors field.
      *
-     * If validation fields, it will return a [SimpleResult] with the errors and a
+     * If validation fails, it will return a [SimpleResult] with the errors and a
      * null success field
      */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
