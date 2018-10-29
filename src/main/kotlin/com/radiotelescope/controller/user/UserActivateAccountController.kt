@@ -12,12 +12,19 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * REST Controller to handle activate a User's account
  *
+ * @param activateTokenWrapper the [UserAccountActivateTokenWrapper] interface
+ * @param logger the [Logger] service
  */
 @RestController
 class UserActivateAccountController(
         private val activateTokenWrapper: UserAccountActivateTokenWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of taking the token request param
+     * and executing the [UserAccountActivateTokenWrapper.activateAccount]
+     * method that will activate a user's account.
+     */
     fun execute(@RequestParam("token") token: String): Result {
         val simpleResult = activateTokenWrapper.activateAccount(
                 token = token
