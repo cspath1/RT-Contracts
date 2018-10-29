@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable
  * Implementation of the [Command] interface used to find [UserRole] objects that
  * need an admin's approval
  *
- * @param pageable the [Pageable] request
+ * @param pageable the [Pageable] interface
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
  */
