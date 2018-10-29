@@ -120,4 +120,75 @@ internal class AppointmentTest {
         assertEquals(3272500L, totalTime)
     }
 
+    @Test
+    fun testFindFutureApptsByUserBetweenDates(){
+        val startTime = System.currentTimeMillis() + 400000L
+        val endTime = System.currentTimeMillis() +   800000L
+
+        // Appointment start at the startTime and end before the endTime
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(startTime),
+                endTime = Date(startTime + 1000L),
+                isPublic = true
+
+        )
+
+        // Appointment between the start and end time
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(startTime + 2000L),
+                endTime = Date(startTime + 3000L),
+                isPublic = true
+
+        )
+
+        // Appointment end at the endTime and start after the startTime
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(endTime - 1000L),
+                endTime = Date(endTime),
+                isPublic = true
+
+        )
+
+        // Appointment start before startTime and end before endTime
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(startTime - 2000L),
+                endTime = Date(startTime + 500L),
+                isPublic = true
+
+        )
+
+        // Appointment start before endTime and end after endTime
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(endTime - 500L),
+                endTime = Date(endTime + 1000L),
+                isPublic = true
+
+        )
+
+
+        val pageOfAppointments = appointmentRepo.findAppointmentsByUserBetweenDates(
+                userId = user.id,
+                pageable = PageRequest.of(0, 10),
+                startTime = Date(startTime),
+                endTime = Date(endTime)
+        )
+
+        assertEquals(5, pageOfAppointments.content.size)
+    }
+
 }
