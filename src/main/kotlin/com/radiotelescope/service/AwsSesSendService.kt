@@ -3,6 +3,7 @@ package com.radiotelescope.service
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
 import com.amazonaws.services.simpleemail.model.*
 import com.google.common.collect.HashMultimap
+import com.radiotelescope.controller.model.ses.SendForm
 import org.springframework.stereotype.Service
 
 @Service

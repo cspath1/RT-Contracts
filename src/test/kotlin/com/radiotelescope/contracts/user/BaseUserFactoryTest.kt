@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.user
 
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -24,6 +25,9 @@ internal class BaseUserFactoryTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
+
     private lateinit var factory: UserFactory
 
     @Before
@@ -31,7 +35,8 @@ internal class BaseUserFactoryTest {
         // Instantiate the factory
         factory = BaseUserFactory(
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         )
     }
 

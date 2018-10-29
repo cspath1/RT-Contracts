@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.user
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -28,7 +29,8 @@ class UserUserWrapper(
         private val context: UserContext,
         private val factory: UserFactory,
         private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val accountActivateTokenRepo: IAccountActivateTokenRepository
 ) : UserRetrievable<Long, SimpleResult<UserInfo, Multimap<ErrorTag, String>>>,
         UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>,
         UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
@@ -39,11 +41,12 @@ class UserUserWrapper(
      * @param request the [Register.Request] object
      * @return a [Register] command object
      */
-    fun register(request: Register.Request): Command<Long, Multimap<ErrorTag, String>> {
+    fun register(request: Register.Request): Command<Register.Response, Multimap<ErrorTag, String>> {
         return Register(
                 request = request,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         )
     }
 

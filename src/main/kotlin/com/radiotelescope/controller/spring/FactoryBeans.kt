@@ -38,7 +38,8 @@ class FactoryBeans(
     )
 
     /**
-     * Returns a [UserUserWrapper] object
+     * Returns a [UserUserWrapper] object. This allows these objects
+     * to be autowired in the controllers
      */
     @Bean
     override fun getUserWrapper(): UserUserWrapper {
@@ -46,15 +47,18 @@ class FactoryBeans(
                 context = userContext,
                 factory = BaseUserFactory(
                         userRepo = repositories.userRepo,
-                        userRoleRepo = repositories.userRoleRepo
+                        userRoleRepo = repositories.userRoleRepo,
+                        accountActivateTokenRepo = repositories.accountActivateTokenRepo
                 ),
                 userRepo = repositories.userRepo,
-                userRoleRepo = repositories.userRoleRepo
+                userRoleRepo = repositories.userRoleRepo,
+                accountActivateTokenRepo = repositories.accountActivateTokenRepo
         )
     }
 
     /**
-     * Returns a [UserUserRoleWrapper] object
+     * Returns a [UserUserRoleWrapper] object. This allows these objects
+     * to be autowired in the controllers
      */
     @Bean
     override fun getUserRoleWrapper(): UserUserRoleWrapper {
@@ -70,7 +74,8 @@ class FactoryBeans(
     }
 
     /**
-     * Returns a [UserAppointmentWrapper] object
+     * Returns a [UserAppointmentWrapper] object. This allows these objects
+     * to be autowired in the controllers
      */
     @Bean
     override fun getAppointmentWrapper(): UserAppointmentWrapper {
@@ -87,7 +92,8 @@ class FactoryBeans(
     }
 
     /**
-     * Returns a [UserRFDataWrapper] object
+     * Returns a [UserRFDataWrapper] object. This allows these objects
+     * to be autowired in the controllers
      */
     @Bean
     override fun getRFDataWrapper(): UserRFDataWrapper {
@@ -102,7 +108,8 @@ class FactoryBeans(
     }
 
     /**
-     * Returns a [AdminLogWrapper] object
+     * Returns a [AdminLogWrapper] object. This allows these objects
+     * to be autowired in the controllers
      */
     @Bean
     override fun getLogWrapper(): AdminLogWrapper {
@@ -116,7 +123,8 @@ class FactoryBeans(
     }
 
     /**
-     * Returns a [UserResetPasswordTokenWrapper] object
+     * Returns a [UserResetPasswordTokenWrapper] object. This allows these objects
+     * to be autowired in the controllers
      */
     @Bean
     override fun getResetPasswordTokenWrapper(): UserResetPasswordTokenWrapper {
@@ -126,11 +134,15 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserAccountActivateTokenWrapper] object. This allows these objects
+     * to be autowired in the controllers
+     */
     @Bean
     override fun getAccountActivateTokenWrapper(): UserAccountActivateTokenWrapper {
         return UserAccountActivateTokenWrapper(
                 factory = BaseAccountActivateTokenFactory(
-                        accountActivateTokenRepo = repositories.accountActivateTokenRepository,
+                        accountActivateTokenRepo = repositories.accountActivateTokenRepo,
                         userRepo = repositories.userRepo
                 )
         )

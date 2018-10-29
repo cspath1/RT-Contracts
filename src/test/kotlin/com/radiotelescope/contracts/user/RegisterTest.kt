@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -30,6 +31,9 @@ internal class RegisterTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
+
     private val baseRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
@@ -44,22 +48,23 @@ internal class RegisterTest {
     @Test
     fun testValidConstraints_OptionalFields_Success() {
         // Execute the command
-        val (id, error) = Register(
+        val (success, error) = Register(
                 request = baseRequest,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should not have failed
         assertNull(error)
-        assertNotNull(id)
+        assertNotNull(success)
 
         // Should now have 1 user and 2 user roles
         assertEquals(1, userRepo.count())
         assertEquals(2, userRoleRepo.count())
 
         // Grab the user
-        val user = userRepo.findById(id!!).get()
+        val user = userRepo.findById(success!!.id).get()
 
         // Ensure all fields were properly set
         assertEquals("Cody", user.firstName)
@@ -68,7 +73,7 @@ internal class RegisterTest {
         assertEquals("York College of Pennsylvania", user.company)
         assertEquals("717-823-2216", user.phoneNumber)
 
-        val roles = userRoleRepo.findAllByUserId(id)
+        val roles = userRoleRepo.findAllByUserId(user.id)
 
         // Ensure the role was properly set
         assertEquals(2, roles.size)
@@ -90,22 +95,23 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (success, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should not have failed
         assertNull(error)
-        assertNotNull(id)
+        assertNotNull(success)
 
         // Should now have 1 user and 2 user role
         assertEquals(1, userRepo.count())
         assertEquals(2, userRoleRepo.count())
 
         // Grab the user
-        val user = userRepo.findById(id!!).get()
+        val user = userRepo.findById(success!!.id).get()
 
         // Ensure all fields were properly set
         assertEquals("Cody", user.firstName)
@@ -114,7 +120,7 @@ internal class RegisterTest {
         assertNull(user.company)
         assertNull(user.phoneNumber)
 
-        val roles = userRoleRepo.findAllByUserId(id)
+        val roles = userRoleRepo.findAllByUserId(user.id)
 
         // Ensure the role was properly set
         assertEquals(2, roles.size)
@@ -136,15 +142,16 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (success, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should not have failed
         assertNull(error)
-        assertNotNull(id)
+        assertNotNull(success)
 
         // Should now have 1 user and 2 user roles
         assertEquals(1, userRepo.count())
@@ -153,7 +160,9 @@ internal class RegisterTest {
         // Since we have already confirmed that the values
         // are set accordingly in the above test case, let's
         // just make sure the user roles are both approved
-        val roles = userRoleRepo.findAllByUserId(id!!)
+        val theUser = userRepo.findById(success!!.id).get()
+
+        val roles = userRoleRepo.findAllByUserId(theUser.id)
 
         roles.forEach {
             assertTrue(it.approved)
@@ -168,14 +177,15 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (token, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
-        assertNull(id)
+        assertNull(token)
         assertNotNull(error)
 
         // Ensure it failed because of the first name
@@ -190,14 +200,15 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (token, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
-        assertNull(id)
+        assertNull(token)
         assertNotNull(error)
 
         // Ensure it failed because of the first name
@@ -212,14 +223,15 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (token, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
-        assertNull(id)
+        assertNull(token)
         assertNotNull(error)
 
         // Ensure it failed because of the last name
@@ -234,14 +246,15 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (token, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
-        assertNull(id)
+        assertNull(token)
         assertNotNull(error)
 
         // Ensure it failed because of the last name
@@ -256,14 +269,15 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (token, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
-        assertNull(id)
+        assertNull(token)
         assertNotNull(error)
 
         // Ensure it failed because of the email
@@ -278,14 +292,15 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (token, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
-        assertNull(id)
+        assertNull(token)
         assertNotNull(error)
 
         // Ensure it failed because of the email
@@ -300,14 +315,15 @@ internal class RegisterTest {
 
         // Now, executing the command should result in an error
         // Execute the command
-        val (id, error) = Register(
+        val (token, error) = Register(
                 request = baseRequest,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
-        assertNull(id)
+        assertNull(token)
         assertNotNull(error)
 
         // Ensure it failed because of the email
@@ -322,14 +338,15 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (token, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
-        assertNull(id)
+        assertNull(token)
         assertNotNull(error)
 
         // Ensure it failed because of the password
@@ -344,14 +361,15 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (token, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
-        assertNull(id)
+        assertNull(token)
         assertNotNull(error)
 
         // Ensure it failed because of the password confirm not matching
@@ -366,14 +384,15 @@ internal class RegisterTest {
         )
 
         // Execute the command
-        val (id, error) = Register(
+        val (token, error) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
-        assertNull(id)
+        assertNull(token)
         assertNotNull(error)
 
         // Ensure it failed because of the password

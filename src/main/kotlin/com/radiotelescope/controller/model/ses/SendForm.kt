@@ -1,4 +1,4 @@
-package com.radiotelescope.service
+package com.radiotelescope.controller.model.ses
 
 data class SendForm(
         val toAddresses: List<String>,
