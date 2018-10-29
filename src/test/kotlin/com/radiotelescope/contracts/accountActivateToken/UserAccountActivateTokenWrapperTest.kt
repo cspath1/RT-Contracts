@@ -68,11 +68,11 @@ internal class UserAccountActivateTokenWrapperTest {
 
     @Test
     fun testValidConstraints_ActivateAccount_Success() {
-        val (theToken, error) = wrapper.activateAccount(
+        val (id, error) = wrapper.activateAccount(
                 token = token.token
         ).execute()
 
-        assertNotNull(theToken)
+        assertNotNull(id)
         assertNull(error)
     }
 }

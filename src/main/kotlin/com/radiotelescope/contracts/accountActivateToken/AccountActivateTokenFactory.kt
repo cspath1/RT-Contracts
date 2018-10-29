@@ -15,5 +15,5 @@ interface AccountActivateTokenFactory {
      * @param token the Token
      * @return a [Command] object
      */
-    fun activateAccount(token: String): Command<String, Multimap<ErrorTag, String>>
+    fun activateAccount(token: String): Command<Long, Multimap<ErrorTag, String>>
 }

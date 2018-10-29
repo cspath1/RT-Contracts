@@ -21,7 +21,7 @@ class ActivateAccount(
         private val token: String,
         private val accountActivateTokenRepo: IAccountActivateTokenRepository,
         private val userRepo: IUserRepository
-) : Command<String, Multimap<ErrorTag, String>> {
+) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
      * that will handle all constraint checking/validations.
@@ -30,10 +30,10 @@ class ActivateAccount(
      *
      * If validation fails, it will return a [SimpleResult] with the reason for failure.
      */
-    override fun execute(): SimpleResult<String, Multimap<ErrorTag, String>> {
+    override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
-            activateUser()
-            return SimpleResult(token, null)
+            val theUserId = activateUser()
+            return SimpleResult(theUserId, null)
         }
     }
 
@@ -42,7 +42,7 @@ class ActivateAccount(
      * with the supplied token. It will also delete the record
      * that the token belongs to
      */
-    private fun activateUser() {
+    private fun activateUser(): Long {
         val theToken = accountActivateTokenRepo.findByToken(token)
 
         val theUser = theToken.user!!
@@ -51,6 +51,8 @@ class ActivateAccount(
 
         userRepo.save(theUser)
         accountActivateTokenRepo.deleteById(theToken.id)
+
+        return theUser.id
     }
 
     /**

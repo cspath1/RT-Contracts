@@ -22,7 +22,7 @@ class BaseAccountActivateTokenFactory (
      * @param token the Token
      * @return an [ActivateAccount] command object
      */
-    override fun activateAccount(token: String): Command<String, Multimap<ErrorTag, String>> {
+    override fun activateAccount(token: String): Command<Long, Multimap<ErrorTag, String>> {
         return ActivateAccount(
                 token = token,
                 accountActivateTokenRepo = accountActivateTokenRepo,

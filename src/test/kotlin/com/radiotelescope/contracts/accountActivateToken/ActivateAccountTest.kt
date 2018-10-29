@@ -58,14 +58,14 @@ internal class ActivateAccountTest {
 
     @Test
     fun testValidConstraints_Success() {
-        val (theToken, error) = ActivateAccount(
+        val (id, error) = ActivateAccount(
                 token = token.token,
                 accountActivateTokenRepo = accountActivateTokenRepo,
                 userRepo = userRepo
         ).execute()
 
         // Ensure it was a success
-        assertNotNull(theToken)
+        assertNotNull(id)
         assertNull(error)
 
         // Ensure the user is now active
@@ -81,14 +81,14 @@ internal class ActivateAccountTest {
         token.expirationDate = Date(System.currentTimeMillis() - 1000000L)
         accountActivateTokenRepo.save(token)
 
-        val (theToken, error) = ActivateAccount(
+        val (id, error) = ActivateAccount(
                 token = token.token,
                 accountActivateTokenRepo = accountActivateTokenRepo,
                 userRepo = userRepo
         ).execute()
 
         // Ensure it was a failure
-        assertNull(theToken)
+        assertNull(id)
         assertNotNull(error)
 
         assertTrue(error!![ErrorTag.EXPIRATION_DATE].isNotEmpty())
@@ -96,14 +96,14 @@ internal class ActivateAccountTest {
 
     @Test
     fun testInvalidToken_Failure() {
-        val (theToken, error) = ActivateAccount(
+        val (id, error) = ActivateAccount(
                 token = "Bedeviled is a good movie",
                 accountActivateTokenRepo = accountActivateTokenRepo,
                 userRepo = userRepo
         ).execute()
 
         // Ensure it was a failure
-        assertNull(theToken)
+        assertNull(id)
         assertNotNull(error)
 
         assertTrue(error!![ErrorTag.TOKEN].isNotEmpty())

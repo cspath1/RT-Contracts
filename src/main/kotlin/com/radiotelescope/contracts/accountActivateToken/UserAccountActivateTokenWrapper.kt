@@ -17,7 +17,7 @@ class UserAccountActivateTokenWrapper(
      * command object. This does not need any user role authentication since the user will
      * not be logged in at the time
      */
-    fun activateAccount(token: String): Command<String, Multimap<ErrorTag, String>> {
+    fun activateAccount(token: String): Command<Long, Multimap<ErrorTag, String>> {
         return factory.activateAccount(token)
     }
 }

@@ -1,5 +1,7 @@
 package com.radiotelescope.controller.spring
 
+import com.radiotelescope.contracts.accountActivateToken.BaseAccountActivateTokenFactory
+import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
 import com.radiotelescope.contracts.appointment.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
@@ -121,6 +123,16 @@ class FactoryBeans(
         return UserResetPasswordTokenWrapper(
                 resetPasswordTokenRepo = repositories.resetPasswordTokenRepo,
                 userRepo = repositories.userRepo
+        )
+    }
+
+    @Bean
+    override fun getAccountActivateTokenWrapper(): UserAccountActivateTokenWrapper {
+        return UserAccountActivateTokenWrapper(
+                factory = BaseAccountActivateTokenFactory(
+                        accountActivateTokenRepo = repositories.accountActivateTokenRepository,
+                        userRepo = repositories.userRepo
+                )
         )
     }
 }
