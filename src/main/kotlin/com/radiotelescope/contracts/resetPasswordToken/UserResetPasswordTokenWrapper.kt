@@ -20,7 +20,7 @@ class UserResetPasswordTokenWrapper (
 
     /**
      * Reset Password Token function that will return a [CreateResetPasswordToken] command object.
-     * This does not need any user role authentication since the user will not be signed in a the time
+     * This does not need any user role authentication since the user will not be signed in at the time
      *
      * @param email the User email
      * @return a [CreateResetPasswordToken] command object
