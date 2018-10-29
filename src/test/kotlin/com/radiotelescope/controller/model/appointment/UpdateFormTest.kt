@@ -14,6 +14,16 @@ internal class UpdateFormTest {
     )
 
     @Test
+    fun testToRequest() {
+        val theRequest = baseForm.toRequest()
+
+        assertEquals(baseForm.startTime!!, theRequest.startTime)
+        assertEquals(baseForm.endTime!!, theRequest.endTime)
+        assertEquals(baseForm.telescopeId!!, theRequest.telescopeId)
+        assertEquals(baseForm.isPublic!!, theRequest.isPublic)
+    }
+
+    @Test
     fun testValidConstraints_Success(){
         // Call the validateRequest method
         val errors = baseForm.validateRequest()

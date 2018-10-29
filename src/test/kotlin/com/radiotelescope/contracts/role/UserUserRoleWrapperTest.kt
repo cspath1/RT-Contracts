@@ -101,7 +101,7 @@ internal class UserUserRoleWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.containsAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER)))
+        assertTrue(error!!.missingRoles!!.containsAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER)))
     }
 
     @Test
@@ -117,7 +117,7 @@ internal class UserUserRoleWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -153,7 +153,7 @@ internal class UserUserRoleWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.containsAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN)))
+        assertTrue(error!!.missingRoles!!.containsAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN)))
     }
 
     @Test
@@ -173,7 +173,7 @@ internal class UserUserRoleWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -203,8 +203,8 @@ internal class UserUserRoleWrapperTest {
         }
 
         assertNotNull(error)
-        assertEquals(2, error!!.missingRoles.size)
-        assertTrue(error.missingRoles.containsAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN)))
+        assertEquals(2, error!!.missingRoles!!.size)
+        assertTrue(error.missingRoles!!.containsAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN)))
     }
 
     @Test
@@ -218,7 +218,7 @@ internal class UserUserRoleWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test

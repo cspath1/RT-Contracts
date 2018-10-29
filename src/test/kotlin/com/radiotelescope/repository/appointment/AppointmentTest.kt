@@ -35,7 +35,8 @@ internal class AppointmentTest {
     private lateinit var user: User
     private lateinit var futureAppointment: Appointment
     private lateinit var pastAppointment: Appointment
-    private lateinit var futureCanceledAppointment: Appointment
+
+    private val currentTime = System.currentTimeMillis()
 
     @Before
     fun setUp() {
@@ -47,8 +48,8 @@ internal class AppointmentTest {
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.Scheduled,
-                startTime = Date(System.currentTimeMillis() + 10000L),
-                endTime = Date(System.currentTimeMillis() + 30000L),
+                startTime = Date(currentTime + 100000L),
+                endTime = Date(currentTime + 300000L),
                 isPublic = true
         )
 
@@ -56,8 +57,8 @@ internal class AppointmentTest {
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.Completed,
-                startTime = Date(System.currentTimeMillis() - 30000L),
-                endTime = Date(System.currentTimeMillis() - 10000L),
+                startTime = Date(currentTime - 30000L),
+                endTime = Date(currentTime - 10000L),
                 isPublic = true
         )
 
@@ -66,8 +67,8 @@ internal class AppointmentTest {
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.Canceled,
-                startTime = Date(System.currentTimeMillis() + 10000L),
-                endTime = Date(System.currentTimeMillis() + 30000L),
+                startTime = Date(currentTime + 10000L),
+                endTime = Date(currentTime + 30000L),
                 isPublic = true
 
         )
@@ -93,6 +94,30 @@ internal class AppointmentTest {
 
         assertEquals(1, pageOfAppointments.content.size)
         assertEquals(pastAppointment.id, pageOfAppointments.content[0].id)
+    }
+
+    @Test
+    fun testFindTotalScheduledTimeForUser() {
+        // Test first with the only scheduled appointment
+        var totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(user.id)
+
+        // 300,000 - 100,000
+        assertEquals(200000L, totalTime)
+
+        // Persist a much more longer appointment
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(currentTime + 15200000L),
+                endTime = Date(currentTime + 18272500L),
+                isPublic = true
+        )
+
+        totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(user.id)
+
+        // (300,000 - 100,000) + (18,272,500 - 15,200,000)
+        assertEquals(3272500L, totalTime)
     }
 
 }

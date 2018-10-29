@@ -52,7 +52,7 @@ class AdminUserListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = Log.Action.RETRIEVE,
+                            action = "User LogList Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -68,8 +68,9 @@ class AdminUserListController(
                     // Create success logs
                     page.content.forEach {
                         logger.createSuccessLog(
-                                info = Logger.createInfo(Log.AffectedTable.USER,
-                                        action = Log.Action.RETRIEVE,
+                                info = Logger.createInfo(
+                                        affectedTable = Log.AffectedTable.USER,
+                                        action = "User LogList Retrieval",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -82,7 +83,7 @@ class AdminUserListController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
-                                    action = Log.Action.RETRIEVE,
+                                    action = "User LogList Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -96,7 +97,7 @@ class AdminUserListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = Log.Action.RETRIEVE,
+                                action = "User LogList Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

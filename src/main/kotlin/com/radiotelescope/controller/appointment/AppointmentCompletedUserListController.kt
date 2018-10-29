@@ -12,11 +12,24 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Rest Controller used to retrieve a list of the users completed appointments
+ *
+ * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param logger the [Logger] service
+ */
 @RestController
 class AppointmentCompletedUserListController(
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of, given that valid page parameters
+     * were supplied, calling the [UserAppointmentWrapper.userCompleteList]
+     * method and responding back to the client-side based on if the user
+     * was authenticated, the command was executed and was a success, or the
+     * command was executed and was a failure
+     */
     @GetMapping(value = ["/api/users/{userId}/appointments/completedList"])
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@PathVariable("userId") userId: Long,
@@ -29,7 +42,7 @@ class AppointmentCompletedUserListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = Log.Action.LIST,
+                            action = "User Completed Appointment LogList",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -41,7 +54,7 @@ class AppointmentCompletedUserListController(
         else {
             appointmentWrapper.userCompleteList(
                     userId = userId,
-                    pageRequest = PageRequest.of(pageNumber, pageSize)
+                    pageable = PageRequest.of(pageNumber, pageSize)
             ) {
                 // If the command was a success
                 it.success?.let { page ->
@@ -50,7 +63,7 @@ class AppointmentCompletedUserListController(
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.APPOINTMENT,
-                                        action = Log.Action.LIST,
+                                        action = "User Completed Appointment LogList",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -64,7 +77,7 @@ class AppointmentCompletedUserListController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = Log.Action.LIST,
+                                    action = "User Completed Appointment LogList",
                                     affectedRecordId = null
                             ),
                             errors = error.toStringMap()
@@ -78,7 +91,7 @@ class AppointmentCompletedUserListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = Log.Action.LIST,
+                                action = "User Completed Appointment LogList",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

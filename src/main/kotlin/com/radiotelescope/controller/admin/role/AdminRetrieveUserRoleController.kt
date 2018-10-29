@@ -36,14 +36,13 @@ class AdminRetrieveUserRoleController(
     @CrossOrigin(value = ["http://localhost:8081"])
     @GetMapping(value = ["/api/roles/{roleId}"])
     fun execute(@PathVariable("roleId") roleId: Long): Result {
-        // If the supplied path variable is not null
         roleWrapper.retrieve(roleId) { it ->
             // If the command was a success
             it.success?.let {
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
-                                action = Log.Action.RETRIEVE,
+                                action = "Retrieve",
                                 affectedRecordId = it.id
                         )
                 )
@@ -56,7 +55,7 @@ class AdminRetrieveUserRoleController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
-                                action = Log.Action.RETRIEVE,
+                                action = "Retrieve",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -70,7 +69,7 @@ class AdminRetrieveUserRoleController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER_ROLE,
-                            action = Log.Action.RETRIEVE,
+                            action = "Retrieve",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()

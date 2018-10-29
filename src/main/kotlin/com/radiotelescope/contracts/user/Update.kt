@@ -90,15 +90,19 @@ class Update(
             val phoneNumber: String?,
             val company: String?
     ) : BaseUpdateRequest<User> {
-        override fun updateEntity(user: User): User {
+        /**
+         * Override of the [BaseUpdateRequest.updateEntity] method that will take
+         * a user entity and update its values to the values in the request
+         */
+        override fun updateEntity(entity: User): User {
             // Find the existing user from the repository and update it's information
-            user.firstName = firstName
-            user.lastName = lastName
-            user.email = email
-            user.phoneNumber = phoneNumber
-            user.company = company
+            entity.firstName = firstName
+            entity.lastName = lastName
+            entity.email = email
+            entity.phoneNumber = phoneNumber
+            entity.company = company
 
-            return user
+            return entity
         }
     }
 }

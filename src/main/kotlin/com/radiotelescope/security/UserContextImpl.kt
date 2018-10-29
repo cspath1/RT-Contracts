@@ -81,7 +81,7 @@ class UserContextImpl(
         return object : SecuredAction<S, E> {
             override fun execute(withAccess: (result: SimpleResult<S, E>) -> Unit): AccessReport? {
                 // Either return an AccessReport of the missing roles, or call the success command
-                return missingRoles?.let { AccessReport(it) } ?: let {
+                return missingRoles?.let { AccessReport(missingRoles = it, invalidResourceId = null) } ?: let {
                     withAccess(successCommand.execute())
                     null
                 }
@@ -137,7 +137,7 @@ class UserContextImpl(
                 } else
                     // Otherwise return the requireRoles list
                     // in the AccessReport
-                    AccessReport(requiredRoles)
+                    AccessReport(missingRoles = requiredRoles, invalidResourceId = null)
             }
         }
     }

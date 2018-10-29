@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -43,6 +44,9 @@ internal class UserAppointmentWrapperTest {
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Autowired
+    private lateinit var userRoleRepo: IUserRoleRepository
 
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
@@ -100,16 +104,13 @@ internal class UserAppointmentWrapperTest {
         factory = BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
         )
 
         wrapper = UserAppointmentWrapper(
                 context = context,
-                factory = BaseAppointmentFactory(
-                        appointmentRepo = appointmentRepo,
-                        userRepo = userRepo,
-                        telescopeRepo = telescopeRepo
-                ),
+                factory = factory,
                 appointmentRepo = appointmentRepo
         )
     }
@@ -130,11 +131,18 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
     fun testCreatePublic_User_Success() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
         // Simulate a login
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
@@ -174,11 +182,18 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.RESEARCHER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
     }
 
     @Test
     fun testCreatePrivate_Researcher_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
         // Simulate a login and make the user a researcher
         context.login(user.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
@@ -211,11 +226,51 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
-    fun testRetrieve_NotOwner_Failure() {
+    fun testRetrieve_NotOwner_Private_Failure() {
+        // Persist a new user, and attempt to access
+        // the appointment as this user
+        val newUser = testUtil.createUser("michaelscott@dundermifflin.com")
+        context.login(newUser.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Set the appointment to private
+        appointment.isPublic = false
+        appointmentRepo.save(appointment)
+
+        val error = wrapper.retrieve(
+                id = appointment.id
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testRetrieve_Admin_Private_Success() {
+        // Persist a new user, and attempt to access
+        // the appointment as this user
+        val newUser = testUtil.createUser("michaelscott@dundermifflin.com")
+        context.login(newUser.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        val error = wrapper.retrieve(
+                id = appointment.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testRetrieve_NotOwner_Public_Success() {
         // Persist a new user, and attempt to access
         // the appointment as this user
         val newUser = testUtil.createUser("michaelscott@dundermifflin.com")
@@ -225,11 +280,11 @@ internal class UserAppointmentWrapperTest {
         val error = wrapper.retrieve(
                 id = appointment.id
         ) {
-            fail("Should fail on precondition")
+            assertNotNull(it.success)
+            assertNull(it.error)
         }
 
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertNull(error)
     }
 
     @Test
@@ -249,17 +304,23 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
+    fun testRetrieve_NonExistent_Failure() {
+        val error = wrapper.retrieve(
+                id = 311L
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertNull(error!!.missingRoles)
+        assertNotNull(error.invalidResourceId)
+    }
+
+    @Test
     fun testValidGetFutureAppointmentsForUser_SameUser_Success() {
         // Simulate a login
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
-
-        // Initialize the rapper with the context
-        wrapper = UserAppointmentWrapper(
-                appointmentRepo = appointmentRepo,
-                context = context,
-                factory = factory
-        )
 
         val error = wrapper.userFutureList(
                 pageable = PageRequest.of(0, 10),
@@ -303,7 +364,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -319,7 +380,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -337,7 +398,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -362,7 +423,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -370,13 +431,13 @@ internal class UserAppointmentWrapperTest {
         // Do not log the user in
         val error = wrapper.userCompleteList(
                 userId = user.id,
-                pageRequest = PageRequest.of(0, 30)
+                pageable = PageRequest.of(0, 30)
         ) {
             fail("Should fail on precondition")
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -387,13 +448,13 @@ internal class UserAppointmentWrapperTest {
 
         val error = wrapper.userCompleteList(
                 userId = user.id,
-                pageRequest = PageRequest.of(0, 30)
+                pageable = PageRequest.of(0, 30)
         ) {
             fail("Should fail on precondition")
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -404,7 +465,7 @@ internal class UserAppointmentWrapperTest {
 
         val error = wrapper.userCompleteList(
                 userId = user.id,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         ) {
             assertNotNull(it.success)
             assertNull(it.error)
@@ -421,13 +482,25 @@ internal class UserAppointmentWrapperTest {
 
         val error = wrapper.userCompleteList(
                 userId = user.id,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         ) {
             assertNotNull(it.success)
             assertNull(it.error)
         }
 
         assertNull(error)
+    }
+
+    @Test
+    fun testCancel_NonexistentRecord_Failure() {
+        val error = wrapper.cancel(
+                appointmentId = 311L
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId!!.isNotEmpty())
     }
 
     @Test
@@ -439,7 +512,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -455,7 +528,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -494,13 +567,13 @@ internal class UserAppointmentWrapperTest {
     fun testRetrieveFutureAppointmentsByTelescopeId_NotLoggedIn_Failure() {
         val error = wrapper.retrieveFutureAppointmentsByTelescopeId(
                 telescopeId = 1L,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         ) {
             fail("Should fail on precondition")
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -511,7 +584,7 @@ internal class UserAppointmentWrapperTest {
 
         val error = wrapper.retrieveFutureAppointmentsByTelescopeId(
                 telescopeId = 1L,
-                pageRequest = PageRequest.of(0, 20)
+                pageable = PageRequest.of(0, 20)
         ) {
             assertNotNull(it.success)
             assertNull(it.error)
@@ -540,7 +613,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -561,11 +634,40 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidUpdate_Private_NotResearcher_Failure() {
+        // Simulate a log in to a guest account
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.GUEST))
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId,
+                        isPublic = false
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
     }
 
     @Test
     fun testValidUpdate_UserIsOwner_Success(){
+        // Make the user a researcher
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
         // Simulate a login
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
@@ -589,6 +691,13 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testValidUpdate_Admin_Success(){
+        // Make the user a admin
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
+
         // Simulate a login
         context.login(admin.id)
         context.currentRoles.add(UserRole.Role.ADMIN)
@@ -631,7 +740,7 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -655,37 +764,6 @@ internal class UserAppointmentWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
-    }
-
-    @Test
-    fun testInvalid_PrivateAppointmentNotResearcher_Failure() {
-        // Simulate a login, but do not make them a researcher
-        context.login(user.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        // Initialize the rapper with the context
-        wrapper = UserAppointmentWrapper(
-                appointmentRepo = appointmentRepo,
-                context = context,
-                factory = factory
-        )
-
-        val error = wrapper.update(
-                request = Update.Request(
-                        id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = false
-                )
-
-        ) {
-            assertNull(it.success)
-            assertNotNull(it.error)
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.RESEARCHER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 }

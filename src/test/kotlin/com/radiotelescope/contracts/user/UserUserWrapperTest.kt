@@ -163,7 +163,7 @@ internal class UserUserWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -176,7 +176,7 @@ internal class UserUserWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -192,7 +192,7 @@ internal class UserUserWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -223,7 +223,7 @@ internal class UserUserWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.containsAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER)))
+        assertTrue(error!!.missingRoles!!.containsAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER)))
     }
 
     @Test
@@ -239,7 +239,7 @@ internal class UserUserWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -312,7 +312,7 @@ internal class UserUserWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -341,7 +341,7 @@ internal class UserUserWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.USER))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -357,7 +357,7 @@ internal class UserUserWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.missingRoles.contains(UserRole.Role.ADMIN))
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 
     @Test
@@ -367,6 +367,84 @@ internal class UserUserWrapperTest {
         context.currentRoles.add(UserRole.Role.ADMIN)
 
         val error = wrapper.delete(
+                id = userId
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testBan_Admin_Success() {
+        // Log the user in as an admin
+        context.login(otherUserId)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        val error = wrapper.ban(
+                id = userId
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testBan_NotAdmin_Failure() {
+        // Log the user in as a base user
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.ban(
+                id = userId
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testUnban_NotLoggedIn_Failure() {
+        // Do not log the user in
+
+        val error = wrapper.unban(
+                id = userId
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testUnban_NotAdmin_Failure() {
+        // Log the user in as something other than an admin
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.STUDENT)
+
+        val error = wrapper.unban(
+                id = userId
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testUnban_Admin_Failure() {
+        // Log the user in as an admin
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.unban(
                 id = userId
         ) {
             assertNotNull(it.success)

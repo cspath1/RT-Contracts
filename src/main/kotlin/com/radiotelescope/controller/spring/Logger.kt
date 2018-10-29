@@ -60,6 +60,7 @@ class Logger(
                             message = error
                     )
 
+                    errorRepo.save(err)
                     log.errors.add(err)
                 }
             }
@@ -93,7 +94,7 @@ class Logger(
      */
     data class Info(
             var affectedTable: Log.AffectedTable,
-            var action: Log.Action,
+            var action: String,
             var timestamp: Date,
             var affectedRecordId: Long?
     ) : BaseCreateRequest<Log> {
@@ -113,7 +114,7 @@ class Logger(
     companion object {
         fun createInfo(
                 affectedTable: Log.AffectedTable,
-                action: Log.Action,
+                action: String,
                 affectedRecordId: Long?) : Info {
             return Info(
                     affectedTable = affectedTable,

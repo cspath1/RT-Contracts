@@ -28,8 +28,8 @@ class SecurityConfiguration(
                         .loginProcessingUrl("/api/login")
                     .and()
                     .logout()
-                        .logoutSuccessUrl("/")
-                        .logoutRequestMatcher(AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/login")
+                        .logoutRequestMatcher(AntPathRequestMatcher("/api/logout"))
 
             http.cors().and()
                     .authorizeRequests().antMatchers(HttpMethod.POST, "/users/register").permitAll()

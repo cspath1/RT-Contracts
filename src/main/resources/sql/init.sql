@@ -1,8 +1,21 @@
 CREATE DATABASE IF NOT EXISTS radio_telescope;
 USE radio_telescope;
 
+DROP TABLE IF EXISTS account_activate_token;
+CREATE TABLE account_activate_token (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  token VARCHAR(100) NOT NULL,
+  expiration_date DATETIME NOT NULL,
+
+  PRIMARY KEY (id),
+  UNIQUE KEY (user_id),
+  UNIQUE KEY (token),
+  KEY expiration_date_idx (expiration_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS error;
-CREATE TABLE error(
+CREATE TABLE error (
   id INT(11) NOT NULL AUTO_INCREMENT,
   log_id INT(11) NOT NULL,
   key_field VARCHAR(50) NOT NULL,
@@ -15,17 +28,11 @@ CREATE TABLE error(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS log;
-CREATE TABLE log(
+CREATE TABLE log (
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11),
-  affected_table ENUM('USER', 'APPOINTMENT', 'USER_ROLE', 'RF_DATA') NOT NULL,
-  action ENUM('CREATE',
-              'RETRIEVE',
-              'UPDATE',
-              'DELETE',
-              'LOG_IN',
-              'LIST_FUTURE_APPOINTMENT_BY_USER',
-              'LIST') NOT NULL,
+  affected_table ENUM('USER', 'APPOINTMENT', 'USER_ROLE', 'RF_DATA', 'LOG') NOT NULL,
+  action VARCHAR(100) NOT NULL,
   timestamp DATETIME NOT NULL,
   affected_record_id INT(11),
   success TINYINT(1) DEFAULT '1',
@@ -39,15 +46,30 @@ CREATE TABLE log(
   KEY success_idx (success)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS reset_password_token;
+CREATE TABLE reset_password_token (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  token VARCHAR(100) NOT NULL,
+  expiration_date DATETIME NOT NULL,
+
+  PRIMARY KEY (id),
+  UNIQUE KEY (user_id),
+  UNIQUE KEY (token),
+  KEY expiration_date_idx (expiration_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS rf_data;
 CREATE TABLE rf_data (
   id INT(11) NOT NULL AUTO_INCREMENT,
   appointment_id INT(11) NOT NULL,
   intensity INT(11) NOT NULL,
+  time_captured DATETIME NOT NULL,
 
   PRIMARY KEY (id),
   KEY appointment_id_idx (appointment_id),
-  KEY intensity_idx (intensity)
+  KEY intensity_idx (intensity),
+  KEY time_captured_idx (time_captured)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS telescope;
@@ -95,7 +117,7 @@ CREATE TABLE user_role (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS appointment;
-CREATE TABLE appointment(
+CREATE TABLE appointment (
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11) NOT NULL,
   start_time DATETIME NOT NULL,

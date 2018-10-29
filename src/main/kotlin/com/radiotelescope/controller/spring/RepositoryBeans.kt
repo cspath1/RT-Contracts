@@ -1,8 +1,10 @@
 package com.radiotelescope.controller.spring
 
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
+import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.rfdata.IRFDataRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -20,6 +22,9 @@ import org.springframework.stereotype.Component
  * @param telescopeRepo the [ITelescopeRepository] interface
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param rfDataRepo the [IRFDataRepository] interface
+ * @param resetPasswordTokenRepo the [IResetPasswordTokenRepository] interface
+ * @param accountActivateTokenRepository the [IAccountActivateTokenRepository] interface
+ *
  */
 @Component
 @Configuration
@@ -30,5 +35,7 @@ class RepositoryBeans(
         val errorRepo: IErrorRepository,
         val telescopeRepo: ITelescopeRepository,
         val appointmentRepo: IAppointmentRepository,
-        val rfDataRepo: IRFDataRepository
+        val rfDataRepo: IRFDataRepository,
+        val resetPasswordTokenRepo: IResetPasswordTokenRepository,
+        val accountActivateTokenRepository: IAccountActivateTokenRepository
 )

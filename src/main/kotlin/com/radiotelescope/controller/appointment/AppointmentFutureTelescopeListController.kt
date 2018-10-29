@@ -19,13 +19,21 @@ import org.springframework.web.bind.annotation.RestController
  * Rest Controller to handle retrieving list of future appointments
  * for a telescope
  *
- * @param
+ * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param logger the [Logger] service
  */
 @RestController
 class AppointmentFutureTelescopeListController(
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of, given the page parameters were passed in
+     * correctly, calling the [UserAppointmentWrapper.retrieveFutureAppointmentsByTelescopeId]
+     * method and responding back to the client-side based on if the user was
+     * not authenticated, the command was executed and was a success, or the
+     * command was executed and was not a success
+     */
     @GetMapping(value = ["/api/appointments/telescopes/{telescopeId}/futureList"])
     fun execute(@PathVariable("telescopeId") telescopeId: Long,
                 @RequestParam("page") pageNumber: Int?,
@@ -36,7 +44,7 @@ class AppointmentFutureTelescopeListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = Log.Action.LIST,
+                            action = "Future Telescope Appointments LogList Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -47,7 +55,7 @@ class AppointmentFutureTelescopeListController(
             // Otherwise, call the wrapper method
             appointmentWrapper.retrieveFutureAppointmentsByTelescopeId(
                     telescopeId = telescopeId,
-                    pageRequest = PageRequest.of(pageNumber, pageSize)
+                    pageable = PageRequest.of(pageNumber, pageSize)
             ) {
                 // If the command was a success
                 it.success?.let { page ->
@@ -55,7 +63,7 @@ class AppointmentFutureTelescopeListController(
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.APPOINTMENT,
-                                        action = Log.Action.LIST,
+                                        action = "Future Telescope Appointments LogList Retrieval",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -68,7 +76,7 @@ class AppointmentFutureTelescopeListController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = Log.Action.LIST,
+                                    action = "Future Telescope Appointments LogList Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -82,7 +90,7 @@ class AppointmentFutureTelescopeListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = Log.Action.LIST,
+                                action = "Future Telescope Appointments LogList Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -95,6 +103,10 @@ class AppointmentFutureTelescopeListController(
         return result
     }
 
+    /**
+     * Private method to return a [HashMultimap] of errors in the
+     * event that invalid page parameters were provided
+     */
     private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")

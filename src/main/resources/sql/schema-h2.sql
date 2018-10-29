@@ -23,7 +23,7 @@ CREATE TABLE log(
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11),
   affected_table ENUM('USER', 'APPOINTMENT', 'USER_ROLE') NOT NULL,
-  action ENUM('CREATE', 'RETRIEVE', 'UPDATE', 'DELETE', 'LOG_IN') NOT NULL,
+  action VARCHAR(100) NOT NULL,
   timestamp DATETIME NOT NULL,
   affected_record_id INT(11),
   success TINYINT(1) DEFAULT '1'
@@ -58,4 +58,18 @@ CREATE TABLE user_role (
   user_id INT(11) NOT NULL,
   role ENUM('User', 'Guest', 'Student', 'Researcher', 'Member', 'Admin'),
   approved TINYINT(1) DEFAULT '0'
+);
+
+CREATE TABLE reset_password_token (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  token VARCHAR(100) NOT NULL,
+  expiration_date DATETIME NOT NULL
 )
+
+CREATE TABLE account_activate_token (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  token VARCHAR (100) NOT NULL,
+  expiration_date DATETIME NOT NULL
+);

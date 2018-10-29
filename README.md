@@ -20,3 +20,11 @@ Note: specify the database url as the one found in the local application propert
 4. Setup Gradle Wrapper 
 * Open IntelliJ Terminal and type "gradle wrapper" command
 
+5. Publishing Javadocs
+* Publishing javadocs in kotlin is done via [dokka](https://github.com/Kotlin/dokka)
+* In the build.gradle file, run the dokka task, or in the terminal run 'gradle dokka' to generate the documentation folder
+* Take the contents of the 'docs' folder that was created and put it in the gh-pages branch
+* **NOTE**: overwrite any existing files in the gh-pages branch with the contents of the newly generate docs folder
+* Still on the gh-pages branch, add, commit, and push the changes and GitHub will handle the rest
+* **ANOTHER NOTE** there is a publish-api-docs.sh file that will handle all of this work for you. Simply run "gradle dokka" and then "./publish-api.docs.sh" and you're good to go (as long as you have the project clone via ssh. Cloning via HTTPS **WILL NOT** work).
+* Go [here](https://cspath1.github.io/RT-Contracts) to view the docs

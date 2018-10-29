@@ -1,11 +1,13 @@
 package com.radiotelescope.contracts.rfdata
 
+import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
+import com.radiotelescope.toStringMap
 
 /**
  * Wrapper that takes a [RFDataFactory] and is responsible for
@@ -28,6 +30,10 @@ class UserRFDataWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun retrieveAppointmentData(appointmentId: Long, withAccess: (result: SimpleResult<List<RFDataInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (!appointmentRepo.existsById(appointmentId)) {
+            return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(appointmentId))
+        }
+
         // If the user logged in
         if (context.currentUserId() != null) {
             val theAppointment = appointmentRepo.findById(appointmentId).get()
@@ -56,6 +62,12 @@ class UserRFDataWrapper(
             }
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {
+        val errors = HashMultimap.create<com.radiotelescope.contracts.appointment.ErrorTag, String>()
+        errors.put(com.radiotelescope.contracts.appointment.ErrorTag.ID, "Appointment Id #$id could not be found")
+        return errors.toStringMap()
     }
 }

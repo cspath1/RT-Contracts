@@ -75,6 +75,9 @@ class BaseUserFactory(
 
     /**
      * Override of the [UserFactory.update] method that will return a [Update] command object
+     *
+     * @param request the [Update.Request] object
+     * @return a [Update] command object
      */
     override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>> {
         return Update(
@@ -83,8 +86,40 @@ class BaseUserFactory(
         )
     }
 
+    /**
+     * Override of the [UserFactory.delete] method that will return a [Delete] command object
+     *
+     * @param id the User id
+     * @return a [Delete] command object
+     */
     override fun delete(id: Long): Command<Long, Multimap<ErrorTag, String>> {
         return Delete(
+                id = id,
+                userRepo = userRepo
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.ban] method that will return a [Ban] command object
+     *
+     * @param id the User id
+     * @return a [Ban] command object
+     */
+    override fun ban(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return Ban(
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                id = id
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.unban] method that will return a [Unban] command object
+     * @param id the User id
+     * @return an [Unban] command object
+     */
+    override fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return Unban(
                 id = id,
                 userRepo = userRepo
         )

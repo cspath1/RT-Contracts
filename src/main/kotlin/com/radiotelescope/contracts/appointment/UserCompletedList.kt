@@ -13,13 +13,12 @@ import org.springframework.data.domain.Pageable
 /**
  * Override of the [Command] interface used to retrieve a User's
  * future appointments.
+ *
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userId the user ID
  * @param userRepo the [IUserRepository] interface
  * @param pageable the [Pageable] interface
-
  */
-
 class UserCompletedList(
         private val appointmentRepo: IAppointmentRepository,
         private val userId: Long,

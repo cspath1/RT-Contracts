@@ -12,6 +12,27 @@ import org.springframework.stereotype.Repository
 @Repository
 interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long> {
     /**
+     * Spring Repository method that will return the number of milliseconds of
+     * scheduled appointment time that a user has currently in the [Appointment]
+     * table
+     *
+     * @param userId the User id
+     * @return the appointment time in milliseconds
+     */
+    @Query(value = "SELECT SUM(" +
+            "TIMESTAMPDIFF(MICROSECOND, " +
+            "scheduled_appointments.start_time, " +
+            "scheduled_appointments.end_time" +
+            ") / 1000) " +
+            "FROM (SELECT * " +
+            "FROM appointment " +
+            "WHERE user_id=?1 " +
+            "AND end_time > CURRENT_TIMESTAMP " +
+            "AND status = 'Scheduled') AS scheduled_appointments",
+            nativeQuery = true)
+    fun findTotalScheduledAppointmentTimeForUser(userId: Long): Long?
+
+    /**
      * Spring Repository method that will return all future [Appointment] records
      * for a User. Excludes canceled appointments
      *

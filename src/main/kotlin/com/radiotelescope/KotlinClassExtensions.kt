@@ -2,9 +2,11 @@ package com.radiotelescope
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.AppointmentInfo
+import com.radiotelescope.contracts.log.LogInfo
 import com.radiotelescope.contracts.rfdata.RFDataInfo
 import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.rfdata.RFData
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
@@ -17,7 +19,7 @@ fun <T: Enum<T>> Multimap<T, String>.toStringMap(): Map<String, Collection<Strin
 
 fun AccessReport.toStringMap(): Map<String, Collection<String>> {
     val map = kotlin.collections.mutableMapOf<String, Collection<String>>()
-    map["MISSING_ROLES"] = this.missingRoles.map { it.name }
+    map["MISSING_ROLES"] = this.missingRoles!!.map { it.name }
     return map
 }
 

@@ -1,17 +1,18 @@
 package com.radiotelescope.contracts.appointment
 
+import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
+import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 /**
- * Wrapper that takes a [AppointmentFactory] and is responsible for all
+ * Wrapper that takes an [AppointmentFactory] and is responsible for all
  * user role validations for endpoints for the Appointment Entity
  *
  * @property context the [UserContext] interface
@@ -53,16 +54,29 @@ class UserAppointmentWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun retrieve(id: Long, withAccess: (result: SimpleResult<AppointmentInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (!appointmentRepo.existsById(id)) {
+            return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(id))
+        }
+
         val theAppointment = appointmentRepo.findById(id).get()
+
         if (context.currentUserId() != null &&
                 context.currentUserId() == theAppointment.user!!.id) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.USER),
                     successCommand = factory.retrieve(id)
             ).execute(withAccess)
+        } else if (theAppointment.isPublic) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.USER),
+                    successCommand = factory.retrieve(id)
+            ).execute(withAccess)
+        } else {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.retrieve(id)
+            ).execute(withAccess)
         }
-
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
     }
 
     /**
@@ -96,17 +110,17 @@ class UserAppointmentWrapper(
             }
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
-    fun userCompleteList(userId: Long, pageRequest: PageRequest, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun userCompleteList(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null) {
             return if (context.currentUserId() == userId) {
                 context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.userCompletedList(
                                 userId = userId,
-                                pageable = pageRequest
+                                pageable = pageable
                         )
                 ).execute(withAccess)
             } else {
@@ -114,16 +128,20 @@ class UserAppointmentWrapper(
                         requiredRoles = listOf(UserRole.Role.ADMIN),
                         successCommand = factory.userCompletedList(
                                 userId = userId,
-                                pageable = pageRequest
+                                pageable = pageable
                         )
                 ).execute(withAccess)
             }
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
     fun cancel(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (!appointmentRepo.existsById(appointmentId)) {
+            return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(appointmentId))
+        }
+
         val theAppointment = appointmentRepo.findById(appointmentId).get()
 
         if (context.currentUserId() != null) {
@@ -144,15 +162,15 @@ class UserAppointmentWrapper(
             }
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
-    fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageRequest: PageRequest, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),
                 successCommand = factory.retrieveFutureAppointmentsByTelescopeId(
                         telescopeId = telescopeId,
-                        pageable = pageRequest
+                        pageable = pageable
                 )
         ).execute(withAccess)
     }
@@ -194,7 +212,12 @@ class UserAppointmentWrapper(
                 ).execute(withAccess)
             }
         }
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER))
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
+    private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {
+        val errors = HashMultimap.create<ErrorTag, String>()
+        errors.put(ErrorTag.ID, "Appointment Id #$id could not be found")
+        return errors.toStringMap()
+    }
 }
