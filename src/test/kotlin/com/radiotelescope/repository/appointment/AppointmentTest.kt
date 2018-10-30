@@ -121,7 +121,7 @@ internal class AppointmentTest {
     }
 
     @Test
-    fun testFindFutureApptsByUserBetweenDates(){
+    fun testFindAppointmentsBetweenDates(){
         val startTime = System.currentTimeMillis() + 400000L
         val endTime = System.currentTimeMillis() +   800000L
 
@@ -180,9 +180,30 @@ internal class AppointmentTest {
 
         )
 
+        // Appointment status is Requested
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Requested,
+                startTime = Date(startTime + 1010L),
+                endTime = Date(startTime + 1020L),
+                isPublic = true
 
-        val pageOfAppointments = appointmentRepo.findAppointmentsByUserBetweenDates(
-                userId = user.id,
+        )
+
+        // Appointment status is Canceled
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Canceled,
+                startTime = Date(startTime + 1030L),
+                endTime = Date(startTime + 1040L),
+                isPublic = true
+
+        )
+
+
+        val pageOfAppointments = appointmentRepo.findAppointmentsBetweenDates(
                 pageable = PageRequest.of(0, 10),
                 startTime = Date(startTime),
                 endTime = Date(endTime)

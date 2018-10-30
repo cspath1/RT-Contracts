@@ -105,14 +105,14 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
      */
     @Query(value = "SELECT * " +
             "FROM appointment " +
-            "WHERE user_id=?1 AND " +
-            "((start_time >=?2 AND start_time <=?3) OR (end_time >=?2 AND end_time <=?3))" +
-            "AND status <> 'Canceled'",
+            "WHERE ((start_time >=?1 AND start_time <=?2) OR (end_time >=?1 AND end_time <=?2))" +
+            "AND status <> 'Canceled'" +
+            "AnD status <> 'Requested'",
             countQuery = "SELECT COUNT(*) " +
                     "FROM appointment " +
-                    "WHERE user_id=?1 AND " +
-                    "((start_time >=?2 AND start_time <=?3) OR (end_time >=?2 AND end_time <=?3))" +
-                    "AND status <> 'Canceled'",
+                    "WHERE ((start_time >=?1 AND start_time <=?2) OR (end_time >=?1 AND end_time <=?2))" +
+                    "AND status <> 'Canceled'" +
+                    "AnD status <> 'Requested'",
             nativeQuery = true)
-    fun findAppointmentsByUserBetweenDates(userId: Long, startTime: Date, endTime: Date, pageable: Pageable): Page<Appointment>
+    fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, pageable: Pageable): Page<Appointment>
 }
