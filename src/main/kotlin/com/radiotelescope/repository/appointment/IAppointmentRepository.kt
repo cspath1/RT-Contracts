@@ -97,7 +97,6 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
      * Spring Repository method that will return all future [Appointment] records
      * for a User between specified start time and end time. Excludes canceled appointments
      *
-     * @param userId the User id
      * @param startTime the start time of when to start grabbing the appointment
      * @param endTime the end time of when to stop grabbing the appointment
      * @param pageable the [Pageable] interface
