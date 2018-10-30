@@ -1,6 +1,7 @@
 package com.radiotelescope.repository.accountActivateToken
 
 import com.radiotelescope.TestUtil
+import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -20,6 +21,13 @@ internal class AccountActivateTokenTest {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
+
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
+        }
     }
 
     @Autowired

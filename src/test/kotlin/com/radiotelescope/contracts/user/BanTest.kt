@@ -5,6 +5,7 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -20,12 +21,16 @@ import org.springframework.test.context.junit4.SpringRunner
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 internal class BanTest {
-
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
-        fun utilService(): TestUtil {
-            return TestUtil()
+        fun utilService(): TestUtil { return TestUtil() }
+
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
         }
     }
 
