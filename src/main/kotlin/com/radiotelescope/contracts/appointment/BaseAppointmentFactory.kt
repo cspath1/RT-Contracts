@@ -10,6 +10,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import java.util.*
 
 /**
  * Base concrete implementation of the [AppointmentFactory] interface
@@ -132,6 +133,25 @@ class BaseAppointmentFactory(
                 pageable = pageable,
                 telescopeRepo = telescopeRepo
         )
+    }
+
+    /**
+     * Override of the [AppointmentFactory.appointmentListBetweenDates] method
+     * that will return a [AppointmentListBetweenDates] command object
+     *
+     * @param startTime the start time of when to grab appointments
+     * @param endTime the end time of when to grab the appointments
+     * @param pageable the [Pageable] interface
+     * @return a [AppointmentListBetweenDates] command object
+     */
+    override fun appointmentListBetweenDates(startTime: Date, endTime: Date, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+       return AppointmentListBetweenDates(
+               startTime = startTime,
+               endTime = endTime,
+               pageable = pageable,
+               appointmentRepo = appointmentRepo,
+               userRepo = userRepo
+       )
     }
 }
 

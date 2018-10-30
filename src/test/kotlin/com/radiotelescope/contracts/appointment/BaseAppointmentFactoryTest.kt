@@ -137,4 +137,16 @@ internal class BaseAppointmentFactoryTest {
         assertTrue(cmd is Update)
     }
 
+    @Test
+    fun appointmentListBetweenDates(){
+        val cmd = factory.appointmentListBetweenDates(
+                startTime = Date(System.currentTimeMillis()),
+                endTime = Date(System.currentTimeMillis() + 10000L),
+                pageable = PageRequest.of(0, 10)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is AppointmentListBetweenDates)
+    }
+
 }
