@@ -73,4 +73,6 @@ interface UserFactory {
      */
     fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>>
 
+    fun changePassword(request: ChangePassword.Request): Command<Long, Multimap<ErrorTag, String>>
+
 }

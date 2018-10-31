@@ -124,4 +124,11 @@ class BaseUserFactory(
                 userRepo = userRepo
         )
     }
+
+    override fun changePassword(request: ChangePassword.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return ChangePassword(
+                request = request,
+                userRepo = userRepo
+        )
+    }
 }
