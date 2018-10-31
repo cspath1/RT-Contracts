@@ -22,14 +22,14 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
      */
     @Query(value = "SELECT SUM(" +
             "TIMESTAMPDIFF(MICROSECOND, " +
-            "scheduled_appointments.start_time, " +
-            "scheduled_appointments.end_time" +
+            "schedule_appointments.start_time, " +
+            "schedule_appointments.end_time" +
             ") / 1000) " +
             "FROM (SELECT * " +
             "FROM appointment " +
             "WHERE user_id=?1 " +
             "AND end_time > CURRENT_TIMESTAMP " +
-            "AND status = 'Scheduled') AS scheduled_appointments",
+            "AND status = 'Scheduled') AS schedule_appointments",
             nativeQuery = true)
     fun findTotalScheduledAppointmentTimeForUser(userId: Long): Long?
 

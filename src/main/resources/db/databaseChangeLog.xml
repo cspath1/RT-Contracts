@@ -1,0 +1,13 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <include file="classpath:/db/changelog/01-create-user-and-roles.sql"/>
+    <include file="classpath:/db/changelog/02-create-appointment-and-telescope.sql"/>
+    <include file="classpath:/db/changelog/03-create-log-and-error.sql"/>
+    <include file="classpath:/db/changelog/04-create-rf-data.sql"/>
+    <include file="classpath:/db/changelog/05-create-reset-password-token.sql"/>
+    <include file="classpath:/db/changelog/06-create-account-activate-token.sql"/>
+</databaseChangeLog>

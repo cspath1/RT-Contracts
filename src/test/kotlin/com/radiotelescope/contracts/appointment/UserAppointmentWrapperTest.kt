@@ -22,6 +22,9 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
+import liquibase.integration.spring.SpringLiquibase
+
+
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -33,6 +36,13 @@ internal class UserAppointmentWrapperTest {
         @Bean
         fun utilService(): TestUtil {
             return TestUtil()
+        }
+
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
         }
     }
 

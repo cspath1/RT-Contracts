@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import liquibase.integration.spring.SpringLiquibase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
@@ -23,6 +24,13 @@ internal class RetrieveTest {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
+
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
+        }
     }
 
     @Autowired

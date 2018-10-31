@@ -26,3 +26,5 @@ Note: specify the database url as the one found in the local application propert
 * Take the contents of the 'docs' folder that was created and put it in the gh-pages branch
 * **NOTE**: overwrite any existing files in the gh-pages branch with the contents of the newly generate docs folder
 * Still on the gh-pages branch, add, commit, and push the changes and GitHub will handle the rest
+* **ANOTHER NOTE** there is a publish-api-docs.sh file that will handle all of this work for you. Simply run "gradle dokka" and then "./publish-api.docs.sh" and you're good to go (as long as you have the project clone via ssh. Cloning via HTTPS **WILL NOT** work).
+* Go [here](https://cspath1.github.io/RT-Contracts) to view the docs
