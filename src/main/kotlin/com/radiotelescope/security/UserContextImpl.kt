@@ -7,7 +7,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.security.service.RetrieveAuthService
+import com.radiotelescope.security.service.RetrieveAuthUserService
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
 
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component
 class UserContextImpl(
         private var userRepo: IUserRepository,
         private var userRoleRepo: IUserRoleRepository,
-        private var retrieveAuthService: RetrieveAuthService
+        private var retrieveAuthUserService: RetrieveAuthUserService
 ) : UserContext {
 
     /**
@@ -38,7 +38,7 @@ class UserContextImpl(
     override fun <S, E> require(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>): SecuredAction<S, E> {
         var missingRoles: MutableList<UserRole.Role>? = mutableListOf()
 
-        val (session, _) = retrieveAuthService.execute()
+        val (session, _) = retrieveAuthUserService.execute()
 
         // If the authentication object exists, we can check the user's roles
         if (session != null) {
@@ -97,7 +97,7 @@ class UserContextImpl(
     override fun <S, E> requireAny(requiredRoles: List<UserRole.Role>, successCommand: Command<S, E>): SecuredAction<S, E> {
         var hasAnyRole = false
 
-        val (session, _) = retrieveAuthService.execute()
+        val (session, _) = retrieveAuthUserService.execute()
 
         // If the authentication object exists, we can actually check the roles
         if (session != null) {
@@ -147,7 +147,7 @@ class UserContextImpl(
      * token if it exists and return the userId, otherwise it will return null
      */
     override fun currentUserId(): Long? {
-        val (session, _) = retrieveAuthService.execute()
+        val (session, _) = retrieveAuthUserService.execute()
 
         return session?.userId
     }

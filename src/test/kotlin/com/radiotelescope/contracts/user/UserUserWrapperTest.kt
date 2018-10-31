@@ -1,10 +1,12 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.FakeUserContext
+import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -30,6 +32,13 @@ internal class UserUserWrapperTest {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
+
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
+        }
     }
 
     @Autowired
@@ -40,6 +49,9 @@ internal class UserUserWrapperTest {
 
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
+
+    @Autowired
+    private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
     private val baseCreateRequest = Register.Request(
             firstName = "Cody",
@@ -67,8 +79,17 @@ internal class UserUserWrapperTest {
     @Before
     fun init() {
         // Initialize the factory and wrapper
-        factory = BaseUserFactory(userRepo, userRoleRepo)
-        wrapper = UserUserWrapper(context, factory, userRepo, userRoleRepo)
+        factory = BaseUserFactory(
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
+        )
+
+        wrapper = UserUserWrapper(
+                context = context,
+                factory = factory,
+                userRepo = userRepo
+        )
 
         // Create a user for the authentication test
         // We will need to hash the password before persisting

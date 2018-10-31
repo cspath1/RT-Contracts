@@ -22,6 +22,9 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
+import liquibase.integration.spring.SpringLiquibase
+
+
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -33,6 +36,13 @@ internal class UserAppointmentWrapperTest {
         @Bean
         fun utilService(): TestUtil {
             return TestUtil()
+        }
+
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
         }
     }
 
@@ -765,5 +775,41 @@ internal class UserAppointmentWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testValidAppointmentListBetweenDates_LoggedIn_Success(){
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.appointmentListBetweenDates(
+                startTime = Date(System.currentTimeMillis()),
+                endTime = Date(System.currentTimeMillis() + 200000L),
+                pageable = PageRequest.of(0, 10)
+
+        ){
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testValidAppointmentListBetweenDates_NotLoggedIn_Success(){
+        val error = wrapper.appointmentListBetweenDates(
+                startTime = Date(System.currentTimeMillis()),
+                endTime = Date(System.currentTimeMillis() + 200000L),
+                pageable = PageRequest.of(0, 10)
+
+        ){
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+
     }
 }

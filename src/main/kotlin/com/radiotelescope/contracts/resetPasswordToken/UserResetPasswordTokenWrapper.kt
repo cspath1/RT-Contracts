@@ -2,20 +2,15 @@ package com.radiotelescope.contracts.resetPasswordToken
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
-import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
-import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
-import com.radiotelescope.repository.user.IUserRepository
 
 /**
  * Wrapper that takes a [ResetPasswordTokenFactory] and is responsible for all
  * user role validations for endpoints for the ResetPasswordToken Entity
  *
- * @property resetPasswordTokenRepo the [IResetPasswordTokenRepository] interface
- * @property userRepo the [IUserRepository] interface
+ * @property resetPasswordTokenFactory the [ResetPasswordTokenFactory] interface
  */
 class UserResetPasswordTokenWrapper (
-        private val resetPasswordTokenRepo: IResetPasswordTokenRepository,
-        private val userRepo: IUserRepository
+        private val resetPasswordTokenFactory: ResetPasswordTokenFactory
 ) {
 
     /**
@@ -26,15 +21,11 @@ class UserResetPasswordTokenWrapper (
      * @return a [CreateResetPasswordToken] command object
      */
     fun requestPasswordReset(email: String): Command<String, Multimap<ErrorTag, String>> {
-        return CreateResetPasswordToken(
-                email = email,
-                resetPasswordTokenRepo = resetPasswordTokenRepo,
-                userRepo = userRepo
-        )
+        return resetPasswordTokenFactory.requestPasswordReset(email)
     }
 
     /**
-     * Reset Password funtion that will reutnr a [ResetPassword] command object.
+     * Reset Password function that will return a [ResetPassword] command object.
      * This does not need any user role authentication since the user will not be signed in a the time
      *
      * @param request the [ResetPassword.Request]
@@ -42,11 +33,9 @@ class UserResetPasswordTokenWrapper (
      * @return a [ResetPassword] command object
      */
     fun resetPassword(request: ResetPassword.Request, token: String) : Command<Long, Multimap<ErrorTag, String>> {
-        return ResetPassword(
+        return resetPasswordTokenFactory.resetPassword(
                 request = request,
-                token = token,
-                resetPasswordTokenRepo = resetPasswordTokenRepo,
-                userRepo = userRepo
+                token = token
         )
     }
 }

@@ -10,6 +10,7 @@ import com.radiotelescope.security.UserContext
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import java.util.*
 
 /**
  * Wrapper that takes an [AppointmentFactory] and is responsible for all
@@ -213,6 +214,26 @@ class UserAppointmentWrapper(
             }
         }
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
+     * Wrapper method for the [AppointmentFactory.appointmentListBetweenDates] method that adds Spring
+     * Security authentication to the [AppointmentListBetweenDates] command object.
+     *
+     * @param startTime the start time of when to grab appointments
+     * @param endTime the end time of when to grab the appointments
+     * @param pageable the [Pageable] interface
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun appointmentListBetweenDates(startTime: Date, endTime: Date, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.USER),
+                successCommand = factory.appointmentListBetweenDates(
+                        startTime = startTime,
+                        endTime = endTime,
+                        pageable = pageable
+                )
+        ).execute(withAccess)
     }
 
     private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {

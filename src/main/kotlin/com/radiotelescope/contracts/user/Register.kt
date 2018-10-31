@@ -5,11 +5,13 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
+import java.util.*
 
 /**
  * Override of the [Command] interface method used for User registration
@@ -21,26 +23,39 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 class Register(
         private val request: Request,
         private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository
-) : Command<Long, Multimap<ErrorTag, String>> {
+        private val userRoleRepo: IUserRoleRepository,
+        private val accountActivateTokenRepo: IAccountActivateTokenRepository
+) : Command<Register.Response, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
      * that will handle all constraint checking and validations.
      *
      * If validation passes, it will create and persist the [User] object and create
-     * the [UserRole] associated with it. It will then return a [SimpleResult]
-     * object with the [User] id and a null errors field.
+     * the [UserRole] and [AccountActivateToken] associated with it. It will then return
+     * a [SimpleResult] object with the [User] id and a null errors field.
      *
      * If validation fails, it will return a [SimpleResult] with the errors and a
      * null success field
      */
-    override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
+    override fun execute(): SimpleResult<Register.Response, Multimap<ErrorTag, String>> {
         // If there is a value returned with the validateRequest call, there were errors
         // Otherwise we can persist the entity
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
+            // Create the user and generate their roles
             val newUser = userRepo.save(request.toEntity())
+
+            // Create their account activation token
+            val theToken = generateActivateAccountToken(newUser)
+
             generateUserRoles(newUser)
-            return SimpleResult(newUser.id, null)
+
+            val theResponse = Response(
+                    id = newUser.id,
+                    email = newUser.email,
+                    token = theToken
+            )
+
+            return SimpleResult(theResponse, null)
         }
     }
 
@@ -78,6 +93,29 @@ class Register(
         }
 
         return if (errors.isEmpty) null else errors
+    }
+
+    /**
+     * Private method to generate a [AccountActivateToken] object associated with the user.
+     * This token will be emailed to the user as part of a link, and clicking the link will
+     * make the proper API call to activate the account.
+     */
+    private fun generateActivateAccountToken(user: User): String {
+        var token = UUID.randomUUID().toString().replace("-", "", false)
+        while (accountActivateTokenRepo.existsByToken(token)) {
+            token = UUID.randomUUID().toString().replace("-", "", false)
+        }
+
+        val theAccountActivateToken = AccountActivateToken(
+                token = token,
+                expirationDate = Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000))   // 1 day
+        )
+
+        theAccountActivateToken.user = user
+
+        accountActivateTokenRepo.save(theAccountActivateToken)
+
+        return token
     }
 
     /**
@@ -141,10 +179,16 @@ class Register(
             if (!company.isNullOrBlank())
                 user.company = company
 
-            user.active = true
-            user.status = User.Status.Active
+            user.active = false
+            user.status = User.Status.Inactive
 
             return user
         }
     }
+
+    data class Response(
+            val id: Long,
+            val email: String,
+            val token: String
+    )
 }

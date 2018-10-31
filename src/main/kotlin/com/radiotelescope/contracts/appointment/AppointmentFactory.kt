@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.Appointment
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import java.util.*
 
 /**
  * Abstract factory interface with methods for all [Appointment] Command objects
@@ -68,4 +69,13 @@ interface AppointmentFactory {
      */
     fun userFutureList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
+    /**
+     * Abstract command used to retrieve a user's future appointments
+     *
+     * @param startTime the start time of when to grab appointments
+     * @param endTime the end time of when to grab the appointments
+     * @param pageable the [Pageable] interface
+     * @return a [Command] object
+     */
+    fun appointmentListBetweenDates(startTime: Date, endTime: Date, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 }

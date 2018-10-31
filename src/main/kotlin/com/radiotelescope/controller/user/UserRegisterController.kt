@@ -3,10 +3,14 @@ package com.radiotelescope.controller.user
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.user.Register
 import com.radiotelescope.controller.BaseRestController
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.user.RegisterForm
 import com.radiotelescope.controller.model.Result
+import com.radiotelescope.controller.model.ses.AppLink
+import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class UserRegisterController(
         private val userWrapper: UserUserWrapper,
+        private val profile: Profile,
+        private val awsSesSendService: AwsSesSendService,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -66,8 +72,13 @@ class UserRegisterController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Registration",
-                                affectedRecordId = it
+                                affectedRecordId = it.id
                         )
+                )
+
+                sendEmail(
+                        email = simpleResult.success.email,
+                        token = simpleResult.success.token
                 )
             }
             // Otherwise, it was a failure
@@ -89,5 +100,20 @@ class UserRegisterController(
         }
 
         return result
+    }
+
+    private fun sendEmail(email: String, token: String) {
+        val activateAccountLink = AppLink.generate(profile) + "/activateAccount?token=" + token
+
+        val sendForm = SendForm(
+                toAddresses = listOf(email),
+                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                subject = "Account Created",
+                htmlBody = "<p>Thank you for creating an account for the York County Astronomical Society's " +
+                        "Radio Telescope web application!</p>" +
+                        "<p>Please click <a href='$activateAccountLink'> here to activate your account</p>"
+        )
+
+        awsSesSendService.execute(sendForm)
     }
 }
