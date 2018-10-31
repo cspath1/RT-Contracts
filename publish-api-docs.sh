@@ -1,3 +1,6 @@
+# Generate the docs
+gradle dokka
+
 # Create a temp folder
 mkdir api-docs
 cd api-docs

@@ -7,6 +7,7 @@ import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -27,8 +28,14 @@ internal class RetrieveErrorsTest {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-    }
 
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
+        }
+    }
     @Autowired
     private lateinit var testUtil: TestUtil
 

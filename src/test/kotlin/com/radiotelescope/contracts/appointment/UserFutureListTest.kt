@@ -5,6 +5,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -22,11 +23,18 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-class UserFutureListTest {
+internal class UserFutureListTest {
     @TestConfiguration
-    internal class UtilTestContextConfiguration {
+    class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
+
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
+        }
     }
 
     @Autowired
