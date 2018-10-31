@@ -214,7 +214,7 @@ class UserUserWrapper(
                 if (theUser.get().id == request.id) {
                     return context.require(
                             requiredRoles = listOf(UserRole.Role.USER),
-                            successCommand = factory.delete(request.id)
+                            successCommand = factory.changePassword(request)
                     ).execute(withAccess)
 
                 }
