@@ -1,7 +1,10 @@
 package com.radiotelescope.contracts.appointment
 
 
+import com.google.common.collect.Multimap
 import com.radiotelescope.TestUtil
+import com.radiotelescope.contracts.Command
+import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -333,5 +336,73 @@ internal class CreateTest {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
     }
+
+
+    @Test
+    fun testConflictScheduling()
+    {
+        val appointment = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = date,
+                endTime = Date(date.time + twoHours),
+                isPublic = true
+        )
+
+
+     /*
+        val appointment = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.
+        )
+
+        */
+
+
+         val result: SimpleResult<Long, Multimap<ErrorTag, String>> = Create(
+              request = Create.Request(
+                      userId = 5,
+                      startTime = Date(),
+                      endTime = Date(Date().time + twoHours/ 2),
+                      telescopeId = 1L,
+                      isPublic = true
+              ),
+                         appointmentRepo = appointmentRepo,
+                         userRepo = userRepo,
+                         userRoleRepo = userRoleRepo,
+                         telescopeRepo = telescopeRepo
+      ).execute()
+
+      val success =  result.success
+        val error = result.error
+
+
+        //we have a success
+        if (success != null)
+        {
+            println("success was not null, which means the appointment was scheduled, which wasn't supposed to happen in this test")
+            fail()
+        }
+        //there are errors
+        else if (error != null)
+        {
+            //set up the two appointments so that they do conflict to test
+        //get results of each to make sure they actually did conflict
+
+            println(error.get(ErrorTag.START_TIME))
+
+
+
+        }
+
+
+
+
+
+    }
+
+
 
 }

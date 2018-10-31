@@ -11,6 +11,7 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
+import org.springframework.data.domain.Page
 import java.util.*
 
 /**
@@ -28,6 +29,9 @@ class Create(
     private val userRoleRepo: IUserRoleRepository,
     private val telescopeRepo: ITelescopeRepository
 ) : Command<Long, Multimap<ErrorTag,String>> {
+
+  //  var conflict = false
+
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
@@ -41,9 +45,14 @@ class Create(
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = request.toEntity()
             theAppointment.user = userRepo.findById(request.userId).get()
-            appointmentRepo.save(theAppointment)
-            return SimpleResult(theAppointment.id, null)
-        }
+
+//            if (!conflict) {
+                appointmentRepo.save(theAppointment)
+                return SimpleResult(theAppointment.id, null)
+       //     }
+
+
+            }
     }
 
     /**
@@ -55,6 +64,20 @@ class Create(
     private fun validateRequest(): Multimap<ErrorTag, String>? {
 
         // TODO - Add more validation as more features are implemented
+
+
+        /**
+         * Comm
+         *
+         *
+         */
+
+
+
+
+
+
+
 
         var errors = HashMultimap.create<ErrorTag,String>()
         with(request) {
@@ -71,10 +94,28 @@ class Create(
             if (startTime.before(Date()))
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
 
+
+
+                val appts: Page<Appointment> = appointmentRepo.selectAllAppointmentsNotCanceled()
+                for (a in appts)
+                {
+                    if (request.startTime < a.endTime && request.endTime > a.startTime)
+                    {
+                        errors.put(ErrorTag.START_TIME, "Conflict with an already-scheduled appointment")
+                   //     conflict = true
+                        return errors
+
+                    }
+                }
+
+
+
+
             if (!errors.isEmpty)
                 return errors
 
             errors = validateAvailableAllottedTime()
+
 
         }
 

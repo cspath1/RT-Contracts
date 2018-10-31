@@ -91,4 +91,13 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
                     "AND status <> 'Canceled'" ,
         nativeQuery = true)
     fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable:Pageable):Page<Appointment>
+
+
+    @Query(value = "select starttime, endtime, id from appointment where status <> 'Canceled' " , countQuery =
+            "select COUNT(*) from appointment where status <> 'Canceled' " , nativeQuery = true)
+    fun selectAllAppointmentsNotCanceled():Page<Appointment>
+
+
+
+
 }
