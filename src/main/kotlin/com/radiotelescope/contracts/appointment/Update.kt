@@ -19,7 +19,7 @@ import java.util.*
  * @param request of type [Update.Request]
  * @param appointmentRepo of type [IAppointmentRepository]
  * @param telescopeRepo of type [ITelescopeRepository]
- *
+ * @param userRoleRepo of type [IUserRoleRepository]
  */
 class Update(
         private val request: Update.Request,
@@ -36,6 +36,8 @@ class Update(
      *
      * If validation fails, it will return a [SimpleResult] with the errors
      */
+
+   // var hasOverlap = false
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
 
@@ -65,7 +67,13 @@ class Update(
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
 
+                    if (hasOverlap())
+                    {
+              errors.put(ErrorTag.OVERLAP, "Appointment already exists which would overlap potentially re-scheduled appointment")
+              return errors
+                    }
                     //Make this query get only future appointments
+                    /*
                     val appts: Page<Appointment> = appointmentRepo.selectAllAppointmentsNotCanceled()
                     for (a in appts)
                     {
@@ -75,6 +83,7 @@ class Update(
                             return errors
                         }
                     }
+                    */
 
                 }
                 else{
@@ -93,6 +102,20 @@ class Update(
         errors = validateAvailableAllottedTime()
         return errors
     }
+
+
+    private fun hasOverlap():Boolean
+    {
+        var isOverlap = false
+        val pageAppts:Page<Appointment> = appointmentRepo.selectAppointmentsWithinPotentialAppointmentTimeRange(request.endTime, request.startTime, request.telescopeId)
+        val zero:Long = 0
+        if (pageAppts.totalElements != zero)
+        {
+            isOverlap = true
+        }
+        return isOverlap
+    }
+
 
     /**
      * Method responsible for checking if a user has enough available time

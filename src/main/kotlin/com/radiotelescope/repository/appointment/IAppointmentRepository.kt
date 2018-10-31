@@ -116,9 +116,15 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
     fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, pageable: Pageable): Page<Appointment>
 
 
-    @Query(value = "select starttime, endtime, id from appointment where status <> 'Canceled' " , countQuery =
+    @Query(value = "select * from appointment where status <> 'Canceled' " , countQuery =
             "select COUNT(*) from appointment where status <> 'Canceled' " , nativeQuery = true)
     fun selectAllAppointmentsNotCanceled():Page<Appointment>
+
+
+    @Query(value = "select * from appointment where startTime <= ?1 and endTime >= ?2 and telescopeId =?3 ",
+            countQuery = "select COUNT(*) from appointment where startTime >= ?1 and endTime <= ?2 and telescopeId =?3",
+            nativeQuery = true)
+    fun selectAppointmentsWithinPotentialAppointmentTimeRange(endTimeOfPossibleAppointmentDate:Date, startTimeOfPossibleAppointmentDate:Date, telescopeId: Long):Page<Appointment>
 
 
 

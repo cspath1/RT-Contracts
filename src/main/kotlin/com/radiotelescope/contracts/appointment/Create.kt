@@ -45,12 +45,12 @@ class Create(
             theAppointment.user = userRepo.findById(request.userId).get()
 
 //            if (!conflict) {
-                appointmentRepo.save(theAppointment)
-                return SimpleResult(theAppointment.id, null)
-       //     }
+            appointmentRepo.save(theAppointment)
+            return SimpleResult(theAppointment.id, null)
+            //     }
 
 
-            }
+        }
     }
 
     /**
@@ -63,7 +63,7 @@ class Create(
 
         // TODO - Add more validation as more features are implemented
 
-        var errors = HashMultimap.create<ErrorTag,String>()
+        var errors = HashMultimap.create<ErrorTag, String>()
         with(request) {
             if (!userRepo.existsById(userId)) {
                 errors.put(ErrorTag.USER_ID, "User Id #$userId could not be found")
@@ -76,11 +76,17 @@ class Create(
             if (startTime.after(endTime))
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime.before(Date()))
-                errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
+                errors.put(ErrorTag.START_TIME, "Start time must be after the current time")
 
 
-                //May need to refine-- i.e. not select ALL appointments from the table
-                //actually could do just the future appts, because no one schedules an appointment in the past
+            if (hasOverlap())
+            { errors.put(ErrorTag.OVERLAP, "Appointment already exists which would overlap potentially scheduled appointment")
+                return errors
+            }
+
+            //May need to refine-- i.e. not select ALL appointments from the table
+            //actually could do just the future appts, because no one schedules an appointment in the past
+            /*
                 val appts: Page<Appointment> = appointmentRepo.selectAllAppointmentsNotCanceled()
                 for (a in appts)
                 {
@@ -91,6 +97,10 @@ class Create(
                     }
                 }
 
+                */
+
+
+
             if (!errors.isEmpty)
                 return errors
 
@@ -99,8 +109,23 @@ class Create(
 
         }
 
-      return if (errors.isEmpty) null else errors
+        return if (errors.isEmpty) null else errors
     }
+
+    private fun hasOverlap():Boolean
+    {
+      var isOverlap = false
+      val pageAppts:Page<Appointment> = appointmentRepo.selectAppointmentsWithinPotentialAppointmentTimeRange(request.endTime, request.startTime, request.telescopeId)
+      val zero:Long = 0
+      if (pageAppts.totalElements != zero)
+      {
+        isOverlap = true
+      }
+        return isOverlap
+    }
+
+
+
 
     /**
      * Method responsible for checking if a user has enough available time

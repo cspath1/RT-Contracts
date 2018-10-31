@@ -339,10 +339,10 @@ internal class UpdateTest {
                 userRoleRepo = userRoleRepo
         )
 
-        var uExecuted = u.execute()
+        val uExecuted = u.execute()
 
-        var uSuccess = uExecuted.success
-        var uError = uExecuted.error
+        val uSuccess = uExecuted.success
+        val uError = uExecuted.error
 
         if (uSuccess != null)
         {
@@ -350,8 +350,8 @@ internal class UpdateTest {
             fail()
         }
         else if (uError != null) {
-            println(uError.get(ErrorTag.START_TIME))
-            assert(uError.get(ErrorTag.START_TIME).toString() == "Conflict with an already-scheduled appointment")
+            println(uError.get(ErrorTag.OVERLAP))
+            assert(uError.get(ErrorTag.OVERLAP).toString() == "Appointment already exists which would overlap potentially re-scheduled appointment")
         }
     }
 }

@@ -400,8 +400,8 @@ internal class CreateTest {
         {
        //set up the two appointments so that they do conflict to test
         //get results of each to make sure they actually did conflict
-            println(error.get(ErrorTag.START_TIME))
-          assert( error.get(ErrorTag.START_TIME).toString() == "Conflict with an already-scheduled appointment")
+            println(error.get(ErrorTag.OVERLAP))
+            assert( error.get(ErrorTag.OVERLAP).toString() == "Appointment already exists which would overlap potentially scheduled appointment")
         }
     }
 }
