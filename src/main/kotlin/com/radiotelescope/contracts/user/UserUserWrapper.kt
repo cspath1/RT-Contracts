@@ -31,7 +31,7 @@ class UserUserWrapper(
         private val userRoleRepo: IUserRoleRepository
 ) : UserRetrievable<Long, SimpleResult<UserInfo, Multimap<ErrorTag, String>>>,
         UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>,
-        UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>>{
+        UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>> {
     /**
      * Register function that will return a [Register] command object. This does not need any
      * user role authentication since the user will not be signed in at the time
@@ -204,6 +204,22 @@ class UserUserWrapper(
             ).execute(withAccess)
         }
 
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    fun changePassword(request: ChangePassword.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (context.currentUserId() != null) {
+            val theUser = userRepo.findById(context.currentUserId()!!)
+            if (theUser.isPresent) {
+                if (theUser.get().id == request.id) {
+                    return context.require(
+                            requiredRoles = listOf(UserRole.Role.USER),
+                            successCommand = factory.delete(request.id)
+                    ).execute(withAccess)
+
+                }
+            }
+        }
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 }
