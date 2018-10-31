@@ -30,8 +30,6 @@ class Create(
     private val telescopeRepo: ITelescopeRepository
 ) : Command<Long, Multimap<ErrorTag,String>> {
 
-  //  var conflict = false
-
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
@@ -65,20 +63,6 @@ class Create(
 
         // TODO - Add more validation as more features are implemented
 
-
-        /**
-         * Comm
-         *
-         *
-         */
-
-
-
-
-
-
-
-
         var errors = HashMultimap.create<ErrorTag,String>()
         with(request) {
             if (!userRepo.existsById(userId)) {
@@ -95,21 +79,17 @@ class Create(
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
 
 
-
+                //May need to refine-- i.e. not select ALL appointments from the table
+                //actually could do just the future appts, because no one schedules an appointment in the past
                 val appts: Page<Appointment> = appointmentRepo.selectAllAppointmentsNotCanceled()
                 for (a in appts)
                 {
                     if (request.startTime < a.endTime && request.endTime > a.startTime)
                     {
                         errors.put(ErrorTag.START_TIME, "Conflict with an already-scheduled appointment")
-                   //     conflict = true
                         return errors
-
                     }
                 }
-
-
-
 
             if (!errors.isEmpty)
                 return errors

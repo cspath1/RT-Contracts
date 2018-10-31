@@ -329,4 +329,29 @@ internal class UpdateTest {
         assertTrue(errors!![ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
     }
 
+    @Test
+    fun updateAppointmentButConflictWithExistingAppointment() {
+
+        //this should cause a conflict with the existing appointment
+        val u = Update(Update.Request(id = 100, startTime = Date(System.currentTimeMillis() + 10000L), endTime = Date(System.currentTimeMillis() + 20000L), telescopeId = 1L, isPublic = true),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        )
+
+        var uExecuted = u.execute()
+
+        var uSuccess = uExecuted.success
+        var uError = uExecuted.error
+
+        if (uSuccess != null)
+        {
+            //errors is supposed to have been populated
+            fail()
+        }
+        else if (uError != null) {
+            println(uError.get(ErrorTag.START_TIME))
+            assert(uError.get(ErrorTag.START_TIME).toString() == "Conflict with an already-scheduled appointment")
+        }
+    }
 }

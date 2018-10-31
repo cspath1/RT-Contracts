@@ -10,6 +10,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
+import org.springframework.data.domain.Page
 import java.util.*
 
 /**
@@ -64,6 +65,17 @@ class Update(
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
 
+                    //Make this query get only future appointments
+                    val appts: Page<Appointment> = appointmentRepo.selectAllAppointmentsNotCanceled()
+                    for (a in appts)
+                    {
+                        if (request.startTime < a.endTime && request.endTime > a.startTime)
+                        { //then there is a conflict
+                            errors.put(ErrorTag.START_TIME, "Conflict with an already-scheduled appointment")
+                            return errors
+                        }
+                    }
+
                 }
                 else{
                     errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId not found")
@@ -79,7 +91,6 @@ class Update(
             return errors
 
         errors = validateAvailableAllottedTime()
-
         return errors
     }
 

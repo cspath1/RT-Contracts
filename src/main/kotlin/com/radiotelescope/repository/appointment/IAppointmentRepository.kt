@@ -106,7 +106,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "FROM appointment " +
             "WHERE ((start_time >=?1 AND start_time <=?2) OR (end_time >=?1 AND end_time <=?2))" +
             "AND status <> 'Canceled'" +
-            "AnD status <> 'Requested'",
+            "AND status <> 'Requested'",
             countQuery = "SELECT COUNT(*) " +
                     "FROM appointment " +
                     "WHERE ((start_time >=?1 AND start_time <=?2) OR (end_time >=?1 AND end_time <=?2))" +
@@ -119,7 +119,6 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
     @Query(value = "select starttime, endtime, id from appointment where status <> 'Canceled' " , countQuery =
             "select COUNT(*) from appointment where status <> 'Canceled' " , nativeQuery = true)
     fun selectAllAppointmentsNotCanceled():Page<Appointment>
-
 
 
 

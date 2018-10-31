@@ -386,7 +386,7 @@ internal class CreateTest {
       ).execute()
 
       val success =  result.success
-        val error = result.error
+      val error = result.error
 
 
         //we have a success
@@ -398,21 +398,10 @@ internal class CreateTest {
         //there are errors
         else if (error != null)
         {
-            //set up the two appointments so that they do conflict to test
+       //set up the two appointments so that they do conflict to test
         //get results of each to make sure they actually did conflict
-
             println(error.get(ErrorTag.START_TIME))
-
-
-
+          assert( error.get(ErrorTag.START_TIME).toString() == "Conflict with an already-scheduled appointment")
         }
-
-
-
-
-
     }
-
-
-
 }
