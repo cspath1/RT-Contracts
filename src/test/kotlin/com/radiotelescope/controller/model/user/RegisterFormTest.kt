@@ -28,6 +28,7 @@ internal class RegisterFormTest {
         assertEquals(theRequest.categoryOfService, baseForm.categoryOfService!!)
         assertEquals(theRequest.company, baseForm.company)
         assertEquals(theRequest.email, baseForm.email!!)
+        assertEquals(theRequest.emailConfirm, baseForm.emailConfirm!!)
         assertEquals(theRequest.firstName, baseForm.firstName!!)
         assertEquals(theRequest.lastName, baseForm.lastName!!)
         assertEquals(theRequest.password, baseForm.password!!)
