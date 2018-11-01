@@ -74,6 +74,7 @@ internal class UserAppointmentWrapperTest {
     private lateinit var user2: User
     private lateinit var notAdminYet: User
     private lateinit var appointment: Appointment
+    private lateinit var appointmentNotPublic: Appointment
 
     private val context = FakeUserContext()
     private lateinit var factory: BaseAppointmentFactory
@@ -109,6 +110,15 @@ internal class UserAppointmentWrapperTest {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true
+        )
+
+        appointmentNotPublic = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(System.currentTimeMillis() + 40000L),
+                endTime = Date(System.currentTimeMillis() + 50000L),
+                isPublic = false
         )
 
         factory = BaseAppointmentFactory(
@@ -775,5 +785,38 @@ internal class UserAppointmentWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testValidMakePublic_Researcher_Success(){
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.RESEARCHER)
+
+        val error = wrapper.makePublic(
+                appointmentId = appointmentNotPublic.id
+        ){
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testInvalidMakePublic_NotResearcher_Failure(){
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.makePublic(
+                appointmentId = appointmentNotPublic.id
+        ){
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
     }
 }

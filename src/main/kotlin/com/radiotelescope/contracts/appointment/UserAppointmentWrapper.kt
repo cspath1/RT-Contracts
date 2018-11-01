@@ -214,6 +214,21 @@ class UserAppointmentWrapper(
         }
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
+    /**
+     * Wrapper method for the [AppointmentFactory.makePublic] method that adds Spring
+     * Security authentication to the [makePublic] command object.
+     *
+     * @param appointmentId the Appointment's Id
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun makePublic(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.RESEARCHER),
+                successCommand = factory.makePublic(
+                        appointmentId = appointmentId
+                )
+        ).execute(withAccess)
+    }
 
     private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
