@@ -99,19 +99,22 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
      *
      * @param startTime the start time of when to start grabbing the appointment
      * @param endTime the end time of when to stop grabbing the appointment
-     * @param pageable the [Pageable] interface
      * @return a [Page] of [Appointment]
      */
     @Query(value = "SELECT * " +
             "FROM appointment " +
-            "WHERE ((start_time >=?1 AND start_time <=?2) OR (end_time >=?1 AND end_time <=?2))" +
+            "WHERE ((start_time >=?1 AND start_time <=?2) " +
+            "OR (end_time >=?1 AND end_time <=?2)" +
+            "OR (start_time < ?1 AND end_time > ?2 ))" +
             "AND status <> 'Canceled'" +
-            "AnD status <> 'Requested'",
+            "AND status <> 'Requested'",
             countQuery = "SELECT COUNT(*) " +
                     "FROM appointment " +
-                    "WHERE ((start_time >=?1 AND start_time <=?2) OR (end_time >=?1 AND end_time <=?2))" +
+                    "WHERE ((start_time >=?1 AND start_time <=?2) " +
+                    "OR (end_time >=?1 AND end_time <=?2)" +
+                    "OR (start_time < ?1 AND end_time > ?2 ))" +
                     "AND status <> 'Canceled'" +
-                    "AnD status <> 'Requested'",
+                    "AND status <> 'Requested'",
             nativeQuery = true)
     fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, pageable: Pageable): Page<Appointment>
 }
