@@ -45,7 +45,7 @@ class MakePublic (
      * already public.
      */
     private fun validateRequest(): Multimap<ErrorTag, String> {
-        var errors = HashMultimap.create<ErrorTag, String>()
+        val errors = HashMultimap.create<ErrorTag, String>()
 
         if(!appointmentRepo.existsById(appointmentId))
             errors.put(ErrorTag.ID, "Appointment does not exist with specified Id")

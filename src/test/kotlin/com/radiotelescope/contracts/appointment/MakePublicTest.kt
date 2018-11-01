@@ -12,6 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
@@ -23,6 +24,7 @@ import java.util.*
 @ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 internal class MakePublicTest {
+    @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
@@ -98,7 +100,7 @@ internal class MakePublicTest {
     @Test
     fun testInvalid_AppointmentDoesNotExist_Failure(){
         val (id, errors) = MakePublic(
-                appointmentId = 1L,
+                appointmentId = 311L,
                 appointmentRepo = appointmentRepo
         ).execute()
 

@@ -795,7 +795,7 @@ internal class UserAppointmentWrapperTest {
 
         val error = wrapper.makePublic(
                 appointmentId = appointmentNotPublic.id
-        ){
+        ) {
             assertNotNull(it.success)
             assertNull(it.error)
         }
@@ -804,19 +804,64 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
-    fun testInvalidMakePublic_NotResearcher_Failure(){
+    fun testValidMakePublic_Admin_Success() {
         // Simulate a login
+        context.login(user2.id)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.makePublic(
+                appointmentId = appointmentNotPublic.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testInvalidMakePublic_InvalidAppointment_Failure() {
+        // Execute the method on an invalid id
+        val error = wrapper.makePublic(
+                appointmentId = 420L
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId!!.isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidMakePublic_NotResearcher_Failure(){
+        // Simulate a login as an admin user (different user)
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
         val error = wrapper.makePublic(
                 appointmentId = appointmentNotPublic.id
-        ){
+        ) {
             assertNull(it.success)
             assertNotNull(it.error)
         }
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
+    }
+
+    @Test
+    fun testInvalidMakePublic_NotLoggedIn_Failure() {
+        // Do not log the user in
+
+        val error = wrapper.makePublic(
+                appointmentId = appointmentNotPublic.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 }
