@@ -25,6 +25,7 @@ data class RegisterForm(
         val firstName: String?,
         val lastName: String?,
         val email: String?,
+        val emailConfirm: String?,
         val phoneNumber: String?,
         val password: String?,
         val passwordConfirm: String?,
@@ -40,6 +41,7 @@ data class RegisterForm(
                 firstName = firstName!!,
                 lastName = lastName!!,
                 email = email!!,
+                emailConfirm = emailConfirm!!,
                 phoneNumber = phoneNumber,
                 password = password!!,
                 passwordConfirm = passwordConfirm!!,
@@ -67,6 +69,8 @@ data class RegisterForm(
             errors.put(ErrorTag.PASSWORD_CONFIRM, "Password may not be blank")
         if (categoryOfService == null)
             errors.put(ErrorTag.CATEGORY_OF_SERVICE, "Required field")
+        if (emailConfirm.isNullOrBlank())
+            errors.put(ErrorTag.EMAIL_CONFIRM, "Required field")
 
         return if (errors.isEmpty) null else errors
     }

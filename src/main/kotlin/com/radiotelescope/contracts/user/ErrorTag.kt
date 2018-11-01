@@ -8,6 +8,7 @@ enum class ErrorTag {
     FIRST_NAME,
     LAST_NAME,
     EMAIL,
+    EMAIL_CONFIRM,
     COMPANY,
     PASSWORD,
     PASSWORD_CONFIRM,
