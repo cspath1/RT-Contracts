@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert
@@ -16,12 +17,14 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
+@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 class AppointmentListBetweenDatesTest {
     @TestConfiguration
     internal class UtilTestContextConfiguration {
@@ -41,6 +44,9 @@ class AppointmentListBetweenDatesTest {
 
     @Autowired
     private lateinit var userRepo: IUserRepository
+
+    @Autowired
+    private lateinit var telescopeRepo: ITelescopeRepository
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
@@ -89,15 +95,16 @@ class AppointmentListBetweenDatesTest {
         val (infoList, error) = AppointmentListBetweenDates(
                 startTime = Date(startTime),
                 endTime = Date(endTime),
+                telescopeId = 1L,
                 appointmentRepo = appointmentRepo,
-                userRepo = userRepo
+                telescopeRepo = telescopeRepo
         ).execute()
 
         // Should not have failed
         Assert.assertNull(error)
         Assert.assertNotNull(infoList)
 
-        // should only have 1 AppointmentInfo
+        // should have 2 AppointmentInfo
         Assert.assertEquals(2, infoList!!.size)
     }
 
@@ -106,8 +113,9 @@ class AppointmentListBetweenDatesTest {
         val (infoList, error) = AppointmentListBetweenDates(
                 startTime = Date(endTime),
                 endTime = Date(startTime),
+                telescopeId = 1L,
                 appointmentRepo = appointmentRepo,
-                userRepo = userRepo
+                telescopeRepo = telescopeRepo
         ).execute()
 
         // Should have failed
@@ -116,5 +124,23 @@ class AppointmentListBetweenDatesTest {
 
         // Ensure it failed because of the endTime
         Assert.assertTrue(error!![ErrorTag.END_TIME].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_InvalidTelescopeId_Failure() {
+        val (infoList, error) = AppointmentListBetweenDates(
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                telescopeId = 420L,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Should have failed
+        Assert.assertNotNull(error)
+        Assert.assertNull(infoList)
+
+        // Ensure it failed because of the endTime
+        Assert.assertTrue(error!![ErrorTag.TELESCOPE_ID].isNotEmpty())
     }
 }

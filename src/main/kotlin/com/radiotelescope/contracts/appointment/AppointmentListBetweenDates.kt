@@ -5,7 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.toAppointmentInfoList
 import java.util.*
 
@@ -16,13 +16,13 @@ import java.util.*
  * @param startTime the start time of when to grab appointments
  * @param endTime the end time of when to grab the appointments
  * @param appointmentRepo the [IAppointmentRepository] interface
- * @param userRepo the [IUserRepository] interface
  */
 class AppointmentListBetweenDates(
         private val startTime: Date,
         private val endTime: Date,
-        private val appointmentRepo : IAppointmentRepository,
-        private val userRepo : IUserRepository
+        private val telescopeId: Long,
+        private val appointmentRepo: IAppointmentRepository,
+        private val telescopeRepo: ITelescopeRepository
 ) : Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
@@ -43,7 +43,8 @@ class AppointmentListBetweenDates(
 
         val list = appointmentRepo.findAppointmentsBetweenDates(
                 startTime = startTime,
-                endTime = endTime
+                endTime = endTime,
+                telescopeId = telescopeId
         )
 
         val infoList = list.toAppointmentInfoList()
@@ -60,6 +61,8 @@ class AppointmentListBetweenDates(
         // Check to see if endTime is less than or equal to startTime
         if(endTime <= startTime)
             errors.put(ErrorTag.END_TIME, "End time cannot be less than or equal to start time")
+        if (!telescopeRepo.existsById(telescopeId))
+            errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
 
         return errors
     }

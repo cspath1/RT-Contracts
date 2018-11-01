@@ -107,7 +107,8 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "OR (end_time >=?1 AND end_time <=?2)" +
             "OR (start_time < ?1 AND end_time > ?2 ))" +
             "AND status <> 'Canceled'" +
-            "AND status <> 'Requested'",
+            "AND status <> 'Requested' " +
+            "AND telescope_id = ?3",
             nativeQuery = true)
-    fun findAppointmentsBetweenDates(startTime: Date, endTime: Date): List<Appointment>
+    fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): List<Appointment>
 }
