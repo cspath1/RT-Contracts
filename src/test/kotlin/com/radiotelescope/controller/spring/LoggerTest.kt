@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.spring
 
 import com.google.common.collect.HashMultimap
+import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
@@ -8,18 +9,33 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.FakeUserContext
 import com.radiotelescope.toStringMap
+import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
 internal class LoggerTest {
+    @TestConfiguration
+    class UtilTestContextConfiguration {
+        @Bean
+        fun utilService(): TestUtil { return TestUtil() }
+
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
+        }
+    }
 
     @Autowired
     private lateinit var logRepo: ILogRepository
