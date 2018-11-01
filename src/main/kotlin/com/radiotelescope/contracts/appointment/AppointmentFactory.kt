@@ -68,4 +68,11 @@ interface AppointmentFactory {
      */
     fun userFutureList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
+    /**
+     * Abstract command used to make an appointment public
+     *
+     * @param appointmentId the Appointment's id
+     * @return a [Command] object
+     */
+    fun makePublic(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>>
 }

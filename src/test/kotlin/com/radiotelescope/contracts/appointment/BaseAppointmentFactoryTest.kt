@@ -153,4 +153,14 @@ internal class BaseAppointmentFactoryTest {
         assertTrue(cmd is Update)
     }
 
+    @Test
+    fun makePublic(){
+        val cmd = factory.makePublic(
+                appointmentId = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is MakePublic)
+    }
+
 }

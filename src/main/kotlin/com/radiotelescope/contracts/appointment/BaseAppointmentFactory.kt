@@ -133,5 +133,19 @@ class BaseAppointmentFactory(
                 telescopeRepo = telescopeRepo
         )
     }
+
+    /**
+     * Override of the [AppointmentFactory.makePublic] method
+     * that will return a [MakePublic] command object
+     *
+     * @param appointmentId the Appointment's id
+     * @return the [MakePublic] command object
+     */
+    override fun makePublic(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return MakePublic(
+                appointmentId = appointmentId,
+                appointmentRepo = appointmentRepo
+        )
+    }
 }
 
