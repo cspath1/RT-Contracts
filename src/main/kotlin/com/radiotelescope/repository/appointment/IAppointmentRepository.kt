@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
+import java.util.*
 
 /**
  * Spring Repository for the [Appointment] Entity
@@ -91,4 +92,23 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
                     "AND status <> 'Canceled'" ,
         nativeQuery = true)
     fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable:Pageable):Page<Appointment>
+
+    /**
+     * Spring Repository method that will return all future [Appointment] records
+     * for a User between specified start time and end time. Excludes canceled and requested appointments
+     *
+     * @param startTime the start time of when to start grabbing the appointment
+     * @param endTime the end time of when to stop grabbing the appointment
+     * @return a [List] of [Appointment]
+     */
+    @Query(value = "SELECT * " +
+            "FROM appointment " +
+            "WHERE ((start_time >=?1 AND start_time <=?2) " +
+            "OR (end_time >=?1 AND end_time <=?2)" +
+            "OR (start_time < ?1 AND end_time > ?2 ))" +
+            "AND status <> 'Canceled'" +
+            "AND status <> 'Requested' " +
+            "AND telescope_id = ?3",
+            nativeQuery = true)
+    fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): List<Appointment>
 }

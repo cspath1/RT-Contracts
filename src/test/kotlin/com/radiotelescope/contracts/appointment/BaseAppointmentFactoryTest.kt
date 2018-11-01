@@ -153,4 +153,26 @@ internal class BaseAppointmentFactoryTest {
         assertTrue(cmd is Update)
     }
 
+    @Test
+    fun listBetweenDates(){
+        val cmd = factory.listBetweenDates(
+                startTime = Date(System.currentTimeMillis()),
+                endTime = Date(System.currentTimeMillis() + 10000L),
+                telescopeId = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is ListBetweenDates)
+    }
+
+    @Test
+    fun makePublic(){
+        val cmd = factory.makePublic(
+                appointmentId = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is MakePublic)
+    }
+
 }
