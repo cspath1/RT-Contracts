@@ -5,7 +5,6 @@ import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import com.radiotelescope.contracts.appointment.MakePublic
