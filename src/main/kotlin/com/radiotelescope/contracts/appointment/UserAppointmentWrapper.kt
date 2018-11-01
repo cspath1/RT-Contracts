@@ -222,12 +222,15 @@ class UserAppointmentWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun makePublic(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
-        return context.require(
-                requiredRoles = listOf(UserRole.Role.RESEARCHER),
-                successCommand = factory.makePublic(
-                        appointmentId = appointmentId
-                )
-        ).execute(withAccess)
+        if(context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.RESEARCHER),
+                    successCommand = factory.makePublic(
+                            appointmentId = appointmentId
+                    )
+            ).execute(withAccess)
+        }
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
     private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {

@@ -1,0 +1,94 @@
+package com.radiotelescope.controller.appointment
+
+import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.controller.BaseRestController
+import com.radiotelescope.controller.model.Result
+import com.radiotelescope.controller.spring.Logger
+import com.radiotelescope.security.AccessReport
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RestController
+import com.radiotelescope.contracts.appointment.MakePublic
+import com.radiotelescope.repository.log.Log
+import com.radiotelescope.toStringMap
+import org.springframework.http.HttpStatus
+
+/**
+ * REST Controller to handle Appointment Update
+ *
+ * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param logger the [Logger] service
+ */
+@RestController
+class AppointmentMakePublicController (
+        private val appointmentWrapper: UserAppointmentWrapper,
+        logger: Logger
+): BaseRestController(logger){
+    /**
+     * Execute method that is in charge of taking the appointmentId [PathVariable]
+     * and executing the [UserAppointmentWrapper.makePublic] method. If this method
+     * returns an [AccessReport], this means they did not pass authentication and
+     * we should respond with errors.
+     *
+     * Otherwise, this means the [MakePublic] command was executed, and the controller
+     * will check whether or not this command was a success or not, responding
+     * appropriately.
+     */
+    @GetMapping(value = ["/api/appointments/{appointmentId}/makePublic"])
+    fun execute(@PathVariable("appointmentId") id: Long) : Result {
+        appointmentWrapper.makePublic(id) { it ->
+            // If the command was a success
+            it.success?.let {
+                // Create success logs
+                logger.createSuccessLog(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.APPOINTMENT,
+                                action = "Make Appointment Public",
+                                affectedRecordId = it
+                        )
+                )
+
+                result = Result(data = it)
+            }
+            // Otherwise, it was an error
+            it.error?.let {
+                // Create error logs
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                Log.AffectedTable.APPOINTMENT,
+                                action = "Make Appointment Public",
+                                affectedRecordId = null
+                        ),
+                        errors = it.toStringMap()
+                )
+
+                result = Result(errors = it.toStringMap())
+            }
+        }?.let {
+            // If we get here, that means the User did not pass authentication
+
+            // Set the errors depending on if the user was not authenticated or the
+            // record did not exists
+            logger.createErrorLogs(
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.APPOINTMENT,
+                            action = "Make Appointment Public",
+                            affectedRecordId = null
+                    ),
+                    errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
+            )
+
+            // Set the errors depending on if the user was not authenticated or the
+            // record did not exists
+            result = if (it.missingRoles != null) {
+                Result(errors = it.toStringMap(), status = HttpStatus.NOT_FOUND)
+            }
+            // user did not have access to the resource
+            else {
+                Result(errors = it.invalidResourceId!!, status = HttpStatus.FORBIDDEN)
+            }
+        }
+
+        return result
+    }
+}
