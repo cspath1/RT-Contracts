@@ -776,4 +776,38 @@ internal class UserAppointmentWrapperTest {
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
+
+    @Test
+    fun testValidAppointmentListBetweenDates_LoggedIn_Success(){
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.listBetweenDates(
+                startTime = Date(System.currentTimeMillis()),
+                endTime = Date(System.currentTimeMillis() + 200000L),
+                telescopeId = 1L
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testValidAppointmentListBetweenDates_NotLoggedIn_Success(){
+        val error = wrapper.listBetweenDates(
+                startTime = Date(System.currentTimeMillis()),
+                endTime = Date(System.currentTimeMillis() + 200000L),
+                telescopeId = 1L
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+
+    }
 }
