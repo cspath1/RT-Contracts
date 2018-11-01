@@ -213,13 +213,12 @@ internal class AppointmentTest {
         )
 
 
-        val pageOfAppointments = appointmentRepo.findAppointmentsBetweenDates(
-                pageable = PageRequest.of(0, 10),
+        val listOfAppointments = appointmentRepo.findAppointmentsBetweenDates(
                 startTime = Date(startTime),
                 endTime = Date(endTime)
         )
 
-        assertEquals(5, pageOfAppointments.content.size)
+        assertEquals(5, listOfAppointments.size)
     }
 
 }

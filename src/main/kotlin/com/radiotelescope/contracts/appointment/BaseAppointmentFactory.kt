@@ -141,14 +141,12 @@ class BaseAppointmentFactory(
      *
      * @param startTime the start time of when to grab appointments
      * @param endTime the end time of when to grab the appointments
-     * @param pageable the [Pageable] interface
      * @return a [AppointmentListBetweenDates] command object
      */
-    override fun appointmentListBetweenDates(startTime: Date, endTime: Date, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    override fun appointmentListBetweenDates(startTime: Date, endTime: Date): Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
        return AppointmentListBetweenDates(
                startTime = startTime,
                endTime = endTime,
-               pageable = pageable,
                appointmentRepo = appointmentRepo,
                userRepo = userRepo
        )

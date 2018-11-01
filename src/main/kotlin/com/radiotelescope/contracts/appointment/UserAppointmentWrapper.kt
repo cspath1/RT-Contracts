@@ -222,16 +222,14 @@ class UserAppointmentWrapper(
      *
      * @param startTime the start time of when to grab appointments
      * @param endTime the end time of when to grab the appointments
-     * @param pageable the [Pageable] interface
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun appointmentListBetweenDates(startTime: Date, endTime: Date, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun appointmentListBetweenDates(startTime: Date, endTime: Date, withAccess: (result: SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),
                 successCommand = factory.appointmentListBetweenDates(
                         startTime = startTime,
-                        endTime = endTime,
-                        pageable = pageable
+                        endTime = endTime
                 )
         ).execute(withAccess)
     }

@@ -70,12 +70,11 @@ interface AppointmentFactory {
     fun userFutureList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
 
     /**
-     * Abstract command used to retrieve a user's future appointments
+     * Abstract command used to retrieve a list of appointments between two time
      *
      * @param startTime the start time of when to grab appointments
      * @param endTime the end time of when to grab the appointments
-     * @param pageable the [Pageable] interface
      * @return a [Command] object
      */
-    fun appointmentListBetweenDates(startTime: Date, endTime: Date, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag,String>>
+    fun appointmentListBetweenDates(startTime: Date, endTime: Date): Command<List<AppointmentInfo>, Multimap<ErrorTag,String>>
 }

@@ -32,8 +32,8 @@ class AppointmentListBetweenDates (
      * Execute method that is in charge of returning a list of appointments
      * between the two given time.
      *
-     * If the [pageNumber] or [pageSize] request parameters are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.userFutureList]
+     * If the [startTime] or [endTime]] request parameters are null or invalid,
+     * respond with errors. Otherwise, call the [UserAppointmentWrapper.appointmentListBetweenDates]
      * method. If this method returns an [AccessReport], this means that user authentication
      * failed and the method should respond with errors, setting the [Result]'s
      * [HttpStatus] to [HttpStatus.FORBIDDEN].
@@ -45,12 +45,10 @@ class AppointmentListBetweenDates (
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(
             @RequestParam("startTime") startTime: Date,
-            @RequestParam("endTime") endTime: Date,
-            @RequestParam("page") pageNumber: Int?,
-            @RequestParam("size") pageSize: Int?): Result {
+            @RequestParam("endTime") endTime: Date): Result {
         // If any of the request params are null, respond with errors
-        if((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
-            val errors = pageErrors()
+        if(startTime == null || endTime == null || endTime < startTime) {
+            val errors = timeErrors()
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
@@ -64,11 +62,11 @@ class AppointmentListBetweenDates (
         }
         // Otherwise, call the wrapper method
         else {
-            appointmentWrapper.appointmentListBetweenDates(startTime, endTime, PageRequest.of(pageNumber, pageSize)) { it ->
+            appointmentWrapper.appointmentListBetweenDates(startTime, endTime) { it ->
                 //If the command was a success
-                it.success?.let{ page ->
+                it.success?.let{ list ->
                     // Create success logs
-                    page.content.forEach{
+                    list.forEach{
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         Log.AffectedTable.APPOINTMENT,
@@ -113,11 +111,11 @@ class AppointmentListBetweenDates (
 
     /**
      * Private method to return a [HashMultimap] of errors in the event
-     * that the page size and page number are invalid
+     * that the start time and end time are invalid
      */
-    private fun pageErrors(): HashMultimap<ErrorTag, String> {
+    private fun timeErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
-        errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")
+        errors.put(ErrorTag.TIME, "Invalid start or end time parameters")
         return errors
     }
 }

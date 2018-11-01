@@ -95,11 +95,11 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
 
     /**
      * Spring Repository method that will return all future [Appointment] records
-     * for a User between specified start time and end time. Excludes canceled appointments
+     * for a User between specified start time and end time. Excludes canceled and requested appointments
      *
      * @param startTime the start time of when to start grabbing the appointment
      * @param endTime the end time of when to stop grabbing the appointment
-     * @return a [Page] of [Appointment]
+     * @return a [List] of [Appointment]
      */
     @Query(value = "SELECT * " +
             "FROM appointment " +
@@ -108,13 +108,6 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "OR (start_time < ?1 AND end_time > ?2 ))" +
             "AND status <> 'Canceled'" +
             "AND status <> 'Requested'",
-            countQuery = "SELECT COUNT(*) " +
-                    "FROM appointment " +
-                    "WHERE ((start_time >=?1 AND start_time <=?2) " +
-                    "OR (end_time >=?1 AND end_time <=?2)" +
-                    "OR (start_time < ?1 AND end_time > ?2 ))" +
-                    "AND status <> 'Canceled'" +
-                    "AND status <> 'Requested'",
             nativeQuery = true)
-    fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, pageable: Pageable): Page<Appointment>
+    fun findAppointmentsBetweenDates(startTime: Date, endTime: Date): List<Appointment>
 }

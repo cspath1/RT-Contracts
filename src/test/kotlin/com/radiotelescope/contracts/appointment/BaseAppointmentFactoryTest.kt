@@ -157,8 +157,7 @@ internal class BaseAppointmentFactoryTest {
     fun appointmentListBetweenDates(){
         val cmd = factory.appointmentListBetweenDates(
                 startTime = Date(System.currentTimeMillis()),
-                endTime = Date(System.currentTimeMillis() + 10000L),
-                pageable = PageRequest.of(0, 10)
+                endTime = Date(System.currentTimeMillis() + 10000L)
         )
 
         // Ensure it is the correct command

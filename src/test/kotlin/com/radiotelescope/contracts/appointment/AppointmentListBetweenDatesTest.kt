@@ -86,35 +86,33 @@ class AppointmentListBetweenDatesTest {
 
     @Test
     fun testValid_ValidConstraints_Success(){
-        val (infoPage, error) = AppointmentListBetweenDates(
+        val (infoList, error) = AppointmentListBetweenDates(
                 startTime = Date(startTime),
                 endTime = Date(endTime),
-                pageable = PageRequest.of(0, 10),
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo
         ).execute()
 
         // Should not have failed
         Assert.assertNull(error)
-        Assert.assertNotNull(infoPage)
+        Assert.assertNotNull(infoList)
 
         // should only have 1 AppointmentInfo
-        Assert.assertEquals(2, infoPage!!.content.size)
+        Assert.assertEquals(2, infoList!!.size)
     }
 
     @Test
     fun testInvalid_EndTimeIsLessThanStartTime_Failure() {
-        val (infoPage, error) = AppointmentListBetweenDates(
+        val (infoList, error) = AppointmentListBetweenDates(
                 startTime = Date(endTime),
                 endTime = Date(startTime),
-                pageable = PageRequest.of(0, 10),
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo
         ).execute()
 
         // Should have failed
         Assert.assertNotNull(error)
-        Assert.assertNull(infoPage)
+        Assert.assertNull(infoList)
 
         // Ensure it failed because of the endTime
         Assert.assertTrue(error!![ErrorTag.END_TIME].isNotEmpty())

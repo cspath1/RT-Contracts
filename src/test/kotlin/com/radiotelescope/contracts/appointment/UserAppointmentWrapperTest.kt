@@ -785,9 +785,7 @@ internal class UserAppointmentWrapperTest {
 
         val error = wrapper.appointmentListBetweenDates(
                 startTime = Date(System.currentTimeMillis()),
-                endTime = Date(System.currentTimeMillis() + 200000L),
-                pageable = PageRequest.of(0, 10)
-
+                endTime = Date(System.currentTimeMillis() + 200000L)
         ){
             assertNotNull(it.success)
             assertNull(it.error)
@@ -800,9 +798,7 @@ internal class UserAppointmentWrapperTest {
     fun testValidAppointmentListBetweenDates_NotLoggedIn_Success(){
         val error = wrapper.appointmentListBetweenDates(
                 startTime = Date(System.currentTimeMillis()),
-                endTime = Date(System.currentTimeMillis() + 200000L),
-                pageable = PageRequest.of(0, 10)
-
+                endTime = Date(System.currentTimeMillis() + 200000L)
         ){
             assertNull(it.success)
             assertNotNull(it.error)
