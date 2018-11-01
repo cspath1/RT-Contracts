@@ -137,14 +137,14 @@ class BaseAppointmentFactory(
 
     /**
      * Override of the [AppointmentFactory.appointmentListBetweenDates] method
-     * that will return a [AppointmentListBetweenDates] command object
+     * that will return a [ListBetweenDates] command object
      *
      * @param startTime the start time of when to grab appointments
      * @param endTime the end time of when to grab the appointments
-     * @return a [AppointmentListBetweenDates] command object
+     * @return a [ListBetweenDates] command object
      */
-    override fun appointmentListBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
-       return AppointmentListBetweenDates(
+    override fun listBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
+       return ListBetweenDates(
                startTime = startTime,
                endTime = endTime,
                telescopeId = telescopeId,

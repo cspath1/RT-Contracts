@@ -218,16 +218,16 @@ class UserAppointmentWrapper(
 
     /**
      * Wrapper method for the [AppointmentFactory.appointmentListBetweenDates] method that adds Spring
-     * Security authentication to the [AppointmentListBetweenDates] command object.
+     * Security authentication to the [ListBetweenDates] command object.
      *
      * @param startTime the start time of when to grab appointments
      * @param endTime the end time of when to grab the appointments
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun appointmentListBetweenDates(startTime: Date, endTime: Date, telescopeId: Long, withAccess: (result: SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun listBetweenDates(startTime: Date, endTime: Date, telescopeId: Long, withAccess: (result: SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),
-                successCommand = factory.appointmentListBetweenDates(
+                successCommand = factory.listBetweenDates(
                         startTime = startTime,
                         endTime = endTime,
                         telescopeId = telescopeId

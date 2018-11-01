@@ -76,5 +76,5 @@ interface AppointmentFactory {
      * @param endTime the end time of when to grab the appointments
      * @return a [Command] object
      */
-    fun appointmentListBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): Command<List<AppointmentInfo>, Multimap<ErrorTag,String>>
+    fun listBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): Command<List<AppointmentInfo>, Multimap<ErrorTag,String>>
 }

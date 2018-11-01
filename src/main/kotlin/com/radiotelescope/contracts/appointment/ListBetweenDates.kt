@@ -17,7 +17,7 @@ import java.util.*
  * @param endTime the end time of when to grab the appointments
  * @param appointmentRepo the [IAppointmentRepository] interface
  */
-class AppointmentListBetweenDates(
+class ListBetweenDates(
         private val startTime: Date,
         private val endTime: Date,
         private val telescopeId: Long,

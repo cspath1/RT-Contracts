@@ -60,7 +60,7 @@ class AppointmentListBetweenDates (
         }
         // Otherwise, call the wrapper method
         else {
-            appointmentWrapper.appointmentListBetweenDates(
+            appointmentWrapper.listBetweenDates(
                     startTime = form.startTime,
                     endTime = form.endTime,
                     telescopeId = telescopeId) { it ->

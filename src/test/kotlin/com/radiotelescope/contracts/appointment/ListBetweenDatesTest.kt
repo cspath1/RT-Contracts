@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
@@ -25,7 +24,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-class AppointmentListBetweenDatesTest {
+class ListBetweenDatesTest {
     @TestConfiguration
     internal class UtilTestContextConfiguration {
         @Bean
@@ -92,7 +91,7 @@ class AppointmentListBetweenDatesTest {
 
     @Test
     fun testValid_ValidConstraints_Success(){
-        val (infoList, error) = AppointmentListBetweenDates(
+        val (infoList, error) = ListBetweenDates(
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 telescopeId = 1L,
@@ -110,7 +109,7 @@ class AppointmentListBetweenDatesTest {
 
     @Test
     fun testInvalid_EndTimeIsLessThanStartTime_Failure() {
-        val (infoList, error) = AppointmentListBetweenDates(
+        val (infoList, error) = ListBetweenDates(
                 startTime = Date(endTime),
                 endTime = Date(startTime),
                 telescopeId = 1L,
@@ -128,7 +127,7 @@ class AppointmentListBetweenDatesTest {
 
     @Test
     fun testInvalid_InvalidTelescopeId_Failure() {
-        val (infoList, error) = AppointmentListBetweenDates(
+        val (infoList, error) = ListBetweenDates(
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 telescopeId = 420L,

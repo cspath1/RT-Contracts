@@ -783,7 +783,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        val error = wrapper.appointmentListBetweenDates(
+        val error = wrapper.listBetweenDates(
                 startTime = Date(System.currentTimeMillis()),
                 endTime = Date(System.currentTimeMillis() + 200000L),
                 telescopeId = 1L
@@ -797,7 +797,7 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testValidAppointmentListBetweenDates_NotLoggedIn_Success(){
-        val error = wrapper.appointmentListBetweenDates(
+        val error = wrapper.listBetweenDates(
                 startTime = Date(System.currentTimeMillis()),
                 endTime = Date(System.currentTimeMillis() + 200000L),
                 telescopeId = 1L
