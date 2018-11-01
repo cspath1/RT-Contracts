@@ -12,6 +12,7 @@ import com.radiotelescope.contracts.appointment.MakePublic
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.PutMapping
 
 /**
  * REST Controller to handle Appointment Update
@@ -34,7 +35,7 @@ class AppointmentMakePublicController (
      * will check whether or not this command was a success or not, responding
      * appropriately.
      */
-    @GetMapping(value = ["/api/appointments/{appointmentId}/makePublic"])
+    @PutMapping(value = ["/api/appointments/{appointmentId}/makePublic"])
     fun execute(@PathVariable("appointmentId") id: Long) : Result {
         appointmentWrapper.makePublic(id) { it ->
             // If the command was a success
