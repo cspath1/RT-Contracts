@@ -73,6 +73,12 @@ interface UserFactory {
      */
     fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>>
 
+    /**
+     * Abstract command used to change a user's password
+     *
+     * @param request the [ChangePassword.Request] request
+     * @return a [Command] object
+     */
     fun changePassword(request: ChangePassword.Request): Command<Long, Multimap<ErrorTag, String>>
 
 }
