@@ -9,6 +9,7 @@ import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepos
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
+import java.util.*
 
 /**
  * Override of the [Command] interface method used for User reset password
@@ -57,8 +58,14 @@ class ResetPassword (
         with(request) {
             if (!resetPasswordTokenRepo.existsByToken(token)) {
                 errors.put(ErrorTag.TOKEN, "Reset Password Token not found")
-            } else
+            } else {
+                val theToken = resetPasswordTokenRepo.findByToken(token)
+                if (theToken.expirationDate.before(Date()))
+                    errors.put(ErrorTag.TOKEN, "Token is expired.")
+            }
 
+            if (!errors.isEmpty)
+                return errors
 
             if (password.isBlank())
                 errors.put(ErrorTag.PASSWORD, "Password may not be blank")

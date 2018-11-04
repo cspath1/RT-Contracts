@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -132,6 +133,30 @@ internal class ResetPasswordTest {
 
     @Test
     fun testInvalid_TokenNotFound_Failure() {
+        val (id, error) = ResetPassword(
+                request = ResetPassword.Request(
+                        password = "Password1@",
+                        passwordConfirm = "Password1@"
+                ),
+                token = "fake token",
+                resetPasswordTokenRepo = resetPasswordTokenRepo,
+                userRepo = userRepo
+        ).execute()
+
+        // Should have failed
+        assertNull(id)
+        assertNotNull(error)
+
+        // Ensure it failed because of the token
+        assertTrue(error!![ErrorTag.TOKEN].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_TokenExpired_Failure() {
+        // make the token expired
+        token.expirationDate = Date(System.currentTimeMillis() - 100000L)
+        resetPasswordTokenRepo.save(token)
+
         val (id, error) = ResetPassword(
                 request = ResetPassword.Request(
                         password = "Password1@",
