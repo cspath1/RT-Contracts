@@ -6,6 +6,9 @@ import org.junit.Assert.*
 import org.junit.Test
 
 internal class UserInfoTest {
+
+
+
     @Test
     fun testPrimaryConstructor() {
         val userInfo = UserInfo(

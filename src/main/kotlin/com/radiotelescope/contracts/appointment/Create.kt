@@ -11,6 +11,7 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.service.HasOverlapCreate
 import org.springframework.data.domain.Page
 import java.util.*
 
@@ -61,6 +62,7 @@ class Create(
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
 
+        val hasOverlapCreate = HasOverlapCreate(appointmentRepo)
         // TODO - Add more validation as more features are implemented
 
         var errors = HashMultimap.create<ErrorTag, String>()
@@ -77,53 +79,32 @@ class Create(
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime.before(Date()))
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time")
-
-
-            if (hasOverlap())
-            { errors.put(ErrorTag.OVERLAP, "Appointment already exists which would overlap potentially scheduled appointment")
-                return errors
-            }
-
-            //May need to refine-- i.e. not select ALL appointments from the table
-            //actually could do just the future appts, because no one schedules an appointment in the past
-            /*
-                val appts: Page<Appointment> = appointmentRepo.selectAllAppointmentsNotCanceled()
-                for (a in appts)
-                {
-                    if (request.startTime < a.endTime && request.endTime > a.startTime)
-                    {
-                        errors.put(ErrorTag.START_TIME, "Conflict with an already-scheduled appointment")
-                        return errors
-                    }
-                }
-
-                */
-
-
+            if (hasOverlapCreate.hasOverlap(request))
+                errors.put(ErrorTag.OVERLAP, "Appointment cannot be scheduled: Conflict with an already-scheduled appointment")
 
             if (!errors.isEmpty)
                 return errors
 
             errors = validateAvailableAllottedTime()
 
-
         }
 
         return if (errors.isEmpty) null else errors
     }
 
+    /*
     private fun hasOverlap():Boolean
     {
       var isOverlap = false
-      val pageAppts:Page<Appointment> = appointmentRepo.selectAppointmentsWithinPotentialAppointmentTimeRange(request.endTime, request.startTime, request.telescopeId)
+      val listAppts:List<Appointment> = appointmentRepo.selectAppointmentsWithinPotentialAppointmentTimeRange(request.endTime, request.startTime, request.telescopeId)
       val zero:Long = 0
-      if (pageAppts.totalElements != zero)
+      if (listAppts.isEmpty() )
       {
         isOverlap = true
       }
         return isOverlap
     }
-
+*/
 
 
 

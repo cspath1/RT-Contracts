@@ -10,8 +10,9 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
-import org.springframework.data.domain.Page
+import com.radiotelescope.service.HasOverlapUpdate
 import java.util.*
+import com.radiotelescope.service.ses.AwsSesSendService
 
 /**
  * Command class for editing an appointment
@@ -57,6 +58,7 @@ class Update(
      */
     private fun validateRequest(): Multimap<ErrorTag, String> {
         var errors = HashMultimap.create<ErrorTag, String>()
+        val hasOverlapUpdate = HasOverlapUpdate(appointmentRepo)
 
         with(request) {
             if (appointmentRepo.existsById(id)) {
@@ -66,24 +68,8 @@ class Update(
                         errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
-
-                    if (hasOverlap())
-                    {
-              errors.put(ErrorTag.OVERLAP, "Appointment already exists which would overlap potentially re-scheduled appointment")
-              return errors
-                    }
-                    //Make this query get only future appointments
-                    /*
-                    val appts: Page<Appointment> = appointmentRepo.selectAllAppointmentsNotCanceled()
-                    for (a in appts)
-                    {
-                        if (request.startTime < a.endTime && request.endTime > a.startTime)
-                        { //then there is a conflict
-                            errors.put(ErrorTag.START_TIME, "Conflict with an already-scheduled appointment")
-                            return errors
-                        }
-                    }
-                    */
+                    if (hasOverlapUpdate.hasOverlap(request))
+                        errors.put(ErrorTag.OVERLAP, "Appointment cannot be rescheduled: Conflict with an already-scheduled appointment")
 
                 }
                 else{
@@ -101,19 +87,6 @@ class Update(
 
         errors = validateAvailableAllottedTime()
         return errors
-    }
-
-
-    private fun hasOverlap():Boolean
-    {
-        var isOverlap = false
-        val pageAppts:Page<Appointment> = appointmentRepo.selectAppointmentsWithinPotentialAppointmentTimeRange(request.endTime, request.startTime, request.telescopeId)
-        val zero:Long = 0
-        if (pageAppts.totalElements != zero)
-        {
-            isOverlap = true
-        }
-        return isOverlap
     }
 
 

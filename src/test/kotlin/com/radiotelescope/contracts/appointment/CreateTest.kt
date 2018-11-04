@@ -348,6 +348,7 @@ internal class CreateTest {
     }
 
 
+    /*
     @Test
     fun testConflictScheduling()
     {
@@ -389,6 +390,7 @@ internal class CreateTest {
       val error = result.error
 
 
+
         //we have a success
         if (success != null)
         {
@@ -404,4 +406,6 @@ internal class CreateTest {
             assert( error.get(ErrorTag.OVERLAP).toString() == "Appointment already exists which would overlap potentially scheduled appointment")
         }
     }
+
+    */
 }
