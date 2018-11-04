@@ -54,6 +54,7 @@ internal class UserUserWrapperTest {
             firstName = "Cody",
             lastName = "Spath",
             email = "spathcody@gmail.com",
+            emailConfirm = "spathcody@gmail.com",
             phoneNumber = "717-823-2216",
             password = "ValidPassword1",
             passwordConfirm = "ValidPassword1",
