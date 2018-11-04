@@ -69,6 +69,9 @@ internal class ResetPasswordTest {
         //Should have passed
         assertNotNull(id)
         assertNull(error)
+
+        // Ensure the token record was deleted
+        assertEquals(0, resetPasswordTokenRepo.count())
     }
 
     @Test

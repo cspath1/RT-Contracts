@@ -42,8 +42,11 @@ class ResetPassword (
         if(!errors.isEmpty)
             return SimpleResult(null, errors)
 
-        val user = resetPasswordTokenRepo.findByToken(token).user!!
+        val theToken = resetPasswordTokenRepo.findByToken(token)
+        val user = theToken.user!!
         val updatedUser = userRepo.save(request.updateEntity(user))
+        resetPasswordTokenRepo.delete(theToken)
+
         return SimpleResult(updatedUser.id, null)
     }
 
