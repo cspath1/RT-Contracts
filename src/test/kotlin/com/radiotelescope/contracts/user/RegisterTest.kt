@@ -350,7 +350,8 @@ internal class RegisterTest {
         val (id, errors) = Register(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         ).execute()
 
         // Should have failed
