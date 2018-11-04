@@ -129,4 +129,24 @@ internal class ResetPasswordTest {
         // Ensure it failed because of the password
         assertTrue(error!![ErrorTag.PASSWORD].isNotEmpty())
     }
+
+    @Test
+    fun testInvalid_TokenNotFound_Failure() {
+        val (id, error) = ResetPassword(
+                request = ResetPassword.Request(
+                        password = "Password1@",
+                        passwordConfirm = "Password1@"
+                ),
+                token = "fake token",
+                resetPasswordTokenRepo = resetPasswordTokenRepo,
+                userRepo = userRepo
+        ).execute()
+
+        // Should have failed
+        assertNull(id)
+        assertNotNull(error)
+
+        // Ensure it failed because of the token
+        assertTrue(error!![ErrorTag.TOKEN].isNotEmpty())
+    }
 }

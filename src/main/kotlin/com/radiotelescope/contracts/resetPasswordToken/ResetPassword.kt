@@ -55,6 +55,11 @@ class ResetPassword (
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
+            if (!resetPasswordTokenRepo.existsByToken(token)) {
+                errors.put(ErrorTag.TOKEN, "Reset Password Token not found")
+            } else
+
+
             if (password.isBlank())
                 errors.put(ErrorTag.PASSWORD, "Password may not be blank")
             if (password != passwordConfirm)
