@@ -10,6 +10,7 @@ internal class RegisterFormTest {
             firstName = "Cody",
             lastName = "Spath",
             email = "cspath1@ycp.edu",
+            emailConfirm = "cspath1@ycp.edu",
             phoneNumber = "717-823-2216",
             password = "ValidPassword1",
             passwordConfirm = "ValidPassword1",
@@ -27,6 +28,7 @@ internal class RegisterFormTest {
         assertEquals(theRequest.categoryOfService, baseForm.categoryOfService!!)
         assertEquals(theRequest.company, baseForm.company)
         assertEquals(theRequest.email, baseForm.email!!)
+        assertEquals(theRequest.emailConfirm, baseForm.emailConfirm!!)
         assertEquals(theRequest.firstName, baseForm.firstName!!)
         assertEquals(theRequest.lastName, baseForm.lastName!!)
         assertEquals(theRequest.password, baseForm.password!!)
@@ -206,5 +208,35 @@ internal class RegisterFormTest {
         // Make sure the category of service field was the reason for errors
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
+    }
+
+    @Test
+    fun testNullEmailConfirm_Errors() {
+        // Create a copy of the form with a null email confirm field
+        val formCopy = baseForm.copy(
+                emailConfirm = null
+        )
+
+        // Call the validate request method
+        val errors = formCopy.validateRequest()
+
+        // Make sure the email confirm field was the reason for errors
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.EMAIL_CONFIRM].isNotEmpty())
+    }
+
+    @Test
+    fun testBlankEmailConfirm_Failure() {
+        // Create a copy of the form with a blank email confirm field
+        val formCopy = baseForm.copy(
+                emailConfirm = " "
+        )
+
+        // Call the validate request method
+        val errors = formCopy.validateRequest()
+
+        // Make sure the email confirm field was the reason for errors
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.EMAIL_CONFIRM].isNotEmpty())
     }
 }

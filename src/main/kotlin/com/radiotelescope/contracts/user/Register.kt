@@ -78,6 +78,8 @@ class Register(
                 errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
             if (lastName.length > 100)
                 errors.put(ErrorTag.LAST_NAME, "Last Name must be under 100 characters")
+            if (email != emailConfirm)
+                errors.put(ErrorTag.EMAIL_CONFIRM, "Emails do not match")
             if (email.isBlank())
                 errors.put(ErrorTag.EMAIL, "Email Address may not be blank")
             if (!User.isEmailValid(email))
@@ -153,6 +155,7 @@ class Register(
             val firstName: String,
             val lastName: String,
             val email: String,
+            val emailConfirm: String,
             val phoneNumber: String?,
             val password: String,
             val passwordConfirm: String,

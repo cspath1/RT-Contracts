@@ -189,7 +189,7 @@ class UserUserWrapper(
         if (context.currentUserId() != null) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
-                    successCommand = factory.delete(id)
+                    successCommand = factory.unban(id)
             ).execute(withAccess)
         }
 

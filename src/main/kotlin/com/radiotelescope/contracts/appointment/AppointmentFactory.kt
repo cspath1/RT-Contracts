@@ -77,4 +77,12 @@ interface AppointmentFactory {
      * @return a [Command] object
      */
     fun listBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): Command<List<AppointmentInfo>, Multimap<ErrorTag,String>>
+
+    /**
+     * Abstract command used to make an appointment public
+     *
+     * @param appointmentId the Appointment's id
+     * @return a [Command] object
+     */
+    fun makePublic(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>>
 }
