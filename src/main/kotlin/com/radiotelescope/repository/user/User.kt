@@ -61,7 +61,7 @@ data class User(
                 "(?=.*?[A-Z])(?=.*?\\d)(?=.*?[^a-zA-Z0-9])|" + // Uppercase, digit, special characters
                 "(?=.*?[a-z])(?=.*?\\d)(?=.*?[^a-zA-Z0-9])).{8,}\$") // lowercase, digit, special characters
 
-        const val passwordErrorMessage = "Passwords must be 8 characters long and have 3 or 4 of the following: " +
+        const val passwordErrorMessage = "Passwords must be at least 8 characters long and have 3 or 4 of the following: " +
                 "Upper Case, Lower Case, Special Character, Digit"
 
         val rtPasswordEncoder = Pbkdf2PasswordEncoder(
