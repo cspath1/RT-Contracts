@@ -73,3 +73,10 @@ CREATE TABLE account_activate_token (
   token VARCHAR (100) NOT NULL,
   expiration_date DATETIME NOT NULL
 );
+
+CREATE TABLE update_email_token (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  token VARCHAR (100) NOT NULL,
+  expiration_date DATETIME NOT NULL
+);

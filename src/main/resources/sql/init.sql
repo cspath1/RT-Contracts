@@ -1,6 +1,19 @@
 CREATE DATABASE IF NOT EXISTS radio_telescope;
 USE radio_telescope;
 
+DROP TABLE IF EXISTS update_email_token;
+CREATE TABLE update_email_token (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  token VARCHAR(100) NOT NULL,
+  expiration_date DATETIME NOT NULL,
+
+  PRIMARY KEY (id),
+  UNIQUE KEY (user_id),
+  UNIQUE KEY (token),
+  KEY expiration_date_idx (expiration_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS account_activate_token;
 CREATE TABLE account_activate_token (
   id INT(11) NOT NULL AUTO_INCREMENT,
