@@ -139,7 +139,7 @@ internal class CreateTest {
         // 8 hour appointment
         val requestCopy = baseRequest.copy(
                 userId = user.id,
-                startTime = Date(date.time + twoHours),
+                startTime = Date(date.time + twoHours + 1000),
                 endTime = Date(date.time + (twoHours * 5))
         )
 
