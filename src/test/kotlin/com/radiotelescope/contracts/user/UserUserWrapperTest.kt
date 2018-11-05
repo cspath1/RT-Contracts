@@ -1,9 +1,11 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -49,10 +51,14 @@ internal class UserUserWrapperTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
+
     private val baseCreateRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
             email = "spathcody@gmail.com",
+            emailConfirm = "spathcody@gmail.com",
             phoneNumber = "717-823-2216",
             password = "ValidPassword1",
             passwordConfirm = "ValidPassword1",
@@ -75,8 +81,17 @@ internal class UserUserWrapperTest {
     @Before
     fun init() {
         // Initialize the factory and wrapper
-        factory = BaseUserFactory(userRepo, userRoleRepo)
-        wrapper = UserUserWrapper(context, factory, userRepo, userRoleRepo)
+        factory = BaseUserFactory(
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
+        )
+
+        wrapper = UserUserWrapper(
+                context = context,
+                factory = factory,
+                userRepo = userRepo
+        )
 
         // Create a user for the authentication test
         // We will need to hash the password before persisting
@@ -448,8 +463,14 @@ internal class UserUserWrapperTest {
 
     @Test
     fun testUnban_Admin_Failure() {
+        // Simulate the user being banned
+        val theUser = userRepo.findById(userId).get()
+        theUser.status = User.Status.Banned
+        theUser.active = false
+        userRepo.save(theUser)
+
         // Log the user in as an admin
-        context.login(userId)
+        context.login(otherUserId)
         context.currentRoles.add(UserRole.Role.ADMIN)
 
         val error = wrapper.unban(

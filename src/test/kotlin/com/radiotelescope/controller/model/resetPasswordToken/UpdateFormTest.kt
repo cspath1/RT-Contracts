@@ -33,6 +33,19 @@ class UpdateFormTest {
     }
 
     @Test
+    fun testInvalid_NullPassword_Failure() {
+        // Call the validate request method
+        val errors = UpdateForm(
+                password = null,
+                passwordConfirm = "beepboopbop"
+        ).validateRequest()
+
+        // Make sure it failed
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.PASSWORD].isNotEmpty())
+    }
+
+    @Test
     fun testInvalid_BlankPassword_Failure(){
         // Call the validate request method
         val errors = UpdateForm(

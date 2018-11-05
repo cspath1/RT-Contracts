@@ -38,3 +38,12 @@ fun List<RFData>.toInfoList(): List<RFDataInfo> {
 
     return infoList
 }
+
+fun List<Appointment>.toAppointmentInfoList(): List<AppointmentInfo> {
+    val infoList = arrayListOf<AppointmentInfo>()
+    forEach {
+        infoList.add(AppointmentInfo(it))
+    }
+
+    return infoList
+}

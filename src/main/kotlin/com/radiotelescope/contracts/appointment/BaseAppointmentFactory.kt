@@ -10,6 +10,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import java.util.*
 
 /**
  * Base concrete implementation of the [AppointmentFactory] interface
@@ -131,6 +132,39 @@ class BaseAppointmentFactory(
                 telescopeId = telescopeId,
                 pageable = pageable,
                 telescopeRepo = telescopeRepo
+        )
+    }
+
+    /**
+     * Override of the [AppointmentFactory.appointmentListBetweenDates] method
+     * that will return a [ListBetweenDates] command object
+     *
+     * @param startTime the start time of when to grab appointments
+     * @param endTime the end time of when to grab the appointments
+     * @return a [ListBetweenDates] command object
+     */
+    override fun listBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
+       return ListBetweenDates(
+               startTime = startTime,
+               endTime = endTime,
+               telescopeId = telescopeId,
+               appointmentRepo = appointmentRepo,
+               telescopeRepo = telescopeRepo
+
+       )
+    }
+
+    /**
+     * Override of the [AppointmentFactory.makePublic] method
+     * that will return a [MakePublic] command object
+     *
+     * @param appointmentId the Appointment's id
+     * @return the [MakePublic] command object
+     */
+    override fun makePublic(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return MakePublic(
+                appointmentId = appointmentId,
+                appointmentRepo = appointmentRepo
         )
     }
 }

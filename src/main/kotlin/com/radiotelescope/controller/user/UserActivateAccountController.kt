@@ -6,6 +6,8 @@ import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
@@ -25,6 +27,8 @@ class UserActivateAccountController(
      * and executing the [UserAccountActivateTokenWrapper.activateAccount]
      * method that will activate a user's account.
      */
+    @CrossOrigin(value = ["http://localhost:8081"])
+    @PutMapping(value = ["/api/users/activate"])
     fun execute(@RequestParam("token") token: String): Result {
         val simpleResult = activateTokenWrapper.activateAccount(
                 token = token
