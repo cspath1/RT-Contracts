@@ -125,4 +125,6 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             nativeQuery = true)
     fun selectAppointmentsWithinPotentialAppointmentTimeRange(endTimeOfPossibleAppointmentDate:Date, startTimeOfPossibleAppointmentDate:Date, telescopeId: Long ):List<Appointment>
 
+
+
 }
