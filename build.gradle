@@ -132,10 +132,12 @@ dependencies {
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compile("org.jetbrains.kotlin:kotlin-reflect")
 
+<<<<<<<<< Temporary merge branch 1
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-ses'
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-s3'
 
 	compile("org.liquibase:liquibase-core")
+>>>>>>>>> Temporary merge branch 2
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')

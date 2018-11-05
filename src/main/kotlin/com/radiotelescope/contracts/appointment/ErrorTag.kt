@@ -13,5 +13,6 @@ enum class ErrorTag{
     PUBLIC,
     PAGE_PARAMS,
     CATEGORY_OF_SERVICE,
-    ALLOTTED_TIME
+    ALLOTTED_TIME,
+    OVERLAP
 }

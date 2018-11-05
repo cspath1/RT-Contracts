@@ -1,14 +1,32 @@
 package com.radiotelescope.contracts.appointment
 
+import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.user.User
+import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Test
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import java.util.*
 
 internal class AppointmentInfoTest {
     private var startTime = Date(System.currentTimeMillis() + 10000L)
     private var endTime = Date(System.currentTimeMillis() + 30000L)
+
+    @TestConfiguration
+    class UtilTestContextConfiguration {
+        @Bean
+        fun utilService(): TestUtil { return TestUtil() }
+
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
+        }
+    }
+
 
     @Test
     fun testPrimaryConstructor() {

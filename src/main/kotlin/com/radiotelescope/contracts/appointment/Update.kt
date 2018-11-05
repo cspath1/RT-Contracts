@@ -10,7 +10,9 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.service.HasOverlapUpdate
 import java.util.*
+import com.radiotelescope.service.ses.AwsSesSendService
 
 /**
  * Command class for editing an appointment
@@ -18,7 +20,7 @@ import java.util.*
  * @param request of type [Update.Request]
  * @param appointmentRepo of type [IAppointmentRepository]
  * @param telescopeRepo of type [ITelescopeRepository]
- *
+ * @param userRoleRepo of type [IUserRoleRepository]
  */
 class Update(
         private val request: Update.Request,
@@ -35,6 +37,8 @@ class Update(
      *
      * If validation fails, it will return a [SimpleResult] with the errors
      */
+
+   // var hasOverlap = false
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
 
@@ -54,6 +58,7 @@ class Update(
      */
     private fun validateRequest(): Multimap<ErrorTag, String> {
         var errors = HashMultimap.create<ErrorTag, String>()
+        val hasOverlapUpdate = HasOverlapUpdate(appointmentRepo)
 
         with(request) {
             if (appointmentRepo.existsById(id)) {
@@ -63,6 +68,8 @@ class Update(
                         errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
+                    if (hasOverlapUpdate.hasOverlap(request))
+                        errors.put(ErrorTag.OVERLAP, "Appointment cannot be rescheduled: Conflict with an already-scheduled appointment")
 
                 }
                 else{
@@ -79,9 +86,9 @@ class Update(
             return errors
 
         errors = validateAvailableAllottedTime()
-
         return errors
     }
+
 
     /**
      * Method responsible for checking if a user has enough available time

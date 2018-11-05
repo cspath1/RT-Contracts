@@ -11,6 +11,8 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.service.HasOverlapCreate
+import org.springframework.data.domain.Page
 import java.util.*
 
 /**
@@ -28,6 +30,7 @@ class Create(
     private val userRoleRepo: IUserRoleRepository,
     private val telescopeRepo: ITelescopeRepository
 ) : Command<Long, Multimap<ErrorTag,String>> {
+
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
@@ -41,8 +44,13 @@ class Create(
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = request.toEntity()
             theAppointment.user = userRepo.findById(request.userId).get()
+
+//            if (!conflict) {
             appointmentRepo.save(theAppointment)
             return SimpleResult(theAppointment.id, null)
+            //     }
+
+
         }
     }
 
@@ -54,9 +62,10 @@ class Create(
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
 
+        val hasOverlapCreate = HasOverlapCreate(appointmentRepo)
         // TODO - Add more validation as more features are implemented
 
-        var errors = HashMultimap.create<ErrorTag,String>()
+        var errors = HashMultimap.create<ErrorTag, String>()
         with(request) {
             if (!userRepo.existsById(userId)) {
                 errors.put(ErrorTag.USER_ID, "User Id #$userId could not be found")
@@ -69,7 +78,9 @@ class Create(
             if (startTime.after(endTime))
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime.before(Date()))
-                errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
+                errors.put(ErrorTag.START_TIME, "Start time must be after the current time")
+            if (hasOverlapCreate.hasOverlap(request))
+                errors.put(ErrorTag.OVERLAP, "Appointment cannot be scheduled: Conflict with an already-scheduled appointment")
 
             if (!errors.isEmpty)
                 return errors
@@ -78,8 +89,24 @@ class Create(
 
         }
 
-      return if (errors.isEmpty) null else errors
+        return if (errors.isEmpty) null else errors
     }
+
+    /*
+    private fun hasOverlap():Boolean
+    {
+      var isOverlap = false
+      val listAppts:List<Appointment> = appointmentRepo.selectAppointmentsWithinPotentialAppointmentTimeRange(request.endTime, request.startTime, request.telescopeId)
+      val zero:Long = 0
+      if (listAppts.isEmpty() )
+      {
+        isOverlap = true
+      }
+        return isOverlap
+    }
+*/
+
+
 
     /**
      * Method responsible for checking if a user has enough available time

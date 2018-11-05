@@ -12,6 +12,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -62,7 +63,9 @@ class AdminUserListController(
         }
         // Otherwise, call the wrapper method
         else {
-            userWrapper.pageable(PageRequest.of(pageNumber, pageSize)) { it ->
+            val sort = Sort(Sort.Direction.DESC, "id")
+            val pageRequest = PageRequest.of(pageNumber, pageSize, sort)
+            userWrapper.pageable(pageRequest) { it ->
                 // If the command was a success
                 it.success?.let { page ->
                     // Create success logs

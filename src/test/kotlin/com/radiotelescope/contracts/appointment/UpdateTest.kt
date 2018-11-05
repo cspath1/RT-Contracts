@@ -329,4 +329,32 @@ internal class UpdateTest {
         assertTrue(errors!![ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
     }
 
+
+    /*
+    @Test
+    fun updateAppointmentButConflictWithExistingAppointment() {
+
+        //this should cause a conflict with the existing appointment
+        val u = Update(Update.Request(id = 100, startTime = Date(System.currentTimeMillis() + 10000L), endTime = Date(System.currentTimeMillis() + 20000L), telescopeId = 1L, isPublic = true),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        )
+
+        val uExecuted = u.execute()
+
+        val uSuccess = uExecuted.success
+        val uError = uExecuted.error
+
+        if (uSuccess != null)
+        {
+            //errors is supposed to have been populated
+            fail()
+        }
+        else if (uError != null) {
+            println(uError.get(ErrorTag.OVERLAP))
+            assert(uError.get(ErrorTag.OVERLAP).toString() == "Appointment already exists which would overlap potentially re-scheduled appointment")
+        }
+    }
+    */
 }
