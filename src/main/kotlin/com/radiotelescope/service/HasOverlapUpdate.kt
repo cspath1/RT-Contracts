@@ -3,11 +3,22 @@ package com.radiotelescope.service
 import com.radiotelescope.contracts.appointment.Update
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.user.IUserRepository
 
+/**
+ *
+ * Class that contains the method to check for appointment overlaps when an Update.Request is generated
+ * @param an [IAppointmentRepository] on which to call selectAppointmentsWithinPotentialAppointmentTimeRange
+ */
 
 public class HasOverlapUpdate(val appointmentRepo:IAppointmentRepository)
 {
+    /**
+     * Method checks if there are any conflicts when re-scheduling an appointment.
+     *
+     * @param the [Update.Request], containing the details of the potential appointment
+     * @return a [Boolean], true if conflict, false if no conflict
+     */
+
     public fun hasOverlap(request: Update.Request):Boolean {
     var isOverlap = false
     val listAppts:List<Appointment> = appointmentRepo.selectAppointmentsWithinPotentialAppointmentTimeRange(request.endTime, request.startTime, request.telescopeId)
