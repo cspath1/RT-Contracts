@@ -14,6 +14,8 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.telescope.Telescope
+import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
+import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,6 +44,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
+
+    @Autowired
+    private lateinit var updateEmailTokenRepo: IUpdateEmailTokenRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -209,5 +214,19 @@ internal class TestUtil {
         theAccountActivateToken.user = user
 
         return accountActivateTokenRepo.save(theAccountActivateToken)
+    }
+
+    fun createUpdateEmailToken(
+            user: User,
+            token: String
+    ) : UpdateEmailToken {
+        val theUpdateEmailToken = UpdateEmailToken(
+                token = token,
+                expirationDate = Date(System.currentTimeMillis() + (1 * 24 * 60 * 60 * 1000))
+        )
+
+        theUpdateEmailToken.user = user
+
+        return updateEmailTokenRepo.save(theUpdateEmailToken)
     }
 }
