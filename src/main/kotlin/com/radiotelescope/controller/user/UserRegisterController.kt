@@ -105,6 +105,8 @@ class UserRegisterController(
     private fun sendEmail(email: String, token: String) {
         val activateAccountLink = AppLink.generate(profile) + "/activateAccount?token=" + token
 
+        System.out.println("Token Sent in Email: $token")
+
         val sendForm = SendForm(
                 toAddresses = listOf(email),
                 fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",

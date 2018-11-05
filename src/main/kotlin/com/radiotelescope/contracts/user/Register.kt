@@ -55,6 +55,8 @@ class Register(
                     token = theToken
             )
 
+            System.out.println("Generated Account Activation Token: $theToken")
+
             return SimpleResult(theResponse, null)
         }
     }
@@ -117,7 +119,7 @@ class Register(
 
         accountActivateTokenRepo.save(theAccountActivateToken)
 
-        return token
+        return theAccountActivateToken.token
     }
 
     /**
