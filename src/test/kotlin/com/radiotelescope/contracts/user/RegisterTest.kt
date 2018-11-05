@@ -46,6 +46,7 @@ internal class RegisterTest {
             firstName = "Cody",
             lastName = "Spath",
             email = "cspath1@ycp.edu",
+            emailConfirm = "cspath1@ycp.edu",
             phoneNumber = "717-823-2216",
             password = "ValidPassword1",
             passwordConfirm = "ValidPassword1",
@@ -336,6 +337,29 @@ internal class RegisterTest {
 
         // Ensure it failed because of the email
         assertTrue(error!![ErrorTag.EMAIL].isNotEmpty())
+    }
+
+    @Test
+    fun testEmailsDoNotMatch_Failure() {
+        // Set the emails to be different values
+        val requestCopy = baseRequest.copy(
+                emailConfirm = "spathcody@gmail.com"
+        )
+
+        // Now, execute the command
+        val (id, errors) = Register(
+                request = requestCopy,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
+        ).execute()
+
+        // Should have failed
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Ensure it failed because of the emails not matching
+        assertTrue(errors!![ErrorTag.EMAIL_CONFIRM].isNotEmpty())
     }
 
     @Test

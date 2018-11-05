@@ -29,7 +29,7 @@ apply plugin: 'org.jetbrains.dokka'
 
 group = 'com.radiotelescope'
 
-version = '1.1.0'
+version = '1.2.4'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -54,7 +54,7 @@ dependencyManagement {
 }
 
 processResources {
-	def profile = (project.hasProperty('profile') ? project.profile : 'local').toLowerCase()
+	def profile = (project.hasProperty('profile') ? project.profile : 'remote').toLowerCase()
 
 	copy {
 		from "src/main/resources/properties/application_${profile}.properties"
@@ -132,10 +132,12 @@ dependencies {
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compile("org.jetbrains.kotlin:kotlin-reflect")
 
+<<<<<<<<< Temporary merge branch 1
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-ses'
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-s3'
 
 	compile("org.liquibase:liquibase-core")
+>>>>>>>>> Temporary merge branch 2
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
