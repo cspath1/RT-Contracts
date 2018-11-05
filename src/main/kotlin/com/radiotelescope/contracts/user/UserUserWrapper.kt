@@ -196,6 +196,14 @@ class UserUserWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
+
+    /**
+     *  Wrapper method for the [UserFactory.changePassword] method that adds Spring
+     *  Security authentication to the [ChangePassword] command object
+     *
+     *  @param request the [ChangePassword.Request] request
+     *  @return An [AccessReport] if authentication fails, null otherwise
+     */
     fun changePassword(request: ChangePassword.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null) {
             val theUser = userRepo.findById(context.currentUserId()!!)
