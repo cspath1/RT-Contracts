@@ -5,10 +5,8 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.toAppointmentInfoPage
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.toAppointmentInfoList
 import java.util.*
 
 /**
@@ -17,42 +15,40 @@ import java.util.*
  *
  * @param startTime the start time of when to grab appointments
  * @param endTime the end time of when to grab the appointments
- * @param pageable the [Pageable] interface
  * @param appointmentRepo the [IAppointmentRepository] interface
- * @param userRepo the [IUserRepository] interface
  */
-class AppointmentListBetweenDates(
+class ListBetweenDates(
         private val startTime: Date,
         private val endTime: Date,
-        private val pageable: Pageable,
-        private val appointmentRepo : IAppointmentRepository,
-        private val userRepo : IUserRepository
-) : Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        private val telescopeId: Long,
+        private val appointmentRepo: IAppointmentRepository,
+        private val telescopeRepo: ITelescopeRepository
+) : Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
      * that will handle all constraint checking and validations.
      *
-     * If validation passes it will create a [Page] of [AppointmentInfo] objects and
+     * If validation passes it will create a [List] of [AppointmentInfo] objects and
      * return this in the [SimpleResult.success] value.
      *
      * If validation fails, it will will return the errors in a [SimpleResult.error]
      * value.
      */
-    override fun execute(): SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    override fun execute(): SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
 
         if(!errors.isEmpty){
             return SimpleResult(null, errors)
         }
 
-        val page = appointmentRepo.findAppointmentsBetweenDates(
+        val list = appointmentRepo.findAppointmentsBetweenDates(
                 startTime = startTime,
                 endTime = endTime,
-                pageable = pageable
+                telescopeId = telescopeId
         )
 
-        val infoPage = page.toAppointmentInfoPage()
-        return SimpleResult(infoPage, null)
+        val infoList = list.toAppointmentInfoList()
+        return SimpleResult(infoList, null)
     }
 
     /**
@@ -65,6 +61,8 @@ class AppointmentListBetweenDates(
         // Check to see if endTime is less than or equal to startTime
         if(endTime <= startTime)
             errors.put(ErrorTag.END_TIME, "End time cannot be less than or equal to start time")
+        if (!telescopeRepo.existsById(telescopeId))
+            errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
 
         return errors
     }

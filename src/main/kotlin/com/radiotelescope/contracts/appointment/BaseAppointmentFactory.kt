@@ -137,21 +137,35 @@ class BaseAppointmentFactory(
 
     /**
      * Override of the [AppointmentFactory.appointmentListBetweenDates] method
-     * that will return a [AppointmentListBetweenDates] command object
+     * that will return a [ListBetweenDates] command object
      *
      * @param startTime the start time of when to grab appointments
      * @param endTime the end time of when to grab the appointments
-     * @param pageable the [Pageable] interface
-     * @return a [AppointmentListBetweenDates] command object
+     * @return a [ListBetweenDates] command object
      */
-    override fun appointmentListBetweenDates(startTime: Date, endTime: Date, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
-       return AppointmentListBetweenDates(
+    override fun listBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
+       return ListBetweenDates(
                startTime = startTime,
                endTime = endTime,
-               pageable = pageable,
+               telescopeId = telescopeId,
                appointmentRepo = appointmentRepo,
-               userRepo = userRepo
+               telescopeRepo = telescopeRepo
+
        )
+    }
+
+    /**
+     * Override of the [AppointmentFactory.makePublic] method
+     * that will return a [MakePublic] command object
+     *
+     * @param appointmentId the Appointment's id
+     * @return the [MakePublic] command object
+     */
+    override fun makePublic(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return MakePublic(
+                appointmentId = appointmentId,
+                appointmentRepo = appointmentRepo
+        )
     }
 }
 

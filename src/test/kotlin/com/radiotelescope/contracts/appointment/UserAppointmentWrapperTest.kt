@@ -74,6 +74,7 @@ internal class UserAppointmentWrapperTest {
     private lateinit var user2: User
     private lateinit var notAdminYet: User
     private lateinit var appointment: Appointment
+    private lateinit var appointmentNotPublic: Appointment
 
     private val context = FakeUserContext()
     private lateinit var factory: BaseAppointmentFactory
@@ -109,6 +110,15 @@ internal class UserAppointmentWrapperTest {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true
+        )
+
+        appointmentNotPublic = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Scheduled,
+                startTime = Date(System.currentTimeMillis() + 40000L),
+                endTime = Date(System.currentTimeMillis() + 50000L),
+                isPublic = false
         )
 
         factory = BaseAppointmentFactory(
@@ -778,17 +788,94 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
+    fun testValidMakePublic_Researcher_Success(){
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.RESEARCHER)
+
+        val error = wrapper.makePublic(
+                appointmentId = appointmentNotPublic.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testValidMakePublic_Admin_Success() {
+        // Simulate a login
+        context.login(user2.id)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.makePublic(
+                appointmentId = appointmentNotPublic.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testInvalidMakePublic_InvalidAppointment_Failure() {
+        // Execute the method on an invalid id
+        val error = wrapper.makePublic(
+                appointmentId = 420L
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId!!.isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidMakePublic_NotResearcher_Failure(){
+        // Simulate a login as an admin user (different user)
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.makePublic(
+                appointmentId = appointmentNotPublic.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
+    }
+
+    @Test
+    fun testInvalidMakePublic_NotLoggedIn_Failure() {
+        // Do not log the user in
+
+        val error = wrapper.makePublic(
+                appointmentId = appointmentNotPublic.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
     fun testValidAppointmentListBetweenDates_LoggedIn_Success(){
         // Simulate a login
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        val error = wrapper.appointmentListBetweenDates(
+        val error = wrapper.listBetweenDates(
                 startTime = Date(System.currentTimeMillis()),
                 endTime = Date(System.currentTimeMillis() + 200000L),
-                pageable = PageRequest.of(0, 10)
-
-        ){
+                telescopeId = 1L
+        ) {
             assertNotNull(it.success)
             assertNull(it.error)
         }
@@ -798,12 +885,11 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testValidAppointmentListBetweenDates_NotLoggedIn_Success(){
-        val error = wrapper.appointmentListBetweenDates(
+        val error = wrapper.listBetweenDates(
                 startTime = Date(System.currentTimeMillis()),
                 endTime = Date(System.currentTimeMillis() + 200000L),
-                pageable = PageRequest.of(0, 10)
-
-        ){
+                telescopeId = 1L
+        ) {
             assertNull(it.success)
             assertNotNull(it.error)
         }

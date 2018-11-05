@@ -5,16 +5,14 @@ import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
+import com.radiotelescope.controller.model.appointment.ListBetweenDatesForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 /**
@@ -32,8 +30,8 @@ class AppointmentListBetweenDates (
      * Execute method that is in charge of returning a list of appointments
      * between the two given time.
      *
-     * If the [pageNumber] or [pageSize] request parameters are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.userFutureList]
+     * If the fields in the [ListBetweenDatesForm] are null or invalid,
+     * respond with errors. Otherwise, call the [UserAppointmentWrapper.appointmentListBetweenDates]
      * method. If this method returns an [AccessReport], this means that user authentication
      * failed and the method should respond with errors, setting the [Result]'s
      * [HttpStatus] to [HttpStatus.FORBIDDEN].
@@ -41,16 +39,14 @@ class AppointmentListBetweenDates (
      * If not, the command object was executed, and was either a success or failure,
      * and the method should respond accordingly based on each scenario.
      */
-    @GetMapping(value = ["/api/users/{userId}/appointmentCalender"])
+    @GetMapping(value = ["/api/appointments/telescopes/{telescopeId}/listBetweenDates"])
     @CrossOrigin(value = ["http://localhost:8081"])
-    fun execute(
-            @RequestParam("startTime") startTime: Date,
-            @RequestParam("endTime") endTime: Date,
-            @RequestParam("page") pageNumber: Int?,
-            @RequestParam("size") pageSize: Int?): Result {
+    fun execute(@RequestBody form: ListBetweenDatesForm,
+                @PathVariable("telescopeId") telescopeId: Long
+    ): Result {
         // If any of the request params are null, respond with errors
-        if((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
-            val errors = pageErrors()
+        if(form.startTime == null || form.endTime == null) {
+            val errors = timeErrors()
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
@@ -64,11 +60,14 @@ class AppointmentListBetweenDates (
         }
         // Otherwise, call the wrapper method
         else {
-            appointmentWrapper.appointmentListBetweenDates(startTime, endTime, PageRequest.of(pageNumber, pageSize)) { it ->
+            appointmentWrapper.listBetweenDates(
+                    startTime = form.startTime,
+                    endTime = form.endTime,
+                    telescopeId = telescopeId) { it ->
                 //If the command was a success
-                it.success?.let{ page ->
+                it.success?.let{ list ->
                     // Create success logs
-                    page.content.forEach{
+                    list.forEach{
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         Log.AffectedTable.APPOINTMENT,
@@ -113,11 +112,11 @@ class AppointmentListBetweenDates (
 
     /**
      * Private method to return a [HashMultimap] of errors in the event
-     * that the page size and page number are invalid
+     * that the start time and end time are invalid
      */
-    private fun pageErrors(): HashMultimap<ErrorTag, String> {
+    private fun timeErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
-        errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")
+        errors.put(ErrorTag.TIME, "Invalid start or end time parameters")
         return errors
     }
 }

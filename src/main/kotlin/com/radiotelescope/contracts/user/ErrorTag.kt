@@ -16,5 +16,6 @@ enum class ErrorTag {
     STATUS,
     CATEGORY_OF_SERVICE,
     PAGE_PARAMS,
-    ROLES
+    ROLES,
+    TIME
 }

@@ -5,6 +5,7 @@ import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenR
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -461,8 +462,14 @@ internal class UserUserWrapperTest {
 
     @Test
     fun testUnban_Admin_Failure() {
+        // Simulate the user being banned
+        val theUser = userRepo.findById(userId).get()
+        theUser.status = User.Status.Banned
+        theUser.active = false
+        userRepo.save(theUser)
+
         // Log the user in as an admin
-        context.login(userId)
+        context.login(otherUserId)
         context.currentRoles.add(UserRole.Role.ADMIN)
 
         val error = wrapper.unban(

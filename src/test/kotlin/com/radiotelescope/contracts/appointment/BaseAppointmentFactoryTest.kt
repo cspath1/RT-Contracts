@@ -154,15 +154,25 @@ internal class BaseAppointmentFactoryTest {
     }
 
     @Test
-    fun appointmentListBetweenDates(){
-        val cmd = factory.appointmentListBetweenDates(
+    fun listBetweenDates(){
+        val cmd = factory.listBetweenDates(
                 startTime = Date(System.currentTimeMillis()),
                 endTime = Date(System.currentTimeMillis() + 10000L),
-                pageable = PageRequest.of(0, 10)
+                telescopeId = 1L
         )
 
         // Ensure it is the correct command
-        assertTrue(cmd is AppointmentListBetweenDates)
+        assertTrue(cmd is ListBetweenDates)
+    }
+
+    @Test
+    fun makePublic(){
+        val cmd = factory.makePublic(
+                appointmentId = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is MakePublic)
     }
 
 }

@@ -16,12 +16,13 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 import liquibase.integration.spring.SpringLiquibase
-
+import org.springframework.test.context.jdbc.Sql
 
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
+@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 internal class AppointmentTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
@@ -213,13 +214,13 @@ internal class AppointmentTest {
         )
 
 
-        val pageOfAppointments = appointmentRepo.findAppointmentsBetweenDates(
-                pageable = PageRequest.of(0, 10),
+        val listOfAppointments = appointmentRepo.findAppointmentsBetweenDates(
                 startTime = Date(startTime),
-                endTime = Date(endTime)
+                endTime = Date(endTime),
+                telescopeId = 1L
         )
 
-        assertEquals(5, pageOfAppointments.content.size)
+        assertEquals(5, listOfAppointments.size)
     }
 
 }

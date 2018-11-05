@@ -10,6 +10,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -58,7 +59,8 @@ class AppointmentListFutureAppointmentsByUserController(
         }
         // Otherwise, call the wrapper method
         else {
-            appointmentWrapper.userFutureList(userId, PageRequest.of(pageNumber, pageSize)) { it ->
+            val sort = Sort(Sort.Direction.DESC, "end_time")
+            appointmentWrapper.userFutureList(userId, PageRequest.of(pageNumber, pageSize, sort)) { it ->
                 //If the command was a success
                 it.success?.let{ page ->
                     // Create success logs
@@ -70,7 +72,7 @@ class AppointmentListFutureAppointmentsByUserController(
                                 )
                         )
                     }
-                    result = Result(data = it)
+                    result = Result(data = page)
                 }
                 // If the command was a failure
                 it.error?.let{ errors ->
