@@ -10,7 +10,9 @@ data class UpdateEmailToken (
         @Column(name = "token", unique = true, nullable = false)
         var token: String,
         @Column(name = "expiration_date", nullable = false)
-        var expirationDate: Date
+        var expirationDate: Date,
+        @Column(name = "email_address", nullable = false)
+        var email: String
 ){
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

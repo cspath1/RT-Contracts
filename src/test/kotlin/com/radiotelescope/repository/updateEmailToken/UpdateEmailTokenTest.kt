@@ -37,12 +37,14 @@ internal class UpdateEmailTokenTest {
     private lateinit var updateEmailTokenRepo: IUpdateEmailTokenRepository
 
     private var token = "someToken"
+    private var email = "rpim1@ycp.edu"
 
     @Before
     fun init() {
         testUtil.createUpdateEmailToken(
                 user = testUtil.createUser("rpim@ycp.edu"),
-                token = token
+                token = token,
+                email = email
         )
     }
 

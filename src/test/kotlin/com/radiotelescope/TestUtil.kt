@@ -218,11 +218,13 @@ internal class TestUtil {
 
     fun createUpdateEmailToken(
             user: User,
-            token: String
+            token: String,
+            email: String
     ) : UpdateEmailToken {
         val theUpdateEmailToken = UpdateEmailToken(
                 token = token,
-                expirationDate = Date(System.currentTimeMillis() + (1 * 24 * 60 * 60 * 1000))
+                expirationDate = Date(System.currentTimeMillis() + (1 * 24 * 60 * 60 * 1000)),
+                email = email
         )
 
         theUpdateEmailToken.user = user
