@@ -55,8 +55,6 @@ class Register(
                     token = theToken
             )
 
-            System.out.println("Generated Account Activation Token: $theToken")
-
             return SimpleResult(theResponse, null)
         }
     }

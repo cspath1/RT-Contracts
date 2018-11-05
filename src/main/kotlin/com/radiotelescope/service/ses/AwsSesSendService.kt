@@ -27,7 +27,6 @@ class AwsSesSendService(
                 emailService.sendEmail(email)
             } catch (e: Exception) {
                 val errors = HashMultimap.create<ErrorTag, String>()
-
                 errors.put(ErrorTag.SEND_EMAIL, e.message)
 
                 return errors
