@@ -19,10 +19,20 @@ public class HasOverlapUpdate(val appointmentRepo:IAppointmentRepository
     { //if it's not empty,  there IS an overlap, cannot schedule
         isOverlap = true
 
-        println("size of listAppts: " + listAppts.size)
+      //  println("size of listAppts: " + listAppts.size)
+
+
 
         for (a in listAppts)
         {
+
+            if (listAppts.size == 1 && a.id == request.id)
+            {
+                isOverlap = false
+                break
+            }
+
+            /*
             println("appt id of a:" + a.id)
             println("lastIndex in listAppts: " + listAppts.lastIndex)
             println("isOverlap is true; appt id of the user who scheduled the appointment already in the table: " + a.id)
@@ -36,14 +46,10 @@ public class HasOverlapUpdate(val appointmentRepo:IAppointmentRepository
             println("isOverlap is true; end time of the appointment that was to be scheduled: " + request.endTime)
 
             println("startTime of appointment in index 0 of listAppts: " + listAppts.get(0).startTime)
-
+*/
             //if the ONLY appointment that conflicts with the requested appt is ITSELF, then no conflict
 
-            if (listAppts.size == 1 && a.id == request.id)
-            {
-                isOverlap = false
-                break
-            }
+
 
         }
 
