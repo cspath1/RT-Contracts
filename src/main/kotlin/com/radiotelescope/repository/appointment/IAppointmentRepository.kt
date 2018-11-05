@@ -115,16 +115,35 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             nativeQuery = true)
     fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, pageable: Pageable): Page<Appointment>
 
-/*
-    @Query(value = "select * from appointment where status <> 'Canceled' " , countQuery =
-            "select COUNT(*) from appointment where status <> 'Canceled' " , nativeQuery = true)
-    fun selectAllAppointmentsNotCanceled():Page<Appointment>
-*/
 
+    /**
+     * For use in the scheduling conflict check.
+     * @param endTimeOfPossibleAppointmentDate the endTime of the appt. in either the Create.Request or the Update.Request
+     * @param startTimeOfPossibleAppointmentDate the endTime of the appt. in either the Create.Request or the Update.Request
+     * @param telescopeId the id of the pertaining telescope
+     * @return a [List] of [Appointment]
+     */
     @Query(value = "select * from appointment where start_time <= ?1 and end_time >= ?2 and telescope_id =?3 ",
             nativeQuery = true)
     fun selectAppointmentsWithinPotentialAppointmentTimeRange(endTimeOfPossibleAppointmentDate:Date, startTimeOfPossibleAppointmentDate:Date, telescopeId: Long ):List<Appointment>
 
 
 
+/**
+     * for a User between specified start time and end time. Excludes canceled and requested appointments
+     *
+     * @param startTime the start time of when to start grabbing the appointment
+     * @param endTime the end time of when to stop grabbing the appointment
+     * @return a [List] of [Appointment]
+     */
+    @Query(value = "SELECT * " +
+            "FROM appointment " +
+            "WHERE ((start_time >=?1 AND start_time <=?2) " +
+            "OR (end_time >=?1 AND end_time <=?2)" +
+            "OR (start_time < ?1 AND end_time > ?2 ))" +
+            "AND status <> 'Canceled'" +
+            "AND status <> 'Requested' " +
+            "AND telescope_id = ?3",
+            nativeQuery = true)
+    fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): List<Appointment>
 }
