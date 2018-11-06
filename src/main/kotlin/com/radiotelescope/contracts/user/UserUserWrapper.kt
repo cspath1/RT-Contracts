@@ -73,10 +73,15 @@ class UserUserWrapper(
                             successCommand = factory.retrieve(request)
                     ).execute(withAccess)
                 } else {
-                    context.require(
-                            requiredRoles = listOf(UserRole.Role.ADMIN),
-                            successCommand = factory.retrieve(request)
-                    ).execute(withAccess)
+                    val theRequestedUser = userRepo.findById(request)
+
+                    return if (!theRequestedUser.isPresent)
+                        AccessReport(missingRoles = null, invalidResourceId = invalidUserIdErrors(request))
+                    else
+                        context.require(
+                                requiredRoles = listOf(UserRole.Role.ADMIN),
+                                successCommand = factory.retrieve(request)
+                        ).execute(withAccess)
                 }
             }
         }
@@ -122,7 +127,12 @@ class UserUserWrapper(
                             successCommand = factory.update(request)
                     ).execute(withAccess)
                 } else {
-                    context.require(
+                    val theRequestedUser = userRepo.findById(request.id)
+
+                    return if (!theRequestedUser.isPresent)
+                        AccessReport(missingRoles = null, invalidResourceId = invalidUserIdErrors(request.id))
+                    else
+                        context.require(
                             requiredRoles = listOf(UserRole.Role.ADMIN),
                             successCommand = factory.update(request)
                     ).execute(withAccess)
@@ -227,7 +237,7 @@ class UserUserWrapper(
 
     private fun invalidUserIdErrors(id: Long): Map<String, Collection<String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
-        errors.put(ErrorTag.ID, "User Id #$id could not be found")
+        errors.put(ErrorTag.ID, "User #$id could not be found")
         return errors.toStringMap()
     }
 }

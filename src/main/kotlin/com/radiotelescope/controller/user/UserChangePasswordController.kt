@@ -85,7 +85,7 @@ class UserChangePasswordController(
                                 action = "User change password",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
                 )
 
                 // Set the errors depending on if the user was not authenticated or the
