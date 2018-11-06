@@ -8,7 +8,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 
 /**
- * Override of the [Command] interface method used for Assignment canceling
+ * Override of the [Command] interface method used for Appointment cancellation
  *
  * @param appointmentId the Appointment Id
  * @param appointmentRepo the [IAppointmentRepository] interface
