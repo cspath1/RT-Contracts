@@ -79,5 +79,5 @@ CREATE TABLE update_email_token (
   user_id INT(11) NOT NULL,
   token VARCHAR (100) NOT NULL,
   expiration_date DATETIME NOT NULL,
-  email_address VARCHAR(100) NOT NULL,
+  email_address VARCHAR(100) NOT NULL
 );
