@@ -252,7 +252,7 @@ class UserAppointmentWrapper(
     }
 
     /**
-     * Wrapper method for the [AppointmentFactory.appointmentListBetweenDates] method that adds Spring
+     * Wrapper method for the [AppointmentFactory.listBetweenDates] method that adds Spring
      * Security authentication to the [ListBetweenDates] command object.
      *
      * @param startTime the start time of when to grab appointments
@@ -272,7 +272,7 @@ class UserAppointmentWrapper(
 
     private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
-        errors.put(ErrorTag.ID, "Appointment Id #$id could not be found")
+        errors.put(ErrorTag.ID, "Appointment #$id could not be found")
         return errors.toStringMap()
     }
 }

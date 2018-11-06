@@ -182,6 +182,22 @@ internal class UserUserWrapperTest {
     }
 
     @Test
+    fun testValidRetrieve_Admin_InvalidId_Failure() {
+        // Simulate login as an admin
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.retrieve(
+                request = 311L
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId!!["ID"]!!.isNotEmpty())
+    }
+
+    @Test
     fun testInvalidRetrieve_NoUserRole_Failure() {
         // Simulate a login but do not add USER role
         context.login(userId)
@@ -323,6 +339,29 @@ internal class UserUserWrapperTest {
     }
 
     @Test
+    fun testInvalidUpdate_Admin_InvalidId_Failure() {
+        // Simulate a login
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = 311L,
+                        firstName = "Rathana",
+                        lastName = "Pim",
+                        email = "rpim@ycp.edu",
+                        phoneNumber = "717-555-1111",
+                        company = "York College of Pennsylvania"
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId!!["ID"]!!.isNotEmpty())
+    }
+
+    @Test
     fun testInvalidUpdate_NotOwner_Failure(){
         // Simulate a login
         context.login(otherUserId)
@@ -343,6 +382,27 @@ internal class UserUserWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testInvalidUpdate_NotLoggedIn_Failure() {
+        // Do not simulate a login
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = userId,
+                        firstName = "Codiferous",
+                        lastName = "Spath",
+                        email = "cspath1ycp.edu",
+                        phoneNumber = "717-823-2216",
+                        company = "Business, None of Your, Inc."
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
