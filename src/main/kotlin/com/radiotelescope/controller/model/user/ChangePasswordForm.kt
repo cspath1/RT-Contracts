@@ -7,10 +7,10 @@ import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.model.BaseForm
 
 data class ChangePasswordForm(
-        val currentPassword: String,
-        val password: String,
-        val passwordConfirm: String,
-        val id: Long
+        val currentPassword: String?,
+        val password: String?,
+        val passwordConfirm: String?,
+        val id: Long?
 ): BaseForm<ChangePassword.Request>{
     /**
      * Override of the [BaseForm.toRequest] method that adapts
@@ -18,10 +18,10 @@ data class ChangePasswordForm(
      */
     override fun toRequest(): ChangePassword.Request {
         return ChangePassword.Request(
-                currentPassword = currentPassword,
-                password = password,
-                passwordConfirm = passwordConfirm,
-                id = id
+                currentPassword = currentPassword!!,
+                password = password!!,
+                passwordConfirm = passwordConfirm!!,
+                id = id!!
         )
     }
 
@@ -32,14 +32,19 @@ data class ChangePasswordForm(
      */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
-            if (password.isBlank() || currentPassword.isBlank() || passwordConfirm.isBlank())
-                errors.put(com.radiotelescope.contracts.user.ErrorTag.PASSWORD, "Password may not be blank")
-            if (password != passwordConfirm)
-                errors.put(com.radiotelescope.contracts.user.ErrorTag.PASSWORD_CONFIRM, "Passwords do not match")
-            if (password == currentPassword)
-                errors.put(com.radiotelescope.contracts.user.ErrorTag.PASSWORD, "New password may not be the same as old password")
-            if (!password.matches(com.radiotelescope.repository.user.User.passwordRegex))
-                errors.put(com.radiotelescope.contracts.user.ErrorTag.PASSWORD, com.radiotelescope.repository.user.User.passwordErrorMessage)
+
+        if(id == null)
+            errors.put(ErrorTag.ID, "Required Field")
+        if (password.isNullOrBlank())
+            errors.put(ErrorTag.PASSWORD, "Required Field")
+        if (currentPassword.isNullOrBlank())
+            errors.put(ErrorTag.CURRENT_PASSWORD, "Required Field")
+        if (passwordConfirm.isNullOrBlank())
+            errors.put(ErrorTag.PASSWORD_CONFIRM, "Required Field")
+        if (password != passwordConfirm)
+            errors.put(ErrorTag.PASSWORD_CONFIRM, "Passwords do not match")
+        if (password == currentPassword)
+            errors.put(ErrorTag.PASSWORD, "New password may not be the same as old password")
 
         return if (errors.isEmpty) null else errors
     }

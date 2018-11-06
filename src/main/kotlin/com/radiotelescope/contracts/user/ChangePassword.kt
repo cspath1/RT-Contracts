@@ -44,14 +44,32 @@ class ChangePassword(
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
-            if (password.isBlank() || currentPassword.isBlank() || passwordConfirm.isBlank())
-                errors.put(ErrorTag.PASSWORD, "Password may not be blank")
+            if (!userRepo.existsById(id)) {
+                errors.put(ErrorTag.ID, "User #$id not found")
+                return errors
+            }
+
+            if (password.isBlank())
+                errors.put(ErrorTag.PASSWORD, "Required Field")
+            if (currentPassword.isBlank())
+                errors.put(ErrorTag.CURRENT_PASSWORD, "Required Field")
+            if (passwordConfirm.isBlank())
+                errors.put(ErrorTag.PASSWORD_CONFIRM, "Required Field")
             if (password != passwordConfirm)
                 errors.put(ErrorTag.PASSWORD_CONFIRM, "Passwords do not match")
             if (password == currentPassword)
-                errors.put(ErrorTag.PASSWORD, "New password may not be the same as old password")
+                errors.put(ErrorTag.CURRENT_PASSWORD, "New password may not be the same as old password")
             if (!password.matches(User.passwordRegex))
                 errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
+
+            if (!errors.isEmpty)
+                return errors
+
+            val theUser = userRepo.findById(id).get()
+            val rtPasswordEncoder = User.rtPasswordEncoder
+
+            if (!rtPasswordEncoder.matches(currentPassword, theUser.password))
+                errors.put(ErrorTag.CURRENT_PASSWORD, "Incorrect Password")
         }
 
         return errors

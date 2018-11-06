@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.user
 
+import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
@@ -10,6 +11,7 @@ import com.radiotelescope.security.UserContext
 import com.radiotelescope.security.crud.UserUpdatable
 import com.radiotelescope.security.crud.UserPageable
 import com.radiotelescope.security.crud.UserRetrievable
+import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import kotlin.collections.List
@@ -206,17 +208,26 @@ class UserUserWrapper(
      */
     fun changePassword(request: ChangePassword.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null) {
-            val theUser = userRepo.findById(context.currentUserId()!!)
-            if (theUser.isPresent) {
-                if (theUser.get().id == request.id) {
-                    return context.require(
-                            requiredRoles = listOf(UserRole.Role.USER),
-                            successCommand = factory.changePassword(request)
-                    ).execute(withAccess)
+            if (!userRepo.existsById(request.id))
+                return AccessReport(missingRoles = null, invalidResourceId = invalidUserIdErrors(request.id))
 
-                }
+            val theUser = userRepo.findById(request.id).get()
+
+            return if (context.currentUserId() == theUser.id) {
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.USER),
+                        successCommand = factory.changePassword(request)
+                ).execute(withAccess)
+            } else {
+                return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
             }
         }
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    private fun invalidUserIdErrors(id: Long): Map<String, Collection<String>> {
+        val errors = HashMultimap.create<ErrorTag, String>()
+        errors.put(ErrorTag.ID, "User Id #$id could not be found")
+        return errors.toStringMap()
     }
 }

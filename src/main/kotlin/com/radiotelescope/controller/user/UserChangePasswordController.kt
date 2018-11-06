@@ -27,42 +27,57 @@ class UserChangePasswordController(
      * controller should respond based on whether the command was a
      * success or not
      *
-     * @param currentPassword the user's current password
-     * @param password the user's request password to change to
-     * @param passwordConfirm a confirmation of the user's requested password
-     * @param userId the user's id
+     * @param form the [ChangePasswordForm]
      */
 
     @PutMapping(value = ["/api/users/{userId}/changePassword"])
     @CrossOrigin(value = ["http://localhost:8081"])
-    fun execute(@PathVariable("currentPassword") currentPassword: String,
-                @PathVariable("password") password: String,
-                @PathVariable("passwordConfirm") passwordConfirm : String,
-                @PathVariable("userId") userId : Long): Result {
-        userWrapper.changePassword(
-                request = ChangePassword.Request(
-                        currentPassword = currentPassword,
-                        password = password,
-                        passwordConfirm = passwordConfirm,
-                        id = userId
-                )
+    fun execute(@RequestBody form: ChangePasswordForm): Result {
+        form.validateRequest()?.let {
+            // Create error logs
+            logger.createErrorLogs(
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.USER,
+                            action = "User Change Password",
+                            affectedRecordId = null
+                    ),
+                    errors = it.toStringMap()
+            )
 
-        ) { it->
-            // If the command was a success
-            it.success?.let { id ->
-                // Create success logs
-                logger.createSuccessLog(
-                        info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.USER,
-                                action = "User change password",
-                                affectedRecordId = id
-                        )
-                )
+            result = Result(errors = it.toStringMap())
+        } ?: let { _ ->
+            userWrapper.changePassword(
+                    request = form.toRequest()
+            ) { it ->
+                // If the command was a success
+                it.success?.let { id ->
+                    // Create success logs
+                    logger.createSuccessLog(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.USER,
+                                    action = "User change password",
+                                    affectedRecordId = id
+                            )
+                    )
 
-                result = Result(data = id)
-            }
-            // Otherwise it was a failure
-            it.error?.let { errors ->
+                    result = Result(data = id)
+                }
+                // Otherwise it was a failure
+                it.error?.let { errors ->
+                    // Create error logs
+                    logger.createErrorLogs(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.USER,
+                                    action = "User change password",
+                                    affectedRecordId = null
+                            ),
+                            errors = errors.toStringMap()
+                    )
+
+                    result = Result(errors = errors.toStringMap())
+                }
+            }?.let {
+                // If we get here, this means the User did not pass validation
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
@@ -70,24 +85,19 @@ class UserChangePasswordController(
                                 action = "User change password",
                                 affectedRecordId = null
                         ),
-                        errors = errors.toStringMap()
+                        errors = it.toStringMap()
                 )
 
-                result = Result(errors = errors.toStringMap())
+                // Set the errors depending on if the user was not authenticated or the
+                // record did not exists
+                result = if (it.missingRoles != null) {
+                    Result(errors = it.toStringMap(), status = HttpStatus.NOT_FOUND)
+                }
+                // user did not have access to the resource
+                else {
+                    Result(errors = it.invalidResourceId!!, status = HttpStatus.FORBIDDEN)
+                }
             }
-        }?.let {
-            // If we get here, this means the User did not pass validation
-            // Create error logs
-            logger.createErrorLogs(
-                    info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.USER,
-                            action = "User change password",
-                            affectedRecordId = null
-                    ),
-                    errors = it.toStringMap()
-            )
-
-            result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
         }
 
         return result
