@@ -87,4 +87,23 @@ internal class DeleteTest {
 
         assertTrue(errors!![ErrorTag.ID].isNotEmpty())
     }
+
+    @Test
+    fun UserAlreadyDeleted()
+    {
+        val theUser = testUtil.createUser("jamoros@ycp.edu")
+        theUser.status = User.Status.Deleted
+        userRepo.save(theUser)
+        val (id, errors) = Delete(
+                id = theUser.id,
+                userRepo = userRepo
+        ).execute()
+
+        if (errors != null)
+        {
+
+        }
+        else fail()
+
+    }
 }
