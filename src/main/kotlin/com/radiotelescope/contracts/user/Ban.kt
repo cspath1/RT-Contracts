@@ -29,6 +29,11 @@ class Ban(
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theUser = userRepo.findById(id).get()
 
+            if (theUser.status == User.Status.Banned) {
+                val errors = HashMultimap.create<ErrorTag, String>()
+                errors.put(ErrorTag.STATUS, "User ${id} is already banned, cannot ban again")
+                return SimpleResult(null, errors)
+            }
             theUser.status = User.Status.Banned
             theUser.active = false
             userRepo.save(theUser)
