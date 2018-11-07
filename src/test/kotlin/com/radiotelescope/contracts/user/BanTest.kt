@@ -117,4 +117,25 @@ internal class BanTest {
 
         assertTrue(errors!![ErrorTag.ROLES].isNotEmpty())
     }
+
+    @Test
+    fun testUserAlreadyBanned()
+    {
+
+        val u:User =  testUtil.createUser("jamoros@ycp.edu")
+        u.status = User.Status.Banned
+        val user_id = u.id
+        userRepo.save(u)
+                val (id, errors) = Ban(
+                        id = user_id,
+                        userRepo = userRepo,
+                        userRoleRepo = userRoleRepo).execute()
+
+        if (errors != null)
+        {
+
+        }
+        else fail()
+
+    }
 }
