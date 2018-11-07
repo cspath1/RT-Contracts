@@ -46,6 +46,7 @@ data class Log(
         RF_DATA,
         LOG,
         ERROR,
-        RESET_PASSWORD_TOKEN
+        RESET_PASSWORD_TOKEN,
+        UPDATE_EMAIL_TOKEN
     }
 }

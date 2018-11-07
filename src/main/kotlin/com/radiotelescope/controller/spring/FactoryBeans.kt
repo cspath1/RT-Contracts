@@ -12,6 +12,8 @@ import com.radiotelescope.contracts.rfdata.BaseRFDataFactory
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.BaseUserRoleFactory
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.updateEmailToken.BaseUpdateEmailTokenFactory
+import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.security.UserContextImpl
@@ -146,6 +148,18 @@ class FactoryBeans(
                         accountActivateTokenRepo = repositories.accountActivateTokenRepo,
                         userRepo = repositories.userRepo
                 )
+        )
+    }
+
+    @Bean
+    override fun getUpdateEmailTokenWrapper(): UserUpdateEmailTokenWrapper {
+        return UserUpdateEmailTokenWrapper(
+                factory = BaseUpdateEmailTokenFactory(
+                        updateEmailTokenRepo = repositories.updateEmailTokenRepo,
+                        userRepo = repositories.userRepo
+                ),
+                context = userContext,
+                userRepo = repositories.userRepo
         )
     }
 }

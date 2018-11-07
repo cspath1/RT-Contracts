@@ -86,7 +86,7 @@ class CreateUpdateEmailToken(
      * method
      */
     data class Request(
-            val userId: Long,
+            var userId: Long,
             val email: String,
             val emailConfirm: String
     ) : BaseCreateRequest<UpdateEmailToken> {
