@@ -54,7 +54,7 @@ dependencyManagement {
 }
 
 processResources {
-	def profile = (project.hasProperty('profile') ? project.profile : 'remote').toLowerCase()
+	def profile = (project.hasProperty('profile') ? project.profile : 'local').toLowerCase()
 
 	copy {
 		from "src/main/resources/properties/application_${profile}.properties"
