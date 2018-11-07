@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param rfDataRepo the [IRFDataRepository] interface
  * @param resetPasswordTokenRepo the [IResetPasswordTokenRepository] interface
- * @param accountActivateTokenRepository the [IAccountActivateTokenRepository] interface
+ * @param accountActivateTokenRepo the [IAccountActivateTokenRepository] interface
  *
  */
 @Component
@@ -37,5 +37,5 @@ class RepositoryBeans(
         val appointmentRepo: IAppointmentRepository,
         val rfDataRepo: IRFDataRepository,
         val resetPasswordTokenRepo: IResetPasswordTokenRepository,
-        val accountActivateTokenRepository: IAccountActivateTokenRepository
+        val accountActivateTokenRepo: IAccountActivateTokenRepository
 )

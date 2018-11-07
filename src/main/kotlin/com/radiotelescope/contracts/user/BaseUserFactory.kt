@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.user
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
@@ -12,10 +13,12 @@ import org.springframework.data.domain.Pageable
  *
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
+ * @property accountActivateTokenRepo the [IAccountActivateTokenRepository] interface
  */
 class BaseUserFactory(
         private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val accountActivateTokenRepo: IAccountActivateTokenRepository
 ) : UserFactory {
     /**
      * Override of the [UserFactory.register] method that will return a [Register] command object
@@ -23,11 +26,12 @@ class BaseUserFactory(
      * @param request the [Register.Request] object
      * @return a [Register] command object
      */
-    override fun register(request: Register.Request): Command<Long, Multimap<ErrorTag, String>> {
+    override fun register(request: Register.Request): Command<Register.Response, Multimap<ErrorTag, String>> {
         return Register(
                 request = request,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo
         )
     }
 
@@ -115,12 +119,27 @@ class BaseUserFactory(
 
     /**
      * Override of the [UserFactory.unban] method that will return a [Unban] command object
+     *
      * @param id the User id
      * @return an [Unban] command object
      */
     override fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>> {
         return Unban(
                 id = id,
+                userRepo = userRepo
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.changePassword] method that will return a [ChangePassword]
+     * command object
+     *
+     * @param request the [ChangePassword.Request]
+     * @return a [ChangePassword] command object
+     */
+    override fun changePassword(request: ChangePassword.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return ChangePassword(
+                request = request,
                 userRepo = userRepo
         )
     }

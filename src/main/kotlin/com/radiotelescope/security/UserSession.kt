@@ -16,5 +16,6 @@ data class UserSession(
         var email: String,
         var roles: Collection<SimpleGrantedAuthority>,
         var firstName: String,
-        var lastName: String
+        var lastName: String,
+        var accountActive: Boolean
 )

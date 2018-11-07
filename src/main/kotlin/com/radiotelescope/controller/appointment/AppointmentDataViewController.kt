@@ -80,10 +80,14 @@ class AppointmentDataViewController(
                     errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
             )
 
-            result = if (it.missingRoles != null) {
-                Result(errors = it.toStringMap(), status = HttpStatus.NOT_FOUND)
-            } else {
-                Result(errors = it.invalidResourceId!!, status = HttpStatus.FORBIDDEN)
+            // Set the errors depending on if the user was not authenticated or the
+            // record did not exists
+            result = if (it.missingRoles == null) {
+                Result(errors = it.invalidResourceId!!, status = HttpStatus.NOT_FOUND)
+            }
+            // user did not have access to the resource
+            else {
+                Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
 

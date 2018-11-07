@@ -8,6 +8,7 @@ enum class ErrorTag {
     FIRST_NAME,
     LAST_NAME,
     EMAIL,
+    EMAIL_CONFIRM,
     COMPANY,
     PASSWORD,
     PASSWORD_CONFIRM,
@@ -17,5 +18,6 @@ enum class ErrorTag {
     CATEGORY_OF_SERVICE,
     PAGE_PARAMS,
     ROLES,
-    TIME
+    TIME,
+    CURRENT_PASSWORD
 }

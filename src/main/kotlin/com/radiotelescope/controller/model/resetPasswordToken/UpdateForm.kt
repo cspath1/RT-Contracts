@@ -39,12 +39,12 @@ data class UpdateForm(
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        if (password!!.isBlank())
+        if (password.isNullOrBlank())
             errors.put(ErrorTag.PASSWORD, "Password may not be blank")
+        else if (!password!!.matches(User.passwordRegex))
+            errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
         if (password != passwordConfirm)
             errors.put(ErrorTag.PASSWORD_CONFIRM, "Passwords do not match")
-        if (!password.matches(User.passwordRegex))
-            errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
 
         return if (errors.isEmpty) null else errors
     }

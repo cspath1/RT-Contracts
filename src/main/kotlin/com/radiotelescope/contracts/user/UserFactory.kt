@@ -16,7 +16,7 @@ interface UserFactory {
      * @param request the [Register.Request] request
      * @return a [Command] object
      */
-    fun register(request: Register.Request): Command<Long, Multimap<ErrorTag, String>>
+    fun register(request: Register.Request): Command<Register.Response, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to log a user in to the site
@@ -72,5 +72,13 @@ interface UserFactory {
      * @return a [Command] object
      */
     fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to change a user's password
+     *
+     * @param request the [ChangePassword.Request] request
+     * @return a [Command] object
+     */
+    fun changePassword(request: ChangePassword.Request): Command<Long, Multimap<ErrorTag, String>>
 
 }
