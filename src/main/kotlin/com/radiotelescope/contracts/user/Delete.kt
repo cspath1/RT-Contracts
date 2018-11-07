@@ -26,7 +26,12 @@ class Delete(
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theUser = userRepo.findById(id).get()
-            disableUser(theUser)
+            if (theUser.status == User.Status.Deleted) {
+              val errors = HashMultimap.create<ErrorTag, String>()
+                errors.put(ErrorTag.STATUS, "Status of userId ${theUser.id} is already deleted")
+                return SimpleResult(null, errors)
+            }
+                disableUser(theUser)
             return SimpleResult(theUser.id, null)
         }
     }
