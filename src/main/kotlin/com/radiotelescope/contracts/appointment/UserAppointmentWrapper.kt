@@ -270,6 +270,29 @@ class UserAppointmentWrapper(
         ).execute(withAccess)
     }
 
+    /**
+     * Wrapper method for the [AppointmentFactory.publicCompletedAppointments] method that adds
+     * Spring Security authentication to the [PublicCompletedAppointments] command object.
+     *
+     * @param pageable the Pageable interface
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun publicCompletedAppointments(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.USER),
+                successCommand = factory.publicCompletedAppointments(
+                        pageable = pageable
+                )
+        ).execute(withAccess)
+    }
+
+    /**
+     * Private method to return a [Map] of errors when an appointment could not be found.
+     * This is needed when we must check if the user is the owner of an appointment or not
+     *
+     * @param id the Appointment id
+     * @return a [Map] of errors
+     */
     private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.ID, "Appointment #$id could not be found")
