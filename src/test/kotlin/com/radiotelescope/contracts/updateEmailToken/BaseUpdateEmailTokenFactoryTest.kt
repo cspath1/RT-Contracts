@@ -62,4 +62,15 @@ internal class BaseUpdateEmailTokenFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is CreateUpdateEmailToken)
     }
+
+    @Test
+    fun updateEmail(){
+        // Call the factory method
+        val cmd = factory.updateEmail(
+                token = "someToken"
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is UpdateEmail)
+    }
 }

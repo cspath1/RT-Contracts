@@ -31,4 +31,19 @@ class BaseUpdateEmailTokenFactory (
                 userRepo = userRepo
         )
     }
+
+    /**
+     * Override of the [UpdateEmailTokenFactory.updateEmail] method that will return a
+     * [UpdateEmail] command object
+     *
+     * @param token the token for updating user email
+     * @return a [CreateUpdateEmailToken] command object
+     */
+    override fun updateEmail(token: String): Command<Long, Multimap<ErrorTag, String>> {
+        return UpdateEmail(
+                token = token,
+                updateEmailTokenRepo = updateEmailTokenRepo,
+                userRepo = userRepo
+        )
+    }
 }

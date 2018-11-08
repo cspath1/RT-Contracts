@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.updateEmailToken
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
+import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
@@ -56,6 +57,8 @@ internal class UserUpdateEmailTokenWrapperTest {
     private lateinit var factory: BaseUpdateEmailTokenFactory
     private lateinit var wrapper: UserUpdateEmailTokenWrapper
 
+    private lateinit var token: UpdateEmailToken
+
     @Before
     fun init(){
         // Initialize the factory and wrapper
@@ -77,6 +80,13 @@ internal class UserUpdateEmailTokenWrapperTest {
         // Set the user Id
         userId = user.id
         otherUserId = otherUser.id
+
+        // Persist the token
+        token = testUtil.createUpdateEmailToken(
+                email = "rpim2@ycp.edu",
+                token = "someToken",
+                user = user
+        )
     }
 
     @Test
@@ -159,7 +169,14 @@ internal class UserUpdateEmailTokenWrapperTest {
         Assert.assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
+    @Test
+    fun testValid_UpdateEmail_Success(){
+        val (id, error) = wrapper.updateEmail(
+                token = token.token
+        ).execute()
 
-
+        assertNotNull(id)
+        assertNull(error)
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.updateEmailToken
 
 import com.google.common.collect.Multimap
+import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.user.UserFactory
 import com.radiotelescope.repository.role.UserRole
@@ -21,6 +22,13 @@ class UserUpdateEmailTokenWrapper (
         private val factory: UpdateEmailTokenFactory,
         private val userRepo: IUserRepository){
 
+    /**
+     * Wrapper method for the [UpdateEmailTokenFactory.requestUpdateEmail] method that adds Spring
+     * Security authentication to the [CreateUpdateEmailToken] command object.
+     *
+     * @param request the [CreateUpdateEmailToken.Request] object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
     fun requestUpdateEmail(request: CreateUpdateEmailToken.Request, withAccess: (result: SimpleResult<String, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
         if (context.currentUserId() != null) {
@@ -43,5 +51,18 @@ class UserUpdateEmailTokenWrapper (
         }
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
+     * Reset Password function that will return a [UpdateEmail] command object.
+     * This does not need any user role authentication since the user will not be signed in a the time
+     *
+     * @param token the update user email token
+     * @return a [UpdateEmail] command object
+     */
+    fun updateEmail(token: String) : Command<Long, Multimap<ErrorTag, String>> {
+        return factory.updateEmail(
+                token = token
+        )
     }
 }
