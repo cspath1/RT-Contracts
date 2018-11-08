@@ -44,6 +44,7 @@ data class User(
         Banned,
         Deleted
     }
+
     companion object {
         fun isEmailValid(email: String): Boolean {
             return Pattern.compile(

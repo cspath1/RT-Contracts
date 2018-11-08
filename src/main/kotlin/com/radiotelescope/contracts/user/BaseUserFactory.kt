@@ -119,12 +119,27 @@ class BaseUserFactory(
 
     /**
      * Override of the [UserFactory.unban] method that will return a [Unban] command object
+     *
      * @param id the User id
      * @return an [Unban] command object
      */
     override fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>> {
         return Unban(
                 id = id,
+                userRepo = userRepo
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.changePassword] method that will return a [ChangePassword]
+     * command object
+     *
+     * @param request the [ChangePassword.Request]
+     * @return a [ChangePassword] command object
+     */
+    override fun changePassword(request: ChangePassword.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return ChangePassword(
+                request = request,
                 userRepo = userRepo
         )
     }

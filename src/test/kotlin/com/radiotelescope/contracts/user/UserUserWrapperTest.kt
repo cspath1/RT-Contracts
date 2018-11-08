@@ -66,6 +66,13 @@ internal class UserUserWrapperTest {
             categoryOfService = UserRole.Role.GUEST
     )
 
+    private val baseChangePasswordRequest = ChangePassword.Request(
+            id = -1,
+            password = "Password1!",
+            passwordConfirm = "Password1!",
+            currentPassword = "Password1@"
+    )
+
     private val context = FakeUserContext()
     private lateinit var factory: BaseUserFactory
     private lateinit var wrapper: UserUserWrapper
@@ -172,6 +179,22 @@ internal class UserUserWrapperTest {
 
         assertNull(error)
         assertNotNull(userInfo)
+    }
+
+    @Test
+    fun testValidRetrieve_Admin_InvalidId_Failure() {
+        // Simulate login as an admin
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.retrieve(
+                request = 311L
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId!!["ID"]!!.isNotEmpty())
     }
 
     @Test
@@ -316,6 +339,29 @@ internal class UserUserWrapperTest {
     }
 
     @Test
+    fun testInvalidUpdate_Admin_InvalidId_Failure() {
+        // Simulate a login
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = 311L,
+                        firstName = "Rathana",
+                        lastName = "Pim",
+                        email = "rpim@ycp.edu",
+                        phoneNumber = "717-555-1111",
+                        company = "York College of Pennsylvania"
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId!!["ID"]!!.isNotEmpty())
+    }
+
+    @Test
     fun testInvalidUpdate_NotOwner_Failure(){
         // Simulate a login
         context.login(otherUserId)
@@ -336,6 +382,27 @@ internal class UserUserWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testInvalidUpdate_NotLoggedIn_Failure() {
+        // Do not simulate a login
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = userId,
+                        firstName = "Codiferous",
+                        lastName = "Spath",
+                        email = "cspath1ycp.edu",
+                        phoneNumber = "717-823-2216",
+                        company = "Business, None of Your, Inc."
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test
@@ -475,6 +542,96 @@ internal class UserUserWrapperTest {
 
         val error = wrapper.unban(
                 id = userId
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testChangePassword_NotLoggedIn_Failure() {
+        // Do not log the user in
+
+        // Create a request object
+        val requestCopy = baseChangePasswordRequest.copy(id = userId)
+
+        // Execute the wrapper method
+        val error = wrapper.changePassword(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testChangePassword_DifferentUser_Failure() {
+        // Log the user in as a different user
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Create a request object
+        val requestCopy = baseChangePasswordRequest.copy(
+                id = userId
+        )
+
+        // Execute the wrapper method
+        val error = wrapper.changePassword(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testChangePassword_InvalidUserId_Failure() {
+        // Log the user in
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Create a request object
+        val requestCopy = baseChangePasswordRequest.copy(
+                id = 311L
+        )
+
+        // Execute the wrapper method
+        val error = wrapper.changePassword(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId!!.isNotEmpty())
+    }
+
+    @Test
+    fun testChangePassword_Valid_Success() {
+        // Log the user in
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Create a request object
+        val requestCopy = baseChangePasswordRequest.copy(
+                id = userId
+        )
+
+        // Change the user info so the password is hashed
+        val hashedPassword = User.rtPasswordEncoder.encode("Password1@")
+        val theUser = userRepo.findById(userId).get()
+        theUser.password = hashedPassword
+        userRepo.save(theUser)
+
+        // Execute the factory method
+        val error = wrapper.changePassword(
+                request = requestCopy
         ) {
             assertNotNull(it.success)
             assertNull(it.error)

@@ -53,7 +53,8 @@ class RetrieveAuthUserService(
                 email = user.email,
                 roles = authorities,
                 firstName = user.firstName,
-                lastName = user.lastName
+                lastName = user.lastName,
+                accountActive = user.active
         )
 
         return SimpleResult(userSession, null)
@@ -70,9 +71,9 @@ class RetrieveAuthUserService(
     fun validateStatus(status: User.Status): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
         when (status) {
-            User.Status.Deleted -> errors.put(ErrorTag.STATUS, "User was not found")
-            User.Status.Banned -> errors.put(ErrorTag.STATUS, "User is currently banned")
-            User.Status.Inactive -> errors.put(ErrorTag.STATUS, "User is not currently activated")
+            User.Status.Deleted -> errors.put(ErrorTag.STATUS, "Account has been deleted")
+            User.Status.Banned -> errors.put(ErrorTag.STATUS, "Account is currently banned")
+            User.Status.Inactive -> errors.put(ErrorTag.STATUS, "Account is not currently activated")
             User.Status.Active -> return null
         }
 

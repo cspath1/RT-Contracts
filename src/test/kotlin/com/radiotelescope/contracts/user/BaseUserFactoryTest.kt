@@ -163,4 +163,20 @@ internal class BaseUserFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is Unban)
     }
+
+    @Test
+    fun changePassword() {
+        // Call the factory method
+        val cmd = factory.changePassword(
+                request = ChangePassword.Request(
+                        currentPassword = "Password",
+                        passwordConfirm = "Password1@",
+                        password = "Password1@",
+                        id = 1L
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is ChangePassword)
+    }
 }

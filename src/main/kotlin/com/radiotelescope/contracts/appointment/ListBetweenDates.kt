@@ -60,7 +60,7 @@ class ListBetweenDates(
 
         // Check to see if endTime is less than or equal to startTime
         if(endTime <= startTime)
-            errors.put(ErrorTag.END_TIME, "End time cannot be less than or equal to start time")
+            errors.put(ErrorTag.END_TIME, "End time must be after start time")
         if (!telescopeRepo.existsById(telescopeId))
             errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
 

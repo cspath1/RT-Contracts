@@ -31,7 +31,7 @@ class Retrieve(
     override fun execute(): SimpleResult<UserInfo, Multimap<ErrorTag, String>> {
         if(!userRepo.existsById(id)){
             val errors = HashMultimap.create<ErrorTag,String>()
-            errors.put(ErrorTag.ID, "User id $id not found")
+            errors.put(ErrorTag.ID, "User #$id not found")
             return SimpleResult(null, errors)
         }
 

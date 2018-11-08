@@ -64,7 +64,7 @@ class ResetPassword (
             } else {
                 val theToken = resetPasswordTokenRepo.findByToken(token)
                 if (theToken.expirationDate.before(Date()))
-                    errors.put(ErrorTag.TOKEN, "Token is expired.")
+                    errors.put(ErrorTag.TOKEN, "Token has expired.")
             }
 
             if (!errors.isEmpty)

@@ -117,7 +117,7 @@ class Register(
 
         accountActivateTokenRepo.save(theAccountActivateToken)
 
-        return token
+        return theAccountActivateToken.token
     }
 
     /**

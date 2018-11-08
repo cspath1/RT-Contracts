@@ -28,19 +28,22 @@ data class UserInfo(
         val status: User.Status,
         val membershipRole: String?
 ) {
-     /**
-      * Secondary constructor that takes a user object to set
-      * all fields
-      */
-     constructor(user: User, userRoleLabel: String?) : this(
-             id = user.id,
-             firstName = user.firstName,
-             lastName =  user.lastName,
-             email = user.email,
-             company = user.company,
-             phoneNumber = user.phoneNumber,
-             active = user.active,
-             status = user.status,
-             membershipRole = userRoleLabel
-     )
+    /**
+     * Secondary constructor that takes a user object to set
+     * all fields
+
+     * @param user the User
+     * @param userRoleLabel the UserRole string
+     */
+    constructor(user: User, userRoleLabel: String?) : this(
+            id = user.id,
+            firstName = user.firstName,
+            lastName =  user.lastName,
+            email = user.email,
+            company = user.company,
+            phoneNumber = user.phoneNumber,
+            active = user.active,
+            status = user.status,
+            membershipRole = userRoleLabel
+    )
 }

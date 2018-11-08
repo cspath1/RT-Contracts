@@ -1,52 +1,44 @@
 package com.radiotelescope.controller.user
 
 import com.radiotelescope.contracts.user.UserUserWrapper
-import com.radiotelescope.contracts.user.Update
+import com.radiotelescope.contracts.user.ChangePassword
 import com.radiotelescope.controller.BaseRestController
-import com.radiotelescope.controller.model.user.UpdateForm
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.toStringMap
 import com.radiotelescope.controller.spring.Logger
-import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.security.AccessReport
+import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
+import com.radiotelescope.controller.model.user.ChangePasswordForm
 import org.springframework.web.bind.annotation.*
 
-/**
- * REST Controller to handle update User information
- *
- * @param userWrapper the [UserUserWrapper]
- * @param logger the [Logger] service
- */
 @RestController
-class UserUpdateController(
+class UserChangePasswordController(
         private val userWrapper: UserUserWrapper,
         logger: Logger
-) : BaseRestController(logger){
+) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of taking the [UpdateForm]
-     * and adapting it to the a [Update.Request] if possible.
-     * If it is not able to, it will respond with errors.
+     * Execute method that is in charge of taking the [PathVariable]
+     * request and calling the [UserUserWrapper.changePassword] method. If this method
+     * returns an [AccessReport] this means the user did not pass authentication
+     * and the controller should respond accordingly.
      *
-     * Otherwise, it will execute the [UserUserWrapper.update] method. If
-     * this method returns an [AccessReport] respond with errors. If not,
-     * this means the [Update] command was executed, check if the method
-     * was a success or not
+     * Otherwise, the [ChangePassword] command object was executed, and the
+     * controller should respond based on whether the command was a
+     * success or not
      *
-     * @param userId the User's id
-     * @param form the [UpdateForm] object
+     * @param form the [ChangePasswordForm]
      */
+
+    @PutMapping(value = ["/api/users/{userId}/changePassword"])
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PutMapping(value = ["/api/users/{userId}"])
-    fun execute(@PathVariable("userId") userId: Long,
-                @RequestBody form: UpdateForm): Result{
-        // If the form validation fails, respond with errors
+    fun execute(@RequestBody form: ChangePasswordForm): Result {
         form.validateRequest()?.let {
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = "User Update",
+                            action = "User Change Password",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()
@@ -54,46 +46,43 @@ class UserUpdateController(
 
             result = Result(errors = it.toStringMap())
         } ?: let { _ ->
-            // Otherwise call the factory command
-            userWrapper.update(
+            userWrapper.changePassword(
                     request = form.toRequest()
             ) { it ->
                 // If the command was a success
-                it.success?.let{
-                    result = Result(
-                            data = it
-                    )
-
+                it.success?.let { id ->
+                    // Create success logs
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
-                                    action = "User Update",
-                                    affectedRecordId = it
+                                    action = "User change password",
+                                    affectedRecordId = id
                             )
                     )
+
+                    result = Result(data = id)
                 }
-                // Otherwise, it was a failure
-                it.error?.let{
+                // Otherwise it was a failure
+                it.error?.let { errors ->
                     // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
-                                    action = "User Update",
+                                    action = "User change password",
                                     affectedRecordId = null
                             ),
-                            errors = it.toStringMap()
+                            errors = errors.toStringMap()
                     )
-                    result = Result(
-                            errors = it.toStringMap()
-                    )
+
+                    result = Result(errors = errors.toStringMap())
                 }
             }?.let {
-                // If we get here, that means the user was not authenticated
+                // If we get here, this means the User did not pass validation
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = "User Update",
+                                action = "User change password",
                                 affectedRecordId = null
                         ),
                         errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
@@ -113,4 +102,5 @@ class UserUpdateController(
 
         return result
     }
+
 }
