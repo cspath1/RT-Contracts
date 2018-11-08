@@ -85,4 +85,12 @@ interface AppointmentFactory {
      * @return a [Command] object
      */
     fun makePublic(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve public, completed appointments
+     *
+     * @param pageable the Pageable interface
+     * @return a [Command] object
+     */
+    fun publicCompletedAppointments(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 }

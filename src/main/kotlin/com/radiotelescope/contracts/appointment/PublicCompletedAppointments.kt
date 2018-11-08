@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.appointment
 
+import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -17,14 +18,14 @@ import org.springframework.data.domain.Pageable
 class PublicCompletedAppointments(
         private val pageable: Pageable,
         private val appointmentRepo: IAppointmentRepository
-) : Command<Page<AppointmentInfo>, ErrorTag> {
+) : Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. It will call the
      * [IAppointmentRepository.findCompletedPublicAppointments] method
      * which will return be adapted to return a Page of [AppointmentInfo]
      * objects
      */
-    override fun execute(): SimpleResult<Page<AppointmentInfo>, ErrorTag> {
+    override fun execute(): SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         val appointmentPage = appointmentRepo.findCompletedPublicAppointments(pageable)
         return SimpleResult(appointmentPage.toAppointmentInfoPage(), null)
     }
