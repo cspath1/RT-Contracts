@@ -9,6 +9,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -53,7 +54,8 @@ class AdminLogListController(
         }
         // Otherwise call the wrapper method
         else {
-            val pageRequest = PageRequest.of(pageNumber, pageSize)
+            val sort = Sort(Sort.Direction.DESC, "id")
+            val pageRequest = PageRequest.of(pageNumber, pageSize, sort)
             logWrapper.list(
                     pageable = pageRequest
             ) { it ->

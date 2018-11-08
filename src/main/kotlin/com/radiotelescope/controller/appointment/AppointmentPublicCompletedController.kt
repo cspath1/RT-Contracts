@@ -6,80 +6,73 @@ import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
-import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.*
-
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 /**
- * Rest Controller to handle listing future appointments for a user
+ * Rest Controller to handle retrieving a list of public completed appointments
  *
  * @param appointmentWrapper the [UserAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentListFutureAppointmentsByUserController(
+class AppointmentPublicCompletedController(
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of returning a user's future appointments.
-     *
-     * If the [pageNumber] or [pageSize] request parameters are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.userFutureList]
-     * method. If this method returns an [AccessReport], this means that user authentication
-     * failed and the method should respond with errors, setting the [Result]'s
-     * [HttpStatus] to [HttpStatus.FORBIDDEN].
-     *
-     * If not, the command object was executed, and was either a success or failure,
-     * and the method should respond accordingly based on each scenario.
+     * Execute method that is in charge of, given the page parameters were passed in
+     * correctly, calling the [UserAppointmentWrapper.publicCompletedAppointments]
+     * method and responding back to the client based on if the user was authenticated
+     * or not.
      */
-    @GetMapping(value = ["/api/users/{userId}/appointments/futureList"])
-    @CrossOrigin(value = ["http://localhost:8081"])
-    fun execute(@PathVariable("userId") userId: Long,
-                @RequestParam("page") pageNumber: Int?,
+    @GetMapping(value = ["/api/appointments/publicCompleted"])
+    fun execute(@RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?): Result {
-        // If any of the request params are null, respond with errors
-        if((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
+        if ((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
             val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "User Future Appointment LogList Retrieval",
+                            action = "Future Telescope Appointments LogList Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
             )
+
             result = Result(errors = errors.toStringMap())
-        }
-        // Otherwise, call the wrapper method
-        else {
-            val sort = Sort(Sort.Direction.ASC, "start_time")
-            appointmentWrapper.userFutureList(userId, PageRequest.of(pageNumber, pageSize, sort)) { it ->
-                //If the command was a success
-                it.success?.let{ page ->
-                    // Create success logs
-                    page.content.forEach{
-                        logger.createSuccessLog(
-                                info = Logger.createInfo(Log.AffectedTable.APPOINTMENT,
-                                        action = "User Future Appointment LogList Retrieval",
-                                        affectedRecordId = it.id
-                                )
-                        )
-                    }
+        } else {
+            // Sort by most recent
+            val sort = Sort(Sort.Direction.DESC, "end_time")
+            appointmentWrapper.publicCompletedAppointments(
+                    pageable = PageRequest.of(pageNumber, pageSize, sort)
+            ) {
+                // If the command was a success
+                it.success?.let { page ->
+                    // Create success log
+                    logger.createSuccessLog(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.APPOINTMENT,
+                                    action = "Public Completed Appointments",
+                                    affectedRecordId = null
+                            )
+                    )
+
                     result = Result(data = page)
                 }
                 // If the command was a failure
-                it.error?.let{ errors ->
+                it.error?.let { errors ->
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "User Future Appointment LogList Retrieval",
+                                    action = "Public Completed Appointments",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -93,7 +86,7 @@ class AppointmentListFutureAppointmentsByUserController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "User Future Appointment LogList Retrieval",
+                                action = "Future Telescope Appointments LogList Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -107,8 +100,8 @@ class AppointmentListFutureAppointmentsByUserController(
     }
 
     /**
-     * Private method to return a [HashMultimap] of errors in the event
-     * that the page size and page number are invalid
+     * Private method to return a [HashMultimap] of errors in the
+     * event that invalid page parameters were provided
      */
     private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()

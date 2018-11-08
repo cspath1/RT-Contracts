@@ -9,6 +9,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -52,9 +53,10 @@ class AppointmentCompletedUserListController(
         }
         // Otherwise, call the wrapper method
         else {
+            val sort = Sort(Sort.Direction.DESC, "end_time")
             appointmentWrapper.userCompleteList(
                     userId = userId,
-                    pageable = PageRequest.of(pageNumber, pageSize)
+                    pageable = PageRequest.of(pageNumber, pageSize, sort)
             ) {
                 // If the command was a success
                 it.success?.let { page ->
