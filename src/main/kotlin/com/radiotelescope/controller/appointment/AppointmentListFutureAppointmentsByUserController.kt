@@ -59,7 +59,7 @@ class AppointmentListFutureAppointmentsByUserController(
         }
         // Otherwise, call the wrapper method
         else {
-            val sort = Sort(Sort.Direction.DESC, "end_time")
+            val sort = Sort(Sort.Direction.ASC, "start_time")
             appointmentWrapper.userFutureList(userId, PageRequest.of(pageNumber, pageSize, sort)) { it ->
                 //If the command was a success
                 it.success?.let{ page ->
