@@ -91,7 +91,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
                     "AND end_time > CURRENT_TIMESTAMP " +
                     "AND status <> 'Canceled'" ,
         nativeQuery = true)
-    fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable:Pageable):Page<Appointment>
+    fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable): Page<Appointment>
 
     /**
      * Spring Repository method that will return all future [Appointment] records
@@ -112,6 +112,13 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             nativeQuery = true)
     fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): List<Appointment>
 
+    /**
+     * Spring Repository method that will return all completed and public [Appointment]
+     * records
+     *
+     * @param pageable the [Pageable] interface
+     * @return a Page of [Appointment] records
+     */
     @Query(value = "SELECT * " +
             "FROM appointment " +
             "WHERE status = 'Completed' AND " +
