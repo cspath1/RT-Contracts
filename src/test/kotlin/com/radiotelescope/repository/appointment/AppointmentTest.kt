@@ -73,7 +73,6 @@ internal class AppointmentTest {
                 isPublic = true
         )
 
-        // Make a future canceled appointment to ensure it is not retrieved
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
@@ -223,4 +222,41 @@ internal class AppointmentTest {
         assertEquals(5, listOfAppointments.size)
     }
 
+    @Test
+    fun testFindCompletedPublicAppointments() {
+        // There will already be one completed public appointment from the set up
+        // Make one more, and make a completed private appointment and ensure
+        // this one is not retrieved
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Completed,
+                startTime = Date(System.currentTimeMillis() - 10000L),
+                endTime = Date(System.currentTimeMillis() - 5000L),
+                isPublic = true
+        )
+
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.Completed,
+                startTime = Date(System.currentTimeMillis() - 30000L),
+                endTime = Date(System.currentTimeMillis() - 15000L),
+                isPublic = false
+        )
+
+        val pageRequest = PageRequest.of(0, 5)
+
+        val appointments = appointmentRepo.findCompletedPublicAppointments(pageRequest)
+
+        assertNotNull(appointments)
+
+        // The appointments page should have 2 appointments,
+        // all of which are completed and public
+        assertEquals(2, appointments.content.size)
+        appointments.forEach {
+            assertTrue(it.isPublic)
+            assertEquals(it.status, Appointment.Status.Completed)
+        }
+    }
 }

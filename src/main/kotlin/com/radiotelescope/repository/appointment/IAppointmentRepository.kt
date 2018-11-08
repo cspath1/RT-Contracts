@@ -111,4 +111,15 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "AND telescope_id = ?3",
             nativeQuery = true)
     fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): List<Appointment>
+
+    @Query(value = "SELECT * " +
+            "FROM appointment " +
+            "WHERE status = 'Completed' AND " +
+            "public = 1",
+            countQuery = "SELECT COUNT(*) " +
+                    "FROM appointment " +
+                    "WHERE status = 'Completed' AND " +
+                    "public = 1",
+            nativeQuery = true)
+    fun findCompletedPublicAppointments(pageable: Pageable): Page<Appointment>
 }
