@@ -29,7 +29,7 @@ apply plugin: 'org.jetbrains.dokka'
 
 group = 'com.radiotelescope'
 
-version = '1.3.0'
+version = '1.4.0'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -54,7 +54,7 @@ dependencyManagement {
 }
 
 processResources {
-	def profile = (project.hasProperty('profile') ? project.profile : 'local').toLowerCase()
+	def profile = (project.hasProperty('profile') ? project.profile : 'remote').toLowerCase()
 
 	copy {
 		from "src/main/resources/properties/application_${profile}.properties"
