@@ -6,10 +6,19 @@ import com.google.common.collect.HashMultimap
 import com.radiotelescope.controller.model.ses.SendForm
 import org.springframework.stereotype.Service
 
+/**
+ * Service used to send emails using AWS Simple Email Service.
+ *
+ * @param emailService the [AmazonSimpleEmailService] service.
+ */
 @Service
 class AwsSesSendService(
         private val emailService: AmazonSimpleEmailService
 ) {
+    /**
+     * Execute method that takes a [SendForm] and, given there are no errors with the request,
+     * will send an email using the AWS Simple Email Service.
+     */
     fun execute(sendForm: SendForm): HashMultimap<ErrorTag, String>? {
         validateRequest(sendForm)?.let { return it } ?: let {
             val destination = Destination().withToAddresses(sendForm.toAddresses)
@@ -36,6 +45,12 @@ class AwsSesSendService(
         return null
     }
 
+    /**
+     * Private method used to validate the request to send the email
+     *
+     * @param sendForm the [SendForm]
+     * @return a [HashMultimap] if there are errorsm null otherwise
+     */
     private fun validateRequest(sendForm: SendForm): HashMultimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
