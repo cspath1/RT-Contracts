@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -29,11 +30,15 @@ class List(
     override fun execute(): SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>> {
         val userPage = userRepo.findAll(pageable)
 
+
+
+
         val infoList = arrayListOf<UserInfo>()
         userPage.forEach {
             val theUserRole = userRoleRepo.findMembershipRoleByUserId(it.id)
             val theRole = theUserRole?.role
             infoList.add(UserInfo(it, theRole?.label))
+            infoList.filter{theRole != UserRole.Role.ADMIN}
         }
 
         val infoPage = PageImpl(infoList, userPage.pageable, userPage.totalElements)
