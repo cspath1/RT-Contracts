@@ -65,7 +65,7 @@ class AdminUserListController(
         else {
             val sort = Sort(Sort.Direction.DESC, "id")
             val pageRequest = PageRequest.of(pageNumber, pageSize, sort)
-            userWrapper.pageable(pageRequest) { it ->
+            userWrapper.list(pageRequest) { it ->
                 // If the command was a success
                 it.success?.let { page ->
                     // Create success logs
