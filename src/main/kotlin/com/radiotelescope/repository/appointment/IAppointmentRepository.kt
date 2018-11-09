@@ -102,7 +102,11 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
      * @param telescopeId the id of the pertaining telescope
      * @return a [List] of [Appointment]
      */
-    @Query(value = "select * from appointment where start_time <= ?1 and end_time >= ?2 and telescope_id =?3 ",
+    @Query(value = "select * " +
+            "from appointment " +
+            "where start_time <= ?1 " +
+            "and end_time >= ?2 and " +
+            "telescope_id =?3 ",
             nativeQuery = true)
     fun selectAppointmentsWithinPotentialAppointmentTimeRange(endTimeOfPossibleAppointmentDate:Date, startTimeOfPossibleAppointmentDate:Date, telescopeId: Long ):List<Appointment>
 
