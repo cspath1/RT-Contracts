@@ -17,6 +17,7 @@ com.radiotelescope.controller.model
 com.radiotelescope.controller.model.appointment
 com.radiotelescope.controller.model.resetPasswordToken
 com.radiotelescope.controller.model.role
+com.radiotelescope.controller.model.ses
 com.radiotelescope.controller.model.user
 com.radiotelescope.controller.resetPasswordToken
 com.radiotelescope.controller.spring
@@ -31,5 +32,5 @@ com.radiotelescope.repository.role
 com.radiotelescope.repository.telescope
 com.radiotelescope.repository.user
 com.radiotelescope.security
-com.radiotelescope.security.crud
 com.radiotelescope.security.service
+com.radiotelescope.service.ses
