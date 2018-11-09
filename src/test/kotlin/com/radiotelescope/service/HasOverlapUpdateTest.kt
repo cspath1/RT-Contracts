@@ -91,7 +91,7 @@ class HasOverlapUpdateTest
     @Test
     public fun updateToRightOverlap()
     {
-        val hou = HasOverlapUpdate(appointmentRepo)
+        val hou = HasOverlap(appointmentRepo)
        val dd:Date = Date(d.time + 5000)
 
         //associated with a1
@@ -106,7 +106,9 @@ class HasOverlapUpdateTest
         val e: Multimap<ErrorTag, String>? = executed.error
         if (s == null)
         {
-            if (!hou.hasOverlap(uR)) {
+            //no overlap case
+            //if no overlap, either list is empty or list is 1 and listAppts.size == 1 && a.id == request.id
+            if (hou.hasOverlapUpdate(uR).isEmpty() || (hou.hasOverlapUpdate(uR).size == 1 && uR.id == hou.hasOverlapUpdate(uR).get(0).id) ) {
                 fail()
             }
 
@@ -125,7 +127,7 @@ class HasOverlapUpdateTest
     @Test
     public fun updateToLeftOverlap() {
 
-        val hou = HasOverlapUpdate(appointmentRepo)
+        val hou = HasOverlap(appointmentRepo)
         val dd: Date = Date(d.time + 5000)
         val uR = Update.Request(a1_id, 1, dd, Date(dd.time + 70000), true)
         val uObject = Update(uR, appointmentRepo, telescopeRepo, userRoleRepo)
@@ -137,7 +139,8 @@ class HasOverlapUpdateTest
         val e: Multimap<ErrorTag, String>? = executed.error
         if (s == null) //then e is populated
         {
-            if (!hou.hasOverlap(uR)) {
+            //no overlap case
+            if (hou.hasOverlapUpdate(uR).isEmpty() || (hou.hasOverlapUpdate(uR).size == 1 && uR.id == hou.hasOverlapUpdate(uR).get(0).id)) {
                 fail()
             }
             println("error should be the overlap error: " + e?.get(ErrorTag.OVERLAP).toString())
@@ -154,17 +157,35 @@ class HasOverlapUpdateTest
     public fun updateToFutureNoOverlap() {
 
         val uR = Update.Request(a1_id, 1, Date(d.time + 300000), Date(d.time + 350000), true)
-        val hou = HasOverlapUpdate(appointmentRepo)
-        if (!hou.hasOverlap(uR))
+        val hou = HasOverlap(appointmentRepo)
+        if (hou.hasOverlapUpdate(uR).isEmpty() || (hou.hasOverlapUpdate(uR).size == 1 && uR.id == hou.hasOverlapUpdate(uR).get(0).id))
         {
         }
         else {
             fail()
         }
+
+        println("isEmpty? : " + hou.hasOverlapUpdate(uR).isEmpty())
+
        val uE =  Update(uR, appointmentRepo, telescopeRepo, userRoleRepo).execute()
+       //
+       //the actual success object is a Long, the appointment ID that was updated
+
        val ss =  uE.success
+        //we were entering the error, which means it was supposed to be a success
        val ee = uE.error
+        //ss is null, which means that success is null, so we have errors
        if (ss == null) {
+
+           println("request id " + uR.id)
+           println("size: " + hou.hasOverlapUpdate(uR).size)
+         //  println("id of appointment in index 0 in table " + hou.hasOverlapUpdate(uR).get(0).id)
+
+           for (p in ErrorTag.values())
+           {
+
+               println("empty? : " + ee?.get(p) )
+           }
             fail()
         }
         else //success is not null, so we do not fail
@@ -175,11 +196,11 @@ class HasOverlapUpdateTest
     @Test
     public fun updateToBeforeAnAppointmentNoOverlap()
     {
-      val hou = HasOverlapUpdate(appointmentRepo)
+      val hou = HasOverlap(appointmentRepo)
       //associated with a1
       val uR = Update.Request(a1_id, 1, Date(Date().time + 3000), Date(d.time - 10000), true)
 
-        if (!hou.hasOverlap(uR))
+        if (hou.hasOverlapUpdate(uR).isEmpty() || (hou.hasOverlapUpdate(uR).size == 1 && uR.id == hou.hasOverlapUpdate(uR).get(0).id))
         {
         }
         else {
@@ -201,7 +222,7 @@ class HasOverlapUpdateTest
 
     @Test
     public fun rescheduleSameAppointmentOnTopOfOriginalRangeNoConflict() {
-        val hou = HasOverlapUpdate(appointmentRepo)
+        val hou = HasOverlap(appointmentRepo)
         //normally would be a conflict, but because the only appointment in conflict is the actual one being updated, we're good
         val uR = Update.Request(a1_id, 1, d, Date(d.time + 55000), true)
         val uE =  Update(uR, appointmentRepo, telescopeRepo, userRoleRepo).execute()
@@ -221,7 +242,7 @@ class HasOverlapUpdateTest
     public fun requestedApptExtendsOverAnAppointment()
     {
 
-        val hou = HasOverlapUpdate(appointmentRepo)
+        val hou = HasOverlap(appointmentRepo)
         val uR = Update.Request(a1_id, 1, Date(d.time + 40000), Date(d.time + 70000), true)
         val uObject = Update(uR, appointmentRepo, telescopeRepo, userRoleRepo)
         val executed = uObject.execute()
@@ -230,7 +251,7 @@ class HasOverlapUpdateTest
         val e: Multimap<ErrorTag, String>? = executed.error
         if (s == null)
         {
-            if (!hou.hasOverlap(uR)) {
+            if (hou.hasOverlapUpdate(uR).isEmpty() || (hou.hasOverlapUpdate(uR).size == 1 && uR.id == hou.hasOverlapUpdate(uR).get(0).id)) {
                 fail()
             }
             println("error should be the overlap error: " + e?.get(ErrorTag.OVERLAP).toString())
@@ -245,7 +266,7 @@ class HasOverlapUpdateTest
     @Test
     public fun requestedApptInsideAnAppt()
     {
-        val hou = HasOverlapUpdate(appointmentRepo)
+        val hou = HasOverlap(appointmentRepo)
         val uR = Update.Request(a1_id, 1, Date(d.time + 70000), Date(d.time + 80000), true)
         val uObject = Update(uR, appointmentRepo, telescopeRepo, userRoleRepo)
         val executed = uObject.execute()
@@ -254,7 +275,7 @@ class HasOverlapUpdateTest
         val e: Multimap<ErrorTag, String>? = executed.error
         if (s == null)
         {
-            if (!hou.hasOverlap(uR)) {
+            if (hou.hasOverlapUpdate(uR).isEmpty() || (hou.hasOverlapUpdate(uR).size == 1 && uR.id == hou.hasOverlapUpdate(uR).get(0).id)) {
                 fail()
             }
             println("error should be the overlap error: " + e?.get(ErrorTag.OVERLAP).toString())

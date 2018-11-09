@@ -77,11 +77,11 @@ import java.util.*
 
         val uC = Create.Request(u_id, Date(d.time - 10000), Date(d.time + 10000), 1, true)
 
-        val hoc = HasOverlapCreate(appointmentRepo)
-        if (hoc.hasOverlap(uC))
+        val hoc = HasOverlap(appointmentRepo)
+        if (!hoc.hasOverlapCreate(uC).isEmpty())
         {
         }
-        else if (!hoc.hasOverlap(uC))
+        else if (hoc.hasOverlapCreate(uC).isNotEmpty())
         {
             fail()
         }
@@ -91,11 +91,11 @@ import java.util.*
         public fun rightOverlap() {
 
             val uC = Create.Request(u_id, Date(d.time + 30000), Date(d.time + 60000), 1, true)
-            val hoc = HasOverlapCreate(appointmentRepo)
-            if (hoc.hasOverlap(uC))
+            val hoc = HasOverlap(appointmentRepo)
+            if (hoc.hasOverlapCreate(uC).isNotEmpty())
             {
             }
-            else if (!hoc.hasOverlap(uC))
+            else if (hoc.hasOverlapCreate(uC).isEmpty())
             {
                 fail()
             }
@@ -104,11 +104,11 @@ import java.util.*
         public fun BothEndsOverlap() {
 
             val uC = Create.Request(u_id, Date(d.time - 10000), Date(d.time + 60000), 1, true)
-            val hoc = HasOverlapCreate(appointmentRepo)
-            if (hoc.hasOverlap(uC))
+            val hoc = HasOverlap(appointmentRepo)
+            if (hoc.hasOverlapCreate(uC).isNotEmpty())
             {
             }
-            else if (!hoc.hasOverlap(uC))
+            else if (hoc.hasOverlapCreate(uC).isEmpty())
             {
                 fail()
             }
@@ -118,12 +118,12 @@ import java.util.*
         public fun InnerOverlap() {
 
             val uC = Create.Request(u_id, Date(d.time + 30000), Date(d.time + 40000), 1, true)
-            val hoc = HasOverlapCreate(appointmentRepo)
-            if (hoc.hasOverlap(uC))
+            val hoc = HasOverlap(appointmentRepo)
+            if (hoc.hasOverlapCreate(uC).isNotEmpty())
             {
 
             }
-            else if (!hoc.hasOverlap(uC))
+            else if (hoc.hasOverlapCreate(uC).isEmpty())
             {
                 fail()
             }
@@ -133,12 +133,12 @@ import java.util.*
         public fun noOverlapLeft() {
 
             val uC = Create.Request(u_id, Date(d.time - 10000), Date(d.time - 5000), 1, true)
-            val hoc = HasOverlapCreate(appointmentRepo)
-            if (hoc.hasOverlap(uC))
+            val hoc = HasOverlap(appointmentRepo)
+            if (hoc.hasOverlapCreate(uC).isNotEmpty())
             {
                 fail()
             }
-            else if (!hoc.hasOverlap(uC))
+            else if (hoc.hasOverlapCreate(uC).isEmpty())
             {
             }
         }
@@ -146,12 +146,12 @@ import java.util.*
         @Test
         public fun noOverlapRight() {
             val uC = Create.Request(u_id, Date(d.time + 60000), Date(d.time +70000), 1, true)
-            val hoc = HasOverlapCreate(appointmentRepo)
-            if (hoc.hasOverlap(uC))
+            val hoc = HasOverlap(appointmentRepo)
+            if (hoc.hasOverlapCreate(uC).isNotEmpty())
             {
                 fail()
             }
-            else if (!hoc.hasOverlap(uC))
+            else if (hoc.hasOverlapCreate(uC).isEmpty())
             {
             }
         }
