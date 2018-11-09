@@ -11,8 +11,7 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.service.HasOverlapCreate
-import org.springframework.data.domain.Page
+import com.radiotelescope.service.HasOverlap
 import java.util.*
 
 /**
@@ -62,7 +61,7 @@ class Create(
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
 
-        val hasOverlapCreate = HasOverlapCreate(appointmentRepo)
+
         // TODO - Add more validation as more features are implemented
 
         var errors = HashMultimap.create<ErrorTag, String>()
@@ -79,9 +78,9 @@ class Create(
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime.before(Date()))
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time")
-            if (hasOverlapCreate.hasOverlap(request))
-                errors.put(ErrorTag.OVERLAP, "Appointment cannot be scheduled: Conflict with an already-scheduled appointment")
 
+            if (overlapExists())
+                errors.put(ErrorTag.OVERLAP, "Appointment cannot be scheduled: Conflict with an already-scheduled appointment")
             if (!errors.isEmpty)
                 return errors
 
@@ -92,19 +91,21 @@ class Create(
         return if (errors.isEmpty) null else errors
     }
 
-    /*
-    private fun hasOverlap():Boolean
+
+    private fun overlapExists():Boolean
     {
-      var isOverlap = false
-      val listAppts:List<Appointment> = appointmentRepo.selectAppointmentsWithinPotentialAppointmentTimeRange(request.endTime, request.startTime, request.telescopeId)
-      val zero:Long = 0
-      if (listAppts.isEmpty() )
-      {
-        isOverlap = true
-      }
-        return isOverlap
+        var isOverlap = false
+        val hasOverlapCreate = HasOverlap(appointmentRepo)
+        val listAppts = hasOverlapCreate.hasOverlapCreate(request)
+
+          //if at least one appt returned, there IS an overlap
+          if (!listAppts.isEmpty()) {
+              isOverlap = true
+          }
+          return isOverlap
     }
-*/
+
+
 
 
 
