@@ -138,3 +138,18 @@ CREATE TABLE appointment (
   KEY public_idx (public)
 
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS viewer;
+CREATE TABLE viewer(
+
+recipient_user_id INT(11) NOT NULL,
+sharing_user_id INT(11) NOT NULL,
+shared_appointment_id INT(11) NOT NULL,
+
+KEY viewer_id_idx (viewer_id),
+KEY sharing_user_id_idx (sharing_user_id),
+KEY shared_appointment_id_idx (shared_appointment_id)
+
+
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
