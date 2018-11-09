@@ -93,14 +93,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
         nativeQuery = true)
     fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable:Pageable):Page<Appointment>
 
-    /**
-     * Spring Repository method that will return all future [Appointment] records
-     * for a User between specified start time and end time. Excludes canceled and requested appointments
-     *
-     * @param startTime the start time of when to start grabbing the appointment
-     * @param endTime the end time of when to stop grabbing the appointment
-     * @return a [List] of [Appointment]
-     */
+
 
     /**
      * For use in the scheduling conflict check.
@@ -116,12 +109,15 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
 
 
 /**
-     * for a User between specified start time and end time. Excludes canceled and requested appointments
-     *
-     * @param startTime the start time of when to start grabbing the appointment
-     * @param endTime the end time of when to stop grabbing the appointment
-     * @return a [List] of [Appointment]
-     */
+ *
+ * Spring Repository method that will return all future [Appointment] records
+ * for a User between specified start time and end time. Excludes canceled and requested appointments
+ *
+ * @param startTime the start time of when to start grabbing the appointment
+ * @param endTime the end time of when to stop grabbing the appointment
+ * @return a [List] of [Appointment]
+*/
+
     @Query(value = "SELECT * " +
             "FROM appointment " +
             "WHERE ((start_time >=?1 AND start_time <=?2) " +
