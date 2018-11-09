@@ -6,7 +6,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -170,5 +170,25 @@ internal class CreateUpdateEmailTokenTest {
 
         // Ensure it failed correctly
         assertTrue(errors!![ErrorTag.EMAIL].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_InvalidUserId_Failure() {
+        val (token, errors) = CreateUpdateEmailToken(
+                request = CreateUpdateEmailToken.Request(
+                        userId = 311L,
+                        email = "cspath1@ycp.edu",
+                        emailConfirm = "cspath1@ycp.edu"
+                ),
+                userRepo = userRepo,
+                updateEmailTokenRepo = updateEmailTokenRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(token)
+        assertNotNull(errors)
+
+        // Ensure it failed for the expected reason
+        assertTrue(errors!![ErrorTag.USER_ID].isNotEmpty())
     }
 }

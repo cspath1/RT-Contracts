@@ -44,9 +44,11 @@ class CreateUpdateEmailToken(
             token = UUID.randomUUID().toString().replace("-", "", false)
 
         // Create the Entity, sets its' values and save it
-        var theUpdateEmailToken = request.toEntity()
+        val theUpdateEmailToken = request.toEntity()
+
         theUpdateEmailToken.token = token
         theUpdateEmailToken.user = userRepo.findById(request.userId).get()
+
         updateEmailTokenRepo.save(theUpdateEmailToken)
 
         return SimpleResult(theUpdateEmailToken.token, null)
@@ -62,8 +64,10 @@ class CreateUpdateEmailToken(
         // Check to see if user actually exists
         with(request) {
             if (userRepo.existsById(userId)) {
+                val theUser = userRepo.findById(userId).get()
+
                 if (email == userRepo.findById(userId).get().email)
-                    errors.put(ErrorTag.EMAIL, "Cannot be the same email")
+                    errors.put(ErrorTag.EMAIL, "New email may not be the same as your current email")
                 if (email != emailConfirm)
                     errors.put(ErrorTag.EMAIL_CONFIRM, "Emails do not match")
                 if (email.isBlank())
@@ -72,8 +76,8 @@ class CreateUpdateEmailToken(
                     errors.put(ErrorTag.EMAIL, "Invalid Email Address")
                 if (userRepo.existsByEmail(email))
                     errors.put(ErrorTag.EMAIL, "Email Address is already in use")
-            } else{
-                    errors.put(ErrorTag.USER_ID, "No User is found with specified User's Id")
+            } else {
+                    errors.put(ErrorTag.USER_ID, "User #$userId not found")
                     return errors
             }
         }

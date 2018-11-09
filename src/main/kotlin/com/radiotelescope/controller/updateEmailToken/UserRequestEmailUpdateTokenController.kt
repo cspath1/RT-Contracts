@@ -124,7 +124,7 @@ class UserRequestEmailUpdateTokenController (
                 htmlBody = "<p>You have requested to change your email</p>" +
                         "<p>This link will expire in one day. If it does, you must request another.</p>" +
                         "<p>Please <a href='$resetPasswordLink'> here to update your email</a></p>" +
-                        "<p>If you did not request to update your email, please delete this emails</p>"
+                        "<p>If you did not request to update your email, please delete this email</p>"
         )
 
         awsSesSendService.execute(sendForm)

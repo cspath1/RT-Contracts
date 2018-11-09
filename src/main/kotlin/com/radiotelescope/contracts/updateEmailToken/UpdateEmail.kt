@@ -56,7 +56,7 @@ class UpdateEmail (
     private fun validateRequest(): Multimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        if(token.isNullOrBlank())
+        if(token.isBlank())
             errors.put(ErrorTag.TOKEN, "Update Email Token is invalid")
         if(!updateEmailTokenRepo.existsByToken(token))
             errors.put(ErrorTag.TOKEN, "Update Email Token not found")
