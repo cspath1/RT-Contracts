@@ -52,7 +52,7 @@ internal class PublicCompletedAppointmentsTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Completed,
+                status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 50000L),
                 endTime = Date(System.currentTimeMillis() - 40000L),
                 isPublic = true
@@ -61,7 +61,7 @@ internal class PublicCompletedAppointmentsTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Completed,
+                status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 20000L),
                 isPublic = true
@@ -70,7 +70,7 @@ internal class PublicCompletedAppointmentsTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Completed,
+                status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 15000L),
                 endTime = Date(System.currentTimeMillis() - 5000L),
                 isPublic = false
@@ -90,7 +90,7 @@ internal class PublicCompletedAppointmentsTest {
         assertEquals(2, page!!.content.size)
         page.forEach {
             assertTrue(it.isPublic)
-            assertEquals(it.status, Appointment.Status.Completed)
+            assertEquals(it.status, Appointment.Status.COMPLETED.label)
         }
     }
 }

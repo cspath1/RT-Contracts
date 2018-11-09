@@ -7,7 +7,7 @@ VALUES(1, 'Cody', 'Spath', 'cspath1@ycp.edu', 'York College of PA', '717-823-221
 
 -- Then an appointment --
 INSERT INTO appointment(id, user_id, start_time, end_time, status, telescope_id, public)
-VALUES(1, 1, '2018-10-10 12:00:00', '2018-10-10 15:00:00', 'Completed', 1, 1);
+VALUES(1, 1, '2018-10-10 12:00:00', '2018-10-10 15:00:00', 'COMPLETED', 1, 1);
 
 -- Then some seed RF Data --
 INSERT INTO rf_data(id, appointment_id, intensity, time_captured) VALUES(1, 1, 1, CURRENT_TIMESTAMP);

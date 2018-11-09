@@ -54,7 +54,7 @@ internal class UserCompletedListTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Completed,
+                status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 10000L),
                 isPublic = true

@@ -27,7 +27,7 @@ data class AppointmentInfo(
         val userId: Long,
         val userFirstName: String,
         val userLastName: String,
-        val status: Appointment.Status
+        val status: String
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -44,6 +44,6 @@ data class AppointmentInfo(
             userId = appointment.user!!.id,
             userFirstName = appointment.user!!.firstName,
             userLastName = appointment.user!!.lastName,
-            status = appointment.status
+            status = appointment.status.label
     )
 }

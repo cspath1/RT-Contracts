@@ -73,7 +73,7 @@ internal class UserFutureListTest {
         testUtil.createAppointment(
                 user = user1,
                 telescopeId = futureApptCreateRequest.telescopeId,
-                status = Appointment.Status.Requested,
+                status = Appointment.Status.REQUESTED,
                 startTime = futureApptCreateRequest.startTime,
                 endTime = futureApptCreateRequest.endTime,
                 isPublic = futureApptCreateRequest.isPublic

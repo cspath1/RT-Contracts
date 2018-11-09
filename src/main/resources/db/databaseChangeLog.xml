@@ -10,4 +10,5 @@
     <include file="classpath:/db/changelog/04-create-rf-data.sql"/>
     <include file="classpath:/db/changelog/05-create-reset-password-token.sql"/>
     <include file="classpath:/db/changelog/06-create-account-activate-token.sql"/>
+    <include file="classpath:/db/changelog/07-update-appointment-status-enum.sql"/>
 </databaseChangeLog>

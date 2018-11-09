@@ -21,7 +21,7 @@ internal class AppointmentInfoTest {
                 userId = 1L,
                 userFirstName = "Cody",
                 userLastName = "Spath",
-                status = Appointment.Status.Scheduled
+                status = Appointment.Status.SCHEDULED.label
         )
 
         assertEquals(1L, appointmentInfo.id)
@@ -32,7 +32,7 @@ internal class AppointmentInfoTest {
         assertEquals(1L, appointmentInfo.userId)
         assertEquals("Cody", appointmentInfo.userFirstName)
         assertEquals("Spath", appointmentInfo.userLastName)
-        assertEquals(Appointment.Status.Scheduled, appointmentInfo.status)
+        assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
     }
 
     @Test
@@ -55,7 +55,7 @@ internal class AppointmentInfoTest {
 
         appointment.user = user
         appointment.id = 1L
-        appointment.status = Appointment.Status.Scheduled
+        appointment.status = Appointment.Status.SCHEDULED
 
         val appointmentInfo = AppointmentInfo(appointment)
 
@@ -67,7 +67,7 @@ internal class AppointmentInfoTest {
         assertEquals(1L, appointmentInfo.userId)
         assertEquals("Cody", appointmentInfo.userFirstName)
         assertEquals("Spath", appointmentInfo.userLastName)
-        assertEquals(Appointment.Status.Scheduled, appointmentInfo.status)
+        assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
     }
 
 

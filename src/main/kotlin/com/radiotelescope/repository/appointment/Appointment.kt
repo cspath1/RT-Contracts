@@ -33,14 +33,14 @@ data class Appointment(
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
-    var status: Appointment.Status = Status.Scheduled
+    var status: Appointment.Status = Status.SCHEDULED
 
-    enum class Status {
-        Requested,
-        Scheduled,
-        InProgress,
-        Completed,
-        Canceled
+    enum class Status(val label: String) {
+        REQUESTED("Requested"),
+        SCHEDULED("Scheduled"),
+        IN_PROGRESS("In Progress"),
+        COMPLETED("Completed"),
+        CANCELED("Canceled")
     }
 
     companion object {

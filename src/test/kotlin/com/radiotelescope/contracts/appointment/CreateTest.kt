@@ -127,7 +127,7 @@ internal class CreateTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = date,
                 endTime = Date(date.time + twoHours),
                 isPublic = true
