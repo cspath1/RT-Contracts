@@ -23,7 +23,6 @@ data class UpdateForm(
         val id: Long?,
         val firstName: String?,
         val lastName: String?,
-        val email: String?,
         val phoneNumber: String?,
         val company: String?
 ) : BaseForm<Update.Request> {
@@ -36,7 +35,6 @@ data class UpdateForm(
                 id = id!!,
                 firstName = firstName!!,
                 lastName = lastName!!,
-                email = email!!,
                 phoneNumber = phoneNumber,
                 company = company
         )
@@ -55,8 +53,6 @@ data class UpdateForm(
             errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
         if (lastName.isNullOrBlank())
             errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
-        if (email.isNullOrBlank())
-            errors.put(ErrorTag.EMAIL, "Email may not be blank")
         return if (errors.isEmpty) null else errors
     }
 }

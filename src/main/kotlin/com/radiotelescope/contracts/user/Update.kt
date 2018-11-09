@@ -61,12 +61,6 @@ class Update(
                     errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
                 if (lastName.length > 100)
                     errors.put(ErrorTag.LAST_NAME, "Last Name must be under 100 characters")
-                if (email.isBlank())
-                    errors.put(ErrorTag.EMAIL, "Email Address may not be blank")
-                if (!User.isEmailValid(email))
-                    errors.put(ErrorTag.EMAIL, "Invalid Email Address")
-                if (userRepo.existsByEmail(email) && userRepo.findById(id).get().email != email)
-                    errors.put(ErrorTag.EMAIL, "Email Address is already in use")
             } else {
                 errors.put(ErrorTag.ID, "No User was found with specified Id")
                 return errors
@@ -86,7 +80,6 @@ class Update(
             val id: Long,
             val firstName: String,
             val lastName: String,
-            val email: String,
             val phoneNumber: String?,
             val company: String?
     ) : BaseUpdateRequest<User> {
@@ -98,7 +91,6 @@ class Update(
             // Find the existing user from the repository and update it's information
             entity.firstName = firstName
             entity.lastName = lastName
-            entity.email = email
             entity.phoneNumber = phoneNumber
             entity.company = company
 

@@ -64,8 +64,6 @@ class CreateUpdateEmailToken(
         // Check to see if user actually exists
         with(request) {
             if (userRepo.existsById(userId)) {
-                val theUser = userRepo.findById(userId).get()
-
                 if (email == userRepo.findById(userId).get().email)
                     errors.put(ErrorTag.EMAIL, "New email may not be the same as your current email")
                 if (email != emailConfirm)

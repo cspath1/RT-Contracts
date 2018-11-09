@@ -300,7 +300,6 @@ internal class UserUserWrapperTest {
                         id = userId,
                         firstName = "Rathana",
                         lastName = "Pim",
-                        email = "rpim@ycp.edu",
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania"
                 )
@@ -325,7 +324,6 @@ internal class UserUserWrapperTest {
                         id = userId,
                         firstName = "Rathana",
                         lastName = "Pim",
-                        email = "rpim@ycp.edu",
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania"
                 )
@@ -349,7 +347,6 @@ internal class UserUserWrapperTest {
                         id = 311L,
                         firstName = "Rathana",
                         lastName = "Pim",
-                        email = "rpim@ycp.edu",
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania"
                 )
@@ -372,7 +369,6 @@ internal class UserUserWrapperTest {
                         id = userId,
                         firstName = "Rathana",
                         lastName = "Pim",
-                        email = "rpim@ycp.edu",
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania"
                 )
@@ -393,7 +389,6 @@ internal class UserUserWrapperTest {
                         id = userId,
                         firstName = "Codiferous",
                         lastName = "Spath",
-                        email = "cspath1ycp.edu",
                         phoneNumber = "717-823-2216",
                         company = "Business, None of Your, Inc."
                 )
