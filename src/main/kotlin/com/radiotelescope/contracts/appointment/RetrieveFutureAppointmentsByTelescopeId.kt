@@ -22,10 +22,10 @@ import org.springframework.data.domain.Pageable
  *
  */
 class RetrieveFutureAppointmentsByTelescopeId(
-        private var appointmentRepo: IAppointmentRepository,
-        private var telescopeId: Long,
-        private var pageable: Pageable,
-        private var telescopeRepo: ITelescopeRepository
+        private val appointmentRepo: IAppointmentRepository,
+        private val telescopeId: Long,
+        private val pageable: Pageable,
+        private val telescopeRepo: ITelescopeRepository
 ): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. If the telescope exists, it will

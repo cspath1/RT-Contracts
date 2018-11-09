@@ -7,17 +7,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
-import com.google.common.collect.Multimap
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
-import com.radiotelescope.repository.user.IUserRepository
 import liquibase.integration.spring.SpringLiquibase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
@@ -65,7 +61,7 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(Date().time + 200000L),
                 isPublic = true
@@ -74,7 +70,7 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 300000L),
                 endTime = Date(System.currentTimeMillis() + 400000L),
                 isPublic = true

@@ -249,7 +249,7 @@ internal class UserUserWrapperTest {
 
         var info: Page<UserInfo> = PageImpl<UserInfo>(arrayListOf())
 
-        val error = wrapper.pageable(
+        val error = wrapper.list(
                 request = PageRequest.of(0, 5)
         ) {
             info = it.success!!
@@ -262,7 +262,7 @@ internal class UserUserWrapperTest {
 
     @Test
     fun testInvalidList_UserNotLoggedIn_Failure() {
-        val error = wrapper.pageable(
+        val error = wrapper.list(
                 request = PageRequest.of(0, 5)
         ) {
             fail("Should fail on precondition")
@@ -278,7 +278,7 @@ internal class UserUserWrapperTest {
         context.login(userId)
         context.currentRoles.add(UserRole.Role.USER)
 
-        val error = wrapper.pageable(
+        val error = wrapper.list(
                 request = PageRequest.of(0, 5)
         ) {
             fail("Should fail on precondition")
@@ -532,7 +532,7 @@ internal class UserUserWrapperTest {
     fun testUnban_Admin_Failure() {
         // Simulate the user being banned
         val theUser = userRepo.findById(userId).get()
-        theUser.status = User.Status.Banned
+        theUser.status = User.Status.BANNED
         theUser.active = false
         userRepo.save(theUser)
 

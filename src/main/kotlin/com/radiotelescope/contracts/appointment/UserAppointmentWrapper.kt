@@ -114,6 +114,14 @@ class UserAppointmentWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
+    /**
+     * Wrapper method for the [AppointmentFactory.userCompletedList] method that adds Spring
+     * Security authentication to the [UserCompletedList] command object
+     *
+     * @param userId the User id
+     * @param pageable the [Pageable] interface
+     * @return an [AccessReport] if authentication fails, null otherwise
+     */
     fun userCompleteList(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null) {
             return if (context.currentUserId() == userId) {
@@ -138,6 +146,13 @@ class UserAppointmentWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
+    /**
+     * Wrapper method for the [AppointmentFactory.cancel] method that adds Spring Security
+     * authentication to the [Cancel] command object
+     *
+     * @param appointmentId the Appointment id
+     * @return an [AccessReport] if authentication fails, null otherwise
+     */
     fun cancel(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (!appointmentRepo.existsById(appointmentId)) {
             return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(appointmentId))
@@ -166,6 +181,14 @@ class UserAppointmentWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
+    /**
+     * Wrapper method for the [AppointmentFactory.retrieveFutureAppointmentsByTelescopeId] method that
+     * adds Spring Security authentication to the [RetrieveFutureAppointmentsByTelescopeId] command object
+     *
+     * @param telescopeId the Telescope id
+     * @param pageable the [Pageable] interface
+     * @return an [AccessReport] if authentication fails, null otherwise
+     */
     fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),

@@ -70,7 +70,7 @@ internal class MakePublicTest {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = false,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 telescopeId = 1L
         )
         appointmentAlreadyPublic = testUtil.createAppointment(
@@ -78,7 +78,7 @@ internal class MakePublicTest {
                 startTime = Date(System.currentTimeMillis() + 40000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
                 isPublic = true,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 telescopeId = 1L
         )
         appointmentId = appointment.id

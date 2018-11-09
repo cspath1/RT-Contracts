@@ -25,7 +25,7 @@ data class UserInfo(
         val company: String?,
         val phoneNumber: String?,
         val active: Boolean,
-        val status: User.Status,
+        val status: String,
         val membershipRole: String?
 ) {
     /**
@@ -43,7 +43,7 @@ data class UserInfo(
             company = user.company,
             phoneNumber = user.phoneNumber,
             active = user.active,
-            status = user.status,
+            status = user.status.label,
             membershipRole = userRoleLabel
     )
 }

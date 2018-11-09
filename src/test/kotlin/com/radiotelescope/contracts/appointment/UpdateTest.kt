@@ -12,7 +12,6 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
-import com.radiotelescope.repository.telescope.Telescope
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.springframework.beans.factory.annotation.Autowired
@@ -80,7 +79,7 @@ internal class UpdateTest {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 telescopeId = 1L
         )
         appointmentId = appointment.id

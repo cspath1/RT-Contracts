@@ -1,7 +1,6 @@
 package com.radiotelescope.repository.appointment
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Before
@@ -58,7 +57,7 @@ internal class AppointmentTest {
         futureAppointment = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(currentTime + 100000L),
                 endTime = Date(currentTime + 300000L),
                 isPublic = true
@@ -67,7 +66,7 @@ internal class AppointmentTest {
         pastAppointment = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Completed,
+                status = Appointment.Status.COMPLETED,
                 startTime = Date(currentTime - 30000L),
                 endTime = Date(currentTime - 10000L),
                 isPublic = true
@@ -76,7 +75,7 @@ internal class AppointmentTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Canceled,
+                status = Appointment.Status.CANCELED,
                 startTime = Date(currentTime + 10000L),
                 endTime = Date(currentTime + 30000L),
                 isPublic = true
@@ -118,7 +117,7 @@ internal class AppointmentTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(currentTime + 15200000L),
                 endTime = Date(currentTime + 18272500L),
                 isPublic = true
@@ -139,7 +138,7 @@ internal class AppointmentTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime),
                 endTime = Date(startTime + 1000L),
                 isPublic = true
@@ -150,7 +149,7 @@ internal class AppointmentTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime + 2000L),
                 endTime = Date(startTime + 3000L),
                 isPublic = true
@@ -161,7 +160,7 @@ internal class AppointmentTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(endTime - 1000L),
                 endTime = Date(endTime),
                 isPublic = true
@@ -172,7 +171,7 @@ internal class AppointmentTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime - 2000L),
                 endTime = Date(startTime + 500L),
                 isPublic = true
@@ -183,29 +182,29 @@ internal class AppointmentTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(endTime - 500L),
                 endTime = Date(endTime + 1000L),
                 isPublic = true
 
         )
 
-        // Appointment status is Requested
+        // Appointment status is REQUESTED
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Requested,
+                status = Appointment.Status.REQUESTED,
                 startTime = Date(startTime + 1010L),
                 endTime = Date(startTime + 1020L),
                 isPublic = true
 
         )
 
-        // Appointment status is Canceled
+        // Appointment status is CANCELED
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Canceled,
+                status = Appointment.Status.CANCELED,
                 startTime = Date(startTime + 1030L),
                 endTime = Date(startTime + 1040L),
                 isPublic = true
@@ -230,7 +229,7 @@ internal class AppointmentTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Completed,
+                status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 10000L),
                 endTime = Date(System.currentTimeMillis() - 5000L),
                 isPublic = true
@@ -239,7 +238,7 @@ internal class AppointmentTest {
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Completed,
+                status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 15000L),
                 isPublic = false
@@ -256,7 +255,7 @@ internal class AppointmentTest {
         assertEquals(2, appointments.content.size)
         appointments.forEach {
             assertTrue(it.isPublic)
-            assertEquals(it.status, Appointment.Status.Completed)
+            assertEquals(it.status, Appointment.Status.COMPLETED)
         }
     }
 }

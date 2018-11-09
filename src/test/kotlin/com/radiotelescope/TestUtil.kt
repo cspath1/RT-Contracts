@@ -57,7 +57,7 @@ internal class TestUtil {
         )
 
         user.active = true
-        user.status = User.Status.Active
+        user.status = User.Status.ACTIVE
         return userRepo.save(user)
     }
 
@@ -73,7 +73,7 @@ internal class TestUtil {
         )
 
         user.active = true
-        user.status = User.Status.Active
+        user.status = User.Status.ACTIVE
         return userRepo.save(user)
     }
 
@@ -185,7 +185,7 @@ internal class TestUtil {
             user: User
     ): User{
         user.active = false
-        user.status = User.Status.Inactive
+        user.status = User.Status.INACTIVE
         return userRepo.save(user)
     }
 

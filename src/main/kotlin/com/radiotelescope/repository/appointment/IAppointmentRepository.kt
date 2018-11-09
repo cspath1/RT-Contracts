@@ -29,7 +29,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "FROM appointment " +
             "WHERE user_id=?1 " +
             "AND end_time > CURRENT_TIMESTAMP " +
-            "AND status = 'Scheduled') AS schedule_appointments",
+            "AND status = 'SCHEDULED') AS schedule_appointments",
             nativeQuery = true)
     fun findTotalScheduledAppointmentTimeForUser(userId: Long): Long?
 
@@ -44,11 +44,11 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
     @Query(value = "SELECT * " +
             "FROM appointment " +
             "WHERE user_id=?1 AND end_time > CURRENT_TIMESTAMP() " +
-            "AND status <> 'Canceled'",
+            "AND status <> 'CANCELED'",
             countQuery = "SELECT COUNT(*) " +
                     "FROM appointment " +
                     "WHERE user_id=?1 AND end_time > CURRENT_TIMESTAMP() " +
-                    "AND status <> 'Canceled'",
+                    "AND status <> 'CANCELED'",
             nativeQuery = true)
     fun findFutureAppointmentsByUser(userId: Long, pageable: Pageable): Page<Appointment>
 
@@ -64,12 +64,12 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "FROM appointment " +
             "WHERE user_id=?1 " +
             "AND end_time < CURRENT_TIMESTAMP " +
-            "AND status <> 'Canceled' ",
+            "AND status <> 'CANCELED' ",
             countQuery = "SELECT COUNT(*) " +
                     "FROM appointment " +
                     "WHERE user_id=?1 " +
                     "AND end_time < CURRENT_TIMESTAMP " +
-                    "AND status <> 'Canceled'",
+                    "AND status <> 'CANCELED'",
             nativeQuery = true)
     fun findPreviousAppointmentsByUser(userId: Long, pageable:Pageable): Page<Appointment>
 
@@ -84,12 +84,12 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "FROM appointment " +
             "WHERE telescope_id = ?1 " +
             "AND end_time > CURRENT_TIMESTAMP " +
-            "AND status <> 'Canceled' ",
+            "AND status <> 'CANCELED' ",
             countQuery = "SELECT COUNT(*) " +
                     "FROM appointment " +
                     "WHERE telescope_id=?1 " +
                     "AND end_time > CURRENT_TIMESTAMP " +
-                    "AND status <> 'Canceled'" ,
+                    "AND status <> 'CANCELED'" ,
         nativeQuery = true)
     fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable): Page<Appointment>
 
@@ -106,8 +106,8 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "WHERE ((start_time >=?1 AND start_time <=?2) " +
             "OR (end_time >=?1 AND end_time <=?2)" +
             "OR (start_time < ?1 AND end_time > ?2 ))" +
-            "AND status <> 'Canceled'" +
-            "AND status <> 'Requested' " +
+            "AND status <> 'CANCELED'" +
+            "AND status <> 'REQUESTED' " +
             "AND telescope_id = ?3",
             nativeQuery = true)
     fun findAppointmentsBetweenDates(startTime: Date, endTime: Date, telescopeId: Long): List<Appointment>
@@ -121,11 +121,11 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
      */
     @Query(value = "SELECT * " +
             "FROM appointment " +
-            "WHERE status = 'Completed' AND " +
+            "WHERE status = 'COMPLETED' AND " +
             "public = 1",
             countQuery = "SELECT COUNT(*) " +
                     "FROM appointment " +
-                    "WHERE status = 'Completed' AND " +
+                    "WHERE status = 'COMPLETED' AND " +
                     "public = 1",
             nativeQuery = true)
     fun findCompletedPublicAppointments(pageable: Pageable): Page<Appointment>

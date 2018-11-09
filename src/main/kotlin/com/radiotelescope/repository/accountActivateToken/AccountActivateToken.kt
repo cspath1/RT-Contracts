@@ -4,6 +4,11 @@ import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
 
+/**
+ * Entity Class representing an Account activation token for the web-application
+ *
+ * This Entity correlates to the AccountActivationToken SQL Table
+ */
 @Entity
 @Table(name = "account_activate_token")
 data class AccountActivateToken(

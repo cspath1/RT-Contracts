@@ -19,7 +19,7 @@ class Unban(
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method that, given the request passes
-     * validation, will set a User's status to Active and mark the active flag
+     * validation, will set a User's status to ACTIVE and mark the active flag
      * back to true
      */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
@@ -35,7 +35,7 @@ class Unban(
      * entity to an unbanned state
      */
     private fun unbanUser(user: User) {
-        user.status = User.Status.Active
+        user.status = User.Status.ACTIVE
         user.active = true
         userRepo.save(user)
     }
@@ -55,7 +55,7 @@ class Unban(
         else {
             val theUser = userRepo.findById(id).get()
 
-            if (theUser.status == User.Status.Active){
+            if (theUser.status == User.Status.ACTIVE){
                 errors.put(ErrorTag.ID, "User found by Id #$id is not banned")
             }
             if (theUser.active){

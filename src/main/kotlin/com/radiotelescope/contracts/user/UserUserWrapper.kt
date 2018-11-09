@@ -8,9 +8,6 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
-import com.radiotelescope.security.crud.UserUpdatable
-import com.radiotelescope.security.crud.UserPageable
-import com.radiotelescope.security.crud.UserRetrievable
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -28,9 +25,7 @@ class UserUserWrapper(
         private val context: UserContext,
         private val factory: UserFactory,
         private val userRepo: IUserRepository
-) : UserRetrievable<Long, SimpleResult<UserInfo, Multimap<ErrorTag, String>>>,
-        UserPageable<Pageable, SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>>,
-        UserUpdatable<Update.Request, SimpleResult<Long, Multimap<ErrorTag, String>>> {
+) {
     /**
      * Register function that will return a [Register] command object. This does not need any
      * user role authentication since the user will not be signed in at the time
@@ -54,13 +49,13 @@ class UserUserWrapper(
     }
 
     /**
-     * Concrete implementation of the [UserRetrievable] interface used to add Spring Security
+     * Wrapper method for the [UserFactory.retrieve] method used to add Spring Security
      * authentication to the [Retrieve] command object
      *
      * @param request the User id
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    override fun retrieve(request: Long, withAccess: (result: SimpleResult<UserInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun retrieve(request: Long, withAccess: (result: SimpleResult<UserInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
         if (context.currentUserId() != null) {
             val theUser = userRepo.findById(context.currentUserId()!!)
@@ -90,13 +85,13 @@ class UserUserWrapper(
     }
 
     /**
-     * Concrete implementation of the [UserPageable] interface used to add Spring Security
+     * Wrapper method for [UserFactory.list] method used to add Spring Security
      * authentication to the [List] command object
      *
      * @param request the [Pageable] object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    override fun pageable(request: Pageable, withAccess: (result: SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun list(request: Pageable, withAccess: (result: SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null)
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
@@ -108,13 +103,13 @@ class UserUserWrapper(
     }
 
     /**
-     * Concrete implementation of the [UserUpdatable] interface used to add Spring Security
+     * Wrapper method for the [UserFactory.update] method used to add Spring Security
      * authentication to the [Update] command object
      *
      * @param request the [Update.Request] object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    override fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
         if (context.currentUserId() != null) {
             val theUser = userRepo.findById(context.currentUserId()!!)

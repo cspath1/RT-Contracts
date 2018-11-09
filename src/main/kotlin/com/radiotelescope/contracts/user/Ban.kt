@@ -29,7 +29,7 @@ class Ban(
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theUser = userRepo.findById(id).get()
 
-            theUser.status = User.Status.Banned
+            theUser.status = User.Status.BANNED
             theUser.active = false
             userRepo.save(theUser)
 

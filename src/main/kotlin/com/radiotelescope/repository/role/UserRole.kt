@@ -41,6 +41,4 @@ data class UserRole(
         MEMBER("Member"),
         ADMIN("Admin")
     }
-
-
 }

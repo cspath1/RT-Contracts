@@ -49,7 +49,7 @@ class RetrieveAppointmentData(
 
         val theAppointment = appointmentRepo.findById(appointmentId).get()
 
-        if (theAppointment.status != Appointment.Status.Completed)
+        if (theAppointment.status != Appointment.Status.COMPLETED)
             errors.put(ErrorTag.APPOINTMENT_STATUS, "Appointment is not yet completed")
 
         return if (errors.isEmpty) null else errors
