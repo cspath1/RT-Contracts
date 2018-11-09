@@ -11,7 +11,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
  * @param an [IAppointmentRepository] on which to call selectAppointmentsWithinPotentialAppointmentTimeRange
  */
 
-public class HasOverlap(val appointmentRepo:IAppointmentRepository)
+class HasOverlap(val appointmentRepo:IAppointmentRepository)
 {
     /**
      * Method checks if there are any conflicts when re-scheduling an appointment.
