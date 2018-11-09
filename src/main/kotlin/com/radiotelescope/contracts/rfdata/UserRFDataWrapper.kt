@@ -65,6 +65,13 @@ class UserRFDataWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
+    /**
+     * Private method to return a [Map] of errors when an appointment could not be found.
+     * This is needed when we must check if the user is the owner of an appointment or not
+     *
+     * @param id the Appointment id
+     * @return a [Map] of errors
+     */
     private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {
         val errors = HashMultimap.create<com.radiotelescope.contracts.appointment.ErrorTag, String>()
         errors.put(com.radiotelescope.contracts.appointment.ErrorTag.ID, "Appointment Id #$id could not be found")
