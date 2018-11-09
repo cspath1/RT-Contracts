@@ -532,7 +532,7 @@ internal class UserUserWrapperTest {
     fun testUnban_Admin_Failure() {
         // Simulate the user being banned
         val theUser = userRepo.findById(userId).get()
-        theUser.status = User.Status.Banned
+        theUser.status = User.Status.BANNED
         theUser.active = false
         userRepo.save(theUser)
 

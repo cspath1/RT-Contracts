@@ -57,7 +57,7 @@ internal class UnbanTest {
     fun inactiveUserTest(){
         val theUser = userRepo.findById(userId)
 
-        assertTrue(theUser.get().status == User.Status.Inactive)
+        assertTrue(theUser.get().status == User.Status.INACTIVE)
         assertTrue(!theUser.get().active)
     }
 
@@ -72,7 +72,7 @@ internal class UnbanTest {
         assertTrue(errors == null)
         assertTrue(id == userId)
 
-        assertTrue(theUser.get().status == User.Status.Active)
+        assertTrue(theUser.get().status == User.Status.ACTIVE)
         assertTrue(theUser.get().active)
 
     }

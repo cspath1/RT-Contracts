@@ -183,7 +183,7 @@ class Register(
                 user.company = company
 
             user.active = false
-            user.status = User.Status.Inactive
+            user.status = User.Status.INACTIVE
 
             return user
         }

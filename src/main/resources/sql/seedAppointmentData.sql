@@ -3,7 +3,7 @@ INSERT INTO telescope VALUES(1, 1);
 
 -- Then create a user --
 INSERT INTO user(id, first_name, last_name, email_address, company, phone_number, password, active, status)
-VALUES(1, 'Cody', 'Spath', 'cspath1@ycp.edu', 'York College of PA', '717-823-2216', 'pass1234', 1, 'Active');
+VALUES(1, 'Cody', 'Spath', 'cspath1@ycp.edu', 'York College of PA', '717-823-2216', 'pass1234', 1, 'ACTIVE');
 
 -- Then an appointment --
 INSERT INTO appointment(id, user_id, start_time, end_time, status, telescope_id, public)

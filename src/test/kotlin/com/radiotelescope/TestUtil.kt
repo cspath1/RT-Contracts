@@ -12,8 +12,6 @@ import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepos
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.telescope.ITelescopeRepository
-import com.radiotelescope.repository.telescope.Telescope
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,7 +50,7 @@ internal class TestUtil {
         )
 
         user.active = true
-        user.status = User.Status.Active
+        user.status = User.Status.ACTIVE
         return userRepo.save(user)
     }
 
@@ -68,7 +66,7 @@ internal class TestUtil {
         )
 
         user.active = true
-        user.status = User.Status.Active
+        user.status = User.Status.ACTIVE
         return userRepo.save(user)
     }
 
@@ -180,7 +178,7 @@ internal class TestUtil {
             user: User
     ): User{
         user.active = false
-        user.status = User.Status.Inactive
+        user.status = User.Status.INACTIVE
         return userRepo.save(user)
     }
 

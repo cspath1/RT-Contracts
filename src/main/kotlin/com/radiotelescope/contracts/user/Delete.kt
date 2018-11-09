@@ -32,11 +32,11 @@ class Delete(
     }
 
     /**
-     * Private method that will set the User's status to Deleted and
+     * Private method that will set the User's status to DELETED and
      * active flag to false
      */
     private fun disableUser(user: User) {
-        user.status = User.Status.Deleted
+        user.status = User.Status.DELETED
         user.active = false
         userRepo.save(user)
     }

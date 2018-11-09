@@ -11,4 +11,5 @@
     <include file="classpath:/db/changelog/05-create-reset-password-token.sql"/>
     <include file="classpath:/db/changelog/06-create-account-activate-token.sql"/>
     <include file="classpath:/db/changelog/07-update-appointment-status-enum.sql"/>
+    <include file="classpath:/db/changelog/08-update-user-status-enum.sql"/>
 </databaseChangeLog>

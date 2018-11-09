@@ -67,7 +67,7 @@ internal class DeleteTest {
 
         assertTrue(theUser.isPresent)
 
-        assertEquals(User.Status.Deleted, theUser.get().status)
+        assertEquals(User.Status.DELETED, theUser.get().status)
         assertFalse(theUser.get().active)
     }
 

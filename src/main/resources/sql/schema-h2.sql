@@ -50,7 +50,7 @@ CREATE TABLE user (
   phone_number VARCHAR(25),
   password VARCHAR(256),
   active TINYINT(1) DEFAULT '0',
-  status ENUM('Inactive', 'Active', 'Banned', 'Deleted')
+  status ENUM('INACTIVE', 'ACTIVE', 'BANNED', 'DELETED')
 );
 
 CREATE TABLE user_role (

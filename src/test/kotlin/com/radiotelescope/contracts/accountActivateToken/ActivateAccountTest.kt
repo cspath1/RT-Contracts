@@ -56,7 +56,7 @@ internal class ActivateAccountTest {
         user = testUtil.createUser("cspath1@ycp.edu")
 
         // Set the user to inactive
-        user.status = User.Status.Inactive
+        user.status = User.Status.INACTIVE
         user.active = false
         userRepo.save(user)
 
@@ -80,7 +80,7 @@ internal class ActivateAccountTest {
 
         // Ensure the user is now active
         assertTrue(user.active)
-        assertEquals(User.Status.Active, user.status)
+        assertEquals(User.Status.ACTIVE, user.status)
 
         // Ensure the record no longer exists
         assertFalse(accountActivateTokenRepo.existsByToken(token.token))
