@@ -10,7 +10,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
-import com.radiotelescope.service.HasOverlapUpdate
+import com.radiotelescope.service.HasOverlap
 import java.util.*
 import com.radiotelescope.service.ses.AwsSesSendService
 
@@ -58,7 +58,6 @@ class Update(
      */
     private fun validateRequest(): Multimap<ErrorTag, String> {
         var errors = HashMultimap.create<ErrorTag, String>()
-        val hasOverlapUpdate = HasOverlapUpdate(appointmentRepo)
 
         with(request) {
             if (appointmentRepo.existsById(id)) {
@@ -68,7 +67,7 @@ class Update(
                         errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
-                    if (hasOverlapUpdate.hasOverlap(request))
+                    if (overlapExists())
                         errors.put(ErrorTag.OVERLAP, "Appointment cannot be rescheduled: Conflict with an already-scheduled appointment")
 
                 }
@@ -124,6 +123,29 @@ class Update(
         }
 
         return errors
+    }
+
+
+    private fun overlapExists():Boolean
+    {
+        var isOverlap = false
+        val hou = HasOverlap(appointmentRepo)
+        val listAppts = hou.hasOverlapUpdate(request)
+
+        if (!listAppts.isEmpty())
+        { //if it's not empty,  there IS an overlap, cannot schedule
+            isOverlap = true
+            for (a in listAppts)
+            {
+                //if the ONLY appointment that conflicts with the requested appt is ITSELF, then no conflict
+                if (listAppts.size == 1 && a.id == request.id)
+                {
+                    isOverlap = false
+                    break
+                }
+            }
+        }
+        return isOverlap
     }
 
     /**
