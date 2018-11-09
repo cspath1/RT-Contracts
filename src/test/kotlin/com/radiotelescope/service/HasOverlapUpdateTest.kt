@@ -67,7 +67,7 @@ class HasOverlapUpdateTest
     var a1_id:Long = 0
 
     @Before
-    public fun setUp()
+    fun setUp()
     {
         var ds: Date = Date(Date().time + 100000)
         val u1s: User = testUtil.createUser("jamoros@ycp.edu")
@@ -89,7 +89,7 @@ class HasOverlapUpdateTest
     }
 
     @Test
-    public fun updateToRightOverlap()
+    fun updateToRightOverlap()
     {
         val hou = HasOverlap(appointmentRepo)
        val dd:Date = Date(d.time + 5000)
@@ -125,7 +125,7 @@ class HasOverlapUpdateTest
     }
 
     @Test
-    public fun updateToLeftOverlap() {
+    fun updateToLeftOverlap() {
 
         val hou = HasOverlap(appointmentRepo)
         val dd: Date = Date(d.time + 5000)
@@ -154,7 +154,7 @@ class HasOverlapUpdateTest
     }
 
     @Test
-    public fun updateToFutureNoOverlap() {
+    fun updateToFutureNoOverlap() {
 
         val uR = Update.Request(a1_id, 1, Date(d.time + 300000), Date(d.time + 350000), true)
         val hou = HasOverlap(appointmentRepo)
@@ -194,7 +194,7 @@ class HasOverlapUpdateTest
 
     }
     @Test
-    public fun updateToBeforeAnAppointmentNoOverlap()
+    fun updateToBeforeAnAppointmentNoOverlap()
     {
       val hou = HasOverlap(appointmentRepo)
       //associated with a1
@@ -221,7 +221,7 @@ class HasOverlapUpdateTest
     }
 
     @Test
-    public fun rescheduleSameAppointmentOnTopOfOriginalRangeNoConflict() {
+    fun rescheduleSameAppointmentOnTopOfOriginalRangeNoConflict() {
         val hou = HasOverlap(appointmentRepo)
         //normally would be a conflict, but because the only appointment in conflict is the actual one being updated, we're good
         val uR = Update.Request(a1_id, 1, d, Date(d.time + 55000), true)
@@ -239,7 +239,7 @@ class HasOverlapUpdateTest
     }
 
     @Test
-    public fun requestedApptExtendsOverAnAppointment()
+    fun requestedApptExtendsOverAnAppointment()
     {
 
         val hou = HasOverlap(appointmentRepo)
@@ -264,7 +264,7 @@ class HasOverlapUpdateTest
     }
 
     @Test
-    public fun requestedApptInsideAnAppt()
+    fun requestedApptInsideAnAppt()
     {
         val hou = HasOverlap(appointmentRepo)
         val uR = Update.Request(a1_id, 1, Date(d.time + 70000), Date(d.time + 80000), true)

@@ -27,7 +27,7 @@ import java.util.*
     @RunWith(SpringRunner::class)
     @ActiveProfiles(value = ["test"])
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-    class HasOverlapCreateTest()
+    class HasOverlapCreateTest
     {
         @TestConfiguration
         internal class UtilTestContextConfiguration()
@@ -60,7 +60,7 @@ import java.util.*
         var u_id:Long = 0
 
     @Before
-    public fun setUp()
+    fun setUp()
     {
         Assert.assertEquals(1, telescopeRepo.count())
         val ds: Date = Date(Date().time+ 100000)
@@ -73,7 +73,7 @@ import java.util.*
     }
 
     @Test
-    public fun leftOverlap() {
+     fun leftOverlap() {
 
         val uC = Create.Request(u_id, Date(d.time - 10000), Date(d.time + 10000), 1, true)
 
@@ -88,7 +88,7 @@ import java.util.*
     }
 
         @Test
-        public fun rightOverlap() {
+        fun rightOverlap() {
 
             val uC = Create.Request(u_id, Date(d.time + 30000), Date(d.time + 60000), 1, true)
             val hoc = HasOverlap(appointmentRepo)
@@ -101,7 +101,7 @@ import java.util.*
             }
         }
         @Test
-        public fun BothEndsOverlap() {
+        fun BothEndsOverlap() {
 
             val uC = Create.Request(u_id, Date(d.time - 10000), Date(d.time + 60000), 1, true)
             val hoc = HasOverlap(appointmentRepo)
@@ -115,7 +115,7 @@ import java.util.*
         }
 
         @Test
-        public fun InnerOverlap() {
+        fun InnerOverlap() {
 
             val uC = Create.Request(u_id, Date(d.time + 30000), Date(d.time + 40000), 1, true)
             val hoc = HasOverlap(appointmentRepo)
@@ -130,7 +130,7 @@ import java.util.*
         }
 
         @Test
-        public fun noOverlapLeft() {
+         fun noOverlapLeft() {
 
             val uC = Create.Request(u_id, Date(d.time - 10000), Date(d.time - 5000), 1, true)
             val hoc = HasOverlap(appointmentRepo)
@@ -144,7 +144,7 @@ import java.util.*
         }
 
         @Test
-        public fun noOverlapRight() {
+          fun noOverlapRight() {
             val uC = Create.Request(u_id, Date(d.time + 60000), Date(d.time +70000), 1, true)
             val hoc = HasOverlap(appointmentRepo)
             if (hoc.hasOverlapCreate(uC).isNotEmpty())
