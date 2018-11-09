@@ -2,7 +2,10 @@ package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
+import junit.framework.Assert.fail
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
 import org.junit.Before
@@ -12,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
@@ -78,5 +83,40 @@ internal class ListTest {
         Assert.assertNotNull(page)
         Assert.assertNull(errors)
         Assert.assertEquals(0, page!!.content.size)
+    }
+
+
+
+    @Test
+    fun ensureAdminsFilteredOut()
+    {
+        userRepo.deleteAll()
+
+        val u: User = testUtil.createUser("hello@ycp.edu")
+        testUtil.createUserRolesForUser(u.id, UserRole.Role.ADMIN , true )
+
+        val u2:User = testUtil.createUser("hello2@ycp.edu")
+        testUtil.createUserRolesForUser(u2.id, UserRole.Role.RESEARCHER , true )
+
+        val (page, errors) = List(
+                pageable = pageable,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        val size:Int? = page?.content?.size
+        val sizeSmart = size!!
+        println("sizeSmart is: " + sizeSmart)
+        if (errors != null)
+            fail()
+        else
+        {
+            for (i in 0.. sizeSmart - 1) {
+                println("membership role is, to String: " + page.content.get(i).membershipRole.toString())
+                //println("UserRole.Role.MEMBER.toString(): " + UserRole.Role.MEMBER.toString())
+                if (page.content.get(i).membershipRole.toString().equals(UserRole.Role.ADMIN.toString()))
+                    fail()
+            }
+        }
     }
 }
