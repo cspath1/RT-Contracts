@@ -38,9 +38,9 @@ data class UpdateForm(
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        if (email == null)
+        if (email.isNullOrBlank())
             errors.put(ErrorTag.EMAIL, "Required field")
-        if (emailConfirm == null)
+        if (emailConfirm.isNullOrBlank())
             errors.put(ErrorTag.EMAIL_CONFIRM, "Required field")
 
         return if (errors.isEmpty) null else errors

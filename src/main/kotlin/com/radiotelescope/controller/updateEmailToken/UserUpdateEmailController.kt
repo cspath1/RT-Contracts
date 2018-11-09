@@ -25,7 +25,7 @@ class UserUpdateEmailController (
      * method that will update a user's email.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/updateEmail"])
+    @PutMapping(value = ["/api/updateEmail"])
     fun execute(@RequestParam("token") token: String): Result {
         val simpleResult = updateEmailTokenWrapper.updateEmail(
                 token = token
