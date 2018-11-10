@@ -181,5 +181,21 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo
         )
     }
+
+    /**
+     * Override of the [AppointmentFactory.request] method that will return a [Request]
+     * command object
+     *
+     * @param request the [Request.Request] object
+     * @return a [Create] command
+     */
+    override fun request(request: Request.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return Request(
+                request = request,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        )
+    }
 }
 

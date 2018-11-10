@@ -185,4 +185,21 @@ internal class BaseAppointmentFactoryTest {
         assertTrue(cmd is PublicCompletedAppointments)
     }
 
+    @Test
+    fun request() {
+        // Call the factory method
+        val cmd = factory.request(
+                request = Request.Request(
+                        userId = 1L,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 30000L),
+                        isPublic = true,
+                        telescopeId = 1L
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Request)
+    }
+
 }

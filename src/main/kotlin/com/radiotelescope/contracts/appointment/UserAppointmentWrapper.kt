@@ -310,6 +310,28 @@ class UserAppointmentWrapper(
     }
 
     /**
+     * Wrapper method for the [AppointmentFactory.request] method that adds Spring
+     * Security authentication to the [Request] command object.
+     *
+     * @param request the [Request.Request] object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun request(request: Request.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        // If public, they only need to be a base user
+        return if (request.isPublic)
+            context.require(
+                    requiredRoles = listOf(UserRole.Role.USER),
+                    successCommand = factory.request(request)
+            ).execute(withAccess)
+        // Otherwise, they need to be a researcher
+        else
+            context.require(
+                    requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                    successCommand = factory.request(request)
+            ).execute(withAccess)
+    }
+
+    /**
      * Private method to return a [Map] of errors when an appointment could not be found.
      * This is needed when we must check if the user is the owner of an appointment or not
      *
