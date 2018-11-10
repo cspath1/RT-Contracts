@@ -9,13 +9,12 @@ import com.radiotelescope.repository.role.UserRole
 
 /**
  * Update form that takes nullable versions of the [Update.Request] object.
- * It is in charge of making sure these values are not null befor adapting
+ * It is in charge of making sure these values are not null before adapting
  * it into a [Update.Request] object
  *
  * @param id the User's id
  * @param firstName the User's new first name
  * @param lastName the User's new last name
- * @param email the User's new email address
  * @param phoneNumber the User's new phone number
  * @param company the User's new company
  */
@@ -23,7 +22,6 @@ data class UpdateForm(
         val id: Long?,
         val firstName: String?,
         val lastName: String?,
-        val email: String?,
         val phoneNumber: String?,
         val company: String?
 ) : BaseForm<Update.Request> {
@@ -36,7 +34,6 @@ data class UpdateForm(
                 id = id!!,
                 firstName = firstName!!,
                 lastName = lastName!!,
-                email = email!!,
                 phoneNumber = phoneNumber,
                 company = company
         )
@@ -55,8 +52,6 @@ data class UpdateForm(
             errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
         if (lastName.isNullOrBlank())
             errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
-        if (email.isNullOrBlank())
-            errors.put(ErrorTag.EMAIL, "Email may not be blank")
         return if (errors.isEmpty) null else errors
     }
 }

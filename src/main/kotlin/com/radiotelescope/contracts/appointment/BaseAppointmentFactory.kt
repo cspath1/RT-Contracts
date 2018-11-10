@@ -165,5 +165,19 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo
         )
     }
+
+    /**
+     * Override of the [AppointmentFactory.publicCompletedAppointments] method
+     * that will return public, completed appointments
+     *
+     * @param pageable the Pageable interface
+     * @return a [PublicCompletedAppointments] command object
+     */
+    override fun publicCompletedAppointments(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        return PublicCompletedAppointments(
+                pageable = pageable,
+                appointmentRepo = appointmentRepo
+        )
+    }
 }
 

@@ -39,13 +39,14 @@ data class Log(
     @Column(name = "success")
     var isSuccess: Boolean = true
 
-    enum class AffectedTable {
-        USER,
-        USER_ROLE,
-        APPOINTMENT,
-        RF_DATA,
-        LOG,
-        ERROR,
-        RESET_PASSWORD_TOKEN
+    enum class AffectedTable(val label: String) {
+        USER("User"),
+        USER_ROLE("User Role"),
+        APPOINTMENT("Appointment"),
+        RF_DATA("RF Data"),
+        LOG("Log"),
+        ERROR("Error"),
+        RESET_PASSWORD_TOKEN("Reset Password Token"),
+        UPDATE_EMAIL_TOKEN("Update Email Token")
     }
 }

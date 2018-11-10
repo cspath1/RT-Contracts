@@ -44,7 +44,7 @@ class AdminLogListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = "User LogList Retrieval",
+                            action = "Log List Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()

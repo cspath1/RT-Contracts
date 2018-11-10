@@ -114,6 +114,14 @@ class UserAppointmentWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
+    /**
+     * Wrapper method for the [AppointmentFactory.userCompletedList] method that adds Spring
+     * Security authentication to the [UserCompletedList] command object
+     *
+     * @param userId the User id
+     * @param pageable the [Pageable] interface
+     * @return an [AccessReport] if authentication fails, null otherwise
+     */
     fun userCompleteList(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null) {
             return if (context.currentUserId() == userId) {
@@ -138,6 +146,13 @@ class UserAppointmentWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
+    /**
+     * Wrapper method for the [AppointmentFactory.cancel] method that adds Spring Security
+     * authentication to the [Cancel] command object
+     *
+     * @param appointmentId the Appointment id
+     * @return an [AccessReport] if authentication fails, null otherwise
+     */
     fun cancel(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (!appointmentRepo.existsById(appointmentId)) {
             return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(appointmentId))
@@ -166,6 +181,14 @@ class UserAppointmentWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
+    /**
+     * Wrapper method for the [AppointmentFactory.retrieveFutureAppointmentsByTelescopeId] method that
+     * adds Spring Security authentication to the [RetrieveFutureAppointmentsByTelescopeId] command object
+     *
+     * @param telescopeId the Telescope id
+     * @param pageable the [Pageable] interface
+     * @return an [AccessReport] if authentication fails, null otherwise
+     */
     fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),
@@ -252,7 +275,7 @@ class UserAppointmentWrapper(
     }
 
     /**
-     * Wrapper method for the [AppointmentFactory.appointmentListBetweenDates] method that adds Spring
+     * Wrapper method for the [AppointmentFactory.listBetweenDates] method that adds Spring
      * Security authentication to the [ListBetweenDates] command object.
      *
      * @param startTime the start time of when to grab appointments
@@ -268,9 +291,32 @@ class UserAppointmentWrapper(
         ).execute(withAccess)
     }
 
+    /**
+     * Wrapper method for the [AppointmentFactory.publicCompletedAppointments] method that adds
+     * Spring Security authentication to the [PublicCompletedAppointments] command object.
+     *
+     * @param pageable the Pageable interface
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun publicCompletedAppointments(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.USER),
+                successCommand = factory.publicCompletedAppointments(
+                        pageable = pageable
+                )
+        ).execute(withAccess)
+    }
+
+    /**
+     * Private method to return a [Map] of errors when an appointment could not be found.
+     * This is needed when we must check if the user is the owner of an appointment or not
+     *
+     * @param id the Appointment id
+     * @return a [Map] of errors
+     */
     private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
-        errors.put(ErrorTag.ID, "Appointment Id #$id could not be found")
+        errors.put(ErrorTag.ID, "Appointment #$id could not be found")
         return errors.toStringMap()
     }
 }

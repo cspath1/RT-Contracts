@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
 
 /**
@@ -46,4 +47,9 @@ interface FactoryProvider {
      * Abstract method to return the [UserAccountActivateTokenWrapper] class
      */
     fun getAccountActivateTokenWrapper(): UserAccountActivateTokenWrapper
+
+    /**
+     * Abstract method to return the [UserUpdateEmailTokenWrapper] class
+     */
+    fun getUpdateEmailTokenWrapper(): UserUpdateEmailTokenWrapper
 }

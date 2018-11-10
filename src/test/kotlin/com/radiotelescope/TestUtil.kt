@@ -14,6 +14,8 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.telescope.Telescope
+import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
+import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,6 +45,9 @@ internal class TestUtil {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    @Autowired
+    private lateinit var updateEmailTokenRepo: IUpdateEmailTokenRepository
+
     fun createUser(email: String): User {
         val user = User(
                 firstName = "First Name",
@@ -52,7 +57,7 @@ internal class TestUtil {
         )
 
         user.active = true
-        user.status = User.Status.Active
+        user.status = User.Status.ACTIVE
         return userRepo.save(user)
     }
 
@@ -68,7 +73,7 @@ internal class TestUtil {
         )
 
         user.active = true
-        user.status = User.Status.Active
+        user.status = User.Status.ACTIVE
         return userRepo.save(user)
     }
 
@@ -180,7 +185,7 @@ internal class TestUtil {
             user: User
     ): User{
         user.active = false
-        user.status = User.Status.Inactive
+        user.status = User.Status.INACTIVE
         return userRepo.save(user)
     }
 
@@ -209,5 +214,21 @@ internal class TestUtil {
         theAccountActivateToken.user = user
 
         return accountActivateTokenRepo.save(theAccountActivateToken)
+    }
+
+    fun createUpdateEmailToken(
+            user: User,
+            token: String,
+            email: String
+    ) : UpdateEmailToken {
+        val theUpdateEmailToken = UpdateEmailToken(
+                token = token,
+                expirationDate = Date(System.currentTimeMillis() + (1 * 24 * 60 * 60 * 1000)),
+                email = email
+        )
+
+        theUpdateEmailToken.user = user
+
+        return updateEmailTokenRepo.save(theUpdateEmailToken)
     }
 }

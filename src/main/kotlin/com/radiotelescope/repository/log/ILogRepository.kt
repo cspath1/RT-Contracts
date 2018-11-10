@@ -5,5 +5,4 @@ import org.springframework.data.repository.PagingAndSortingRepository
 /**
  * Spring Repository for the [Log] Entity
  */
-interface ILogRepository : PagingAndSortingRepository<Log, Long> {
-}
+interface ILogRepository : PagingAndSortingRepository<Log, Long>

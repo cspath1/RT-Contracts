@@ -3,11 +3,11 @@ CREATE TABLE appointment(
   user_id INT(11) NOT NULL,
   start_time DATETIME NOT NULL,
   end_time DATETIME NOT NULL,
-  status ENUM('Requested',
-              'Scheduled',
-              'InProgress',
-              'Completed',
-              'Canceled'),
+  status ENUM('REQUESTED',
+              'SCHEDULED',
+              'IN_PROGRESS',
+              'COMPLETED',
+              'CANCELED'),
   telescope_id INT(11) NOT NULL,
   public TINYINT(1) DEFAULT 1
 );
@@ -50,7 +50,7 @@ CREATE TABLE user (
   phone_number VARCHAR(25),
   password VARCHAR(256),
   active TINYINT(1) DEFAULT '0',
-  status ENUM('Inactive', 'Active', 'Banned', 'Deleted')
+  status ENUM('INACTIVE', 'ACTIVE', 'BANNED', 'DELETED')
 );
 
 CREATE TABLE user_role (
@@ -72,4 +72,12 @@ CREATE TABLE account_activate_token (
   user_id INT(11) NOT NULL,
   token VARCHAR (100) NOT NULL,
   expiration_date DATETIME NOT NULL
+);
+
+CREATE TABLE update_email_token (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  token VARCHAR (100) NOT NULL,
+  expiration_date DATETIME NOT NULL,
+  email_address VARCHAR(100) NOT NULL
 );

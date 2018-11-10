@@ -177,4 +177,14 @@ internal class BaseAppointmentFactoryTest {
         assertTrue(cmd is MakePublic)
     }
 
+    @Test
+    fun publicCompletedAppointments() {
+        val cmd = factory.publicCompletedAppointments(
+                pageable = PageRequest.of(0, 5)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is PublicCompletedAppointments)
+    }
+
 }

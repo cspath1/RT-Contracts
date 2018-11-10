@@ -67,7 +67,7 @@ internal class UserAccountActivateTokenWrapperTest {
 
         // Set the user to inactive
         user.active = false
-        user.status = User.Status.Inactive
+        user.status = User.Status.INACTIVE
         userRepo.save(user)
 
         token = testUtil.createAccountActivateToken(

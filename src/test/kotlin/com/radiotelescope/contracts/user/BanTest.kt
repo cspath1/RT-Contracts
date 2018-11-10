@@ -72,7 +72,7 @@ internal class BanTest {
 
         assertTrue(theUser.isPresent)
 
-        assertEquals(User.Status.Banned, theUser.get().status)
+        assertEquals(User.Status.BANNED, theUser.get().status)
         assertFalse(theUser.get().active)
     }
 

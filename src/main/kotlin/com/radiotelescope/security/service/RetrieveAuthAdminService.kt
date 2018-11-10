@@ -64,7 +64,8 @@ class RetrieveAuthAdminService(
                 email = user.email,
                 roles = authorities,
                 firstName = user.firstName,
-                lastName = user.lastName
+                lastName = user.lastName,
+                accountActive = user.active
         )
 
         return SimpleResult(userSession, null)

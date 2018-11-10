@@ -72,7 +72,7 @@ internal class RetrieveAppointmentDataTest {
         uncompletedAppointment = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true

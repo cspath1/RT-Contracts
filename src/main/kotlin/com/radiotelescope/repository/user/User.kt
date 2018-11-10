@@ -36,14 +36,15 @@ data class User(
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
-    var status: User.Status = Status.Inactive
+    var status: User.Status = Status.INACTIVE
 
-    enum class Status {
-        Inactive,
-        Active,
-        Banned,
-        Deleted
+    enum class Status(val label: String) {
+        INACTIVE("Inactive"),
+        ACTIVE("Active"),
+        BANNED("Banned"),
+        DELETED("Deleted")
     }
+
     companion object {
         fun isEmailValid(email: String): Boolean {
             return Pattern.compile(

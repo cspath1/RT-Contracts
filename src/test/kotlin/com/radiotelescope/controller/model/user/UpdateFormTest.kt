@@ -11,7 +11,6 @@ class UpdateFormTest {
             id = 123456789,
             firstName = "Rathana",
             lastName = "Pim",
-            email = "rpim@ycp.edu",
             phoneNumber = "717-555-1111",
             company = "York College of PA"
     )
@@ -23,7 +22,6 @@ class UpdateFormTest {
         assertEquals(baseForm.id!!, theRequest.id)
         assertEquals(baseForm.firstName!!, theRequest.firstName)
         assertEquals(baseForm.lastName!!, theRequest.lastName)
-        assertEquals(baseForm.email!!, theRequest.email)
         assertEquals(baseForm.phoneNumber, theRequest.phoneNumber)
         assertEquals(baseForm.company, theRequest.company)
     }
@@ -95,36 +93,6 @@ class UpdateFormTest {
         // Make sure the last name field was the reason for errors
         Assert.assertNotNull(errors)
         Assert.assertTrue(errors!![ErrorTag.LAST_NAME].isNotEmpty())
-    }
-
-    @Test
-    fun testNullEmail_Errors() {
-        // Create a copy of the form with a null email
-        val baseFormCopy = baseForm.copy(
-                email = null
-        )
-
-        // Call the validate request method
-        val errors = baseFormCopy.validateRequest()
-
-        // Make sure the email field was the reason for errors
-        Assert.assertNotNull(errors)
-        Assert.assertTrue(errors!![ErrorTag.EMAIL].isNotEmpty())
-    }
-
-    @Test
-    fun testBlankEmail_Errors() {
-        // Create a copy of the form with a blank email
-        val baseFormCopy = baseForm.copy(
-                email = " "
-        )
-
-        // Call the validate request method
-        val errors = baseFormCopy.validateRequest()
-
-        // Make sure the email field was the reason for errors
-        Assert.assertNotNull(errors)
-        Assert.assertTrue(errors!![ErrorTag.EMAIL].isNotEmpty())
     }
 
     @Test

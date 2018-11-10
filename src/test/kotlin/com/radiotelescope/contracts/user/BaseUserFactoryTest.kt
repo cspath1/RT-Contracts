@@ -121,7 +121,6 @@ internal class BaseUserFactoryTest {
                         id = 123456789,
                         firstName = "Cody",
                         lastName = "Spath",
-                        email = "cspath1@ycp.edu",
                         phoneNumber = "717-823-2216",
                         company = "York College of Pennsylvania"
                 )
@@ -162,5 +161,21 @@ internal class BaseUserFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is Unban)
+    }
+
+    @Test
+    fun changePassword() {
+        // Call the factory method
+        val cmd = factory.changePassword(
+                request = ChangePassword.Request(
+                        currentPassword = "Password",
+                        passwordConfirm = "Password1@",
+                        password = "Password1@",
+                        id = 1L
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is ChangePassword)
     }
 }

@@ -106,7 +106,7 @@ internal class UserAppointmentWrapperTest {
         appointment = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true
@@ -115,7 +115,7 @@ internal class UserAppointmentWrapperTest {
         appointmentNotPublic = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.Scheduled,
+                status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 40000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
                 isPublic = false
@@ -892,7 +892,7 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
-    fun testValidAppointmentListBetweenDates_NotLoggedIn_Success(){
+    fun testInvalidAppointmentListBetweenDates_NotLoggedIn_Success(){
         val error = wrapper.listBetweenDates(
                 request = ListBetweenDates.Request(
                         start_Time = Date(System.currentTimeMillis()),
@@ -910,5 +910,34 @@ internal class UserAppointmentWrapperTest {
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
 
+    }
+
+    @Test
+    fun testValidPublicCompletedAppointments_User_Success() {
+        // Log the user in
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.publicCompletedAppointments(
+                pageable = PageRequest.of(0, 5)
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testInvalidPublicCompletedAppointments_NotLoggedIn_Failure() {
+        // Do not log the user in
+        val error = wrapper.publicCompletedAppointments(
+                pageable = PageRequest.of(0, 5)
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 }

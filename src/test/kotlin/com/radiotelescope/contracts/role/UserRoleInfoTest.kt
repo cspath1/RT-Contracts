@@ -22,7 +22,7 @@ internal class UserRoleInfoTest {
         user.phoneNumber = "717-823-2216"
         user.company = "York College of PA"
         user.active = true
-        user.status = User.Status.Active
+        user.status = User.Status.ACTIVE
         user.id = 1L
 
         userInfo = UserInfo(

@@ -53,7 +53,7 @@ class AdminUserListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = "User LogList Retrieval",
+                            action = "User List Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -65,7 +65,7 @@ class AdminUserListController(
         else {
             val sort = Sort(Sort.Direction.DESC, "id")
             val pageRequest = PageRequest.of(pageNumber, pageSize, sort)
-            userWrapper.pageable(pageRequest) { it ->
+            userWrapper.list(pageRequest) { it ->
                 // If the command was a success
                 it.success?.let { page ->
                     // Create success logs
@@ -73,7 +73,7 @@ class AdminUserListController(
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.USER,
-                                        action = "User LogList Retrieval",
+                                        action = "User List Retrieval",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -86,7 +86,7 @@ class AdminUserListController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
-                                    action = "User LogList Retrieval",
+                                    action = "User List Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -100,7 +100,7 @@ class AdminUserListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = "User LogList Retrieval",
+                                action = "User List Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

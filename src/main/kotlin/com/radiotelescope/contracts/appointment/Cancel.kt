@@ -8,7 +8,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 
 /**
- * Override of the [Command] interface method used for Assignment canceling
+ * Override of the [Command] interface method used for Appointment cancellation
  *
  * @param appointmentId the Appointment Id
  * @param appointmentRepo the [IAppointmentRepository] interface
@@ -29,7 +29,7 @@ class Cancel(
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = appointmentRepo.findById(appointmentId).get()
-            theAppointment.status = Appointment.Status.Canceled
+            theAppointment.status = Appointment.Status.CANCELED
             appointmentRepo.save(theAppointment)
             return SimpleResult(theAppointment.id, null)
         }
@@ -47,9 +47,9 @@ class Cancel(
             val theAppointment = appointmentRepo.findById(appointmentId).get()
 
             // If the appointment's status is either canceled or completed
-            if (theAppointment.status == Appointment.Status.Canceled) {
+            if (theAppointment.status == Appointment.Status.CANCELED) {
                 errors.put(ErrorTag.STATUS, "Appointment #$appointmentId is already canceled")
-            } else if (theAppointment.status == Appointment.Status.Completed) {
+            } else if (theAppointment.status == Appointment.Status.COMPLETED) {
                 errors.put(ErrorTag.STATUS, "Appointment #$appointmentId is already completed")
             }
         }

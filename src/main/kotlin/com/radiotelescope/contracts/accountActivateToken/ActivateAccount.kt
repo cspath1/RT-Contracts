@@ -46,7 +46,7 @@ class ActivateAccount(
         val theToken = accountActivateTokenRepo.findByToken(token)
 
         val theUser = theToken.user!!
-        theUser.status = User.Status.Active
+        theUser.status = User.Status.ACTIVE
         theUser.active = true
 
         userRepo.save(theUser)

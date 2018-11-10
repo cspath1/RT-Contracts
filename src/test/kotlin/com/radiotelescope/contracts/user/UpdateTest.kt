@@ -67,7 +67,6 @@ internal class UpdateTest {
                     id = userId,
                     firstName = "Evil",
                     lastName = "Twin",
-                    email = "eviltwin@ycp.edu",
                     phoneNumber = "717-000-0000",
                     company = "Evil Twin Company"
             ),
@@ -89,7 +88,6 @@ internal class UpdateTest {
                         id = userId,
                         firstName = "",
                         lastName = "Twin",
-                        email = "eviltwin@ycp.edu",
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company"
                 ),
@@ -110,7 +108,6 @@ internal class UpdateTest {
                         id = userId,
                         firstName = "Evil".repeat(50),
                         lastName = "Twin",
-                        email = "eviltwin@ycp.edu",
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company"
                 ),
@@ -131,7 +128,6 @@ internal class UpdateTest {
                         id = userId,
                         firstName = "Evil",
                         lastName = "",
-                        email = "eviltwin@ycp.edu",
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company"
                 ),
@@ -152,7 +148,6 @@ internal class UpdateTest {
                         id = userId,
                         firstName = "Evil",
                         lastName = "Twin".repeat(50),
-                        email = "eviltwin@ycp.edu",
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company"
                 ),
@@ -166,69 +161,6 @@ internal class UpdateTest {
     }
 
     @Test
-    fun testBlankEmail_Failure() {
-        // Execute the command
-        val (id, error) = Update(
-                request = Update.Request(
-                        id = userId,
-                        firstName = "Evil",
-                        lastName = "Twin",
-                        email = "",
-                        phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
-                ),
-                userRepo = userRepo
-        ).execute()
-
-        // Should have failed
-        assertNotNull(error)
-        assertNull(id)
-        assertTrue(error!![ErrorTag.EMAIL].isNotEmpty())
-    }
-
-    @Test
-    fun testInvalidEmail_Failure() {
-        // Execute the command
-        val (id, error) = Update(
-                request = Update.Request(
-                        id = userId,
-                        firstName = "Evil",
-                        lastName = "Twin",
-                        email = "not an email",
-                        phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
-                ),
-                userRepo = userRepo
-        ).execute()
-
-        // Should have failed
-        assertNotNull(error)
-        assertNull(id)
-        assertTrue(error!![ErrorTag.EMAIL].isNotEmpty())
-    }
-
-    @Test
-    fun testEmailInUse_Failure() {
-        // Execute the command
-        val (id, error) = Update(
-                request = Update.Request(
-                        id = userId,
-                        firstName = "Evil",
-                        lastName = "Twin",
-                        email = otherUser.email,
-                        phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
-                ),
-                userRepo = userRepo
-        ).execute()
-
-        // Should have failed
-        assertNotNull(error)
-        assertNull(id)
-        assertTrue(error!![ErrorTag.EMAIL].isNotEmpty())
-    }
-
-    @Test
     fun testUserDoesNotExist_Failure() {
         // Execute the command
         val (id, error) = Update(
@@ -236,7 +168,6 @@ internal class UpdateTest {
                         id = 123456789,
                         firstName = "Evil",
                         lastName = "Twin",
-                        email = otherUser.email,
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company"
                 ),
