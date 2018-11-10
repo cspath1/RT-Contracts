@@ -66,7 +66,10 @@ internal class RetrieveAppointmentDataTest {
         assertEquals(10, rfDataRepo.count())
 
         // Persist another user
-        user = testUtil.createUser("cspath617@gmail.com")
+        user = testUtil.createUser(
+                email = "cspath617@gmail.com",
+                accountHash = "Test Account 1"
+        )
 
         // Persist a new, not completed appointment
         uncompletedAppointment = testUtil.createAppointment(

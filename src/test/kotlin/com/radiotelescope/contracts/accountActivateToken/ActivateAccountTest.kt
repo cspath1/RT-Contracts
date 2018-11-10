@@ -53,7 +53,10 @@ internal class ActivateAccountTest {
     @Before
     fun init() {
         // Persist the user and token
-        user = testUtil.createUser("cspath1@ycp.edu")
+        user = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account"
+        )
 
         // Set the user to inactive
         user.status = User.Status.INACTIVE

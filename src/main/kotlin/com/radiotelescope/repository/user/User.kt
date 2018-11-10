@@ -1,6 +1,7 @@
 package com.radiotelescope.repository.user
 
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
+import java.util.*
 import java.util.regex.Pattern
 import javax.persistence.*
 /**
@@ -31,6 +32,9 @@ data class User(
     @Column(name = "phone_number")
     var phoneNumber: String? = null
 
+    @Column(name = "account_hash", nullable = false, unique = true)
+    var accountHash: String = ""
+
     @Column(name = "active")
     var active: Boolean = false
 
@@ -56,6 +60,11 @@ data class User(
                             + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
             ).matcher(email).matches()
         }
+
+        fun generateAccountHash(): String {
+            return UUID.randomUUID().toString().replace("-", "")
+        }
+
         // Any of the following must also be over 8
         val passwordRegex = Regex("^((?=.*?[A-Z])(?=.*?[a-z])(?=.*?\\d)|" + // Uppercase, lowercase, digit
                 "(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^a-zA-Z0-9])|" + // Uppercase, lowercase, special characters

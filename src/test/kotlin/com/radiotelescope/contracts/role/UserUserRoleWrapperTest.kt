@@ -76,7 +76,11 @@ internal class UserUserRoleWrapperTest {
         )
 
         // Persist a user and give them some roles
-        val user = testUtil.createUser("cspath1@ycp.edu")
+        val user = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+
         val roles = testUtil.createUserRolesForUser(
                 userId = user.id,
                 role = UserRole.Role.STUDENT,
@@ -91,12 +95,17 @@ internal class UserUserRoleWrapperTest {
         userId = user.id
 
         // Persist an admin user too
-        val adminUser = testUtil.createUser("spathcody@gmail.com")
+        val adminUser = testUtil.createUser(
+                email = "spathcody@gmail.com",
+                accountHash = "Test Account 2"
+        )
+
         testUtil.createUserRolesForUser(
                 userId = user.id,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
+
         adminId = adminUser.id
     }
 

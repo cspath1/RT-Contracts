@@ -50,7 +50,11 @@ internal class UserCompletedListTest {
     @Before
     fun setUp() {
         // Persist a user that has an appointment
-        val user = testUtil.createUser("spathcody@gmail.com")
+        val user = testUtil.createUser(
+                email = "spathcody@gmail.com",
+                accountHash = "Test Account 1"
+        )
+
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
@@ -62,7 +66,11 @@ internal class UserCompletedListTest {
         firstUserId = user.id
 
         // Persist another user without any appointments
-        val secondUser = testUtil.createUser("cspath1@ycp.edu")
+        val secondUser = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 2"
+        )
+        
         secondUserId = secondUser.id
     }
 

@@ -44,7 +44,9 @@ internal class RetrieveTest {
     @Before
     fun setUp() {
         // Persist a user
-        val user = testUtil.createUser("spathcody@gmail.com")
+        val user = testUtil.createUser(
+                email = "spathcody@gmail.com",
+                accountHash = "Test Account")
 
         // Persist an appointment
         appointment = testUtil.createAppointment(

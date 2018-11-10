@@ -48,7 +48,10 @@ internal class BanTest {
     @Before
     fun setUp() {
         // Persist a user
-        val theUser = testUtil.createUser("cspath1@ycp.edu")
+        val theUser = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 1"
+        )
 
         userId = theUser.id
     }

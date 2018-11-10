@@ -49,8 +49,14 @@ internal class CreateUpdateEmailTokenTest {
 
     @Before
     fun setUp() {
-        user = testUtil.createUser("rpim@ycp.edu")
-        otherUser = testUtil.createUser("otherUser@ycp.edu")
+        user = testUtil.createUser(
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+        otherUser = testUtil.createUser(
+                email = "otherUser@ycp.edu",
+                accountHash = "Test Account 2"
+        )
 
         userId = user.id
     }

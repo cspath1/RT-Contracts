@@ -54,7 +54,10 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
         assertEquals(1, telescopeRepo.count())
 
         // persist a user
-        val user = testUtil.createUser("jamoros@ycp.edu")
+        val user = testUtil.createUser(
+                email = "jamoros@ycp.edu",
+                accountHash = "Test Account"
+        )
         userId = user.id
 
         // persist two future appointment

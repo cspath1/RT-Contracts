@@ -41,7 +41,10 @@ internal class AccountActivateTokenTest {
     @Before
     fun init() {
         testUtil.createAccountActivateToken(
-                user = testUtil.createUser("cspath1@ycp.edu"),
+                user = testUtil.createUser(
+                        email = "cspath1@ycp.edu",
+                        accountHash = "Test Account 1"
+                ),
                 token = token
         )
     }

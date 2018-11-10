@@ -48,7 +48,7 @@ internal class TestUtil {
     @Autowired
     private lateinit var updateEmailTokenRepo: IUpdateEmailTokenRepository
 
-    fun createUser(email: String): User {
+    fun createUser(email: String, accountHash: String): User {
         val user = User(
                 firstName = "First Name",
                 lastName = "Last Name",
@@ -56,6 +56,7 @@ internal class TestUtil {
                 password = "Password"
         )
 
+        user.accountHash = accountHash
         user.active = true
         user.status = User.Status.ACTIVE
         return userRepo.save(user)
@@ -63,7 +64,8 @@ internal class TestUtil {
 
     fun createUserWithEncodedPassword(
             email: String,
-            password: String
+            password: String,
+            accountHash: String
     ): User {
         val user = User(
                 firstName = "First Name",
@@ -72,6 +74,7 @@ internal class TestUtil {
                 password = password
         )
 
+        user.accountHash = accountHash
         user.active = true
         user.status = User.Status.ACTIVE
         return userRepo.save(user)

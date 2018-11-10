@@ -79,7 +79,10 @@ internal class CancelTest {
     @Before
     fun setUp() {
         // Persist a user
-        val user = testUtil.createUser("spathcody@gmail.com")
+        val user = testUtil.createUser(
+                email = "spathcody@gmail.com",
+                accountHash = "Test Account"
+        )
 
         // SCHEDULED to CANCELED
         val appt1 = testUtil.createAppointment(user = user,

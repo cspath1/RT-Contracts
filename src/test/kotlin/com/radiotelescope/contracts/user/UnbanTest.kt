@@ -44,8 +44,14 @@ internal class UnbanTest {
     @Before
     fun setUp() {
         // Persist a user
-        val theUser = testUtil.createUser("cspath1@ycp.edu")
-        val theUser2 = testUtil.createUser("testemail@ycp.edu")
+        val theUser = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+        val theUser2 = testUtil.createUser(
+                email = "testemail@ycp.edu",
+                accountHash = "Test Account 2"
+        )
 
         userId = theUser.id
         testUtil.setInactiveStatus(theUser)

@@ -47,9 +47,18 @@ internal class ListTest {
     @Before
     fun setUp() {
         // Create a few user's
-        testUtil.createUser("cspath1@ycp.edu")
-        testUtil.createUser("spathcody@gmail.com")
-        testUtil.createUser("codyspath@gmail.com")
+        testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+        testUtil.createUser(
+                email = "spathcody@gmail.com",
+                accountHash = "Test Account 2"
+        )
+        testUtil.createUser(
+                email = "codyspath@gmail.com",
+                accountHash = "Test Account 3"
+        )
     }
 
     @Test

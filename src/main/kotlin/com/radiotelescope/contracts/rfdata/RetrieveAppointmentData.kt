@@ -16,7 +16,8 @@ import com.radiotelescope.toInfoList
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param rfDataRepo the [IRFDataRepository] interface
  */
-class RetrieveAppointmentData(
+class
+RetrieveAppointmentData(
         private val appointmentId: Long,
         private val appointmentRepo: IAppointmentRepository,
         private val rfDataRepo: IRFDataRepository

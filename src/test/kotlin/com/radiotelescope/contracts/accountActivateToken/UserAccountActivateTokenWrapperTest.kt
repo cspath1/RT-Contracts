@@ -63,7 +63,10 @@ internal class UserAccountActivateTokenWrapperTest {
         wrapper = UserAccountActivateTokenWrapper(factory)
 
         // Persist a user and token
-        user = testUtil.createUser("cspath1@ycp.edu")
+        user = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account"
+        )
 
         // Set the user to inactive
         user.active = false

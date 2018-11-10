@@ -39,7 +39,10 @@ internal class UserTest {
     @Before
     fun setUp() {
         // Instantiate and persist a User Entity Object
-        val user = testUtil.createUser("cspath1@ycp.edu")
+        val user = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 1"
+        )
 
         // Set the email variable to be used used in the IUserRepository existsByEmail query
         email = user.email
