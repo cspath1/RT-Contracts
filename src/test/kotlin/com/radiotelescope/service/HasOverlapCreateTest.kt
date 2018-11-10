@@ -66,7 +66,7 @@ import java.util.*
         val ds: Date = Date(Date().time+ 100000)
         d = ds
         val us: User = testUtil.createUser("jamoros@ycp.edu")
-        var a: Appointment = testUtil.createAppointment(us, 1, Appointment.Status.Scheduled, d, Date(d.time + 50000), true)
+        var a: Appointment = testUtil.createAppointment(us, 1, Appointment.Status.SCHEDULED, d, Date(d.time + 50000), true)
         testUtil.createUserRolesForUser(us.id, UserRole.Role.MEMBER, true)
         u = us
         u_id = u.id

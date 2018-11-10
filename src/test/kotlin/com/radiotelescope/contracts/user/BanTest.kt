@@ -123,7 +123,7 @@ internal class BanTest {
     {
 
         val u:User =  testUtil.createUser("jamoros@ycp.edu")
-        u.status = User.Status.Banned
+        u.status = User.Status.BANNED
         val user_id = u.id
         userRepo.save(u)
                 val (id, errors) = Ban(

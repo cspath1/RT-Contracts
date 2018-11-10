@@ -92,7 +92,7 @@ internal class DeleteTest {
     fun UserAlreadyDeleted()
     {
         val theUser = testUtil.createUser("jamoros@ycp.edu")
-        theUser.status = User.Status.Deleted
+        theUser.status = User.Status.DELETED
         userRepo.save(theUser)
         val (id, errors) = Delete(
                 id = theUser.id,

@@ -81,9 +81,9 @@ class HasOverlapUpdateTest
         d = ds
 
         //updates are called on a1
-        val a1: Appointment = testUtil.createAppointment(u1, 1, Appointment.Status.Scheduled, d, Date(d.time + 50000), true)
+        val a1: Appointment = testUtil.createAppointment(u1, 1, Appointment.Status.SCHEDULED, d, Date(d.time + 50000), true)
         //sometimes tested against a2
-        val a2: Appointment = testUtil.createAppointment(u2, 1, Appointment.Status.Scheduled, Date(d.time + 60000), Date(d.time + 100000), true)
+        val a2: Appointment = testUtil.createAppointment(u2, 1, Appointment.Status.SCHEDULED, Date(d.time + 60000), Date(d.time + 100000), true)
 
         a1_id = a1.id
     }
