@@ -83,13 +83,12 @@ internal class AppointmentTest {
 
         )
 
-        // Persist requested appointment
         requestedAppointment = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.REQUESTED,
-                startTime = Date(currentTime + 1000000L),
-                endTime = Date(currentTime + 3000000L),
+                startTime = Date(currentTime + 1000000000L),
+                endTime = Date(currentTime +   3000000000L),
                 isPublic = true
         )
     }
@@ -101,7 +100,7 @@ internal class AppointmentTest {
                 pageable = PageRequest.of(0, 5)
         )
 
-        assertEquals(1, pageOfAppointments.content.size)
+        assertEquals(2, pageOfAppointments.content.size)
         assertEquals(futureAppointment.id, pageOfAppointments.content[0].id)
     }
 
