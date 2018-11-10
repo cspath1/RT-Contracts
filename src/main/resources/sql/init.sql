@@ -147,7 +147,7 @@ recipient_user_id INT(11) NOT NULL,
 sharing_user_id INT(11) NOT NULL,
 shared_appointment_id INT(11) NOT NULL,
 
-KEY viewer_id_idx (viewer_id),
+KEY recipient_user_id_idx (recipient_user_id),
 KEY sharing_user_id_idx (sharing_user_id),
 KEY shared_appointment_id_idx (shared_appointment_id)
 
