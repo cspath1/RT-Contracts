@@ -129,4 +129,19 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
                     "public = 1",
             nativeQuery = true)
     fun findCompletedPublicAppointments(pageable: Pageable): Page<Appointment>
+
+    /**
+     * Spring Repository method that will return all request [Appointment] records
+     *
+     * @param pageable the [Pageable] interface
+     * @return a [Page] of [Appointment]
+     */
+    @Query(value = "SELECT * " +
+            "FROM appointment " +
+            "WHERE status = 'REQUESTED'",
+            countQuery = "SELECT COUNT(*) " +
+                    "FROM appointment " +
+                    "WHERE status = 'REQUESTED'",
+            nativeQuery = true)
+    fun findRequest(pageable: Pageable): Page<Appointment>
 }

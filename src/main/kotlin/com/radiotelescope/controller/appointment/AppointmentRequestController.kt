@@ -2,14 +2,12 @@ package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.contracts.appointment.Request
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.RequestForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
-import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
