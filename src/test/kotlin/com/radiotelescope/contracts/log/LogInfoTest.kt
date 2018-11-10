@@ -17,7 +17,7 @@ internal class LogInfoTest {
                 userFirstName = "Cody",
                 userLastName = "Spath",
                 affectedRecordId = 1L,
-                affectedTable = Log.AffectedTable.USER,
+                affectedTable = Log.AffectedTable.USER.label,
                 action = "User Registration",
                 timestamp = date,
                 isSuccess = true
@@ -28,7 +28,7 @@ internal class LogInfoTest {
         assertEquals("Cody", logInfo.userFirstName)
         assertEquals("Spath", logInfo.userLastName)
         assertEquals(1L, logInfo.affectedRecordId)
-        assertEquals(Log.AffectedTable.USER, logInfo.affectedTable)
+        assertEquals(Log.AffectedTable.USER.label, logInfo.affectedTable)
         assertEquals("User Registration", logInfo.action)
         assertEquals(date, logInfo.timestamp)
         assertTrue(logInfo.isSuccess)
@@ -51,7 +51,7 @@ internal class LogInfoTest {
         assertEquals(log.id, logInfo.id)
         assertEquals(log.isSuccess, logInfo.isSuccess)
         assertEquals(log.affectedRecordId, logInfo.affectedRecordId)
-        assertEquals(log.affectedTable, logInfo.affectedTable)
+        assertEquals(log.affectedTable.label, logInfo.affectedTable)
         assertEquals(log.action, logInfo.action)
         assertEquals(log.timestamp, logInfo.timestamp)
         assertNull(logInfo.userId)
@@ -87,7 +87,7 @@ internal class LogInfoTest {
         assertEquals(log.userId, logInfo.userId)
         assertEquals(log.isSuccess, logInfo.isSuccess)
         assertEquals(log.action, logInfo.action)
-        assertEquals(log.affectedTable, logInfo.affectedTable)
+        assertEquals(log.affectedTable.label, logInfo.affectedTable)
         assertEquals(log.affectedRecordId, logInfo.affectedRecordId)
         assertEquals(log.timestamp, logInfo.timestamp)
         assertEquals(user.firstName, logInfo.userFirstName)

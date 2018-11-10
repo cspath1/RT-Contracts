@@ -24,7 +24,7 @@ data class LogInfo(
         val userFirstName: String?,
         val userLastName: String?,
         val affectedRecordId: Long?,
-        val affectedTable: Log.AffectedTable,
+        val affectedTable: String,
         val action: String,
         val timestamp: Date,
         val isSuccess: Boolean
@@ -41,7 +41,7 @@ data class LogInfo(
             userFirstName = null,
             userLastName = null,
             affectedRecordId = log.affectedRecordId,
-            affectedTable = log.affectedTable,
+            affectedTable = log.affectedTable.label,
             action = log.action,
             timestamp = log.timestamp,
             isSuccess = log.isSuccess
@@ -60,7 +60,7 @@ data class LogInfo(
             userFirstName = user.firstName,
             userLastName = user.lastName,
             affectedRecordId = log.affectedRecordId,
-            affectedTable = log.affectedTable,
+            affectedTable = log.affectedTable.label,
             action = log.action,
             timestamp = log.timestamp,
             isSuccess = log.isSuccess
