@@ -13,4 +13,5 @@
     <include file="classpath:/db/changelog/07-update-appointment-status-enum.sql"/>
     <include file="classpath:/db/changelog/08-update-user-status-enum.sql"/>
     <include file="classpath:/db/changelog/09-create-update-email-token.sql"/>
+    <include file="classpath:/db/changelog/10-create-profile-picture-table.sql"/>
 </databaseChangeLog>
