@@ -54,7 +54,7 @@ class UserRequestEmailUpdateTokenController (
             result = Result(errors = it.toStringMap())
         } ?: let { _ ->
             // Setting the request
-            var request = form.toRequest()
+            val request = form.toRequest()
             request.userId = userId
 
             // Otherwise call the factory command

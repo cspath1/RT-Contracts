@@ -53,7 +53,7 @@ class AdminUserListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
-                            action = "User LogList Retrieval",
+                            action = "User List Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -73,7 +73,7 @@ class AdminUserListController(
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.USER,
-                                        action = "User LogList Retrieval",
+                                        action = "User List Retrieval",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -86,7 +86,7 @@ class AdminUserListController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
-                                    action = "User LogList Retrieval",
+                                    action = "User List Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -100,7 +100,7 @@ class AdminUserListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = "User LogList Retrieval",
+                                action = "User List Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

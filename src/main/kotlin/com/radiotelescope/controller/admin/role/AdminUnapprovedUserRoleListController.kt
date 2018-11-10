@@ -48,7 +48,7 @@ class AdminUnapprovedUserRoleListController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER_ROLE,
-                            action = "Retrieve Unapproved Role LogList",
+                            action = "Retrieve Unapproved Role List",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -65,7 +65,7 @@ class AdminUnapprovedUserRoleListController(
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.USER_ROLE,
-                                        action = "Retrieve Unapproved Role LogList",
+                                        action = "Retrieve Unapproved Role List",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -92,7 +92,7 @@ class AdminUnapprovedUserRoleListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
-                                action = "Retrieve Unapproved Role LogList",
+                                action = "Retrieve Unapproved Role List",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

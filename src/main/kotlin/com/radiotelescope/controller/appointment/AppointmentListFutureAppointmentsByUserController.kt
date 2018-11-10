@@ -50,7 +50,7 @@ class AppointmentListFutureAppointmentsByUserController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "User Future Appointment LogList Retrieval",
+                            action = "User Future Appointment List Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -67,7 +67,7 @@ class AppointmentListFutureAppointmentsByUserController(
                     page.content.forEach{
                         logger.createSuccessLog(
                                 info = Logger.createInfo(Log.AffectedTable.APPOINTMENT,
-                                        action = "User Future Appointment LogList Retrieval",
+                                        action = "User Future Appointment List Retrieval",
                                         affectedRecordId = it.id
                                 )
                         )

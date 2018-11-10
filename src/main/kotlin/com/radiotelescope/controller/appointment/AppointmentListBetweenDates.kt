@@ -51,7 +51,7 @@ class AppointmentListBetweenDates (
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Retrieving Appointment List Between Two Times",
+                            action = "Appointment List Between Times",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -71,7 +71,7 @@ class AppointmentListBetweenDates (
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         Log.AffectedTable.APPOINTMENT,
-                                        action = "Retrieving Appointment List Between Two Times",
+                                        action = "Appointment List Between Times",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -83,7 +83,7 @@ class AppointmentListBetweenDates (
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Retrieving Appointment List Between Two Times",
+                                    action = "Appointment List Between Times",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -97,7 +97,7 @@ class AppointmentListBetweenDates (
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Retrieving Appointment List Between Two Times",
+                                action = "Appointment List Between Times",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

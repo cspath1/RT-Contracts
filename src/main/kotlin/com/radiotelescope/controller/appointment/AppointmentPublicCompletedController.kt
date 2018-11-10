@@ -41,7 +41,7 @@ class AppointmentPublicCompletedController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Future Telescope Appointments LogList Retrieval",
+                            action = "Completed Public Appointment List Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -60,7 +60,7 @@ class AppointmentPublicCompletedController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Public COMPLETED Appointments",
+                                    action = "Completed Public Appointment List Retrieval",
                                     affectedRecordId = null
                             )
                     )
@@ -72,7 +72,7 @@ class AppointmentPublicCompletedController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Public COMPLETED Appointments",
+                                    action = "Completed Public Appointment List Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
