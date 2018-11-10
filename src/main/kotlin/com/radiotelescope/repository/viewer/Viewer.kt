@@ -17,9 +17,6 @@ data class Viewer
         @ManyToOne
         @JoinColumn(name = "shared_appointment_id", nullable = false)
         var appointment: Appointment? = null
-        //var appointmentId: Long
 )
-
 {
-    //ultimate goal is to share the correct Appointment
 }

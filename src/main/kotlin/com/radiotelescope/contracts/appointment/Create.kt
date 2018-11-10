@@ -43,11 +43,8 @@ class Create(
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = request.toEntity()
             theAppointment.user = userRepo.findById(request.userId).get()
-
-//            if (!conflict) {
             appointmentRepo.save(theAppointment)
             return SimpleResult(theAppointment.id, null)
-            //     }
 
 
         }

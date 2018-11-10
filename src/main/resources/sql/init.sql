@@ -157,8 +157,8 @@ CREATE TABLE appointment (
 DROP TABLE IF EXISTS viewer;
 CREATE TABLE viewer(
 
-recipient_user_id INT(11) NOT NULL,
 sharing_user_id INT(11) NOT NULL,
+recipient_user_id INT(11) NOT NULL,
 shared_appointment_id INT(11) NOT NULL,
 
 KEY recipient_user_id_idx (recipient_user_id),
