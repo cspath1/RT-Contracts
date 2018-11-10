@@ -48,6 +48,9 @@ internal class TestUtil {
     @Autowired
     private lateinit var updateEmailTokenRepo: IUpdateEmailTokenRepository
 
+    @Autowired
+    private lateinit var telescopeRepo: ITelescopeRepository
+
     fun createUser(email: String): User {
         val user = User(
                 firstName = "First Name",
@@ -230,5 +233,11 @@ internal class TestUtil {
         theUpdateEmailToken.user = user
 
         return updateEmailTokenRepo.save(theUpdateEmailToken)
+    }
+
+    fun createTelescope(): Telescope {
+        val telescope = Telescope()
+
+        return telescopeRepo.save(telescope)
     }
 }
