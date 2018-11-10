@@ -61,9 +61,13 @@ class AppointmentListBetweenDates (
         // Otherwise, call the wrapper method
         else {
             appointmentWrapper.listBetweenDates(
-                    startTime = form.startTime,
-                    endTime = form.endTime,
-                    telescopeId = telescopeId) { it ->
+                    request = ListBetweenDatesForm(
+                            startTime = form.startTime,
+                            endTime = form.endTime,
+                            telescopeId = form.telescopeId,
+                            isPublic = form.isPublic
+                    ).toRequest()
+                ) { it ->
                 //If the command was a success
                 it.success?.let{ list ->
                     // Create success logs

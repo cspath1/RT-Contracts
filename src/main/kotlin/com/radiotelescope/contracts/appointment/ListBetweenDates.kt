@@ -70,20 +70,13 @@ with(request)
         return errors
     }
 
-
    data class Request(
             var telescope_Id:Long,
             var start_Time:Date,
             var end_Time:Date,
             var isPublic: Boolean
     )
-    {
-        fun toEntity(): Appointment
-        {
-           return  Appointment(telescopeId = telescope_Id,
-                   startTime = start_Time,
-                   endTime = end_Time,
-                   isPublic = isPublic)
-        }
-    }
+   {
+
+   }
 }

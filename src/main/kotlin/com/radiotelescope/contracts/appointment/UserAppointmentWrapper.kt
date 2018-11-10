@@ -259,13 +259,11 @@ class UserAppointmentWrapper(
      * @param endTime the end time of when to grab the appointments
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun listBetweenDates(startTime: Date, endTime: Date, telescopeId: Long, withAccess: (result: SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun listBetweenDates(request: ListBetweenDates.Request, withAccess: (result: SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),
                 successCommand = factory.listBetweenDates(
-                        startTime = startTime,
-                        endTime = endTime,
-                        telescopeId = telescopeId
+                request = request
                 )
         ).execute(withAccess)
     }

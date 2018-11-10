@@ -156,9 +156,11 @@ internal class BaseAppointmentFactoryTest {
     @Test
     fun listBetweenDates(){
         val cmd = factory.listBetweenDates(
-                startTime = Date(System.currentTimeMillis()),
-                endTime = Date(System.currentTimeMillis() + 10000L),
-                telescopeId = 1L
+            request = ListBetweenDates.Request(
+                    start_Time = Date(System.currentTimeMillis()),
+                    end_Time = Date(System.currentTimeMillis() + 10000L),
+                    telescope_Id = 1L,
+                    isPublic = true)
         )
 
         // Ensure it is the correct command

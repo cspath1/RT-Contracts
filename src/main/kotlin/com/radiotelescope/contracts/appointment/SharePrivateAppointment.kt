@@ -9,7 +9,6 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.repository.viewer.Viewer
-import org.springframework.data.domain.Page
 
 class SharePrivateAppointment(
         private val appointmentRepo: IAppointmentRepository,
@@ -37,9 +36,7 @@ if (!userRepo.existsById(user_id) || !userRepo.existsById(viewer_id))
 
     val user = userRepo.findById(user_id)
     val appointment: Appointment = appointmentRepo.findById(a_id).get()
-
-   val aInfo =  AppointmentInfo(appointment)
-
+    val aInfo =  AppointmentInfo(appointment)
 
         //if I take the user_id of the user, and get from an endpoint, the user_id the user shares with
         //And then
@@ -47,13 +44,11 @@ if (!userRepo.existsById(user_id) || !userRepo.existsById(viewer_id))
 
         //The Viewer id is:
         //
-       val v =  Viewer(viewer_id, user_id, a_id)
+
+    val v =  Viewer(viewer_id, user_id, appointment)
        //then the ViewerRepo comes into place
-
-    //save it into the table
-    viewerRepo.save(v)
-    return SimpleResult(1,errors)
+       //save it into the table
+       viewerRepo.save(v)
+       return SimpleResult(1,errors)
     }
-
-
 }

@@ -16,10 +16,10 @@ data class Viewer
         private val sharing_user_id:Long,
         @ManyToOne
         @JoinColumn(name = "shared_appointment_id", nullable = false)
-        //  var appointment: Appointment? = null
-        var appointmentId: Long
+        var appointment: Appointment? = null
+        //var appointmentId: Long
 )
 
 {
-    //ultimate goal is to share the correct AppointmentInfo
+    //ultimate goal is to share the correct Appointment
 }
