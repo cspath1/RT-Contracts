@@ -935,7 +935,7 @@ internal class UserAppointmentWrapperTest {
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @Test
     fun testRequestPublic_NotUser_Failure() {
         // Do not log the user in
@@ -957,13 +957,6 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testRequestPublic_User_Success() {
-        // Make the user a guest
-        testUtil.createUserRolesForUser(
-                userId = user.id,
-                role = UserRole.Role.GUEST,
-                isApproved = true
-        )
-
         // Simulate a login
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
@@ -1008,13 +1001,6 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testRequestPrivate_Researcher_Success() {
-        // Make the user a guest
-        testUtil.createUserRolesForUser(
-                userId = user.id,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = true
-        )
-
         // Simulate a login and make the user a researcher
         context.login(user.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
