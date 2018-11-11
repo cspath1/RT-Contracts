@@ -43,7 +43,7 @@ class Request(
      * It also ensures that the start time is not before the current date
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-        var errors = HashMultimap.create<ErrorTag,String>()
+        val errors = HashMultimap.create<ErrorTag,String>()
 
         with(request) {
             if (!userRepo.existsById(userId)) {

@@ -75,11 +75,7 @@ class AppointmentRequestController(
                     )
                     result = Result(data = it)
 
-                    sendEmail(
-                            email = userRepo.findAllAdminEmail(),
-                            appointmentId = it
-
-                    )
+                    sendEmail(userRepo.findAllAdminEmail())
                 }
                 // Otherwise, it was an error
                 it.error?.let {
@@ -114,13 +110,13 @@ class AppointmentRequestController(
         return result
     }
 
-    private fun sendEmail(email: List<String>, appointmentId: Long) {
+    private fun sendEmail(emails: List<String>) {
         val sendForm = SendForm(
-                toAddresses = email,
+                toAddresses = emails,
                 fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
                 subject = "Appointment Request",
-                htmlBody = "<p>An Appointment with an ID of $appointmentId has been requested " +
-                        "and is awaiting for approval.</p>"
+                htmlBody = "<p>A new observation has been requested by a user at their " +
+                        "allotted quota and requires your approval.</p>"
         )
 
         awsSesSendService.execute(sendForm)

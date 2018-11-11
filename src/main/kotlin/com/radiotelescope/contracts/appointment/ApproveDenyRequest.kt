@@ -23,7 +23,7 @@ class ApproveDenyRequest(
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = appointmentRepo.findById(request.appointmentId).get()
-            if(request.isApprove)
+            if (request.isApprove)
                 theAppointment.status = Appointment.Status.SCHEDULED
             else
                 theAppointment.status = Appointment.Status.CANCELED
@@ -38,7 +38,7 @@ class ApproveDenyRequest(
      * and it's status is REQUESTED
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-        var errors = HashMultimap.create<ErrorTag,String>()
+        val errors = HashMultimap.create<ErrorTag,String>()
 
         with(request) {
             if (!appointmentRepo.existsById(appointmentId)) {

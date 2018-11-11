@@ -1057,8 +1057,20 @@ internal class UserAppointmentWrapperTest {
         val error = wrapper.listRequest(
                 pageable = PageRequest.of(0, 10)
         ) {
-            assertNull(it.success)
-            assertNotNull(it.error)
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testListRequest_NotLoggedIn_Failure() {
+        // Do not log the user in
+        val error = wrapper.listRequest(
+                pageable = PageRequest.of(0, 10)
+        ) {
+            fail("Should fail on precondition")
         }
 
         assertNotNull(error)
@@ -1096,8 +1108,23 @@ internal class UserAppointmentWrapperTest {
                         isApprove = true
                 )
         ) {
-            assertNull(it.success)
-            assertNotNull(it.error)
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testApproveDenyRequest_NotLoggedIn_Failure() {
+        // Do not log the user in
+        val error = wrapper.approveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = appointmentRequested.id,
+                        isApprove = true
+                )
+        ) {
+            fail("Should fail on precondition")
         }
 
         assertNotNull(error)

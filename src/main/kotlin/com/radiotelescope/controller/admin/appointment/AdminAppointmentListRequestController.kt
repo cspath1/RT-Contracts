@@ -37,7 +37,7 @@ class AdminAppointmentListRequestController(
      * If not, the command object was executed, and was either a success or failure,
      * and the method should respond accordingly based on each scenario.
      */
-    @GetMapping(value = ["/api/users/{userId}/appointments/listRequest"])
+    @GetMapping(value = ["/api/appointments/listRequested"])
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?): Result {
@@ -65,7 +65,7 @@ class AdminAppointmentListRequestController(
                     page.content.forEach{
                         logger.createSuccessLog(
                                 info = Logger.createInfo(Log.AffectedTable.APPOINTMENT,
-                                        action = "User Request List Of Appointment Request",
+                                        action = "Requested Appointment List",
                                         affectedRecordId = it.id
                                 )
                         )
@@ -77,7 +77,7 @@ class AdminAppointmentListRequestController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "User Request List Of Appointment Request",
+                                    action = "Requested Appointment List",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -91,7 +91,7 @@ class AdminAppointmentListRequestController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "User Request List Of Appointment Request",
+                                action = "Requested Appointment List",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

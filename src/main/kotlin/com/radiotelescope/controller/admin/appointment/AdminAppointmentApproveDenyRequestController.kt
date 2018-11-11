@@ -50,7 +50,7 @@ class AdminAppointmentApproveDenyRequestController (
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Admin approve/deny an appointment request",
+                                action = "Requested Appointment Reviewal",
                                 affectedRecordId = id
                         )
                 )
@@ -69,7 +69,7 @@ class AdminAppointmentApproveDenyRequestController (
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Admin approve/deny an appointment request",
+                                action = "Requested Appointment Reviewal",
                                 affectedRecordId = null
                         ),
                         errors = errors.toStringMap()
@@ -84,7 +84,7 @@ class AdminAppointmentApproveDenyRequestController (
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Admin approve/deny an appointment request",
+                            action = "Requested Appointment Reviewal",
                             affectedRecordId = null
                     ),
                     errors = it.toStringMap()
@@ -101,18 +101,17 @@ class AdminAppointmentApproveDenyRequestController (
             sendForm = SendForm(
                     toAddresses = listOf(email),
                     fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
-                    subject = "Appointment Approve",
-                    htmlBody = "<p>Your appointment with the id = $id has been approved. " +
-                            "It is now a SCHEDULED appointment</p>"
+                    subject = "Requested Observation Approved",
+                    htmlBody = "<p>Your appointment with the id = $id has been approved " +
+                            "and has now been scheduled for the allotted timeslot.</p>"
             )
         }
         else{
             sendForm = SendForm(
                     toAddresses = listOf(email),
                     fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
-                    subject = "Appointment Deny",
-                    htmlBody = "<p>Your appointment with the id = $id has been denied. " +
-                            "It is now a CANCELED appointment</p>"
+                    subject = "Requested Observation Denied",
+                    htmlBody = "<p>Your appointment with the id = $id has been denied.</p>"
             )
         }
 
