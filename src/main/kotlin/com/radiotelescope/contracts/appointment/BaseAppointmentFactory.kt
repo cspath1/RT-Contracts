@@ -197,5 +197,20 @@ class BaseAppointmentFactory(
                 telescopeRepo = telescopeRepo
         )
     }
+
+    /**
+     * Override of the [AppointmentFactory.listRequest] method that will return a [ListRequest]
+     * command object
+     *
+     * @param pageable the [Pageable] object that has the page number and page size
+     * @return a [ListRequest] command
+     */
+    override fun listRequest(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        return ListRequest(
+                pageable = pageable,
+                userRepo = userRepo,
+                appointmentRepo = appointmentRepo
+        )
+    }
 }
 

@@ -1035,4 +1035,37 @@ internal class UserAppointmentWrapperTest {
 
         assertNull(error)
     }
+
+    @Test
+    fun testListRequest_Admin_Success() {
+        // Simulate a login and make the user a researcher
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.listRequest(
+                pageable = PageRequest.of(0, 10)
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testListRequest_NotAdmin_Failure() {
+        // Simulate a login and make the user a researcher
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.listRequest(
+                pageable = PageRequest.of(0, 10)
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
 }

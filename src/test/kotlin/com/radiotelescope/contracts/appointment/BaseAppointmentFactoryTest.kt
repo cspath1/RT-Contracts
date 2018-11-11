@@ -202,4 +202,15 @@ internal class BaseAppointmentFactoryTest {
         assertTrue(cmd is Request)
     }
 
+    @Test
+    fun listRequest() {
+        // Call the factory method
+        val cmd = factory.listRequest(
+                pageable = PageRequest.of(0, 10)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is ListRequest)
+    }
+
 }

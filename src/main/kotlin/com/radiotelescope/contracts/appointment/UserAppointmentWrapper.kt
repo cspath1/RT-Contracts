@@ -332,6 +332,26 @@ class UserAppointmentWrapper(
     }
 
     /**
+     * Wrapper method for the [AppointmentFactory.listRequest] method that adds Spring
+     * Security authentication to the [ListRequest] command object.
+     *
+     * @param pageable contains the pageSize and pageNumber
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun listRequest(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if(context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.listRequest(
+                            pageable = pageable
+                    )
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
+    }
+
+    /**
      * Private method to return a [Map] of errors when an appointment could not be found.
      * This is needed when we must check if the user is the owner of an appointment or not
      *

@@ -101,4 +101,12 @@ interface AppointmentFactory {
      * @return a [Command] object
      */
     fun request(request: Request.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command user to retrieve completed appointments for a user
+     *
+     * @param pageable the [Pageable] object, that has the page number and page size
+     * @return a [Command] object
+     */
+    fun listRequest(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 }
