@@ -6,8 +6,9 @@ gradle
 gradlew.bat
 docs/
 
-**/application_remote.properties
+**/application_dev.properties
 **/application_local.properties
+**/application_prod.properties
 
 ### STS ###
 .apt_generated
