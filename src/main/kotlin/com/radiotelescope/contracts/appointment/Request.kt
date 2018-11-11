@@ -21,7 +21,7 @@ class Request(
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
      *
-     * If validation passes, it will create and persist the [Appointment] object, set [Appointment.status] to SCHEDULED
+     * If validation passes, it will create and persist the [Appointment] object, set [Appointment.status] to REQUESTED
      * and return the id in the [SimpleResult] object.
      *
      * If validation fails, it will return a [SimpleResult] with the errors
@@ -30,7 +30,7 @@ class Request(
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = request.toEntity()
             theAppointment.user = userRepo.findById(request.userId).get()
-            theAppointment.status = Appointment.Status.SCHEDULED
+            theAppointment.status = Appointment.Status.REQUESTED
             appointmentRepo.save(theAppointment)
             return SimpleResult(theAppointment.id, null)
         }
