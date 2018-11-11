@@ -35,7 +35,7 @@ class AdminAppointmentApproveDenyRequestController (
      * @param isApprove the approve/deny of an appointment request
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/users/{userId}/appointments/{appointmentId}/approveDenyRequest"])
+    @PutMapping(value = ["/api/appointments/{appointmentId}/validate"])
     fun execute(@RequestParam("appointmentId") appointmentId: Long?,
                 @RequestParam isApprove: Boolean?): Result {
         appointmentWrapper.approveDenyRequest(
@@ -50,7 +50,7 @@ class AdminAppointmentApproveDenyRequestController (
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Requested Appointment Reviewal",
+                                action = "Requested Appointment Review",
                                 affectedRecordId = id
                         )
                 )
