@@ -352,6 +352,26 @@ class UserAppointmentWrapper(
     }
 
     /**
+     * Wrapper method for the [AppointmentFactory.approveDenyRequest] method that adds Spring
+     * Security authentication to the [ApproveDenyRequest] command object.
+     *
+     * @param request the [ApproveDenyRequest.Request]
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun approveDenyRequest(request: ApproveDenyRequest.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if(context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.approveDenyRequest(
+                            request = request
+                    )
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
+    }
+
+    /**
      * Private method to return a [Map] of errors when an appointment could not be found.
      * This is needed when we must check if the user is the owner of an appointment or not
      *

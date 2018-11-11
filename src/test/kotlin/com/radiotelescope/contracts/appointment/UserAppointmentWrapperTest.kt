@@ -83,6 +83,7 @@ internal class UserAppointmentWrapperTest {
     private lateinit var notAdminYet: User
     private lateinit var appointment: Appointment
     private lateinit var appointmentNotPublic: Appointment
+    private lateinit var appointmentRequested: Appointment
 
     private val context = FakeUserContext()
     private lateinit var factory: BaseAppointmentFactory
@@ -126,6 +127,15 @@ internal class UserAppointmentWrapperTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 40000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
+                isPublic = false
+        )
+
+        appointmentRequested = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED,
+                startTime = Date(System.currentTimeMillis() + 60000L),
+                endTime = Date(System.currentTimeMillis() + 70000L),
                 isPublic = false
         )
 
@@ -1046,6 +1056,45 @@ internal class UserAppointmentWrapperTest {
 
         val error = wrapper.listRequest(
                 pageable = PageRequest.of(0, 10)
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testApproveDenyRequest_Admin_Success() {
+        // Simulate a login and make the user a researcher
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.approveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = appointmentRequested.id,
+                        isApprove = true
+                )
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testApproveDenyRequest_NotAdmin_Failure() {
+        // Simulate a login and make the user a researcher
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.approveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = appointmentRequested.id,
+                        isApprove = true
+                )
         ) {
             assertNull(it.success)
             assertNotNull(it.error)

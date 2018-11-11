@@ -212,5 +212,19 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo
         )
     }
+
+    /**
+     * Override of the [AppointmentFactory.approveDenyRequest] method that will return a [ListRequest]
+     * command object
+     *
+     * @param request the [ApproveDenyRequest.Request] object
+     * @return a [Command] object
+     */
+    override fun approveDenyRequest(request: ApproveDenyRequest.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return ApproveDenyRequest(
+                request = request,
+                appointmentRepo = appointmentRepo
+        )
+    }
 }
 

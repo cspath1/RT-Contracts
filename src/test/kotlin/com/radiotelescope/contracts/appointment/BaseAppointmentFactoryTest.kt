@@ -213,4 +213,17 @@ internal class BaseAppointmentFactoryTest {
         assertTrue(cmd is ListRequest)
     }
 
+    @Test
+    fun approveDenyRequest() {
+        // Call the factory method
+        val cmd = factory.approveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = 1L,
+                        isApprove = true
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is ApproveDenyRequest)    }
+
 }
