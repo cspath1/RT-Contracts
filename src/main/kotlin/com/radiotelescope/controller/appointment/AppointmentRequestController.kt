@@ -5,9 +5,12 @@ import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.RequestForm
+import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -19,11 +22,15 @@ import org.springframework.web.bind.annotation.RestController
  * REST Controller to handle Appointment Request
  *
  * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param awsSesSendService the [AwsSesSendService]
+ * @param userRepo the [IUserRepository]
  * @param logger the [Logger] service
  */
 @RestController
 class AppointmentRequestController(
         private val appointmentWrapper: UserAppointmentWrapper,
+        private val awsSesSendService: AwsSesSendService,
+        private val userRepo: IUserRepository,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -66,8 +73,13 @@ class AppointmentRequestController(
                                     affectedRecordId = it
                             )
                     )
-
                     result = Result(data = it)
+
+                    sendEmail(
+                            email = userRepo.findAllAdminEmail(),
+                            appointmentId = it
+
+                    )
                 }
                 // Otherwise, it was an error
                 it.error?.let {
@@ -100,5 +112,17 @@ class AppointmentRequestController(
         }
 
         return result
+    }
+
+    private fun sendEmail(email: List<String>, appointmentId: Long) {
+        val sendForm = SendForm(
+                toAddresses = email,
+                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                subject = "Appointment Request",
+                htmlBody = "<p>An Appointment with an ID of $appointmentId has been requested " +
+                        "and is awaiting for approval.</p>"
+        )
+
+        awsSesSendService.execute(sendForm)
     }
 }
