@@ -2,7 +2,7 @@ package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.orientation.IOrientationRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.telescope.Telescope
 import com.radiotelescope.repository.user.IUserRepository
@@ -52,7 +52,7 @@ internal class RequestTest {
     private lateinit var telescopeRepo: ITelescopeRepository
 
     @Autowired
-    private lateinit var orientationRepo: IOrientationRepository
+    private lateinit var coordinateRepo: ICoordinateRepository
 
     private val baseRequest = Request.Request(
             userId = -1L,
@@ -91,7 +91,7 @@ internal class RequestTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success
@@ -115,7 +115,7 @@ internal class RequestTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success
@@ -142,7 +142,7 @@ internal class RequestTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success
@@ -169,7 +169,7 @@ internal class RequestTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success
@@ -196,7 +196,7 @@ internal class RequestTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success
@@ -223,7 +223,7 @@ internal class RequestTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success
@@ -250,7 +250,7 @@ internal class RequestTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success
@@ -277,7 +277,7 @@ internal class RequestTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success
@@ -304,7 +304,7 @@ internal class RequestTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success

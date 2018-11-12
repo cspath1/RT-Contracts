@@ -4,7 +4,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.orientation.IOrientationRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -60,7 +60,7 @@ internal class CreateTest {
     private lateinit var telescopeRepo: ITelescopeRepository
 
     @Autowired
-    private lateinit var orientationRepo: IOrientationRepository
+    private lateinit var coordinateRepo: ICoordinateRepository
 
     private val baseRequest = Create.Request(
             userId = -1L,
@@ -102,7 +102,7 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success
@@ -153,7 +153,7 @@ internal class CreateTest {
                 userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a success
@@ -176,7 +176,7 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -198,7 +198,7 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -227,7 +227,7 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -253,7 +253,7 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -287,7 +287,7 @@ internal class CreateTest {
                 userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -321,7 +321,7 @@ internal class CreateTest {
                 userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -347,7 +347,7 @@ internal class CreateTest {
                 userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -380,7 +380,7 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -413,7 +413,7 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -446,7 +446,7 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -479,7 +479,7 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         ).execute()
 
         // Make sure the command was a failure

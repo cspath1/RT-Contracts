@@ -2,7 +2,7 @@ package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.orientation.IOrientationRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 
@@ -51,7 +51,7 @@ internal class BaseAppointmentFactoryTest {
     private lateinit var telescopeRepo: ITelescopeRepository
 
     @Autowired
-    private lateinit var orientationRepo: IOrientationRepository
+    private lateinit var coordinateRepo: ICoordinateRepository
 
     private lateinit var factory: AppointmentFactory
 
@@ -62,7 +62,7 @@ internal class BaseAppointmentFactoryTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         )
     }
 

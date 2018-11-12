@@ -1,10 +1,10 @@
-package com.radiotelescope.repository.orientation
+package com.radiotelescope.repository.coordinate
 
 import javax.persistence.*
 
 @Entity
-@Table(name = "orientation")
-data class Orientation(
+@Table(name = "coordinate")
+data class Coordinate(
         @Column(name = "right_ascension")
         var rightAscension: Double,
         @Column(name = "declination")

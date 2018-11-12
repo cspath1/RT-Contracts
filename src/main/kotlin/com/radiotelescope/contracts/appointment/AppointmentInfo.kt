@@ -28,8 +28,8 @@ data class AppointmentInfo(
         val userFirstName: String,
         val userLastName: String,
         val status: String,
-        val rightAscension: Double,
-        val declination: Double
+        val rightAscension: Double?,
+        val declination: Double?
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -47,7 +47,7 @@ data class AppointmentInfo(
             userFirstName = appointment.user!!.firstName,
             userLastName = appointment.user!!.lastName,
             status = appointment.status.label,
-            rightAscension = appointment.orientation.rightAscension,
-            declination = appointment.orientation.declination
+            rightAscension = appointment.coordinate?.rightAscension,
+            declination = appointment.coordinate?.declination
     )
 }

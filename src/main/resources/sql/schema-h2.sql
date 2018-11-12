@@ -9,11 +9,11 @@ CREATE TABLE appointment(
               'COMPLETED',
               'CANCELED'),
   telescope_id INT(11) NOT NULL,
-  orientation_id INT(11) NOT NULL,
+  coordinate_id INT(11) NOT NULL,
   public TINYINT(1) DEFAULT 1
 );
 
-CREATE TABLE orientation(
+CREATE TABLE coordinate(
   id INT(11) NOT NULL AUTO_INCREMENT,
   right_ascension DOUBLE NOT NULL,
   declination DOUBLE NOT NULL

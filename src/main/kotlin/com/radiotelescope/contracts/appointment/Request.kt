@@ -7,8 +7,8 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.orientation.IOrientationRepository
-import com.radiotelescope.repository.orientation.Orientation
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -18,7 +18,7 @@ class Request(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
-        private val orientationRepo: IOrientationRepository
+        private val coordinateRepo: ICoordinateRepository
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -32,9 +32,14 @@ class Request(
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = request.toEntity()
-            orientationRepo.save(theAppointment.orientation)
+
+            val theCoordinate = request.toCoordinate()
+            coordinateRepo.save(request.toCoordinate())
+
             theAppointment.user = userRepo.findById(request.userId).get()
             theAppointment.status = Appointment.Status.REQUESTED
+            theAppointment.coordinate = theCoordinate
+
             appointmentRepo.save(theAppointment)
             return SimpleResult(theAppointment.id, null)
         }
@@ -92,11 +97,14 @@ class Request(
                     startTime = startTime,
                     endTime = endTime,
                     telescopeId = telescopeId,
-                    isPublic = isPublic,
-                    orientation = Orientation(
-                            rightAscension = rightAscension,
-                            declination = declination
-                    )
+                    isPublic = isPublic
+            )
+        }
+
+        fun toCoordinate(): Coordinate {
+            return Coordinate(
+                    rightAscension = rightAscension,
+                    declination = declination
             )
         }
     }

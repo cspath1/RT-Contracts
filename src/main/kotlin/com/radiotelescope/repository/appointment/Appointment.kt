@@ -1,6 +1,6 @@
 package com.radiotelescope.repository.appointment
 
-import com.radiotelescope.repository.orientation.Orientation
+import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
@@ -20,9 +20,6 @@ data class Appointment(
         var endTime: Date,
         @Column(name = "telescope_id", nullable = false)
         var telescopeId: Long,
-        @OneToOne
-        @JoinColumn(name = "orientation_id", nullable = false)
-        var orientation: Orientation,
         @Column(name = "public", nullable = false)
         var isPublic: Boolean
 ) {
@@ -34,6 +31,10 @@ data class Appointment(
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     var user: User? = null
+
+    @OneToOne
+    @JoinColumn(name = "coordinate_id")
+    var coordinate: Coordinate? = null
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)

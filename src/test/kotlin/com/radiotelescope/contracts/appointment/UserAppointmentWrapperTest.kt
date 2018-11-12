@@ -3,7 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.orientation.IOrientationRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -63,7 +63,7 @@ internal class UserAppointmentWrapperTest {
     private lateinit var telescopeRepo: ITelescopeRepository
 
     @Autowired
-    private lateinit var orientationRepo: IOrientationRepository
+    private lateinit var coordinateRepo: ICoordinateRepository
 
     private val baseCreateRequest = Create.Request(
             userId = -1L,
@@ -152,7 +152,7 @@ internal class UserAppointmentWrapperTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                orientationRepo = orientationRepo
+                coordinateRepo = coordinateRepo
         )
 
         wrapper = UserAppointmentWrapper(
