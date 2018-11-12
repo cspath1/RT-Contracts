@@ -15,8 +15,6 @@ import org.springframework.data.domain.Pageable
 class RetrieveViewersByUserId(
         private val viewerRepo: IViewerRepository,
         private val userRepo: IUserRepository,
-     //   private val sharing_user_id:Long,
-      //  private val viewer_id:Long,
         private val request: Create.Request,
         private val pageable: Pageable
         ):Command<MutableList<Appointment>, Multimap<ErrorTag, String>> {
@@ -35,16 +33,19 @@ class RetrieveViewersByUserId(
                 errors.put(ErrorTag.VIEWER_ID, "viewer with user id ${viewerId} does not exist")
                 return SimpleResult(null, errors)
             }
+
+
+
+            //shared_appointment_id is apparently null
             val viewers: Page<Viewer> = viewerRepo.getViewersOfAppointmentBySharingUserId(sharinguserId, pageable)
             val sharedAppointments: MutableList<Appointment>? = arrayListOf()
+
+
 
             for (v in viewers) {
                 sharedAppointments?.add(v.appointment!!)
             }
             return SimpleResult(sharedAppointments, null)
-
-
         }
-
     }
 }

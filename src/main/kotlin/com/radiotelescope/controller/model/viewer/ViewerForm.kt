@@ -5,11 +5,11 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.viewer.Create
 import com.radiotelescope.contracts.viewer.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
-import com.radiotelescope.repository.viewer.Viewer
 
 class ViewerForm(
         val viewer_id:Long?,
-        val sharing_user_id:Long?
+        val sharing_user_id:Long?,
+        val appointment: Appointment?
 )
 {
 
@@ -18,8 +18,8 @@ class ViewerForm(
     {
         return Create.Request(
                 viewerId = viewer_id!!,
-                sharinguserId = sharing_user_id!!
-          //      appointment = appointment
+                sharinguserId = sharing_user_id!!,
+                appointment = appointment!!
         )
     }
 
@@ -36,12 +36,14 @@ class ViewerForm(
          errors.put(ErrorTag.USER_ID, "sharing user id cannot be null")
         }
 
-        if (errors.isEmpty())
+        if (appointment == null)
         {
-            return null
+          errors.put(ErrorTag.APPOINTMENT_ID, "appointment does not exist")
         }
+
+        //if validateRequest returns null, success
+        if (errors.isEmpty()) return null
+
         else return errors
     }
-
-
 }

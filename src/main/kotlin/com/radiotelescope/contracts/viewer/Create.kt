@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.contracts.viewer.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
@@ -20,6 +19,8 @@ class Create(
 
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
+
+        //what if the user saved into the repo hasn't scheduled
        val errors = HashMultimap.create<ErrorTag, String>()
         with (request)
         {
@@ -27,6 +28,8 @@ class Create(
                 errors.put(ErrorTag.USER_ID, "user id ${sharinguserId} does not exist")
                 return SimpleResult(null, errors)
             }
+
+
             viewerRepo.save(request.toEntity())
             return SimpleResult(sharinguserId, null)
         }
@@ -36,7 +39,7 @@ class Create(
     data class Request(
         val viewerId:Long,
         val sharinguserId:Long,
-        val appointment:Appointment
+        val appointment: Appointment
     ): BaseCreateRequest<Viewer>
     {
         override fun toEntity(): Viewer {

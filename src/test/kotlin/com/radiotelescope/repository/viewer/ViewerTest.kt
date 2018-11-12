@@ -1,9 +1,7 @@
 package com.radiotelescope.repository.viewer
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.viewer.Create
-import com.radiotelescope.contracts.viewer.ErrorTag
-import com.radiotelescope.contracts.viewer.RetrieveViewersByUserId
+import com.radiotelescope.contracts.viewer.*
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
@@ -56,6 +54,9 @@ internal class ViewerTest {
     @Autowired
     private lateinit var viewerRepo: IViewerRepository
 
+    @Autowired
+    private lateinit var appointmentRepo: IAppointmentRepository
+
     var u1_id:Long = -1
     var u2_id:Long = -1
     var a1:Appointment = Appointment(Date(), Date(Date().time + 1000), 1L, false)
@@ -81,6 +82,7 @@ internal class ViewerTest {
     {
         //first add the viewer
         val request = Create.Request(u2_id, u1_id, a1)
+
         val cObject = Create(request, viewerRepo, userRepo)
         val executed = cObject.execute()
 
@@ -91,8 +93,10 @@ internal class ViewerTest {
 
         else fail()
         //Now viewers table should be populated
-       val retrieved = RetrieveViewersByUserId(viewerRepo, userRepo, u1_id, u2_id, PageRequest.of(0,5)).execute()
+       val retrieved = RetrieveViewersByUserId(viewerRepo, userRepo, request, PageRequest.of(0,5)).execute()
        val mutableListAppointments = retrieved.success
+
+
 
         //should now contain the appointment which can be viewed by u1
         //yup it's null
@@ -127,6 +131,31 @@ internal class ViewerTest {
                 assert(appt.isPublic == a1.isPublic)
             }
         }
+
+    }
+
+
+    @Test
+    fun getViewerByAppointmentId()
+    {
+      //  viewerRepo.getViewersByAppointmentId(a1.id, pageable = ).execute()
+
+        val result = RetrieveViewersByAppointmentId(appointmentRepo, viewerRepo, a1.id, PageRequest.of(0,5)).execute()
+        val suc = result.success
+        val err = result.error
+
+        //error case
+        if (suc == null)
+        {
+            fail()
+        }
+
+
+            //success case
+            if (err == null)
+            {
+
+            }
 
     }
 }

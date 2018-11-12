@@ -14,4 +14,10 @@ interface IViewerRepository : PagingAndSortingRepository<Viewer, Long>
             " where sharing_user_id =?1",
             nativeQuery = true)
     fun getViewersOfAppointmentBySharingUserId(sharing_user_id:Long, pageable: Pageable): Page<Viewer>
+
+
+    @Query(value = "select *" +
+            " from viewer" +
+            " where shared_appointment_id = ?1", nativeQuery = true)
+    fun getViewersByAppointmentId(shared_appointment_id:Long, pageable:Pageable): Page<Viewer>
 }

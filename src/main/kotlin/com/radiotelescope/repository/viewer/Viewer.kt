@@ -1,5 +1,8 @@
 package com.radiotelescope.repository.viewer
 
+import com.radiotelescope.contracts.appointment.ListBetweenDates
+import com.radiotelescope.contracts.role.Validate
+import com.radiotelescope.contracts.viewer.Create
 import com.radiotelescope.repository.appointment.Appointment
 import javax.persistence.*
 
@@ -19,4 +22,9 @@ data class Viewer
         var appointment: Appointment? = null
 )
 {
+
+
+
+
+
 }
