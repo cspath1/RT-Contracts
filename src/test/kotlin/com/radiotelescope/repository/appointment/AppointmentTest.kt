@@ -278,4 +278,16 @@ internal class AppointmentTest {
         assertEquals(1, pageOfAppointments.content.size)
         assertEquals(requestedAppointment.id, pageOfAppointments.content[0].id)
     }
+
+    @Test
+    fun testFindConflict() {
+        val conflictAppointments = appointmentRepo.findConflict(
+                endTime = futureAppointment.endTime,
+                startTime = futureAppointment.startTime,
+                telescopeId = futureAppointment.telescopeId
+        )
+
+        assertEquals(1, conflictAppointments.size)
+        assertEquals(futureAppointment.id, conflictAppointments[0].id)
+    }
 }
