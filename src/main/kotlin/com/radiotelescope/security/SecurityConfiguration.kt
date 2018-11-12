@@ -8,15 +8,29 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
+import org.springframework.web.servlet.config.annotation.CorsRegistry
+import com.google.common.collect.ImmutableList
+import com.radiotelescope.controller.model.Profile
+import org.springframework.context.annotation.Bean
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+
 
 @EnableWebSecurity
 @Configuration
 class SecurityConfiguration(
-        private var authenticationProvider: AuthenticationProvider
+        private var authenticationProvider: AuthenticationProvider,
+        private val profile: Profile
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
         if (http != null) {
+            if (profile == Profile.PROD) {
+                http.requiresChannel().anyRequest().requiresSecure()
+                http.headers().httpStrictTransportSecurity()
+            }
+
             http.csrf().disable()
 
             http.cors().and()
@@ -33,10 +47,28 @@ class SecurityConfiguration(
 
             http.cors().and()
                     .authorizeRequests().antMatchers(HttpMethod.POST, "/users/register").permitAll()
+            http.cors()
         }
     }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
         auth?.authenticationProvider(authenticationProvider)
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowedOrigins = ImmutableList.of("*")
+        configuration.allowedMethods = ImmutableList.of("HEAD",
+                "GET", "POST", "PUT", "DELETE", "PATCH")
+        // setAllowCredentials(true) is important, otherwise:
+        // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
+        configuration.allowCredentials = true
+        // setAllowedHeaders is important! Without it, OPTIONS preflight request
+        // will fail with 403 Invalid CORS request
+        configuration.allowedHeaders = ImmutableList.of("Authorization", "Cache-Control", "Content-Type")
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
     }
 }

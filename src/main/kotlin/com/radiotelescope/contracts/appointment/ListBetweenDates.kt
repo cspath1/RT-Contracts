@@ -13,14 +13,12 @@ import java.util.*
  * Override of the [Command] interface used to retrieve appointments
  * between start time and end time.
  *
- * @param startTime the start time of when to grab appointments
- * @param endTime the end time of when to grab the appointments
+ * @param request the [Request] object
  * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param telescopeRepo the [ITelescopeRepository] interface
  */
 class ListBetweenDates(
-        private val startTime: Date,
-        private val endTime: Date,
-        private val telescopeId: Long,
+        private val request: ListBetweenDates.Request,
         private val appointmentRepo: IAppointmentRepository,
         private val telescopeRepo: ITelescopeRepository
 ) : Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
@@ -42,9 +40,9 @@ class ListBetweenDates(
         }
 
         val list = appointmentRepo.findAppointmentsBetweenDates(
-                startTime = startTime,
-                endTime = endTime,
-                telescopeId = telescopeId
+                startTime = request.startTime,
+                endTime = request.endTime,
+                telescopeId = request.telescopeId
         )
 
         val infoList = list.toAppointmentInfoList()
@@ -58,12 +56,22 @@ class ListBetweenDates(
     private fun validateRequest(): Multimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        // Check to see if endTime is less than or equal to startTime
-        if(endTime <= startTime)
-            errors.put(ErrorTag.END_TIME, "End time must be after start time")
-        if (!telescopeRepo.existsById(telescopeId))
-            errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
-
+        with(request) {
+            // Check to see if endTime is less than or equal to startTime
+            if (endTime <= startTime)
+                errors.put(ErrorTag.END_TIME, "End time cannot be less than or equal to start time")
+            if (!telescopeRepo.existsById(telescopeId))
+                errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
+        }
         return errors
     }
+
+    /**
+     * Data class containing all fields necessary for listing appointments between dates
+     */
+    data class Request(
+            var telescopeId: Long,
+            var startTime: Date,
+            var endTime: Date
+    )
 }
