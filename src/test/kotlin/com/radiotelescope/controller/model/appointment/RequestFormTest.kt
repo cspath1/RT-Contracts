@@ -5,8 +5,8 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class CreateFormTest {
-    private val baseForm = CreateForm(
+internal class RequestFormTest {
+    val baseForm = RequestForm(
             userId = 1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
@@ -18,7 +18,6 @@ internal class CreateFormTest {
 
     @Test
     fun testToRequest() {
-        // First, make sure there are no errors
         assertNull(baseForm.validateRequest())
 
         val theRequest = baseForm.toRequest()
