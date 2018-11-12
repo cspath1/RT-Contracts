@@ -113,4 +113,34 @@ internal class CreateFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.PUBLIC].isNotEmpty())
     }
+
+    @Test
+    fun testNullRightAscension_Failure() {
+        // Create a copy of the form with a null right ascension
+        val baseFormCopy = baseForm.copy(
+                rightAscension = null
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the right ascension was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+    }
+
+    @Test
+    fun testNullDeclination_Failure() {
+        // Create a copy of the form with a null declination
+        val baseFormCopy = baseForm.copy(
+                declination = null
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the right ascension was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
+    }
 }

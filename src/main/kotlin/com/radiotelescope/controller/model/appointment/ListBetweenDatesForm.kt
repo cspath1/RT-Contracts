@@ -14,7 +14,6 @@ import java.util.*
  *
  * @param startTime the Appointment start time
  * @param endTime the Appointment end time
- * @param telescopeId the Appointment's telescope
  */
 data class ListBetweenDatesForm(
         val startTime: Date?,
