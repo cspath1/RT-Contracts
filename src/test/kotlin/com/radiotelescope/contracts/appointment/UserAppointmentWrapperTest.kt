@@ -187,7 +187,9 @@ internal class UserAppointmentWrapperTest {
 
         // Create a base request copy with a valid id
         val requestCopy = baseCreateRequest.copy(
-                userId = user.id
+                userId = user.id,
+                startTime = Date(Date().time + 100000),
+                endTime = Date(Date().time + 150000)
         )
 
         val error = wrapper.create(
@@ -240,6 +242,8 @@ internal class UserAppointmentWrapperTest {
         // is also private
         val requestCopy = baseCreateRequest.copy(
                 userId = user.id,
+                startTime = Date(Date().time + 100000),
+                endTime = Date(Date().time+ 150000),
                 isPublic = false
         )
 
@@ -713,8 +717,8 @@ internal class UserAppointmentWrapperTest {
         val error = wrapper.update(
                 request = Update.Request(
                         id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        startTime = Date(appointment.startTime.time + 10L),
+                        endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic
                 )
@@ -743,8 +747,8 @@ internal class UserAppointmentWrapperTest {
         val error = wrapper.update(
                 request = Update.Request(
                         id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        startTime = Date(System.currentTimeMillis() + 100000L),
+                        endTime = Date(System.currentTimeMillis() + 110000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic
                 )

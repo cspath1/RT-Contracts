@@ -58,12 +58,12 @@ class Update(
         with(request) {
             if (appointmentRepo.existsById(id)) {
                 if(telescopeRepo.existsById(telescopeId)) {
-                    // TODO: Check for scheduling conflict later on
                     if (startTime.before(Date()))
                         errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
-
+                    if (isOverlap())
+                        errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
                 }
                 else{
                     errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId not found")
@@ -136,6 +136,27 @@ class Update(
             totalTime -= (theAppointment.endTime.time - theAppointment.startTime.time)
 
         return totalTime
+    }
+
+    /**
+     * Method responsible for check if the requested appointment
+     * conflict with the one that are already scheduled
+     */
+    private fun isOverlap(): Boolean
+    {
+        var isOverlap = false
+        val listAppts = appointmentRepo.findConflict(
+                endTime = request.endTime,
+                startTime = request.startTime,
+                telescopeId = request.telescopeId
+        )
+
+        if(listAppts.size > 1)
+            isOverlap = true
+        else if(listAppts.size == 1 && listAppts[0].id != request.id)
+            isOverlap = true
+
+        return isOverlap
     }
 
     /**

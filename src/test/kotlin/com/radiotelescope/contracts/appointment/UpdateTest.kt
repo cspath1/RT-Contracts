@@ -328,4 +328,37 @@ internal class UpdateTest {
         assertTrue(errors!![ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
     }
 
+    @Test
+    fun testInvalid_ConflictScheduling_Failure() {
+        // Persist the appointment
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(System.currentTimeMillis() + 50000L),
+                endTime = Date(System.currentTimeMillis() + 80000L),
+                isPublic = true,
+                status = Appointment.Status.SCHEDULED,
+                telescopeId = 1L
+        )
+        val(id, errors) = Update(
+                Update.Request(
+                        id = appointmentId,
+                        startTime = conflict.startTime,
+                        endTime = conflict.endTime,
+                        telescopeId = 1L,
+                        isPublic = true
+                ),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Make sure it failed
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed because of the correct reason
+        assertTrue(errors!![ErrorTag.OVERLAP].isNotEmpty())
+
+    }
+
 }
