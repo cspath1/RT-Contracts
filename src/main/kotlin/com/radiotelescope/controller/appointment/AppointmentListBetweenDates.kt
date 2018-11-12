@@ -10,10 +10,8 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
-import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 /**
  * Rest Controller to handle listing appointments between two dates
@@ -45,8 +43,8 @@ class AppointmentListBetweenDates (
                 @PathVariable("telescopeId") telescopeId: Long
     ): Result {
         // If any of the request params are null, respond with errors
-        if(form.startTime == null || form.endTime == null) {
-            val errors = timeErrors()
+        val errors = form.validateRequest()!!
+        if(!errors.isEmpty) {
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
@@ -60,10 +58,9 @@ class AppointmentListBetweenDates (
         }
         // Otherwise, call the wrapper method
         else {
-            appointmentWrapper.listBetweenDates(
-                    startTime = form.startTime,
-                    endTime = form.endTime,
-                    telescopeId = telescopeId) { it ->
+            var request = form.toRequest()
+            request.telescopeId = telescopeId
+            appointmentWrapper.listBetweenDates(request) { it ->
                 //If the command was a success
                 it.success?.let{ list ->
                     // Create success logs
