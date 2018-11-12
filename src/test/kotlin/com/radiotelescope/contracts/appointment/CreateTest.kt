@@ -124,7 +124,7 @@ internal class CreateTest {
         )
 
         // Create an appointment for two hours
-        testUtil.createAppointment(
+        val appointment = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
@@ -136,8 +136,8 @@ internal class CreateTest {
         // 8 hour appointment
         val requestCopy = baseRequest.copy(
                 userId = user.id,
-                startTime = Date(date.time + twoHours),
-                endTime = Date(date.time + (twoHours * 5))
+                startTime = Date(date.time + (twoHours * 2)),
+                endTime = Date( date.time + (twoHours * 2) + (twoHours * 5))
         )
 
         val (id, errors) = Create(
@@ -344,4 +344,33 @@ internal class CreateTest {
         assertTrue(errors[ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
     }
 
+    @Test
+    fun testInvalid_ScheduleConflict_Failure(){
+        testUtil.createAppointment(
+                user = user,
+                startTime = baseRequest.startTime,
+                endTime = baseRequest.endTime,
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val requestCopy = baseRequest.copy(userId = user.id)
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
 }

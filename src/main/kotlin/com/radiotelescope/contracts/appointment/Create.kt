@@ -53,9 +53,6 @@ class Create(
      * It also ensures that the start time is not before the current date
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-
-        // TODO - Add more validation as more features are implemented
-
         var errors = HashMultimap.create<ErrorTag,String>()
         with(request) {
             if (!userRepo.existsById(userId)) {
@@ -70,6 +67,8 @@ class Create(
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime.before(Date()))
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
+            if (isOverlap())
+                errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
 
             if (!errors.isEmpty)
                 return errors
@@ -113,6 +112,26 @@ class Create(
         }
 
         return errors
+    }
+
+    /**
+     * Method responsible for check if the requested appointment
+     * conflict with the one that are already scheduled
+     */
+    private fun isOverlap(): Boolean
+    {
+        var isOverlap = false
+        val listAppts = appointmentRepo.findConflict(
+                endTime = request.endTime,
+                startTime = request.startTime,
+                telescopeId = request.telescopeId
+        )
+
+        if (!listAppts.isEmpty()) {
+            isOverlap = true
+        }
+
+        return isOverlap
     }
 
     /**
