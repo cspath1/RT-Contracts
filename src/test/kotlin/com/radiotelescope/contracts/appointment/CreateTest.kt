@@ -343,7 +343,7 @@ internal class CreateTest {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
     }
-
+/*
     @Test
     fun testInvalid_ScheduleConflict_Failure(){
         testUtil.createAppointment(
@@ -372,5 +372,435 @@ internal class CreateTest {
         // Make sure it failed for the correct reason
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+   */
+
+    @Test
+    fun testInvalidSC_StartAtStart_EndBeforeEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(startTime),
+                endTime = Date(startTime + 1000L),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_BetweenEndAndStart_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(startTime + 1000L),
+                endTime = Date(endTime - 1000L),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartAfterStart_EndAtEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(endTime - 1000L),
+                endTime = Date(endTime),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartBeforeStart_EndBeforeEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(startTime - 2000L),
+                endTime = Date(startTime + 500L),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartBeforeEnd_EndAfterEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(endTime - 500L),
+                endTime = Date(endTime + 1000L),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_EndAtStart_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(startTime - 1000L),
+                endTime = Date(startTime),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartAtEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(endTime),
+                endTime = Date(endTime + 2000L),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartBeforeStart_EndAfterEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(startTime - 1111L),
+                endTime = Date(endTime + 1111L),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartAtStart_EndAtEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testValidSC_Requested_Success(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(startTime + 1L),
+                endTime = Date(endTime + 1L),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNotNull(id)
+        assertNull(errors)
+    }
+
+    @Test
+    fun testValidSC_Canceled_Success(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.CANCELED
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(startTime + 1L),
+                endTime = Date(endTime + 1L),
+                isPublic = true
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNotNull(id)
+        assertNull(errors)
     }
 }

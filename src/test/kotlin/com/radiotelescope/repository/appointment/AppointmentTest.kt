@@ -359,6 +359,16 @@ internal class AppointmentTest {
                 isPublic = true
         )
 
+        // Appointment start before start and end after end
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(startTime - 1111L),
+                endTime = Date(endTime + 1111L),
+                isPublic = true
+        )
+
         // Appointment status is REQUESTED
         testUtil.createAppointment(
                 user = user,
@@ -387,6 +397,6 @@ internal class AppointmentTest {
                 telescopeId = 1L
         )
 
-        assertEquals(7, listOfAppointments.size)
+        assertEquals(8, listOfAppointments.size)
     }
 }
