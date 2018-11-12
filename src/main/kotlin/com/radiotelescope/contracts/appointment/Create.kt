@@ -45,7 +45,7 @@ class Create(
             val theAppointment = request.toEntity()
 
             val theCoordinate = request.toCoordinate()
-            coordinateRepo.save(request.toCoordinate())
+            coordinateRepo.save(theCoordinate)
 
             theAppointment.user = userRepo.findById(request.userId).get()
             theAppointment.coordinate = theCoordinate
