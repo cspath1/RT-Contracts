@@ -8,6 +8,7 @@ docs/
 
 **/application_dev.properties
 **/application_local.properties
+**/application_remote.properties
 **/application_prod.properties
 
 ### STS ###
