@@ -8,7 +8,7 @@ docs/
 
 **/application_dev.properties
 **/application_local.properties
-**/application_prod.properties
+**/application_remote.properties
 
 ### STS ###
 .apt_generated
