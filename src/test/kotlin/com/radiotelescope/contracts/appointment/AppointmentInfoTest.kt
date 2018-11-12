@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Test
@@ -21,7 +22,9 @@ internal class AppointmentInfoTest {
                 userId = 1L,
                 userFirstName = "Cody",
                 userLastName = "Spath",
-                status = Appointment.Status.SCHEDULED.label
+                status = Appointment.Status.SCHEDULED.label,
+                rightAscension = 311.0,
+                declination = 69.0
         )
 
         assertEquals(1L, appointmentInfo.id)
@@ -33,6 +36,8 @@ internal class AppointmentInfoTest {
         assertEquals("Cody", appointmentInfo.userFirstName)
         assertEquals("Spath", appointmentInfo.userLastName)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
+        assertEquals(311.0, appointmentInfo.rightAscension, 0.000001)
+        assertEquals(69.0, appointmentInfo.declination, 0.000001)
     }
 
     @Test
@@ -50,7 +55,11 @@ internal class AppointmentInfoTest {
                 startTime = startTime,
                 endTime = endTime,
                 telescopeId = 1L,
-                isPublic = true
+                isPublic = true,
+                orientation = Orientation(
+                        rightAscension = 311.0,
+                        declination = 69.0
+                )
         )
 
         appointment.user = user
@@ -68,6 +77,8 @@ internal class AppointmentInfoTest {
         assertEquals("Cody", appointmentInfo.userFirstName)
         assertEquals("Spath", appointmentInfo.userLastName)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
+        assertEquals(appointment.orientation.rightAscension, appointmentInfo.rightAscension, 0.00001)
+        assertEquals(appointment.orientation.declination, appointmentInfo.declination, 0.00001)
     }
 
 

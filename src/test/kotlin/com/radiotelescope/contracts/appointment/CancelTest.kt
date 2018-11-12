@@ -44,7 +44,9 @@ internal class CancelTest {
             endTime = Date(Date().time + 10000),
             isPublic = true,
             telescopeId = 456,
-            userId = 23
+            userId = 23,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     private var appointmentRequest2 = Create.Request(
@@ -52,7 +54,9 @@ internal class CancelTest {
             endTime = Date(Date().time + 2500),
             isPublic = true,
             telescopeId = 512,
-            userId = 54
+            userId = 54,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     private var appointmentRequest3 = Create.Request(
@@ -60,7 +64,9 @@ internal class CancelTest {
             endTime = Date(Date().time + 15000),
             isPublic = true,
             telescopeId = 513,
-            userId = 55
+            userId = 55,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     private var appointmentRequest4 = Create.Request(
@@ -68,7 +74,9 @@ internal class CancelTest {
             endTime = Date(Date().time + 17000),
             isPublic = true,
             telescopeId = 514,
-            userId = 56
+            userId = 56,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     var scheduledAppointmentId:Long = 0

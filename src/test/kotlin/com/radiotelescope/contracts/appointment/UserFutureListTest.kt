@@ -51,7 +51,9 @@ internal class UserFutureListTest {
             endTime = Date(12012019130011),
             isPublic = false,
             telescopeId = 1,
-            userId = -1L
+            userId = -1L,
+            rightAscension = 311.0,
+            declination = 311.0
     )
 
     private lateinit var user1: User
@@ -154,23 +156,4 @@ internal class UserFutureListTest {
         // Ensure it failed because of the userId
         assertTrue(error!![ErrorTag.USER_ID].isNotEmpty())
     }
-
-
-    @Test
-    fun getInfo() {
-        var page: Page<AppointmentInfo> = UserFutureList(user1Id, PageRequest.of(1, 10), appointmentRepo, userRepo).execute().success!!
-
-        if (page.hasContent())
-            println("page has content")
-        else println("page does not have content")
-
-
-        for (a in page)
-        {
-         println("startTime is: " +a.startTime)
-        }
-
-
-    }
-
 }

@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.telescope.Telescope
 import com.radiotelescope.repository.user.IUserRepository
@@ -44,19 +45,23 @@ internal class RequestTest {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
-
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
 
+    @Autowired
+    private lateinit var orientationRepo: IOrientationRepository
+
     private val baseRequest = Request.Request(
             userId = -1L,
             telescopeId = 1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
-            isPublic = true
+            isPublic = true,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     private lateinit var user: User
@@ -79,11 +84,14 @@ internal class RequestTest {
                         telescopeId = telescope.getId(),
                         startTime = baseRequest.startTime,
                         endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic
+                        isPublic = baseRequest.isPublic,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a success
@@ -100,11 +108,14 @@ internal class RequestTest {
                         telescopeId = telescope.getId(),
                         startTime = baseRequest.startTime,
                         endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic
+                        isPublic = baseRequest.isPublic,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a success
@@ -124,11 +135,14 @@ internal class RequestTest {
                         telescopeId = 123456789,
                         startTime = baseRequest.startTime,
                         endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic
+                        isPublic = baseRequest.isPublic,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a success
@@ -148,11 +162,14 @@ internal class RequestTest {
                         telescopeId = telescope.getId(),
                         startTime = Date(System.currentTimeMillis() - 1000L),
                         endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic
+                        isPublic = baseRequest.isPublic,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a success
@@ -172,11 +189,14 @@ internal class RequestTest {
                         telescopeId = telescope.getId(),
                         startTime = baseRequest.endTime,
                         endTime = baseRequest.startTime,
-                        isPublic = baseRequest.isPublic
+                        isPublic = baseRequest.isPublic,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a success
@@ -185,5 +205,113 @@ internal class RequestTest {
 
         // Make sure it failed for the correct reason
         assertTrue(errors!![ErrorTag.END_TIME].isNotEmpty())
+    }
+
+    @Test
+    fun testRightAscensionTooLow_Failure() {
+        // Execute the command
+        val (id, errors) = Request(
+                request = Request.Request(
+                        userId = user.id,
+                        telescopeId = telescope.getId(),
+                        startTime = baseRequest.startTime,
+                        endTime = baseRequest.endTime,
+                        isPublic = baseRequest.isPublic,
+                        rightAscension = -311.0,
+                        declination = 69.0
+                ),
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+    }
+
+    @Test
+    fun testRightAscensionTooGreat_Failure() {
+        // Execute the command
+        val (id, errors) = Request(
+                request = Request.Request(
+                        userId = user.id,
+                        telescopeId = telescope.getId(),
+                        startTime = baseRequest.startTime,
+                        endTime = baseRequest.endTime,
+                        isPublic = baseRequest.isPublic,
+                        rightAscension = 666.0,
+                        declination = 69.0
+                ),
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+    }
+
+    @Test
+    fun testDeclinationTooLow_Failure() {
+        // Execute the command
+        val (id, errors) = Request(
+                request = Request.Request(
+                        userId = user.id,
+                        telescopeId = telescope.getId(),
+                        startTime = baseRequest.startTime,
+                        endTime = baseRequest.endTime,
+                        isPublic = baseRequest.isPublic,
+                        rightAscension = 311.0,
+                        declination = -311.0
+                ),
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
+    }
+
+    @Test
+    fun testDeclinationTooGreat_Failure() {
+        // Execute the command
+        val (id, errors) = Request(
+                request = Request.Request(
+                        userId = user.id,
+                        telescopeId = telescope.getId(),
+                        startTime = baseRequest.startTime,
+                        endTime = baseRequest.endTime,
+                        isPublic = baseRequest.isPublic,
+                        rightAscension = 311.0,
+                        declination = 666.0
+                ),
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
     }
 }

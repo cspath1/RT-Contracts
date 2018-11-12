@@ -4,6 +4,7 @@ import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenR
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.rfdata.IRFDataRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -39,5 +40,6 @@ class RepositoryBeans(
         val rfDataRepo: IRFDataRepository,
         val resetPasswordTokenRepo: IResetPasswordTokenRepository,
         val accountActivateTokenRepo: IAccountActivateTokenRepository,
-        val updateEmailTokenRepo: IUpdateEmailTokenRepository
+        val updateEmailTokenRepo: IUpdateEmailTokenRepository,
+        val orientationRepo: IOrientationRepository
 )

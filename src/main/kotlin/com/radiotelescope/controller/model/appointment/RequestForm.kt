@@ -22,7 +22,9 @@ data class RequestForm(
         val startTime: Date?,
         val endTime: Date?,
         val telescopeId: Long?,
-        val isPublic: Boolean?
+        val isPublic: Boolean?,
+        val rightAscension: Double?,
+        val declination: Double?
 ) : BaseForm<Request.Request> {
     /**
      * Override of the [BaseForm.toRequest] method that
@@ -36,7 +38,9 @@ data class RequestForm(
                 startTime = startTime!!,
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
-                isPublic = isPublic!!
+                isPublic = isPublic!!,
+                rightAscension = rightAscension!!,
+                declination = declination!!
         )
     }
 
@@ -57,6 +61,10 @@ data class RequestForm(
             errors.put(ErrorTag.TELESCOPE_ID, "Required field")
         if (isPublic == null)
             errors.put(ErrorTag.PUBLIC, "Required field")
+        if (rightAscension == null)
+            errors.put(ErrorTag.RIGHT_ASCENSION, "Required field")
+        if (declination == null)
+            errors.put(ErrorTag.DECLINATION, "Required field")
 
         return if (errors.isEmpty) null else errors
     }

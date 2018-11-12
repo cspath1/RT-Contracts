@@ -7,6 +7,8 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
+import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -15,7 +17,8 @@ class Request(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val telescopeRepo: ITelescopeRepository
+        private val telescopeRepo: ITelescopeRepository,
+        private val orientationRepo: IOrientationRepository
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -29,6 +32,7 @@ class Request(
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = request.toEntity()
+            orientationRepo.save(theAppointment.orientation)
             theAppointment.user = userRepo.findById(request.userId).get()
             theAppointment.status = Appointment.Status.REQUESTED
             appointmentRepo.save(theAppointment)
@@ -58,6 +62,10 @@ class Request(
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime < Date())
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
+            if (rightAscension > 360 || rightAscension < 0)
+                errors.put(ErrorTag.RIGHT_ASCENSION, "Right Ascension must be between 0 - 360")
+            if (declination > 90 || declination < 0)
+                errors.put(ErrorTag.DECLINATION, "Declination must be between 0 - 90")
         }
         return if (errors.isEmpty) null else errors
     }
@@ -71,7 +79,9 @@ class Request(
             val startTime: Date,
             val endTime: Date,
             val telescopeId: Long,
-            val isPublic: Boolean
+            val isPublic: Boolean,
+            val rightAscension: Double,
+            val declination: Double
     ) : BaseCreateRequest<Appointment> {
         /**
          * Concrete implementation of the [BaseCreateRequest.toEntity] method that
@@ -82,7 +92,11 @@ class Request(
                     startTime = startTime,
                     endTime = endTime,
                     telescopeId = telescopeId,
-                    isPublic = isPublic
+                    isPublic = isPublic,
+                    orientation = Orientation(
+                            rightAscension = rightAscension,
+                            declination = declination
+                    )
             )
         }
     }

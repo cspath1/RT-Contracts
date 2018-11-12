@@ -27,7 +27,9 @@ data class AppointmentInfo(
         val userId: Long,
         val userFirstName: String,
         val userLastName: String,
-        val status: String
+        val status: String,
+        val rightAscension: Double,
+        val declination: Double
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -35,7 +37,7 @@ data class AppointmentInfo(
      *
      * @param appointment the Appointment
      */
-    constructor(appointment: Appointment): this(
+    constructor(appointment: Appointment) : this(
             id = appointment.id,
             startTime = appointment.startTime,
             endTime = appointment.endTime,
@@ -44,6 +46,8 @@ data class AppointmentInfo(
             userId = appointment.user!!.id,
             userFirstName = appointment.user!!.firstName,
             userLastName = appointment.user!!.lastName,
-            status = appointment.status.label
+            status = appointment.status.label,
+            rightAscension = appointment.orientation.rightAscension,
+            declination = appointment.orientation.declination
     )
 }

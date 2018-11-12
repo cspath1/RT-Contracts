@@ -11,7 +11,9 @@ internal class CreateFormTest {
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
-            isPublic = true
+            isPublic = true,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     @Test

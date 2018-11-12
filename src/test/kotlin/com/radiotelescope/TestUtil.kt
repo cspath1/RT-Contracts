@@ -8,6 +8,8 @@ import com.radiotelescope.repository.error.Error
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.orientation.IOrientationRepository
+import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -50,6 +52,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
+
+    @Autowired
+    private lateinit var orientationRepo: IOrientationRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -113,11 +118,19 @@ internal class TestUtil {
             endTime: Date,
             isPublic: Boolean
     ): Appointment {
+        val orientation = Orientation(
+                rightAscension = 311.0,
+                declination = 69.0
+        )
+
+        orientationRepo.save(orientation)
+
         val theAppointment = Appointment(
                 startTime = startTime,
                 endTime = endTime,
                 telescopeId = telescopeId,
-                isPublic = isPublic
+                isPublic = isPublic,
+                orientation = orientation
         )
 
         theAppointment.status = status

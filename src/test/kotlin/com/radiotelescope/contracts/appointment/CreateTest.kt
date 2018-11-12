@@ -4,6 +4,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -58,12 +59,17 @@ internal class CreateTest {
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
 
+    @Autowired
+    private lateinit var orientationRepo: IOrientationRepository
+
     private val baseRequest = Create.Request(
             userId = -1L,
             telescopeId = 1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
-            isPublic = true
+            isPublic = true,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     private lateinit var user: User
@@ -95,7 +101,8 @@ internal class CreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a success
@@ -145,7 +152,8 @@ internal class CreateTest {
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a success
@@ -167,7 +175,8 @@ internal class CreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -188,7 +197,8 @@ internal class CreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -216,7 +226,8 @@ internal class CreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -241,7 +252,8 @@ internal class CreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -274,7 +286,8 @@ internal class CreateTest {
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -307,7 +320,8 @@ internal class CreateTest {
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -332,7 +346,8 @@ internal class CreateTest {
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -344,4 +359,135 @@ internal class CreateTest {
         assertTrue(errors[ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
     }
 
+    @Test
+    fun testRightAscensionTooLow_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Create a copy of the request with an invalid right ascension
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                rightAscension = -666.0
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+    }
+
+    @Test
+    fun testRightAscensionTooGreat_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Create a copy of the request with an invalid right ascension
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                rightAscension = 666.0
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+    }
+
+    @Test
+    fun testDeclinationTooLow_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Create a copy of the request with an invalid declination
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                declination = -666.0
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.DECLINATION].isNotEmpty())
+    }
+
+    @Test
+    fun testDeclinationTooGreat_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Create a copy of the request with an invalid declination
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                declination = 666.0
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                orientationRepo = orientationRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.DECLINATION].isNotEmpty())
+    }
 }

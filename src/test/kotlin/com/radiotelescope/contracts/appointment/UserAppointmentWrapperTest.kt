@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -61,12 +62,17 @@ internal class UserAppointmentWrapperTest {
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
 
+    @Autowired
+    private lateinit var orientationRepo: IOrientationRepository
+
     private val baseCreateRequest = Create.Request(
             userId = -1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
-            isPublic = true
+            isPublic = true,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     private val baseRequestRequest = Request.Request(
@@ -74,7 +80,9 @@ internal class UserAppointmentWrapperTest {
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
-            isPublic = true
+            isPublic = true,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     private lateinit var user: User
@@ -143,7 +151,8 @@ internal class UserAppointmentWrapperTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                orientationRepo = orientationRepo
         )
 
         wrapper = UserAppointmentWrapper(
