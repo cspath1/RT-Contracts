@@ -154,11 +154,13 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
      * @param telescopeId the id of the pertaining telescope
      * @return a [List] of [Appointment]
      */
-    @Query(value = "select * " +
-            "from appointment " +
-            "where start_time <= ?1 " +
-            "and end_time >= ?2 and " +
-            "telescope_id =?3 ",
+    @Query(value = "SELECT * " +
+            "FROM appointment " +
+            "WHERE start_time <= ?1 " +
+            "AND end_time >= ?2 " +
+            "AND telescope_id =?3 " +
+            "AND status <> 'CANCELED' " +
+            "AND status <> 'REQUESTED'",
             nativeQuery = true)
     fun findConflict(endTime: Date, startTime: Date, telescopeId: Long ):List<Appointment>
 
