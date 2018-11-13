@@ -58,12 +58,16 @@ class Update(
         with(request) {
             if (appointmentRepo.existsById(id)) {
                 if(telescopeRepo.existsById(telescopeId)) {
-                    // TODO: Check for scheduling conflict later on
                     if (startTime.before(Date()))
                         errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
-
+                    if (rightAscension > 360 || rightAscension < 0)
+                        errors.put(ErrorTag.RIGHT_ASCENSION, "Right Ascension must be between 0 - 360")
+                    if (declination > 90 || declination < 0)
+                        errors.put(ErrorTag.DECLINATION, "Declination must be between 0 - 90")
+                    if (isOverlap())
+                        errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
                 }
                 else{
                     errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId not found")
@@ -139,6 +143,27 @@ class Update(
     }
 
     /**
+     * Method responsible for check if the requested appointment
+     * conflict with the one that are already scheduled
+     */
+    private fun isOverlap(): Boolean
+    {
+        var isOverlap = false
+        val listAppts = appointmentRepo.findConflict(
+                endTime = request.endTime,
+                startTime = request.startTime,
+                telescopeId = request.telescopeId
+        )
+
+        if(listAppts.size > 1)
+            isOverlap = true
+        else if(listAppts.size == 1 && listAppts[0].id != request.id)
+            isOverlap = true
+
+        return isOverlap
+    }
+
+    /**
      * Data class containing all fields necessary for appointment update. Implements the
      * [BaseUpdateRequest] interface and overrides the [BaseUpdateRequest.updateEntity]
      * method
@@ -148,7 +173,9 @@ class Update(
             val telescopeId: Long,
             val startTime: Date,
             val endTime: Date,
-            val isPublic: Boolean
+            val isPublic: Boolean,
+            val rightAscension: Double,
+            val declination: Double
     ): BaseUpdateRequest<Appointment> {
         /**
          * Override of the [BaseUpdateRequest.updateEntity] method that
@@ -159,7 +186,12 @@ class Update(
             entity.telescopeId = telescopeId
             entity.startTime = startTime
             entity.endTime = endTime
-            entity.isPublic
+            entity.isPublic = isPublic
+
+            if (entity.coordinate != null) {
+                entity.coordinate!!.declination = declination
+                entity.coordinate!!.rightAscension = rightAscension
+            }
 
             return entity
         }

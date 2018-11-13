@@ -14,5 +14,6 @@
     <include file="classpath:/db/changelog/08-update-user-status-enum.sql"/>
     <include file="classpath:/db/changelog/09-create-update-email-token.sql"/>
     <include file="classpath:/db/changelog/10-create-profile-picture-table.sql"/>
-    <include file="classpath:/db/changelog/11-add-user-account-hash.sql"/>
+    <include file="classpath:/db/changelog/11-create-coordinate.sql"/>
+    <include file="classpath:/db/changelog/12-add-user-account-hash.sql"/>
 </databaseChangeLog>

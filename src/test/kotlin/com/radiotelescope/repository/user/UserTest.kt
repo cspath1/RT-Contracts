@@ -1,8 +1,10 @@
 package com.radiotelescope.repository.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.role.UserRole
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,6 +45,18 @@ internal class UserTest {
                 email = "cspath1@ycp.edu",
                 accountHash = "Test Account 1"
         )
+        val admin1 = testUtil.createUser(
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account 2"
+        )
+        testUtil.createUserRolesForUser(admin1.id, UserRole.Role.ADMIN, true)
+
+        val admin2 = testUtil.createUser(
+                email = "rpim2@ycp.edu",
+                accountHash = "Test Account 3"
+        )
+        testUtil.createUserRolesForUser(admin2.id, UserRole.Role.ADMIN, true)
+
 
         // Set the email variable to be used used in the IUserRepository existsByEmail query
         email = user.email
@@ -91,5 +105,12 @@ internal class UserTest {
 
         // All four, over 8
         Assert.assertTrue("GoodPassword!?3".matches(User.passwordRegex))
+    }
+
+    @Test
+    fun findAllAdminEmail(){
+        val adminEmailList = userRepo.findAllAdminEmail()
+
+        assertTrue(adminEmailList.size == 2)
     }
 }

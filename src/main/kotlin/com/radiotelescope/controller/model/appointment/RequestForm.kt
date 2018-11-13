@@ -2,22 +2,22 @@ package com.radiotelescope.controller.model.appointment
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
-import com.radiotelescope.contracts.appointment.Create
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.contracts.appointment.Request
 import com.radiotelescope.controller.model.BaseForm
 import java.util.*
 
 /**
- * Create form that takes nullable versions of the [Create.Request] object.
+ * Request form that takes nullable versions of the [Request.Request] object.
  * It is in charge of making sure these values are not null before adapting it
- * to a [Create.Request] object
+ * to a [Request.Request] object
  *
  * @param userId the User id
  * @param startTime the Appointment start time
  * @param endTime the Appointment end time
  * @param telescopeId the Appointment's telescope
  */
-data class CreateForm(
+data class RequestForm(
         val userId: Long?,
         val startTime: Date?,
         val endTime: Date?,
@@ -25,15 +25,15 @@ data class CreateForm(
         val isPublic: Boolean?,
         val rightAscension: Double?,
         val declination: Double?
-) : BaseForm<Create.Request> {
+) : BaseForm<Request.Request> {
     /**
      * Override of the [BaseForm.toRequest] method that
-     * adapts the form into a [Create.Request] object
+     * adapts the form into a [Request.Request] object
      *
-     * @return the [Create.Request] object
+     * @return the [Request.Request] object
      */
-    override fun toRequest(): Create.Request {
-        return Create.Request(
+    override fun toRequest(): Request.Request {
+        return Request.Request(
                 userId = userId!!,
                 startTime = startTime!!,
                 endTime = endTime!!,

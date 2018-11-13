@@ -1,5 +1,6 @@
 package com.radiotelescope.repository.user
 
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 
@@ -34,4 +35,17 @@ interface IUserRepository : PagingAndSortingRepository<User, Long> {
      * @return the matching record count
      */
     fun countByAccountHash(accountHash: String): Int
+
+    /**
+     * Spring Repository method that will grab all Admins' email
+     *
+     * @return a [List] of all admin emails
+     */
+    @Query(value = "SELECT user.email_address " +
+            "FROM user " +
+            "JOIN user_role ON user.id = user_role.user_id " +
+            "WHERE user_role.role = 'ADMIN'",
+            nativeQuery = true)
+    fun findAllAdminEmail(): List<String>
+
 }

@@ -86,7 +86,8 @@ class FactoryBeans(
                         userRepo = repositories.userRepo,
                         appointmentRepo = repositories.appointmentRepo,
                         telescopeRepo = repositories.telescopeRepo,
-                        userRoleRepo = repositories.userRoleRepo
+                        userRoleRepo = repositories.userRoleRepo,
+                        coordinateRepo = repositories.coordinateRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo
         )

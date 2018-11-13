@@ -7,6 +7,8 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -26,7 +28,8 @@ class Create(
     private val appointmentRepo: IAppointmentRepository,
     private val userRepo: IUserRepository,
     private val userRoleRepo: IUserRoleRepository,
-    private val telescopeRepo: ITelescopeRepository
+    private val telescopeRepo: ITelescopeRepository,
+    private val coordinateRepo: ICoordinateRepository
 ) : Command<Long, Multimap<ErrorTag,String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -40,7 +43,13 @@ class Create(
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = request.toEntity()
+
+            val theCoordinate = request.toCoordinate()
+            coordinateRepo.save(theCoordinate)
+
             theAppointment.user = userRepo.findById(request.userId).get()
+            theAppointment.coordinate = theCoordinate
+
             appointmentRepo.save(theAppointment)
             return SimpleResult(theAppointment.id, null)
         }
@@ -53,23 +62,26 @@ class Create(
      * It also ensures that the start time is not before the current date
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-
-        // TODO - Add more validation as more features are implemented
-
         var errors = HashMultimap.create<ErrorTag,String>()
         with(request) {
             if (!userRepo.existsById(userId)) {
-                errors.put(ErrorTag.USER_ID, "User Id #$userId could not be found")
+                errors.put(ErrorTag.USER_ID, "User #$userId could not be found")
                 return errors
             }
             if (!telescopeRepo.existsById(telescopeId)) {
-                errors.put(ErrorTag.TELESCOPE_ID, "Telescope Id #$telescopeId could not be found")
+                errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
                 return errors
             }
             if (startTime.after(endTime))
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime.before(Date()))
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
+            if (isOverlap())
+                errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
+            if (rightAscension > 360 || rightAscension < 0)
+                errors.put(ErrorTag.RIGHT_ASCENSION, "Right Ascension must be between 0 - 360")
+            if (declination > 90 || declination < 0)
+                errors.put(ErrorTag.DECLINATION, "Declination must be between 0 - 90")
 
             if (!errors.isEmpty)
                 return errors
@@ -116,6 +128,26 @@ class Create(
     }
 
     /**
+     * Method responsible for check if the requested appointment
+     * conflict with the one that are already scheduled
+     */
+    private fun isOverlap(): Boolean
+    {
+        var isOverlap = false
+        val listAppts = appointmentRepo.findConflict(
+                endTime = request.endTime,
+                startTime = request.startTime,
+                telescopeId = request.telescopeId
+        )
+
+        if (!listAppts.isEmpty()) {
+            isOverlap = true
+        }
+
+        return isOverlap
+    }
+
+    /**
      * Data class containing all fields necessary for appointment creation. Implements
      * the [BaseCreateRequest] interface.
      */
@@ -124,7 +156,9 @@ class Create(
             val startTime: Date,
             val endTime: Date,
             val telescopeId: Long,
-            val isPublic: Boolean
+            val isPublic: Boolean,
+            val rightAscension: Double,
+            val declination: Double
     ) : BaseCreateRequest<Appointment> {
         /**
          * Concrete implementation of the [BaseCreateRequest.toEntity] method that
@@ -136,6 +170,13 @@ class Create(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic
+            )
+        }
+
+        fun toCoordinate(): Coordinate {
+            return Coordinate(
+                    rightAscension = rightAscension,
+                    declination = declination
             )
         }
     }

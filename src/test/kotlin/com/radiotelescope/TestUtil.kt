@@ -8,6 +8,8 @@ import com.radiotelescope.repository.error.Error
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -47,6 +49,12 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var updateEmailTokenRepo: IUpdateEmailTokenRepository
+
+    @Autowired
+    private lateinit var telescopeRepo: ITelescopeRepository
+
+    @Autowired
+    private lateinit var coordinateRepo: ICoordinateRepository
 
     fun createUser(email: String, accountHash: String): User {
         val user = User(
@@ -113,6 +121,13 @@ internal class TestUtil {
             endTime: Date,
             isPublic: Boolean
     ): Appointment {
+        val coordinate = Coordinate(
+                rightAscension = 311.0,
+                declination = 69.0
+        )
+
+        coordinateRepo.save(coordinate)
+
         val theAppointment = Appointment(
                 startTime = startTime,
                 endTime = endTime,
@@ -122,6 +137,7 @@ internal class TestUtil {
 
         theAppointment.status = status
         theAppointment.user = user
+        theAppointment.coordinate = coordinate
 
         return appointmentRepo.save(theAppointment)
     }
@@ -233,5 +249,11 @@ internal class TestUtil {
         theUpdateEmailToken.user = user
 
         return updateEmailTokenRepo.save(theUpdateEmailToken)
+    }
+
+    fun createTelescope(): Telescope {
+        val telescope = Telescope()
+
+        return telescopeRepo.save(telescope)
     }
 }

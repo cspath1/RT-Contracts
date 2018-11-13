@@ -98,9 +98,11 @@ class ListBetweenDatesTest {
     @Test
     fun testValid_ValidConstraints_Success(){
         val (infoList, error) = ListBetweenDates(
-                startTime = Date(startTime),
-                endTime = Date(endTime),
-                telescopeId = 1L,
+                request = ListBetweenDates.Request(
+                    startTime = Date(startTime),
+                    endTime = Date(endTime),
+                    telescopeId = 1L
+                ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo
         ).execute()
@@ -116,9 +118,11 @@ class ListBetweenDatesTest {
     @Test
     fun testInvalid_EndTimeIsLessThanStartTime_Failure() {
         val (infoList, error) = ListBetweenDates(
-                startTime = Date(endTime),
-                endTime = Date(startTime),
-                telescopeId = 1L,
+                request = ListBetweenDates.Request(
+                        startTime = Date(endTime),
+                        endTime = Date(startTime),
+                        telescopeId = 1L
+                ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo
         ).execute()
@@ -134,9 +138,11 @@ class ListBetweenDatesTest {
     @Test
     fun testInvalid_InvalidTelescopeId_Failure() {
         val (infoList, error) = ListBetweenDates(
-                startTime = Date(startTime),
-                endTime = Date(endTime),
-                telescopeId = 420L,
+                request = ListBetweenDates.Request(
+                        startTime = Date(startTime),
+                        endTime = Date(endTime),
+                        telescopeId = 420L
+                ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo
         ).execute()
