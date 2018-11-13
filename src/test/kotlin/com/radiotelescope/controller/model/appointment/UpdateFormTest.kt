@@ -23,6 +23,8 @@ internal class UpdateFormTest {
         assertEquals(baseForm.endTime!!, theRequest.endTime)
         assertEquals(baseForm.telescopeId!!, theRequest.telescopeId)
         assertEquals(baseForm.isPublic!!, theRequest.isPublic)
+        assertEquals(baseForm.rightAscension!!, theRequest.rightAscension, 0.00001)
+        assertEquals(baseForm.declination!!, theRequest.declination, 0.00001)
     }
 
     @Test
