@@ -56,11 +56,11 @@ class Create(
         var errors = HashMultimap.create<ErrorTag,String>()
         with(request) {
             if (!userRepo.existsById(userId)) {
-                errors.put(ErrorTag.USER_ID, "User Id #$userId could not be found")
+                errors.put(ErrorTag.USER_ID, "User #$userId could not be found")
                 return errors
             }
             if (!telescopeRepo.existsById(telescopeId)) {
-                errors.put(ErrorTag.TELESCOPE_ID, "Telescope Id #$telescopeId could not be found")
+                errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
                 return errors
             }
             if (startTime.after(endTime))
