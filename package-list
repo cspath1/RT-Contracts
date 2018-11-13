@@ -10,6 +10,7 @@ com.radiotelescope.contracts.role
 com.radiotelescope.contracts.updateEmailToken
 com.radiotelescope.contracts.user
 com.radiotelescope.controller
+com.radiotelescope.controller.admin.appointment
 com.radiotelescope.controller.admin.log
 com.radiotelescope.controller.admin.role
 com.radiotelescope.controller.admin.user
@@ -27,6 +28,7 @@ com.radiotelescope.controller.updateEmailToken
 com.radiotelescope.controller.user
 com.radiotelescope.repository.accountActivateToken
 com.radiotelescope.repository.appointment
+com.radiotelescope.repository.coordinate
 com.radiotelescope.repository.error
 com.radiotelescope.repository.log
 com.radiotelescope.repository.resetPasswordToken
