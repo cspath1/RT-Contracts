@@ -63,6 +63,10 @@ class Update(
                         errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
+                    if (rightAscension > 360 || rightAscension < 0)
+                        errors.put(ErrorTag.RIGHT_ASCENSION, "Right Ascension must be between 0 - 360")
+                    if (declination > 90 || declination < 0)
+                        errors.put(ErrorTag.DECLINATION, "Declination must be between 0 - 90")
 
                 }
                 else{
@@ -148,7 +152,9 @@ class Update(
             val telescopeId: Long,
             val startTime: Date,
             val endTime: Date,
-            val isPublic: Boolean
+            val isPublic: Boolean,
+            val rightAscension: Double,
+            val declination: Double
     ): BaseUpdateRequest<Appointment> {
         /**
          * Override of the [BaseUpdateRequest.updateEntity] method that
@@ -159,7 +165,12 @@ class Update(
             entity.telescopeId = telescopeId
             entity.startTime = startTime
             entity.endTime = endTime
-            entity.isPublic
+            entity.isPublic = isPublic
+
+            if (entity.coordinate != null) {
+                entity.coordinate!!.declination = declination
+                entity.coordinate!!.rightAscension = rightAscension
+            }
 
             return entity
         }

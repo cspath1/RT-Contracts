@@ -59,7 +59,6 @@ internal class UpdateTest {
     private var appointmentId = -1L
     private var userId = -1L
 
-    private val date = Date()
     private val twoHours = 2 * 60 * 60 * 1000
 
     @Before
@@ -100,7 +99,9 @@ internal class UpdateTest {
                         startTime = Date(appointment.endTime.time + twoHours),
                         endTime = Date(appointment.endTime.time + (twoHours * 2)),
                         telescopeId = 1L,
-                        isPublic = false
+                        isPublic = false,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -128,7 +129,9 @@ internal class UpdateTest {
                         startTime = Date(appointment.endTime.time + twoHours),
                         endTime = Date(appointment.endTime.time + (twoHours * 25)),
                         telescopeId = 1L,
-                        isPublic = false
+                        isPublic = false,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -149,7 +152,9 @@ internal class UpdateTest {
                         startTime = Date(appointment.endTime.time + 10000L),
                         endTime = Date(appointment.endTime.time + 40000L),
                         telescopeId = 1L,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 69.0
 
                 ),
                 appointmentRepo = appointmentRepo,
@@ -173,7 +178,9 @@ internal class UpdateTest {
                         startTime = Date(appointment.endTime.time + 40000L),
                         endTime = Date(appointment.endTime.time + 10000L),
                         telescopeId = 1L,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 69.0
 
                 ),
                 appointmentRepo = appointmentRepo,
@@ -197,7 +204,9 @@ internal class UpdateTest {
                         startTime = Date(System.currentTimeMillis() - 10000L),
                         endTime = Date(appointment.endTime.time + 40000L),
                         telescopeId = 1L,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -220,7 +229,9 @@ internal class UpdateTest {
                         startTime = Date(appointment.endTime.time + 10000L),
                         endTime = Date(appointment.endTime.time + 40000L),
                         telescopeId = 123456789,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -250,7 +261,9 @@ internal class UpdateTest {
                         startTime = Date(appointment.endTime.time + twoHours),
                         endTime = Date(appointment.endTime.time + (twoHours * 5)),
                         telescopeId = 1L,
-                        isPublic = false
+                        isPublic = false,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -281,7 +294,9 @@ internal class UpdateTest {
                         startTime = Date(appointment.endTime.time + twoHours),
                         endTime = Date(appointment.endTime.time + (twoHours * 29)),
                         telescopeId = 1L,
-                        isPublic = false
+                        isPublic = false,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -312,7 +327,9 @@ internal class UpdateTest {
                         startTime = Date(appointment.endTime.time + twoHours),
                         endTime = Date(appointment.endTime.time + (twoHours * 29)),
                         telescopeId = 1L,
-                        isPublic = false
+                        isPublic = false,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 ),
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -328,4 +345,103 @@ internal class UpdateTest {
         assertTrue(errors!![ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
     }
 
+    @Test
+    fun testInvalid_RightAscensionTooLow_Failure() {
+        val (id, errors) = Update(
+                request = Update.Request(
+                        id = appointmentId,
+                        startTime = Date(System.currentTimeMillis() - 10000L),
+                        endTime = Date(appointment.endTime.time + 40000L),
+                        telescopeId = 1L,
+                        isPublic = appointment.isPublic,
+                        rightAscension = -311.0,
+                        declination = 69.0
+                ),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Make sure it was an error
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it was for the expected reason
+        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_RightAscensionTooGreat_Failure() {
+        val (id, errors) = Update(
+                request = Update.Request(
+                        id = appointmentId,
+                        startTime = Date(System.currentTimeMillis() - 10000L),
+                        endTime = Date(appointment.endTime.time + 40000L),
+                        telescopeId = 1L,
+                        isPublic = appointment.isPublic,
+                        rightAscension = 420.0,
+                        declination = 19.0
+                ),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Make sure it was an error
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it was for the expected reason
+        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_DeclinationTooLow_Failure() {
+        val (id, errors) = Update(
+                request = Update.Request(
+                        id = appointmentId,
+                        startTime = Date(System.currentTimeMillis() - 10000L),
+                        endTime = Date(appointment.endTime.time + 40000L),
+                        telescopeId = 1L,
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = -99.0
+                ),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Make sure it was for the expected reason
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it was for the expected reason
+        assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_DeclinationTooGreat_Failure() {
+        val (id, errors) = Update(
+                request = Update.Request(
+                        id = appointmentId,
+                        startTime = Date(System.currentTimeMillis() - 10000L),
+                        endTime = Date(appointment.endTime.time + 40000L),
+                        telescopeId = 1L,
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 99.0
+                ),
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Make sure it was for the expected reason
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it was for the expected reason
+        assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
+    }
 }

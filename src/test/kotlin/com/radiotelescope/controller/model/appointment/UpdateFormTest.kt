@@ -10,7 +10,9 @@ internal class UpdateFormTest {
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
-            isPublic = false
+            isPublic = false,
+            rightAscension = 311.0,
+            declination = 21.0
     )
 
     @Test
@@ -42,7 +44,7 @@ internal class UpdateFormTest {
         // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure there were errors
+        // Make sure start time was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.START_TIME].isNotEmpty())
     }
@@ -56,7 +58,7 @@ internal class UpdateFormTest {
         // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure there were errors
+        // Make sure end time was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.END_TIME].isNotEmpty())
     }
@@ -70,7 +72,7 @@ internal class UpdateFormTest {
         // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure there were errors
+        // Make sure the telescope id was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.TELESCOPE_ID].isNotEmpty())
     }
@@ -84,8 +86,36 @@ internal class UpdateFormTest {
         // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure there were errors
+        // Make sure the isPublic was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.PUBLIC].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_NullRightAscension_Failure() {
+        // Create a copy of the form with a null right ascension
+        val baseFormCopy = baseForm.copy(
+                rightAscension = null
+        )
+        // Call the validateRequest method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the right ascension was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_NullDeclination_Failure() {
+        // Create a copy of the form with a null declination
+        val baseFormCopy = baseForm.copy(
+                declination = null
+        )
+        // Call the validateRequest method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the declination was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
     }
 }

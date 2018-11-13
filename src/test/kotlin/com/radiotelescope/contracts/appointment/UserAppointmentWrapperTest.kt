@@ -651,7 +651,9 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
@@ -672,7 +674,9 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
@@ -696,7 +700,9 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = false
+                        isPublic = false,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
         ) {
             fail("Should fail on precondition")
@@ -725,7 +731,9 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
@@ -755,7 +763,9 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
@@ -778,7 +788,9 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
@@ -802,7 +814,9 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
