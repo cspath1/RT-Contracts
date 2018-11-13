@@ -236,7 +236,7 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testCreatePrivate_Researcher_Success() {
-        // Make the user a guest
+        // Make the user a researcher
         testUtil.createUserRolesForUser(
                 userId = user.id,
                 role = UserRole.Role.RESEARCHER,
@@ -246,6 +246,38 @@ internal class UserAppointmentWrapperTest {
         // Simulate a login and make the user a researcher
         context.login(user.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
+
+        // Create a base request copy with a valid id that
+        // is also private
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id,
+                startTime = Date(Date().time + 100000),
+                endTime = Date(Date().time+ 150000),
+                isPublic = false
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testCreatePrivate_Admin_Success() {
+        // Make the user an admin
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        // Simulate a login and make the user an admin
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
 
         // Create a base request copy with a valid id that
         // is also private
@@ -661,8 +693,7 @@ internal class UserAppointmentWrapperTest {
                 )
 
         ) {
-            assertNull(it.success)
-            assertNotNull(it.error)
+            fail("Should fail on precondition")
         }
 
         assertNotNull(error)
@@ -684,8 +715,7 @@ internal class UserAppointmentWrapperTest {
                 )
 
         ) {
-            assertNull(it.success)
-            assertNotNull(it.error)
+            fail("Should fail on precondition")
         }
 
         assertNotNull(error)
@@ -714,6 +744,70 @@ internal class UserAppointmentWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
+    }
+
+    @Test
+    fun testValidUpdate_Private_Researcher_Success() {
+        // Make the user a researcher
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        // Simulate a log in to a researcher account
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(appointment.startTime.time + 10L),
+                        endTime = Date(appointment.endTime.time -10L),
+                        telescopeId = appointment.telescopeId,
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
+                )
+
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testValidUpdate_Admin_Private_Success() {
+        // Make the user an admin
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
+
+        // Simulate a log in to an admin account
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(appointment.startTime.time + 10L),
+                        endTime = Date(appointment.endTime.time -10L),
+                        telescopeId = appointment.telescopeId,
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
+                )
+
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
     }
 
     @Test

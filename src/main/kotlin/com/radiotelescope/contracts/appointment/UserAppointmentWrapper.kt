@@ -41,8 +41,8 @@ class UserAppointmentWrapper(
             ).execute(withAccess)
         // Otherwise, they need to be a researcher
         else
-            context.require(
-                    requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+            context.requireAny(
+                    requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
                     successCommand = factory.create(request)
             ).execute(withAccess)
     }
@@ -219,8 +219,8 @@ class UserAppointmentWrapper(
                     ).execute(withAccess)
                 // Otherwise, they need to be a researcher
                 else
-                    context.require(
-                            requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                    context.requireAny(
+                            requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
                             successCommand = factory.update(
                                     request = request
                             )
