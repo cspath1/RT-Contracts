@@ -38,5 +38,5 @@ interface IResetPasswordTokenRepository : CrudRepository<ResetPasswordToken, Lon
             "FROM reset_password_token " +
             "WHERE user_id = ?1 ",
             nativeQuery = true)
-    fun findAllByUserId(userId: Long): List<String>
+    fun findAllByUserId(userId: Long): List<ResetPasswordToken>
 }
