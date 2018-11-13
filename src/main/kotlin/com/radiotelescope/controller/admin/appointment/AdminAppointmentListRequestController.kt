@@ -1,35 +1,35 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.admin.appointment
 
 import com.google.common.collect.HashMultimap
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.appointment.ListBetweenDatesForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 /**
- * Rest Controller to handle listing appointments between two dates
+ * Rest Controller to handle listing appointment requests
  *
  * @param appointmentWrapper the [UserAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentListBetweenDates (
+class AdminAppointmentListRequestController(
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger){
     /**
-     * Execute method that is in charge of returning a list of appointments
-     * between the two given time.
+     * Execute method that is in charge of returning a user's future appointments.
      *
-     * If the fields in the [ListBetweenDatesForm] are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.appointmentListBetweenDates]
+     * If the [pageNumber] or [pageSize] request parameters are null or invalid,
+     * respond with errors. Otherwise, call the [UserAppointmentWrapper.listRequest]
      * method. If this method returns an [AccessReport], this means that user authentication
      * failed and the method should respond with errors, setting the [Result]'s
      * [HttpStatus] to [HttpStatus.FORBIDDEN].
@@ -37,19 +37,18 @@ class AppointmentListBetweenDates (
      * If not, the command object was executed, and was either a success or failure,
      * and the method should respond accordingly based on each scenario.
      */
-    @GetMapping(value = ["/api/appointments/telescopes/{telescopeId}/listBetweenDates"])
+    @GetMapping(value = ["/api/appointments/listRequested"])
     @CrossOrigin(value = ["http://localhost:8081"])
-    fun execute(@RequestBody form: ListBetweenDatesForm,
-                @PathVariable("telescopeId") telescopeId: Long
-    ): Result {
+    fun execute(@RequestParam("page") pageNumber: Int?,
+                @RequestParam("size") pageSize: Int?): Result {
         // If any of the request params are null, respond with errors
-        val errors = form.validateRequest()!!
-        if(!errors.isEmpty) {
+        if((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
+            val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment List Between Times",
+                            action = "User Request List Of Appointment Request",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
@@ -58,29 +57,27 @@ class AppointmentListBetweenDates (
         }
         // Otherwise, call the wrapper method
         else {
-            var request = form.toRequest()
-            request.telescopeId = telescopeId
-            appointmentWrapper.listBetweenDates(request) { it ->
+            val sort = Sort(Sort.Direction.ASC, "start_time")
+            appointmentWrapper.listRequest(PageRequest.of(pageNumber, pageSize, sort)) { it ->
                 //If the command was a success
-                it.success?.let{ list ->
+                it.success?.let{ page ->
                     // Create success logs
-                    list.forEach{
+                    page.content.forEach{
                         logger.createSuccessLog(
-                                info = Logger.createInfo(
-                                        Log.AffectedTable.APPOINTMENT,
-                                        action = "Appointment List Between Times",
+                                info = Logger.createInfo(Log.AffectedTable.APPOINTMENT,
+                                        action = "Requested Appointment List",
                                         affectedRecordId = it.id
                                 )
                         )
                     }
-                    result = Result(data = it)
+                    result = Result(data = page)
                 }
                 // If the command was a failure
                 it.error?.let{ errors ->
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment List Between Times",
+                                    action = "Requested Appointment List",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -94,7 +91,7 @@ class AppointmentListBetweenDates (
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Appointment List Between Times",
+                                action = "Requested Appointment List",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
@@ -106,14 +103,13 @@ class AppointmentListBetweenDates (
 
         return result
     }
-
     /**
      * Private method to return a [HashMultimap] of errors in the event
-     * that the start time and end time are invalid
+     * that the page size and page number are invalid
      */
-    private fun timeErrors(): HashMultimap<ErrorTag, String> {
+    private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
-        errors.put(ErrorTag.TIME, "Invalid start or end time parameters")
+        errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")
         return errors
     }
 }

@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.toAppointmentInfoList
@@ -14,12 +13,12 @@ import java.util.*
  * Override of the [Command] interface used to retrieve appointments
  * between start time and end time.
  *
- * @param startTime the start time of when to grab appointments
- * @param endTime the end time of when to grab the appointments
+ * @param request the [Request] object
  * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param telescopeRepo the [ITelescopeRepository] interface
  */
 class ListBetweenDates(
-        private val request:Request,
+        private val request: ListBetweenDates.Request,
         private val appointmentRepo: IAppointmentRepository,
         private val telescopeRepo: ITelescopeRepository
 ) : Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
@@ -35,21 +34,19 @@ class ListBetweenDates(
      */
     override fun execute(): SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
-with(request)
-{
-    if (!errors.isEmpty) {
-        return SimpleResult(null, errors)
-    }
 
-    val list = appointmentRepo.findAppointmentsBetweenDates(
-            startTime = start_Time,
-            endTime = end_Time,
-            telescopeId = telescope_Id
-    )
+        if(!errors.isEmpty){
+            return SimpleResult(null, errors)
+        }
 
-    val infoList = list.toAppointmentInfoList()
-    return SimpleResult(infoList, null)
-}
+        val list = appointmentRepo.findAppointmentsBetweenDates(
+                startTime = request.startTime,
+                endTime = request.endTime,
+                telescopeId = request.telescopeId
+        )
+
+        val infoList = list.toAppointmentInfoList()
+        return SimpleResult(infoList, null)
     }
 
     /**
@@ -59,24 +56,22 @@ with(request)
     private fun validateRequest(): Multimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        with (request)
-        {
+        with(request) {
             // Check to see if endTime is less than or equal to startTime
-            if (end_Time <= start_Time)
+            if (endTime <= startTime)
                 errors.put(ErrorTag.END_TIME, "End time cannot be less than or equal to start time")
-            if (!telescopeRepo.existsById(telescope_Id))
-                errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescope_Id could not be found")
+            if (!telescopeRepo.existsById(telescopeId))
+                errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
         }
         return errors
     }
 
-   data class Request(
-            var telescope_Id:Long,
-            var start_Time:Date,
-            var end_Time:Date,
-            var isPublic: Boolean
+    /**
+     * Data class containing all fields necessary for listing appointments between dates
+     */
+    data class Request(
+            var telescopeId: Long,
+            var startTime: Date,
+            var endTime: Date
     )
-   {
-
-   }
 }

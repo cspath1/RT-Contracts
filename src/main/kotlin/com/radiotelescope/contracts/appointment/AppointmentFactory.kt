@@ -72,8 +72,7 @@ interface AppointmentFactory {
     /**
      * Abstract command used to retrieve a list of appointments between two time
      *
-     * @param startTime the start time of when to grab appointments
-     * @param endTime the end time of when to grab the appointments
+     * @param request the [ListBetweenDates.Request] object
      * @return a [Command] object
      */
     fun listBetweenDates(request: ListBetweenDates.Request): Command<List<AppointmentInfo>, Multimap<ErrorTag,String>>
@@ -93,4 +92,28 @@ interface AppointmentFactory {
      * @return a [Command] object
      */
     fun publicCompletedAppointments(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to request an appointment
+     *
+     * @param request the [Request.Request] request
+     * @return a [Command] object
+     */
+    fun request(request: Request.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command user to retrieve completed appointments for a user
+     *
+     * @param pageable the [Pageable] object, that has the page number and page size
+     * @return a [Command] object
+     */
+    fun listRequest(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command user to retrieve completed appointments for a user
+     *
+     * @param request the [ApproveDenyRequest.Request] object
+     * @return a [Command] object
+     */
+    fun approveDenyRequest(request: ApproveDenyRequest.Request): Command<Long, Multimap<ErrorTag, String>>
 }

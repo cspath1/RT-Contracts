@@ -139,8 +139,7 @@ class BaseAppointmentFactory(
      * Override of the [AppointmentFactory.appointmentListBetweenDates] method
      * that will return a [ListBetweenDates] command object
      *
-     * @param startTime the start time of when to grab appointments
-     * @param endTime the end time of when to grab the appointments
+     * @param request the [ListBetweenDates.Request] object
      * @return a [ListBetweenDates] command object
      */
     override fun listBetweenDates(request: ListBetweenDates.Request): Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
@@ -176,6 +175,51 @@ class BaseAppointmentFactory(
     override fun publicCompletedAppointments(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return PublicCompletedAppointments(
                 pageable = pageable,
+                appointmentRepo = appointmentRepo
+        )
+    }
+
+    /**
+     * Override of the [AppointmentFactory.request] method that will return a [Request]
+     * command object
+     *
+     * @param request the [Request.Request] object
+     * @return a [Create] command
+     */
+    override fun request(request: Request.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return Request(
+                request = request,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo
+        )
+    }
+
+    /**
+     * Override of the [AppointmentFactory.listRequest] method that will return a [ListRequest]
+     * command object
+     *
+     * @param pageable the [Pageable] object that has the page number and page size
+     * @return a [ListRequest] command
+     */
+    override fun listRequest(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        return ListRequest(
+                pageable = pageable,
+                userRepo = userRepo,
+                appointmentRepo = appointmentRepo
+        )
+    }
+
+    /**
+     * Override of the [AppointmentFactory.approveDenyRequest] method that will return a [ListRequest]
+     * command object
+     *
+     * @param request the [ApproveDenyRequest.Request] object
+     * @return a [Command] object
+     */
+    override fun approveDenyRequest(request: ApproveDenyRequest.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return ApproveDenyRequest(
+                request = request,
                 appointmentRepo = appointmentRepo
         )
     }

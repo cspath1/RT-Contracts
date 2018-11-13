@@ -278,15 +278,14 @@ class UserAppointmentWrapper(
      * Wrapper method for the [AppointmentFactory.listBetweenDates] method that adds Spring
      * Security authentication to the [ListBetweenDates] command object.
      *
-     * @param startTime the start time of when to grab appointments
-     * @param endTime the end time of when to grab the appointments
+     * @param request the [ListBetweenDates.Request] object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun listBetweenDates(request: ListBetweenDates.Request, withAccess: (result: SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),
                 successCommand = factory.listBetweenDates(
-                request = request
+                        request = request
                 )
         ).execute(withAccess)
     }
@@ -305,6 +304,68 @@ class UserAppointmentWrapper(
                         pageable = pageable
                 )
         ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for the [AppointmentFactory.request] method that adds Spring
+     * Security authentication to the [Request] command object.
+     *
+     * @param request the [Request.Request] object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun request(request: Request.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        // If public, they only need to be a base user
+        return if (request.isPublic)
+            context.require(
+                    requiredRoles = listOf(UserRole.Role.USER),
+                    successCommand = factory.request(request)
+            ).execute(withAccess)
+        // Otherwise, they need to be a researcher
+        else
+            context.require(
+                    requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                    successCommand = factory.request(request)
+            ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for the [AppointmentFactory.listRequest] method that adds Spring
+     * Security authentication to the [ListRequest] command object.
+     *
+     * @param pageable contains the pageSize and pageNumber
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun listRequest(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if(context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.listRequest(
+                            pageable = pageable
+                    )
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
+    }
+
+    /**
+     * Wrapper method for the [AppointmentFactory.approveDenyRequest] method that adds Spring
+     * Security authentication to the [ApproveDenyRequest] command object.
+     *
+     * @param request the [ApproveDenyRequest.Request]
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun approveDenyRequest(request: ApproveDenyRequest.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if(context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.approveDenyRequest(
+                            request = request
+                    )
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
     }
 
     /**

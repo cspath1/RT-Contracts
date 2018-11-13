@@ -45,6 +45,7 @@ internal class AppointmentTest {
     private lateinit var user: User
     private lateinit var futureAppointment: Appointment
     private lateinit var pastAppointment: Appointment
+    private lateinit var requestedAppointment: Appointment
 
     private val currentTime = System.currentTimeMillis()
 
@@ -81,6 +82,15 @@ internal class AppointmentTest {
                 isPublic = true
 
         )
+
+        requestedAppointment = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED,
+                startTime = Date(currentTime + 1000000000L),
+                endTime = Date(currentTime +   3000000000L),
+                isPublic = true
+        )
     }
 
     @Test
@@ -90,7 +100,7 @@ internal class AppointmentTest {
                 pageable = PageRequest.of(0, 5)
         )
 
-        assertEquals(1, pageOfAppointments.content.size)
+        assertEquals(2, pageOfAppointments.content.size)
         assertEquals(futureAppointment.id, pageOfAppointments.content[0].id)
     }
 
@@ -257,5 +267,15 @@ internal class AppointmentTest {
             assertTrue(it.isPublic)
             assertEquals(it.status, Appointment.Status.COMPLETED)
         }
+    }
+
+    @Test
+    fun testFindRequest() {
+        val pageOfAppointments = appointmentRepo.findRequest(
+                pageable = PageRequest.of(0, 5)
+        )
+
+        assertEquals(1, pageOfAppointments.content.size)
+        assertEquals(requestedAppointment.id, pageOfAppointments.content[0].id)
     }
 }

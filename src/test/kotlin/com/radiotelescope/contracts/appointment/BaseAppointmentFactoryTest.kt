@@ -156,11 +156,11 @@ internal class BaseAppointmentFactoryTest {
     @Test
     fun listBetweenDates(){
         val cmd = factory.listBetweenDates(
-            request = ListBetweenDates.Request(
-                    start_Time = Date(System.currentTimeMillis()),
-                    end_Time = Date(System.currentTimeMillis() + 10000L),
-                    telescope_Id = 1L,
-                    isPublic = true)
+                request = ListBetweenDates.Request(
+                    startTime = Date(System.currentTimeMillis()),
+                    endTime = Date(System.currentTimeMillis() + 10000L),
+                    telescopeId = 1L
+                )
         )
 
         // Ensure it is the correct command
@@ -186,5 +186,46 @@ internal class BaseAppointmentFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is PublicCompletedAppointments)
     }
+
+    @Test
+    fun request() {
+        // Call the factory method
+        val cmd = factory.request(
+                request = Request.Request(
+                        userId = 1L,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 30000L),
+                        isPublic = true,
+                        telescopeId = 1L
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Request)
+    }
+
+    @Test
+    fun listRequest() {
+        // Call the factory method
+        val cmd = factory.listRequest(
+                pageable = PageRequest.of(0, 10)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is ListRequest)
+    }
+
+    @Test
+    fun approveDenyRequest() {
+        // Call the factory method
+        val cmd = factory.approveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = 1L,
+                        isApprove = true
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is ApproveDenyRequest)    }
 
 }
