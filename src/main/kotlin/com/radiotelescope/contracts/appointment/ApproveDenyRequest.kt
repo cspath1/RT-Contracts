@@ -47,9 +47,33 @@ class ApproveDenyRequest(
             }
             if(appointmentRepo.findById(appointmentId).get().status != Appointment.Status.REQUESTED)
                 errors.put(ErrorTag.STATUS, "Appointment $appointmentId status is not requested")
+            if(isApprove)
+                if (isOverlap())
+                    errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
         }
         return if (errors.isEmpty) null else errors
     }
+
+    /**
+     * Method responsible for check if the requested appointment
+     * conflict with the one that are already scheduled
+     */
+    private fun isOverlap(): Boolean {
+        val appointment = appointmentRepo.findById(request.appointmentId).get()
+        var isOverlap = false
+        val listAppts = appointmentRepo.findConflict(
+                endTime = appointment.endTime,
+                startTime = appointment.startTime,
+                telescopeId = appointment.telescopeId
+        )
+
+        if (!listAppts.isEmpty()) {
+            isOverlap = true
+        }
+
+        return isOverlap
+    }
+
     /**
      * Data class containing all fields necessary for approving and denying
      * an appointment

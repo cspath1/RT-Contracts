@@ -24,7 +24,7 @@ class Request(
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
      *
-     * If validation passes, it will create and persist the [Appointment] object, set [Appointment.status] to REQUESTED
+     * If validation passes, it will create and persist the [Appointment] object, set [Appointment.status] to Requested
      * and return the id in the [SimpleResult] object.
      *
      * If validation fails, it will return a [SimpleResult] with the errors
