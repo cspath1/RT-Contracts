@@ -9,6 +9,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -75,6 +76,16 @@ class RetrieveViewersByAppointmentIdController(
                     )
                     result = Result(data = it.success)
                 }
+            }?.let {
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.VIEWER,
+                                action = "Viewer Retrieve By Appointment ID",
+                                affectedRecordId = null
+                        ),
+                        errors = it.toStringMap()
+                )
+                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
         return result

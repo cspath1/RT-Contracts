@@ -8,6 +8,7 @@ import com.radiotelescope.controller.model.viewer.ViewerForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -67,7 +68,17 @@ class ViewerCreateController(
                     )
                     result = Result(data = it.success)
                 }
-            }
+            }?.let{
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.VIEWER,
+                                action = "Viewer Creation",
+                                affectedRecordId = null
+                        ),
+                        errors = it.toStringMap()
+                )
+                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+                }
         }
 return result
     }

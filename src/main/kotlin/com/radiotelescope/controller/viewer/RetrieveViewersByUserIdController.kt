@@ -13,6 +13,7 @@ import com.radiotelescope.controller.model.viewer.ViewerForm
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
@@ -89,14 +90,26 @@ class RetrieveViewersByUserIdController(
                             )
                     )
                 }
+            }?.let {
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.VIEWER,
+                                action = "Viewer Retrieve by User Id",
+                                affectedRecordId = null
+                        ),
+                        errors = it.toStringMap()
+                )
+                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
         return result
     }
-
     private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")
         return errors
     }
 }
+
+
+
