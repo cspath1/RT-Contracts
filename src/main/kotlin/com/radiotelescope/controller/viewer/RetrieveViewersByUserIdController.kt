@@ -1,56 +1,91 @@
 package com.radiotelescope.controller.viewer
 
-import com.radiotelescope.contracts.appointment.Create
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.google.common.collect.HashMultimap
+import com.radiotelescope.contracts.user.ErrorTag
+import com.radiotelescope.contracts.viewer.UserViewerWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.spring.Logger
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.appointment.CreateForm
 import com.radiotelescope.controller.model.viewer.ViewerForm
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.data.domain.PageRequest
+import org.springframework.web.bind.annotation.RequestParam
 
 class RetrieveViewersByUserIdController(
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val userViewerWrapper: UserViewerWrapper,
         logger: Logger
 ): BaseRestController(logger) {
-    /*
+
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/viewers/retrieve"])
+    @PostMapping(value = ["/api/viewers/retrieve/byUser/{sharingUserId}"])
 
-    fun execute(@RequestBody form: ViewerForm):Result {
-        //should return a multimap
-        form.validateRequest()?.let()
-        {
-            if (it == null) {
+    fun execute(@RequestBody form: ViewerForm,
+                @RequestParam("page") pageNumber: Int?,
+                @RequestParam("size") pageSize: Int?
+    ): Result {
 
+        if (pageNumber == null || pageSize == null || pageNumber < 0 || pageSize <= 0) {
+            val errors = pageErrors()
 
-                //here is where I would call the wrapper method
-                //I need to add that wrapper method
+            logger.createErrorLogs(
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.VIEWER,
+                            action = "Request for Viewers By User Id",
+                            affectedRecordId = null),
+                    errors = errors.toStringMap()
+            )
+            result = Result(errors = errors.toStringMap())
 
-                //do I actually need to make a new wrapper class?
+            return result
+        }
 
-            } else {
+        form.validateRequest()?.let {
+            logger.createErrorLogs(
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.VIEWER,
+                            action = "Request for Viewers By User Id",
+                            affectedRecordId = null),
+                    errors = it.toStringMap()
+            )
+            result = Result(data = it.toStringMap())
+        } ?: let {
+
+            userViewerWrapper.getViewersByUserId(form.toRequest(), PageRequest.of(pageNumber, pageSize))
+            {
+
                 //fail case
-                //if it is not equal to null, then we have errors
-                //populate the errors log
-
-                //Logger.info type
-                logger.createErrorLogs(
-                        info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.VIEWER,
-                                action = "Request to retrieve Viewers",
-                                affectedRecordId = null
-                        ),
-                        errors = it.toStringMap()
-                )
-
+                if (it.success == null) {
+                    logger.createErrorLogs(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.VIEWER,
+                                    action = "Request to retrieve Viewers",
+                                    affectedRecordId = null
+                            ),
+                            errors = it.error!!.toStringMap()
+                    )
+                    result = Result(data = it.error)
+                } else {
+                    //success case
+                    logger.createSuccessLog(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.VIEWER,
+                                    action = "Request for Retrieve Viewers By Appointment Id",
+                                    affectedRecordId = null
+                            )
+                    )
+                }
             }
         }
+        return result
     }
 
-    */
+    private fun pageErrors(): HashMultimap<ErrorTag, String> {
+        val errors = HashMultimap.create<ErrorTag, String>()
+        errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")
+        return errors
+    }
 }
