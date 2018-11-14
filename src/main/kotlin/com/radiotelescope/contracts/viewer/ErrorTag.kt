@@ -1,5 +1,10 @@
 package com.radiotelescope.contracts.viewer
 
+/**
+ * Error Tags specific to Viewer.
+ *
+ */
+
 enum class ErrorTag {
     USER_ID,
     VIEWER_ID,

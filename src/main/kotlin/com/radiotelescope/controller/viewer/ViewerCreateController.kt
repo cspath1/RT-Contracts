@@ -12,6 +12,13 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
+/**
+ * Controller to interface with front-end with REST API endpoints for creating a Viewer from a User
+ * @param userViewerWrapper [UserViewerWrapper] on which to call Viewer create
+ * @return BaseRestController
+ *
+ */
+
 class ViewerCreateController(
         private val userViewerWrapper: UserViewerWrapper,
         logger: Logger

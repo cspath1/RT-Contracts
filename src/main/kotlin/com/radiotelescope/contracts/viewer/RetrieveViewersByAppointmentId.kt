@@ -11,6 +11,15 @@ import com.radiotelescope.repository.viewer.Viewer
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
+/**
+ * Command class to get all viewers of an Appointment by its ID.
+ * @param viewerRepo [IViewerRepository] on which to call the query method to get the Viewers
+   @param appointmentRepo [IAppointmentRepository] to make sure the appointment exists in the DB table
+ * @param appointment_id [Long] the ID of the appointment of which we want the Viewers
+ * @param pageable [Pageable] object to get a specific Page of Viewers
+ * @return a Command object Command<MutableList<Appointment?>, Multimap<ErrorTag, String>>
+ */
+
 class RetrieveViewersByAppointmentId(
 
         val appointmentRepo: IAppointmentRepository,

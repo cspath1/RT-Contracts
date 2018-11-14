@@ -11,6 +11,15 @@ import com.radiotelescope.repository.viewer.Viewer
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
+/**
+ * Command class to get all viewers of a User.
+ * @param viewerRepo [IViewerRepository] on which to call the query method to get the Viewers
+ * @param userRepo [IUserRepository] to ensure the User and Viewer both exist in the DB tables
+ * @param request [Create.Request] a Viewer Create Request, which will eventually come from the front-end
+ * @param pageable [Pageable] object to get a specific Page of Viewers
+ * @return a Command object [Command<MutableList<Appointment>, Multimap<ErrorTag, String>>]
+ */
+
 class RetrieveViewersByUserId(
         private val viewerRepo: IViewerRepository,
         private val userRepo: IUserRepository,
@@ -33,13 +42,8 @@ class RetrieveViewersByUserId(
                 return SimpleResult(null, errors)
             }
 
-
-
-            //shared_appointment_id is apparently null
             val viewers: Page<Viewer> = viewerRepo.getViewersOfAppointmentBySharingUserId(sharinguserId, pageable)
             val sharedAppointments: MutableList<Appointment>? = arrayListOf()
-
-
 
             for (v in viewers) {
                 sharedAppointments?.add(v.appointment!!)

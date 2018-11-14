@@ -6,7 +6,10 @@ import com.radiotelescope.contracts.viewer.Create
 import com.radiotelescope.repository.appointment.Appointment
 import javax.persistence.*
 
-//For a researcher
+/**
+Entity for Viewer table.
+A Viewer is a User who can view another user's Appointment.
+ */
 
 @Entity
 @Table(name = "viewer")
@@ -22,9 +25,4 @@ data class Viewer
         var appointment: Appointment? = null
 )
 {
-
-
-
-
-
 }

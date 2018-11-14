@@ -9,9 +9,15 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import org.springframework.data.domain.Pageable
 
+/**
+Wrapper class used in the Controller classes for Viewer. Includes a context object to ensure that Researchers have the ability
+ to have viewers to their private appointments.
+ @param context [UserContext]
+ @param viewerFactory [ViewerFactory]
+ @return [Unit]
+ */
 class UserViewerWrapper(
         private val context: UserContext,
-        private val viewerRepo: IViewerRepository,
         private val viewerFactory: ViewerFactory
         )
 {

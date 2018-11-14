@@ -10,6 +10,13 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.repository.viewer.Viewer
 
+/**
+ * Command class to make a Viewer upon a Viewer Create.Request
+ * @param request [Create.Request] which has viewerId, sharinguserId, and appointment
+ * @param viewerRepo [IViewerRepository], on which .save is called to save the Viewer into the viewer table
+ * @return a Command object [Command<Long, Multimap<ErrorTag, String>>] where the success type is the sharinguserId
+ */
+
 class Create(
         private val request: Create.Request,
         private val viewerRepo: IViewerRepository,
@@ -26,8 +33,6 @@ class Create(
                 errors.put(ErrorTag.USER_ID, "user id ${sharinguserId} does not exist")
                 return SimpleResult(null, errors)
             }
-
-
             viewerRepo.save(request.toEntity())
             return SimpleResult(sharinguserId, null)
         }
@@ -46,7 +51,5 @@ class Create(
                     appointment = appointment
             )
         }
-
     }
-
 }

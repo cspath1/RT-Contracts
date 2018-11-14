@@ -11,6 +11,13 @@ import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Controller to interface with front-end with REST API endpoints for getting viewers of an Appointment, by Appointment Id
+ * @param userViewerWrapper [UserViewerWrapper] on which to call getViewersByAppointmentId
+ * @return BaseRestController
+ *
+ */
+
 class RetrieveViewersByAppointmentIdController(
         private val userViewerWrapper: UserViewerWrapper,
         logger: Logger
