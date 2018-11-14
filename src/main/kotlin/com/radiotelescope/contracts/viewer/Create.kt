@@ -18,8 +18,6 @@ class Create(
 {
 
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
-
-
         //what if the user saved into the repo hasn't scheduled
        val errors = HashMultimap.create<ErrorTag, String>()
         with (request)
@@ -34,7 +32,6 @@ class Create(
             return SimpleResult(sharinguserId, null)
         }
     }
-
 
     data class Request(
         val viewerId:Long,
