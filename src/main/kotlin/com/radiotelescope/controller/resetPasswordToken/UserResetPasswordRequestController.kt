@@ -82,7 +82,7 @@ class UserResetPasswordRequestController (
                 subject = "Password Reset Requested",
                 htmlBody = "<p>You have requested to reset you password</p>" +
                         "<p>This link will expire in one day. If it does, you must request another.</p>" +
-                        "<p>Please <a href='$resetPasswordLink'> here to reset your password</a></p>" +
+                        "<p>Please <a href='$resetPasswordLink'> click here to reset your password</a></p>" +
                         "<p>If you did not request to reset your password, please delete this email</p>"
         )
 
