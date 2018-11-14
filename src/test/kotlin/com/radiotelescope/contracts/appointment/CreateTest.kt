@@ -131,7 +131,7 @@ internal class CreateTest {
         )
 
         // Create an appointment for two hours
-        val appointment = testUtil.createAppointment(
+        testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
