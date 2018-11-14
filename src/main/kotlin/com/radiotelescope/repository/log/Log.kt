@@ -47,6 +47,7 @@ data class Log(
         LOG("Log"),
         ERROR("Error"),
         RESET_PASSWORD_TOKEN("Reset Password Token"),
-        UPDATE_EMAIL_TOKEN("Update Email Token")
+        UPDATE_EMAIL_TOKEN("Update Email Token"),
+        ACTIVATE_ACCOUNT_TOKEN("Activate Account Token")
     }
 }
