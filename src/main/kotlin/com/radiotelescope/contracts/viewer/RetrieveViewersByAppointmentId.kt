@@ -20,8 +20,6 @@ class RetrieveViewersByAppointmentId(
 
 ): Command<MutableList<Appointment?>, Multimap<ErrorTag, String>>
 {
-
-
     override fun execute(): SimpleResult<MutableList<Appointment?>, Multimap<ErrorTag, String>>
     {
 
@@ -29,7 +27,7 @@ class RetrieveViewersByAppointmentId(
 
         if (!appointmentRepo.existsById(appointment_id))
         {
-            errors.put(null, "Appointment ${appointment_id} does not exist")
+            errors.put(ErrorTag.APPOINTMENT_ID, "Appointment ${appointment_id} does not exist")
 
             return SimpleResult(null, errors)
         }
@@ -43,6 +41,7 @@ class RetrieveViewersByAppointmentId(
         }
         return SimpleResult(mutableListofAppointments, null)
         }
+
     }
 
 

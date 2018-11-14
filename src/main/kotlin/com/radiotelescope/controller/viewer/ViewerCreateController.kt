@@ -19,7 +19,7 @@ class ViewerCreateController(
 {
 
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/viewers/{sharingUserId}/create"])
+    @PostMapping(value = ["/api/viewers/create/{sharingUserId}"])
 
     fun execute(@RequestBody form: ViewerForm): Result
     {
