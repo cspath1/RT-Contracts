@@ -110,10 +110,18 @@ interface AppointmentFactory {
     fun listRequest(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 
     /**
-     * Abstract command user to retrieve completed appointments for a user
+     * Abstract command used to approve or deny an appointment request
      *
      * @param request the [ApproveDenyRequest.Request] object
      * @return a [Command] object
      */
     fun approveDenyRequest(request: ApproveDenyRequest.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command user to retrieve the available time for a user
+     *
+     * @param userId the User's Id
+     * @return a [Command] object
+     */
+    fun userAvailableTime(userId: Long): Command<Long, Multimap<ErrorTag, String>>
 }
