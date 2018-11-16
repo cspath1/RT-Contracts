@@ -12,6 +12,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 /**
  * Rest Controller to handle listing appointments between two dates
@@ -39,9 +40,14 @@ class AppointmentListBetweenDates (
      */
     @GetMapping(value = ["/api/appointments/telescopes/{telescopeId}/listBetweenDates"])
     @CrossOrigin(value = ["http://localhost:8081"])
-    fun execute(@RequestBody form: ListBetweenDatesForm,
+    fun execute(@RequestParam("startTime" ) startTime: Date,
+                @RequestParam("endTime") endTime: Date,
                 @PathVariable("telescopeId") telescopeId: Long
     ): Result {
+        val form = ListBetweenDatesForm(
+                startTime = startTime,
+                endTime = endTime
+        )
         // If any of the request params are null, respond with errors
         val errors = form.validateRequest()!!
         if(!errors.isEmpty) {
