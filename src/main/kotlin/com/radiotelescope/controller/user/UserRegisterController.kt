@@ -10,6 +10,7 @@ import com.radiotelescope.controller.model.ses.AppLink
 import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -28,7 +29,9 @@ class UserRegisterController(
         private val userWrapper: UserUserWrapper,
         private val profile: Profile,
         private val awsSesSendService: AwsSesSendService,
-        logger: Logger
+        private val userRepo: IUserRepository,
+
+        logger: Logger                            
 ) : BaseRestController(logger) {
     /**
      * Execute method that is in charge of taking the incoming
@@ -80,6 +83,10 @@ class UserRegisterController(
                         email = simpleResult.success.email,
                         token = simpleResult.success.token
                 )
+
+
+                sendEmailToAdmins(userRepo.findAllAdminEmail())
+     
             }
             // Otherwise, it was a failure
             simpleResult.error?.let {
@@ -97,6 +104,7 @@ class UserRegisterController(
                         errors = it.toStringMap()
                 )
             }
+
         }
 
         return result
@@ -116,4 +124,15 @@ class UserRegisterController(
 
         awsSesSendService.execute(sendForm)
     }
+
+       private fun sendEmailToAdmins(emails:List<String>)
+       {
+           val sendForm = SendForm(
+                   toAddresses = emails,
+                   fromAddress ="YCP Radio Telescope <cspath1@ycp.edu>",
+                   subject = "User registration",
+                   htmlBody = "<p>A new user has registered. </p>"
+           )
+           awsSesSendService.execute(sendForm)
+       }
 }

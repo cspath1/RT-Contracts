@@ -65,8 +65,8 @@ internal class ViewerTest {
     fun setUp()
     {
         //u1 shares, u2 is viewer
-        val u1: User = testUtil.createUser("123@crimescene.com")
-        val u2: User = testUtil.createUser("illustrativepurposes@poetical.com")
+        val u1: User = testUtil.createUser("123@crimescene.com", "test1")
+        val u2: User = testUtil.createUser("illustrativepurposes@poetical.com", "test2")
         u1_id = u1.id
         u2_id = u2.id
         testUtil.createUserRolesForUser(u1.id, UserRole.Role.RESEARCHER, true)
@@ -74,7 +74,6 @@ internal class ViewerTest {
 
         val a = testUtil.createAppointment(u1, 1L, Appointment.Status.COMPLETED, Date(), Date(Date().time + 1000), false)
         a1 = a
-
 
     }
     @Test

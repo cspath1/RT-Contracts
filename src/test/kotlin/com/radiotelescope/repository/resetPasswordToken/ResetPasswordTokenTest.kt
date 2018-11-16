@@ -72,7 +72,7 @@ internal class ResetPasswordTokenTest {
     @Test
     fun testFindAllByUserId() {
         //Persist user and resetPasswordToken
-        val user = testUtil.createUser("rpim1@ycp.edu")
+        val user = testUtil.createUser("rpim1@ycp.edu", "test")
         testUtil.createResetPasswordToken(user)
         testUtil.createResetPasswordToken(user)
         testUtil.createResetPasswordToken(user)

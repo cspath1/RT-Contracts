@@ -125,7 +125,7 @@ internal class BanTest {
     fun testUserAlreadyBanned()
     {
 
-        val u:User =  testUtil.createUser("jamoros@ycp.edu")
+        val u:User =  testUtil.createUser("jamoros@ycp.edu", "test4")
         u.status = User.Status.BANNED
         val user_id = u.id
         userRepo.save(u)

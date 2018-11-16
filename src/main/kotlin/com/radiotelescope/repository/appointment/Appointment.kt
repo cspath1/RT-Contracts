@@ -25,7 +25,7 @@ data class Appointment(
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", nullable = false)
     var id: Long = 0
 
     @ManyToOne

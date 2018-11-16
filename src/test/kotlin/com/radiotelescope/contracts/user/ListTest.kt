@@ -101,10 +101,10 @@ internal class ListTest {
     {
         userRepo.deleteAll()
 
-        val u: User = testUtil.createUser("hello@ycp.edu")
+        val u: User = testUtil.createUser("hello@ycp.edu", "test")
         testUtil.createUserRolesForUser(u.id, UserRole.Role.ADMIN , true )
 
-        val u2:User = testUtil.createUser("hello2@ycp.edu")
+        val u2:User = testUtil.createUser("hello2@ycp.edu", "test100")
         testUtil.createUserRolesForUser(u2.id, UserRole.Role.RESEARCHER , true )
 
         val (page, errors) = List(
