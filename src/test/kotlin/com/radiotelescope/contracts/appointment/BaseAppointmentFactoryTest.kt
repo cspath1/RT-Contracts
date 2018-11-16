@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 
@@ -49,6 +50,9 @@ internal class BaseAppointmentFactoryTest {
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
 
+    @Autowired
+    private lateinit var coordinateRepo: ICoordinateRepository
+
     private lateinit var factory: AppointmentFactory
 
     @Before
@@ -57,7 +61,8 @@ internal class BaseAppointmentFactoryTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo
         )
     }
 
@@ -70,7 +75,9 @@ internal class BaseAppointmentFactoryTest {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
-                        telescopeId = 1L
+                        telescopeId = 1L,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 )
         )
 
@@ -145,7 +152,9 @@ internal class BaseAppointmentFactoryTest {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 40000L),
                         telescopeId = 123456789,
-                        isPublic = false
+                        isPublic = false,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
         )
 
@@ -196,7 +205,9 @@ internal class BaseAppointmentFactoryTest {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
-                        telescopeId = 1L
+                        telescopeId = 1L,
+                        rightAscension = 311.0,
+                        declination = 69.0
                 )
         )
 

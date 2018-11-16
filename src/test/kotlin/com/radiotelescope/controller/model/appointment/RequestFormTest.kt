@@ -5,73 +5,94 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class UpdateFormTest {
-    private val baseForm = UpdateForm(
+internal class RequestFormTest {
+    val baseForm = RequestForm(
+            userId = 1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
-            isPublic = false,
+            isPublic = true,
             rightAscension = 311.0,
-            declination = 21.0
+            declination = 69.0
     )
 
     @Test
     fun testToRequest() {
+        assertNull(baseForm.validateRequest())
+
         val theRequest = baseForm.toRequest()
 
-        assertEquals(baseForm.startTime!!, theRequest.startTime)
-        assertEquals(baseForm.endTime!!, theRequest.endTime)
-        assertEquals(baseForm.telescopeId!!, theRequest.telescopeId)
-        assertEquals(baseForm.isPublic!!, theRequest.isPublic)
-        assertEquals(baseForm.rightAscension!!, theRequest.rightAscension, 0.00001)
-        assertEquals(baseForm.declination!!, theRequest.declination, 0.00001)
+        assertEquals(theRequest.userId, baseForm.userId!!)
+        assertEquals(theRequest.telescopeId, baseForm.telescopeId!!)
+        assertEquals(theRequest.endTime, baseForm.endTime!!)
+        assertEquals(theRequest.startTime, baseForm.startTime!!)
+        assertEquals(theRequest.isPublic, baseForm.isPublic!!)
+        assertEquals(theRequest.rightAscension, baseForm.rightAscension!!, 0.00001)
+        assertEquals(theRequest.declination, baseForm.declination!!, 0.00001)
     }
 
     @Test
-    fun testValidConstraints_Success(){
-        // Call the validateRequest method
+    fun testValidConstraints_Success() {
+        // Call the validate request method
         val errors = baseForm.validateRequest()
 
         // Make sure there were no errors
         assertNull(errors)
     }
 
+    @Test
+    fun testNullUserId_Failure() {
+        // Create a copy of the form with a null user id
+        val baseFormCopy = baseForm.copy(
+                userId = null
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the user id field was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.USER_ID].isNotEmpty())
+    }
 
     @Test
-    fun testInvalid_NullStartTime_Failure(){
-        // Create a copy of the form with a null appointmentId
+    fun testNullStartTime_Failure() {
+        // Create a copy of the form with a null start time
         val baseFormCopy = baseForm.copy(
                 startTime = null
         )
-        // Call the validateRequest method
+
+        // Call the validate request method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure start time was the reason for failure
+        // Make sure the start time was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.START_TIME].isNotEmpty())
     }
 
     @Test
-    fun testInvalid_NullEndTime_Failure(){
-        // Create a copy of the form with a null appointmentId
+    fun testNullEndTime_Failure() {
+        // Create a copy of the form with a null end time
         val baseFormCopy = baseForm.copy(
                 endTime = null
         )
-        // Call the validateRequest method
+
+        // Call the validate request method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure end time was the reason for failure
+        // Make sure the end time was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.END_TIME].isNotEmpty())
     }
 
     @Test
-    fun testInvalid_NullTelescopeId_Failure(){
-        // Create a copy of the form with a null appointmentId
+    fun testNullTelescopeId_Failure() {
+        // Create a copy of the form with a null telescope id
         val baseFormCopy = baseForm.copy(
                 telescopeId = null
         )
-        // Call the validateRequest method
+
+        // Call the validate request method
         val errors = baseFormCopy.validateRequest()
 
         // Make sure the telescope id was the reason for failure
@@ -80,26 +101,28 @@ internal class UpdateFormTest {
     }
 
     @Test
-    fun testInvalid_NullIsPublic_Failure(){
-        // Create a copy of the form with a null appointmentId
+    fun testNullPublicFlag_Failure() {
+        // Create a copy of the form with a null isPublic flag
         val baseFormCopy = baseForm.copy(
                 isPublic = null
         )
-        // Call the validateRequest method
+
+        // Call the validate request method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure the isPublic was the reason for failure
+        // Make sure the isPublic field was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.PUBLIC].isNotEmpty())
     }
 
     @Test
-    fun testInvalid_NullRightAscension_Failure() {
+    fun testNullRightAscension_Failure() {
         // Create a copy of the form with a null right ascension
         val baseFormCopy = baseForm.copy(
                 rightAscension = null
         )
-        // Call the validateRequest method
+
+        // Call the validate request method
         val errors = baseFormCopy.validateRequest()
 
         // Make sure the right ascension was the reason for failure
@@ -108,15 +131,16 @@ internal class UpdateFormTest {
     }
 
     @Test
-    fun testInvalid_NullDeclination_Failure() {
+    fun testNullDeclination_Failure() {
         // Create a copy of the form with a null declination
         val baseFormCopy = baseForm.copy(
                 declination = null
         )
-        // Call the validateRequest method
+
+        // Call the validate request method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure the declination was the reason for failure
+        // Make sure the right ascension was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
     }

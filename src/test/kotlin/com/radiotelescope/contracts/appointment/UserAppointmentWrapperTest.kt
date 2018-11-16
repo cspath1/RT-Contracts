@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -61,12 +62,17 @@ internal class UserAppointmentWrapperTest {
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
 
+    @Autowired
+    private lateinit var coordinateRepo: ICoordinateRepository
+
     private val baseCreateRequest = Create.Request(
             userId = -1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
-            isPublic = true
+            isPublic = true,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     private val baseRequestRequest = Request.Request(
@@ -74,7 +80,9 @@ internal class UserAppointmentWrapperTest {
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
-            isPublic = true
+            isPublic = true,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     private lateinit var user: User
@@ -143,7 +151,8 @@ internal class UserAppointmentWrapperTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo
         )
 
         wrapper = UserAppointmentWrapper(
@@ -187,7 +196,9 @@ internal class UserAppointmentWrapperTest {
 
         // Create a base request copy with a valid id
         val requestCopy = baseCreateRequest.copy(
-                userId = user.id
+                userId = user.id,
+                startTime = Date(Date().time + 100000),
+                endTime = Date(Date().time + 150000)
         )
 
         val error = wrapper.create(
@@ -225,7 +236,7 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testCreatePrivate_Researcher_Success() {
-        // Make the user a guest
+        // Make the user a researcher
         testUtil.createUserRolesForUser(
                 userId = user.id,
                 role = UserRole.Role.RESEARCHER,
@@ -240,6 +251,40 @@ internal class UserAppointmentWrapperTest {
         // is also private
         val requestCopy = baseCreateRequest.copy(
                 userId = user.id,
+                startTime = Date(Date().time + 100000),
+                endTime = Date(Date().time+ 150000),
+                isPublic = false
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testCreatePrivate_Admin_Success() {
+        // Make the user an admin
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        // Simulate a login and make the user an admin
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        // Create a base request copy with a valid id that
+        // is also private
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id,
+                startTime = Date(Date().time + 100000),
+                endTime = Date(Date().time+ 150000),
                 isPublic = false
         )
 
@@ -642,12 +687,13 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
-            assertNull(it.success)
-            assertNotNull(it.error)
+            fail("Should fail on precondition")
         }
 
         assertNotNull(error)
@@ -663,12 +709,13 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
-            assertNull(it.success)
-            assertNotNull(it.error)
+            fail("Should fail on precondition")
         }
 
         assertNotNull(error)
@@ -687,7 +734,9 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = false
+                        isPublic = false,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
         ) {
             fail("Should fail on precondition")
@@ -695,6 +744,70 @@ internal class UserAppointmentWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
+    }
+
+    @Test
+    fun testValidUpdate_Private_Researcher_Success() {
+        // Make the user a researcher
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        // Simulate a log in to a researcher account
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(appointment.startTime.time + 10L),
+                        endTime = Date(appointment.endTime.time -10L),
+                        telescopeId = appointment.telescopeId,
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
+                )
+
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testValidUpdate_Admin_Private_Success() {
+        // Make the user an admin
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
+
+        // Simulate a log in to an admin account
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = appointment.id,
+                        startTime = Date(appointment.startTime.time + 10L),
+                        endTime = Date(appointment.endTime.time -10L),
+                        telescopeId = appointment.telescopeId,
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
+                )
+
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
     }
 
     @Test
@@ -713,10 +826,12 @@ internal class UserAppointmentWrapperTest {
         val error = wrapper.update(
                 request = Update.Request(
                         id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        startTime = Date(appointment.startTime.time + 10L),
+                        endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
@@ -743,10 +858,12 @@ internal class UserAppointmentWrapperTest {
         val error = wrapper.update(
                 request = Update.Request(
                         id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        startTime = Date(System.currentTimeMillis() + 100000L),
+                        endTime = Date(System.currentTimeMillis() + 110000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
@@ -769,7 +886,9 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {
@@ -793,7 +912,9 @@ internal class UserAppointmentWrapperTest {
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic
+                        isPublic = appointment.isPublic,
+                        rightAscension = 311.0,
+                        declination = 42.0
                 )
 
         ) {

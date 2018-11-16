@@ -4,7 +4,7 @@ import com.radiotelescope.contracts.resetPasswordToken.ErrorTag
 import org.junit.Assert.*
 import org.junit.Test
 
-class UpdateFormTest {
+internal class UpdateFormTest {
 
     @Test
     fun testToRequest() {

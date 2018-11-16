@@ -278,4 +278,125 @@ internal class AppointmentTest {
         assertEquals(1, pageOfAppointments.content.size)
         assertEquals(requestedAppointment.id, pageOfAppointments.content[0].id)
     }
+
+    @Test
+    fun testFindConflict() {
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        // Appointment start at the startTime and end before the endTime
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(startTime),
+                endTime = Date(startTime + 1000L),
+                isPublic = true
+
+        )
+
+        // Appointment between the start and end time
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(startTime + 2000L),
+                endTime = Date(startTime + 3000L),
+                isPublic = true
+
+        )
+
+        // Appointment end at the endTime and start after the startTime
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(endTime - 1000L),
+                endTime = Date(endTime),
+                isPublic = true
+
+        )
+
+        // Appointment start before startTime and end before endTime
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(startTime - 2000L),
+                endTime = Date(startTime + 500L),
+                isPublic = true
+
+        )
+
+        // Appointment start before endTime and end after endTime
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(endTime - 500L),
+                endTime = Date(endTime + 1000L),
+                isPublic = true
+
+        )
+
+        // Appointment end at the start time
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(startTime - 1000L),
+                endTime = Date(startTime),
+                isPublic = true
+        )
+
+        // Appointment start at the end time
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(endTime),
+                endTime = Date(endTime + 2000L),
+                isPublic = true
+        )
+
+        // Appointment start before start and end after end
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(startTime - 1111L),
+                endTime = Date(endTime + 1111L),
+                isPublic = true
+        )
+
+        // Appointment status is REQUESTED
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED,
+                startTime = Date(startTime + 1010L),
+                endTime = Date(startTime + 1020L),
+                isPublic = true
+        )
+
+        // Appointment status is CANCELED
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.CANCELED,
+                startTime = Date(startTime + 1030L),
+                endTime = Date(startTime + 1040L),
+                isPublic = true
+
+        )
+
+
+        val listOfAppointments = appointmentRepo.findConflict(
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                telescopeId = 1L
+        )
+
+        assertEquals(8, listOfAppointments.size)
+    }
 }

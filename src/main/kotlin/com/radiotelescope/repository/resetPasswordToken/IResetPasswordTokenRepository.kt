@@ -1,5 +1,6 @@
 package com.radiotelescope.repository.resetPasswordToken
 
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
@@ -26,4 +27,16 @@ interface IResetPasswordTokenRepository : CrudRepository<ResetPasswordToken, Lon
      * @return a [ResetPasswordToken]
      */
     fun findByToken(token: String): ResetPasswordToken
+
+    /**
+     * Spring Repository method that will grab all [ResetPasswordToken] by the User's Id
+     *
+     * @param userId the User's Id
+     * @return a [List] of [ResetPasswordToken]
+     */
+    @Query(value = "SELECT *" +
+            "FROM reset_password_token " +
+            "WHERE user_id = ?1 ",
+            nativeQuery = true)
+    fun findAllByUserId(userId: Long): List<ResetPasswordToken>
 }

@@ -14,5 +14,7 @@ enum class ErrorTag{
     PAGE_PARAMS,
     CATEGORY_OF_SERVICE,
     ALLOTTED_TIME,
-    OVERLAP
+    OVERLAP,
+    RIGHT_ASCENSION,
+    DECLINATION
 }

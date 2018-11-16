@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -39,7 +40,9 @@ internal class AppointmentInfoTest {
                 userId = 1L,
                 userFirstName = "Cody",
                 userLastName = "Spath",
-                status = Appointment.Status.SCHEDULED.label
+                status = Appointment.Status.SCHEDULED.label,
+                rightAscension = 311.0,
+                declination = 69.0
         )
 
         assertEquals(1L, appointmentInfo.id)
@@ -51,6 +54,13 @@ internal class AppointmentInfoTest {
         assertEquals("Cody", appointmentInfo.userFirstName)
         assertEquals("Spath", appointmentInfo.userLastName)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
+
+        if (appointmentInfo.rightAscension == null || appointmentInfo.declination == null)
+            fail("Should not be null")
+        else {
+            assertEquals(311.0, appointmentInfo.rightAscension!!, 0.00001)
+            assertEquals(69.0, appointmentInfo.declination!!, 0.00001)
+        }
     }
 
     @Test
@@ -71,9 +81,15 @@ internal class AppointmentInfoTest {
                 isPublic = true
         )
 
+        val coordinate = Coordinate(
+                rightAscension = 311.0,
+                declination = 69.0
+        )
+
         appointment.user = user
         appointment.id = 1L
         appointment.status = Appointment.Status.SCHEDULED
+        appointment.coordinate = coordinate
 
         val appointmentInfo = AppointmentInfo(appointment)
 
@@ -86,6 +102,13 @@ internal class AppointmentInfoTest {
         assertEquals("Cody", appointmentInfo.userFirstName)
         assertEquals("Spath", appointmentInfo.userLastName)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
+
+        if (appointmentInfo.declination == null || appointmentInfo.rightAscension == null)
+            fail("Should not be null")
+        else {
+            assertEquals(appointment.coordinate?.rightAscension!!, appointmentInfo.rightAscension!!, 0.00001)
+            assertEquals(appointment.coordinate?.declination!!, appointmentInfo.declination!!, 0.00001)
+        }
     }
 
 

@@ -11,7 +11,9 @@ internal class CreateFormTest {
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
-            isPublic = true
+            isPublic = true,
+            rightAscension = 311.0,
+            declination = 69.0
     )
 
     @Test
@@ -26,6 +28,8 @@ internal class CreateFormTest {
         assertEquals(theRequest.endTime, baseForm.endTime!!)
         assertEquals(theRequest.startTime, baseForm.startTime!!)
         assertEquals(theRequest.isPublic, baseForm.isPublic!!)
+        assertEquals(theRequest.rightAscension, baseForm.rightAscension!!, 0.00001)
+        assertEquals(theRequest.declination, baseForm.declination!!, 0.00001)
     }
 
     @Test
@@ -110,5 +114,35 @@ internal class CreateFormTest {
         // Make sure the isPublic field was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.PUBLIC].isNotEmpty())
+    }
+
+    @Test
+    fun testNullRightAscension_Failure() {
+        // Create a copy of the form with a null right ascension
+        val baseFormCopy = baseForm.copy(
+                rightAscension = null
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the right ascension was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+    }
+
+    @Test
+    fun testNullDeclination_Failure() {
+        // Create a copy of the form with a null declination
+        val baseFormCopy = baseForm.copy(
+                declination = null
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the right ascension was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
     }
 }

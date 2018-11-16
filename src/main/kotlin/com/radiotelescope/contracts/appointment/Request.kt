@@ -7,6 +7,8 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -15,13 +17,14 @@ class Request(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val telescopeRepo: ITelescopeRepository
+        private val telescopeRepo: ITelescopeRepository,
+        private val coordinateRepo: ICoordinateRepository
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
      *
-     * If validation passes, it will create and persist the [Appointment] object, set [Appointment.status] to REQUESTED
+     * If validation passes, it will create and persist the [Appointment] object, set [Appointment.status] to Requested
      * and return the id in the [SimpleResult] object.
      *
      * If validation fails, it will return a [SimpleResult] with the errors
@@ -29,8 +32,14 @@ class Request(
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = request.toEntity()
+
+            val theCoordinate = request.toCoordinate()
+            coordinateRepo.save(request.toCoordinate())
+
             theAppointment.user = userRepo.findById(request.userId).get()
             theAppointment.status = Appointment.Status.REQUESTED
+            theAppointment.coordinate = theCoordinate
+
             appointmentRepo.save(theAppointment)
             return SimpleResult(theAppointment.id, null)
         }
@@ -58,6 +67,10 @@ class Request(
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime < Date())
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
+            if (rightAscension > 360 || rightAscension < 0)
+                errors.put(ErrorTag.RIGHT_ASCENSION, "Right Ascension must be between 0 - 360")
+            if (declination > 90 || declination < 0)
+                errors.put(ErrorTag.DECLINATION, "Declination must be between 0 - 90")
         }
         return if (errors.isEmpty) null else errors
     }
@@ -71,7 +84,9 @@ class Request(
             val startTime: Date,
             val endTime: Date,
             val telescopeId: Long,
-            val isPublic: Boolean
+            val isPublic: Boolean,
+            val rightAscension: Double,
+            val declination: Double
     ) : BaseCreateRequest<Appointment> {
         /**
          * Concrete implementation of the [BaseCreateRequest.toEntity] method that
@@ -83,6 +98,13 @@ class Request(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic
+            )
+        }
+
+        fun toCoordinate(): Coordinate {
+            return Coordinate(
+                    rightAscension = rightAscension,
+                    declination = declination
             )
         }
     }

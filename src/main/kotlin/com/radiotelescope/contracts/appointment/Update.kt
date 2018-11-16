@@ -10,9 +10,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
-import com.radiotelescope.service.HasOverlap
 import java.util.*
-import com.radiotelescope.service.ses.AwsSesSendService
 
 /**
  * Command class for editing an appointment
@@ -20,7 +18,7 @@ import com.radiotelescope.service.ses.AwsSesSendService
  * @param request of type [Update.Request]
  * @param appointmentRepo of type [IAppointmentRepository]
  * @param telescopeRepo of type [ITelescopeRepository]
- * @param userRoleRepo of type [IUserRoleRepository]
+ *
  */
 class Update(
         private val request: Update.Request,
@@ -37,8 +35,6 @@ class Update(
      *
      * If validation fails, it will return a [SimpleResult] with the errors
      */
-
-   // var hasOverlap = false
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
 
@@ -62,14 +58,16 @@ class Update(
         with(request) {
             if (appointmentRepo.existsById(id)) {
                 if(telescopeRepo.existsById(telescopeId)) {
-                    // TODO: Check for scheduling conflict later on
                     if (startTime.before(Date()))
                         errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
-                    if (overlapExists())
-                        errors.put(ErrorTag.OVERLAP, "Appointment cannot be rescheduled: Conflict with an already-scheduled appointment")
-
+                    if (rightAscension > 360 || rightAscension < 0)
+                        errors.put(ErrorTag.RIGHT_ASCENSION, "Right Ascension must be between 0 - 360")
+                    if (declination > 90 || declination < 0)
+                        errors.put(ErrorTag.DECLINATION, "Declination must be between 0 - 90")
+                    if (isOverlap())
+                        errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
                 }
                 else{
                     errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId not found")
@@ -85,9 +83,9 @@ class Update(
             return errors
 
         errors = validateAvailableAllottedTime()
+
         return errors
     }
-
 
     /**
      * Method responsible for checking if a user has enough available time
@@ -125,29 +123,6 @@ class Update(
         return errors
     }
 
-
-    private fun overlapExists():Boolean
-    {
-        var isOverlap = false
-        val hou = HasOverlap(appointmentRepo)
-        val listAppts = hou.hasOverlapUpdate(request)
-
-        if (!listAppts.isEmpty())
-        { //if it's not empty,  there IS an overlap, cannot schedule
-            isOverlap = true
-            for (a in listAppts)
-            {
-                //if the ONLY appointment that conflicts with the requested appt is ITSELF, then no conflict
-                if (listAppts.size == 1 && a.id == request.id)
-                {
-                    isOverlap = false
-                    break
-                }
-            }
-        }
-        return isOverlap
-    }
-
     /**
      * Determine the amount of allotted time currently being used by the user.
      * This more or less just frees up the allotted time for the database record
@@ -168,6 +143,26 @@ class Update(
     }
 
     /**
+     * Method responsible for check if the requested appointment
+     * conflict with the one that are already scheduled
+     */
+    private fun isOverlap(): Boolean {
+        var isOverlap = false
+        val listAppts = appointmentRepo.findConflict(
+                endTime = request.endTime,
+                startTime = request.startTime,
+                telescopeId = request.telescopeId
+        )
+
+        if(listAppts.size > 1)
+            isOverlap = true
+        else if(listAppts.size == 1 && listAppts[0].id != request.id)
+            isOverlap = true
+
+        return isOverlap
+    }
+
+    /**
      * Data class containing all fields necessary for appointment update. Implements the
      * [BaseUpdateRequest] interface and overrides the [BaseUpdateRequest.updateEntity]
      * method
@@ -177,7 +172,9 @@ class Update(
             val telescopeId: Long,
             val startTime: Date,
             val endTime: Date,
-            val isPublic: Boolean
+            val isPublic: Boolean,
+            val rightAscension: Double,
+            val declination: Double
     ): BaseUpdateRequest<Appointment> {
         /**
          * Override of the [BaseUpdateRequest.updateEntity] method that
@@ -188,7 +185,12 @@ class Update(
             entity.telescopeId = telescopeId
             entity.startTime = startTime
             entity.endTime = endTime
-            entity.isPublic
+            entity.isPublic = isPublic
+
+            if (entity.coordinate != null) {
+                entity.coordinate!!.declination = declination
+                entity.coordinate!!.rightAscension = rightAscension
+            }
 
             return entity
         }

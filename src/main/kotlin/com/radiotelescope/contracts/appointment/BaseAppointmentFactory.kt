@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -23,7 +24,8 @@ class BaseAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val coordinateRepo: ICoordinateRepository
 ) : AppointmentFactory {
     /**
      * Override of the [AppointmentFactory.retrieve] method that will return a [Retrieve]
@@ -69,7 +71,8 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo
         )
     }
 
@@ -191,7 +194,8 @@ class BaseAppointmentFactory(
                 request = request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo
         )
     }
 

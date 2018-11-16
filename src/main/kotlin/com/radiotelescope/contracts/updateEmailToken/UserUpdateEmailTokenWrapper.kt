@@ -34,19 +34,14 @@ class UserUpdateEmailTokenWrapper (
         if (context.currentUserId() != null) {
             val theUser = userRepo.findById(context.currentUserId()!!)
 
-            // If the user exists, they must either be the owner or an admin
-            if (theUser.isPresent) {
-                return if (theUser.isPresent && theUser.get().id == request.userId) {
-                    context.require(
-                            requiredRoles = listOf(UserRole.Role.USER),
-                            successCommand = factory.requestUpdateEmail(request)
-                    ).execute(withAccess)
-                } else {
-                    context.require(
-                            requiredRoles = listOf(UserRole.Role.ADMIN),
-                            successCommand = factory.requestUpdateEmail(request)
-                    ).execute(withAccess)
-                }
+            // If the user exists, they must either be the owner
+            if (theUser.isPresent && theUser.get().id == request.userId) {
+                return context.require(
+                        requiredRoles = listOf(UserRole.Role.USER),
+                        successCommand = factory.requestUpdateEmail(
+                                request = request
+                        )
+                ).execute(withAccess)
             }
         }
 
