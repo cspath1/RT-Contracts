@@ -60,7 +60,8 @@ internal class AuthenticateTest {
         // Persist the User with the hashed password
         val user = testUtil.createUserWithEncodedPassword(
                 email = "cspath1@ycp.edu",
-                password = encodedPassword
+                password = encodedPassword,
+                accountHash = "Test Account 1"
         )
 
         // Make sure this was correctly executed

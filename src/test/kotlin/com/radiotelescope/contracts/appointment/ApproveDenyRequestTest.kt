@@ -53,7 +53,11 @@ internal class ApproveDenyRequestTest {
     @Before
     fun setUp() {
         // Persist User and Appointment
-        user = testUtil.createUser("rpim@ycp.edu")
+        user = testUtil.createUser(
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+
         appointment = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,

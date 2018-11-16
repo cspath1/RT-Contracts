@@ -61,7 +61,8 @@ internal class MakePublicTest {
 
         // Persist the user
         user = testUtil.createUser(
-                email = "rpim@ycp.edu"
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account"
         )
 
         // Persist the appointment

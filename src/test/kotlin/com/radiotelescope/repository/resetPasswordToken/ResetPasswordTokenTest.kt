@@ -42,7 +42,10 @@ internal class ResetPasswordTokenTest {
     @Before
     fun init(){
         val resetPasswordToken = testUtil.createResetPasswordToken(
-                testUtil.createUser("rpim@ycp.edu")
+                testUtil.createUser(
+                        email = "rpim@ycp.edu",
+                        accountHash = "Test Account 1"
+                )
         )
 
         token = resetPasswordToken.token

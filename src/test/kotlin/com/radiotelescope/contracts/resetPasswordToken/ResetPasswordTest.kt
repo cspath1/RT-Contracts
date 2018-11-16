@@ -50,7 +50,11 @@ internal class ResetPasswordTest {
     @Before
     fun init(){
         // Persist the user and token
-        user = testUtil.createUser("rpim@ycp.edu")
+        user = testUtil.createUser(
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+
         token = testUtil.createResetPasswordToken(user)
     }
 

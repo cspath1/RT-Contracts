@@ -44,7 +44,12 @@ internal class ChangePasswordTest {
     fun setUp() {
         // Persist a user
         val thePassword = User.rtPasswordEncoder.encode("Password1@")
-        val theUser = testUtil.createUserWithEncodedPassword("cspath1@ycp.edu", thePassword)
+        val theUser = testUtil.createUserWithEncodedPassword(
+                email = "cspath1@ycp.edu",
+                password = thePassword,
+                accountHash = "Test Account 1"
+        )
+
         userId = theUser.id
     }
 

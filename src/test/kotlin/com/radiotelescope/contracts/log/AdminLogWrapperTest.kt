@@ -61,7 +61,10 @@ internal class AdminLogWrapperTest {
     @Before
     fun setUp() {
         // Persist a user
-        user = testUtil.createUser("cspath1@ycp.edu")
+        user = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account"
+        )
 
         // Persist a log
         testUtil.createLog(

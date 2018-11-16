@@ -111,12 +111,14 @@ internal class UserUserWrapperTest {
         // Persist the User with the hashed password
         val user = testUtil.createUserWithEncodedPassword(
                 email = "cspath1@ycp.edu",
-                password = passwordEncoder.encode("Password")
+                password = passwordEncoder.encode("Password"),
+                accountHash = "Test Account 1"
         )
 
         val otherUser = testUtil.createUserWithEncodedPassword(
                 email = "codyspath@gmail.com",
-                password = passwordEncoder.encode("Password")
+                password = passwordEncoder.encode("Password"),
+                accountHash = "Test Account 2"
         )
 
         userId = user.id

@@ -76,8 +76,14 @@ internal class UserRFDataWrapperTest {
         ownerUser = userRepo.findAll().first()
 
         // Persist two more users
-        differentUser = testUtil.createUser("cspath617@gmail.com")
-        adminUser = testUtil.createUser("admin@radiotele.com")
+        differentUser = testUtil.createUser(
+                email = "cspath617@gmail.com",
+                accountHash = "Test Account 1"
+        )
+        adminUser = testUtil.createUser(
+                email = "admin@radiotele.com",
+                accountHash = "Test Account 2"
+        )
 
         factory = BaseRFDataFactory(
                 appointmentRepo = appointmentRepo,

@@ -5,8 +5,8 @@ INSERT INTO telescope VALUES(1, 1);
 INSERT INTO coordinate VALUES(1, 311.0, 69.0);
 
 -- Then create a user --
-INSERT INTO user(id, first_name, last_name, email_address, company, phone_number, password, active, status)
-VALUES(1, 'Cody', 'Spath', 'cspath1@ycp.edu', 'York College of PA', '717-823-2216', 'pass1234', 1, 'ACTIVE');
+INSERT INTO user(id, first_name, last_name, email_address, company, phone_number, password, active, status, account_hash)
+VALUES(1, 'Cody', 'Spath', 'cspath1@ycp.edu', 'York College of PA', '717-823-2216', 'pass1234', 1, 'ACTIVE', 'Test Account');
 
 -- Then an appointment --
 INSERT INTO appointment(id, user_id, start_time, end_time, status, telescope_id, public, coordinate_id)

@@ -48,7 +48,11 @@ internal class RetrieveTest {
     @Before
     fun setUp() {
         // Instantiate and persist a User Entity Object
-        val user = testUtil.createUser("cspath1@ycp.edu")
+        val user = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+
         id = user.id
     }
 

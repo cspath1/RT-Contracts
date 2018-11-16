@@ -45,7 +45,10 @@ internal class PublicCompletedAppointmentsTest {
     @Before
     fun setUp() {
         // Persist a user
-        val user = testUtil.createUser("cspath1@ycp.edu")
+        val user = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account"
+        )
 
         // Persist three completed public appointments
         // One of which is private

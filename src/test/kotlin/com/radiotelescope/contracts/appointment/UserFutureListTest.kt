@@ -64,8 +64,14 @@ internal class UserFutureListTest {
     @Before
     fun init(){
         // Persist the users
-        user1 = testUtil.createUser("rpim@ycp.edu")
-        user2 = testUtil.createUser("rathanapim1@yahoo.com")
+        user1 = testUtil.createUser(
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+        user2 = testUtil.createUser(
+                email = "rathanapim1@yahoo.com",
+                accountHash = "Test Account 2"
+        )
 
         // Set the userId
         user1Id = userRepo.findByEmail(user1.email)!!.id
@@ -80,9 +86,6 @@ internal class UserFutureListTest {
                 endTime = futureApptCreateRequest.endTime,
                 isPublic = futureApptCreateRequest.isPublic
         )
-
-
-
     }
 
     @Test

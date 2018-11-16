@@ -100,10 +100,22 @@ internal class UserAppointmentWrapperTest {
     @Before
     fun setUp() {
         // Persist a user
-        user = testUtil.createUser("cspath1@ycp.edu")
-        admin = testUtil.createUser("rpim@ycp.edu")
-        user2 = testUtil.createUser("rathanapim@yahoo.com")
-        notAdminYet = testUtil.createUser("rathanapim1@yahoo.com")
+        user = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+        admin = testUtil.createUser(
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account 2"
+        )
+        user2 = testUtil.createUser(
+                email = "rathanapim@yahoo.com",
+                accountHash = "Test Account 3"
+        )
+        notAdminYet = testUtil.createUser(
+                email = "rathanapim1@yahoo.com",
+                accountHash = "Test Account 4"
+        )
 
         // Persist Role.ADMIN for admin
         testUtil.createUserRolesForUser(
@@ -316,7 +328,11 @@ internal class UserAppointmentWrapperTest {
     fun testRetrieve_NotOwner_Private_Failure() {
         // Persist a new user, and attempt to access
         // the appointment as this user
-        val newUser = testUtil.createUser("michaelscott@dundermifflin.com")
+        val newUser = testUtil.createUser(
+                email = "michaelscott@dundermifflin.com",
+                accountHash = "Test Account 5"
+        )
+
         context.login(newUser.id)
         context.currentRoles.add(UserRole.Role.USER)
 
@@ -338,7 +354,11 @@ internal class UserAppointmentWrapperTest {
     fun testRetrieve_Admin_Private_Success() {
         // Persist a new user, and attempt to access
         // the appointment as this user
-        val newUser = testUtil.createUser("michaelscott@dundermifflin.com")
+        val newUser = testUtil.createUser(
+                email = "michaelscott@dundermifflin.com",
+                accountHash = "Test Account 5"
+        )
+
         context.login(newUser.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
 
@@ -356,7 +376,11 @@ internal class UserAppointmentWrapperTest {
     fun testRetrieve_NotOwner_Public_Success() {
         // Persist a new user, and attempt to access
         // the appointment as this user
-        val newUser = testUtil.createUser("michaelscott@dundermifflin.com")
+        val newUser = testUtil.createUser(
+                email = "michaelscott@dundermifflin.com",
+                accountHash = "Test Account 5"
+        )
+
         context.login(newUser.id)
         context.currentRoles.add(UserRole.Role.USER)
 
@@ -1254,5 +1278,40 @@ internal class UserAppointmentWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testValidUserAvailableTime_LoggedIn_Success(){
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.userAvailableTime(
+                userId = user.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testInvalidUserAvailableTime_NotLoggedIn_Success(){
+        val error = wrapper.userAvailableTime(
+                userId = user.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 }

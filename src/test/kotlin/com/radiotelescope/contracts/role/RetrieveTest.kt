@@ -47,7 +47,11 @@ internal class RetrieveTest {
     @Before
     fun setUp() {
         // Create a user and some roles
-        val user = testUtil.createUser("cspath1@ycp.edu")
+        val user = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+
         val roles = testUtil.createUserRolesForUser(
                 userId = user.id,
                 role = UserRole.Role.STUDENT,

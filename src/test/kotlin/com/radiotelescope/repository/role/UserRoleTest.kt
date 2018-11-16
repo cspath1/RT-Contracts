@@ -44,8 +44,14 @@ internal class UserRoleTest {
     @Before
     fun setUp() {
         // Create two users and roles for those users
-        firstUser = testUtil.createUser("cspath1@ycp.edu")
-        val secondUser = testUtil.createUser("spathcody@gmail.com")
+        firstUser = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+        val secondUser = testUtil.createUser(
+                email = "spathcody@gmail.com",
+                accountHash = "Test Account 2"
+        )
 
         val firstRoles = testUtil.createUserRolesForUser(
                 userId = firstUser.id,

@@ -48,6 +48,9 @@ class Register(
             val theToken = generateActivateAccountToken(newUser)
 
             generateUserRoles(newUser)
+            val hash = generateUniqueHash()
+
+            newUser.accountHash = hash
 
             val theResponse = Response(
                     id = newUser.id,
@@ -145,6 +148,15 @@ class Register(
         categoryRole.approved = request.categoryOfService == UserRole.Role.GUEST
 
         userRoleRepo.save(categoryRole)
+    }
+
+    private fun generateUniqueHash(): String {
+        var hash = User.generateAccountHash()
+
+        while (userRepo.countByAccountHash(hash) > 0)
+            hash = User.generateAccountHash()
+
+        return hash
     }
 
     /**

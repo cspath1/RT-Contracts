@@ -42,7 +42,10 @@ internal class UpdateEmailTokenTest {
     @Before
     fun init() {
         testUtil.createUpdateEmailToken(
-                user = testUtil.createUser("rpim@ycp.edu"),
+                user = testUtil.createUser(
+                        email = "rpim@ycp.edu",
+                        accountHash = "Test Account 1"
+                ),
                 token = token,
                 email = email
         )

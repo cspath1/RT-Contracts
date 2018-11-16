@@ -74,8 +74,14 @@ internal class UserUpdateEmailTokenWrapperTest {
         )
 
         // Persist the users
-        user = testUtil.createUser("rpim@ycp.edu")
-        otherUser = testUtil.createUser("rpim1@ycp.edu")
+        user = testUtil.createUser(
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+        otherUser = testUtil.createUser(
+                email = "rpim1@ycp.edu",
+                accountHash = "Test Account 2"
+        )
 
         // Set the user Id
         userId = user.id

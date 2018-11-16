@@ -71,7 +71,11 @@ internal class RequestTest {
     @Before
     fun setUp() {
         // Persist User and Telescope
-        user = testUtil.createUser("rpim@ycp.edu")
+        user = testUtil.createUser(
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account 1"
+        )
+
         telescope = testUtil.createTelescope()
     }
 

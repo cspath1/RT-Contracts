@@ -49,7 +49,10 @@ internal class LogListTest {
     @Before
     fun setUp() {
         // Persist a user
-        val theUser = testUtil.createUser("cspath1@ycp.edu")
+        val theUser = testUtil.createUser(
+                email = "cspath1@ycp.edu",
+                accountHash = "Test Account 1"
+        )
 
         // Create a few logs without user ids
         for (i in 0..9) {

@@ -68,7 +68,8 @@ internal class UpdateTest {
 
         // Persist the user
         user = testUtil.createUser(
-                email = "rpim@ycp.edu"
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account"
         )
         userId = user.id
 
