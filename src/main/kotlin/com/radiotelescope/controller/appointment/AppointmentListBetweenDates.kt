@@ -49,8 +49,8 @@ class AppointmentListBetweenDates (
                 endTime = endTime
         )
         // If any of the request params are null, respond with errors
-        val errors = form.validateRequest()!!
-        if(!errors.isEmpty) {
+        val errors = form.validateRequest()
+        if(errors != null) {
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
@@ -64,7 +64,7 @@ class AppointmentListBetweenDates (
         }
         // Otherwise, call the wrapper method
         else {
-            var request = form.toRequest()
+            val request = form.toRequest()
             request.telescopeId = telescopeId
             appointmentWrapper.listBetweenDates(request) { it ->
                 //If the command was a success
