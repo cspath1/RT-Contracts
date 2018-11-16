@@ -79,7 +79,7 @@ class AppointmentListBetweenDates (
                                 )
                         )
                     }
-                    result = Result(data = it)
+                    result = Result(data = list)
                 }
                 // If the command was a failure
                 it.error?.let{ errors ->
