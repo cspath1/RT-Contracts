@@ -4,6 +4,7 @@ import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -22,7 +23,8 @@ import java.util.*
 class RemoveExpiredActivateAccountTokens(
         private val accountActivateRepo: IAccountActivateTokenRepository,
         private val userRepo: IUserRepository,
-        private val logRepo: ILogRepository
+        private val logRepo: ILogRepository,
+        private val userRoleRepo: IUserRoleRepository
 ) {
     /**
      * Iterate through all [AccountActivateToken] records (and associated user
@@ -33,6 +35,7 @@ class RemoveExpiredActivateAccountTokens(
         accountActivateRepo.findAll().forEach {
             if (it.expirationDate.before(Date())) {
                 accountActivateRepo.delete(it)
+                userRoleRepo.deleteAll(userRoleRepo.findAllByUserId(it.user.id))
                 userRepo.deleteById(it.user.id)
                 createLogs(it)
             }
