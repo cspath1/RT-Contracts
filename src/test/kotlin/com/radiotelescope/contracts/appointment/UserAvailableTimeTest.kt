@@ -56,7 +56,10 @@ internal class UserAvailableTimeTest {
 
     @Before
     fun setUp() {
-        user = testUtil.createUser("rpim@ycp.edu")
+        user = testUtil.createUser(
+                email = "rpim@ycp.edu",
+                accountHash = "Test Account"
+        )
     }
 
     @Test
