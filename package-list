@@ -37,6 +37,7 @@ com.radiotelescope.repository.role
 com.radiotelescope.repository.telescope
 com.radiotelescope.repository.updateEmailToken
 com.radiotelescope.repository.user
+com.radiotelescope.schedule
 com.radiotelescope.security
 com.radiotelescope.security.service
 com.radiotelescope.service.ses
