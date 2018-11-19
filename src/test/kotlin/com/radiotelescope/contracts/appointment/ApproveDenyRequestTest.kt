@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
@@ -147,4 +148,487 @@ internal class ApproveDenyRequestTest {
 
         assertTrue(errors!![ErrorTag.STATUS].isNotEmpty())
     }
+
+    @Test
+    fun testInvalidSC_StartAtStart_EndBeforeEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(startTime + 1000L),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_BetweenEndAndStart_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime + 1000L),
+                endTime = Date(endTime - 1000L),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartAfterStart_EndAtEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(endTime - 1000L),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartBeforeStart_EndBeforeEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime - 2000L),
+                endTime = Date(startTime + 500L),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartBeforeEnd_EndAfterEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(endTime - 500L),
+                endTime = Date(endTime + 1000L),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_EndAtStart_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime - 1000L),
+                endTime = Date(startTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartAtEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(endTime),
+                endTime = Date(endTime + 2000L),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartBeforeStart_EndAfterEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime - 1111L),
+                endTime = Date(endTime + 1111L),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidSC_StartAtStart_EndAtEnd_Failure(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testValidSC_Requested_Success(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime + 1L),
+                endTime = Date(endTime + 1L),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNotNull(id)
+        assertNull(errors)
+    }
+
+    @Test
+    fun testValidSC_Canceled_Success(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.CANCELED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime + 1L),
+                endTime = Date(endTime + 1L),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = true
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNotNull(id)
+        assertNull(errors)
+    }
+
+    @Test
+    fun testValidSC_ConflictButApproveFalse_Success(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED
+        )
+
+        val conflict = testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED
+        )
+
+        val (id, errors) = ApproveDenyRequest(
+                request = ApproveDenyRequest.Request(
+                        appointmentId = conflict.id,
+                        isApprove = false
+                ),
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNotNull(id)
+        assertNull(errors)
+    }
+
 }

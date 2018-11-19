@@ -131,8 +131,7 @@ class Create(
      * Method responsible for check if the requested appointment
      * conflict with the one that are already scheduled
      */
-    private fun isOverlap(): Boolean
-    {
+    private fun isOverlap(): Boolean {
         var isOverlap = false
         val listAppts = appointmentRepo.findConflict(
                 endTime = request.endTime,

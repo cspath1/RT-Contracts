@@ -116,26 +116,6 @@ internal class UserUpdateEmailTokenWrapperTest {
     }
 
     @Test
-    fun testValid_RequestUpdateEmail_Admin_Success(){
-        // Simulate a login
-        context.login(otherUserId)
-        context.currentRoles.add(UserRole.Role.ADMIN)
-
-        val error = wrapper.requestUpdateEmail(
-                CreateUpdateEmailToken.Request(
-                        userId = userId,
-                        email = "rpim1234@ycp.edu",
-                        emailConfirm = "rpim1234@ycp.edu"
-                )
-        ){
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
-    }
-
-    @Test
     fun testInvalid_RequestUpdateEmail_NotOwner_Failure(){
         // Simulate a login
         context.login(otherUserId)
@@ -153,7 +133,7 @@ internal class UserUpdateEmailTokenWrapperTest {
         }
 
         assertNotNull(error)
-        Assert.assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+        Assert.assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 
     @Test

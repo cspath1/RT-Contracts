@@ -1279,4 +1279,39 @@ internal class UserAppointmentWrapperTest {
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
+
+    @Test
+    fun testValidUserAvailableTime_LoggedIn_Success(){
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.userAvailableTime(
+                userId = user.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testInvalidUserAvailableTime_NotLoggedIn_Success(){
+        val error = wrapper.userAvailableTime(
+                userId = user.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
 }

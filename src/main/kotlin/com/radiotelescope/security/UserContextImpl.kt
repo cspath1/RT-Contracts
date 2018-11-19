@@ -52,7 +52,7 @@ class UserContextImpl(
 
             // Check if the token's user id is null or refers to a non-existent user
             if (!userRepo.existsById(session.userId))
-                missingRoles?.add(UserRole.Role.GUEST)
+                missingRoles?.add(UserRole.Role.USER)
             // Otherwise, we can check if the proper roles
             else {
                 // Grab all of the roles and check them agains the required list

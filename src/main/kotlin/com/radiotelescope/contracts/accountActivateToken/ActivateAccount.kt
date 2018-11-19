@@ -45,7 +45,7 @@ class ActivateAccount(
     private fun activateUser(): Long {
         val theToken = accountActivateTokenRepo.findByToken(token)
 
-        val theUser = theToken.user!!
+        val theUser = theToken.user
         theUser.status = User.Status.ACTIVE
         theUser.active = true
 

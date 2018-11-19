@@ -369,6 +369,22 @@ class UserAppointmentWrapper(
     }
 
     /**
+     * Wrapper method for the [AppointmentFactory.userAvailableTime] method that adds Spring
+     * Security authentication to the [UserAvailableTime] command object.
+     *
+     * @param userId the User's Id
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun userAvailableTime(userId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.USER),
+                successCommand = factory.userAvailableTime(
+                        userId = userId
+                )
+        ).execute(withAccess)
+    }
+
+    /**
      * Private method to return a [Map] of errors when an appointment could not be found.
      * This is needed when we must check if the user is the owner of an appointment or not
      *

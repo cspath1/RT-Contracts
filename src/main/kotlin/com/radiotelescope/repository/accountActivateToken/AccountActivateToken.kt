@@ -21,8 +21,8 @@ data class AccountActivateToken(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
-    
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    var user: User? = null
+    lateinit var user: User
 }

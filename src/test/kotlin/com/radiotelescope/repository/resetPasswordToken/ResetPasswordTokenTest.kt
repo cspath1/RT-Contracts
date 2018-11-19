@@ -68,4 +68,20 @@ internal class ResetPasswordTokenTest {
         // The resetPasswordToken val should not be null
         Assert.assertNotNull(resetPasswordToken)
     }
+
+    @Test
+    fun testFindAllByUserId() {
+        //Persist user and resetPasswordToken
+        val user = testUtil.createUser("rpim1@ycp.edu")
+        testUtil.createResetPasswordToken(user)
+        testUtil.createResetPasswordToken(user)
+        testUtil.createResetPasswordToken(user)
+
+        // Call method
+        val list = resetPasswordTokenRepo.findAllByUserId(user.id)
+
+        // Make sure the correct amount return
+        Assert.assertEquals(3, list.size)
+
+    }
 }

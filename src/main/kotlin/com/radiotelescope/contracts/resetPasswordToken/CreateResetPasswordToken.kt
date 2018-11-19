@@ -32,8 +32,16 @@ class CreateResetPasswordToken (
      */
     override fun execute(): SimpleResult<String, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
-        if(!errors.isEmpty)
+        if (!errors.isEmpty)
             return SimpleResult(null, errors)
+
+        // Delete any previous tokens
+        val listToken = resetPasswordTokenRepo.findAllByUserId(
+                userRepo.findByEmail(email)!!.id
+        )
+        listToken.forEach{
+            resetPasswordTokenRepo.delete(it)
+        }
 
         // Create Token and check that the same token string has not been created
         var token = UUID.randomUUID().toString().replace("-", "", false)

@@ -13,14 +13,14 @@ import javax.persistence.*
 @Entity
 @Table(name = "reset_password_token")
 data class ResetPasswordToken (
-        @Column(name = "token", unique = true, nullable = false)
+        @Column(name = "token", nullable = false)
         var token: String,
         @Column(name = "expiration_date", nullable = false)
         var expirationDate: Date
 ){
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", nullable = false)
     var id: Long = 0
 
     @OneToOne

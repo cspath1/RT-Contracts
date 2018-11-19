@@ -33,7 +33,7 @@ class AdminUserRoleValidateController(
      * @param validateForm the [ValidateForm] object
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PutMapping(value = ["/roles/validate"])
+    @PutMapping(value = ["/api/roles/validate"])
     fun execute(@RequestBody validateForm: ValidateForm): Result {
         validateForm.validateRequest()?.let { errors -> 
             // Create error logs

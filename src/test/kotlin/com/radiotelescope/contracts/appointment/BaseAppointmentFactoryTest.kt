@@ -237,6 +237,17 @@ internal class BaseAppointmentFactoryTest {
         )
 
         // Ensure it is the correct command
-        assertTrue(cmd is ApproveDenyRequest)    }
+        assertTrue(cmd is ApproveDenyRequest)
+    }
 
+    @Test
+    fun userAvailableTime() {
+        // Call the factory method
+        val cmd = factory.userAvailableTime(
+                userId = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is UserAvailableTime)
+    }
 }
