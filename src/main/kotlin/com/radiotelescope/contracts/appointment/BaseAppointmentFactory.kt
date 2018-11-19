@@ -227,5 +227,21 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo
         )
     }
+
+    /**
+     * Override of the [AppointmentFactory.userAvailableTime] method that will return a [UserAvailableTime]
+     * command object
+     *
+     * @param userId the User's Id
+     * @return a [Command] object
+     */
+    override fun userAvailableTime(userId: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return UserAvailableTime(
+                userId = userId,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        )
+    }
 }
 
