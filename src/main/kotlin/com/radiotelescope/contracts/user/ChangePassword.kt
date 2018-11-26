@@ -60,7 +60,7 @@ class ChangePassword(
             if (password == currentPassword)
                 errors.put(ErrorTag.CURRENT_PASSWORD, "New password may not be the same as old password")
             if (!password.matches(User.passwordRegex))
-                errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
+                errors.put(ErrorTag.PASSWORD, User.PASSWORD_ERROR_MESSAGE)
 
             if (!errors.isEmpty)
                 return errors

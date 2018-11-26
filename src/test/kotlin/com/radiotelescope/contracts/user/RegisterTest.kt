@@ -2,6 +2,8 @@ package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.profilePicture.IProfilePictureRepository
+import com.radiotelescope.repository.profilePicture.ProfilePicture
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -42,6 +44,9 @@ internal class RegisterTest {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    @Autowired
+    private lateinit var profilePictureRepo: IProfilePictureRepository
+
     private val baseRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
@@ -61,7 +66,8 @@ internal class RegisterTest {
                 request = baseRequest,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should not have failed
@@ -81,7 +87,9 @@ internal class RegisterTest {
         assertEquals("cspath1@ycp.edu", user.email)
         assertEquals("York College of Pennsylvania", user.company)
         assertEquals("717-823-2216", user.phoneNumber)
+        assertNotNull(user.accountHash)
 
+        // There should also be two roles
         val roles = userRoleRepo.findAllByUserId(user.id)
 
         // Ensure the role was properly set
@@ -93,6 +101,14 @@ internal class RegisterTest {
             if (it.role == UserRole.Role.STUDENT)
                 assertFalse(it.approved)
         }
+
+        // Finally, make sure the user's default profile picture was persisted
+        val profilePicture = profilePictureRepo.findUsersActiveProfilePicture(user.id)
+
+        assertNotNull(profilePicture)
+        assertEquals(user, profilePicture.user)
+        assertEquals(ProfilePicture.DEFAULT_PROFILE_PICTURE, profilePicture.profilePictureUrl)
+        assertTrue(profilePicture.validated)
     }
 
     @Test
@@ -108,7 +124,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should not have failed
@@ -155,7 +172,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should not have failed
@@ -190,7 +208,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed
@@ -213,7 +232,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed
@@ -236,7 +256,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed
@@ -259,7 +280,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed
@@ -282,7 +304,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed
@@ -305,7 +328,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed
@@ -328,7 +352,8 @@ internal class RegisterTest {
                 request = baseRequest,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed
@@ -351,7 +376,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed
@@ -374,7 +400,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed
@@ -397,7 +424,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed
@@ -420,7 +448,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         ).execute()
 
         // Should have failed

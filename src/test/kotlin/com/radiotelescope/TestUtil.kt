@@ -10,6 +10,8 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
+import com.radiotelescope.repository.profilePicture.IProfilePictureRepository
+import com.radiotelescope.repository.profilePicture.ProfilePicture
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -55,6 +57,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var profilePictureRepo: IProfilePictureRepository
 
     fun createUser(email: String, accountHash: String): User {
         val user = User(
@@ -255,5 +260,20 @@ internal class TestUtil {
         val telescope = Telescope()
 
         return telescopeRepo.save(telescope)
+    }
+
+    fun createProfilePicture(
+            user: User,
+            url: String,
+            approved: Boolean
+    ): ProfilePicture {
+        val profilePicture = ProfilePicture(
+                profilePictureUrl = url,
+                user = user
+        )
+
+        profilePicture.validated = approved
+
+        return profilePictureRepo.save(profilePicture)
     }
 }

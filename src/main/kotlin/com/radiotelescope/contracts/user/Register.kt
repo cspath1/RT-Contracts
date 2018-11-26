@@ -7,6 +7,8 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.profilePicture.IProfilePictureRepository
+import com.radiotelescope.repository.profilePicture.ProfilePicture
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -24,7 +26,8 @@ class Register(
         private val request: Request,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val accountActivateTokenRepo: IAccountActivateTokenRepository
+        private val accountActivateTokenRepo: IAccountActivateTokenRepository,
+        private val profilePictureRepo: IProfilePictureRepository
 ) : Command<Register.Response, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
@@ -47,10 +50,15 @@ class Register(
             // Create their account activation token
             val theToken = generateActivateAccountToken(newUser)
 
+            // Generate roles, profile picture, and account hash
+            // for the user
             generateUserRoles(newUser)
+            generateDefaultProfilePicture(newUser)
             val hash = generateUniqueHash()
 
+            // Set the user's account hash field and persist the changes
             newUser.accountHash = hash
+            userRepo.save(newUser)
 
             val theResponse = Response(
                     id = newUser.id,
@@ -94,7 +102,7 @@ class Register(
             if (password != passwordConfirm)
                 errors.put(ErrorTag.PASSWORD_CONFIRM, "Passwords do not match")
             if (!password.matches(User.passwordRegex))
-                errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
+                errors.put(ErrorTag.PASSWORD, User.PASSWORD_ERROR_MESSAGE)
         }
 
         return if (errors.isEmpty) null else errors
@@ -121,6 +129,19 @@ class Register(
         accountActivateTokenRepo.save(theAccountActivateToken)
 
         return theAccountActivateToken.token
+    }
+
+    private fun generateDefaultProfilePicture(user: User) {
+        val profilePicture = ProfilePicture(
+                profilePictureUrl = ProfilePicture.DEFAULT_PROFILE_PICTURE,
+                user = user
+        )
+
+        // This is just a generic image stored on S3, so it can
+        // be set to approved
+        profilePicture.validated = true
+
+        profilePictureRepo.save(profilePicture)
     }
 
     /**

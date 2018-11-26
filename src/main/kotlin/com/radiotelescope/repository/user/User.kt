@@ -50,6 +50,21 @@ data class User(
     }
 
     companion object {
+        const val PASSWORD_ERROR_MESSAGE = "Passwords must be at least 8 characters long and have 3 or 4 of the following: " +
+                "Upper Case, Lower Case, Special Character, Digit"
+
+        // Any of the following must also be over 8
+        val passwordRegex = Regex("^((?=.*?[A-Z])(?=.*?[a-z])(?=.*?\\d)|" + // Uppercase, lowercase, digit
+                "(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^a-zA-Z0-9])|" + // Uppercase, lowercase, special characters
+                "(?=.*?[A-Z])(?=.*?\\d)(?=.*?[^a-zA-Z0-9])|" + // Uppercase, digit, special characters
+                "(?=.*?[a-z])(?=.*?\\d)(?=.*?[^a-zA-Z0-9])).{8,}\$") // lowercase, digit, special characters
+
+        val rtPasswordEncoder = Pbkdf2PasswordEncoder(
+                "YCAS2018",
+                50,
+                256
+        )
+
         fun isEmailValid(email: String): Boolean {
             return Pattern.compile(
                     "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
@@ -64,21 +79,6 @@ data class User(
         fun generateAccountHash(): String {
             return UUID.randomUUID().toString().replace("-", "")
         }
-
-        // Any of the following must also be over 8
-        val passwordRegex = Regex("^((?=.*?[A-Z])(?=.*?[a-z])(?=.*?\\d)|" + // Uppercase, lowercase, digit
-                "(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^a-zA-Z0-9])|" + // Uppercase, lowercase, special characters
-                "(?=.*?[A-Z])(?=.*?\\d)(?=.*?[^a-zA-Z0-9])|" + // Uppercase, digit, special characters
-                "(?=.*?[a-z])(?=.*?\\d)(?=.*?[^a-zA-Z0-9])).{8,}\$") // lowercase, digit, special characters
-
-        const val passwordErrorMessage = "Passwords must be at least 8 characters long and have 3 or 4 of the following: " +
-                "Upper Case, Lower Case, Special Character, Digit"
-
-        val rtPasswordEncoder = Pbkdf2PasswordEncoder(
-                "YCAS2018",
-                50,
-                256
-        )
 
     }
 }

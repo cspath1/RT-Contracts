@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.user
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.profilePicture.IProfilePictureRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
@@ -18,7 +19,8 @@ import org.springframework.data.domain.Pageable
 class BaseUserFactory(
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val accountActivateTokenRepo: IAccountActivateTokenRepository
+        private val accountActivateTokenRepo: IAccountActivateTokenRepository,
+        private val profilePictureRepo: IProfilePictureRepository
 ) : UserFactory {
     /**
      * Override of the [UserFactory.register] method that will return a [Register] command object
@@ -31,7 +33,8 @@ class BaseUserFactory(
                 request = request,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         )
     }
 

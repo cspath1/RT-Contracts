@@ -8,7 +8,6 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import java.util.*
 
 /**
@@ -75,7 +74,7 @@ class ResetPassword (
             if (password != passwordConfirm)
                 errors.put(ErrorTag.PASSWORD_CONFIRM, "Passwords do not match")
             if (!password.matches(User.passwordRegex))
-                errors.put(ErrorTag.PASSWORD, User.passwordErrorMessage)
+                errors.put(ErrorTag.PASSWORD, User.PASSWORD_ERROR_MESSAGE)
         }
 
         return errors

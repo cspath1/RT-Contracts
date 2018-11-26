@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.profilePicture.IProfilePictureRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -54,6 +55,9 @@ internal class UserUserWrapperTest {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    @Autowired
+    private lateinit var profilePictureRepo: IProfilePictureRepository
+
     private val baseCreateRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
@@ -91,7 +95,8 @@ internal class UserUserWrapperTest {
         factory = BaseUserFactory(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                profilePictureRepo = profilePictureRepo
         )
 
         wrapper = UserUserWrapper(
