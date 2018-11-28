@@ -30,6 +30,14 @@ class Validate(
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val id = updateRole()
+
+            // Delete any old roles or any other requested roles
+            val roleList = userRoleRepo.findAllByUserId(userRoleRepo.findById(request.id).get().userId!!)
+            roleList.forEach {
+                if(it.id != request.id && it.role != UserRole.Role.USER)
+                    userRoleRepo.delete(it)
+            }
+
             return SimpleResult(id, null)
         }
     }

@@ -45,10 +45,13 @@ internal class ValidateTest {
 
     var unapprovedId: Long = -1L
 
+    private var userId = -1L
+
     @Before
     fun setUp() {
         // Create a user and a role that needs approval
         val user = testUtil.createUser("cspath1@ycp.edu")
+        userId = user.id
 
         val roles = testUtil.createUserRolesForUser(
                 userId = user.id,
@@ -160,5 +163,35 @@ internal class ValidateTest {
         assertNotNull(errors)
 
         assertTrue(errors!![ErrorTag.ROLE].isNotEmpty())
+    }
+
+    @Test
+    fun testValid_RemoveOldRole_Success() {
+        testUtil.createUserRolesForUser(
+                userId = userId,
+                role = UserRole.Role.STUDENT,
+                isApproved = false
+        )
+        testUtil.createUserRolesForUser(
+                userId = userId,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        val requestCopy = baseValidateRequest.copy(
+                id = unapprovedId,
+                role = UserRole.Role.MEMBER
+        )
+        val (id, errors) = Validate(
+                request = requestCopy,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNotNull(id)
+        assertNull(errors)
+
+        // Make sure all requested role were removed
+        assertEquals(4, userRoleRepo.findAllByUserId(userId).size)
     }
 }
