@@ -85,4 +85,18 @@ internal class BaseUserRoleFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is Retrieve)
     }
+
+    @Test
+    fun requestRole() {
+        // Cal the factory method
+        val cmd = factory.requestRole(
+                request = RequestRole.Request(
+                        userId = 1L,
+                        role = UserRole.Role.GUEST
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is RequestRole)
+    }
 }

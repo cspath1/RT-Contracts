@@ -242,4 +242,62 @@ internal class UserUserRoleWrapperTest {
 
         assertNull(error)
     }
+
+    @Test
+    fun testRequestRole_Admin_Success() {
+        // Simulate a login
+        context.login(adminId!!)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.requestRole(
+                request = RequestRole.Request(
+                        userId = userId!!,
+                        role = UserRole.Role.GUEST
+                )
+        ){
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testRequestRole_NotLoggedIn_Failure() {
+        // Not simulate a login
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.requestRole(
+                request = RequestRole.Request(
+                        userId = userId!!,
+                        role = UserRole.Role.GUEST
+                )
+        ){
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testRequestRole_NotAdmin_Failure() {
+        // Not simulate a login
+        context.login(adminId!!)
+        context.currentRoles.add(UserRole.Role.STUDENT)
+
+        val error = wrapper.requestRole(
+                request = RequestRole.Request(
+                        userId = userId!!,
+                        role = UserRole.Role.GUEST
+                )
+        ){
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
 }
