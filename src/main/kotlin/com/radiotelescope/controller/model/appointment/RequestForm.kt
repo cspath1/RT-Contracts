@@ -54,17 +54,17 @@ data class RequestForm(
         if (userId == null)
             errors.put(ErrorTag.USER_ID, "Invalid user id")
         if (startTime == null)
-            errors.put(ErrorTag.START_TIME, "Required field")
+            errors.put(ErrorTag.START_TIME, "Required field: Start Time")
         if (endTime == null)
-            errors.put(ErrorTag.END_TIME, "Required field")
+            errors.put(ErrorTag.END_TIME, "Required field: End Time")
         if (telescopeId == null)
-            errors.put(ErrorTag.TELESCOPE_ID, "Required field")
+            errors.put(ErrorTag.TELESCOPE_ID, "Required field: Telescope Id")
         if (isPublic == null)
-            errors.put(ErrorTag.PUBLIC, "Required field")
+            errors.put(ErrorTag.PUBLIC, "Required field: Public")
         if (rightAscension == null)
-            errors.put(ErrorTag.RIGHT_ASCENSION, "Required field")
+            errors.put(ErrorTag.RIGHT_ASCENSION, "Required field: Right Ascension")
         if (declination == null)
-            errors.put(ErrorTag.DECLINATION, "Required field")
+            errors.put(ErrorTag.DECLINATION, "Required field: Declination")
 
         return if (errors.isEmpty) null else errors
     }
