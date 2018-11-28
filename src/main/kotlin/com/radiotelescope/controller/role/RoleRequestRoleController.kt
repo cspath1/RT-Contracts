@@ -41,7 +41,7 @@ class RoleRequestRoleController (
      * and the method should respond accordingly based on each scenario.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/users"])
+    @PostMapping(value = ["/api/users/{userId}/requestRole"])
     fun execute(@PathVariable("userId") userId: Long,
                 @RequestParam role: UserRole.Role
     ): Result {
