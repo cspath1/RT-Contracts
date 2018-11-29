@@ -60,4 +60,19 @@ class BaseUserRoleFactory(
                 userRepo = userRepo
         )
     }
+
+    /**
+     * Override of the [UserRoleFactory.requestRole] method that will return a [RequestRole] command
+     * object
+     *
+     * @param request the [RequestRole.Request] object
+     * @return a [RequestRole] command object
+     */
+    override fun requestRole(request: RequestRole.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return RequestRole(
+                request = request,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        )
+    }
 }

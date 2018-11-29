@@ -34,4 +34,12 @@ interface UserRoleFactory {
      * @return a [Command] object
      */
     fun retrieve(id: Long): Command<UserRoleInfo, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to request a new [UserRole]
+     *
+     * @param request the [RequestRole.Request] object
+     * @return a [Command] object
+     */
+    fun requestRole(request: RequestRole.Request): Command<Long, Multimap<ErrorTag, String>>
 }

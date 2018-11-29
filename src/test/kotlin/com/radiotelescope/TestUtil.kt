@@ -118,6 +118,21 @@ internal class TestUtil {
         return listOf(userRole, otherRole)
     }
 
+    fun createUserRoleForUser(
+            userId: Long,
+            role: UserRole.Role,
+            isApproved: Boolean
+    ): UserRole {
+        val userRole = UserRole(
+                userId = userId,
+                role = role
+        )
+
+        userRole.approved = isApproved
+
+        return userRoleRepo.save(userRole)
+    }
+
     fun createAppointment(
             user: User,
             telescopeId: Long,
