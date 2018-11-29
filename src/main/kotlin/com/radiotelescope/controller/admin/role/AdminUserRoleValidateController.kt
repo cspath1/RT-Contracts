@@ -47,13 +47,13 @@ class AdminUserRoleValidateController(
             )
 
             result = Result(errors = errors.toStringMap())
-        } ?: let { _ ->
+        } ?: let {
             // Otherwise, call the wrapper command
             roleWrapper.validate(
                     request = validateForm.toRequest()
-            ) {
+            ) { response ->
                 // If the request was a success
-                it.success?.let { id -> 
+                response.success?.let { id ->
                     // Create success log
                     logger.createSuccessLog(
                             info = Logger.createInfo(
@@ -66,7 +66,7 @@ class AdminUserRoleValidateController(
                     result = Result(data = id)
                 }
                 // Otherwise it was a failure
-                it.error?.let { errors ->
+                response.error?.let { errors ->
                     // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
@@ -79,7 +79,7 @@ class AdminUserRoleValidateController(
                     
                     result = Result(errors = errors.toStringMap())
                 }
-            }?.let {  
+            }?.let { report ->
                 // If we get here, user authentication failed
                 // Create error logs
                 logger.createErrorLogs(
@@ -88,10 +88,10 @@ class AdminUserRoleValidateController(
                                 action = "User Role Validation",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = report.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+                result = Result(errors = report.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
 

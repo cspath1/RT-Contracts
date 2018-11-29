@@ -89,8 +89,8 @@ internal class CancelTest {
         // Persist a user
         val user = testUtil.createUser("spathcody@gmail.com")
 
-        // SCHEDULED to CANCELED
-        val appt1 = testUtil.createAppointment(user = user,
+        // Scheduled to Canceled
+        val appointmentOne = testUtil.createAppointment(user = user,
                 telescopeId = appointmentRequest.telescopeId,
                 status = Appointment.Status.SCHEDULED,
                 startTime = appointmentRequest.startTime,
@@ -98,16 +98,16 @@ internal class CancelTest {
                 isPublic = appointmentRequest.isPublic
         )
 
-        // In Progress to CANCELED
-        val appt2 = testUtil.createAppointment(user = user,
+        // In Progress to Canceled
+        val appointmentTwo = testUtil.createAppointment(user = user,
                 telescopeId = appointmentRequest2.telescopeId,
                 status = Appointment.Status.IN_PROGRESS,
                 startTime = appointmentRequest2.startTime,
                 endTime = appointmentRequest2.endTime,
                 isPublic = appointmentRequest2.isPublic
         )
-        // Should result in error: CANCELED to CANCELED
-        val appt3 = testUtil.createAppointment(user = user,
+        // Should result in error: Canceled to Canceled
+        val appointmentThree = testUtil.createAppointment(user = user,
                 telescopeId = appointmentRequest3.telescopeId,
                 status = Appointment.Status.CANCELED,
                 startTime = appointmentRequest3.startTime,
@@ -115,17 +115,17 @@ internal class CancelTest {
                 isPublic = appointmentRequest3.isPublic)
 
         // Already completed appointments cannot be canceled
-        val appt4 = testUtil.createAppointment(user = user,
+        val appointmentFour = testUtil.createAppointment(user = user,
                 telescopeId = appointmentRequest4.telescopeId,
                 status = Appointment.Status.COMPLETED,
                 startTime = appointmentRequest4.startTime,
                 endTime = appointmentRequest4.endTime,
                 isPublic = appointmentRequest4.isPublic)
 
-        scheduledAppointmentId = appt1.id
-        inProgressAppointmentId = appt2.id
-        canceledAppointmentId = appt3.id
-        completedAppointmentId = appt4.id
+        scheduledAppointmentId = appointmentOne.id
+        inProgressAppointmentId = appointmentTwo.id
+        canceledAppointmentId = appointmentThree.id
+        completedAppointmentId = appointmentFour.id
     }
 
     @Test

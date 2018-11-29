@@ -109,7 +109,7 @@ class AdminUnapprovedUserRoleListController(
     }
 
     /**
-     * Private method that will return erros if any of the parameters
+     * Private method that will return errors if any of the parameters
      * are not valid
      */
     private fun pageErrors(): HashMultimap<ErrorTag, String> {

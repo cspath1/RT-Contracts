@@ -4,7 +4,6 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -40,9 +39,6 @@ internal class ApproveDenyRequestTest {
 
     @Autowired
     private lateinit var testUtil: TestUtil
-
-    @Autowired
-    private lateinit var userRepo: IUserRepository
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
@@ -121,7 +117,7 @@ internal class ApproveDenyRequestTest {
 
     @Test
     fun testInvalid_AppointmentNotRequested_Success(){
-        var notRequested = testUtil.createAppointment(
+        val notRequested = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
                 startTime = Date(System.currentTimeMillis() + 10000L),

@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails
  * Concrete implementation of [UserDetails] class
  *
  * @param user a [User] entity
- * @param grantedAuths a [Set] of the User's roles
+ * @param grantedAuthorities a [Set] of the User's roles
  * @property id the User id
  * @property active the User's active flag
  * @property email the User's email
@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails
  */
 class UserDetailsImpl(
         user: User,
-        private var grantedAuths: Set<GrantedAuthority>
+        private var grantedAuthorities: Set<GrantedAuthority>
 ) : UserDetails {
     var id = user.id
     private var active = user.active
@@ -27,7 +27,7 @@ class UserDetailsImpl(
      * Return the list of granted authorities
      */
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return grantedAuths.toMutableList()
+        return grantedAuthorities.toMutableList()
     }
 
     /**

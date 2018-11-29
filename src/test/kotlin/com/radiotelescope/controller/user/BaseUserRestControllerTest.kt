@@ -1,7 +1,6 @@
 package com.radiotelescope.controller.user
 
 import com.radiotelescope.contracts.user.BaseUserFactory
-import com.radiotelescope.contracts.user.UserFactory
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository

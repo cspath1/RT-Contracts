@@ -45,12 +45,12 @@ class UserChangePasswordController(
             )
 
             result = Result(errors = it.toStringMap())
-        } ?: let { _ ->
+        } ?: let {
             userWrapper.changePassword(
                     request = form.toRequest()
-            ) { it ->
+            ) { response ->
                 // If the command was a success
-                it.success?.let { id ->
+                response.success?.let { id ->
                     // Create success logs
                     logger.createSuccessLog(
                             info = Logger.createInfo(
@@ -63,7 +63,7 @@ class UserChangePasswordController(
                     result = Result(data = id)
                 }
                 // Otherwise it was a failure
-                it.error?.let { errors ->
+                response.error?.let { errors ->
                     // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
@@ -76,7 +76,7 @@ class UserChangePasswordController(
 
                     result = Result(errors = errors.toStringMap())
                 }
-            }?.let {
+            }?.let { report ->
                 // If we get here, this means the User did not pass validation
                 // Create error logs
                 logger.createErrorLogs(
@@ -85,17 +85,17 @@ class UserChangePasswordController(
                                 action = "User change password",
                                 affectedRecordId = null
                         ),
-                        errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
+                        errors = if (report.missingRoles != null) report.toStringMap() else report.invalidResourceId!!
                 )
 
                 // Set the errors depending on if the user was not authenticated or the
                 // record did not exists
-                result = if (it.missingRoles == null) {
-                    Result(errors = it.invalidResourceId!!, status = HttpStatus.NOT_FOUND)
+                result = if (report.missingRoles == null) {
+                    Result(errors = report.invalidResourceId!!, status = HttpStatus.NOT_FOUND)
                 }
                 // user did not have access to the resource
                 else {
-                    Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+                    Result(errors = report.toStringMap(), status = HttpStatus.FORBIDDEN)
                 }
             }
         }

@@ -31,7 +31,7 @@ class UpdateFormTest {
         // Call the validate request method
         val errors = baseForm.validateRequest()
 
-        // Make sure no errors occured
+        // Make sure no errors occurred
         assertNull(errors)
     }
 

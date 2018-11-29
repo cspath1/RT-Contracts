@@ -61,13 +61,13 @@ class ApproveDenyRequest(
     private fun isOverlap(): Boolean {
         val appointment = appointmentRepo.findById(request.appointmentId).get()
         var isOverlap = false
-        val listAppts = appointmentRepo.findConflict(
+        val appointmentList = appointmentRepo.findConflict(
                 endTime = appointment.endTime,
                 startTime = appointment.startTime,
                 telescopeId = appointment.telescopeId
         )
 
-        if (!listAppts.isEmpty()) {
+        if (!appointmentList.isEmpty()) {
             isOverlap = true
         }
 

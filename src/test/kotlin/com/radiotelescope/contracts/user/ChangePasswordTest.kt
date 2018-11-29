@@ -38,7 +38,6 @@ internal class ChangePasswordTest {
     private lateinit var userRepo: IUserRepository
 
     private var userId = -1L
-    private var userId2 = -2L
 
     @Before
     fun setUp() {

@@ -1,8 +1,6 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase

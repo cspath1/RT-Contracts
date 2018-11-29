@@ -103,10 +103,9 @@ class AdminAppointmentApproveDenyRequestController (
                     fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
                     subject = "Requested Observation Approved",
                     htmlBody = "<p>Your appointment with the id = $id has been approved " +
-                            "and has now been scheduled for the allotted timeslot.</p>"
+                            "and has now been scheduled for the allotted time slot.</p>"
             )
-        }
-        else{
+        } else {
             sendForm = SendForm(
                     toAddresses = listOf(email),
                     fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",

@@ -71,7 +71,7 @@ internal class ChangePasswordFormTest {
     }
 
     @Test
-    fun testBlankNewPasssword_Failure() {
+    fun testBlankNewPassword_Failure() {
         // Create a copy of the form with a blank new password
         val baseFormCopy = baseForm.copy(
                 password = " "

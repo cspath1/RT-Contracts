@@ -55,7 +55,7 @@ internal class ResetPasswordTest {
     }
 
     @Test
-    fun testValid_CorrectContraints_Success(){
+    fun testValid_CorrectConstraints_Success(){
         val (id, error) = ResetPassword(
                 request = ResetPassword.Request(
                         password = "ValidPassword1",

@@ -21,7 +21,7 @@ internal class UpdateFormTest {
 
 
     @Test
-    fun testValid_CorrectContraints_Success(){
+    fun testValid_CorrectConstraints_Success(){
         // Call the validate request method
         val errors = UpdateForm(
                 password = "ValidPassword1",

@@ -10,7 +10,6 @@ import com.radiotelescope.security.UserContext
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import java.util.*
 
 /**
  * Wrapper that takes an [AppointmentFactory] and is responsible for all

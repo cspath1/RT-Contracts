@@ -8,7 +8,6 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import java.util.*
 
 /**

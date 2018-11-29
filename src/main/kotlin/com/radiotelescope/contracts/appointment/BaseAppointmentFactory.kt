@@ -11,7 +11,6 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import java.util.*
 
 /**
  * Base concrete implementation of the [AppointmentFactory] interface
@@ -139,7 +138,7 @@ class BaseAppointmentFactory(
     }
 
     /**
-     * Override of the [AppointmentFactory.appointmentListBetweenDates] method
+     * Override of the [AppointmentFactory.listBetweenDates] method
      * that will return a [ListBetweenDates] command object
      *
      * @param request the [ListBetweenDates.Request] object

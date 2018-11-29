@@ -33,7 +33,7 @@ class AdminUserListController(
     /**
      * Execute method that is in charge of using the [pageNumber]
      * and [pageSize] request parameters to create a [PageRequest]
-     * so the [UserUserWrapper.pageable] method can be called.
+     * so the [UserUserWrapper.list] method can be called.
      *
      * If this method returns an [AccessReport], this means the user
      * accessing the endpoint did not pass authentication.

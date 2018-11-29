@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
@@ -46,7 +45,7 @@ internal class UserFutureListTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private val futureApptCreateRequest = Create.Request(
+    private val baseCreateRequest = Create.Request(
             startTime=Date(12012019120000),
             endTime = Date(12012019130011),
             isPublic = false,
@@ -74,11 +73,11 @@ internal class UserFutureListTest {
         // Persist the appointment
         testUtil.createAppointment(
                 user = user1,
-                telescopeId = futureApptCreateRequest.telescopeId,
+                telescopeId = baseCreateRequest.telescopeId,
                 status = Appointment.Status.REQUESTED,
-                startTime = futureApptCreateRequest.startTime,
-                endTime = futureApptCreateRequest.endTime,
-                isPublic = futureApptCreateRequest.isPublic
+                startTime = baseCreateRequest.startTime,
+                endTime = baseCreateRequest.endTime,
+                isPublic = baseCreateRequest.isPublic
         )
 
 
@@ -120,11 +119,11 @@ internal class UserFutureListTest {
         assertEquals(infoPage!!.content.size, 1)
 
         // should be the future appointment
-        assertTrue(Date().before(infoPage.content.get(0).endTime))
+        assertTrue(Date().before(infoPage.content[0].endTime))
     }
 
     @Test
-    fun testInvalid_NoApptWithSpecifiedUserId_Success(){
+    fun testInvalid_NoAppointments_Success(){
         val (infoPage, error) = UserFutureList(
                 userId = user2Id,
                 pageable = PageRequest.of(1, 10),

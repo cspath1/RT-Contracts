@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.Update
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.UpdateForm
@@ -49,7 +50,7 @@ class AppointmentUpdateController(
                     errors = it.toStringMap()
             )
             result = Result(errors = it.toStringMap())
-        }?: let{ _ ->
+        }?: let {
             // Otherwise call the factory command
             val request = form.toRequest()
 
@@ -58,21 +59,21 @@ class AppointmentUpdateController(
 
             appointmentWrapper.update(
                     request = request
-            ) { it ->
-                it.success?.let{
+            ) { response ->
+                response.success?.let { data ->
                     result = Result(
-                            data = it
+                            data = data
                     )
 
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action = "Appointment Update",
-                                    affectedRecordId = it
+                                    affectedRecordId = data
                             )
                     )
                 }
-                it.error?.let{
+                response.error?.let { errors ->
                     // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
@@ -80,13 +81,13 @@ class AppointmentUpdateController(
                                     action = "Appointment Retrieval",
                                     affectedRecordId = null
                             ),
-                            errors = it.toStringMap()
+                            errors = errors.toStringMap()
                     )
                     result = Result(
-                            errors = it.toStringMap()
+                            errors = errors.toStringMap()
                     )
                 }
-            }?.let {
+            }?.let { report ->
                 // If we get here, that means the User did not pass authentication
 
                 // Set the errors depending on if the user was not authenticated or the
@@ -97,17 +98,17 @@ class AppointmentUpdateController(
                                 action = "Appointment Update",
                                 affectedRecordId = null
                         ),
-                        errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
+                        errors = if (report.missingRoles != null) report.toStringMap() else report.invalidResourceId!!
                 )
 
                 // Set the errors depending on if the user was not authenticated or the
                 // record did not exists
-                result = if (it.missingRoles == null) {
-                    Result(errors = it.invalidResourceId!!, status = HttpStatus.NOT_FOUND)
+                result = if (report.missingRoles == null) {
+                    Result(errors = report.invalidResourceId!!, status = HttpStatus.NOT_FOUND)
                 }
                 // user did not have access to the resource
                 else {
-                    Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+                    Result(errors = report.toStringMap(), status = HttpStatus.FORBIDDEN)
                 }
             }
         }

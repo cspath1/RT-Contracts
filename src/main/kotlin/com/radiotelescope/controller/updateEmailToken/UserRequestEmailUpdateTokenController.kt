@@ -52,7 +52,7 @@ class UserRequestEmailUpdateTokenController (
             )
 
             result = Result(errors = it.toStringMap())
-        } ?: let { _ ->
+        } ?: let {
             // Setting the request
             val request = form.toRequest()
             request.userId = userId
@@ -60,11 +60,11 @@ class UserRequestEmailUpdateTokenController (
             // Otherwise call the factory command
             updateEmailTokenWrapper.requestUpdateEmail(
                     request = request
-            ) { it ->
+            ) { response ->
                 // If the command was a success
-                it.success?.let{
+                response.success?.let { data ->
                     result = Result(
-                            data = it
+                            data = data
                     )
 
                     logger.createSuccessLog(
@@ -77,11 +77,11 @@ class UserRequestEmailUpdateTokenController (
 
                     sendEmail(
                             email = request.email,
-                            token = it
+                            token = data
                     )
                 }
                 // Otherwise, it was a failure
-                it.error?.let{
+                response.error?.let { error ->
                     // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
@@ -89,13 +89,13 @@ class UserRequestEmailUpdateTokenController (
                                     action = "User Update Email Request",
                                     affectedRecordId = null
                             ),
-                            errors = it.toStringMap()
+                            errors = error.toStringMap()
                     )
                     result = Result(
-                            errors = it.toStringMap()
+                            errors = error.toStringMap()
                     )
                 }
-            }?.let {
+            }?.let { report ->
                 // If we get here, that means the user was not authenticated
                 // Create error logs
                 logger.createErrorLogs(
@@ -104,10 +104,10 @@ class UserRequestEmailUpdateTokenController (
                                 action = "User Update Email Request",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = report.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+                result = Result(errors = report.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
 

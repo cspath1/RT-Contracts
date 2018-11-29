@@ -1,8 +1,6 @@
 package com.radiotelescope.controller.appointment
 
-import com.google.common.collect.HashMultimap
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.ListBetweenDatesForm
@@ -30,7 +28,7 @@ class AppointmentListBetweenDates (
      * between the two given time.
      *
      * If the fields in the [ListBetweenDatesForm] are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.appointmentListBetweenDates]
+     * respond with errors. Otherwise, call the [UserAppointmentWrapper.listBetweenDates]
      * method. If this method returns an [AccessReport], this means that user authentication
      * failed and the method should respond with errors, setting the [Result]'s
      * [HttpStatus] to [HttpStatus.FORBIDDEN].
@@ -111,15 +109,5 @@ class AppointmentListBetweenDates (
         }
 
         return result
-    }
-
-    /**
-     * Private method to return a [HashMultimap] of errors in the event
-     * that the start time and end time are invalid
-     */
-    private fun timeErrors(): HashMultimap<ErrorTag, String> {
-        val errors = HashMultimap.create<ErrorTag, String>()
-        errors.put(ErrorTag.TIME, "Invalid start or end time parameters")
-        return errors
     }
 }

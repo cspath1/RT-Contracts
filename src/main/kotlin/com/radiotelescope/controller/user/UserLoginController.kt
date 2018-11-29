@@ -52,25 +52,25 @@ class UserLoginController(
             result = Result(errors = it.toStringMap())
         } ?:
         // Otherwise execute the wrapper command
-        let { _ ->
+        let {
             val simpleResult = userWrapper.authenticate(
                     request = form.toRequest()
             ).execute()
             // If the command was a success
-            simpleResult.success?.let {
-                result = Result(data = it)
+            simpleResult.success?.let { data ->
+                result = Result(data = data)
 
                 // Create a success log
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Login",
-                                affectedRecordId = it.id
+                                affectedRecordId = data.id
                         )
                 )
             }
             // Otherwise, it was a failure
-            simpleResult.error?.let {
+            simpleResult.error?.let { error ->
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
@@ -78,10 +78,10 @@ class UserLoginController(
                                 action = "User Login",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = error.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap())
+                result = Result(errors = error.toStringMap())
             }
         }
 

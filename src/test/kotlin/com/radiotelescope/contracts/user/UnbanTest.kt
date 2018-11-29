@@ -78,7 +78,7 @@ internal class UnbanTest {
     }
 
     @Test
-    fun unbanNonexistingUserTest(){
+    fun unbanNonExistingUserTest(){
         val (id, errors) = Unban(
                 id = 10,
                 userRepo = userRepo

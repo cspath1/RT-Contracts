@@ -148,15 +148,15 @@ class Update(
      */
     private fun isOverlap(): Boolean {
         var isOverlap = false
-        val listAppts = appointmentRepo.findConflict(
+        val appointmentList = appointmentRepo.findConflict(
                 endTime = request.endTime,
                 startTime = request.startTime,
                 telescopeId = request.telescopeId
         )
 
-        if(listAppts.size > 1)
+        if (appointmentList.size > 1)
             isOverlap = true
-        else if(listAppts.size == 1 && listAppts[0].id != request.id)
+        else if (appointmentList.size == 1 && appointmentList[0].id != request.id)
             isOverlap = true
 
         return isOverlap

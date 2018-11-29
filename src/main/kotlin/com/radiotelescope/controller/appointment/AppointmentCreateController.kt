@@ -52,25 +52,25 @@ class AppointmentCreateController(
             result = Result(errors = it.toStringMap())
         } ?:
         // Otherwise, execute the wrapper command
-        let { _ ->
+        let {
             appointmentWrapper.create(
                     request = form.toRequest()
-            ) { it ->
+            ) { response ->
                 // If the command called was a success
-                it.success?.let {
+                response.success?.let { data ->
                     // Create success logs
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action = "Appointment Creation",
-                                    affectedRecordId = it
+                                    affectedRecordId = data
                             )
                     )
 
-                    result = Result(data = it)
+                    result = Result(data = data)
                 }
                 // Otherwise, it was an error
-                it.error?.let {
+                response.error?.let { errors ->
                     // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
@@ -78,12 +78,12 @@ class AppointmentCreateController(
                                     action ="Appointment Creation",
                                     affectedRecordId = null
                             ),
-                            errors = it.toStringMap()
+                            errors = errors.toStringMap()
                     )
 
-                    result = Result(errors = it.toStringMap())
+                    result = Result(errors = errors.toStringMap())
                 }
-            }?.let {
+            }?.let { report ->
                 // If we get here, this means the User did not pass authentication
                 // Create error logs
                 logger.createErrorLogs(
@@ -92,10 +92,10 @@ class AppointmentCreateController(
                                 action = "Appointment Creation",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = report.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+                result = Result(errors = report.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
 

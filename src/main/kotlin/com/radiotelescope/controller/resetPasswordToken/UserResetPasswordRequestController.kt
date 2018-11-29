@@ -34,12 +34,12 @@ class UserResetPasswordRequestController (
     @CrossOrigin(value = ["http://localhost:8081"])
     @PostMapping(value = ["/api/requestPasswordReset"])
     fun execute(@RequestBody email: String): Result {
-        let { _ ->
+        let {
             val simpleResult = resetPasswordTokenWrapper.requestPasswordReset(
                     email = email
             ).execute()
             // If the command was a success
-            simpleResult.success?.let {
+            simpleResult.success?.let { data ->
                 // Create a success log
                 logger.createSuccessLog(
                         info = Logger.createInfo(
@@ -49,24 +49,24 @@ class UserResetPasswordRequestController (
                         )
                 )
 
-                result = Result(data = it)
+                result = Result(data = data)
 
                 sendEmail(
                         email = email,
-                        token = it
+                        token = data
                 )
             }
-            simpleResult.error?.let {
+            simpleResult.error?.let { error ->
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.RESET_PASSWORD_TOKEN,
                                 action = "Request Password Reset",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = error.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap())
+                result = Result(errors = error.toStringMap())
             }
         }
 

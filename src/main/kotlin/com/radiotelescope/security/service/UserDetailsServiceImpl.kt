@@ -25,7 +25,7 @@ class UserDetailsServiceImpl(
      * Override of the [UserDetailsService.loadUserByUsername] used to load the user
      * by the username (email) so it can create a [UserDetailsImpl] object. It checks
      * to make sure the email refers to a valid [User] Entity. If it does not, (or
-     * the email is null) it willthrow an error. It will then grab all of the user's
+     * the email is null) it will throw an error. It will then grab all of the user's
      * roles and create the [UserDetailsImpl]
      *
      * @param username the [User] email
@@ -42,12 +42,12 @@ class UserDetailsServiceImpl(
         if (roles.isEmpty())
             throw UsernameNotFoundException("This User does not have any roles")
 
-        var grantedAuths: Set<GrantedAuthority> = HashSet()
+        var grantedAuthorities: Set<GrantedAuthority> = HashSet()
 
         roles.forEach {
-            grantedAuths = grantedAuths.plus(SimpleGrantedAuthority("ROLE_${it.role.name.toUpperCase()}"))
+            grantedAuthorities = grantedAuthorities.plus(SimpleGrantedAuthority("ROLE_${it.role.name.toUpperCase()}"))
         }
 
-        return UserDetailsImpl(user, grantedAuths)
+        return UserDetailsImpl(user, grantedAuthorities)
     }
 }
