@@ -95,8 +95,8 @@ class AdminUserBanController(
         val sendForm = SendForm(
                 toAddresses = listOf(email),
                 fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
-                subject = "Ban",
-                htmlBody = "<p>You have been ban. The reason for your ban is: " +
+                subject = "Banned By Admin",
+                htmlBody = "<p>You have been banned. The reason for your ban is as follows: " +
                         "$message</p>"
         )
 
