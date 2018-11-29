@@ -26,6 +26,7 @@ com.radiotelescope.controller.resetPasswordToken
 com.radiotelescope.controller.spring
 com.radiotelescope.controller.updateEmailToken
 com.radiotelescope.controller.user
+com.radiotelescope.controller.user.role
 com.radiotelescope.repository.accountActivateToken
 com.radiotelescope.repository.appointment
 com.radiotelescope.repository.coordinate
