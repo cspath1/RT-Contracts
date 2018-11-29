@@ -1,4 +1,4 @@
-package com.radiotelescope.controller.role
+package com.radiotelescope.controller.user.role
 
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.controller.BaseRestController
@@ -24,7 +24,7 @@ import com.radiotelescope.contracts.role.RequestRole
  * @param logger the [Logger] service
  */
 @RestController
-class RoleRequestRoleController (
+class RoleRequestController (
         private val roleWrapper: UserUserRoleWrapper,
         private val userRepo: IUserRepository,
         private val awsSesSendService: AwsSesSendService,
@@ -41,9 +41,9 @@ class RoleRequestRoleController (
      * and the method should respond accordingly based on each scenario.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/users/{userId}/requestRole"])
+    @PostMapping(value = ["/api/users/{userId}/role/request"])
     fun execute(@PathVariable("userId") userId: Long,
-                @RequestParam role: UserRole.Role
+                @RequestParam(value = "role") role: UserRole.Role
     ): Result {
         val form = RequestRoleForm(
                 userId = userId,
@@ -61,10 +61,11 @@ class RoleRequestRoleController (
                     ),
                     errors = errors.toStringMap()
             )
+
             result = Result(errors = errors.toStringMap())
         }
         // Otherwise, call the wrapper method
-        else{
+        else {
             val request = form.toRequest()
             roleWrapper.requestRole(request) { it ->
                 //If the command was a success
