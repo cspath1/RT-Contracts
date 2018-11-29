@@ -44,11 +44,18 @@ internal class RequestRoleTest {
     private lateinit var userRoleRepo: IUserRoleRepository
 
     private lateinit var user: User
+    private lateinit var baseRole: UserRole
 
     @Before
     fun setUp() {
         // Persist a user
         user = testUtil.createUser("rpim@ycp.edu")
+
+        baseRole = testUtil.createUserRoleForUser(
+                user.id,
+                UserRole.Role.USER,
+                true
+        )
     }
 
     @Test
@@ -70,12 +77,12 @@ internal class RequestRoleTest {
     @Test
     fun testValid_OlderRequestIsRemove_Success() {
         // Make a request for Student user role
-        testUtil.createUserRolesForUser(
+        testUtil.createUserRoleForUser(
                 userId = user.id,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )
-        testUtil.createUserRolesForUser(
+        testUtil.createUserRoleForUser(
                 userId = user.id,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
@@ -94,8 +101,19 @@ internal class RequestRoleTest {
         assertNotNull(id)
         assertNull(errors)
 
+        val theRoles = userRoleRepo.findAllByUserId(user.id)
+
         // Make sure all requested role were removed
-        assertEquals(3, userRoleRepo.findAllByUserId(user.id).size)
+        assertEquals(3, theRoles.size)
+
+        // Make sure all roles are as expected
+        theRoles.forEach {
+            when {
+                it.id == id -> assertEquals(UserRole.Role.GUEST, it.role)
+                baseRole.id == it.id -> assertEquals(baseRole.role, it.role)
+                else -> assertEquals(UserRole.Role.RESEARCHER, it.role)
+            }
+        }
     }
 
     @Test

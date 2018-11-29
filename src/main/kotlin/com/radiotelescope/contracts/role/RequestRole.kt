@@ -37,7 +37,7 @@ class RequestRole(
 
         // Delete any old request
         val roleList = userRoleRepo.findAllByUserId(request.userId)
-        roleList.forEach {role ->
+        roleList.forEach { role ->
             if(!role.approved)
                 userRoleRepo.delete(role)
         }
@@ -91,9 +91,14 @@ class RequestRole(
          * returns a UserRole object
          */
         override fun toEntity(): UserRole {
-            return UserRole(
+            val theUserRole = UserRole(
+                    userId = userId,
                     role = role
             )
+
+            theUserRole.approved = false
+
+            return theUserRole
         }
     }
 }

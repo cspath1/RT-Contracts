@@ -21,9 +21,11 @@ class Validate(
         private val userRoleRepo: IUserRoleRepository
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
-     * Override of the [Command.execute] method that will vall the [validateRequest]
+     * Override of the [Command.execute] method that will validate the [validateRequest]
      * method and if there are no errors, will update the [UserRole] object and persist
-     * the changes, setting it to approved.
+     * the changes, setting it to approved. As part of this, it will remove any pre-existing
+     * approved roles, as this role will replace any existing roles. This excludes the base
+     * "user" role, as this just indicates that the user is logged in.
      *
      * If there are errors, it will respond with them
      */
@@ -33,9 +35,9 @@ class Validate(
 
             // Delete any old roles or any other requested roles
             val roleList = userRoleRepo.findAllByUserId(userRoleRepo.findById(request.id).get().userId!!)
-            roleList.forEach {
-                if(it.id != request.id && it.role != UserRole.Role.USER)
-                    userRoleRepo.delete(it)
+            roleList.forEach { theRole ->
+                if(theRole.id != request.id && theRole.role != UserRole.Role.USER)
+                    userRoleRepo.delete(theRole)
             }
 
             return SimpleResult(id, null)

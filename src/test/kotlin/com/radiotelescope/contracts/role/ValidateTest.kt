@@ -167,12 +167,12 @@ internal class ValidateTest {
 
     @Test
     fun testValid_RemoveOldRole_Success() {
-        testUtil.createUserRolesForUser(
+        testUtil.createUserRoleForUser(
                 userId = userId,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )
-        testUtil.createUserRolesForUser(
+        testUtil.createUserRoleForUser(
                 userId = userId,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
@@ -191,7 +191,19 @@ internal class ValidateTest {
         assertNotNull(id)
         assertNull(errors)
 
-        // Make sure all requested role were removed
-        assertEquals(4, userRoleRepo.findAllByUserId(userId).size)
+        val theRoles = userRoleRepo.findAllByUserId(userId)
+
+        // Make sure all other role were removed
+        assertEquals(2, theRoles.size)
+
+        // Make sure the roles are as expected
+        theRoles.forEach {
+            if (it.id == id) {
+                assertEquals(UserRole.Role.MEMBER, it.role)
+            } else {
+                assertEquals(UserRole.Role.USER, it.role)
+            }
+        }
+
     }
 }
