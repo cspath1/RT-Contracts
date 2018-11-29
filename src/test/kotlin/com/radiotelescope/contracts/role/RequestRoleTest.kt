@@ -82,12 +82,10 @@ internal class RequestRoleTest {
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )
-        testUtil.createUserRoleForUser(
-                userId = user.id,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = true
-        )
 
+        // Simulate requesting a new role before the other has been
+        // approved. In this case, the other unapproved role should
+        // be deleted
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.GUEST,
@@ -104,14 +102,13 @@ internal class RequestRoleTest {
         val theRoles = userRoleRepo.findAllByUserId(user.id)
 
         // Make sure all requested role were removed
-        assertEquals(3, theRoles.size)
+        assertEquals(2, theRoles.size)
 
         // Make sure all roles are as expected
         theRoles.forEach {
             when {
                 it.id == id -> assertEquals(UserRole.Role.GUEST, it.role)
                 baseRole.id == it.id -> assertEquals(baseRole.role, it.role)
-                else -> assertEquals(UserRole.Role.RESEARCHER, it.role)
             }
         }
     }
