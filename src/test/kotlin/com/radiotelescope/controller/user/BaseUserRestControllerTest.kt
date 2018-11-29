@@ -19,6 +19,8 @@ abstract class BaseUserRestControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    // These will both be needed in all user rest controller
+    // so instantiate them here
     private lateinit var wrapper: UserUserWrapper
     private lateinit var factory: BaseUserFactory
 
@@ -39,6 +41,8 @@ abstract class BaseUserRestControllerTest : BaseRestControllerTest() {
         )
     }
 
+    // Once instantiated, this will not be altered
+    // so only supply a getter for it
     fun getWrapper(): UserUserWrapper {
         return wrapper
     }

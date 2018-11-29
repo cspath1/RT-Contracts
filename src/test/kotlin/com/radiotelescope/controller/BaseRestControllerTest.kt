@@ -18,10 +18,15 @@ abstract class BaseRestControllerTest {
     private lateinit var errorRepo: IErrorRepository
 
     private lateinit var logger: Logger
+
+    // This is needed in each rest controller
+    // so instantiate it here
     private val context = FakeUserContext()
 
     @Before
     fun init() {
+        // This is needed in each rest controller
+        // so instantiate it here
         logger = Logger(
                 logRepo = logRepo,
                 errorRepo = errorRepo,
@@ -29,10 +34,14 @@ abstract class BaseRestControllerTest {
         )
     }
 
+    // Once instantiated, this should be immutable
+    // so only provide a getter for it
     fun getLogger(): Logger {
         return logger
     }
 
+    // Once instantiated, this should be immutable
+    // so only provide a getter for it
     fun getContext(): UserContext {
         return context
     }
