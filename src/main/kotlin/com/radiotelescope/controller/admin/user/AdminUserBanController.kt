@@ -4,25 +4,29 @@ import com.radiotelescope.contracts.user.Ban
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
+import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.AccessReport
+import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * REST Controller to handle an admin banning a user
  *
  * @param userWrapper the [UserUserWrapper]
+ * @param userRepo the [IUserRepository]
+ * @param awsSesSendService the [AwsSesSendService]
  * @param logger the [Logger] service
  */
 @RestController
 class AdminUserBanController(
         private val userWrapper: UserUserWrapper,
+        private val userRepo: IUserRepository,
+        private val awsSesSendService: AwsSesSendService,
         logger: Logger
 ): BaseRestController(logger) {
     /**
@@ -33,11 +37,13 @@ class AdminUserBanController(
      * endpoint did not pass authentication.
      *
      * Otherwise the [Ban] command was executed, and the controller should
-     * respond based on wherther or not the command was a success or not
+     * respond based on whether or not the command was a success or not
      */
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["api/users/{userId}/ban"])
-    fun execute(@PathVariable("userId") userId: Long): Result {
+    fun execute(@PathVariable("userId") userId: Long,
+                @RequestParam message: String
+    ): Result {
         userWrapper.ban(id = userId) { it->
             // If the command was a success
             it.success?.let { id ->
@@ -49,6 +55,7 @@ class AdminUserBanController(
                                 affectedRecordId = id
                         )
                 )
+                sendEmail(userRepo.findById(id).get().email, message)
 
                 result = Result(data = id)
             }
@@ -82,5 +89,17 @@ class AdminUserBanController(
         }
 
         return result
+    }
+
+    private fun sendEmail(email: String, message: String) {
+        val sendForm = SendForm(
+                toAddresses = listOf(email),
+                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                subject = "Banned By Admin",
+                htmlBody = "<p>You have been banned. The reason for your ban is as follows: " +
+                        "$message</p>"
+        )
+
+        awsSesSendService.execute(sendForm)
     }
 }
