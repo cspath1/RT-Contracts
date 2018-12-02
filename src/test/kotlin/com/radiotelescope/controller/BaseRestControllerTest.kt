@@ -42,7 +42,7 @@ abstract class BaseRestControllerTest {
 
     // Once instantiated, this should be immutable
     // so only provide a getter for it
-    fun getContext(): UserContext {
+    fun getContext(): FakeUserContext {
         return context
     }
 }
