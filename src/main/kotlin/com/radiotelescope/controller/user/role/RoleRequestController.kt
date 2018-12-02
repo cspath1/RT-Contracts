@@ -9,17 +9,17 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import com.radiotelescope.contracts.role.RequestRole
+import com.radiotelescope.service.ses.IAwsSesSendService
 
 /**
  * REST Controller to handle retrieval of User Roles for an Admin
  *
  * @param roleWrapper the [UserUserRoleWrapper]
- * @param awsSesSendService the [AwsSesSendService]
+ * @param awsSesSendService the [IAwsSesSendService]
  * @param userRepo the [IUserRepository]
  * @param logger the [Logger] service
  */
@@ -27,7 +27,7 @@ import com.radiotelescope.contracts.role.RequestRole
 class RoleRequestController (
         private val roleWrapper: UserUserRoleWrapper,
         private val userRepo: IUserRepository,
-        private val awsSesSendService: AwsSesSendService,
+        private val awsSesSendService: IAwsSesSendService,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
