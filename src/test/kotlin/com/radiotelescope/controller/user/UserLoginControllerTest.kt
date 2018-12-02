@@ -1,7 +1,8 @@
 package com.radiotelescope.controller.user
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.contracts.user.UserInfo
+import com.radiotelescope.controller.model.user.LoginForm
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -19,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles("test")
-internal class UserDeleteControllerTest : BaseUserRestControllerTest() {
+internal class UserLoginControllerTest : BaseUserRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -36,25 +37,29 @@ internal class UserDeleteControllerTest : BaseUserRestControllerTest() {
     @Autowired
     private lateinit var testUtil: TestUtil
 
-    private lateinit var userDeleteController: UserDeleteController
+    private lateinit var userLoginController: UserLoginController
 
     private lateinit var user: User
 
-    private var userContext = getContext()
+    private lateinit var baseForm: LoginForm
 
     @Before
     override fun init() {
         super.init()
 
-        user = testUtil.createUser("rpim@ycp.edu")
+        user = testUtil.createUserWithEncodedPassword(
+                email = "rpim@ycp.edu",
+                password = "Password"
+        )
 
-        // Simulate a login
-        userContext.login(user.id)
-        userContext.currentRoles.add(UserRole.Role.USER)
-
-        userDeleteController = UserDeleteController(
+        userLoginController = UserLoginController(
                 userWrapper = getWrapper(),
                 logger = getLogger()
+        )
+
+        baseForm = LoginForm(
+                email = user.email,
+                password = "Password"
         )
     }
 
@@ -62,41 +67,42 @@ internal class UserDeleteControllerTest : BaseUserRestControllerTest() {
     fun testSuccessResponse() {
         // Test the success scenario to ensure the result
         // object is correctly set
-        val result = userDeleteController.execute(user.id)
+        val result = userLoginController.execute(baseForm)
 
         assertNotNull(result)
-        assertEquals(user.id, result.data)
+        assertTrue(result.data is UserInfo)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+    }
+
+    @Test
+    fun testInvalidFormResponse() {
+        // Test the scenario where the form's validate
+        // request method fails to ensure the result object
+        // has the correct properties
+        val formCopy = baseForm.copy(email = "")
+
+        val result = userLoginController.execute(formCopy)
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertEquals(1, result.errors!!.size)
     }
 
     @Test
     fun testFailedValidationResponse() {
         // Test the scenario where the validation
         // in the command object fails
-        val result = userDeleteController.execute(123456)
+        val formCopy = baseForm.copy(email = "r@ycp.edu")
+
+        val result = userLoginController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)
         assertNotNull(result.errors)
-        assertEquals(HttpStatus.FORBIDDEN, result.status)
-        assertEquals(1, result.errors!!.size)
-    }
-
-    @Test
-    fun testValidForm_FailedAuthenticationResponse() {
-        // Test the scenario where the authentication
-        // in the wrapper fails
-
-        // Simulate a log out
-        userContext.logout()
-
-        val result = userDeleteController.execute(user.id)
-
-        assertNotNull(result)
-        assertNull(result.data)
-        assertNotNull(result.errors)
-        assertEquals(HttpStatus.FORBIDDEN, result.status)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
     }
 
