@@ -100,23 +100,15 @@ internal class UserUserWrapperTest {
                 userRepo = userRepo
         )
 
-        // Create a user for the authentication test
-        // We will need to hash the password before persisting
-        val passwordEncoder = Pbkdf2PasswordEncoder(
-                "YCAS2018",
-                50,
-                256
-        )
-
         // Persist the User with the hashed password
         val user = testUtil.createUserWithEncodedPassword(
                 email = "cspath1@ycp.edu",
-                password = passwordEncoder.encode("Password")
+                password = "Password"
         )
 
         val otherUser = testUtil.createUserWithEncodedPassword(
                 email = "codyspath@gmail.com",
-                password = passwordEncoder.encode("Password")
+                password = "Password"
         )
 
         userId = user.id
