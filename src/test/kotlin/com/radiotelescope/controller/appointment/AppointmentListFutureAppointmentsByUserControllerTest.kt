@@ -23,7 +23,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestControllerTest() {
+internal class AppointmentListFutureAppointmentsByUserControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -43,14 +43,14 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private lateinit var appointmentCompletedUserListController: AppointmentCompletedUserListController
+    private lateinit var appointmentListFutureAppointmentsByUserController: AppointmentListFutureAppointmentsByUserController
     private lateinit var user: User
 
     @Before
     override fun init() {
         super.init()
 
-        appointmentCompletedUserListController = AppointmentCompletedUserListController(
+        appointmentListFutureAppointmentsByUserController = AppointmentListFutureAppointmentsByUserController(
                 appointmentWrapper = getWrapper(),
                 logger = getLogger()
         )
@@ -61,18 +61,18 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.COMPLETED,
-                startTime = Date(System.currentTimeMillis() - 10000L),
-                endTime = Date(System.currentTimeMillis() - 5000L),
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(System.currentTimeMillis() + 5000L),
+                endTime = Date(System.currentTimeMillis() + 10000L),
                 isPublic = true
         )
 
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
-                status = Appointment.Status.COMPLETED,
-                startTime = Date(System.currentTimeMillis() - 20000L),
-                endTime = Date(System.currentTimeMillis() - 15000L),
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(System.currentTimeMillis() + 15000L),
+                endTime = Date(System.currentTimeMillis() + 20000L),
                 isPublic = true
         )
     }
@@ -83,7 +83,7 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
         getContext().login(user.id)
         getContext().currentRoles.add(UserRole.Role.USER)
 
-        val result = appointmentCompletedUserListController.execute(
+        val result = appointmentListFutureAppointmentsByUserController.execute(
                 userId = user.id,
                 pageNumber = 0,
                 pageSize = 25
@@ -105,8 +105,8 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
 
         // Call the method with an id that does not exist
-        val result = appointmentCompletedUserListController.execute(
-                311L,
+        val result = appointmentListFutureAppointmentsByUserController.execute(
+                userId = 311L,
                 pageNumber = 0,
                 pageSize = 25
         )
@@ -123,7 +123,7 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
     @Test
     fun testFailedAuthenticationResponse() {
         // Do not log the user in
-        val result = appointmentCompletedUserListController.execute(
+        val result = appointmentListFutureAppointmentsByUserController.execute(
                 userId = user.id,
                 pageNumber = 0,
                 pageSize = 25
@@ -144,7 +144,7 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
         getContext().login(user.id)
         getContext().currentRoles.add(UserRole.Role.USER)
 
-        val result = appointmentCompletedUserListController.execute(
+        val result = appointmentListFutureAppointmentsByUserController.execute(
                 userId = user.id,
                 pageNumber = -311,
                 pageSize = -420
