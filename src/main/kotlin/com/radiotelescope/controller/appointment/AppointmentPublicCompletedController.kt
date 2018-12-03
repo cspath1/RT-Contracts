@@ -33,9 +33,9 @@ class AppointmentPublicCompletedController(
      * or not.
      */
     @GetMapping(value = ["/api/appointments/publicCompleted"])
-    fun execute(@RequestParam("page") pageNumber: Int?,
-                @RequestParam("size") pageSize: Int?): Result {
-        if ((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
+    fun execute(@RequestParam("page") pageNumber: Int,
+                @RequestParam("size") pageSize: Int): Result {
+        if (pageNumber < 0 || pageSize <= 0) {
             val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(
@@ -55,30 +55,22 @@ class AppointmentPublicCompletedController(
                     pageable = PageRequest.of(pageNumber, pageSize, sort)
             ) {
                 // If the command was a success
+                // NOTE: As of now, there is no scenario
+                // where the command object's execute method
+                // will return errors
                 it.success?.let { page ->
-                    // Create success log
-                    logger.createSuccessLog(
-                            info = Logger.createInfo(
-                                    affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Completed Public Appointment List Retrieval",
-                                    affectedRecordId = null
-                            )
-                    )
+                    // Create success logs
+                    page.forEach { info ->
+                        logger.createSuccessLog(
+                                info = Logger.createInfo(
+                                        affectedTable = Log.AffectedTable.APPOINTMENT,
+                                        action = "Completed Public Appointment List Retrieval",
+                                        affectedRecordId = info.id
+                                )
+                        )
+                    }
 
                     result = Result(data = page)
-                }
-                // If the command was a failure
-                it.error?.let { errors ->
-                    logger.createErrorLogs(
-                            info = Logger.createInfo(
-                                    affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Completed Public Appointment List Retrieval",
-                                    affectedRecordId = null
-                            ),
-                            errors = errors.toStringMap()
-                    )
-
-                    result = Result(errors = errors.toStringMap())
                 }
             }?.let {
                 // If we get here, this means the User did not pass validation
@@ -86,7 +78,7 @@ class AppointmentPublicCompletedController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Future Telescope Appointments LogList Retrieval",
+                                action = "Completed Public Appointment List Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()
