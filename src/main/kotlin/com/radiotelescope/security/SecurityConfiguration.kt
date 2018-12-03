@@ -38,6 +38,8 @@ class SecurityConfiguration(
             http.cors().and()
                     .authorizeRequests().antMatchers("/api/login**").permitAll()
                     .and()
+                    .authorizeRequests().antMatchers(HttpMethod.POST, "/users/register").permitAll()
+                    .and()
                     .formLogin()
                         .usernameParameter("email")
                         .passwordParameter("password")
@@ -48,10 +50,6 @@ class SecurityConfiguration(
                         .logoutRequestMatcher(AntPathRequestMatcher("/api/logout"))
                     .and()
                     .addFilterAfter(CorsAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
-
-            http.cors().and()
-                    .authorizeRequests().antMatchers(HttpMethod.POST, "/users/register").permitAll()
-
         }
     }
 
