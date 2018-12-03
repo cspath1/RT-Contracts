@@ -20,7 +20,7 @@ abstract class BaseUserRestControllerTest : BaseRestControllerTest() {
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
     // These will both be needed in all user rest controller
-    // so instantiate them here
+    // tests, so instantiate them here
     private lateinit var wrapper: UserUserWrapper
     private lateinit var factory: BaseUserFactory
 

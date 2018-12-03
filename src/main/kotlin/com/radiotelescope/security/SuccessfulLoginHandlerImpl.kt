@@ -18,7 +18,9 @@ class SuccessfulLoginHandlerImpl : AuthenticationSuccessHandler {
      * @param authentication the [Authentication] object
      */
     override fun onAuthenticationSuccess(request: HttpServletRequest?, response: HttpServletResponse?, authentication: Authentication?) {
-        // Set the timeout to 10 days
-        request?.session?.maxInactiveInterval = 60 * 60 * 24 * 10
+        if (request != null) {
+            // Set the timeout to 10 days
+            request.session?.maxInactiveInterval = 60 * 60 * 24 * 10
+        }
     }
 }

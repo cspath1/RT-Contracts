@@ -1,12 +1,9 @@
-package com.radiotelescope.controller.user
+package com.radiotelescope.controller.resetPasswordToken
 
-import com.radiotelescope.services.ses.MockAwsSesSendService
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.user.Register
-import com.radiotelescope.controller.model.Profile
-import com.radiotelescope.controller.model.user.RegisterForm
+import com.radiotelescope.controller.model.resetPasswordToken.UpdateForm
 import com.radiotelescope.repository.log.ILogRepository
-import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
@@ -23,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class UserRegisterControllerTest : BaseUserRestControllerTest() {
+internal class UserResetPasswordControllerTest : BaseResetPasswordTokenRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -43,40 +40,39 @@ internal class UserRegisterControllerTest : BaseUserRestControllerTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private lateinit var userRegisterController: UserRegisterController
+    private lateinit var userResetPasswordController: UserResetPasswordController
+    private lateinit var resetPasswordToken: ResetPasswordToken
 
-    private val baseForm = RegisterForm(
-            firstName = "Cody",
-            lastName = "Spath",
-            email = "cspath1@ycp.edu",
-            emailConfirm = "cspath1@ycp.edu",
+    private val baseForm = UpdateForm(
             password = "Password1@",
-            passwordConfirm = "Password1@",
-            phoneNumber = "717-823-2216",
-            company = "York College of PA",
-            categoryOfService = UserRole.Role.GUEST
+            passwordConfirm = "Password1@"
     )
 
     @Before
     override fun init() {
         super.init()
 
-        userRegisterController = UserRegisterController(
-                userWrapper = getWrapper(),
-                profile = Profile.LOCAL,
-                awsSesSendService = MockAwsSesSendService(true),
+        userResetPasswordController = UserResetPasswordController(
+                resetPasswordTokenWrapper = getWrapper(),
                 logger = getLogger()
         )
+
+        val user = testUtil.createUser("cspath1@ycp.edu")
+
+        resetPasswordToken = testUtil.createResetPasswordToken(user)
     }
 
     @Test
     fun testSuccessResponse() {
-        // Test the success scenario to ensure the result
-        // object is correctly set
-        val result = userRegisterController.execute(baseForm)
+        // Test the success scenario to ensure the
+        // result object is correctly set
+        val result = userResetPasswordController.execute(
+                token = resetPasswordToken.token,
+                form = baseForm
+        )
 
         assertNotNull(result)
-        assertTrue(result.data is Register.Response)
+        assertTrue(result.data is Long)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
 
@@ -86,21 +82,24 @@ internal class UserRegisterControllerTest : BaseUserRestControllerTest() {
 
     @Test
     fun testInvalidFormResponse() {
-        // Test the scenario where the form's validate
-        // request method fails to ensure the result object
-        // has the correct properties
-        val formCopy = baseForm.copy(firstName = "")
+        // Test the scenario where the form's validate request
+        // method fails to ensure the result object has the
+        // correct properties
+        val formCopy = baseForm.copy(
+                password = "password",
+                passwordConfirm = "password"
+        )
 
-        val result = userRegisterController.execute(formCopy)
+        val result = userResetPasswordController.execute(
+                token = resetPasswordToken.token,
+                form = formCopy
+        )
 
         assertNotNull(result)
         assertNull(result.data)
         assertNotNull(result.errors)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
-
-        // Ensure a log record was created
-        assertEquals(1, logRepo.count())
     }
 
     @Test
@@ -108,12 +107,11 @@ internal class UserRegisterControllerTest : BaseUserRestControllerTest() {
         // Test the scenario where the form is valid,
         // but validation in the command object fails
 
-        // Create a user with the same email as the form
-        testUtil.createUser(
-                email = baseForm.email!!
+        // Pass in an invalid password reset token
+        val result = userResetPasswordController.execute(
+                token = "AToken",
+                form = baseForm
         )
-
-        val result = userRegisterController.execute(baseForm)
 
         assertNotNull(result)
         assertNull(result.data)

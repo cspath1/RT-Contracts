@@ -212,6 +212,27 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
+    fun testCreate_DifferentUser_Failure() {
+        // Simulate a login as a different user
+        context.login(user2.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Create a base request copy with a valid id
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
     fun testCreatePrivate_NotResearcher_Failure() {
         // Simulate a login, but do not make them a researcher
         context.login(user.id)
@@ -1279,7 +1300,24 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
-    fun testInvalidUserAvailableTime_NotLoggedIn_Success(){
+    fun testInvalidUserAvailableTime_NotLoggedIn_Failure(){
+        val error = wrapper.userAvailableTime(
+                userId = user.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidUserAvailableTime_DifferentUser_Failure() {
+        // Simulate a login as a different user
+        context.login(user2.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
         val error = wrapper.userAvailableTime(
                 userId = user.id
         ) {

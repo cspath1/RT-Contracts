@@ -40,7 +40,11 @@ class UserAvailableTime(
         if(!errors.isEmpty)
             return SimpleResult(null, errors)
 
-        val totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(userId)!!
+        // If the user has no appointments, this will return null
+        // so change it to 0 if null
+        var totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(userId)
+        totalTime = totalTime ?: 0
+
         val theUserRole = userRoleRepo.findMembershipRoleByUserId(userId)
         var availableTime: Long
 

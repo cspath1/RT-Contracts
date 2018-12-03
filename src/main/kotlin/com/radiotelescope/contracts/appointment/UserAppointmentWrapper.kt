@@ -32,18 +32,22 @@ class UserAppointmentWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun create(request: Create.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        // If public, they only need to be a base user
-        return if (request.isPublic)
-            context.require(
-                    requiredRoles = listOf(UserRole.Role.USER),
-                    successCommand = factory.create(request)
-            ).execute(withAccess)
-        // Otherwise, they need to be a researcher
-        else
-            context.requireAny(
-                    requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
-                    successCommand = factory.create(request)
-            ).execute(withAccess)
+        if (context.currentUserId() != null && context.currentUserId() == request.userId) {
+            // If public, they only need to be a base user
+            return if (request.isPublic)
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.USER),
+                        successCommand = factory.create(request)
+                ).execute(withAccess)
+            // Otherwise, they need to be a researcher or admin
+            else
+                context.requireAny(
+                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
+                        successCommand = factory.create(request)
+                ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
     /**
@@ -375,12 +379,16 @@ class UserAppointmentWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun userAvailableTime(userId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        return context.require(
-                requiredRoles = listOf(UserRole.Role.USER),
-                successCommand = factory.userAvailableTime(
-                        userId = userId
-                )
-        ).execute(withAccess)
+        return if (context.currentUserId() != null && context.currentUserId() == userId)
+            context.require(
+                    requiredRoles = listOf(UserRole.Role.USER),
+                    successCommand = factory.userAvailableTime(
+                            userId = userId
+                    )
+            ).execute(withAccess)
+        else
+            AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+
     }
 
     /**

@@ -106,13 +106,15 @@ internal class CancelTest {
                 endTime = appointmentRequest2.endTime,
                 isPublic = appointmentRequest2.isPublic
         )
+
         // Should result in error: Canceled to Canceled
         val appointmentThree = testUtil.createAppointment(user = user,
                 telescopeId = appointmentRequest3.telescopeId,
                 status = Appointment.Status.CANCELED,
                 startTime = appointmentRequest3.startTime,
                 endTime = appointmentRequest3.endTime,
-                isPublic = appointmentRequest3.isPublic)
+                isPublic = appointmentRequest3.isPublic
+        )
 
         // Already completed appointments cannot be canceled
         val appointmentFour = testUtil.createAppointment(user = user,
@@ -120,7 +122,8 @@ internal class CancelTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = appointmentRequest4.startTime,
                 endTime = appointmentRequest4.endTime,
-                isPublic = appointmentRequest4.isPublic)
+                isPublic = appointmentRequest4.isPublic
+        )
 
         scheduledAppointmentId = appointmentOne.id
         inProgressAppointmentId = appointmentTwo.id
@@ -130,7 +133,7 @@ internal class CancelTest {
 
     @Test
     fun testValidConstraints_Success() {
-        // Test the SCHEDULED cleaning
+        // Test the Scheduled cleaning
         val (id1, errors1) = Cancel(
                 appointmentId = scheduledAppointmentId,
                 appointmentRepo = appointmentRepo

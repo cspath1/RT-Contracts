@@ -16,5 +16,8 @@ enum class ErrorTag{
     ALLOTTED_TIME,
     OVERLAP,
     RIGHT_ASCENSION,
+    HOURS,
+    MINUTES,
+    SECONDS,
     DECLINATION
 }

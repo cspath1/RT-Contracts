@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.model.appointment
 
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.repository.coordinate.Coordinate
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
@@ -12,7 +13,9 @@ internal class CreateFormTest {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = true,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 
@@ -22,13 +25,18 @@ internal class CreateFormTest {
         assertNull(baseForm.validateRequest())
 
         val theRequest = baseForm.toRequest()
+        val rightAscensionInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
+                hours = baseForm.hours!!,
+                minutes = baseForm.hours!!,
+                seconds = baseForm.seconds!!
+        )
 
         assertEquals(theRequest.userId, baseForm.userId!!)
         assertEquals(theRequest.telescopeId, baseForm.telescopeId!!)
         assertEquals(theRequest.endTime, baseForm.endTime!!)
         assertEquals(theRequest.startTime, baseForm.startTime!!)
         assertEquals(theRequest.isPublic, baseForm.isPublic!!)
-        assertEquals(theRequest.rightAscension, baseForm.rightAscension!!, 0.00001)
+        assertEquals(theRequest.rightAscension, rightAscensionInDegrees, 0.00001)
         assertEquals(theRequest.declination, baseForm.declination!!, 0.00001)
     }
 
@@ -117,18 +125,138 @@ internal class CreateFormTest {
     }
 
     @Test
-    fun testNullRightAscension_Failure() {
-        // Create a copy of the form with a null right ascension
+    fun testNullHours_Failure() {
+        // Create a copy of the form with a null hours field
         val baseFormCopy = baseForm.copy(
-                rightAscension = null
+                hours = null
         )
 
         // Call the validate request method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure the right ascension was the reason for failure
+        // Make sure the hours was the reason for failure
         assertNotNull(errors)
-        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+        assertTrue(errors!![ErrorTag.HOURS].isNotEmpty())
+    }
+
+    @Test
+    fun testHoursBelowZero_Failure() {
+        // Create a copy of the form with hours below zero
+        val baseFormCopy = baseForm.copy(
+                hours = -1
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the hours was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.HOURS].isNotEmpty())
+    }
+
+    @Test
+    fun testHoursAboveTwentyFour_Failure() {
+        // Create a copy of the form with hours below twenty four
+        val baseFormCopy = baseForm.copy(
+                hours = 25
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the hours was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.HOURS].isNotEmpty())
+    }
+
+    @Test
+    fun testNullMinutes_Failure() {
+        // Create a copy of the form with a null minutes field
+        val baseFormCopy = baseForm.copy(
+                minutes = null
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the minutes was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
+    }
+
+    @Test
+    fun testMinutesBelowZero_Failure() {
+        // Create a copy of the form with a minutes field below zero
+        val baseFormCopy = baseForm.copy(
+                minutes = -1
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the minutes was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
+    }
+
+    @Test
+    fun testMinutesAboveSixty_Failure() {
+        // Create a copy of the form with a minutes field above sixty
+        val baseFormCopy = baseForm.copy(
+                minutes = 61
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the minutes was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
+    }
+
+    @Test
+    fun testNullSeconds_Failure() {
+        // Create a copy of the form with a null seconds field
+        val baseFormCopy = baseForm.copy(
+                seconds = null
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the seconds was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
+    }
+
+    @Test
+    fun testSecondsBelowZero_Failure() {
+        // Create a copy of the form with a seconds field below zero
+        val baseFormCopy = baseForm.copy(
+                seconds = -1
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the seconds was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
+    }
+
+    @Test
+    fun testSecondsAboveSixty_Failure() {
+        // Create a copy of the form with a seconds field above sixty
+        val baseFormCopy = baseForm.copy(
+                seconds = 61
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the seconds was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
     }
 
     @Test

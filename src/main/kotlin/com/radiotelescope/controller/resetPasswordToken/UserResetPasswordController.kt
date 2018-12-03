@@ -73,7 +73,9 @@ class UserResetPasswordController (
                         )
                 )
             }
+            // If the command was a failure
             simpleResult.error?.let { error ->
+                // Create an error log
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
@@ -82,11 +84,11 @@ class UserResetPasswordController (
                         ),
                         errors = error.toStringMap()
                 )
+
                 result = Result(
                         errors = error.toStringMap()
                 )
             }
-
         }
 
         return result
