@@ -375,12 +375,16 @@ class UserAppointmentWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun userAvailableTime(userId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        return context.require(
-                requiredRoles = listOf(UserRole.Role.USER),
-                successCommand = factory.userAvailableTime(
-                        userId = userId
-                )
-        ).execute(withAccess)
+        return if (context.currentUserId() != null && context.currentUserId() == userId)
+            context.require(
+                    requiredRoles = listOf(UserRole.Role.USER),
+                    successCommand = factory.userAvailableTime(
+                            userId = userId
+                    )
+            ).execute(withAccess)
+        else
+            AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+
     }
 
     /**

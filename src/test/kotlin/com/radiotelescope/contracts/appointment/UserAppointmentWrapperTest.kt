@@ -1279,7 +1279,24 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
-    fun testInvalidUserAvailableTime_NotLoggedIn_Success(){
+    fun testInvalidUserAvailableTime_NotLoggedIn_Failure(){
+        val error = wrapper.userAvailableTime(
+                userId = user.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testInvalidUserAvailableTime_DifferentUser_Failure() {
+        // Simulate a login as a different user
+        context.login(user2.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
         val error = wrapper.userAvailableTime(
                 userId = user.id
         ) {

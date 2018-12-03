@@ -8,7 +8,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
-abstract class BaseResetPasswordTokenControllerTest : BaseRestControllerTest() {
+abstract class BaseResetPasswordTokenRestControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var resetPasswordTokenRepo: IResetPasswordTokenRepository
 
