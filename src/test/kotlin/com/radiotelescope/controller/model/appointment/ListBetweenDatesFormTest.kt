@@ -64,4 +64,20 @@ internal class ListBetweenDatesFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.END_TIME].isNotEmpty())
     }
+
+    @Test
+    fun testStartAfterEnd_Failure() {
+        // Create a copy of the form with a start time after the end time
+        val baseFormCopy = baseForm.copy(
+                startTime = baseForm.endTime,
+                endTime = baseForm.startTime
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the start time field was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.START_TIME].isNotEmpty())
+    }
 }

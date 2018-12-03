@@ -19,7 +19,7 @@ import java.util.*
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentListBetweenDates (
+class AppointmentListBetweenDatesController (
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger){
@@ -66,9 +66,9 @@ class AppointmentListBetweenDates (
             request.telescopeId = telescopeId
             appointmentWrapper.listBetweenDates(request) { it ->
                 //If the command was a success
-                it.success?.let{ list ->
+                it.success?.let { list ->
                     // Create success logs
-                    list.forEach{
+                    list.forEach {
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         Log.AffectedTable.APPOINTMENT,
@@ -80,7 +80,7 @@ class AppointmentListBetweenDates (
                     result = Result(data = list)
                 }
                 // If the command was a failure
-                it.error?.let{ errors ->
+                it.error?.let { errors ->
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
