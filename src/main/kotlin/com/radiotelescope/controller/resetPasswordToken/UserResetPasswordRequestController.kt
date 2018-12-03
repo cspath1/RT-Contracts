@@ -9,6 +9,7 @@ import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.service.ses.AwsSesSendService
+import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.web.bind.annotation.*
 
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.*
 class UserResetPasswordRequestController (
         private val resetPasswordTokenWrapper: UserResetPasswordTokenWrapper,
         private val profile: Profile,
-        private val awsSesSendService: AwsSesSendService,
+        private val awsSesSendService: IAwsSesSendService,
         logger: Logger
 ): BaseRestController(logger) {
     /**
@@ -34,40 +35,39 @@ class UserResetPasswordRequestController (
     @CrossOrigin(value = ["http://localhost:8081"])
     @PostMapping(value = ["/api/requestPasswordReset"])
     fun execute(@RequestBody email: String): Result {
-        let {
-            val simpleResult = resetPasswordTokenWrapper.requestPasswordReset(
-                    email = email
-            ).execute()
-            // If the command was a success
-            simpleResult.success?.let { data ->
-                // Create a success log
-                logger.createSuccessLog(
-                        info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.RESET_PASSWORD_TOKEN,
-                                action = "Request Password Reset",
-                                affectedRecordId = null
-                        )
-                )
+        val simpleResult = resetPasswordTokenWrapper.requestPasswordReset(
+                email = email
+        ).execute()
+        // If the command was a success
+        simpleResult.success?.let { data ->
+            // Create a success log
+            logger.createSuccessLog(
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.RESET_PASSWORD_TOKEN,
+                            action = "Request Password Reset",
+                            affectedRecordId = null
+                    )
+            )
 
-                result = Result(data = data)
+            result = Result(data = data)
 
-                sendEmail(
-                        email = email,
-                        token = data
-                )
-            }
-            simpleResult.error?.let { error ->
-                logger.createErrorLogs(
-                        info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.RESET_PASSWORD_TOKEN,
-                                action = "Request Password Reset",
-                                affectedRecordId = null
-                        ),
-                        errors = error.toStringMap()
-                )
+            sendEmail(
+                    email = email,
+                    token = data
+            )
+        }
+        // If the command was a failure
+        simpleResult.error?.let { error ->
+            logger.createErrorLogs(
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.RESET_PASSWORD_TOKEN,
+                            action = "Request Password Reset",
+                            affectedRecordId = null
+                    ),
+                    errors = error.toStringMap()
+            )
 
-                result = Result(errors = error.toStringMap())
-            }
+            result = Result(errors = error.toStringMap())
         }
 
         return result
