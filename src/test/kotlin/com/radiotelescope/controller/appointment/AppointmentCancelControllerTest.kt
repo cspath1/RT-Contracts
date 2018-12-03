@@ -1,8 +1,9 @@
 package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.ILogRepository
-import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
@@ -17,11 +18,13 @@ import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
+
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestControllerTest() {
+internal class AppointmentCancelControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -42,39 +45,40 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
     private lateinit var logRepo: ILogRepository
 
     @Autowired
-    private lateinit var userRoleRepo: IUserRoleRepository
+    private lateinit var appointmentRepo: IAppointmentRepository
 
-    private lateinit var appointmentAvailableTimeController: AppointmentAvailableTimeController
+    private lateinit var appointmentCancelController: AppointmentCancelController
     private lateinit var user: User
+    private lateinit var appointment: Appointment
 
     @Before
     override fun init() {
         super.init()
 
-        appointmentAvailableTimeController = AppointmentAvailableTimeController(
+        appointmentCancelController = AppointmentCancelController(
                 appointmentWrapper = getWrapper(),
                 logger = getLogger()
         )
 
         user = testUtil.createUser("cspath1@ycp.edu")
 
-        testUtil.createUserRolesForUser(
-                userId = user.id,
-                role = UserRole.Role.MEMBER,
-                isApproved = true
+        appointment = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(System.currentTimeMillis() + 50000L),
+                endTime = Date(System.currentTimeMillis() + 100000L),
+                isPublic = true
         )
     }
 
     @Test
     fun testSuccessResponse() {
-        // Test the success scenario to ensure
-        // the result object is correctly set
-
         // Simulate a login
         getContext().login(user.id)
-        getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
+        getContext().currentRoles.add(UserRole.Role.USER)
 
-        val result = appointmentAvailableTimeController.execute(user.id)
+        val result = appointmentCancelController.execute(appointment.id)
 
         assertNotNull(result)
         assertTrue(result.data is Long)
@@ -87,18 +91,15 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
 
     @Test
     fun testFailedValidationResponse() {
-        // Delete the user's category of service
-        userRoleRepo.findAll().forEach {
-            if (it.role != UserRole.Role.USER) {
-                userRoleRepo.delete(it)
-            }
-        }
+        // Set the status to canceled and then call the method
+        appointment.status = Appointment.Status.CANCELED
+        appointmentRepo.save(appointment)
 
         // Simulate a login
         getContext().login(user.id)
         getContext().currentRoles.add(UserRole.Role.USER)
 
-        val result = appointmentAvailableTimeController.execute(user.id)
+        val result = appointmentCancelController.execute(appointment.id)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -112,11 +113,30 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
     @Test
     fun testFailedAuthenticationResponse() {
         // Do not log the user in
-        val result = appointmentAvailableTimeController.execute(user.id)
+        val result = appointmentCancelController.execute(appointment.id)
 
         assertNotNull(result)
         assertNull(result.data)
         assertEquals(HttpStatus.FORBIDDEN, result.status)
+        assertNotNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+    }
+
+    @Test
+    fun testInvalidResourceIdResponse() {
+        // Call the method on a record id that does not exist
+
+        // Simulate a login
+        getContext().login(user.id)
+        getContext().currentRoles.add(UserRole.Role.USER)
+
+        val result = appointmentCancelController.execute(311L)
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertEquals(HttpStatus.NOT_FOUND, result.status)
         assertNotNull(result.errors)
 
         // Ensure a log record was created
