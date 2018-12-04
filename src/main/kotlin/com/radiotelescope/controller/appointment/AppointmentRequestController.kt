@@ -11,6 +11,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.service.ses.AwsSesSendService
+import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class AppointmentRequestController(
         private val appointmentWrapper: UserAppointmentWrapper,
-        private val awsSesSendService: AwsSesSendService,
+        private val awsSesSendService: IAwsSesSendService,
         private val userRepo: IUserRepository,
         logger: Logger
 ) : BaseRestController(logger) {

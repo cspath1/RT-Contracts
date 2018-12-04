@@ -1112,6 +1112,27 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
+    fun testRequest_DifferentUser_Failure() {
+        // Simulate a login as a different user
+        context.login(user2.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Create a base request copy with a valid id
+        val requestCopy = baseRequestRequest.copy(
+                userId = user.id
+        )
+
+        val error = wrapper.request(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
     fun testRequestPublic_User_Success() {
         // Simulate a login
         context.login(user.id)
