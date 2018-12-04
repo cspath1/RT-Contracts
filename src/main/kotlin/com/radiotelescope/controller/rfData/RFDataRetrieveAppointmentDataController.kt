@@ -1,4 +1,4 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.rfData
 
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.rfdata.RetrieveAppointmentData
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentDataViewController(
+class RFDataRetrieveAppointmentDataController(
         private val rfDataWrapper: UserRFDataWrapper,
         logger: Logger
 ) : BaseRestController(logger) {

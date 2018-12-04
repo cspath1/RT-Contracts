@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.Update
 import com.radiotelescope.controller.model.BaseForm
+import com.radiotelescope.repository.coordinate.Coordinate
 import java.util.*
 
 /**
@@ -22,7 +23,9 @@ data class UpdateForm (
         val endTime: Date?,
         val telescopeId: Long?,
         val isPublic: Boolean?,
-        val rightAscension: Double?,
+        val hours: Int?,
+        val minutes: Int?,
+        val seconds: Int?,
         val declination: Double?
 ) : BaseForm<Update.Request> {
     /**
@@ -36,7 +39,11 @@ data class UpdateForm (
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
                 isPublic = isPublic!!,
-                rightAscension = rightAscension!!,
+                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = hours!!,
+                        minutes = minutes!!,
+                        seconds = seconds!!
+                ),
                 declination = declination!!
         )
     }
@@ -57,8 +64,18 @@ data class UpdateForm (
             errors.put(ErrorTag.TELESCOPE_ID, "Required field")
         if(isPublic == null)
             errors.put(ErrorTag.PUBLIC, "Required field")
-        if (rightAscension == null)
-            errors.put(ErrorTag.RIGHT_ASCENSION, "Required field")
+        if (hours == null)
+            errors.put(ErrorTag.HOURS, "Required field")
+        else if (hours >= 24 || hours < 0)
+            errors.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
+        if (minutes == null)
+            errors.put(ErrorTag.MINUTES, "Required field")
+        else if (minutes >= 60 || minutes < 0)
+            errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
+        if (seconds == null)
+            errors.put(ErrorTag.SECONDS, "Required field")
+        else if (seconds >= 60 || seconds < 0)
+            errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
         if (declination == null)
             errors.put(ErrorTag.DECLINATION, "Required field")
 
