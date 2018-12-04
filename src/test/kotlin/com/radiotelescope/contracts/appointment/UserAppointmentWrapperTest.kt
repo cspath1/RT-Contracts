@@ -768,6 +768,37 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
+    fun testInvalidUpdate_InvalidId_Failure() {
+        // Make the user an admin
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
+
+        // Simulate a log in to an admin account
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        val error = wrapper.update(
+                request = Update.Request(
+                        id = 420L,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId,
+                        isPublic = false,
+                        rightAscension = 311.0,
+                        declination = 42.0
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId!!.isNotEmpty())
+    }
+
+    @Test
     fun testValidUpdate_Private_Researcher_Success() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(

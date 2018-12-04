@@ -210,8 +210,14 @@ class UserAppointmentWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
+        if (!appointmentRepo.existsById(request.id)) {
+            return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(request.id))
+        }
+
+        val theAppointment = appointmentRepo.findById(request.id).get()
+
         if(context.currentUserId() != null) {
-            if (context.currentUserId() == appointmentRepo.findById(request.id).get().user!!.id) {
+            if (context.currentUserId() == theAppointment.user!!.id) {
                 // If public, they only need to be a base user
                 return if (request.isPublic)
                     context.require(
