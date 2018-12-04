@@ -1,10 +1,8 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.updateEmailToken
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.AppointmentInfo
-import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
-import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -18,12 +16,11 @@ import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
-import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class AppointmentRetrieveControllerTest : BaseAppointmentRestControllerTest() {
+internal class UserUpdateEmailControllerTest : BaseUpdateEmailTokenRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -43,41 +40,34 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private lateinit var appointmentRetrieveController: AppointmentRetrieveController
+    private lateinit var userUpdateEmailController: UserUpdateEmailController
+    private lateinit var updateEmailToken: UpdateEmailToken
     private lateinit var user: User
-    private lateinit var appointment: Appointment
 
     @Before
     override fun init() {
         super.init()
 
-        appointmentRetrieveController = AppointmentRetrieveController(
-                appointmentWrapper = getWrapper(),
+        userUpdateEmailController = UserUpdateEmailController(
+                updateEmailTokenWrapper = getWrapper(),
                 logger = getLogger()
         )
 
         user = testUtil.createUser("cspath1@ycp.edu")
 
-        appointment = testUtil.createAppointment(
+        updateEmailToken = testUtil.createUpdateEmailToken(
                 user = user,
-                telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED,
-                startTime = Date(System.currentTimeMillis() + 50000L),
-                endTime = Date(System.currentTimeMillis() + 100000L),
-                isPublic = false
+                token = "AGoodToken",
+                email = "spathcody@gmail.com"
         )
     }
 
     @Test
     fun testSuccessResponse() {
-        // Simulate a login
-        getContext().login(user.id)
-        getContext().currentRoles.add(UserRole.Role.USER)
-
-        val result = appointmentRetrieveController.execute(appointment.id)
+        val result = userUpdateEmailController.execute(updateEmailToken.token)
 
         assertNotNull(result)
-        assertTrue(result.data is AppointmentInfo)
+        assertTrue(result.data is Long)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
 
@@ -86,32 +76,13 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
     }
 
     @Test
-    fun testInvalidResourceIdResponse() {
-        // Simulate a login
-        getContext().login(user.id)
-        getContext().currentRoles.add(UserRole.Role.USER)
-
-        val result = appointmentRetrieveController.execute(420L)
+    fun testInvalidTokenResponse() {
+        val result = userUpdateEmailController.execute("ABadToken")
 
         assertNotNull(result)
         assertNull(result.data)
         assertNotNull(result.errors)
-        assertEquals(HttpStatus.NOT_FOUND, result.status)
-        assertEquals(1, result.errors!!.size)
-
-        // Ensure a log record was created
-        assertEquals(1, logRepo.count())
-    }
-
-    @Test
-    fun testFailedAuthenticationResponse() {
-        // Do no log the user in
-        val result = appointmentRetrieveController.execute(appointment.id)
-
-        assertNotNull(result)
-        assertNull(result.data)
-        assertNotNull(result.errors)
-        assertEquals(HttpStatus.FORBIDDEN, result.status)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
 
         // Ensure a log record was created

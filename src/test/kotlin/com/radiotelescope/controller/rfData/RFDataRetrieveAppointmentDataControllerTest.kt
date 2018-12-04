@@ -1,10 +1,11 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.rfData
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.AppointmentInfo
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -17,13 +18,14 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
-import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class AppointmentRetrieveControllerTest : BaseAppointmentRestControllerTest() {
+@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedAppointmentData.sql"])
+internal class RFDataRetrieveAppointmentDataControllerTest : BaseRFDataRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -43,7 +45,13 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private lateinit var appointmentRetrieveController: AppointmentRetrieveController
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
+    @Autowired
+    private lateinit var appointmentRepo: IAppointmentRepository
+
+    private lateinit var rfDataRetrieveAppointmentDataController: RFDataRetrieveAppointmentDataController
     private lateinit var user: User
     private lateinit var appointment: Appointment
 
@@ -51,21 +59,18 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
     override fun init() {
         super.init()
 
-        appointmentRetrieveController = AppointmentRetrieveController(
-                appointmentWrapper = getWrapper(),
+        assertEquals(1, userRepo.count())
+        assertEquals(1, appointmentRepo.count())
+
+        rfDataRetrieveAppointmentDataController = RFDataRetrieveAppointmentDataController(
+                rfDataWrapper = getWrapper(),
                 logger = getLogger()
         )
 
-        user = testUtil.createUser("cspath1@ycp.edu")
-
-        appointment = testUtil.createAppointment(
-                user = user,
-                telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED,
-                startTime = Date(System.currentTimeMillis() + 50000L),
-                endTime = Date(System.currentTimeMillis() + 100000L),
-                isPublic = false
-        )
+        // Retrieve the user and appointment that were persisted by the
+        // sql script
+        user = userRepo.findAll().iterator().next()
+        appointment = appointmentRepo.findAll().iterator().next()
     }
 
     @Test
@@ -74,12 +79,34 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
         getContext().login(user.id)
         getContext().currentRoles.add(UserRole.Role.USER)
 
-        val result = appointmentRetrieveController.execute(appointment.id)
+        val result = rfDataRetrieveAppointmentDataController.execute(appointment.id)
 
         assertNotNull(result)
-        assertTrue(result.data is AppointmentInfo)
+        assertTrue(result.data is List<*>)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+
+        // A log should have been created for each record
+        assertEquals(10, logRepo.count())
+    }
+
+    @Test
+    fun testFailedValidationResponse() {
+        // Set the appointment status to scheduled
+        appointment.status = Appointment.Status.SCHEDULED
+        appointmentRepo.save(appointment)
+
+        // Simulate a login
+        getContext().login(user.id)
+        getContext().currentRoles.add(UserRole.Role.USER)
+
+        val result = rfDataRetrieveAppointmentDataController.execute(appointment.id)
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertEquals(1, result.errors!!.size)
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
@@ -91,7 +118,7 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
         getContext().login(user.id)
         getContext().currentRoles.add(UserRole.Role.USER)
 
-        val result = appointmentRetrieveController.execute(420L)
+        val result = rfDataRetrieveAppointmentDataController.execute(311L)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -105,8 +132,8 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
 
     @Test
     fun testFailedAuthenticationResponse() {
-        // Do no log the user in
-        val result = appointmentRetrieveController.execute(appointment.id)
+        // Do not log the user in
+        val result = rfDataRetrieveAppointmentDataController.execute(appointment.id)
 
         assertNotNull(result)
         assertNull(result.data)
