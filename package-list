@@ -23,6 +23,7 @@ com.radiotelescope.controller.model.ses
 com.radiotelescope.controller.model.updateEmailToken
 com.radiotelescope.controller.model.user
 com.radiotelescope.controller.resetPasswordToken
+com.radiotelescope.controller.rfData
 com.radiotelescope.controller.spring
 com.radiotelescope.controller.updateEmailToken
 com.radiotelescope.controller.user
