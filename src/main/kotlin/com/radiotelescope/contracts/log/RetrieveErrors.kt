@@ -20,12 +20,12 @@ class RetrieveErrors(
      * Override of the [Command.execute] method that returns all errors for a given log
      */
     override fun execute(): SimpleResult<List<ErrorInfo>, Multimap<ErrorTag, String>> {
-        validateRequest()?.let { return SimpleResult(null, it) } ?: let { _ ->
+        validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theLog = logRepo.findById(logId).get()
 
             val infoList = arrayListOf<ErrorInfo>()
-            theLog.errors.forEach {
-                infoList.add(ErrorInfo(it, theLog.id))
+            theLog.errors.forEach { error ->
+                infoList.add(ErrorInfo(error, theLog.id))
             }
 
             return SimpleResult(infoList, null)

@@ -40,10 +40,17 @@ data class ListBetweenDatesForm(
      */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
+
         if (startTime == null)
             errors.put(ErrorTag.START_TIME, "Required field")
         if (endTime == null)
             errors.put(ErrorTag.END_TIME, "Required field")
+
+        if (!errors.isEmpty)
+            return errors
+
+        if (startTime!!.after(endTime))
+            errors.put(ErrorTag.START_TIME, "Start Time must be after End Time")
 
         return if (errors.isEmpty) null else errors
     }

@@ -1,7 +1,6 @@
 package com.radiotelescope.repository.role
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*

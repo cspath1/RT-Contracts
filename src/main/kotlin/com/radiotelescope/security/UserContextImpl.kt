@@ -55,7 +55,7 @@ class UserContextImpl(
                 missingRoles?.add(UserRole.Role.USER)
             // Otherwise, we can check if the proper roles
             else {
-                // Grab all of the roles and check them agains the required list
+                // Grab all of the roles and check them against the required list
                 val userRoles = userRoleRepo.findAllByUserId(session.userId)
                 if (!requiredRoles.isEmpty()) {
                     requiredRoles.forEach { role: UserRole.Role ->

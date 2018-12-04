@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
@@ -105,24 +104,16 @@ internal class UserUserWrapperTest {
                 userRepo = userRepo
         )
 
-        // Create a user for the authentication test
-        // We will need to hash the password before persisting
-        val passwordEncoder = Pbkdf2PasswordEncoder(
-                "YCAS2018",
-                50,
-                256
-        )
-
         // Persist the User with the hashed password
         val user = testUtil.createUserWithEncodedPassword(
                 email = "cspath1@ycp.edu",
-                password = passwordEncoder.encode("Password"),
+                password = "Password",
                 accountHash = "Test Account 1"
         )
 
         val otherUser = testUtil.createUserWithEncodedPassword(
                 email = "codyspath@gmail.com",
-                password = passwordEncoder.encode("Password"),
+                password = "Password",
                 accountHash = "Test Account 2"
         )
 
@@ -301,7 +292,7 @@ internal class UserUserWrapperTest {
         context.login(userId)
         context.currentRoles.add(UserRole.Role.USER)
 
-        var Id = -1L
+        var id = -1L
         val error = wrapper.update(
                 request = Update.Request(
                         id = userId,
@@ -311,12 +302,12 @@ internal class UserUserWrapperTest {
                         company = "York College of Pennsylvania"
                 )
         ){
-            Id = it.success!!
+            id = it.success!!
             assertNull(it.error)
         }
 
         assertNull(error)
-        assertEquals(userId, Id)
+        assertEquals(userId, id)
     }
 
     @Test
@@ -325,7 +316,7 @@ internal class UserUserWrapperTest {
         context.login(otherUserId)
         context.currentRoles.add(UserRole.Role.ADMIN)
 
-        var Id = -1L
+        var id = -1L
         val error = wrapper.update(
                 request = Update.Request(
                         id = userId,
@@ -335,12 +326,12 @@ internal class UserUserWrapperTest {
                         company = "York College of Pennsylvania"
                 )
         ){
-            Id = it.success!!
+            id = it.success!!
             assertNull(it.error)
         }
 
         assertNull(error)
-        assertEquals(userId, Id)
+        assertEquals(userId, id)
     }
 
     @Test

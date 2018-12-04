@@ -19,4 +19,10 @@ data class Coordinate(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
+
+    companion object {
+        fun hoursMinutesSecondsToDegrees(hours: Int, minutes: Int, seconds: Int): Double {
+            return (hours.toDouble() * 15) + (minutes.toDouble() / 4) + (seconds.toDouble() / 240)
+        }
+    }
 }

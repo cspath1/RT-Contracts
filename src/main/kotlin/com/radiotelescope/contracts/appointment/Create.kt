@@ -133,13 +133,13 @@ class Create(
      */
     private fun isOverlap(): Boolean {
         var isOverlap = false
-        val listAppts = appointmentRepo.findConflict(
+        val appointmentList = appointmentRepo.findConflict(
                 endTime = request.endTime,
                 startTime = request.startTime,
                 telescopeId = request.telescopeId
         )
 
-        if (!listAppts.isEmpty()) {
+        if (!appointmentList.isEmpty()) {
             isOverlap = true
         }
 

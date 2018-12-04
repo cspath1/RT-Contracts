@@ -38,18 +38,15 @@ internal class ChangePasswordTest {
     private lateinit var userRepo: IUserRepository
 
     private var userId = -1L
-    private var userId2 = -2L
 
     @Before
     fun setUp() {
         // Persist a user
-        val thePassword = User.rtPasswordEncoder.encode("Password1@")
         val theUser = testUtil.createUserWithEncodedPassword(
                 email = "cspath1@ycp.edu",
-                password = thePassword,
+                password = "Password1@",
                 accountHash = "Test Account 1"
         )
-
         userId = theUser.id
     }
 

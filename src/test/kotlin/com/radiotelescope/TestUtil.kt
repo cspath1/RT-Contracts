@@ -84,7 +84,7 @@ internal class TestUtil {
                 firstName = "First Name",
                 lastName = "Last Name",
                 email = email,
-                password = password
+                password = User.rtPasswordEncoder.encode(password)
         )
 
         user.accountHash = accountHash

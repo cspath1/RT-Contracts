@@ -4,7 +4,6 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.repository.user.User
 
 /**
  * Base concrete implementation of the [UpdateEmailTokenFactory] interface

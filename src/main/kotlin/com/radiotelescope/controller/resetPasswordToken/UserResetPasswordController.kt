@@ -52,16 +52,16 @@ class UserResetPasswordController (
             )
 
             result = Result(errors = it.toStringMap())
-        } ?: let { _ ->
+        } ?: let {
             // Otherwise call the factory command
             val simpleResult = resetPasswordTokenWrapper.resetPassword(
                     request = form.toRequest(),
                     token = token
             ).execute()
             // If the command was a success
-            simpleResult.success?.let {
+            simpleResult.success?.let { data ->
                 result = Result(
-                        data = it
+                        data = data
                 )
 
                 // Create a success log
@@ -69,25 +69,28 @@ class UserResetPasswordController (
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Password Reset",
-                                affectedRecordId = it
+                                affectedRecordId = data
                         )
                 )
             }
-            simpleResult.error?.let {
+            // If the command was a failure
+            simpleResult.error?.let { error ->
+                // Create an error log
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Password Reset",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = error.toStringMap()
                 )
+
                 result = Result(
-                        errors = it.toStringMap()
+                        errors = error.toStringMap()
                 )
             }
-
         }
+
         return result
     }
 }

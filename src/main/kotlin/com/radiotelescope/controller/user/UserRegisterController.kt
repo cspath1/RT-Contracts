@@ -10,7 +10,7 @@ import com.radiotelescope.controller.model.ses.AppLink
 import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
-import com.radiotelescope.service.ses.AwsSesSendService
+import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController
 class UserRegisterController(
         private val userWrapper: UserUserWrapper,
         private val profile: Profile,
-        private val awsSesSendService: AwsSesSendService,
+        private val awsSesSendService: IAwsSesSendService,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -58,21 +58,21 @@ class UserRegisterController(
             result = Result(errors = it.toStringMap())
         } ?:
         // Otherwise execute the wrapper command
-        let { _ ->
+        let {
             val simpleResult = userWrapper.register(
                     request = form.toRequest()
             ).execute()
             // If the command was a success
-            simpleResult.success?.let {
+            simpleResult.success?.let { data ->
                 result = Result(
-                        data = it
+                        data = data
                 )
                 // Create a success log
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Registration",
-                                affectedRecordId = it.id
+                                affectedRecordId = data.id
                         )
                 )
 
@@ -82,7 +82,7 @@ class UserRegisterController(
                 )
             }
             // Otherwise, it was a failure
-            simpleResult.error?.let {
+            simpleResult.error?.let { error ->
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
@@ -90,11 +90,11 @@ class UserRegisterController(
                                 action = "User Registration",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = error.toStringMap()
                 )
 
                 result = Result(
-                        errors = it.toStringMap()
+                        errors = error.toStringMap()
                 )
             }
         }

@@ -6,7 +6,6 @@ import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
-import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.FakeUserContext
 import com.radiotelescope.toStringMap
 import liquibase.integration.spring.SpringLiquibase
@@ -147,7 +146,7 @@ internal class LoggerTest {
 
         val iterableErrors = errorRepo.findAll()
         iterableErrors.forEach {
-            assertEquals(it.log, iterableLogs.toMutableList().get(0))
+            assertEquals(it.log, iterableLogs.toMutableList()[0])
         }
     }
 
@@ -189,7 +188,7 @@ internal class LoggerTest {
 
         val iterableErrors = errorRepo.findAll()
         iterableErrors.forEach {
-            assertEquals(it.log, iterableLogs.toMutableList().get(0))
+            assertEquals(it.log, iterableLogs.toMutableList()[0])
         }
     }
 }

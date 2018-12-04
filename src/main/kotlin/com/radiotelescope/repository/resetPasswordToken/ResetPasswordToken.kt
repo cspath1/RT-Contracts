@@ -6,7 +6,7 @@ import javax.persistence.*
 
 
 /**
- * Entity Class representing a ResetPasswordToken for the web-applicaiton
+ * Entity Class representing a ResetPasswordToken for the web-application
  *
  * This Entity correlates to the ResetPasswordToken SQL Table
  */

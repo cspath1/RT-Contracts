@@ -38,7 +38,7 @@ class AdminLogWrapper(
 
     /**
      * Wrapper method for the [LogFactory.retrieveErrors] method that adds Spring Security
-     * authenticaiton to the [RetrieveErrors] command object
+     * authentication to the [RetrieveErrors] command object
      *
      * @param logId the Log id
      * @return An [AccessReport] if authentication fails or null

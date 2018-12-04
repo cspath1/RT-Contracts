@@ -53,27 +53,27 @@ class UserUpdateController(
             )
 
             result = Result(errors = it.toStringMap())
-        } ?: let { _ ->
+        } ?: let {
             // Otherwise call the factory command
             userWrapper.update(
                     request = form.toRequest()
-            ) { it ->
+            ) { response ->
                 // If the command was a success
-                it.success?.let{
+                response.success?.let { data ->
                     result = Result(
-                            data = it
+                            data = data
                     )
 
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
                                     action = "User Update",
-                                    affectedRecordId = it
+                                    affectedRecordId = data
                             )
                     )
                 }
                 // Otherwise, it was a failure
-                it.error?.let{
+                response.error?.let { error ->
                     // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
@@ -81,13 +81,13 @@ class UserUpdateController(
                                     action = "User Update",
                                     affectedRecordId = null
                             ),
-                            errors = it.toStringMap()
+                            errors = error.toStringMap()
                     )
                     result = Result(
-                            errors = it.toStringMap()
+                            errors = error.toStringMap()
                     )
                 }
-            }?.let {
+            }?.let { report ->
                 // If we get here, that means the user was not authenticated
                 // Create error logs
                 logger.createErrorLogs(
@@ -96,17 +96,17 @@ class UserUpdateController(
                                 action = "User Update",
                                 affectedRecordId = null
                         ),
-                        errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
+                        errors = if (report.missingRoles != null) report.toStringMap() else report.invalidResourceId!!
                 )
 
                 // Set the errors depending on if the user was not authenticated or the
                 // record did not exists
-                result = if (it.missingRoles == null) {
-                    Result(errors = it.invalidResourceId!!, status = HttpStatus.NOT_FOUND)
+                result = if (report.missingRoles == null) {
+                    Result(errors = report.invalidResourceId!!, status = HttpStatus.NOT_FOUND)
                 }
                 // user did not have access to the resource
                 else {
-                    Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+                    Result(errors = report.toStringMap(), status = HttpStatus.FORBIDDEN)
                 }
             }
         }

@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.contracts.user.Update
 import com.radiotelescope.controller.model.BaseForm
-import com.radiotelescope.repository.role.UserRole
 
 /**
  * Update form that takes nullable versions of the [Update.Request] object.

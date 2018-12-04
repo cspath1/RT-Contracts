@@ -36,9 +36,9 @@ class AppointmentFutureTelescopeListController(
      */
     @GetMapping(value = ["/api/appointments/telescopes/{telescopeId}/futureList"])
     fun execute(@PathVariable("telescopeId") telescopeId: Long,
-                @RequestParam("page") pageNumber: Int?,
-                @RequestParam("size") pageSize: Int?): Result {
-        if ((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
+                @RequestParam("page") pageNumber: Int,
+                @RequestParam("size") pageSize: Int): Result {
+        if (pageNumber < 0 || pageSize <= 0) {
             val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(

@@ -11,6 +11,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.service.ses.AwsSesSendService
+import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class AppointmentRequestController(
         private val appointmentWrapper: UserAppointmentWrapper,
-        private val awsSesSendService: AwsSesSendService,
+        private val awsSesSendService: IAwsSesSendService,
         private val userRepo: IUserRepository,
         logger: Logger
 ) : BaseRestController(logger) {
@@ -59,26 +60,26 @@ class AppointmentRequestController(
             result = Result(errors = it.toStringMap())
         } ?:
         // Otherwise, execute the wrapper command
-        let { _ ->
+        let {
             appointmentWrapper.request(
                     request = form.toRequest()
-            ) { it ->
+            ) { response ->
                 // If the command called was a success
-                it.success?.let {
+                response.success?.let { data ->
                     // Create success logs
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action = "Appointment Request",
-                                    affectedRecordId = it
+                                    affectedRecordId = data
                             )
                     )
-                    result = Result(data = it)
+                    result = Result(data = data)
 
                     sendEmail(userRepo.findAllAdminEmail())
                 }
                 // Otherwise, it was an error
-                it.error?.let {
+                response.error?.let { errors ->
                     // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
@@ -86,12 +87,12 @@ class AppointmentRequestController(
                                     action ="Appointment Request",
                                     affectedRecordId = null
                             ),
-                            errors = it.toStringMap()
+                            errors = errors.toStringMap()
                     )
 
-                    result = Result(errors = it.toStringMap())
+                    result = Result(errors = errors.toStringMap())
                 }
-            }?.let {
+            }?.let { report ->
                 // If we get here, this means the User did not pass authentication
                 // Create error logs
                 logger.createErrorLogs(
@@ -100,10 +101,10 @@ class AppointmentRequestController(
                                 action = "Appointment Request",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = report.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+                result = Result(errors = report.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
 

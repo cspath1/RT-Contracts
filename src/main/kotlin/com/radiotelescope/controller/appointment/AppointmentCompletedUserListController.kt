@@ -34,10 +34,10 @@ class AppointmentCompletedUserListController(
     @GetMapping(value = ["/api/users/{userId}/appointments/completedList"])
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@PathVariable("userId") userId: Long,
-                @RequestParam("page") pageNumber: Int?,
-                @RequestParam("size") pageSize: Int?): Result {
-        // If any of the request params are null, respond with errors
-        if ((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
+                @RequestParam("page") pageNumber: Int,
+                @RequestParam("size") pageSize: Int): Result {
+        // If any of the request params are invalid, respond with errors
+        if (pageNumber < 0 || pageSize <= 0) {
             val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(
