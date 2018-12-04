@@ -10,6 +10,7 @@ import com.radiotelescope.controller.model.updateEmailToken.UpdateForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.service.ses.AwsSesSendService
+import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.*
 class UserRequestEmailUpdateTokenController (
         private val updateEmailTokenWrapper: UserUpdateEmailTokenWrapper,
         private val profile: Profile,
-        private val awsSesSendService: AwsSesSendService,
+        private val awsSesSendService: IAwsSesSendService,
         logger: Logger
 ): BaseRestController(logger){
 
