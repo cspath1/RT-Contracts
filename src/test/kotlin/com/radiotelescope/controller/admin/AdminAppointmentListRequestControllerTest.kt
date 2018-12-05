@@ -1,14 +1,13 @@
 package com.radiotelescope.controller.admin
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.controller.admin.appointment.AdminAppointmentApproveDenyRequestController
+import com.radiotelescope.controller.admin.appointment.AdminAppointmentListRequestController
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
-import com.radiotelescope.services.ses.MockAwsSesSendService
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
@@ -26,7 +26,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmentRestControllerTest() {
+internal class AdminAppointmentListRequestControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -49,18 +49,15 @@ internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmen
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private lateinit var adminAppointmentApproveDenyRequestController: AdminAppointmentApproveDenyRequestController
+    private lateinit var adminAppointmentListRequestController: AdminAppointmentListRequestController
     private lateinit var admin: User
-    private lateinit var appointmentRequest: Appointment
 
     @Before
     override fun init() {
         super.init()
 
-        adminAppointmentApproveDenyRequestController = AdminAppointmentApproveDenyRequestController(
-                appointmentRepo = appointmentRepo,
+        adminAppointmentListRequestController = AdminAppointmentListRequestController(
                 appointmentWrapper = getWrapper(),
-                awsSesSendService = MockAwsSesSendService(true),
                 logger = getLogger()
         )
 
@@ -71,19 +68,23 @@ internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmen
                 isApproved = true
         )
 
-        val user = testUtil.createUser("rpim1@ycp.edu")
-        testUtil.createUserRolesForUser(
-                userId = user.id,
-                role = UserRole.Role.GUEST,
-                isApproved = true
-        )
-
-        appointmentRequest = testUtil.createAppointment(
-                user = user,
+        val user1 = testUtil.createUser("rpim1@ycp.edu")
+        testUtil.createAppointment(
+                user = user1,
                 telescopeId = 1L,
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
+                isPublic = true
+        )
+
+        val user2 = testUtil.createUser("rpim2@ycp.edu")
+        testUtil.createAppointment(
+                user = user2,
+                telescopeId = 1L,
+                status = Appointment.Status.REQUESTED,
+                startTime = Date(System.currentTimeMillis() + 80000L),
+                endTime = Date(System.currentTimeMillis() + 90000L),
                 isPublic = true
         )
     }
@@ -97,18 +98,18 @@ internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmen
         getContext().login(admin.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
 
-        val result = adminAppointmentApproveDenyRequestController.execute(
-                appointmentId = appointmentRequest.id,
-                isApprove = true
+        val result = adminAppointmentListRequestController.execute(
+                pageNumber = 0,
+                pageSize = 10
         )
 
         assertNotNull(result)
-        assertTrue(result.data is Long)
+        assertTrue(result.data is Page<*>)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
 
         // Ensure a log record was created
-        assertEquals(1, logRepo.count())
+        assertEquals(2, logRepo.count())
     }
 
     @Test
@@ -117,28 +118,9 @@ internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmen
         getContext().login(admin.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
 
-        val result = adminAppointmentApproveDenyRequestController.execute(
-                appointmentId = appointmentRequest.id,
-                isApprove = null
-        )
-        assertNotNull(result)
-        assertNull(result.data)
-        assertEquals(HttpStatus.BAD_REQUEST, result.status)
-        assertNotNull(result.errors)
-
-        // Ensure a log record was created
-        assertEquals(1, logRepo.count())
-    }
-
-    @Test
-    fun testFailedValidationResponse() {
-        // Simulate a login
-        getContext().login(admin.id)
-        getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
-
-        val result = adminAppointmentApproveDenyRequestController.execute(
-                appointmentId = 123456789,
-                isApprove = true
+        val result = adminAppointmentListRequestController.execute(
+                pageNumber = -1,
+                pageSize = 0
         )
         assertNotNull(result)
         assertNull(result.data)
@@ -152,9 +134,9 @@ internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmen
     @Test
     fun testFailedAuthenticationResponse() {
         // Do not log the user in
-        val result = adminAppointmentApproveDenyRequestController.execute(
-                appointmentId = appointmentRequest.id,
-                isApprove = true
+        val result = adminAppointmentListRequestController.execute(
+                pageNumber = 0,
+                pageSize = 10
         )
         assertNotNull(result)
         assertNull(result.data)
