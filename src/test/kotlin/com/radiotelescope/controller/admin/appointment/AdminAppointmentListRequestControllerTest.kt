@@ -1,10 +1,8 @@
-package com.radiotelescope.controller.admin
+package com.radiotelescope.controller.admin.appointment
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.controller.admin.appointment.AdminAppointmentListRequestController
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
 import com.radiotelescope.repository.appointment.Appointment
-import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
@@ -45,9 +43,6 @@ internal class AdminAppointmentListRequestControllerTest : BaseAppointmentRestCo
 
     @Autowired
     private lateinit var logRepo: ILogRepository
-
-    @Autowired
-    private lateinit var appointmentRepo: IAppointmentRepository
 
     private lateinit var adminAppointmentListRequestController: AdminAppointmentListRequestController
     private lateinit var admin: User

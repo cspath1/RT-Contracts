@@ -1,12 +1,10 @@
 package com.radiotelescope.controller.admin.appointment
 
-import com.google.common.collect.HashMultimap
-import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ApproveDenyRequest
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
+import com.radiotelescope.controller.model.appointment.ApproveDenyForm
 import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -40,10 +38,14 @@ class AdminAppointmentApproveDenyRequestController (
      */
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["/api/appointments/{appointmentId}/validate"])
-    fun execute(@RequestParam("appointmentId") appointmentId: Long?,
+    fun execute(@PathVariable("appointmentId") appointmentId: Long?,
                 @RequestParam isApprove: Boolean?)
     : Result {
-        validateField(appointmentId, isApprove)?.let{ errors ->
+        val form = ApproveDenyForm(
+                appointmentId = appointmentId,
+                isApprove = isApprove
+        )
+        form.validateRequest()?.let{ errors ->
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
@@ -133,16 +135,6 @@ class AdminAppointmentApproveDenyRequestController (
         }
 
         awsSesSendService.execute(sendForm)
-    }
-
-    private fun validateField(appointmentId: Long?, isApprove: Boolean?) : Multimap<ErrorTag, String>? {
-        val errors = HashMultimap.create<ErrorTag, String>()
-        if(appointmentId == null)
-            errors.put(ErrorTag.ID, "Required field: Appointment Id")
-        if(isApprove == null)
-            errors.put(ErrorTag.IS_APPROVE, "Required Field: Is Approve")
-
-        return if (errors.isEmpty) null else errors
     }
 
 }

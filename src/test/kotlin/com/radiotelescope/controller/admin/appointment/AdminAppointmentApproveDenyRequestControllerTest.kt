@@ -1,7 +1,6 @@
-package com.radiotelescope.controller.admin
+package com.radiotelescope.controller.admin.appointment
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.controller.admin.appointment.AdminAppointmentApproveDenyRequestController
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
