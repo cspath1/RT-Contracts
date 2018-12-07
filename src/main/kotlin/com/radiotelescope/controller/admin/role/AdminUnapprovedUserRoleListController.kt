@@ -42,7 +42,7 @@ class AdminUnapprovedUserRoleListController(
     fun execute(@RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?): Result {
         // If any of the request params are null, respond with errors
-        if (pageNumber == null || pageSize == null) {
+        if((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
             val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(
@@ -71,14 +71,14 @@ class AdminUnapprovedUserRoleListController(
                         )
                     }
 
-                    result = Result(data = it)
+                    result = Result(data = page)
                 }
                 // If the command was a failure
                 it.error?.let { errors ->
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER_ROLE,
-                                    action = "Retrieve Unapproved Role LogList",
+                                    action = "Retrieve Unapproved Role List",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
