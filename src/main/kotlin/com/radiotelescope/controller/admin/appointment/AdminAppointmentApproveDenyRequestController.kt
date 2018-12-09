@@ -39,8 +39,8 @@ class AdminAppointmentApproveDenyRequestController (
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["/api/appointments/{appointmentId}/validate"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long?,
-                @RequestParam isApprove: Boolean?)
-    : Result {
+                @RequestParam("isApprove") isApprove: Boolean?)
+            : Result {
         val form = ApproveDenyForm(
                 appointmentId = appointmentId,
                 isApprove = isApprove
