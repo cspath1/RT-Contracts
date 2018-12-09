@@ -268,4 +268,12 @@ internal class TestUtil {
 
         return telescopeRepo.save(telescope)
     }
+
+    fun banUser(
+            user: User
+    ): User{
+        user.active = false
+        user.status = User.Status.BANNED
+        return userRepo.save(user)
+    }
 }
