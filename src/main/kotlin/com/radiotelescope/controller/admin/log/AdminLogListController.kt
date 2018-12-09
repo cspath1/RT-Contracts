@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Rest Controller to handle retrieving a list of logs
+ * Rest Controller to handle retrieving a [Page] of logs
  *
  * @param logWrapper the [AdminLogWrapper]
  * @param logger the [Logger] service
@@ -28,10 +28,16 @@ class AdminLogListController(
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of, given the page parameters are valid,
-     * calling the [AdminLogWrapper.list] method and responding to the client based
-     * on if the user was authenticated, the command was executed and was a success,
-     * or the command was executed and was a failure
+     * Execute method that is in charge of using the [pageNumber]
+     * and [pageSize] request parameters to create a [PageRequest]
+     * so the [AdminLogWrapper.list] method can be called.
+     *
+     * If this method returns an [AccessReport], this means the user
+     * accessing the endpoint did not pass authentication.
+     *
+     * Otherwise, the [List] command was executed, and the controller
+     * should respond based on whether the command was a success or
+     * failure
      */
     @CrossOrigin(value = ["http://localhost:8081"])
     @GetMapping(value = ["/api/logs"])
@@ -43,7 +49,7 @@ class AdminLogListController(
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.USER,
+                            affectedTable = Log.AffectedTable.LOG,
                             action = "Log List Retrieval",
                             affectedRecordId = null
                     ),
