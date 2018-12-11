@@ -74,12 +74,14 @@ internal class UserDeleteControllerTest : BaseUserRestControllerTest() {
     fun testFailedValidationResponse() {
         // Test the scenario where the validation
         // in the command object fails
+        userContext.currentRoles.add(UserRole.Role.ADMIN)
+
         val result = userDeleteController.execute(123456)
 
         assertNotNull(result)
         assertNull(result.data)
         assertNotNull(result.errors)
-        assertEquals(HttpStatus.FORBIDDEN, result.status)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
     }
 

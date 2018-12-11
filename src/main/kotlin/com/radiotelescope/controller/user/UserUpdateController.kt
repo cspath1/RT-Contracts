@@ -39,7 +39,7 @@ class UserUpdateController(
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["/api/users/{userId}"])
     fun execute(@PathVariable("userId") userId: Long,
-                @RequestBody form: UpdateForm): Result{
+                @RequestBody form: UpdateForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
             // Create error logs

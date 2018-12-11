@@ -132,10 +132,31 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 userId = user.id,
                 form = baseForm
         )
+
         Assert.assertNotNull(result)
         Assert.assertNull(result.data)
         Assert.assertNotNull(result.errors)
         Assert.assertEquals(HttpStatus.FORBIDDEN, result.status)
+        Assert.assertEquals(1, result.errors!!.size)
+    }
+
+    @Test
+    fun testValidForm_InvalidResourceResponse() {
+        // Test the scenario where the form is valid,
+        // but the user id does not exist
+        val formCopy = baseForm.copy(
+                id = 420L
+        )
+
+        val result = userUpdateController.execute(
+                userId = 420L,
+                form = formCopy
+        )
+
+        Assert.assertNotNull(result)
+        Assert.assertNull(result.data)
+        Assert.assertNotNull(result.errors)
+        Assert.assertEquals(HttpStatus.NOT_FOUND, result.status)
         Assert.assertEquals(1, result.errors!!.size)
     }
 }
