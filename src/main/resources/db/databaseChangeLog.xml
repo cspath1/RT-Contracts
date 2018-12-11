@@ -14,4 +14,5 @@
     <include file="classpath:/db/changelog/08-update-user-status-enum.sql"/>
     <include file="classpath:/db/changelog/09-create-update-email-token.sql"/>
     <include file="classpath:/db/changelog/11-create-coordinate.sql"/>
+    <include file="classpath:/db/changelog/12-add-hours-minutes-seconds.sql"/>
 </databaseChangeLog>
