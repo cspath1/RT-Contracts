@@ -88,7 +88,7 @@ internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmen
     }
 
     @Test
-    fun testSuccessResponse() {
+    fun testSuccessResponse_ApprovedRole() {
         // Test the success scenario to ensure
         // the result object is correctly set
 
@@ -99,6 +99,29 @@ internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmen
         val result = adminAppointmentApproveDenyRequestController.execute(
                 appointmentId = appointmentRequest.id,
                 isApprove = true
+        )
+
+        assertNotNull(result)
+        assertTrue(result.data is Long)
+        assertEquals(HttpStatus.OK, result.status)
+        assertNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+    }
+
+    @Test
+    fun testSuccessResponse_DisprovedRole() {
+        // Test the success scenario to ensure
+        // the result object is correctly set
+
+        // Simulate a login
+        getContext().login(admin.id)
+        getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
+
+        val result = adminAppointmentApproveDenyRequestController.execute(
+                appointmentId = appointmentRequest.id,
+                isApprove = false
         )
 
         assertNotNull(result)

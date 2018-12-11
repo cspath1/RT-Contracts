@@ -59,13 +59,11 @@ class AdminLogListController(
             logWrapper.list(
                     pageable = pageRequest
             ) { it ->
+                // NOTE: This command currently only has a success scenario
+                // (given the user is authenticated)
                 // If the command was a success
                 it.success?.let {
                     result = Result(data = it)
-                }
-                // If the command was a failure
-                it.error?.let {
-                    result = Result(errors = it.toStringMap())
                 }
             }?.let {
                 // If we get here, this means the User did not pass validation

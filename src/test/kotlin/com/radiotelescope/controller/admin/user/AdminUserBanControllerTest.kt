@@ -73,7 +73,7 @@ internal class AdminUserBanControllerTest : BaseUserRestControllerTest() {
     }
 
     @Test
-    fun testSuccessResponse() {
+    fun testSuccessResponse_BanMessage() {
         // Test the success scenario to ensure
         // the result object is correctly set
 
@@ -82,7 +82,30 @@ internal class AdminUserBanControllerTest : BaseUserRestControllerTest() {
         getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
 
         val result = adminUserBanController.execute(
-                message = "You have missed use our site",
+                message = "You have misused our site",
+                userId = user.id
+        )
+
+        assertNotNull(result)
+        assertTrue(result.data is Long)
+        assertEquals(HttpStatus.OK, result.status)
+        assertNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+    }
+
+    @Test
+    fun testSuccessResponse_NoBanMessage() {
+        // Test the success scenario to ensure
+        // the result object is correctly set
+
+        // Simulate a login
+        getContext().login(admin.id)
+        getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
+
+        val result = adminUserBanController.execute(
+                message = null,
                 userId = user.id
         )
 

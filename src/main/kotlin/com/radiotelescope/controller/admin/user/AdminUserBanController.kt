@@ -42,7 +42,10 @@ class AdminUserBanController(
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["api/users/{userId}/ban"])
     fun execute(@PathVariable("userId") userId: Long,
-                @RequestParam message: String
+                @RequestParam(
+                        value = "message",
+                        required = false,
+                        defaultValue = "") message: String?
     ): Result {
         userWrapper.ban(id = userId) { it->
             // If the command was a success
@@ -91,7 +94,7 @@ class AdminUserBanController(
         return result
     }
 
-    private fun sendEmail(email: String, message: String) {
+    private fun sendEmail(email: String, message: String?) {
         val sendForm: SendForm
         if(!message.isNullOrBlank()) {
             sendForm = SendForm(

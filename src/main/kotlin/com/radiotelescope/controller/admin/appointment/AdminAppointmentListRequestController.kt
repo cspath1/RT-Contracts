@@ -59,6 +59,8 @@ class AdminAppointmentListRequestController(
         else {
             val sort = Sort(Sort.Direction.ASC, "start_time")
             appointmentWrapper.listRequest(PageRequest.of(pageNumber, pageSize, sort)) { it ->
+                // NOTE: This command currently only has a success scenario
+                // (given the user is authenticated)
                 //If the command was a success
                 it.success?.let{ page ->
                     // Create success logs
@@ -71,19 +73,6 @@ class AdminAppointmentListRequestController(
                         )
                     }
                     result = Result(data = page)
-                }
-                // If the command was a failure
-                it.error?.let{ errors ->
-                    logger.createErrorLogs(
-                            info = Logger.createInfo(
-                                    affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Requested Appointment List",
-                                    affectedRecordId = null
-                            ),
-                            errors = errors.toStringMap()
-                    )
-
-                    result = Result(errors = errors.toStringMap())
                 }
             }?.let {
                 // If we get here, this means the User did not pass validation
