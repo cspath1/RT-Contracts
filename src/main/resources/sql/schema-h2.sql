@@ -17,6 +17,9 @@ CREATE TABLE coordinate(
   id INT(11) NOT NULL AUTO_INCREMENT,
   right_ascension DOUBLE NOT NULL,
   declination DOUBLE NOT NULL
+  hours INT(11) NOT NULL,
+  minutes INT(11) NOT NULL,
+  seconds INT(11) NOT NULL
 )
 
 CREATE TABLE error (

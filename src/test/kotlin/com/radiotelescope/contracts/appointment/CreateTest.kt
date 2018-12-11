@@ -1,9 +1,9 @@
 package com.radiotelescope.contracts.appointment
 
-
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
@@ -23,8 +23,6 @@ import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 import liquibase.integration.spring.SpringLiquibase
-
-
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -65,10 +63,12 @@ internal class CreateTest {
     private val baseRequest = Create.Request(
             userId = -1L,
             telescopeId = 1L,
-            startTime = Date(System.currentTimeMillis() + 10000L),
-            endTime = Date(System.currentTimeMillis() + 30000L),
+            startTime = Date(System.currentTimeMillis() + 100000L),
+            endTime = Date(System.currentTimeMillis() + 300000L),
             isPublic = true,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 
@@ -378,8 +378,9 @@ internal class CreateTest {
                 telescopeId = 1L,
                 startTime = Date(startTime),
                 endTime = Date(startTime + 1000L),
-                isPublic = true,
-                rightAscension = 311.0,
+                isPublic = true,hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -421,7 +422,9 @@ internal class CreateTest {
                 startTime = Date(startTime + 1000L),
                 endTime = Date(endTime - 1000L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -463,7 +466,9 @@ internal class CreateTest {
                 startTime = Date(endTime - 1000L),
                 endTime = Date(endTime),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -505,7 +510,9 @@ internal class CreateTest {
                 startTime = Date(startTime - 2000L),
                 endTime = Date(startTime + 500L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 11.0
         )
 
@@ -547,7 +554,9 @@ internal class CreateTest {
                 startTime = Date(endTime - 500L),
                 endTime = Date(endTime + 1000L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 42.0
         )
 
@@ -589,7 +598,9 @@ internal class CreateTest {
                 startTime = Date(startTime - 1000L),
                 endTime = Date(startTime),
                 isPublic = true,
-                rightAscension = 31.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 42.0
         )
 
@@ -631,7 +642,9 @@ internal class CreateTest {
                 startTime = Date(endTime),
                 endTime = Date(endTime + 2000L),
                 isPublic = true,
-                rightAscension = 31.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 21.0
         )
 
@@ -673,7 +686,9 @@ internal class CreateTest {
                 startTime = Date(startTime - 1111L),
                 endTime = Date(endTime + 1111L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 23.0
         )
 
@@ -715,7 +730,9 @@ internal class CreateTest {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 42.0
         )
 
@@ -761,7 +778,9 @@ internal class CreateTest {
                 startTime = Date(startTime + 1L),
                 endTime = Date(endTime + 1L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -803,7 +822,9 @@ internal class CreateTest {
                 startTime = Date(startTime + 1L),
                 endTime = Date(endTime + 1L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 42.0
         )
 
@@ -820,8 +841,9 @@ internal class CreateTest {
         assertNotNull(id)
         assertNull(errors)
     }
+
     @Test
-    fun testRightAscensionTooLow_Failure() {
+    fun testHoursTooLow_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 userId = user.id,
@@ -829,10 +851,10 @@ internal class CreateTest {
                 isApproved = true
         )
 
-        // Create a copy of the request with an invalid right ascension
+        // Create a copy of the request with an invalid hours
         val requestCopy = baseRequest.copy(
                 userId = user.id,
-                rightAscension = -666.0
+                hours = -311
         )
 
         val (id, errors) = Create(
@@ -850,11 +872,11 @@ internal class CreateTest {
 
         // Make sure it failed for the correct reason
         assertEquals(1, errors!!.size())
-        assertTrue(errors[ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+        assertTrue(errors[ErrorTag.HOURS].isNotEmpty())
     }
 
     @Test
-    fun testRightAscensionTooGreat_Failure() {
+    fun testHoursTooHigh_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 userId = user.id,
@@ -862,10 +884,10 @@ internal class CreateTest {
                 isApproved = true
         )
 
-        // Create a copy of the request with an invalid right ascension
+        // Create a copy of the request with an invalid hours
         val requestCopy = baseRequest.copy(
                 userId = user.id,
-                rightAscension = 666.0
+                hours = 311
         )
 
         val (id, errors) = Create(
@@ -883,7 +905,139 @@ internal class CreateTest {
 
         // Make sure it failed for the correct reason
         assertEquals(1, errors!!.size())
-        assertTrue(errors[ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+        assertTrue(errors[ErrorTag.HOURS].isNotEmpty())
+    }
+
+    @Test
+    fun testMinutesTooLow_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Create a copy of the request with an invalid hours
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                minutes = -311
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.MINUTES].isNotEmpty())
+    }
+
+    @Test
+    fun testMinutesTooHigh_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Create a copy of the request with an invalid hours
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                minutes = 311
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.MINUTES].isNotEmpty())
+    }
+
+    @Test
+    fun testSecondsTooLow_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Create a copy of the request with an invalid hours
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                seconds = -311
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.SECONDS].isNotEmpty())
+    }
+
+    @Test
+    fun testSecondsTooHigh_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Create a copy of the request with an invalid hours
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                seconds = 311
+        )
+
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.SECONDS].isNotEmpty())
     }
 
     @Test

@@ -134,8 +134,15 @@ internal class TestUtil {
             isPublic: Boolean
     ): Appointment {
         val coordinate = Coordinate(
-                rightAscension = 311.0,
-                declination = 69.0
+                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12
+                ),
+                declination = 69.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12
         )
 
         coordinateRepo.save(coordinate)

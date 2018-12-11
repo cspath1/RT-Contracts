@@ -67,8 +67,12 @@ class Request(
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime < Date())
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
-            if (rightAscension > 360 || rightAscension < 0)
-                errors.put(ErrorTag.RIGHT_ASCENSION, "Right Ascension must be between 0 - 360")
+            if (hours < 0 || hours >= 24)
+                errors.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
+            if (minutes < 0 || minutes >= 60)
+                errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
+            if (seconds < 0 || seconds >= 60)
+                errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
             if (declination > 90 || declination < 0)
                 errors.put(ErrorTag.DECLINATION, "Declination must be between 0 - 90")
         }
@@ -85,7 +89,9 @@ class Request(
             val endTime: Date,
             val telescopeId: Long,
             val isPublic: Boolean,
-            val rightAscension: Double,
+            val hours: Int,
+            val minutes: Int,
+            val seconds: Int,
             val declination: Double
     ) : BaseCreateRequest<Appointment> {
         /**
@@ -103,7 +109,14 @@ class Request(
 
         fun toCoordinate(): Coordinate {
             return Coordinate(
-                    rightAscension = rightAscension,
+                    hours = hours,
+                    minutes = minutes,
+                    seconds = seconds,
+                    rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                            hours = hours,
+                            minutes = minutes,
+                            seconds = seconds
+                    ),
                     declination = declination
             )
         }

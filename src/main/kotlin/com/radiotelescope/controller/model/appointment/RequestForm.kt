@@ -42,11 +42,9 @@ data class RequestForm(
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
                 isPublic = isPublic!!,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
-                        hours = hours!!,
-                        minutes = minutes!!,
-                        seconds = seconds!!
-                ),
+                hours = hours!!,
+                minutes = minutes!!,
+                seconds = seconds!!,
                 declination = declination!!
         )
     }

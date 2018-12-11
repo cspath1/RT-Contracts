@@ -2,7 +2,7 @@
 INSERT INTO telescope VALUES(1, 1);
 
 -- Create an coordinate --
-INSERT INTO coordinate VALUES(1, 311.0, 69.0);
+INSERT INTO coordinate VALUES(1, 311.0, 69.0, 12, 12, 12);
 
 -- Then create a user --
 INSERT INTO user(id, first_name, last_name, email_address, company, phone_number, password, active, status)

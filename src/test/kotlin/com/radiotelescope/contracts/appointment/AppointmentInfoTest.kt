@@ -64,8 +64,15 @@ internal class AppointmentInfoTest {
         )
 
         val coordinate = Coordinate(
-                rightAscension = 311.0,
-                declination = 69.0
+                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12
+                ),
+                declination = 69.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12
         )
 
         appointment.user = user

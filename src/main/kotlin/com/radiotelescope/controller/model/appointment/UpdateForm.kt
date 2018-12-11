@@ -39,11 +39,9 @@ data class UpdateForm (
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
                 isPublic = isPublic!!,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
-                        hours = hours!!,
-                        minutes = minutes!!,
-                        seconds = seconds!!
-                ),
+                hours = hours!!,
+                minutes = minutes!!,
+                seconds = seconds!!,
                 declination = declination!!
         )
     }

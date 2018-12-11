@@ -24,18 +24,15 @@ internal class RequestFormTest {
         assertNull(baseForm.validateRequest())
 
         val theRequest = baseForm.toRequest()
-        val rightAscensionInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
-                hours = baseForm.hours!!,
-                minutes = baseForm.hours!!,
-                seconds = baseForm.seconds!!
-        )
 
         assertEquals(theRequest.userId, baseForm.userId!!)
         assertEquals(theRequest.telescopeId, baseForm.telescopeId!!)
         assertEquals(theRequest.endTime, baseForm.endTime!!)
         assertEquals(theRequest.startTime, baseForm.startTime!!)
         assertEquals(theRequest.isPublic, baseForm.isPublic!!)
-        assertEquals(theRequest.rightAscension, rightAscensionInDegrees, 0.00001)
+        assertEquals(theRequest.hours, baseForm.hours!!)
+        assertEquals(theRequest.minutes, baseForm.minutes!!)
+        assertEquals(theRequest.seconds, baseForm.seconds!!)
         assertEquals(theRequest.declination, baseForm.declination!!, 0.00001)
     }
 

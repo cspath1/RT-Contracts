@@ -10,6 +10,12 @@ import javax.persistence.*
 @Entity
 @Table(name = "coordinate")
 data class Coordinate(
+        @Column(name = "hours")
+        var hours: Int,
+        @Column(name = "minutes")
+        var minutes: Int,
+        @Column(name = "seconds")
+        var seconds: Int,
         @Column(name = "right_ascension")
         var rightAscension: Double,
         @Column(name = "declination")

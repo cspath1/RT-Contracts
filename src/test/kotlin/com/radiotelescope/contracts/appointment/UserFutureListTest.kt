@@ -51,7 +51,9 @@ internal class UserFutureListTest {
             isPublic = false,
             telescopeId = 1,
             userId = -1L,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 311.0
     )
 

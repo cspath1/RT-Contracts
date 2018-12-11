@@ -71,7 +71,9 @@ internal class UserAppointmentWrapperTest {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = true,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 
@@ -81,7 +83,9 @@ internal class UserAppointmentWrapperTest {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = true,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 
@@ -709,7 +713,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -731,7 +737,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -756,7 +764,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = false,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
         ) {
@@ -787,7 +797,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = false,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
         ) {
@@ -818,7 +830,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -850,7 +864,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -882,7 +898,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -914,7 +932,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 110000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -939,7 +959,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -965,7 +987,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 

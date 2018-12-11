@@ -7,6 +7,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -62,8 +63,12 @@ class Update(
                         errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
                     if (endTime.before(startTime) || endTime == startTime)
                         errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
-                    if (rightAscension > 360 || rightAscension < 0)
-                        errors.put(ErrorTag.RIGHT_ASCENSION, "Right Ascension must be between 0 - 360")
+                    if (hours < 0 || hours >= 24)
+                        errors.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
+                    if (minutes < 0 || minutes >= 60)
+                        errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
+                    if (seconds < 0 || seconds >= 60)
+                        errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
                     if (declination > 90 || declination < 0)
                         errors.put(ErrorTag.DECLINATION, "Declination must be between 0 - 90")
                     if (isOverlap())
@@ -173,7 +178,9 @@ class Update(
             val startTime: Date,
             val endTime: Date,
             val isPublic: Boolean,
-            val rightAscension: Double,
+            val hours: Int,
+            val minutes: Int,
+            val seconds: Int,
             val declination: Double
     ): BaseUpdateRequest<Appointment> {
         /**
@@ -188,8 +195,15 @@ class Update(
             entity.isPublic = isPublic
 
             if (entity.coordinate != null) {
+                entity.coordinate!!.hours = hours
+                entity.coordinate!!.minutes = minutes
+                entity.coordinate!!.seconds = seconds
                 entity.coordinate!!.declination = declination
-                entity.coordinate!!.rightAscension = rightAscension
+                entity.coordinate!!.rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = hours,
+                        minutes = minutes,
+                        seconds = seconds
+                )
             }
 
             return entity
