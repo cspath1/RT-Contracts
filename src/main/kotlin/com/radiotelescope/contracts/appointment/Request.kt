@@ -73,8 +73,8 @@ class Request(
                 errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
             if (seconds < 0 || seconds >= 60)
                 errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
-            if (declination > 90 || declination < 0)
-                errors.put(ErrorTag.DECLINATION, "Declination must be between 0 - 90")
+            if (declination > 90 || declination < -90)
+                errors.put(ErrorTag.DECLINATION, "Declination must be between -90 - 90")
         }
         return if (errors.isEmpty) null else errors
     }

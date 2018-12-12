@@ -354,7 +354,7 @@ internal class RequestTest {
         // Create a copy of the request with a declination below 0
         val requestCopy = baseRequest.copy(
                 userId = user.id,
-                declination = -42.0
+                declination = -311.0
         )
 
         // Execute the command
