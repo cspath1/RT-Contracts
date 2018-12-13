@@ -28,6 +28,9 @@ data class AppointmentInfo(
         val userFirstName: String,
         val userLastName: String,
         val status: String,
+        val hours: Int?,
+        val minutes: Int?,
+        val seconds: Int?,
         val rightAscension: Double?,
         val declination: Double?
 ) {
@@ -47,6 +50,9 @@ data class AppointmentInfo(
             userFirstName = appointment.user!!.firstName,
             userLastName = appointment.user!!.lastName,
             status = appointment.status.label,
+            hours = appointment.coordinate?.hours,
+            minutes = appointment.coordinate?.minutes,
+            seconds = appointment.coordinate?.seconds,
             rightAscension = appointment.coordinate?.rightAscension,
             declination = appointment.coordinate?.declination
     )

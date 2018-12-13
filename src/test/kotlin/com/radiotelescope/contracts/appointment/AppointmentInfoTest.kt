@@ -23,7 +23,14 @@ internal class AppointmentInfoTest {
                 userFirstName = "Cody",
                 userLastName = "Spath",
                 status = Appointment.Status.SCHEDULED.label,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
+                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12
+                ),
                 declination = 69.0
         )
 
@@ -40,7 +47,15 @@ internal class AppointmentInfoTest {
         if (appointmentInfo.rightAscension == null || appointmentInfo.declination == null)
             fail("Should not be null")
         else {
-            assertEquals(311.0, appointmentInfo.rightAscension!!, 0.00001)
+            val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
+                    hours = 12,
+                    minutes = 12,
+                    seconds = 12
+            )
+            assertEquals(hoursMinutesSecondsInDegrees, appointmentInfo.rightAscension!!, 0.00001)
+            assertEquals(12, appointmentInfo.hours)
+            assertEquals(12, appointmentInfo.minutes)
+            assertEquals(12, appointmentInfo.seconds)
             assertEquals(69.0, appointmentInfo.declination!!, 0.00001)
         }
     }
@@ -95,8 +110,12 @@ internal class AppointmentInfoTest {
         if (appointmentInfo.declination == null || appointmentInfo.rightAscension == null)
             fail("Should not be null")
         else {
+
             assertEquals(appointment.coordinate?.rightAscension!!, appointmentInfo.rightAscension!!, 0.00001)
             assertEquals(appointment.coordinate?.declination!!, appointmentInfo.declination!!, 0.00001)
+            assertEquals(appointment.coordinate?.hours, appointmentInfo.hours)
+            assertEquals(appointment.coordinate?.minutes, appointmentInfo.minutes)
+            assertEquals(appointment.coordinate?.seconds, appointmentInfo.seconds)
         }
     }
 
