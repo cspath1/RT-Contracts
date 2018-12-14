@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -32,8 +33,11 @@ class List(
         val infoList = arrayListOf<UserInfo>()
         userPage.forEach {
             val theUserRole = userRoleRepo.findMembershipRoleByUserId(it.id)
-            val theRole = theUserRole?.role
-            infoList.add(UserInfo(it, theRole?.label))
+            // Do not add admins to this list
+            if (theUserRole?.role != UserRole.Role.ADMIN) {
+                val theRole = theUserRole?.role
+                infoList.add(UserInfo(it, theRole?.label))
+            }
         }
 
         val infoPage = PageImpl(infoList, userPage.pageable, userPage.totalElements)

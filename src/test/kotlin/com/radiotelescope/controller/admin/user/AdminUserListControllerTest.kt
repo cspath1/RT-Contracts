@@ -84,7 +84,9 @@ internal class AdminUserListControllerTest : BaseUserRestControllerTest() {
         assertNull(result.errors)
 
         // Ensure a log record was created
-        assertEquals(2, logRepo.count())
+        // Only one should exist since the admin user
+        // should have been filtered out
+        assertEquals(1, logRepo.count())
     }
 
     @Test
