@@ -57,15 +57,15 @@ class AdminAppointmentApproveDenyRequestController (
             )
 
             result = Result(errors = errors.toStringMap())
-        } ?: let{ _ ->
+        } ?: let{
             appointmentWrapper.approveDenyRequest(
                     request = ApproveDenyRequest.Request(
                             appointmentId = appointmentId!!,
                             isApprove = isApprove!!
                     )
-            ) { it ->
+            ) { response ->
                 // If the command was a success
-                it.success?.let { id ->
+                response.success?.let { id ->
                     // Create success logs
                     logger.createSuccessLog(
                             info = Logger.createInfo(
@@ -84,7 +84,7 @@ class AdminAppointmentApproveDenyRequestController (
                     )
                 }
                 // Otherwise it was a failure
-                it.error?.let { errors ->
+                response.error?.let { errors ->
                     // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(

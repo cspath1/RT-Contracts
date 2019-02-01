@@ -40,9 +40,6 @@ internal class RFDataRetrieveAppointmentDataControllerTest : BaseRFDataRestContr
     }
 
     @Autowired
-    private lateinit var testUtil: TestUtil
-
-    @Autowired
     private lateinit var logRepo: ILogRepository
 
     @Autowired

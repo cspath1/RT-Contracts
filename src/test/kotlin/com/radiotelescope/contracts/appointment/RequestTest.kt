@@ -2,7 +2,6 @@ package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.telescope.Telescope

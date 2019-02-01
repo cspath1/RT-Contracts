@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.Request
 import com.radiotelescope.controller.model.BaseForm
-import com.radiotelescope.repository.coordinate.Coordinate
 import java.util.*
 
 /**

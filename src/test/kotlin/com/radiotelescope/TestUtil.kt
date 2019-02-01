@@ -219,14 +219,6 @@ internal class TestUtil {
         return logRepo.save(theLog)
     }
 
-    fun setInactiveStatus(
-            user: User
-    ): User{
-        user.active = false
-        user.status = User.Status.INACTIVE
-        return userRepo.save(user)
-    }
-
     fun createResetPasswordToken(
             user: User
     ) : ResetPasswordToken {

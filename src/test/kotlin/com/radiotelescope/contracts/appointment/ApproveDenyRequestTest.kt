@@ -134,7 +134,7 @@ internal class ApproveDenyRequestTest {
                 appointmentRepo = appointmentRepo
         ).execute()
 
-        // Make sure the command was a success
+        // Make sure the command was not a success
         assertNull(id)
         assertNotNull(errors)
 

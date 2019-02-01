@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.admin.role
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.controller.user.BaseUserRoleControllerTest
+import com.radiotelescope.controller.user.role.BaseUserRoleControllerTest
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User

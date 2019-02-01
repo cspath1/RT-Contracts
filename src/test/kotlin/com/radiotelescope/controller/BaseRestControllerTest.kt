@@ -4,7 +4,6 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.security.FakeUserContext
-import com.radiotelescope.security.UserContext
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -42,7 +41,7 @@ abstract class BaseRestControllerTest {
 
     // Once instantiated, this should be immutable
     // so only provide a getter for it
-    fun getContext(): FakeUserContext {
+    final fun getContext(): FakeUserContext {
         return context
     }
 }

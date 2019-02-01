@@ -1,7 +1,6 @@
 package com.radiotelescope.controller.model.appointment
 
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.repository.coordinate.Coordinate
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
