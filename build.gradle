@@ -143,3 +143,8 @@ dependencies {
 	runtime('mysql:mysql-connector-java')
 	runtime group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
 }
+
+test{
+	minHeapSize = "128m"
+	maxHeapSize = "2048m"
+}
