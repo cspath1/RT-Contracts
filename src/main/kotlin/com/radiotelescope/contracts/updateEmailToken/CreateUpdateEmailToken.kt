@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.generateToken
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
@@ -39,9 +40,9 @@ class CreateUpdateEmailToken(
             return SimpleResult(null, errors)
 
         // Create Token and check that the same token string has not been created
-        var token = UUID.randomUUID().toString().replace("-", "", false)
+        var token = generateToken()
         while(updateEmailTokenRepo.existsByToken(token))
-            token = UUID.randomUUID().toString().replace("-", "", false)
+            token = generateToken()
 
         // Create the Entity, sets its' values and save it
         val theUpdateEmailToken = request.toEntity()

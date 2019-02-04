@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.generateToken
 import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -103,9 +104,9 @@ class Register(
      * make the proper API call to activate the account.
      */
     private fun generateActivateAccountToken(user: User): String {
-        var token = UUID.randomUUID().toString().replace("-", "", false)
+        var token = generateToken()
         while (accountActivateTokenRepo.existsByToken(token)) {
-            token = UUID.randomUUID().toString().replace("-", "", false)
+            token = generateToken()
         }
 
         val theAccountActivateToken = AccountActivateToken(

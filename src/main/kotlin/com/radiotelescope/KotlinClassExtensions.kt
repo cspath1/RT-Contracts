@@ -8,6 +8,7 @@ import com.radiotelescope.repository.rfdata.RFData
 import com.radiotelescope.security.AccessReport
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
+import java.util.*
 
 fun <T: Enum<T>> Multimap<T, String>.toStringMap(): Map<String, Collection<String>> {
     return this.asMap().mapKeys { it.key.name }
@@ -42,4 +43,8 @@ fun List<Appointment>.toAppointmentInfoList(): List<AppointmentInfo> {
     }
 
     return infoList
+}
+
+fun generateToken(): String {
+    return UUID.randomUUID().toString().replace("-", "", false)
 }

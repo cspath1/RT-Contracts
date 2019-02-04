@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.generateToken
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.user.IUserRepository
@@ -44,9 +45,9 @@ class CreateResetPasswordToken (
         }
 
         // Create Token and check that the same token string has not been created
-        var token = UUID.randomUUID().toString().replace("-", "", false)
+        var token = generateToken()
         while(resetPasswordTokenRepo.existsByToken(token))
-            token = UUID.randomUUID().toString().replace("-", "", false)
+            token = generateToken()
 
         // Expiration date for token will be 1 day
         // NOTE: Date objects are set using milliseconds
