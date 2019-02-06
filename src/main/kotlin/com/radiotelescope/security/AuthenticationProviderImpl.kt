@@ -64,6 +64,15 @@ class AuthenticationProviderImpl(
         return UsernamePasswordAuthenticationToken::class.java.isAssignableFrom(authentication)
     }
 
+    /**
+     * Function that will call the [Authenticate] command, which will
+     * verify if the email and password matches with a record in the
+     * database, signifying a successful login
+     *
+     * @param email the email
+     * @param password the password
+     * @return true or false, based on if the user was authenticated
+     */
     private fun execute(email: String, password: String): Boolean {
         val simpleResult = Authenticate(
                 request = Authenticate.Request(

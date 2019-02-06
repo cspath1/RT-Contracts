@@ -19,11 +19,25 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @EnableWebSecurity
 @Configuration
+/**
+ * Specifies security details specific to the application. Extends the
+ * [WebSecurityConfigurerAdapter] class
+ *
+ * @param authenticationProvider the Spring Security [AuthenticationProvider]
+ * @param profile the application [Profile]
+ */
 class SecurityConfiguration(
         private var authenticationProvider: AuthenticationProvider,
         private val profile: Profile
 ) : WebSecurityConfigurerAdapter() {
 
+    /**
+     * Configure the applications endpoints, specifically in regards to the
+     * endpoints involved with Spring Security.
+     *
+     * If the application is running in production, it will require that all
+     * requests happen over HTTPS.
+     */
     override fun configure(http: HttpSecurity?) {
         if (http != null) {
             if (profile == Profile.PROD) {
@@ -51,10 +65,17 @@ class SecurityConfiguration(
         }
     }
 
+    /**
+     * Override of the [WebSecurityConfigurerAdapter.configure] method that
+     * specifies the [AuthenticationProvider] to use.
+     */
     override fun configure(auth: AuthenticationManagerBuilder?) {
         auth?.authenticationProvider(authenticationProvider)
     }
 
+    /**
+     * Allows for CORS requests to be made to the API endpoints
+     */
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()

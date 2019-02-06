@@ -42,6 +42,12 @@ class RemoveExpiredActivateAccountTokens(
         }
     }
 
+    /**
+     * Function that will create logs for each of the records that were deleted
+     * due to expired [AccountActivateToken] entities.
+     *
+     * @param accountActivateToken the [AccountActivateToken]
+     */
     private fun createLogs(accountActivateToken: AccountActivateToken) {
         val activateAccountTokenLog = Log(
                 affectedTable = Log.AffectedTable.ACTIVATE_ACCOUNT_TOKEN,
