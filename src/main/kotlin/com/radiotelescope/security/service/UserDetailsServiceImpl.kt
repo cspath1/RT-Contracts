@@ -37,7 +37,7 @@ class UserDetailsServiceImpl(
         }
 
         val user = userRepo.findByEmail(email = username) ?: throw UsernameNotFoundException("Invalid email or password")
-        val roles = userRoleRepo.findAllByUserId(user.id)
+        val roles = userRoleRepo.findAllApprovedRolesByUserId(user.id)
 
         if (roles.isEmpty())
             throw UsernameNotFoundException("This User does not have any roles")

@@ -106,4 +106,28 @@ internal class UserRoleTest {
         assertTrue(role!!.approved)
         assertEquals(UserRole.Role.STUDENT, role.role)
     }
+
+    @Test
+    fun testFindAllApprovedRolesByUserId() {
+        val user = testUtil.createUser("realtadukoo@gmail.com")
+
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        testUtil.createUserRoleForUser(
+                userId = user.id,
+                role = UserRole.Role.STUDENT,
+                isApproved = false
+        )
+
+        val roles = userRoleRepo.findAllApprovedRolesByUserId(user.id)
+
+        roles.forEach {
+            assertTrue(it.approved)
+        }
+        assertEquals(2, roles.size)
+    }
 }
