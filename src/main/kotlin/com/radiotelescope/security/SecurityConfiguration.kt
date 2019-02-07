@@ -56,7 +56,7 @@ class SecurityConfiguration(
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .loginProcessingUrl("/api/login")
-                        .successHandler(SuccessfulLoginHandlerImpl())
+                        // .successHandler(SuccessfulLoginHandlerImpl())
                     .and()
                     .logout()
                         .logoutSuccessUrl("/login")
