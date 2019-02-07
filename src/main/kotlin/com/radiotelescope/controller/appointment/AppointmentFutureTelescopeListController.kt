@@ -90,7 +90,7 @@ class AppointmentFutureTelescopeListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Future Telescope Appointments LogList Retrieval",
+                                action = "Future Telescope Appointments List Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.log.ILogRepository
+import kotlin.collections.List
 
 /**
  * Override of the [Command] interface used for retrieving Log errors

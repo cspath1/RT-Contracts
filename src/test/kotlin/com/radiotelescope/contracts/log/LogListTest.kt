@@ -78,7 +78,7 @@ internal class LogListTest {
 
     @Test
     fun testPopulatedRepo_Success() {
-        val (page, errors) = LogList(
+        val (page, errors) = List(
                 pageable = pageable,
                 logRepo = logRepo,
                 userRepo = userRepo
@@ -93,7 +93,7 @@ internal class LogListTest {
     fun testEmptyRepo_Success() {
         logRepo.deleteAll()
 
-        val (page, errors) = LogList(
+        val (page, errors) = List(
                 pageable = pageable,
                 logRepo = logRepo,
                 userRepo = userRepo
