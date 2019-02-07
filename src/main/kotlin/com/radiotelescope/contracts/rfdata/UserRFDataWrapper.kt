@@ -38,7 +38,7 @@ class UserRFDataWrapper(
         if (context.currentUserId() != null) {
             val theAppointment = appointmentRepo.findById(appointmentId).get()
             // If the user id matches the appointment's user id
-            return if (context.currentUserId() == theAppointment.user!!.id)
+            return if (context.currentUserId() == theAppointment.user.id)
                 context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.retrieveAppointmentData(appointmentId)

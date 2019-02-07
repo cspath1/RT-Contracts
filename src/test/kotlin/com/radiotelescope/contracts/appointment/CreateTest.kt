@@ -116,7 +116,7 @@ internal class CreateTest {
         assertEquals(requestCopy.startTime, theAppointment.get().startTime)
         assertEquals(requestCopy.endTime, theAppointment.get().endTime)
         assertEquals(requestCopy.telescopeId, theAppointment.get().telescopeId)
-        assertEquals(requestCopy.userId, theAppointment.get().user!!.id)
+        assertEquals(requestCopy.userId, theAppointment.get().user.id)
         assertTrue(theAppointment.get().isPublic)
     }
 

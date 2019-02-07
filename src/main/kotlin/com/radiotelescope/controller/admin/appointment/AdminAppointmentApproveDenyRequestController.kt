@@ -78,7 +78,7 @@ class AdminAppointmentApproveDenyRequestController (
                     result = Result(data = id)
 
                     sendEmail(
-                            email = appointmentRepo.findById(id).get().user!!.email,
+                            email = appointmentRepo.findById(id).get().user.email,
                             id = id,
                             isApprove = isApprove
                     )

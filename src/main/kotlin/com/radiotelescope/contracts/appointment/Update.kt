@@ -102,7 +102,7 @@ class Update(
         with(request) {
             val theAppointment = appointmentRepo.findById(id).get()
             val newTime = endTime.time - startTime.time
-            val theUserRole = userRoleRepo.findMembershipRoleByUserId(theAppointment.user!!.id)
+            val theUserRole = userRoleRepo.findMembershipRoleByUserId(theAppointment.user.id)
 
             if (theUserRole == null) {
                 errors.put(ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
@@ -137,7 +137,7 @@ class Update(
      * @param theAppointment the [Appointment]
      */
     private fun determineCurrentUsedTime(theAppointment: Appointment): Long {
-        var totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(theAppointment.user!!.id) ?: 0
+        var totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(theAppointment.user.id) ?: 0
 
         // This could potentially be 0 if the appointment being
         // updated is a requested appointment and no others exist

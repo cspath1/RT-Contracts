@@ -65,7 +65,7 @@ class UserAppointmentWrapper(
         val theAppointment = appointmentRepo.findById(id).get()
 
         if (context.currentUserId() != null &&
-                context.currentUserId() == theAppointment.user!!.id) {
+                context.currentUserId() == theAppointment.user.id) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.USER),
                     successCommand = factory.retrieve(id)
@@ -164,7 +164,7 @@ class UserAppointmentWrapper(
         val theAppointment = appointmentRepo.findById(appointmentId).get()
 
         if (context.currentUserId() != null) {
-            return if (context.currentUserId() == theAppointment.user!!.id) {
+            return if (context.currentUserId() == theAppointment.user.id) {
                 context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.cancel(
@@ -217,7 +217,7 @@ class UserAppointmentWrapper(
         val theAppointment = appointmentRepo.findById(request.id).get()
 
         if(context.currentUserId() != null) {
-            if (context.currentUserId() == theAppointment.user!!.id) {
+            if (context.currentUserId() == theAppointment.user.id) {
                 // If public, they only need to be a base user
                 return if (request.isPublic)
                     context.require(
@@ -262,7 +262,7 @@ class UserAppointmentWrapper(
         val theAppointment = appointmentRepo.findById(appointmentId).get()
 
         if(context.currentUserId() != null) {
-            return if (context.currentUserId() == theAppointment.user!!.id) {
+            return if (context.currentUserId() == theAppointment.user.id) {
                 context.require(
                         requiredRoles = listOf(UserRole.Role.RESEARCHER),
                         successCommand = factory.makePublic(
