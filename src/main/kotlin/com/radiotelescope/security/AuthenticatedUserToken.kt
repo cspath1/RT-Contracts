@@ -12,8 +12,8 @@ import org.springframework.security.core.GrantedAuthority
  * @param userId the User's id
  */
 class AuthenticatedUserToken(
-        email: String,
-        password: String,
+        val email: String,
+        password: String?,
         authorities: Collection<GrantedAuthority>,
         val userId: Long?
 ) : UsernamePasswordAuthenticationToken(email, password, authorities)

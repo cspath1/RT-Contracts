@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.user.ErrorTag
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AuthenticatedUserToken
@@ -19,7 +20,8 @@ import org.springframework.stereotype.Service
  */
 @Service
 class RetrieveAuthUserService(
-        private val userRepo: IUserRepository
+        private val userRepo: IUserRepository,
+        private val userRoleRepo: IUserRoleRepository
 ) {
     /**
      * Execute method that will grab the [SecurityContextHolder] authentication token and,
@@ -38,13 +40,9 @@ class RetrieveAuthUserService(
 
         val authToken: AuthenticatedUserToken = authentication
 
-        val authorities = arrayListOf<SimpleGrantedAuthority>()
-
-        authToken.authorities.forEach {
-            authorities.add(SimpleGrantedAuthority(it.authority))
-        }
-
         val user = userRepo.findById(authToken.userId!!).get()
+
+        val authorities = getAuthorities(authToken.userId)
 
         validateStatus(user.status)?.let { return SimpleResult(null, it) }
 
@@ -68,7 +66,7 @@ class RetrieveAuthUserService(
      * @param status the [User.Status]
      * @return a [Multimap] of errors or null
      */
-    fun validateStatus(status: User.Status): Multimap<ErrorTag, String>? {
+    private fun validateStatus(status: User.Status): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
         when (status) {
             User.Status.DELETED -> errors.put(ErrorTag.STATUS, "Account has been deleted")
@@ -78,5 +76,17 @@ class RetrieveAuthUserService(
         }
 
         return errors
+    }
+
+    private fun getAuthorities(userId: Long): List<SimpleGrantedAuthority> {
+        val roles = userRoleRepo.findAllByUserId(userId)
+        val authorities = arrayListOf<SimpleGrantedAuthority>()
+
+        roles.forEach { it ->
+            if (it.approved)
+                authorities.add(SimpleGrantedAuthority("ROLE_${it.role.name.toUpperCase()}"))
+        }
+
+        return authorities
     }
 }

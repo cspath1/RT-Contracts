@@ -10,7 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import com.google.common.collect.ImmutableList
 import com.radiotelescope.controller.model.Profile
+import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.context.annotation.Bean
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
@@ -28,6 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
  */
 class SecurityConfiguration(
         private var authenticationProvider: AuthenticationProvider,
+        private val userRepo: IUserRepository,
         private val profile: Profile
 ) : WebSecurityConfigurerAdapter() {
 
@@ -62,7 +65,10 @@ class SecurityConfiguration(
                         .logoutSuccessUrl("/login")
                         .logoutRequestMatcher(AntPathRequestMatcher("/api/logout"))
                     .and()
-                    .addFilterAfter(CorsAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
+                    .addFilter(JWTAuthenticationFilter(authenticationManager()))
+                    .addFilter(JWTAuthorizationFilter(authenticationManager(), userRepo))
+                    .addFilter(CorsAuthenticationFilter())
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         }
     }
 

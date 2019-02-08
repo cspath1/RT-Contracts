@@ -41,7 +41,11 @@ class RetrieveAuthAdminService(
 
         val authToken: AuthenticatedUserToken = authentication
 
-        val isAdmin = userRoleRepo.findAllByUserId(authToken.userId!!).any {
+        // Use only approved roles
+        val roles = userRoleRepo.findAllByUserId(authToken.userId!!).filter { it -> it.approved }
+
+
+        val isAdmin = roles.any {
             it.role == UserRole.Role.ADMIN
         }
 

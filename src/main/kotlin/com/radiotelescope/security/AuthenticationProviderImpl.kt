@@ -46,8 +46,6 @@ class AuthenticationProviderImpl(
         if (!verified)
             throw AuthenticationCredentialsNotFoundException("Invalid Email or Password")
 
-        System.out.println("Logging user in.")
-
         return AuthenticatedUserToken(
                 userId = userDetails.id,
                 authorities = userDetails.authorities,
