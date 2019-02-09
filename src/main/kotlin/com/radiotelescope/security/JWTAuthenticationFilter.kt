@@ -37,6 +37,7 @@ class JWTAuthenticationFilter : UsernamePasswordAuthenticationFilter {
                 .withSubject(authResult.email)
                 .withExpiresAt(Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET.toByteArray()))
+        System.out.println(token)
         response?.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token)
     }
 }

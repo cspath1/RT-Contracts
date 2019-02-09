@@ -59,7 +59,6 @@ class SecurityConfiguration(
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .loginProcessingUrl("/api/login")
-                        // .successHandler(SuccessfulLoginHandlerImpl())
                     .and()
                     .logout()
                         .logoutSuccessUrl("/login")
@@ -95,6 +94,7 @@ class SecurityConfiguration(
         // setAllowedHeaders is important! Without it, OPTIONS pre-flight request
         // will fail with 403 Invalid CORS request
         configuration.allowedHeaders = ImmutableList.of("Authorization", "Cache-Control", "Content-Type")
+        configuration.exposedHeaders = ImmutableList.of("Authorization")
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
         return source
