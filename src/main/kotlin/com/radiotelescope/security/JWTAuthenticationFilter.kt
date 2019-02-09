@@ -2,6 +2,7 @@ package com.radiotelescope.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.radiotelescope.config.JWTConfiguration
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
@@ -11,8 +12,14 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class JWTAuthenticationFilter : UsernamePasswordAuthenticationFilter {
-    constructor(authenticationManager: AuthenticationManager) : super() {
+    private var jwtConfiguration: JWTConfiguration
+
+    constructor(
+            authenticationManager: AuthenticationManager,
+            jwtConfiguration: JWTConfiguration
+    ) : super() {
         this.authenticationManager = authenticationManager
+        this.jwtConfiguration = jwtConfiguration
     }
 
     override fun obtainUsername(request: HttpServletRequest?): String {
@@ -36,8 +43,7 @@ class JWTAuthenticationFilter : UsernamePasswordAuthenticationFilter {
         val token = JWT.create()
                 .withSubject(authResult.email)
                 .withExpiresAt(Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
-                .sign(Algorithm.HMAC512(SecurityConstants.SECRET.toByteArray()))
-        System.out.println(token)
+                .sign(Algorithm.HMAC512(jwtConfiguration.secretKey().toByteArray()))
         response?.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token)
     }
 }

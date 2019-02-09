@@ -2,6 +2,7 @@ package com.radiotelescope.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.radiotelescope.config.JWTConfiguration
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse
 
 class JWTAuthorizationFilter(
         authenticationManager: AuthenticationManager,
+        private val jwtConfiguration: JWTConfiguration,
         private val userRepo: IUserRepository
 ) : BasicAuthenticationFilter(authenticationManager) {
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
@@ -31,7 +33,7 @@ class JWTAuthorizationFilter(
     private fun getAuthentication(request: HttpServletRequest): AuthenticatedUserToken? {
         val token = request.getHeader(SecurityConstants.HEADER_STRING)
         if (token != null) {
-            val email = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.toByteArray()))
+            val email = JWT.require(Algorithm.HMAC512(jwtConfiguration.secretKey().toByteArray()))
                     .build()
                     .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
                     .subject
