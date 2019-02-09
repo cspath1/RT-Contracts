@@ -11,9 +11,23 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+/**
+ * Extension of the [UsernamePasswordAuthenticationFilter] that handles the JSON Web Token
+ * used to identify users. Acts as a wrapper around the login process that, upon successful
+ * authentication will create and return a JSON Web Token to the client.
+ */
 class JWTAuthenticationFilter : UsernamePasswordAuthenticationFilter {
     private var jwtConfiguration: JWTConfiguration
 
+    /**
+     * Secondary constructor that takes an authentication manager object
+     * and sets the filter's authentication manager object to this parameeter.
+     * It also takes a [JWTConfiguration] object and sets the private variable
+     * to this.
+     *
+     * @param authenticationManager the [AuthenticationManager]
+     * @param jwtConfiguration the [JWTConfiguration]
+     */
     constructor(
             authenticationManager: AuthenticationManager,
             jwtConfiguration: JWTConfiguration
@@ -22,22 +36,27 @@ class JWTAuthenticationFilter : UsernamePasswordAuthenticationFilter {
         this.jwtConfiguration = jwtConfiguration
     }
 
+    /**
+     * Override of the [UsernamePasswordAuthenticationFilter.obtainUsername] method
+     * that will look for a request parameter with a name of "email" since this is what
+     * is used for user authentication
+     *
+     * @param request the [HttpServletRequest]
+     * @return the email addressed entered by the user
+     */
     override fun obtainUsername(request: HttpServletRequest?): String {
         return request?.getParameter("email") ?: ""
     }
 
-    override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
-        val email = obtainUsername(request)
-        val password = obtainPassword(request)
-
-        return authenticationManager.authenticate(AuthenticatedUserToken(
-                email = email,
-                password = password,
-                authorities = listOf(),
-                userId = null
-        ))
-    }
-
+    /**
+     * Override of the [UsernamePasswordAuthenticationFilter.successfulAuthentication] method that
+     * will create a JSON Web token and return it to the client in the response headers
+     *
+     * @param request the [HttpServletRequest]
+     * @param response the [HttpServletResponse]
+     * @param chain the [FilterChain]
+     * @param authResult the [AuthenticatedUserToken]
+     */
     override fun successfulAuthentication(request: HttpServletRequest?, response: HttpServletResponse?, chain: FilterChain?, authResult: Authentication?) {
         authResult as AuthenticatedUserToken
         val token = JWT.create()

@@ -29,6 +29,9 @@ class AuthenticationProviderImpl(
 ) : AuthenticationProvider {
     /**
      * Performs the user authentication using Spring Security
+     *
+     * @param authentication the [AuthenticatedUserToken] (or null if the user is not authenticated)
+     * @return an [AuthenticatedUserToken] object
      */
     override fun authenticate(authentication: Authentication?): Authentication {
         val context = SecurityContextHolder.getContext()

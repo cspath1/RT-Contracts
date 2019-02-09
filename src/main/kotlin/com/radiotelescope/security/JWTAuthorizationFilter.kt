@@ -11,11 +11,28 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+/**
+ * Extension of the [BasicAuthenticationFilter] that will grab JWT token from
+ * the request header and use it to grab the user's context from Spring Security.
+ * This will then be used to authenticate requests via role-based authentication
+ *
+ * @param authenticationManager the [AuthenticationManager] object
+ * @param jwtConfiguration the [JWTConfiguration] object
+ * @param userRepo the [IUserRepository] interface
+ */
 class JWTAuthorizationFilter(
         authenticationManager: AuthenticationManager,
         private val jwtConfiguration: JWTConfiguration,
         private val userRepo: IUserRepository
 ) : BasicAuthenticationFilter(authenticationManager) {
+    /**
+     * Override of the [BasicAuthenticationFilter.doFilterInternal] method that will grab the
+     * JWT toke from the request header so Spring Security knows who is making the request
+     *
+     * @param request the [HttpServletRequest]
+     * @param response the [HttpServletResponse]
+     * @param chain the [FilterChain]
+     */
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         val header = request.getHeader(SecurityConstants.HEADER_STRING)
 
@@ -30,6 +47,13 @@ class JWTAuthorizationFilter(
         chain.doFilter(request, response)
     }
 
+    /**
+     * Private method used to retrieve the [AuthenticatedUserToken] using the
+     * JWT Token.
+     *
+     * @param request the [HttpServletRequest]
+     * @return an [AuthenticatedUserToken] or null
+     */
     private fun getAuthentication(request: HttpServletRequest): AuthenticatedUserToken? {
         val token = request.getHeader(SecurityConstants.HEADER_STRING)
         if (token != null) {
@@ -50,7 +74,6 @@ class JWTAuthorizationFilter(
                             userId = user.id
                     )
                 }
-
             }
         }
 
