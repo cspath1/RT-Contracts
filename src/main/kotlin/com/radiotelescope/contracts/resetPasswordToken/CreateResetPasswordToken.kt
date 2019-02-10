@@ -56,7 +56,7 @@ class CreateResetPasswordToken (
                 expirationDate = Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000))
         )
 
-        theResetPasswordToken.user = userRepo.findByEmail(email)
+        theResetPasswordToken.user = userRepo.findByEmail(email)!!
         resetPasswordTokenRepo.save(theResetPasswordToken)
 
         return SimpleResult(theResetPasswordToken.token, null)
