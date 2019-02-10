@@ -21,5 +21,5 @@ data class UpdateEmailToken (
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    var user: User? = null
+    lateinit var user: User
 }
