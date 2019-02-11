@@ -7,7 +7,7 @@ CREATE TABLE update_email_token (
   user_id INT(11) NOT NULL,
   token VARCHAR(100) NOT NULL,
   expiration_date DATETIME NOT NULL,
-  email_address VARCHAR(100) NOT NULL
+  email_address VARCHAR(100) NOT NULL,
 
   PRIMARY KEY (id),
   UNIQUE KEY (user_id),
@@ -152,3 +152,14 @@ CREATE TABLE appointment (
   KEY public_idx (public)
 
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS user_notification_type;
+CREATE TABLE user_notification_type(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  type ENUM('EMAIL',
+            'PHONE')  ,
+  PRIMARY KEY (id),
+  KEY user_id_idx (user_id),
+  KEY type_idx (type)
+)ENGINE = InnoDB DEFAULT CHARSET=utf8;
