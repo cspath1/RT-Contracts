@@ -9,6 +9,7 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.viewer.IViewerRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -18,13 +19,17 @@ import org.springframework.data.domain.Pageable
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
  * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param coordinateRepo the [ICoordinateRepository] interface
+ * @param viewerRepo the [IViewerRepository] interface
  */
 class BaseAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val coordinateRepo: ICoordinateRepository
+        private val coordinateRepo: ICoordinateRepository,
+        private val viewerRepo: IViewerRepository
 ) : AppointmentFactory {
     /**
      * Override of the [AppointmentFactory.retrieve] method that will return a [Retrieve]
@@ -240,6 +245,22 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
+        )
+    }
+
+    /**
+     * Override of the [AppointmentFactory.sharePrivate] method that will return a [SharePrivate]
+     * command object
+     *
+     * @param request the [SharePrivate.Request] object
+     * @return a [Command] object
+     */
+    override fun sharePrivate(request: SharePrivate.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return SharePrivate(
+                request = request,
+                userRepo = userRepo,
+                appointmentRepo = appointmentRepo,
+                viewerRepo = viewerRepo
         )
     }
 }

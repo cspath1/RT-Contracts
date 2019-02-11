@@ -8,6 +8,7 @@ import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.viewer.IViewerRepository
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -27,6 +28,9 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var viewerRepo: IViewerRepository
+
     // These will both be needed in all appointment
     // controller tests, so instantiate them here
     private lateinit var wrapper: UserAppointmentWrapper
@@ -41,7 +45,8 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                viewerRepo = viewerRepo
         )
 
         wrapper = UserAppointmentWrapper(
