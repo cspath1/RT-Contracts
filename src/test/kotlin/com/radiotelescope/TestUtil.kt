@@ -20,6 +20,8 @@ import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepositor
 import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.viewer.IViewerRepository
+import com.radiotelescope.repository.viewer.Viewer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -55,6 +57,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var viewerRepo: IViewerRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -274,5 +279,16 @@ internal class TestUtil {
         user.active = false
         user.status = User.Status.BANNED
         return userRepo.save(user)
+    }
+
+    fun createViewer(
+            user: User,
+            appointment: Appointment
+    ): Viewer {
+        val viewer = Viewer()
+        viewer.user = user
+        viewer.appointment = appointment
+
+        return viewerRepo.save(viewer)
     }
 }
