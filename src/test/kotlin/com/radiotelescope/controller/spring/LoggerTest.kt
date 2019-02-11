@@ -6,6 +6,8 @@ import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
 import com.radiotelescope.toStringMap
 import liquibase.integration.spring.SpringLiquibase
@@ -42,6 +44,12 @@ internal class LoggerTest {
     @Autowired
     private lateinit var errorRepo: IErrorRepository
 
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
+    @Autowired
+    private lateinit var testUtil: TestUtil
+
     private lateinit var logger: Logger
 
     private val userContext = FakeUserContext()
@@ -52,6 +60,7 @@ internal class LoggerTest {
         logger = Logger(
                 logRepo = logRepo,
                 errorRepo = errorRepo,
+                userRepo = userRepo,
                 userContext = userContext
         )
     }
@@ -77,15 +86,16 @@ internal class LoggerTest {
             assertEquals(Log.AffectedTable.USER, it.affectedTable)
             assertEquals("User Registration", it.action)
             assertNull(it.affectedRecordId)
-            assertNull(it.userId)
+            assertNull(it.user)
             assertEquals(0, it.errors.size)
         }
     }
 
     @Test
     fun testCreateSuccessLog_UserId_Success() {
+        val user: User = testUtil.createUser("lferree@ycp.edu")
         // Simulate a login
-        userContext.login(1L)
+        userContext.login(user.id)
 
         // The user is now logged in, so the log generated
         // should have a populated user id
@@ -106,7 +116,7 @@ internal class LoggerTest {
             assertEquals(Log.AffectedTable.APPOINTMENT, it.affectedTable)
             assertEquals("User Registration", it.action)
             assertNull(it.affectedRecordId)
-            assertEquals(userContext.currentUserId(), it.userId)
+            assertEquals(user, it.user)
             assertEquals(0, it.errors.size)
         }
     }
@@ -140,7 +150,7 @@ internal class LoggerTest {
             assertEquals(Log.AffectedTable.USER, it.affectedTable)
             assertEquals("Appointment Creation", it.action)
             assertNull(it.affectedRecordId)
-            assertNull(it.userId)
+            assertNull(it.user)
             assertEquals(2, it.errors.size)
         }
 
@@ -152,8 +162,10 @@ internal class LoggerTest {
 
     @Test
     fun testCreateErrorLogs_UserId_Success() {
+        val user: User = testUtil.createUser("lferree@ycp.edu")
+        user.id = 1L
         // Simulate a login
-        userContext.login(1L)
+        userContext.login(user.id)
 
         // Create our errors map
         val errors = HashMultimap.create<ErrorTag, String>()
@@ -182,7 +194,7 @@ internal class LoggerTest {
             assertEquals(Log.AffectedTable.USER, it.affectedTable)
             assertEquals("User Registration", it.action)
             assertNull(it.affectedRecordId)
-            assertEquals(userContext.currentUserId(), it.userId)
+            assertEquals(user, it.user)
             assertEquals(2, it.errors.size)
         }
 

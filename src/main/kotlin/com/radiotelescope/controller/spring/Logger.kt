@@ -5,6 +5,7 @@ import com.radiotelescope.repository.error.Error
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.UserContext
 import org.springframework.stereotype.Service
 import java.util.*
@@ -21,6 +22,7 @@ import java.util.*
 class Logger(
         private var logRepo: ILogRepository,
         private var errorRepo: IErrorRepository,
+        private var userRepo: IUserRepository,
         private var userContext: UserContext
 ) {
     /**
@@ -29,7 +31,11 @@ class Logger(
     fun createSuccessLog(info: Info) {
         val log = info.toEntity()
         userContext.currentUserId()?.let {
-            log.userId = it
+            userRepo.findById(it).let{user ->
+                if(user.isPresent){
+                    log.user = user.get()
+                }
+            }
         }
         log.isSuccess = true
         logRepo.save(log)
@@ -41,7 +47,7 @@ class Logger(
     fun createErrorLogs(info: Info, errors: Map<String, Collection<String>>) {
         val log = info.toEntity()
         userContext.currentUserId()?.let {
-            log.userId = it
+            log.user = userRepo.findById(it).get()
         }
         log.isSuccess = false
         logRepo.save(log)

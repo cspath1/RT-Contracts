@@ -68,7 +68,7 @@ internal class AdminLogErrorListControllerTest : BaseLogRestControllerTest() {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.SUCCESS, "Create Error Log")
         log = testUtil.createErrorLog(
-                userId = admin.id,
+                user = admin,
                 action = "Creating log",
                 affectedRecordId = null,
                 affectedTable = Log.AffectedTable.LOG,

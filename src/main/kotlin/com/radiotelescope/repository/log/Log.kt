@@ -2,6 +2,7 @@ package com.radiotelescope.repository.log
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.radiotelescope.repository.error.Error
+import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
 
@@ -21,16 +22,16 @@ data class Log(
         @Column(name = "timestamp")
         var timestamp: Date,
         @Column(name = "affected_record_id")
-        var affectedRecordId: Long? = null
+        var affectedRecordId: Long? = null,
+        @OneToOne
+        @JoinColumn(name = "user_id")
+        var user: User? = null
 ) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
-
-    @Column(name = "user_id")
-    var userId: Long? = null
 
     @OneToMany(mappedBy = "log", fetch = FetchType.EAGER)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

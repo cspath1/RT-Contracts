@@ -54,7 +54,7 @@ internal class LogListTest {
         // Create a few logs without user ids
         for (i in 0..9) {
             testUtil.createLog(
-                    userId = null,
+                    user = null,
                     affectedRecordId = i.toLong(),
                     affectedTable = Log.AffectedTable.USER,
                     action = "User Registration",
@@ -66,7 +66,7 @@ internal class LogListTest {
         // Create a few logs with user ids
         for (i in 0..9) {
             testUtil.createLog(
-                    userId = theUser.id,
+                    user = theUser,
                     affectedRecordId = i.toLong(),
                     affectedTable = Log.AffectedTable.APPOINTMENT,
                     action = "Appointment Creation",

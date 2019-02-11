@@ -162,7 +162,7 @@ internal class TestUtil {
     }
 
     fun createLog(
-            userId: Long?,
+            user: User?,
             affectedRecordId: Long?,
             affectedTable: Log.AffectedTable,
             action: String,
@@ -176,14 +176,14 @@ internal class TestUtil {
                 affectedRecordId = null
         )
 
-        theLog.userId = userId
+        theLog.user = user
         theLog.isSuccess = isSuccess
 
         return logRepo.save(theLog)
     }
 
     fun createErrorLog(
-            userId: Long?,
+            user: User?,
             affectedRecordId: Long?,
             affectedTable: Log.AffectedTable,
             action: String,
@@ -192,7 +192,7 @@ internal class TestUtil {
             errors: Map<String, Collection<String>>
     ): Log {
         val theLog = createLog(
-                userId = userId,
+                user = user,
                 affectedRecordId = affectedRecordId,
                 affectedTable = affectedTable,
                 action = action,

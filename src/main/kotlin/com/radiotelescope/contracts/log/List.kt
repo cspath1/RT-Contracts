@@ -31,9 +31,8 @@ class List(
 
         val infoList = arrayListOf<LogInfo>()
         logPage.forEach {
-            if (it.userId != null) {
-                val theUser = userRepo.findById(it.userId!!).get()
-                infoList.add(LogInfo(log = it, user = theUser))
+            if (it.user != null) {
+                infoList.add(LogInfo(log = it, user = it.user!!))
             } else {
                 infoList.add(LogInfo(it))
             }

@@ -64,7 +64,7 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
         )
 
         testUtil.createLog(
-                userId = admin.id,
+                user = admin,
                 action = "Creating log",
                 affectedRecordId = null,
                 affectedTable = Log.AffectedTable.LOG,
