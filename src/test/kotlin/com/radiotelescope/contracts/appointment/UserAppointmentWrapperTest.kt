@@ -9,7 +9,6 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
-import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Assert.*
 import org.junit.Before
@@ -65,9 +64,6 @@ internal class UserAppointmentWrapperTest {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
-
-    @Autowired
-    private lateinit var viewerRepo: IViewerRepository
 
     private val baseCreateRequest = Create.Request(
             userId = -1L,
@@ -160,8 +156,7 @@ internal class UserAppointmentWrapperTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo,
-                viewerRepo = viewerRepo
+                coordinateRepo = coordinateRepo
         )
 
         wrapper = UserAppointmentWrapper(
