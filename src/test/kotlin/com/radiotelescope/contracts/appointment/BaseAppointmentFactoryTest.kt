@@ -7,6 +7,7 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.viewer.IViewerRepository
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
@@ -53,6 +54,9 @@ internal class BaseAppointmentFactoryTest {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var viewerRepo: IViewerRepository
+
     private lateinit var factory: AppointmentFactory
 
     @Before
@@ -62,7 +66,8 @@ internal class BaseAppointmentFactoryTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                viewerRepo = viewerRepo
         )
     }
 

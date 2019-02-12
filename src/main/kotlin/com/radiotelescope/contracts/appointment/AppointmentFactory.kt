@@ -117,10 +117,18 @@ interface AppointmentFactory {
     fun approveDenyRequest(request: ApproveDenyRequest.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
-     * Abstract command user to retrieve the available time for a user
+     * Abstract command used to retrieve the available time for a user
      *
      * @param userId the User's Id
      * @return a [Command] object
      */
     fun userAvailableTime(userId: Long): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to share a private appointment with a user
+     *
+     * @param request the [SharePrivate.Request] object
+     * @return a [Command] object
+     */
+    fun sharePrivate(request: SharePrivate.Request): Command<Long, Multimap<ErrorTag, String>>
 }
