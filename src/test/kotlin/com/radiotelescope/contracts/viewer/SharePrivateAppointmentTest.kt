@@ -24,7 +24,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 @ActiveProfiles(value = ["test"])
-internal class SharePrivateTest {
+internal class SharePrivateAppointmentTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
