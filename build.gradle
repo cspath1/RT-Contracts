@@ -147,7 +147,7 @@ dependencies {
 	runtime group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
 }
 
-test{
-	minHeapSize = "128m"
-	maxHeapSize = "2048m"
-}
+//test{
+//	minHeapSize = "128m"
+//	maxHeapSize = "2048m"
+//}
