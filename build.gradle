@@ -29,7 +29,7 @@ apply plugin: 'org.jetbrains.dokka'
 
 group = 'com.radiotelescope'
 
-version = '2.7.4-prod'
+version = '2.7.5-prod'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -147,7 +147,7 @@ dependencies {
 	runtime group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
 }
 
-//test{
-//	minHeapSize = "128m"
-//	maxHeapSize = "2048m"
-//}
+test{
+	minHeapSize = "128m"
+	maxHeapSize = "2048m"
+}
