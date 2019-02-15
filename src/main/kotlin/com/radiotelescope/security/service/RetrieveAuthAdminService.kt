@@ -41,7 +41,10 @@ class RetrieveAuthAdminService(
 
         val authToken: AuthenticatedUserToken = authentication
 
-        val isAdmin = userRoleRepo.findAllByUserId(authToken.userId!!).any {
+        // Use only approved roles
+        val roles = userRoleRepo.findAllByUserId(authToken.userId!!).filter { it -> it.approved }
+
+        val isAdmin = roles.any {
             it.role == UserRole.Role.ADMIN
         }
 
@@ -51,23 +54,31 @@ class RetrieveAuthAdminService(
             return SimpleResult(null, errors)
         }
 
-        val authorities = arrayListOf<SimpleGrantedAuthority>()
-
-        authToken.authorities.forEach {
-            authorities.add(SimpleGrantedAuthority(it.authority))
-        }
+        val authorities = getAuthorities(userId = authToken.userId)
 
         val user = userRepo.findById(authToken.userId).get()
 
         val userSession = UserSession(
-                userId = user.id,
+                userId = authToken.userId,
                 email = user.email,
                 roles = authorities,
-                firstName = user.firstName,
                 lastName = user.lastName,
+                firstName = user.firstName,
                 accountActive = user.active
         )
 
         return SimpleResult(userSession, null)
+    }
+
+    private fun getAuthorities(userId: Long): List<SimpleGrantedAuthority> {
+        val roles = userRoleRepo.findAllByUserId(userId)
+        val authorities = arrayListOf<SimpleGrantedAuthority>()
+
+        roles.forEach { it ->
+            if (it.approved)
+                authorities.add(SimpleGrantedAuthority("ROLE_${it.role.name.toUpperCase()}"))
+        }
+
+        return authorities
     }
 }
