@@ -16,6 +16,8 @@ import com.radiotelescope.contracts.updateEmailToken.BaseUpdateEmailTokenFactory
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
 import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.viewer.BaseViewerFactory
+import com.radiotelescope.contracts.viewer.UserViewerWrapper
 import com.radiotelescope.security.UserContextImpl
 import com.radiotelescope.security.service.RetrieveAuthUserService
 import org.springframework.context.annotation.Bean
@@ -165,6 +167,23 @@ class FactoryBeans(
                 ),
                 context = userContext,
                 userRepo = repositories.userRepo
+        )
+    }
+
+    /**
+     * Returns a [UserViewerWrapper] object, allowing it to be autowired
+     * in the controllers
+     */
+    @Bean
+    override fun getViewerWrapper(): UserViewerWrapper {
+        return UserViewerWrapper(
+                factory = BaseViewerFactory(
+                        viewerRepo = repositories.viewerRepo,
+                        userRepo = repositories.userRepo,
+                        appointmentRepo = repositories.appointmentRepo
+                ),
+                context = userContext,
+                appointmentRepo = repositories.appointmentRepo
         )
     }
 }
