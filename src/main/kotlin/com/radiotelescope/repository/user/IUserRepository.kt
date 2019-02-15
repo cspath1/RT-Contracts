@@ -2,15 +2,16 @@ package com.radiotelescope.repository.user
 
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 
 /**
- * Spring Repository for the [User] Entity
+ * Spring Repository for the [User] Entity.
  */
 @Repository
-interface IUserRepository : PagingAndSortingRepository<User, Long> {
+interface IUserRepository : PagingAndSortingRepository<User, Long>, JpaSpecificationExecutor<User> {
     /**
      * Spring Repository method that will see if any [User] records exist
      * with the given email parameter

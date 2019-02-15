@@ -1,6 +1,9 @@
 package com.radiotelescope.repository.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.model.user.Filter
+import com.radiotelescope.repository.model.user.SearchCriteria
+import com.radiotelescope.repository.model.user.UserSpecificationBuilder
 import com.radiotelescope.repository.role.UserRole
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
@@ -114,5 +117,50 @@ internal class UserTest {
 
         // Should be the email of the non-admin user
         assertEquals(email, userPage.content[0].email)
+    }
+
+    @Test
+    fun testSearchEmail() {
+        val searchCriteria = SearchCriteria(Filter.EMAIL, "rpim")
+        val specification = UserSpecificationBuilder().with(searchCriteria).build()
+
+        val userList = userRepo.findAll(specification)
+
+        assertNotNull(userList)
+        assertEquals(2, userList.size)
+
+        for (user in userList) {
+            assertTrue(user.email.contains("rpim"))
+        }
+    }
+
+    @Test
+    fun testSearchFirstNameOrLastName() {
+        val searchCriteriaOne = SearchCriteria(Filter.FIRST_NAME, "Fir")
+        val searchCriteriaTwo = SearchCriteria(Filter.LAST_NAME, "La")
+
+        val specification = UserSpecificationBuilder().with(searchCriteriaOne).with(searchCriteriaTwo).build()
+
+        val userList = userRepo.findAll(specification)
+
+        assertNotNull(userList)
+        assertEquals(3, userList.size)
+    }
+
+    @Test
+    fun testSearchCompanyName() {
+        val user = userRepo.findByEmail(email)!!
+        user.company = "York College of PA"
+
+        // Should still return the above user
+        val searchCriteria = SearchCriteria(Filter.COMPANY, "York College")
+
+        val specification = UserSpecificationBuilder().with(searchCriteria).build()
+
+        val userList = userRepo.findAll(specification)
+
+        assertNotNull(userList)
+        assertEquals(1, userList.size)
+        assertEquals(user.email, userList[0].email)
     }
 }
