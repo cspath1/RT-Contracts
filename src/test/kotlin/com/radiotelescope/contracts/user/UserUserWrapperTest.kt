@@ -2,6 +2,8 @@ package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.model.user.Filter
+import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -636,5 +638,42 @@ internal class UserUserWrapperTest {
         }
 
         assertNull(error)
+    }
+
+    @Test
+    fun testSearch_User_Success() {
+        // Log the user in
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Create the SearchCriteria list
+        val searchCriteria = arrayListOf<SearchCriteria>()
+        searchCriteria.add(SearchCriteria(Filter.FIRST_NAME, "First"))
+
+        val error = wrapper.search(
+                searchCriteria = searchCriteria,
+                pageable = PageRequest.of(0, 20)
+        ) {
+            assertNull(it.error)
+            assertNotNull(it.success)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testSearch_NotLoggedIn_Failure() {
+        // Create the SearchCriteria list
+        val searchCriteria = arrayListOf<SearchCriteria>()
+        searchCriteria.add(SearchCriteria(Filter.FIRST_NAME, "First"))
+
+        val error = wrapper.search(
+                searchCriteria = searchCriteria,
+                pageable = PageRequest.of(0, 10)
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
     }
 }

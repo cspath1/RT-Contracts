@@ -70,6 +70,5 @@ data class User(
                 50,
                 256
         )
-
     }
 }

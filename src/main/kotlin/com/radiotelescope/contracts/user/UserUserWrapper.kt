@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.AccessReport
@@ -218,6 +219,25 @@ class UserUserWrapper(
                 return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
             }
         }
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
+     * Wrapper method for the [UserFactory.search] method that adds Spring
+     * Security authentication to the [Search] command object
+     *
+     * @param searchCriteria a [List] of [SearchCriteria]
+     * @param pageable the [Pageable] interface
+     * @return an [AccessReport] if authentications fails, null otherwise
+     */
+    fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable, withAccess: (result: SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(),
+                    successCommand = factory.search(searchCriteria, pageable)
+            ).execute(withAccess)
+        }
+
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
