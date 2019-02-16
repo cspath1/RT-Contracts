@@ -105,9 +105,21 @@ internal class UserUserWrapperTest {
                 password = "Password"
         )
 
+        testUtil.createUserRolesForUser(
+                userId = user.id,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
         val otherUser = testUtil.createUserWithEncodedPassword(
                 email = "codyspath@gmail.com",
                 password = "Password"
+        )
+
+        testUtil.createUserRolesForUser(
+                userId = otherUser.id,
+                role = UserRole.Role.MEMBER,
+                isApproved = true
         )
 
         userId = user.id

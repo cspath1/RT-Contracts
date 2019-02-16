@@ -28,16 +28,14 @@ class List(
      * into a [Page] of [UserInfo] objects
      */
     override fun execute(): SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>> {
-        val userPage = userRepo.findAll(pageable)
+        val userPage = userRepo.findAllNonAdminUsers(pageable)
 
         val infoList = arrayListOf<UserInfo>()
         userPage.forEach {
             val theUserRole = userRoleRepo.findMembershipRoleByUserId(it.id)
-            // Do not add admins to this list
-            if (theUserRole?.role != UserRole.Role.ADMIN) {
-                val theRole = theUserRole?.role
-                infoList.add(UserInfo(it, theRole?.label))
-            }
+
+            val theRole = theUserRole?.role
+            infoList.add(UserInfo(it, theRole?.label))
         }
 
         val infoPage = PageImpl(infoList, userPage.pageable, userPage.totalElements)

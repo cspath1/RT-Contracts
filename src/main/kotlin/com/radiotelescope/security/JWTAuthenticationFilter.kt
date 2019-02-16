@@ -61,7 +61,7 @@ class JWTAuthenticationFilter : UsernamePasswordAuthenticationFilter {
         authResult as AuthenticatedUserToken
         val token = JWT.create()
                 .withSubject(authResult.email)
-                .withExpiresAt(Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
+                .withExpiresAt(Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 7)))
                 .sign(Algorithm.HMAC512(jwtConfiguration.secretKey().toByteArray()))
         response?.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token)
     }
