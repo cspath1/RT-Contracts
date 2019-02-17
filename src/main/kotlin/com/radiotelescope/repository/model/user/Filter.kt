@@ -11,5 +11,21 @@ enum class Filter(val field: String) {
     FIRST_NAME("firstName"),
     LAST_NAME("lastName"),
     EMAIL("email"),
-    COMPANY("company")
+    COMPANY("company");
+
+    companion object {
+        fun fromField(field: String): Filter? {
+            return when (field) {
+                "firstName" -> FIRST_NAME
+                "lastName" -> LAST_NAME
+                "email" -> EMAIL
+                "company" -> COMPANY
+                else -> {
+                    // Handle the case where an invalid parameter
+                    // is supplied
+                    null
+                }
+            }
+        }
+    }
 }
