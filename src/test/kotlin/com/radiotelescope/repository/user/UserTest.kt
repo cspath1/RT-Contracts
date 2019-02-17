@@ -153,7 +153,7 @@ internal class UserTest {
         user.company = "York College of PA"
 
         // Should still return the above user
-        val searchCriteria = SearchCriteria(Filter.COMPANY, "York College")
+        val searchCriteria = SearchCriteria(Filter.COMPANY, "york college")
 
         val specification = UserSpecificationBuilder().with(searchCriteria).build()
 

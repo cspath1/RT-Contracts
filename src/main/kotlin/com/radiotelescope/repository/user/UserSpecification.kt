@@ -17,9 +17,9 @@ class UserSpecification(
 ) : Specification<User> {
     /**
      * Returns a predicate that looks for values [SearchCriteria.filter] field that contain the
-     * [SearchCriteria.value]
+     * [SearchCriteria.value]. Case insensitive search.
      */
     override fun toPredicate(root: Root<User>, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder): Predicate? {
-        return criteriaBuilder.like(root.get(searchCriteria.filter.field), "%" + searchCriteria.value + "%")
+        return criteriaBuilder.like(criteriaBuilder.lower(root.get(searchCriteria.filter.field)), "%" + searchCriteria.value.toString().toLowerCase() + "%")
     }
 }
