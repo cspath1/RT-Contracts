@@ -16,11 +16,31 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
+/**
+ * REST Controller to handle dynamically searching for users
+ *
+ * @param userWrapper the [UserUserWrapper]
+ * @param logger the [Logger] service
+ */
 @RestController
 class UserSearchController(
         private val userWrapper: UserUserWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of taking the the request parameters
+     * and adapting them into the parameters required for the [UserUserWrapper.search]
+     *
+     * Once the parameters have been adapted, it will call the method, and respond
+     * according to if the request was successfully authenticated, or whether the
+     * request was a success or an error
+     *
+     * @param pageNumber the page number
+     * @param pageSize the page size
+     * @param value the search value
+     * @param search the search criteria string
+     * @return a [Result] object
+     */
     @CrossOrigin(value = ["http://localhost:8081"])
     @GetMapping(value = ["/api/users/search"])
     fun execute(@RequestParam(value = "page") pageNumber: Int,
@@ -80,6 +100,14 @@ class UserSearchController(
         return result
     }
 
+    /**
+     * Private method that will take the search string and value from the request
+     * and adapt it into a [List] of [SearchCriteria]
+     *
+     * @param value the search value
+     * @param search the search criteria string
+     * @return a [List] of [SearchCriteria]
+     */
     private fun getSearchCriteriaFromParams(value: Any, search: String): List<SearchCriteria> {
         val tokenizer = StringTokenizer(search, "+")
         val filters = arrayListOf<Filter>()
