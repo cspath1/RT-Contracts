@@ -56,7 +56,7 @@ internal class AdminUserListControllerTest : BaseUserRestControllerTest() {
 
         admin = testUtil.createUser("rpim@ycp.edu")
         testUtil.createUserRolesForUser(
-                userId = admin.id,
+                user = admin,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )

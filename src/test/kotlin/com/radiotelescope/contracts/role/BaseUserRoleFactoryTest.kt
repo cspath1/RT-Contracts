@@ -42,6 +42,9 @@ internal class BaseUserRoleFactoryTest {
 
     private lateinit var factory: UserRoleFactory
 
+    @Autowired
+    private lateinit var testUtil: TestUtil
+
     @Before
     fun init() {
         factory = BaseUserRoleFactory(
@@ -88,10 +91,10 @@ internal class BaseUserRoleFactoryTest {
 
     @Test
     fun requestRole() {
-        // Cal the factory method
+        // Call the factory method
         val cmd = factory.requestRole(
                 request = RequestRole.Request(
-                        userId = 1L,
+                        user = testUtil.createUser("lferree@ycp.edu"),
                         role = UserRole.Role.GUEST
                 )
         )

@@ -57,14 +57,14 @@ internal class AdminRetrieveUserRoleControllerTest : BaseUserRoleControllerTest(
 
         admin = testUtil.createUser("rpim@ycp.edu")
         testUtil.createUserRolesForUser(
-                userId = admin.id,
+                user = admin,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
 
         val user = testUtil.createUser("rpim1@ycp.edu")
         roles = testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )

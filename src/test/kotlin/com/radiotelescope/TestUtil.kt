@@ -86,13 +86,13 @@ internal class TestUtil {
     }
 
     fun createUserRolesForUser(
-            userId: Long,
+            user: User,
             role: UserRole.Role,
             isApproved: Boolean
     ): List<UserRole> {
         // Creates a User UserRole by default
         val userRole = UserRole(
-                userId = userId,
+                user = user,
                 role = UserRole.Role.USER
         )
 
@@ -100,7 +100,7 @@ internal class TestUtil {
         userRoleRepo.save(userRole)
 
         val otherRole = UserRole(
-                userId = userId,
+                user = user,
                 role = role
         )
 
@@ -111,12 +111,12 @@ internal class TestUtil {
     }
 
     fun createUserRoleForUser(
-            userId: Long,
+            user: User,
             role: UserRole.Role,
             isApproved: Boolean
     ): UserRole {
         val userRole = UserRole(
-                userId = userId,
+                user = user,
                 role = role
         )
 

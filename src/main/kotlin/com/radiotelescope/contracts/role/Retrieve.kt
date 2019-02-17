@@ -35,7 +35,7 @@ class Retrieve(
             val theRole = userRoleRepo.findById(roleId).get()
             // Since this is used to retrieve an unapproved role, the userRoleLabel field will
             // always be null
-            val userInfo = UserInfo(userRepo.findById(theRole.userId!!).get(), null)
+            val userInfo = UserInfo(userRepo.findById(theRole.user.id).get(), null)
 
             val roleInfo = UserRoleInfo(
                     userInfo = userInfo,

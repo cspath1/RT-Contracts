@@ -113,14 +113,14 @@ internal class UserAppointmentWrapperTest {
         testUtil.createUserRolesForUser(
                 isApproved = true,
                 role = UserRole.Role.ADMIN,
-                userId = admin.id
+                user = admin
         )
 
         // Persis the Role.ADMIN for notAdminYet, but is not approved
         testUtil.createUserRolesForUser(
                 isApproved = false,
                 role = UserRole.Role.ADMIN,
-                userId = notAdminYet.id
+                user = notAdminYet
         )
 
         // Persist an appointment for the user
@@ -189,7 +189,7 @@ internal class UserAppointmentWrapperTest {
     fun testCreatePublic_User_Success() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -263,7 +263,7 @@ internal class UserAppointmentWrapperTest {
     fun testCreatePrivate_Researcher_Success() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -295,7 +295,7 @@ internal class UserAppointmentWrapperTest {
     fun testCreatePrivate_Admin_Success() {
         // Make the user an admin
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -781,7 +781,7 @@ internal class UserAppointmentWrapperTest {
     fun testInvalidUpdate_InvalidId_Failure() {
         // Make the user an admin
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
@@ -814,7 +814,7 @@ internal class UserAppointmentWrapperTest {
     fun testValidUpdate_Private_Researcher_Success() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -848,7 +848,7 @@ internal class UserAppointmentWrapperTest {
     fun testValidUpdate_Admin_Private_Success() {
         // Make the user an admin
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
@@ -882,7 +882,7 @@ internal class UserAppointmentWrapperTest {
     fun testValidUpdate_UserIsOwner_Success(){
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -916,7 +916,7 @@ internal class UserAppointmentWrapperTest {
     fun testValidUpdate_Admin_Success(){
         // Make the user a admin
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
@@ -1356,7 +1356,7 @@ internal class UserAppointmentWrapperTest {
     @Test
     fun testValidUserAvailableTime_LoggedIn_Success(){
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )

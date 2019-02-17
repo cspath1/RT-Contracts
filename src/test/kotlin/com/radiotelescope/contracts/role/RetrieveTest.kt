@@ -49,7 +49,7 @@ internal class RetrieveTest {
         // Create a user and some roles
         val user = testUtil.createUser("cspath1@ycp.edu")
         val roles = testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )

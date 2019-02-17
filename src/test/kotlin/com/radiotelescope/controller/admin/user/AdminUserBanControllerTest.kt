@@ -63,7 +63,7 @@ internal class AdminUserBanControllerTest : BaseUserRestControllerTest() {
 
         admin = testUtil.createUser("rpim1@ycp.edu")
         testUtil.createUserRolesForUser(
-                userId = admin.id,
+                user = admin,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )

@@ -130,7 +130,7 @@ class Register(
         // Generate the basic user UserRole
         val role = UserRole(
                 role = UserRole.Role.USER,
-                userId = user.id
+                user = user
         )
 
         role.approved = true
@@ -140,7 +140,7 @@ class Register(
         // Generate the categoryOfService UserRole
         val categoryRole = UserRole(
                 role = request.categoryOfService,
-                userId = user.id
+                user = user
         )
 
         categoryRole.approved = request.categoryOfService == UserRole.Role.GUEST

@@ -63,7 +63,7 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
         user = testUtil.createUser("cspath1@ycp.edu")
 
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )

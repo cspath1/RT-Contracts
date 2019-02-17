@@ -85,7 +85,7 @@ internal class CreateTest {
     fun testValidConstraintsGuest_EnoughTime_Success() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -124,7 +124,7 @@ internal class CreateTest {
     fun test_Researcher_EnoughTime_Success() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -268,7 +268,7 @@ internal class CreateTest {
     fun testNotEnoughTime_Guest_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -302,7 +302,7 @@ internal class CreateTest {
     fun testNotEnoughTime_Other_Failure() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -758,7 +758,7 @@ internal class CreateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -802,7 +802,7 @@ internal class CreateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -845,7 +845,7 @@ internal class CreateTest {
     fun testHoursTooLow_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -878,7 +878,7 @@ internal class CreateTest {
     fun testHoursTooHigh_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -911,7 +911,7 @@ internal class CreateTest {
     fun testMinutesTooLow_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -944,7 +944,7 @@ internal class CreateTest {
     fun testMinutesTooHigh_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -977,7 +977,7 @@ internal class CreateTest {
     fun testSecondsTooLow_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -1010,7 +1010,7 @@ internal class CreateTest {
     fun testSecondsTooHigh_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -1043,7 +1043,7 @@ internal class CreateTest {
     fun testDeclinationTooLow_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -1076,7 +1076,7 @@ internal class CreateTest {
     fun testDeclinationTooGreat_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
