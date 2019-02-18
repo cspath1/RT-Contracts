@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
@@ -55,6 +56,7 @@ internal class UserViewerWrapperTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     private lateinit var user: User
+    private lateinit var otherUser: User
     private lateinit var admin: User
     private lateinit var appointment: Appointment
 
@@ -67,6 +69,7 @@ internal class UserViewerWrapperTest {
         // Persist a user
         user = testUtil.createUser("rpim@ycp.edu")
         admin = testUtil.createUser("rpim1@ycp.edu")
+        otherUser = testUtil.createUser("rpim2@ycp.edu")
 
         // Persist an appointment for the user
         appointment = testUtil.createAppointment(
@@ -76,6 +79,11 @@ internal class UserViewerWrapperTest {
                 endTime = Date(System.currentTimeMillis() +   200000L),
                 isPublic = false,
                 status = Appointment.Status.SCHEDULED
+        )
+
+        testUtil.createViewer(
+                user = otherUser,
+                appointment = appointment
         )
 
         factory = BaseViewerFactory(
@@ -92,7 +100,7 @@ internal class UserViewerWrapperTest {
     }
 
     @Test
-    fun testValidConstraints_Success(){
+    fun testSharePrivateAppointment_ValidConstraints_Success(){
         // Simulate a login
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
@@ -113,7 +121,7 @@ internal class UserViewerWrapperTest {
     }
 
     @Test
-    fun testAdmin_Success(){
+    fun testSharePrivateAppointment_Admin_Success(){
         // Simulate a login
         context.login(admin.id)
         context.currentRoles.add(UserRole.Role.USER)
@@ -134,7 +142,7 @@ internal class UserViewerWrapperTest {
     }
 
     @Test
-    fun testResearcher_NotLogIn_Failure(){
+    fun testSharePrivateAppointment_Researcher_NotLogIn_Failure(){
         // Don't simulate a login
 
         val error = wrapper.sharePrivateAppointment(
@@ -153,7 +161,7 @@ internal class UserViewerWrapperTest {
     }
 
     @Test
-    fun testResearcher_NotOwner_Failure(){
+    fun testSharePrivateAppointment_Researcher_NotOwner_Failure(){
         // Simulate a login
         context.login(123L)
         context.currentRoles.add(UserRole.Role.USER)
@@ -173,4 +181,63 @@ internal class UserViewerWrapperTest {
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
+
+    @Test
+    fun testListSharedAppointment_ValidConstraints_Success(){
+        // Simulate a login
+        context.login(otherUser.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.listSharedAppointment(
+                userId = otherUser.id,
+                pageable = PageRequest.of(0, 25)
+        ){
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        // Make sure it was a success
+        assertNull(error)
+
+    }
+
+    @Test
+    fun testListSharedAppointment_NotOwner_Failure(){
+        // Simulate a login
+        context.login(123L)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.listSharedAppointment(
+                userId = otherUser.id,
+                pageable = PageRequest.of(0, 25)
+        ){
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        // Make sure it was a failure
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testListSharedAppointment_Admin_Success(){
+        // Simulate a login
+        context.login(admin.id)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.listSharedAppointment(
+                userId = otherUser.id,
+                pageable = PageRequest.of(0, 25)
+        ){
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        // Make sure it was a success
+        assertNull(error)
+
+    }
+
+
 }

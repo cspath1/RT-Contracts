@@ -2,6 +2,9 @@ package com.radiotelescope.contracts.viewer
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.contracts.appointment.AppointmentInfo
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 /**
  * Abstract factory interface with methods for all [Viewer] Command objects
@@ -11,4 +14,9 @@ interface ViewerFactory {
      * Abstract command used to share a private appointment
      */
     fun sharePrivateAppointment(request: SharePrivateAppointment.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstracr command used to list of shared appointments
+     */
+    fun listSharedAppointment(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 }

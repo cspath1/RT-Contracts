@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
@@ -65,5 +66,17 @@ internal class BaseViewerFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is SharePrivateAppointment)
+    }
+
+    @Test
+    fun listSharedAppointment(){
+        // Call the factory method
+        val cmd = factory.listSharedAppointment(
+                userId = 1L,
+                pageable = PageRequest.of(0, 25)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is ListSharedAppointment)
     }
 }

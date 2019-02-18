@@ -2,9 +2,12 @@ package com.radiotelescope.contracts.viewer
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.contracts.appointment.AppointmentInfo
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 /**
  * Base concrete implementation of the [ViewerFactory] interface
@@ -29,6 +32,19 @@ class BaseViewerFactory (
         return SharePrivateAppointment(
                 request = request,
                 viewerRepo = viewerRepo,
+                userRepo = userRepo,
+                appointmentRepo = appointmentRepo
+        )
+    }
+
+    /**
+     * Override of the [ViewerFactory.listSharedAppointment] method that will return a
+     * [ListSharedAppointment] command object
+     */
+    override fun listSharedAppointment(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        return ListSharedAppointment(
+                userId = userId,
+                pageable = pageable,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo
         )
