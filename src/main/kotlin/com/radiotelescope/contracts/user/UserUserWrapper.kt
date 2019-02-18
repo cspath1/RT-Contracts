@@ -225,6 +225,12 @@ class UserUserWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
+    /**
+     * Private method to return a [Map] of errors when a user could not be found.
+     *
+     * @param id the Appointment id
+     * @return a [Map] of errors
+     */
     private fun invalidUserIdErrors(id: Long): Map<String, Collection<String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.ID, "User #$id could not be found")

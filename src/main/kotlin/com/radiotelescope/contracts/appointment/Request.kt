@@ -13,6 +13,15 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
+/**
+ * Override of the [Command] interface used to request an appointment.
+ *
+ * @param request the [Request] data class
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param userRepo the [IUserRepository] interface
+ * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param coordinateRepo the [ICoordinateRepository] interface
+ */
 class Request(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,

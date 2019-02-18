@@ -7,6 +7,12 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 
+/**
+ * Override of the [Command] interface used to approve or deny appointment requests.
+ *
+ * @param request the [ApproveDenyRequest.Request] data class
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ */
 class ApproveDenyRequest(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository

@@ -190,6 +190,9 @@ class Register(
         }
     }
 
+    /**
+     * Data class containing all fields returned from user creation.
+     */
     data class Response(
             val id: Long,
             val email: String,
