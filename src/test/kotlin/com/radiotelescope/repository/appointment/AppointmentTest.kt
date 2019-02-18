@@ -43,6 +43,7 @@ internal class AppointmentTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     private lateinit var user: User
+    private lateinit var otherUser: User
     private lateinit var futureAppointment: Appointment
     private lateinit var pastAppointment: Appointment
     private lateinit var requestedAppointment: Appointment
@@ -51,8 +52,9 @@ internal class AppointmentTest {
 
     @Before
     fun setUp() {
-        // Persist a user
+        // Persist users
         user = testUtil.createUser("cspath1@ycp.edu")
+        otherUser = testUtil.createUser("rpim@ycp.edu")
 
         // Persist a past appointment, future appointment, and canceled future appointment
         futureAppointment = testUtil.createAppointment(
@@ -90,6 +92,10 @@ internal class AppointmentTest {
                 startTime = Date(currentTime + 1000000000L),
                 endTime = Date(currentTime +   3000000000L),
                 isPublic = true
+        )
+        testUtil.createViewer(
+                user = otherUser,
+                appointment = futureAppointment
         )
     }
 
@@ -398,5 +404,18 @@ internal class AppointmentTest {
         )
 
         assertEquals(8, listOfAppointments.size)
+    }
+
+    @Test
+    fun testFindSharedAppointmentsByUser() {
+        var appointmentPage = appointmentRepo.findSharedAppointmentsByUser(
+                userId = otherUser.id,
+                pageable = PageRequest.of(0, 25)
+        )
+
+        assertNotNull(appointmentPage)
+        assertEquals(1, appointmentPage.content.size)
+
+        assertEquals(futureAppointment.id, appointmentPage.content[0].id)
     }
 }

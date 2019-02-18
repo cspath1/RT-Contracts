@@ -164,4 +164,17 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             nativeQuery = true)
     fun findConflict(endTime: Date, startTime: Date, telescopeId: Long ):List<Appointment>
 
+    /**
+     * Spring Repository method that will return a list of appointments
+     * that was shared with a user
+     *
+     * @param userId the User's Id
+     * @return a [Page] of [Appointment] records
+     */
+    @Query(value = "SELECT * FROM appointment " +
+            "WHERE id IN (SELECT appointment_id FROM viewer WHERE user_id=?1)",
+            countQuery = "SELECT COUNT(*) FROM appointment " +
+                    "WHERE id IN (SELECT appointment_id FROM viewer WHERE user_id=?1)",
+            nativeQuery = true)
+    fun findSharedAppointmentsByUser(userId: Long, pageable: Pageable): Page<Appointment>
 }
