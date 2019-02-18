@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
  * REST Controller to handle Sharing Private Appointment
  *
  * @param viewerWrapper the [UserViewerWrapper]
- * @param awsSesSendService the [AwsSesSendService]
+ * @param awsSesSendService the [IAwsSesSendService]
  * @param userRepo the [IUserRepository]
  * @param logger the [Logger] service
  */
@@ -29,12 +29,14 @@ class ViewerSharePrivateController(
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of sharing a private appointment
+     * Execute method that is in charge of sharing a private appointment by executing
+     * [UserViewerWrapper.sharePrivateAppointment] method
      *
-     * If the email
+     * If it was successful, it will notify the user that an appointment has been shared
+     * with them
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/user/{id}/appointment/{appointmentId}/sharePrivate"])
+    @GetMapping(value = ["/api/user/{id}/appointment/{appointmentId}/sharePrivate"])
     fun execute(@PathVariable("id") id: Long,
                 @PathVariable("appointmentId") appointmentId: Long,
                 @RequestParam("userId") userId: Long): Result {
