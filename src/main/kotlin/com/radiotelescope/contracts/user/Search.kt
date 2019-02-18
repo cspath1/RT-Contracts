@@ -7,6 +7,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.model.user.UserSpecificationBuilder
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -36,15 +37,28 @@ class Search(
             val userPage = userRepo.findAll(specification, pageable)
             val infoList = arrayListOf<UserInfo>()
 
+            // Grab the total elements from the page result
+            var totalElements = userPage.totalElements
+
             // Adapt the user page into a page of info objects
             userPage.forEach { user ->
                 val theUserRole = userRoleRepo.findMembershipRoleByUserId(user.id)
 
                 val theRole = theUserRole?.role
-                infoList.add(UserInfo(user, theRole?.label))
+
+                // Ignore adding admin users
+                if (theRole != UserRole.Role.ADMIN) {
+                    infoList.add(UserInfo(user, theRole?.label))
+
+                } else {
+                    // When there is an admin user, subtract
+                    // the total elements so the custom page
+                    // result is correctly instantiated
+                    totalElements--
+                }
             }
 
-            val infoPage = PageImpl(infoList, userPage.pageable, userPage.totalElements)
+            val infoPage = PageImpl(infoList, userPage.pageable, totalElements)
 
             // Return the page of info objects
             return SimpleResult(infoPage, null)
