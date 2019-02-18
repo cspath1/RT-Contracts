@@ -5,6 +5,7 @@ import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenR
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.userNotificationType.IUserNotificationTypeRepository
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
@@ -44,6 +45,9 @@ internal class BaseUserFactoryTest {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    @Autowired
+    private lateinit var userNotificationTypeRepo: IUserNotificationTypeRepository
+
     private lateinit var factory: UserFactory
 
     @Before
@@ -52,7 +56,8 @@ internal class BaseUserFactoryTest {
         factory = BaseUserFactory(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         )
     }
 

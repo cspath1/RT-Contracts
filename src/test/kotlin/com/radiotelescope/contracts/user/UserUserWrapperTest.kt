@@ -6,6 +6,7 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.userNotificationType.IUserNotificationTypeRepository
 import com.radiotelescope.security.FakeUserContext
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -53,6 +54,9 @@ internal class UserUserWrapperTest {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    @Autowired
+    private lateinit var userNotificationTypeRepo: IUserNotificationTypeRepository
+
     private val baseCreateRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
@@ -90,7 +94,8 @@ internal class UserUserWrapperTest {
         factory = BaseUserFactory(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         )
 
         wrapper = UserUserWrapper(

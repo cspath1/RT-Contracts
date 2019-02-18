@@ -11,6 +11,8 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.userNotificationType.IUserNotificationTypeRepository
+import com.radiotelescope.repository.userNotificationType.UserNotificationType
 import java.util.*
 
 /**
@@ -24,7 +26,8 @@ class Register(
         private val request: Request,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val accountActivateTokenRepo: IAccountActivateTokenRepository
+        private val accountActivateTokenRepo: IAccountActivateTokenRepository,
+        private val userNotificationTypeRepo: IUserNotificationTypeRepository
 ) : Command<Register.Response, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
@@ -48,6 +51,7 @@ class Register(
             val theToken = generateActivateAccountToken(newUser)
 
             generateUserRoles(newUser)
+            generateUserNotificationType(newUser)
 
             val theResponse = Response(
                     id = newUser.id,
@@ -118,6 +122,17 @@ class Register(
         accountActivateTokenRepo.save(theAccountActivateToken)
 
         return theAccountActivateToken.token
+    }
+
+    private fun generateUserNotificationType(user: User) {
+
+        val userNotification = UserNotificationType(
+                userId = user.id,
+                type = UserNotificationType.NotificationType.EMAIL
+        )
+        userNotificationTypeRepo.save(userNotification)
+
+        return
     }
 
     /**

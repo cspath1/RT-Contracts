@@ -51,7 +51,8 @@ class FactoryBeans(
                 factory = BaseUserFactory(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo,
-                        accountActivateTokenRepo = repositories.accountActivateTokenRepo
+                        accountActivateTokenRepo = repositories.accountActivateTokenRepo,
+                        userNotificationTypeRepo = repositories.userNotificationRepo
                 ),
                 userRepo = repositories.userRepo
         )

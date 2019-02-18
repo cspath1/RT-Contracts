@@ -5,6 +5,8 @@ import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenR
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.userNotificationType.IUserNotificationTypeRepository
+import com.radiotelescope.repository.userNotificationType.UserNotificationType
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Test
@@ -42,6 +44,9 @@ internal class RegisterTest {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    @Autowired
+    private lateinit var userNotificationTypeRepo: IUserNotificationTypeRepository
+
     private val baseRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
@@ -61,7 +66,8 @@ internal class RegisterTest {
                 request = baseRequest,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should not have failed
@@ -108,7 +114,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should not have failed
@@ -155,7 +162,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should not have failed
@@ -190,7 +198,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -213,7 +222,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -236,7 +246,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -259,7 +270,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -282,7 +294,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -305,7 +318,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -328,7 +342,8 @@ internal class RegisterTest {
                 request = baseRequest,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -351,7 +366,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -374,7 +390,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -397,7 +414,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -420,7 +438,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
 
         // Should have failed
@@ -429,5 +448,22 @@ internal class RegisterTest {
 
         // Ensure it failed because of the password
         assertTrue(error!![ErrorTag.PASSWORD].isNotEmpty())
+    }
+
+    @Test
+    fun testUserNotificationType(){
+        val (token, error) = Register(
+                request = baseRequest,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
+        ).execute()
+
+        assertNotNull(token)
+        assertNull(error)
+
+        assertEquals(1, userNotificationTypeRepo.count())
+        
     }
 }
