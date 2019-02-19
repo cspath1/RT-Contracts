@@ -119,6 +119,30 @@ internal class SearchTest {
     }
 
     @Test
+    fun testValidConstraints_Email_Success() {
+        searchCriteria = arrayListOf()
+        searchCriteria.add(SearchCriteria(Filter.EMAIL, "ycp.edu"))
+
+        val (page, errors) = Search(
+                searchCriteria = searchCriteria,
+                pageable = pageable,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Should not have failed
+        assertNull(errors)
+        assertNotNull(page)
+
+        // Should have 3 UserInfo objects
+        assertEquals(2, page!!.content.size)
+
+        page.content.forEach {
+            assertTrue(it.email.contains("ycp.edu"))
+        }
+    }
+
+    @Test
     fun testValidConstraints_Company_Success() {
         searchCriteria = arrayListOf()
         searchCriteria.add(SearchCriteria(Filter.COMPANY, "York College"))

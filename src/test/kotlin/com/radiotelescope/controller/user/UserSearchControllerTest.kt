@@ -58,14 +58,65 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
     }
 
     @Test
-    fun testSuccessResponse() {
+    fun testSuccessResponse_FirstNameAndLastName() {
         // Test the success response scenario to ensure the result
         // object is correctly set
         val result = userSearchController.execute(
                 pageNumber = 0,
                 pageSize = 15,
-                search = "firstName",
+                search = "firstName+lastName",
                 value = "First"
+        )
+
+        assertNotNull(result)
+        assertTrue(result.data is Page<*>)
+        assertEquals(HttpStatus.OK, result.status)
+        assertNull(result.errors)
+    }
+
+    @Test
+    fun testSuccessResponse_Email() {
+        // Test the success response scenario to ensure the result
+        // object is correctly set
+        val result = userSearchController.execute(
+                pageNumber = 0,
+                pageSize = 15,
+                search = "email",
+                value = "ycp.edu"
+        )
+
+        assertNotNull(result)
+        assertTrue(result.data is Page<*>)
+        assertEquals(HttpStatus.OK, result.status)
+        assertNull(result.errors)
+    }
+
+    @Test
+    fun testSuccessResponse_Company() {
+        // Test the success response scenario to ensure the result
+        // object is correctly set
+        val result = userSearchController.execute(
+                pageNumber = 0,
+                pageSize = 15,
+                search = "company",
+                value = "York College"
+        )
+
+        assertNotNull(result)
+        assertTrue(result.data is Page<*>)
+        assertEquals(HttpStatus.OK, result.status)
+        assertNull(result.errors)
+    }
+
+    @Test
+    fun testSuccessResponse_UnknownSearchParamIgnored() {
+        // Test the success response scenario to ensure the result
+        // object is correctly set
+        val result = userSearchController.execute(
+                pageNumber = 0,
+                pageSize = 15,
+                search = "firstName+username",
+                value = "York College"
         )
 
         assertNotNull(result)
