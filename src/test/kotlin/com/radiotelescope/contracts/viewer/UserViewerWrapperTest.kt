@@ -239,5 +239,62 @@ internal class UserViewerWrapperTest {
 
     }
 
+    @Test
+    fun testListSharedUser_ValidConstraints_Success(){
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.listSharedUser(
+                appointmentId = appointment.id,
+                pageable = PageRequest.of(0, 25)
+        ){
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        // Make sure it was a success
+        assertNull(error)
+
+    }
+
+    @Test
+    fun testListSharedUser_NotOwner_Failure(){
+        // Simulate a login
+        context.login(123L)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.listSharedUser(
+                appointmentId = appointment.id,
+                pageable = PageRequest.of(0, 25)
+        ){
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        // Make sure it was a failure
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testListSharedUser_Admin_Success(){
+        // Simulate a login
+        context.login(admin.id)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.listSharedUser(
+                appointmentId = appointment.id,
+                pageable = PageRequest.of(0, 25)
+        ){
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        // Make sure it was a success
+        assertNull(error)
+
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.viewer
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.AppointmentInfo
+import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
@@ -44,6 +45,19 @@ class BaseViewerFactory (
     override fun listSharedAppointment(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return ListSharedAppointment(
                 userId = userId,
+                pageable = pageable,
+                userRepo = userRepo,
+                appointmentRepo = appointmentRepo
+        )
+    }
+
+    /**
+     * Override of the [ViewerFactory.listSharedUser] method that will return a
+     * [ListSharedUser] command object
+     */
+    override fun listSharedUser(appointmentId: Long, pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
+        return ListSharedUser(
+                appointmentId = appointmentId,
                 pageable = pageable,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo

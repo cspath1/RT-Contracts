@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.viewer
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.AppointmentInfo
+import com.radiotelescope.contracts.user.UserInfo
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -16,7 +17,12 @@ interface ViewerFactory {
     fun sharePrivateAppointment(request: SharePrivateAppointment.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
-     * Abstracr command used to list of shared appointments
+     * Abstract command used to list the shared appointments
      */
     fun listSharedAppointment(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to list the shared users
+     */
+    fun listSharedUser(appointmentId: Long, pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>>
 }

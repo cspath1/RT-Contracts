@@ -79,4 +79,15 @@ internal class BaseViewerFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is ListSharedAppointment)
     }
-}
+
+    @Test
+    fun listSharedUser(){
+        // Call the factory method
+        val cmd = factory.listSharedUser(
+                appointmentId = 1L,
+                pageable = PageRequest.of(0, 25)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is ListSharedUser)
+    }}

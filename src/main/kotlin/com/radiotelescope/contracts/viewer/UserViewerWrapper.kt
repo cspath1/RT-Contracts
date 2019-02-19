@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.AppointmentFactory
 import com.radiotelescope.contracts.appointment.AppointmentInfo
+import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
@@ -83,6 +84,44 @@ class UserViewerWrapper (
                         requiredRoles = listOf(UserRole.Role.ADMIN),
                         successCommand = factory.listSharedAppointment(
                                 userId = userId,
+                                pageable = pageable
+                        )
+                ).execute(withAccess)
+            }
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
+     * Wrapper method for the [ViewerFactory.listSharedUser] method that adds Spring
+     * Security authentication to the [ListSharedUser] command object.
+     *
+     * @param appointmentId the Appointment's Id
+     * @param pageable the [Pageable] interface
+     * @return an [AccessReport] if the authentication fails, null otherwise
+     */
+    fun listSharedUser(appointmentId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (!appointmentRepo.existsById(appointmentId)) {
+            return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(appointmentId))
+        }
+
+        val theAppointment = appointmentRepo.findById(appointmentId).get()
+
+        if (context.currentUserId() != null) {
+            return if(context.currentUserId() == theAppointment.user!!.id) {
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.USER),
+                        successCommand = factory.listSharedUser(
+                                appointmentId = appointmentId,
+                                pageable = pageable
+                        )
+                ).execute(withAccess)
+            } else {
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.ADMIN),
+                        successCommand = factory.listSharedUser(
+                                appointmentId = appointmentId,
                                 pageable = pageable
                         )
                 ).execute(withAccess)
