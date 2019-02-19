@@ -1,6 +1,7 @@
 package com.radiotelescope.repository.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.UserRole
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -37,12 +39,14 @@ internal class UserTest {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
-    private var email: String = ""
+    private lateinit var email: String
+    private lateinit var user: User
+    private lateinit var appointment: Appointment
 
     @Before
     fun setUp() {
         // Instantiate and persist a User Entity Object
-        val user = testUtil.createUser("cspath1@ycp.edu")
+        user = testUtil.createUser("cspath1@ycp.edu")
         testUtil.createUserRolesForUser(user.id, UserRole.Role.MEMBER, true)
         val admin1 = testUtil.createUser("rpim@ycp.edu")
         testUtil.createUserRolesForUser(admin1.id, UserRole.Role.ADMIN, true)
@@ -51,6 +55,19 @@ internal class UserTest {
 
         // Set the email variable to be used used in the IUserRepository existsByEmail query
         email = user.email
+
+        appointment = testUtil.createAppointment(
+                user = admin1,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(System.currentTimeMillis() + 100000L),
+                endTime = Date(System.currentTimeMillis() + 300000L),
+                isPublic = false
+        )
+        testUtil.createViewer(
+                user = user,
+                appointment = appointment
+        )
     }
 
     @Test
@@ -114,5 +131,18 @@ internal class UserTest {
 
         // Should be the email of the non-admin user
         assertEquals(email, userPage.content[0].email)
+    }
+
+    @Test
+    fun testFindSharedUserByAppointment() {
+        val userPage = userRepo.findSharedUserByAppointment(
+                appointmentId = appointment.id,
+                pageable = PageRequest.of(0, 25)
+        )
+
+        assertNotNull(userPage)
+        assertEquals(1, userPage.content.size)
+
+        assertEquals(user.id, userPage.content[0].id)
     }
 }

@@ -3,8 +3,11 @@ package com.radiotelescope
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.AppointmentInfo
 import com.radiotelescope.contracts.rfdata.RFDataInfo
+import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.rfdata.RFData
+import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -42,4 +45,12 @@ fun List<Appointment>.toAppointmentInfoList(): List<AppointmentInfo> {
     }
 
     return infoList
+}
+
+fun Page<User>.toUserInfoPage(): Page<UserInfo> {
+    val infoList = arrayListOf<UserInfo>()
+    content.forEach {
+        infoList.add(UserInfo(it, null))
+    }
+    return PageImpl(infoList, pageable, totalElements)
 }

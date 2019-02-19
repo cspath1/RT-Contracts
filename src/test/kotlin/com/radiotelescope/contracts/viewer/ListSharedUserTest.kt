@@ -5,7 +5,6 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
-import com.radiotelescope.repository.viewer.IViewerRepository
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
@@ -23,7 +22,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class ListSharedAppointmentTest {
+internal class ListSharedUserTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -73,8 +72,8 @@ internal class ListSharedAppointmentTest {
 
     @Test
     fun testValidConstraints_Success(){
-        val (page, error) = ListSharedAppointment(
-                userId = otherUser.id,
+        val (page, error) = ListSharedUser(
+                appointmentId = appointment.id,
                 pageable = PageRequest.of(0, 25),
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo
@@ -87,9 +86,9 @@ internal class ListSharedAppointmentTest {
     }
 
     @Test
-    fun testInvalid_UserDoesNotExist_Failure(){
-        val (page, error) = ListSharedAppointment(
-                userId = -1L,
+    fun testInvalid_AppointmentDoesNotExist_Failure(){
+        val (page, error) = ListSharedUser(
+                appointmentId = 123L,
                 pageable = PageRequest.of(0, 25),
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo
@@ -99,7 +98,6 @@ internal class ListSharedAppointmentTest {
         assertNotNull(error)
 
         assertEquals(1, error!!.size())
-        assertTrue(error[ErrorTag.USER_ID].isNotEmpty())
+        assertTrue(error[ErrorTag.APPOINTMENT_ID].isNotEmpty())
     }
-
 }
