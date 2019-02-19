@@ -1,6 +1,10 @@
 package com.radiotelescope.repository.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.model.appointment.AppointmentSpecificationBuilder
+import com.radiotelescope.repository.model.appointment.Filter
+import com.radiotelescope.repository.model.appointment.SearchCriteria
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Before
@@ -41,6 +45,9 @@ internal class AppointmentTest {
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Autowired
+    private lateinit var userRepo: IUserRepository
 
     private lateinit var user: User
     private lateinit var futureAppointment: Appointment
@@ -199,7 +206,7 @@ internal class AppointmentTest {
 
         )
 
-        // Appointment status is REQUESTED
+        // Appointment status is requested
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
@@ -210,7 +217,7 @@ internal class AppointmentTest {
 
         )
 
-        // Appointment status is CANCELED
+        // Appointment status is canceled
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
@@ -398,5 +405,40 @@ internal class AppointmentTest {
         )
 
         assertEquals(8, listOfAppointments.size)
+    }
+
+    @Test
+    fun testSearchUserFullName() {
+        user.firstName = "Cody"
+        user.lastName = "Spath"
+        userRepo.save(user)
+
+        // Create a search criteria for the user's full name
+        val searchCriteria = SearchCriteria(Filter.USER_FULL_NAME, "cody spath")
+
+        val specification = AppointmentSpecificationBuilder().with(searchCriteria).build()
+
+        val appointmentList = appointmentRepo.findAll(specification)
+
+        assertNotNull(appointmentList)
+        assertEquals(2, appointmentList.size)
+    }
+
+    @Test
+    fun testSearchFirstAndLastName() {
+        user.firstName = "John"
+        user.lastName = "Henry"
+        userRepo.save(user)
+
+        // Create a search criteria for the first and last name
+        val searchCriteriaOne = SearchCriteria(Filter.USER_FIRST_NAME, "Henry")
+        val searchCriteriaTwo = SearchCriteria(Filter.USER_LAST_NAME, "Henry")
+
+        val specification = AppointmentSpecificationBuilder().with(searchCriteriaOne).with(searchCriteriaTwo).build()
+
+        val appointmentList = appointmentRepo.findAll(specification)
+
+        assertNotNull(appointmentList)
+        assertEquals(2, appointmentList.size)
     }
 }

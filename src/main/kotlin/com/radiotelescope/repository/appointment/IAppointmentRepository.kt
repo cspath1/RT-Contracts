@@ -2,6 +2,7 @@ package com.radiotelescope.repository.appointment
 
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
@@ -11,7 +12,7 @@ import java.util.*
  * Spring Repository for the [Appointment] Entity
  */
 @Repository
-interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long> {
+interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>, JpaSpecificationExecutor<Appointment> {
     /**
      * Spring Repository method that will return the number of milliseconds of
      * scheduled appointment time that a user has currently in the [Appointment]
