@@ -108,7 +108,7 @@ internal class UserUserWrapperTest {
         )
 
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -119,7 +119,7 @@ internal class UserUserWrapperTest {
         )
 
         testUtil.createUserRolesForUser(
-                userId = otherUser.id,
+                user = otherUser,
                 role = UserRole.Role.MEMBER,
                 isApproved = true
         )

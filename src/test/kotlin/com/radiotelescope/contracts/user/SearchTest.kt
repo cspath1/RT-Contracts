@@ -54,7 +54,7 @@ internal class SearchTest {
         // Persist a few users and set them up
         val user = testUtil.createUser("cspath1@ycp.edu")
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.MEMBER,
                 isApproved = true
         )
@@ -65,7 +65,7 @@ internal class SearchTest {
 
         val userTwo = testUtil.createUser("rpim@ycp.edu")
         testUtil.createUserRolesForUser(
-                userId = userTwo.id,
+                user = userTwo,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -76,7 +76,7 @@ internal class SearchTest {
 
         val userThree = testUtil.createUser("spathca@gmail.com")
         testUtil.createUserRolesForUser(
-                userThree.id,
+                user= userThree,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )

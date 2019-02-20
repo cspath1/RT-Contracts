@@ -63,7 +63,7 @@ internal class AdminUserListControllerTest : BaseUserRestControllerTest() {
 
         val user = testUtil.createUser("rpim2@ycp.edu")
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
