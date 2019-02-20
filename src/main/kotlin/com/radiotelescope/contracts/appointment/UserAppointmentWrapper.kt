@@ -343,16 +343,16 @@ class UserAppointmentWrapper(
 
     /**
      * Wrapper method for the [AppointmentFactory.listRequest] method that adds Spring
-     * Security authentication to the [ListRequest] command object.
+     * Security authentication to the [RequestedList] command object.
      *
      * @param pageable contains the pageSize and pageNumber
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun listRequest(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun requestedList(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if(context.currentUserId() != null) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
-                    successCommand = factory.listRequest(
+                    successCommand = factory.requestedList(
                             pageable = pageable
                     )
             ).execute(withAccess)

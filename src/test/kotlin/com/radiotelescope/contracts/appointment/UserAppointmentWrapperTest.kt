@@ -1260,7 +1260,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.ADMIN)
 
-        val error = wrapper.listRequest(
+        val error = wrapper.requestedList(
                 pageable = PageRequest.of(0, 10)
         ) {
             assertNotNull(it.success)
@@ -1276,7 +1276,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        val error = wrapper.listRequest(
+        val error = wrapper.requestedList(
                 pageable = PageRequest.of(0, 10)
         ) {
             fail("Should fail on precondition")
@@ -1289,7 +1289,7 @@ internal class UserAppointmentWrapperTest {
     @Test
     fun testListRequest_NotLoggedIn_Failure() {
         // Do not log the user in
-        val error = wrapper.listRequest(
+        val error = wrapper.requestedList(
                 pageable = PageRequest.of(0, 10)
         ) {
             fail("Should fail on precondition")

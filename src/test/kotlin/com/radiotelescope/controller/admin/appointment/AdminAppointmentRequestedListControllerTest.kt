@@ -24,7 +24,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class AdminAppointmentListRequestControllerTest : BaseAppointmentRestControllerTest() {
+internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean

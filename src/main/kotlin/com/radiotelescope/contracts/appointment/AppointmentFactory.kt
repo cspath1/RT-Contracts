@@ -106,7 +106,7 @@ interface AppointmentFactory {
      * @param pageable the [Pageable] object, that has the page number and page size
      * @return a [Command] object
      */
-    fun listRequest(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+    fun requestedList(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to approve or deny an appointment request
