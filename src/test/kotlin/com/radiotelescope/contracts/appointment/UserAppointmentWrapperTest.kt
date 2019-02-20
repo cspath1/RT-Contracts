@@ -4,6 +4,8 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.model.appointment.Filter
+import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -105,6 +107,10 @@ internal class UserAppointmentWrapperTest {
     fun setUp() {
         // Persist a user
         user = testUtil.createUser("cspath1@ycp.edu")
+        user.firstName = "Cody"
+        user.lastName = "Spath"
+        userRepo.save(user)
+
         admin = testUtil.createUser("rpim@ycp.edu")
         user2 = testUtil.createUser("rathanapim@yahoo.com")
         notAdminYet = testUtil.createUser("rathanapim1@yahoo.com")
@@ -1396,6 +1402,43 @@ internal class UserAppointmentWrapperTest {
 
         val error = wrapper.userAvailableTime(
                 userId = user.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testSearch_LoggedIn_Success() {
+        val searchCriteria = arrayListOf<SearchCriteria>()
+        searchCriteria.add(SearchCriteria(Filter.USER_FULL_NAME, "cody spath"))
+
+        // Simulate a login
+        context.login(user2.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.search(
+                searchCriteria = searchCriteria,
+                pageable = PageRequest.of(0, 19)
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testSearch_NotLoggedIn_Failure() {
+        val searchCriteria = arrayListOf<SearchCriteria>()
+        searchCriteria.add(SearchCriteria(Filter.USER_FULL_NAME, "cody spath"))
+
+        val error = wrapper.search(
+                searchCriteria = searchCriteria,
+                pageable = PageRequest.of(0, 19)
         ) {
             assertNull(it.success)
             assertNotNull(it.error)
