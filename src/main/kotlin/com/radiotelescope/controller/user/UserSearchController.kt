@@ -28,7 +28,7 @@ class UserSearchController(
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of taking the the request parameters
+     * Execute method that is in charge of taking the request parameters
      * and adapting them into the parameters required for the [UserUserWrapper.search]
      *
      * Once the parameters have been adapted, it will call the method, and respond
@@ -102,7 +102,7 @@ class UserSearchController(
 
     /**
      * Private method that will take the search string and value from the request
-     * and adapt it into a [List] of [SearchCriteria]
+     * and adapt them into a [List] of [SearchCriteria]
      *
      * @param value the search value
      * @param search the search criteria string
