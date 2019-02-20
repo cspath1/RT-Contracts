@@ -80,6 +80,21 @@ internal class InviteTest {
     }
 
     @Test
+    fun testInvalidEmail_Failure(){
+        // Execute the Command
+        val (value, errors) = Invite(
+                email = "not an email",
+                userRepo = userRepo
+        ).execute()
+
+        // Success value should be null
+        assertNull(value)
+
+        // Errors shouldn't be null
+        assertNotNull(errors)
+    }
+
+    @Test
     fun testEmailExistsInRepository_Failure(){
         // Execute the Command
         val (value, errors) = Invite(

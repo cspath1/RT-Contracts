@@ -252,7 +252,7 @@ class UserUserWrapper(
      *  @param email an email to send the invite to
      *  @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun invite(email: String, withAccess: (result: SimpleResult<Boolean?, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun invite(email: String, withAccess: (result: SimpleResult<Boolean, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
         if (context.currentUserId() != null) {
             return context.require(
