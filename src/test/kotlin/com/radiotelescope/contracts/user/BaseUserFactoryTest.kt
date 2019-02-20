@@ -190,4 +190,15 @@ internal class BaseUserFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is Search)
     }
+
+    @Test
+    fun invite(){
+        // Call the factory method
+        val cmd = factory.invite(
+                email = "email@email.email"
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Invite)
+    }
 }

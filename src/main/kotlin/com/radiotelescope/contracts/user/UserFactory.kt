@@ -91,4 +91,11 @@ interface UserFactory {
      * @return a [Command] object
      */
     fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to invite users by email
+     *
+     * @param email the email address to send an invite to
+     */
+    fun invite(email: String): Command<Boolean, Multimap<ErrorTag, String>>
 }

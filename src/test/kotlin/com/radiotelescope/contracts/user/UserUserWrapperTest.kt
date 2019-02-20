@@ -676,4 +676,32 @@ internal class UserUserWrapperTest {
 
         assertNotNull(error)
     }
+
+    @Test
+    fun testInvite_User_Success() {
+        // Log the user in and make them an admin
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.invite(
+                email = "whatever@email.mail"
+        ) {
+            assertTrue(it.success!!)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testInvite_NotLoggedIn_Failure() {
+        val error = wrapper.invite(
+                email = "whatever@email.mail"
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
 }

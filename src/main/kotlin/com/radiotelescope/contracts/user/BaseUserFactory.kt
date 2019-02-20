@@ -158,4 +158,16 @@ class BaseUserFactory(
                 userRoleRepo = userRoleRepo
         )
     }
+
+    /**
+     * Override of the [UserFactory.invite] method that will return an [Invite] command object
+     *
+     * @return an [Invite] command object
+     */
+    override fun invite(email: String): Command<Boolean, Multimap<ErrorTag, String>>{
+        return Invite(
+                email = email,
+                userRepo = userRepo
+        )
+    }
 }

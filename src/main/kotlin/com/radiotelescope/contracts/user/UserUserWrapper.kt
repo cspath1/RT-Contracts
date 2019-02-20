@@ -246,6 +246,25 @@ class UserUserWrapper(
     }
 
     /**
+     *  Wrapper method for the [UserFactory.invite] method that adds Spring
+     *  Security authentication to the [Invite] command object
+     *
+     *  @param email an email to send the invite to
+     *  @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun invite(email: String, withAccess: (result: SimpleResult<Boolean?, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        // If the user is logged in
+        if (context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.USER),
+                    successCommand = factory.invite(email)
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
      * Private method to return a [Map] of errors when a user could not be found.
      *
      * @param id the User id
