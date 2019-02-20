@@ -45,9 +45,9 @@ class CreateResetPasswordToken (
         }
 
         // Create Token and check that the same token string has not been created
-        var token = generateToken()
+        var token = String.generateToken()
         while(resetPasswordTokenRepo.existsByToken(token))
-            token = generateToken()
+            token = String.generateToken()
 
         // Expiration date for token will be 1 day
         // NOTE: Date objects are set using milliseconds

@@ -104,9 +104,9 @@ class Register(
      * make the proper API call to activate the account.
      */
     private fun generateActivateAccountToken(user: User): String {
-        var token = generateToken()
+        var token = String.generateToken()
         while (accountActivateTokenRepo.existsByToken(token)) {
-            token = generateToken()
+            token = String.generateToken()
         }
 
         val theAccountActivateToken = AccountActivateToken(

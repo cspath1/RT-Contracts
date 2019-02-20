@@ -22,16 +22,17 @@ data class Log(
         @Column(name = "timestamp")
         var timestamp: Date,
         @Column(name = "affected_record_id")
-        var affectedRecordId: Long? = null,
-        @OneToOne
-        @JoinColumn(name = "user_id")
-        var user: User? = null
+        var affectedRecordId: Long? = null
 ) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    var user: User? = null
 
     @OneToMany(mappedBy = "log", fetch = FetchType.EAGER)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

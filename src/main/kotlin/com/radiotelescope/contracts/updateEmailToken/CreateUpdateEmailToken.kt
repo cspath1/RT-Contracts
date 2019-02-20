@@ -40,9 +40,9 @@ class CreateUpdateEmailToken(
             return SimpleResult(null, errors)
 
         // Create Token and check that the same token string has not been created
-        var token = generateToken()
+        var token = String.generateToken()
         while(updateEmailTokenRepo.existsByToken(token))
-            token = generateToken()
+            token = String.generateToken()
 
         // Create the Entity, sets its' values and save it
         val theUpdateEmailToken = request.toEntity()

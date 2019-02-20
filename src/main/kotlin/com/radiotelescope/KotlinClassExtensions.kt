@@ -45,6 +45,6 @@ fun List<Appointment>.toAppointmentInfoList(): List<AppointmentInfo> {
     return infoList
 }
 
-fun generateToken(): String {
+fun String.Companion.generateToken(): String {
     return UUID.randomUUID().toString().replace("-", "", false)
 }
