@@ -6,15 +6,16 @@ import com.radiotelescope.repository.appointment.Appointment
  * Enum class that acts as a search filter for the [Appointment]
  *
  * @param field the filter field parameter
+ * @param label the filter label
  * @param multiCompatible whether the filter is compatible with other filters or not
  */
-enum class Filter(val field: String, val multiCompatible: Boolean) {
+enum class Filter(val field: String, val label: String, val multiCompatible: Boolean) {
     // User full name will operate different, and will be an "AND" clause
-    USER_FULL_NAME("userFullName", false),
-    USER_FIRST_NAME("firstName", true),
-    USER_LAST_NAME("lastName", true),
-    USER_EMAIL("email", true),
-    USER_COMPANY("company", true);
+    USER_FULL_NAME("userFullName", "User Full Name", false),
+    USER_FIRST_NAME("firstName", "First Name", true),
+    USER_LAST_NAME("lastName", "Last Name", true),
+    USER_EMAIL("email", "Email Address", true),
+    USER_COMPANY("company", "Company Affiliation", true);
 
     companion object {
         /**

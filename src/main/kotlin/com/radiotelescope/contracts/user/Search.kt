@@ -14,12 +14,30 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import kotlin.collections.List
 
+/**
+ * Override of the [Command] interface method used for User searching
+ *
+ * @param searchCriteria a [List] of [SearchCriteria]
+ * @param pageable the [Pageable] interface
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ */
 class Search(
         private val searchCriteria: List<SearchCriteria>,
         private val pageable: Pageable,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository
 ) : Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
+    /**
+     * Override of the [Command.execute] method. Calls the [validateSearch] method that will
+     * handle all constraint checking and validation.
+     *
+     * If validation passes, it will execute a custom search using the [UserSpecificationBuilder]
+     * which will build a custom search specification based upon the user's criteria. It will then
+     * adapt the results into a [Page] of [UserInfo].
+     *
+     * If validation fails, it will return a [SimpleResult] with the errors.
+     */
     override fun execute(): SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>> {
         validateSearch(searchCriteria)?.let { return SimpleResult(null, it) } ?: let {
             // Instantiate the specification builder
@@ -65,6 +83,13 @@ class Search(
         }
     }
 
+    /**
+     * Method responsible for constraint checking and validations for the [List] of [SearchCriteria].
+     * Currently, it just checks to ensure the list is not empty
+     *
+     * @param searchCriteria the [List] of [SearchCriteria]
+     * @return a [Multimap] of errors or null
+     */
     private fun validateSearch(searchCriteria: List<SearchCriteria>): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 

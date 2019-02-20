@@ -16,6 +16,7 @@ import java.util.*
  * @param userId the Appointment's associated user id
  * @param userFirstName the Appointment owner's first name
  * @param userLastName the Appointment owner's last name
+ * @param userEmail the Appointment owner's email address
  * @param status the Appointment's Status
  */
 data class AppointmentInfo(
@@ -27,6 +28,7 @@ data class AppointmentInfo(
         val userId: Long,
         val userFirstName: String,
         val userLastName: String,
+        val userEmail: String,
         val status: String,
         val hours: Int?,
         val minutes: Int?,
@@ -49,6 +51,7 @@ data class AppointmentInfo(
             userId = appointment.user!!.id,
             userFirstName = appointment.user!!.firstName,
             userLastName = appointment.user!!.lastName,
+            userEmail = appointment.user!!.email,
             status = appointment.status.label,
             hours = appointment.coordinate?.hours,
             minutes = appointment.coordinate?.minutes,
