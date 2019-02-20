@@ -6,17 +6,18 @@ import com.radiotelescope.contracts.role.ErrorTag
 import com.radiotelescope.contracts.role.RequestRole
 import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.User
 
 /**
  * RequestRole form that takes nullable versions of the [RequestRole.Request] object.
  * It is in charge of making sure these values are not null before adapting it
  * to a [RequestRole.Request] object
  *
- * @param userId the User's Id
+ * @param user the User
  * @param role the User's role
  */
 data class RequestRoleForm(
-        val userId: Long?,
+        val user: User?,
         val role: UserRole.Role?
 ) : BaseForm<RequestRole.Request> {
     /**
@@ -27,7 +28,7 @@ data class RequestRoleForm(
      */
     override fun toRequest(): RequestRole.Request {
         return RequestRole.Request(
-                userId = userId!!,
+                user = user!!,
                 role = role!!
         )
     }
@@ -39,7 +40,7 @@ data class RequestRoleForm(
      */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
-        if (userId == null)
+        if (user == null)
             errors.put(ErrorTag.USER_ID, "Required field")
         if (role == null)
             errors.put(ErrorTag.ROLE, "Required field")

@@ -23,14 +23,15 @@ data class UserRole(
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
 
-    @Column(name = "user_id")
-    var userId: Long? = null
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    lateinit var user: User
 
     @Column(name = "approved")
     var approved: Boolean = false
 
-    constructor(userId: Long, role: Role) : this(role) {
-        this.userId = userId
+    constructor(user: User, role: Role) : this(role) {
+        this.user = user
     }
 
     enum class Role(val label: String){

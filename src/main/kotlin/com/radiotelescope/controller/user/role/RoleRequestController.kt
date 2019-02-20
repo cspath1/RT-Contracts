@@ -46,7 +46,7 @@ class RoleRequestController (
                 @RequestParam(value = "role") role: UserRole.Role
     ): Result {
         val form = RequestRoleForm(
-                userId = userId,
+                user = userRepo.findById(userId).get(),
                 role = role
         )
         // If any of the request params are null, respond with errors

@@ -65,7 +65,7 @@ internal class SearchTest {
         userRepo.save(user)
 
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.MEMBER,
                 isApproved = true
         )
@@ -76,7 +76,7 @@ internal class SearchTest {
         userRepo.save(userTwo)
 
         testUtil.createUserRolesForUser(
-                userId = userTwo.id,
+                user = userTwo,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )

@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.generateToken
 import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -103,9 +104,9 @@ class Register(
      * make the proper API call to activate the account.
      */
     private fun generateActivateAccountToken(user: User): String {
-        var token = UUID.randomUUID().toString().replace("-", "", false)
+        var token = String.generateToken()
         while (accountActivateTokenRepo.existsByToken(token)) {
-            token = UUID.randomUUID().toString().replace("-", "", false)
+            token = String.generateToken()
         }
 
         val theAccountActivateToken = AccountActivateToken(
@@ -129,7 +130,7 @@ class Register(
         // Generate the basic user UserRole
         val role = UserRole(
                 role = UserRole.Role.USER,
-                userId = user.id
+                user = user
         )
 
         role.approved = true
@@ -139,7 +140,7 @@ class Register(
         // Generate the categoryOfService UserRole
         val categoryRole = UserRole(
                 role = request.categoryOfService,
-                userId = user.id
+                user = user
         )
 
         categoryRole.approved = request.categoryOfService == UserRole.Role.GUEST
@@ -189,6 +190,13 @@ class Register(
         }
     }
 
+    /**
+     * Data class containing all fields returned from user creation.
+     *
+     * @param id the new [User] id
+     * @param email the new [User] email
+     * @param token the [AccountActivateToken] token
+     */
     data class Response(
             val id: Long,
             val email: String,

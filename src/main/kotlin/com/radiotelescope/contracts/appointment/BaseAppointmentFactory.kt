@@ -199,14 +199,14 @@ class BaseAppointmentFactory(
     }
 
     /**
-     * Override of the [AppointmentFactory.listRequest] method that will return a [ListRequest]
+     * Override of the [AppointmentFactory.listRequest] method that will return a [RequestedList]
      * command object
      *
      * @param pageable the [Pageable] object that has the page number and page size
-     * @return a [ListRequest] command
+     * @return a [RequestedList] command
      */
-    override fun listRequest(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
-        return ListRequest(
+    override fun requestedList(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        return RequestedList(
                 pageable = pageable,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo
@@ -214,7 +214,7 @@ class BaseAppointmentFactory(
     }
 
     /**
-     * Override of the [AppointmentFactory.approveDenyRequest] method that will return a [ListRequest]
+     * Override of the [AppointmentFactory.approveDenyRequest] method that will return a [RequestedList]
      * command object
      *
      * @param request the [ApproveDenyRequest.Request] object

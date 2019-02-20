@@ -47,12 +47,12 @@ internal class UserRoleTest {
         val secondUser = testUtil.createUser("spathcody@gmail.com")
 
         val firstRoles = testUtil.createUserRolesForUser(
-                userId = firstUser.id,
+                user = firstUser,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )
         val secondRoles = testUtil.createUserRolesForUser(
-                userId = secondUser.id,
+                user = secondUser,
                 role = UserRole.Role.MEMBER,
                 isApproved = false
         )
@@ -78,7 +78,7 @@ internal class UserRoleTest {
         assertEquals(2, rolePage.content.size)
 
         // Make sure each is role is actually not approved
-        rolePage.content.forEach { it ->
+        rolePage.content.forEach {
             assertFalse(it.approved)
 
             // also make sure it is one of the ones from the list
@@ -105,5 +105,29 @@ internal class UserRoleTest {
         assertNotNull(role)
         assertTrue(role!!.approved)
         assertEquals(UserRole.Role.STUDENT, role.role)
+    }
+
+    @Test
+    fun testFindAllApprovedRolesByUserId() {
+        val user = testUtil.createUser("realtadukoo@gmail.com")
+
+        testUtil.createUserRolesForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.STUDENT,
+                isApproved = false
+        )
+
+        val roles = userRoleRepo.findAllApprovedRolesByUserId(user.id)
+
+        roles.forEach {
+            assertTrue(it.approved)
+        }
+        assertEquals(2, roles.size)
     }
 }

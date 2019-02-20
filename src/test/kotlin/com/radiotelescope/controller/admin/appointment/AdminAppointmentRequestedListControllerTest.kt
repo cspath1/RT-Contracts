@@ -24,7 +24,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class AdminAppointmentListRequestControllerTest : BaseAppointmentRestControllerTest() {
+internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -58,7 +58,7 @@ internal class AdminAppointmentListRequestControllerTest : BaseAppointmentRestCo
 
         admin = testUtil.createUser("rpim@ycp.edu")
         testUtil.createUserRolesForUser(
-                userId = admin.id,
+                user = admin,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )

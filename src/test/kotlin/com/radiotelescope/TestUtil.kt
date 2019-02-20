@@ -86,13 +86,13 @@ internal class TestUtil {
     }
 
     fun createUserRolesForUser(
-            userId: Long,
+            user: User,
             role: UserRole.Role,
             isApproved: Boolean
     ): List<UserRole> {
         // Creates a User UserRole by default
         val userRole = UserRole(
-                userId = userId,
+                user = user,
                 role = UserRole.Role.USER
         )
 
@@ -100,7 +100,7 @@ internal class TestUtil {
         userRoleRepo.save(userRole)
 
         val otherRole = UserRole(
-                userId = userId,
+                user = user,
                 role = role
         )
 
@@ -111,12 +111,12 @@ internal class TestUtil {
     }
 
     fun createUserRoleForUser(
-            userId: Long,
+            user: User,
             role: UserRole.Role,
             isApproved: Boolean
     ): UserRole {
         val userRole = UserRole(
-                userId = userId,
+                user = user,
                 role = role
         )
 
@@ -162,7 +162,7 @@ internal class TestUtil {
     }
 
     fun createLog(
-            userId: Long?,
+            user: User?,
             affectedRecordId: Long?,
             affectedTable: Log.AffectedTable,
             action: String,
@@ -176,14 +176,14 @@ internal class TestUtil {
                 affectedRecordId = null
         )
 
-        theLog.userId = userId
+        theLog.user = user
         theLog.isSuccess = isSuccess
 
         return logRepo.save(theLog)
     }
 
     fun createErrorLog(
-            userId: Long?,
+            user: User?,
             affectedRecordId: Long?,
             affectedTable: Log.AffectedTable,
             action: String,
@@ -192,7 +192,7 @@ internal class TestUtil {
             errors: Map<String, Collection<String>>
     ): Log {
         val theLog = createLog(
-                userId = userId,
+                user = user,
                 affectedRecordId = affectedRecordId,
                 affectedTable = affectedTable,
                 action = action,

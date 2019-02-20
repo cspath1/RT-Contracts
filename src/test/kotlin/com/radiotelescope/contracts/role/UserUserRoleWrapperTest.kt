@@ -78,7 +78,7 @@ internal class UserUserRoleWrapperTest {
         // Persist a user and give them some roles
         val user = testUtil.createUser("cspath1@ycp.edu")
         val roles = testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )
@@ -93,7 +93,7 @@ internal class UserUserRoleWrapperTest {
         // Persist an admin user too
         val adminUser = testUtil.createUser("spathcody@gmail.com")
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
@@ -251,7 +251,7 @@ internal class UserUserRoleWrapperTest {
 
         val error = wrapper.requestRole(
                 request = RequestRole.Request(
-                        userId = userId!!,
+                        user = userRepo.findById(userId!!).get(),
                         role = UserRole.Role.GUEST
                 )
         ){
@@ -269,7 +269,7 @@ internal class UserUserRoleWrapperTest {
 
         val error = wrapper.requestRole(
                 request = RequestRole.Request(
-                        userId = userId!!,
+                        user = userRepo.findById(userId!!).get(),
                         role = UserRole.Role.GUEST
                 )
         ){
@@ -289,7 +289,7 @@ internal class UserUserRoleWrapperTest {
 
         val error = wrapper.requestRole(
                 request = RequestRole.Request(
-                        userId = userId!!,
+                        user = userRepo.findById(userId!!).get(),
                         role = UserRole.Role.GUEST
                 )
         ){

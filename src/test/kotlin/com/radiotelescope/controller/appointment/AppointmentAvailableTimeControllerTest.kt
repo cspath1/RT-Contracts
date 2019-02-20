@@ -59,7 +59,7 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
         user = testUtil.createUser("cspath1@ycp.edu")
 
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.MEMBER,
                 isApproved = true
         )

@@ -79,7 +79,7 @@ class AppointmentListFutureAppointmentsByUserController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "User Future Appointment LogList Retrieval",
+                                    action = "User Future Appointment List Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -93,7 +93,7 @@ class AppointmentListFutureAppointmentsByUserController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "User Future Appointment LogList Retrieval",
+                                action = "User Future Appointment List Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

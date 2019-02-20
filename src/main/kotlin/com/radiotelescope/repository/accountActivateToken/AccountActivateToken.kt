@@ -7,7 +7,7 @@ import javax.persistence.*
 /**
  * Entity Class representing an Account activation token for the web-application
  *
- * This Entity correlates to the AccountActivationToken SQL Table
+ * This Entity correlates to the account_activation_token SQL Table
  */
 @Entity
 @Table(name = "account_activate_token")

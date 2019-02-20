@@ -30,7 +30,7 @@ data class Appointment(
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    var user: User? = null
+    lateinit var user: User
 
     @OneToOne
     @JoinColumn(name = "coordinate_id")

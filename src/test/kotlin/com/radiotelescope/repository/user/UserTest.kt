@@ -46,11 +46,11 @@ internal class UserTest {
     fun setUp() {
         // Instantiate and persist a User Entity Object
         val user = testUtil.createUser("cspath1@ycp.edu")
-        testUtil.createUserRolesForUser(user.id, UserRole.Role.MEMBER, true)
+        testUtil.createUserRolesForUser(user, UserRole.Role.MEMBER, true)
         val admin1 = testUtil.createUser("rpim@ycp.edu")
-        testUtil.createUserRolesForUser(admin1.id, UserRole.Role.ADMIN, true)
+        testUtil.createUserRolesForUser(admin1, UserRole.Role.ADMIN, true)
         val admin2 = testUtil.createUser("rpim2@ycp.edu")
-        testUtil.createUserRolesForUser(admin2.id, UserRole.Role.ADMIN, true)
+        testUtil.createUserRolesForUser(admin2, UserRole.Role.ADMIN, true)
 
         // Set the email variable to be used used in the IUserRepository existsByEmail query
         email = user.email

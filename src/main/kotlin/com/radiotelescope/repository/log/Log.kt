@@ -2,6 +2,7 @@ package com.radiotelescope.repository.log
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.radiotelescope.repository.error.Error
+import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
 
@@ -29,8 +30,9 @@ data class Log(
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
 
-    @Column(name = "user_id")
-    var userId: Long? = null
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    var user: User? = null
 
     @OneToMany(mappedBy = "log", fetch = FetchType.EAGER)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

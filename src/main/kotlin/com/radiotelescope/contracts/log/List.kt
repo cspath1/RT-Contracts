@@ -10,13 +10,13 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 
 /**
- * Override of the [Command] interface used for Log LogList retrieval
+ * Override of the [Command] interface used for Log List retrieval
  *
  * @param pageable the [Pageable] interface
  * @param logRepo the [ILogRepository] interface
  * @param userRepo the [IUserRepository] interface
  */
-class LogList(
+class List(
         private val pageable: Pageable,
         private val logRepo: ILogRepository,
         private val userRepo: IUserRepository
@@ -31,9 +31,8 @@ class LogList(
 
         val infoList = arrayListOf<LogInfo>()
         logPage.forEach {
-            if (it.userId != null) {
-                val theUser = userRepo.findById(it.userId!!).get()
-                infoList.add(LogInfo(log = it, user = theUser))
+            if (it.user != null) {
+                infoList.add(LogInfo(log = it, user = it.user!!))
             } else {
                 infoList.add(LogInfo(it))
             }

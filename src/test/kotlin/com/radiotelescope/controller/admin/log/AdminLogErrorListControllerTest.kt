@@ -60,7 +60,7 @@ internal class AdminLogErrorListControllerTest : BaseLogRestControllerTest() {
 
         admin = testUtil.createUser("rpim@ycp.edu")
         testUtil.createUserRolesForUser(
-                userId = admin.id,
+                user = admin,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
@@ -68,7 +68,7 @@ internal class AdminLogErrorListControllerTest : BaseLogRestControllerTest() {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.SUCCESS, "Create Error Log")
         log = testUtil.createErrorLog(
-                userId = admin.id,
+                user = admin,
                 action = "Creating log",
                 affectedRecordId = null,
                 affectedTable = Log.AffectedTable.LOG,

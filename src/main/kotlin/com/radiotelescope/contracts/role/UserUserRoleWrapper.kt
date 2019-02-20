@@ -93,16 +93,16 @@ class UserUserRoleWrapper(
 
             // If the user exists, they must either be the owner or an admin
             if (theUser.isPresent) {
-                return if (theUser.isPresent && theUser.get().id == request.userId) {
+                return if (theUser.isPresent && theUser.get().id == request.user.id) {
                     context.require(
                             requiredRoles = listOf(UserRole.Role.USER),
                             successCommand = factory.requestRole(request)
                     ).execute(withAccess)
                 } else {
-                    val theRequestedUser = userRepo.findById(request.userId)
+                    val theRequestedUser = userRepo.findById(request.user.id)
 
                     return if (!theRequestedUser.isPresent)
-                        AccessReport(missingRoles = null, invalidResourceId = invalidUserIdErrors(request.userId))
+                        AccessReport(missingRoles = null, invalidResourceId = invalidUserIdErrors(request.user.id))
                     else
                         context.require(
                                 requiredRoles = listOf(UserRole.Role.ADMIN),
@@ -114,6 +114,12 @@ class UserUserRoleWrapper(
         return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
     }
 
+    /**
+     * Private method to return a [Map] of errors when a user could not be found.
+     *
+     * @param id the user id
+     * @return a [Map] of errors
+     */
     private fun invalidUserIdErrors(id: Long): Map<String, Collection<String>> {
         val errors = HashMultimap.create<com.radiotelescope.contracts.user.ErrorTag, String>()
         errors.put(com.radiotelescope.contracts.user.ErrorTag.ID, "User #$id could not be found")

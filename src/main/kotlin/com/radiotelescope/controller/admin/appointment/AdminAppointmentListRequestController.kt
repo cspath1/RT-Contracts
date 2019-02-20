@@ -58,7 +58,7 @@ class AdminAppointmentListRequestController(
         // Otherwise, call the wrapper method
         else {
             val sort = Sort(Sort.Direction.ASC, "start_time")
-            appointmentWrapper.listRequest(PageRequest.of(pageNumber, pageSize, sort)) { it ->
+            appointmentWrapper.requestedList(PageRequest.of(pageNumber, pageSize, sort)) { it ->
                 // NOTE: This command currently only has a success scenario
                 // (given the user is authenticated)
                 //If the command was a success

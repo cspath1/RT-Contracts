@@ -9,7 +9,7 @@ import java.util.*
  * the [Log] Entity
  *
  * @param id the Log's id
- * @param userId the Log's user id
+ * @param user the Log's user
  * @param userFirstName the Log's user's first name
  * @param userLastName the Log's user's last name
  * @param affectedRecordId the Log's affected record id
@@ -20,7 +20,7 @@ import java.util.*
  */
 data class LogInfo(
         val id: Long,
-        val userId: Long?,
+        val user: User?,
         val userFirstName: String?,
         val userLastName: String?,
         val affectedRecordId: Long?,
@@ -37,7 +37,7 @@ data class LogInfo(
      */
     constructor(log: Log): this(
             id = log.id,
-            userId = null,
+            user = null,
             userFirstName = null,
             userLastName = null,
             affectedRecordId = log.affectedRecordId,
@@ -56,7 +56,7 @@ data class LogInfo(
      */
     constructor(log: Log, user: User): this(
             id = log.id,
-            userId = log.userId,
+            user = user,
             userFirstName = user.firstName,
             userLastName = user.lastName,
             affectedRecordId = log.affectedRecordId,

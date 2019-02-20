@@ -98,7 +98,7 @@ internal class BanTest {
     fun testUserIsAdmin_Failure() {
         // Make the user an admin
         testUtil.createUserRolesForUser(
-                userId = userId,
+                user = userRepo.findById(userId).get(),
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )

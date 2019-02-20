@@ -58,13 +58,13 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
 
         admin = testUtil.createUser("rpim@ycp.edu")
         testUtil.createUserRolesForUser(
-                userId = admin.id,
+                user = admin,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
 
         testUtil.createLog(
-                userId = admin.id,
+                user = admin,
                 action = "Creating log",
                 affectedRecordId = null,
                 affectedTable = Log.AffectedTable.LOG,
