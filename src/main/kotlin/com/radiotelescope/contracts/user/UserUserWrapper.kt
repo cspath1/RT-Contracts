@@ -248,7 +248,7 @@ class UserUserWrapper(
     /**
      * Private method to return a [Map] of errors when a user could not be found.
      *
-     * @param id the Appointment id
+     * @param id the User id
      * @return a [Map] of errors
      */
     private fun invalidUserIdErrors(id: Long): Map<String, Collection<String>> {

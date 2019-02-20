@@ -4,6 +4,11 @@ import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
 
+/**
+ * Entity Class representing a token to update the user email
+ *
+ * This Entity correlates to the update_email_token SQL Table
+ */
 @Entity
 @Table(name = "update_email_token")
 data class UpdateEmailToken (

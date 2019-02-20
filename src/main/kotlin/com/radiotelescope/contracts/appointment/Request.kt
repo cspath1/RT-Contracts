@@ -116,6 +116,9 @@ class Request(
             )
         }
 
+        /**
+         * Method that will adapt the request into a [Coordinate] entity object
+         */
         fun toCoordinate(): Coordinate {
             return Coordinate(
                     hours = hours,

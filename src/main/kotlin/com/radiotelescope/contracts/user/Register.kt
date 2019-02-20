@@ -192,6 +192,10 @@ class Register(
 
     /**
      * Data class containing all fields returned from user creation.
+     *
+     * @param id the new [User] id
+     * @param email the new [User] email
+     * @param token the [AccountActivateToken] token
      */
     data class Response(
             val id: Long,
