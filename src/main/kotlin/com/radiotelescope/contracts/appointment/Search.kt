@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.AppointmentSpecificationBuilder
+import com.radiotelescope.repository.model.appointment.Filter
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -73,7 +74,16 @@ class Search(
 
         if (searchCriteria.isEmpty()) {
             errors.put(ErrorTag.SEARCH, "No search parameters specified")
-        } else if (searchCriteria.size > 1) {
+        } else if (searchCriteria.size == 1) {
+            // Handle individual constraints here
+            val theSearchCriteria = searchCriteria[0]
+            // Full names must have a first and last name supplied
+            if (theSearchCriteria.filter == Filter.USER_FULL_NAME) {
+                if (!theSearchCriteria.value.toString().trim().contains(" ")) {
+                    errors.put(ErrorTag.SEARCH, "First and Last Name must be supplied")
+                }
+            }
+        } else {
             // If there is more than one search criteria, check to make sure
             // all of them are compatible with each other
             val incompatibleSearchParams = searchCriteria.any { !it.filter.multiCompatible }

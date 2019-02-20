@@ -1,7 +1,9 @@
-package com.radiotelescope.controller.user
+package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
@@ -15,11 +17,12 @@ import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles("test")
-internal class UserSearchControllerTest : BaseUserRestControllerTest() {
+internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -36,7 +39,10 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
     @Autowired
     private lateinit var testUtil: TestUtil
 
-    private lateinit var userSearchController: UserSearchController
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
+    private lateinit var appointmentSearchController: AppointmentSearchController
 
     private val userContext = getContext()
 
@@ -44,27 +50,40 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
     override fun init() {
         super.init()
 
+        // Create a user and an appointment
         val user = testUtil.createUser("cspath1@ycp.edu")
+        user.firstName = "Cody"
+        user.lastName = "Spath"
+        userRepo.save(user)
+
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(System.currentTimeMillis() + 100000L),
+                endTime = Date(System.currentTimeMillis() + 200000L),
+                isPublic = true
+        )
 
         // Simulate a login
         userContext.login(user.id)
         userContext.currentRoles.add(UserRole.Role.USER)
 
-        userSearchController = UserSearchController(
-                userWrapper = getWrapper(),
+        appointmentSearchController = AppointmentSearchController(
+                appointmentWrapper = getWrapper(),
                 logger = getLogger()
         )
     }
 
     @Test
-    fun testSuccessResponse_FirstNameAndLastName() {
+    fun testSuccessResponse_FullName() {
         // Test the success response scenario to ensure the result
         // object is correctly set
-        val result = userSearchController.execute(
+        val result = appointmentSearchController.execute(
                 pageNumber = 0,
                 pageSize = 15,
-                search = "firstName+lastName",
-                value = "First"
+                search = "userFullName",
+                value = "cody spath"
         )
 
         assertNotNull(result)
@@ -74,48 +93,14 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
     }
 
     @Test
-    fun testSuccessResponse_Email() {
+    fun testSuccessResponse_FirstAndLastName() {
         // Test the success response scenario to ensure the result
         // object is correctly set
-        val result = userSearchController.execute(
+        val result = appointmentSearchController.execute(
                 pageNumber = 0,
                 pageSize = 15,
-                search = "email",
-                value = "ycp.edu"
-        )
-
-        assertNotNull(result)
-        assertTrue(result.data is Page<*>)
-        assertEquals(HttpStatus.OK, result.status)
-        assertNull(result.errors)
-    }
-
-    @Test
-    fun testSuccessResponse_Company() {
-        // Test the success response scenario to ensure the result
-        // object is correctly set
-        val result = userSearchController.execute(
-                pageNumber = 0,
-                pageSize = 15,
-                search = "company",
-                value = "York College"
-        )
-
-        assertNotNull(result)
-        assertTrue(result.data is Page<*>)
-        assertEquals(HttpStatus.OK, result.status)
-        assertNull(result.errors)
-    }
-
-    @Test
-    fun testSuccessResponse_UnknownSearchParamIgnored() {
-        // Test the success response scenario to ensure the result
-        // object is correctly set
-        val result = userSearchController.execute(
-                pageNumber = 0,
-                pageSize = 15,
-                search = "firstName+username",
-                value = "York College"
+                search = "userFirstName+userLastName",
+                value = "cody"
         )
 
         assertNotNull(result)
@@ -127,11 +112,11 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
     @Test
     fun testErrorResponse() {
         // Test the scenario where the business logic did not pass
-        val result = userSearchController.execute(
+        val result = appointmentSearchController.execute(
                 pageNumber = 0,
                 pageSize = 15,
-                search = "",
-                value = "oeif"
+                search = "userSearchName",
+                value = "cody"
         )
 
         assertNotNull(result)
@@ -149,11 +134,11 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
         // Simulate a logout
         userContext.logout()
 
-        val result = userSearchController.execute(
+        val result = appointmentSearchController.execute(
                 pageNumber = 0,
                 pageSize = 15,
                 search = "firstName",
-                value = "eifnwoiefnwieo"
+                value = "weuibgwoie"
         )
 
         assertNotNull(result)

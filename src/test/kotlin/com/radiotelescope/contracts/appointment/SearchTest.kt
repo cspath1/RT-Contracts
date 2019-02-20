@@ -170,6 +170,26 @@ internal class SearchTest {
     }
 
     @Test
+    fun testFullName_InvalidSearchValue_Failure() {
+        val searchCriteria = arrayListOf<SearchCriteria>()
+        searchCriteria.add(SearchCriteria(Filter.USER_FULL_NAME, "cody"))
+
+        val (page, errors) = Search(
+                searchCriteria = searchCriteria,
+                pageable = pageable,
+                appointmentRepo = appointmentRepo
+        ).execute()
+
+        // Should have failed
+        assertNotNull(errors)
+        assertNull(page)
+
+        // Ensure it failed for the expected reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.SEARCH].isNotEmpty())
+    }
+
+    @Test
     fun testNoSearchParams_Failure() {
         val searchCriteria = arrayListOf<SearchCriteria>()
 

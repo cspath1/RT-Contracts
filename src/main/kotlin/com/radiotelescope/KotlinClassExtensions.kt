@@ -48,3 +48,7 @@ fun List<Appointment>.toAppointmentInfoList(): List<AppointmentInfo> {
 fun String.Companion.generateToken(): String {
     return UUID.randomUUID().toString().replace("-", "", false)
 }
+
+fun <K, V> Multimap<K, V>.isNotEmpty(): Boolean {
+    return !isEmpty
+}
