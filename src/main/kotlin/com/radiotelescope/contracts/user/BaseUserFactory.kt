@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.user
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
@@ -141,6 +142,20 @@ class BaseUserFactory(
         return ChangePassword(
                 request = request,
                 userRepo = userRepo
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.search] method that will return a [Search] command object
+     *
+     * @return a [Search] command object
+     */
+    override fun search(searchCriteria: kotlin.collections.List<SearchCriteria>, pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
+        return Search(
+                searchCriteria = searchCriteria,
+                pageable = pageable,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 }

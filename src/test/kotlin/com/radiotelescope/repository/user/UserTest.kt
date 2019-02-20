@@ -1,10 +1,13 @@
 package com.radiotelescope.repository.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.model.user.Filter
+import com.radiotelescope.repository.model.user.SearchCriteria
+import com.radiotelescope.repository.model.user.UserSpecificationBuilder
 import com.radiotelescope.repository.role.UserRole
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
@@ -42,6 +46,7 @@ internal class UserTest {
     fun setUp() {
         // Instantiate and persist a User Entity Object
         val user = testUtil.createUser("cspath1@ycp.edu")
+        testUtil.createUserRolesForUser(user.id, UserRole.Role.MEMBER, true)
         val admin1 = testUtil.createUser("rpim@ycp.edu")
         testUtil.createUserRolesForUser(admin1, UserRole.Role.ADMIN, true)
         val admin2 = testUtil.createUser("rpim2@ycp.edu")
@@ -101,5 +106,61 @@ internal class UserTest {
         val adminEmailList = userRepo.findAllAdminEmail()
 
         assertTrue(adminEmailList.size == 2)
+    }
+
+    @Test
+    fun findAllNonAdminUser() {
+        val userPage = userRepo.findAllNonAdminUsers(PageRequest.of(0, 25))
+
+        assertNotNull(userPage)
+        assertEquals(1, userPage.content.size)
+
+        // Should be the email of the non-admin user
+        assertEquals(email, userPage.content[0].email)
+    }
+
+    @Test
+    fun testSearchEmail() {
+        val searchCriteria = SearchCriteria(Filter.EMAIL, "rpim")
+        val specification = UserSpecificationBuilder().with(searchCriteria).build()
+
+        val userList = userRepo.findAll(specification)
+
+        assertNotNull(userList)
+        assertEquals(2, userList.size)
+
+        for (user in userList) {
+            assertTrue(user.email.contains("rpim"))
+        }
+    }
+
+    @Test
+    fun testSearchFirstNameOrLastName() {
+        val searchCriteriaOne = SearchCriteria(Filter.FIRST_NAME, "Fir")
+        val searchCriteriaTwo = SearchCriteria(Filter.LAST_NAME, "La")
+
+        val specification = UserSpecificationBuilder().with(searchCriteriaOne).with(searchCriteriaTwo).build()
+
+        val userList = userRepo.findAll(specification)
+
+        assertNotNull(userList)
+        assertEquals(3, userList.size)
+    }
+
+    @Test
+    fun testSearchCompanyName() {
+        val user = userRepo.findByEmail(email)!!
+        user.company = "York College of PA"
+
+        // Should still return the above user
+        val searchCriteria = SearchCriteria(Filter.COMPANY, "york college")
+
+        val specification = UserSpecificationBuilder().with(searchCriteria).build()
+
+        val userList = userRepo.findAll(specification)
+
+        assertNotNull(userList)
+        assertEquals(1, userList.size)
+        assertEquals(user.email, userList[0].email)
     }
 }

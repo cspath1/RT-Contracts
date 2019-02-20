@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
  * @param roles the User's roles
  * @param firstName the User's first name
  * @param lastName the User's last name
+ * @param accountActive whether the account is active or not
  */
 data class UserSession(
         var userId: Long,

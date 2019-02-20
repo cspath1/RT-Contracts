@@ -8,10 +8,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @EnableWebMvc
+/**
+ * Allows the application to handle CORS requests
+ *
+ * @property profile the application [Profile]
+ */
 class WebConfiguration(
         val profile: Profile
 ) : WebMvcConfigurer {
-
+    /**
+     * Specifies the contents for CORS requests/responses
+     */
     override fun addCorsMappings(registry: CorsRegistry) {
         if (profile == Profile.PROD || profile == Profile.DEV) {
             registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "DELETE", "OPTIONS", "PUT")

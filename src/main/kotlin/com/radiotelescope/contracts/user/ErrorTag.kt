@@ -19,5 +19,6 @@ enum class ErrorTag {
     PAGE_PARAMS,
     ROLES,
     TIME,
-    CURRENT_PASSWORD
+    CURRENT_PASSWORD,
+    SEARCH
 }
