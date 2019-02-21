@@ -200,7 +200,7 @@ class BaseAppointmentFactory(
     }
 
     /**
-     * Override of the [AppointmentFactory.listRequest] method that will return a [RequestedList]
+     * Override of the [AppointmentFactory.requestedList] method that will return a [RequestedList]
      * command object
      *
      * @param pageable the [Pageable] object that has the page number and page size

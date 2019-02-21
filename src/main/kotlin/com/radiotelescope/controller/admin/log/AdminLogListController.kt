@@ -59,12 +59,12 @@ class AdminLogListController(
             val pageRequest = PageRequest.of(pageNumber, pageSize, sort)
             logWrapper.list(
                     pageable = pageRequest
-            ) { it ->
+            ) {
                 // NOTE: This command currently only has a success scenario
                 // (given the user is authenticated)
                 // If the command was a success
-                it.success?.let {
-                    result = Result(data = it)
+                it.success?.let { info ->
+                    result = Result(data = info)
                 }
             }?.let {
                 // If we get here, this means the User did not pass validation

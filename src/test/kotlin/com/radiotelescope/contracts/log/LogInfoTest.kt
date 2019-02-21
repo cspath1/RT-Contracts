@@ -1,6 +1,5 @@
 package com.radiotelescope.contracts.log
 
-import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*

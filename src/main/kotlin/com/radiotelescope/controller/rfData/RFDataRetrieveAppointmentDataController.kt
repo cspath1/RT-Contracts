@@ -36,16 +36,16 @@ class RFDataRetrieveAppointmentDataController(
      */
     @GetMapping(value = ["/api/appointments/{appointmentId}/rf-data"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long): Result {
-        rfDataWrapper.retrieveAppointmentData(appointmentId) { it ->
+        rfDataWrapper.retrieveAppointmentData(appointmentId) {
             // If the command was a success
             it.success?.let { list ->
                 // Create success logs
-                list.forEach {
+                list.forEach { info ->
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.RF_DATA,
                                     action = "Appointment RF Data Retrieval",
-                                    affectedRecordId = it.id
+                                    affectedRecordId = info.id
                             )
                     )
                 }
@@ -53,7 +53,7 @@ class RFDataRetrieveAppointmentDataController(
                 result = Result(data = list)
             }
             // Otherwise, it was an error
-            it.error?.let {
+            it.error?.let { errors ->
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
@@ -61,10 +61,10 @@ class RFDataRetrieveAppointmentDataController(
                                 action = "Appointment RF Data Retrieval",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = errors.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap())
+                result = Result(errors = errors.toStringMap())
             }
         }?.let {
             // If we get here, that means the User did not pass authentication

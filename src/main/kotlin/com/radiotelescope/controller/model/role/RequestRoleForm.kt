@@ -6,14 +6,13 @@ import com.radiotelescope.contracts.role.ErrorTag
 import com.radiotelescope.contracts.role.RequestRole
 import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.user.User
 
 /**
  * RequestRole form that takes nullable versions of the [RequestRole.Request] object.
  * It is in charge of making sure these values are not null before adapting it
  * to a [RequestRole.Request] object
  *
- * @param user the User
+ * @param userId the User id
  * @param role the User's role
  */
 data class RequestRoleForm(

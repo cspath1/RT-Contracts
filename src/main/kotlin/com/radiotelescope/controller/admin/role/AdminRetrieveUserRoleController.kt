@@ -36,21 +36,21 @@ class AdminRetrieveUserRoleController(
     @CrossOrigin(value = ["http://localhost:8081"])
     @GetMapping(value = ["/api/roles/{roleId}"])
     fun execute(@PathVariable("roleId") roleId: Long): Result {
-        roleWrapper.retrieve(roleId) { it ->
+        roleWrapper.retrieve(roleId) {
             // If the command was a success
-            it.success?.let {
+            it.success?.let { info ->
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
                                 action = "Retrieve",
-                                affectedRecordId = it.id
+                                affectedRecordId = info.id
                         )
                 )
 
-                result = Result(data = it)
+                result = Result(data = info)
             }
             // Otherwise, it was a failure
-            it.error?.let {
+            it.error?.let { errors ->
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
@@ -58,10 +58,10 @@ class AdminRetrieveUserRoleController(
                                 action = "Retrieve",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = errors.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap())
+                result = Result(errors = errors.toStringMap())
             }
         }?.let {
             // If we get here, this means the User did not pass validation

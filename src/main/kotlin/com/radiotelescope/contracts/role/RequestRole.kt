@@ -8,7 +8,6 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.repository.user.User
 
 /**
  * Override of the [Command] interface for a user to request new user role

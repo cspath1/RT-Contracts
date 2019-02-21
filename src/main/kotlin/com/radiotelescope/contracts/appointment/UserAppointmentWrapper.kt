@@ -343,7 +343,7 @@ class UserAppointmentWrapper(
     }
 
     /**
-     * Wrapper method for the [AppointmentFactory.listRequest] method that adds Spring
+     * Wrapper method for the [AppointmentFactory.requestedList] method that adds Spring
      * Security authentication to the [RequestedList] command object.
      *
      * @param pageable contains the pageSize and pageNumber

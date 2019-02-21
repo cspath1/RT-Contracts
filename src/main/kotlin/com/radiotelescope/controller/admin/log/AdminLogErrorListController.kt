@@ -35,14 +35,14 @@ class AdminLogErrorListController(
     fun execute(@PathVariable("logId") logId: Long): Result {
         logWrapper.retrieveErrors(
                 logId = logId
-        ) { it ->
+        ) {
             // If the command was a success
-            it.success?.let {
-                result = Result(data = it)
+            it.success?.let { info ->
+                result = Result(data = info)
             }
             // If the command was a failure
-            it.error?.let {
-                result = Result(errors = it.toStringMap())
+            it.error?.let { error ->
+                result = Result(errors = error.toStringMap())
             }
         }?.let {
             // If we get here, this means the User did not pass validation

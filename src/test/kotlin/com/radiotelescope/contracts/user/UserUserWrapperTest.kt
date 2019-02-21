@@ -199,7 +199,7 @@ internal class UserUserWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.invalidResourceId!!["ID"]!!.isNotEmpty())
+        assertTrue(error!!.invalidResourceId!!.getValue("ID").isNotEmpty())
     }
 
     @Test
@@ -360,7 +360,7 @@ internal class UserUserWrapperTest {
         }
 
         assertNotNull(error)
-        assertTrue(error!!.invalidResourceId!!["ID"]!!.isNotEmpty())
+        assertTrue(error!!.invalidResourceId!!.getValue("ID").isNotEmpty())
     }
 
     @Test

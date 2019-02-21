@@ -47,7 +47,7 @@ class AdminUserBanController(
                         required = false,
                         defaultValue = "") message: String?
     ): Result {
-        userWrapper.ban(id = userId) { it->
+        userWrapper.ban(id = userId) {
             // If the command was a success
             it.success?.let { id ->
                 // Create success logs

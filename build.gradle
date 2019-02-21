@@ -29,7 +29,7 @@ apply plugin: 'org.jetbrains.dokka'
 
 group = 'com.radiotelescope'
 
-version = '2.11.1-dev'
+version = '2.11.2-dev'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8

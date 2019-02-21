@@ -64,16 +64,16 @@ class AppointmentListBetweenDatesController (
         else {
             val request = form.toRequest()
             request.telescopeId = telescopeId
-            appointmentWrapper.listBetweenDates(request) { it ->
+            appointmentWrapper.listBetweenDates(request) {
                 //If the command was a success
                 it.success?.let { list ->
                     // Create success logs
-                    list.forEach {
+                    list.forEach { info ->
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         Log.AffectedTable.APPOINTMENT,
                                         action = "Appointment List Between Times",
-                                        affectedRecordId = it.id
+                                        affectedRecordId = info.id
                                 )
                         )
                     }

@@ -42,7 +42,7 @@ class RetrieveAuthAdminService(
         val authToken: AuthenticatedUserToken = authentication
 
         // Use only approved roles
-        val roles = userRoleRepo.findAllByUserId(authToken.userId!!).filter { it -> it.approved }
+        val roles = userRoleRepo.findAllByUserId(authToken.userId!!).filter { it.approved }
 
         val isAdmin = roles.any {
             it.role == UserRole.Role.ADMIN
@@ -74,7 +74,7 @@ class RetrieveAuthAdminService(
         val roles = userRoleRepo.findAllByUserId(userId)
         val authorities = arrayListOf<SimpleGrantedAuthority>()
 
-        roles.forEach { it ->
+        roles.forEach {
             if (it.approved)
                 authorities.add(SimpleGrantedAuthority("ROLE_${it.role.name.toUpperCase()}"))
         }

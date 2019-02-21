@@ -29,7 +29,7 @@ class AdminAppointmentListRequestController(
      * Execute method that is in charge of returning a user's future appointments.
      *
      * If the [pageNumber] or [pageSize] request parameters are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.listRequest]
+     * respond with errors. Otherwise, call the [UserAppointmentWrapper.requestedList]
      * method. If this method returns an [AccessReport], this means that user authentication
      * failed and the method should respond with errors, setting the [Result]'s
      * [HttpStatus] to [HttpStatus.FORBIDDEN].
@@ -58,17 +58,17 @@ class AdminAppointmentListRequestController(
         // Otherwise, call the wrapper method
         else {
             val sort = Sort(Sort.Direction.ASC, "start_time")
-            appointmentWrapper.requestedList(PageRequest.of(pageNumber, pageSize, sort)) { it ->
+            appointmentWrapper.requestedList(PageRequest.of(pageNumber, pageSize, sort)) {
                 // NOTE: This command currently only has a success scenario
                 // (given the user is authenticated)
                 //If the command was a success
                 it.success?.let{ page ->
                     // Create success logs
-                    page.content.forEach{
+                    page.content.forEach { info ->
                         logger.createSuccessLog(
                                 info = Logger.createInfo(Log.AffectedTable.APPOINTMENT,
                                         action = "Requested Appointment List",
-                                        affectedRecordId = it.id
+                                        affectedRecordId = info.id
                                 )
                         )
                     }

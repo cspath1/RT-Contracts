@@ -21,7 +21,7 @@ class JWTAuthenticationFilter : UsernamePasswordAuthenticationFilter {
 
     /**
      * Secondary constructor that takes an authentication manager object
-     * and sets the filter's authentication manager object to this parameeter.
+     * and sets the filter's authentication manager object to this parameter.
      * It also takes a [JWTConfiguration] object and sets the private variable
      * to this.
      *

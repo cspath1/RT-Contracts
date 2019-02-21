@@ -200,7 +200,7 @@ internal class TestUtil {
                 isSuccess = isSuccess
         )
 
-        errors.keys.forEach { it ->
+        errors.keys.forEach {
             val errorList = errors[it]
             if (errorList != null && errorList.isNotEmpty()) {
                 errorList.forEach { error ->

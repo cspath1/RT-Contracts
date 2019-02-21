@@ -28,7 +28,7 @@ class Search(
      * Override of the [Command.execute] method. Calls the [validateSearch] method that will
      * handle all constraint checking and validation.
      *
-     * If validation passes, it will execute a customer search usnig the [AppointmentSpecificationBuilder]
+     * If validation passes, it will execute a customer search using the [AppointmentSpecificationBuilder]
      * which will build a custom search specification based on the user's criteria. It will then
      * adapt the results into a [Page] of [AppointmentInfo].
      *
