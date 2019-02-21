@@ -94,7 +94,7 @@ internal class BaseUserRoleFactoryTest {
         // Call the factory method
         val cmd = factory.requestRole(
                 request = RequestRole.Request(
-                        user = testUtil.createUser("lferree@ycp.edu"),
+                        userId = testUtil.createUser("lferree@ycp.edu").id,
                         role = UserRole.Role.GUEST
                 )
         )

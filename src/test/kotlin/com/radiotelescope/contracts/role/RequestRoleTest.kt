@@ -63,7 +63,7 @@ internal class RequestRoleTest {
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.GUEST,
-                        user = user
+                        userId = user.id
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
@@ -89,7 +89,7 @@ internal class RequestRoleTest {
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.GUEST,
-                        user = user
+                        userId = user.id
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
@@ -124,7 +124,7 @@ internal class RequestRoleTest {
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.RESEARCHER,
-                        user = user
+                        userId = user.id
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
@@ -143,7 +143,7 @@ internal class RequestRoleTest {
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.ADMIN,
-                        user = user
+                        userId = user.id
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
@@ -162,7 +162,7 @@ internal class RequestRoleTest {
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.USER,
-                        user = user
+                        userId = user.id
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo

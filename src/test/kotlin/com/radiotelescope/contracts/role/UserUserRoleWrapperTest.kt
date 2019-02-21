@@ -251,10 +251,10 @@ internal class UserUserRoleWrapperTest {
 
         val error = wrapper.requestRole(
                 request = RequestRole.Request(
-                        user = userRepo.findById(userId!!).get(),
+                        userId = userId!!,
                         role = UserRole.Role.GUEST
                 )
-        ){
+        ) {
             assertNotNull(it.success)
             assertNull(it.error)
         }
@@ -269,7 +269,7 @@ internal class UserUserRoleWrapperTest {
 
         val error = wrapper.requestRole(
                 request = RequestRole.Request(
-                        user = userRepo.findById(userId!!).get(),
+                        userId = userId!!,
                         role = UserRole.Role.GUEST
                 )
         ){
@@ -289,10 +289,10 @@ internal class UserUserRoleWrapperTest {
 
         val error = wrapper.requestRole(
                 request = RequestRole.Request(
-                        user = userRepo.findById(userId!!).get(),
+                        userId = userId!!,
                         role = UserRole.Role.GUEST
                 )
-        ){
+        ) {
             assertNotNull(it.success)
             assertNull(it.error)
         }

@@ -17,7 +17,7 @@ import com.radiotelescope.repository.user.User
  * @param role the User's role
  */
 data class RequestRoleForm(
-        val user: User?,
+        val userId: Long?,
         val role: UserRole.Role?
 ) : BaseForm<RequestRole.Request> {
     /**
@@ -28,7 +28,7 @@ data class RequestRoleForm(
      */
     override fun toRequest(): RequestRole.Request {
         return RequestRole.Request(
-                user = user!!,
+                userId = userId!!,
                 role = role!!
         )
     }
@@ -40,7 +40,7 @@ data class RequestRoleForm(
      */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
-        if (user == null)
+        if (userId == null)
             errors.put(ErrorTag.USER_ID, "Required field")
         if (role == null)
             errors.put(ErrorTag.ROLE, "Required field")

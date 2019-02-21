@@ -37,13 +37,14 @@ class RequestRole(
             return SimpleResult(null, errors)
 
         // Delete any old request
-        val roleList = userRoleRepo.findAllByUserId(request.user.id)
+        val roleList = userRoleRepo.findAllByUserId(request.userId)
         roleList.forEach { role ->
             if(!role.approved)
                 userRoleRepo.delete(role)
         }
 
         val newRole = request.toEntity()
+        newRole.user = userRepo.findById(request.userId).get()
         userRoleRepo.save(newRole)
         return SimpleResult(newRole.id, null)
 
@@ -58,11 +59,11 @@ class RequestRole(
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
         with(request) {
-            if(!userRepo.existsById(user.id))
+            if(!userRepo.existsById(userId))
                 errors.put(ErrorTag.USER_ID, "User does not exist")
             else{
-                if(userRoleRepo.findMembershipRoleByUserId(user.id) != null)
-                    if(userRoleRepo.findMembershipRoleByUserId(user.id)!!.role == role)
+                if(userRoleRepo.findMembershipRoleByUserId(userId) != null)
+                    if(userRoleRepo.findMembershipRoleByUserId(userId)!!.role == role)
                         errors.put(ErrorTag.ROLE, "New role is the same as the current role")
                 if(role == UserRole.Role.ADMIN)
                     errors.put(ErrorTag.ROLE, "Cannot set request admin role")
@@ -80,11 +81,11 @@ class RequestRole(
      * Data class containing all fields necessary for requesting
      * a new role
      *
-     * @param user the User
+     * @param userId the User id
      * @param role the desired [UserRole.Role] value
      */
     data class Request(
-            val user: User,
+            val userId: Long,
             val role: UserRole.Role
     ) : BaseCreateRequest<UserRole> {
         /**
@@ -93,7 +94,6 @@ class RequestRole(
          */
         override fun toEntity(): UserRole {
             val theUserRole = UserRole(
-                    user = user,
                     role = role
             )
 
