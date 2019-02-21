@@ -33,6 +33,8 @@ com.radiotelescope.repository.appointment
 com.radiotelescope.repository.coordinate
 com.radiotelescope.repository.error
 com.radiotelescope.repository.log
+com.radiotelescope.repository.model.appointment
+com.radiotelescope.repository.model.user
 com.radiotelescope.repository.resetPasswordToken
 com.radiotelescope.repository.rfdata
 com.radiotelescope.repository.role
