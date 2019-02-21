@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.log.Log
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import kotlin.collections.List
 
 /**
  * Abstract factory interface with methods for all [Log] Command objects

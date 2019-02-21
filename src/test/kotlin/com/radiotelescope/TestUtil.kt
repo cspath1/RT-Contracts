@@ -94,13 +94,13 @@ internal class TestUtil {
     }
 
     fun createUserRolesForUser(
-            userId: Long,
+            user: User,
             role: UserRole.Role,
             isApproved: Boolean
     ): List<UserRole> {
         // Creates a User UserRole by default
         val userRole = UserRole(
-                userId = userId,
+                user = user,
                 role = UserRole.Role.USER
         )
 
@@ -108,7 +108,7 @@ internal class TestUtil {
         userRoleRepo.save(userRole)
 
         val otherRole = UserRole(
-                userId = userId,
+                user = user,
                 role = role
         )
 
@@ -119,12 +119,12 @@ internal class TestUtil {
     }
 
     fun createUserRoleForUser(
-            userId: Long,
+            user: User,
             role: UserRole.Role,
             isApproved: Boolean
     ): UserRole {
         val userRole = UserRole(
-                userId = userId,
+                user = user,
                 role = role
         )
 
@@ -142,8 +142,15 @@ internal class TestUtil {
             isPublic: Boolean
     ): Appointment {
         val coordinate = Coordinate(
-                rightAscension = 311.0,
-                declination = 69.0
+                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12
+                ),
+                declination = 69.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12
         )
 
         coordinateRepo.save(coordinate)
@@ -163,7 +170,7 @@ internal class TestUtil {
     }
 
     fun createLog(
-            userId: Long?,
+            user: User?,
             affectedRecordId: Long?,
             affectedTable: Log.AffectedTable,
             action: String,
@@ -177,14 +184,14 @@ internal class TestUtil {
                 affectedRecordId = null
         )
 
-        theLog.userId = userId
+        theLog.user = user
         theLog.isSuccess = isSuccess
 
         return logRepo.save(theLog)
     }
 
     fun createErrorLog(
-            userId: Long?,
+            user: User?,
             affectedRecordId: Long?,
             affectedTable: Log.AffectedTable,
             action: String,
@@ -193,7 +200,7 @@ internal class TestUtil {
             errors: Map<String, Collection<String>>
     ): Log {
         val theLog = createLog(
-                userId = userId,
+                user = user,
                 affectedRecordId = affectedRecordId,
                 affectedTable = affectedTable,
                 action = action,
@@ -218,14 +225,6 @@ internal class TestUtil {
         }
 
         return logRepo.save(theLog)
-    }
-
-    fun setInactiveStatus(
-            user: User
-    ): User{
-        user.active = false
-        user.status = User.Status.INACTIVE
-        return userRepo.save(user)
     }
 
     fun createResetPasswordToken(
@@ -275,6 +274,14 @@ internal class TestUtil {
         val telescope = Telescope()
 
         return telescopeRepo.save(telescope)
+    }
+
+    fun banUser(
+            user: User
+    ): User{
+        user.active = false
+        user.status = User.Status.BANNED
+        return userRepo.save(user)
     }
 
     fun createProfilePicture(

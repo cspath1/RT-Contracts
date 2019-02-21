@@ -2,8 +2,6 @@ package com.radiotelescope.controller.user.role
 
 import com.radiotelescope.services.ses.MockAwsSesSendService
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.user.Register
-import com.radiotelescope.controller.user.BaseUserRoleControllerTest
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User

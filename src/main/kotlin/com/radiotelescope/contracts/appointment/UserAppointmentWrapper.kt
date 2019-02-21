@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
@@ -65,7 +66,7 @@ class UserAppointmentWrapper(
         val theAppointment = appointmentRepo.findById(id).get()
 
         if (context.currentUserId() != null &&
-                context.currentUserId() == theAppointment.user!!.id) {
+                context.currentUserId() == theAppointment.user.id) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.USER),
                     successCommand = factory.retrieve(id)
@@ -164,7 +165,7 @@ class UserAppointmentWrapper(
         val theAppointment = appointmentRepo.findById(appointmentId).get()
 
         if (context.currentUserId() != null) {
-            return if (context.currentUserId() == theAppointment.user!!.id) {
+            return if (context.currentUserId() == theAppointment.user.id) {
                 context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.cancel(
@@ -217,7 +218,7 @@ class UserAppointmentWrapper(
         val theAppointment = appointmentRepo.findById(request.id).get()
 
         if(context.currentUserId() != null) {
-            if (context.currentUserId() == theAppointment.user!!.id) {
+            if (context.currentUserId() == theAppointment.user.id) {
                 // If public, they only need to be a base user
                 return if (request.isPublic)
                     context.require(
@@ -262,7 +263,7 @@ class UserAppointmentWrapper(
         val theAppointment = appointmentRepo.findById(appointmentId).get()
 
         if(context.currentUserId() != null) {
-            return if (context.currentUserId() == theAppointment.user!!.id) {
+            return if (context.currentUserId() == theAppointment.user.id) {
                 context.require(
                         requiredRoles = listOf(UserRole.Role.RESEARCHER),
                         successCommand = factory.makePublic(
@@ -343,16 +344,16 @@ class UserAppointmentWrapper(
 
     /**
      * Wrapper method for the [AppointmentFactory.listRequest] method that adds Spring
-     * Security authentication to the [ListRequest] command object.
+     * Security authentication to the [RequestedList] command object.
      *
      * @param pageable contains the pageSize and pageNumber
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun listRequest(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun requestedList(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if(context.currentUserId() != null) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
-                    successCommand = factory.listRequest(
+                    successCommand = factory.requestedList(
                             pageable = pageable
                     )
             ).execute(withAccess)
@@ -398,7 +399,25 @@ class UserAppointmentWrapper(
             ).execute(withAccess)
         else
             AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
 
+    /**
+     * Wrapper method for the [AppointmentFactory.search] method that adds Spring
+     * Security authentication to the [Search] command object
+     *
+     * @param searchCriteria a [List] of [SearchCriteria]
+     * @param pageable the [Pageable] interface
+     * @return an [AccessReport] if authentication fails, null otherwise
+     */
+    fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(),
+                    successCommand = factory.search(searchCriteria, pageable)
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
     /**

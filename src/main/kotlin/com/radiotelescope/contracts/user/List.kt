@@ -4,13 +4,14 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 
 /**
- * Override of the [Command] interface method used for User LogList retrieval
+ * Override of the [Command] interface method used for User List retrieval
  *
  * @param pageable the [Pageable] interface
  * @param userRepo the [IUserRepository] interface
@@ -27,11 +28,12 @@ class List(
      * into a [Page] of [UserInfo] objects
      */
     override fun execute(): SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>> {
-        val userPage = userRepo.findAll(pageable)
+        val userPage = userRepo.findAllNonAdminUsers(pageable)
 
         val infoList = arrayListOf<UserInfo>()
         userPage.forEach {
             val theUserRole = userRoleRepo.findMembershipRoleByUserId(it.id)
+
             val theRole = theUserRole?.role
             infoList.add(UserInfo(it, theRole?.label))
         }

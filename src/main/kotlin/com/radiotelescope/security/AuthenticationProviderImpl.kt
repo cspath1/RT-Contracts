@@ -29,6 +29,9 @@ class AuthenticationProviderImpl(
 ) : AuthenticationProvider {
     /**
      * Performs the user authentication using Spring Security
+     *
+     * @param authentication the [AuthenticatedUserToken] (or null if the user is not authenticated)
+     * @return an [AuthenticatedUserToken] object
      */
     override fun authenticate(authentication: Authentication?): Authentication {
         val context = SecurityContextHolder.getContext()
@@ -46,8 +49,6 @@ class AuthenticationProviderImpl(
         if (!verified)
             throw AuthenticationCredentialsNotFoundException("Invalid Email or Password")
 
-        System.out.println("Logging user in.")
-
         return AuthenticatedUserToken(
                 userId = userDetails.id,
                 authorities = userDetails.authorities,
@@ -64,6 +65,15 @@ class AuthenticationProviderImpl(
         return UsernamePasswordAuthenticationToken::class.java.isAssignableFrom(authentication)
     }
 
+    /**
+     * Function that will call the [Authenticate] command, which will
+     * verify if the email and password matches with a record in the
+     * database, signifying a successful login
+     *
+     * @param email the email
+     * @param password the password
+     * @return true or false, based on if the user was authenticated
+     */
     private fun execute(email: String, password: String): Boolean {
         val simpleResult = Authenticate(
                 request = Authenticate.Request(

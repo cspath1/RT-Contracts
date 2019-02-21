@@ -4,6 +4,8 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.model.appointment.Filter
+import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -71,7 +73,9 @@ internal class UserAppointmentWrapperTest {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = true,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 
@@ -81,7 +85,9 @@ internal class UserAppointmentWrapperTest {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = true,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 
@@ -104,6 +110,10 @@ internal class UserAppointmentWrapperTest {
                 email = "cspath1@ycp.edu",
                 accountHash = "Test Account 1"
         )
+        user.firstName = "Cody"
+        user.lastName = "Spath"
+        userRepo.save(user)
+
         admin = testUtil.createUser(
                 email = "rpim@ycp.edu",
                 accountHash = "Test Account 2"
@@ -121,14 +131,14 @@ internal class UserAppointmentWrapperTest {
         testUtil.createUserRolesForUser(
                 isApproved = true,
                 role = UserRole.Role.ADMIN,
-                userId = admin.id
+                user = admin
         )
 
         // Persis the Role.ADMIN for notAdminYet, but is not approved
         testUtil.createUserRolesForUser(
                 isApproved = false,
                 role = UserRole.Role.ADMIN,
-                userId = notAdminYet.id
+                user = notAdminYet
         )
 
         // Persist an appointment for the user
@@ -197,7 +207,7 @@ internal class UserAppointmentWrapperTest {
     fun testCreatePublic_User_Success() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -271,7 +281,7 @@ internal class UserAppointmentWrapperTest {
     fun testCreatePrivate_Researcher_Success() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -303,7 +313,7 @@ internal class UserAppointmentWrapperTest {
     fun testCreatePrivate_Admin_Success() {
         // Make the user an admin
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -733,7 +743,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -755,7 +767,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -780,7 +794,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = false,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
         ) {
@@ -795,7 +811,7 @@ internal class UserAppointmentWrapperTest {
     fun testInvalidUpdate_InvalidId_Failure() {
         // Make the user an admin
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
@@ -811,7 +827,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = false,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
         ) {
@@ -826,7 +844,7 @@ internal class UserAppointmentWrapperTest {
     fun testValidUpdate_Private_Researcher_Success() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -842,7 +860,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -858,7 +878,7 @@ internal class UserAppointmentWrapperTest {
     fun testValidUpdate_Admin_Private_Success() {
         // Make the user an admin
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
@@ -874,7 +894,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -890,7 +912,7 @@ internal class UserAppointmentWrapperTest {
     fun testValidUpdate_UserIsOwner_Success(){
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -906,7 +928,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -922,7 +946,7 @@ internal class UserAppointmentWrapperTest {
     fun testValidUpdate_Admin_Success(){
         // Make the user a admin
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
@@ -938,7 +962,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 110000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -963,7 +989,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -989,7 +1017,9 @@ internal class UserAppointmentWrapperTest {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -1260,7 +1290,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.ADMIN)
 
-        val error = wrapper.listRequest(
+        val error = wrapper.requestedList(
                 pageable = PageRequest.of(0, 10)
         ) {
             assertNotNull(it.success)
@@ -1276,7 +1306,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        val error = wrapper.listRequest(
+        val error = wrapper.requestedList(
                 pageable = PageRequest.of(0, 10)
         ) {
             fail("Should fail on precondition")
@@ -1289,7 +1319,7 @@ internal class UserAppointmentWrapperTest {
     @Test
     fun testListRequest_NotLoggedIn_Failure() {
         // Do not log the user in
-        val error = wrapper.listRequest(
+        val error = wrapper.requestedList(
                 pageable = PageRequest.of(0, 10)
         ) {
             fail("Should fail on precondition")
@@ -1356,7 +1386,7 @@ internal class UserAppointmentWrapperTest {
     @Test
     fun testValidUserAvailableTime_LoggedIn_Success(){
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -1396,6 +1426,43 @@ internal class UserAppointmentWrapperTest {
 
         val error = wrapper.userAvailableTime(
                 userId = user.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testSearch_LoggedIn_Success() {
+        val searchCriteria = arrayListOf<SearchCriteria>()
+        searchCriteria.add(SearchCriteria(Filter.USER_FULL_NAME, "cody spath"))
+
+        // Simulate a login
+        context.login(user2.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.search(
+                searchCriteria = searchCriteria,
+                pageable = PageRequest.of(0, 19)
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testSearch_NotLoggedIn_Failure() {
+        val searchCriteria = arrayListOf<SearchCriteria>()
+        searchCriteria.add(SearchCriteria(Filter.USER_FULL_NAME, "cody spath"))
+
+        val error = wrapper.search(
+                searchCriteria = searchCriteria,
+                pageable = PageRequest.of(0, 19)
         ) {
             assertNull(it.success)
             assertNotNull(it.error)

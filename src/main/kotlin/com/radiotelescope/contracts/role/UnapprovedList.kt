@@ -34,16 +34,14 @@ class UnapprovedList(
 
         val roleInfos = arrayListOf<UserRoleInfo>()
         unapprovedRoles.forEach {
-            if (it.userId != null) {
-                // Since this is used to retrieve an unapproved role, the userRoleLabel field will
-                // always be null
-                val userInfo = UserInfo(userRepo.findById(it.userId!!).get(), null)
+            // Since this is used to retrieve an unapproved role, the userRoleLabel field will
+            // always be null
+            val userInfo = UserInfo(userRepo.findById(it.user.id).get(), null)
 
-                roleInfos.add(UserRoleInfo(
-                        userRole = it,
-                        userInfo = userInfo
-                ))
-            }
+            roleInfos.add(UserRoleInfo(
+                    userRole = it,
+                    userInfo = userInfo
+            ))
         }
 
         val roleInfoPage: Page<UserRoleInfo> = PageImpl(roleInfos, pageable, unapprovedRoles.totalElements)

@@ -1,4 +1,4 @@
-package com.radiotelescope.controller.user
+package com.radiotelescope.controller.user.role
 
 import com.radiotelescope.contracts.role.BaseUserRoleFactory
 import com.radiotelescope.contracts.role.UserUserRoleWrapper

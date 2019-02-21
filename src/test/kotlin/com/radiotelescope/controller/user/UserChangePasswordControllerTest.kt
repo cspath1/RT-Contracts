@@ -136,4 +136,22 @@ internal class UserChangePasswordControllerTest : BaseUserRestControllerTest() {
         assertEquals(HttpStatus.FORBIDDEN, result.status)
         assertEquals(1, result.errors!!.size)
     }
+
+    @Test
+    fun testValidForm_InvalidResourceIdResponse() {
+        // Test the scenario where the form is valid,
+        // but the resource does not exist
+
+        val formCopy = baseForm.copy(
+                id = 420L
+        )
+
+        val result = userChangePasswordController.execute(formCopy)
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.NOT_FOUND, result.status)
+        assertEquals(1, result.errors!!.size)
+    }
 }

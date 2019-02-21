@@ -54,10 +54,8 @@ class Unban(
         } // User exists
         else {
             val theUser = userRepo.findById(id).get()
-
-            if (theUser.status == User.Status.ACTIVE){
-                errors.put(ErrorTag.ID, "User found by Id #$id is not banned")
-            }
+            if(theUser.status != User.Status.BANNED)
+                errors.put(ErrorTag.STATUS, "User found by Id #$id is not banned")
             if (theUser.active){
                 errors.put(ErrorTag.ID, "User found by id #$id is already active")
             }

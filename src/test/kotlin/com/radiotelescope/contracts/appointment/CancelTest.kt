@@ -45,7 +45,9 @@ internal class CancelTest {
             isPublic = true,
             telescopeId = 456,
             userId = 23,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 
@@ -55,7 +57,9 @@ internal class CancelTest {
             isPublic = true,
             telescopeId = 512,
             userId = 54,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 
@@ -65,7 +69,9 @@ internal class CancelTest {
             isPublic = true,
             telescopeId = 513,
             userId = 55,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 
@@ -75,7 +81,9 @@ internal class CancelTest {
             isPublic = true,
             telescopeId = 514,
             userId = 56,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 

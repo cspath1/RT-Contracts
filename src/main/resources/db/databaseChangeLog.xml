@@ -16,4 +16,5 @@
     <include file="classpath:/db/changelog/10-create-profile-picture-table.sql"/>
     <include file="classpath:/db/changelog/11-create-coordinate.sql"/>
     <include file="classpath:/db/changelog/12-add-user-account-hash.sql"/>
+    <include file="classpath:/db/changelog/12-add-hours-minutes-seconds.sql"/>
 </databaseChangeLog>

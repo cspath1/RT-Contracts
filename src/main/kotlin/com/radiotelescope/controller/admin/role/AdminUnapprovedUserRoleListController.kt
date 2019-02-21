@@ -42,7 +42,7 @@ class AdminUnapprovedUserRoleListController(
     fun execute(@RequestParam("page") pageNumber: Int?,
                 @RequestParam("size") pageSize: Int?): Result {
         // If any of the request params are null, respond with errors
-        if (pageNumber == null || pageSize == null) {
+        if((pageNumber == null || pageNumber < 0) || (pageSize == null || pageSize <= 0)) {
             val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(
@@ -59,6 +59,8 @@ class AdminUnapprovedUserRoleListController(
         // Otherwise call the wrapper method
         else {
             roleWrapper.unapprovedList(PageRequest.of(pageNumber, pageSize)) { it ->
+                // NOTE: This command currently only has a success scenario
+                // (given the user is authenticated)
                 // If the command was a success
                 it.success?.let { page ->
                     page.content.forEach {
@@ -71,20 +73,7 @@ class AdminUnapprovedUserRoleListController(
                         )
                     }
 
-                    result = Result(data = it)
-                }
-                // If the command was a failure
-                it.error?.let { errors ->
-                    logger.createErrorLogs(
-                            info = Logger.createInfo(
-                                    affectedTable = Log.AffectedTable.USER_ROLE,
-                                    action = "Retrieve Unapproved Role LogList",
-                                    affectedRecordId = null
-                            ),
-                            errors = errors.toStringMap()
-                    )
-
-                    result = Result(errors = errors.toStringMap())
+                    result = Result(data = page)
                 }
             }?.let {
                 // If we get here, this means the User did not pass authentication

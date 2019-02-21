@@ -82,7 +82,7 @@ internal class UserUserRoleWrapperTest {
         )
 
         val roles = testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )
@@ -101,7 +101,7 @@ internal class UserUserRoleWrapperTest {
         )
 
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
@@ -260,7 +260,7 @@ internal class UserUserRoleWrapperTest {
 
         val error = wrapper.requestRole(
                 request = RequestRole.Request(
-                        userId = userId!!,
+                        user = userRepo.findById(userId!!).get(),
                         role = UserRole.Role.GUEST
                 )
         ){
@@ -278,7 +278,7 @@ internal class UserUserRoleWrapperTest {
 
         val error = wrapper.requestRole(
                 request = RequestRole.Request(
-                        userId = userId!!,
+                        user = userRepo.findById(userId!!).get(),
                         role = UserRole.Role.GUEST
                 )
         ){
@@ -298,7 +298,7 @@ internal class UserUserRoleWrapperTest {
 
         val error = wrapper.requestRole(
                 request = RequestRole.Request(
-                        userId = userId!!,
+                        user = userRepo.findById(userId!!).get(),
                         role = UserRole.Role.GUEST
                 )
         ){

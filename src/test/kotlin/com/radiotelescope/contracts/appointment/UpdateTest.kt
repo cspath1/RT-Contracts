@@ -61,6 +61,8 @@ internal class UpdateTest {
 
     private val twoHours = 2 * 60 * 60 * 1000
 
+    private lateinit var baseRequest: Update.Request
+
     @Before
     fun setUp() {
         // Make sure the sql script was executed
@@ -83,27 +85,31 @@ internal class UpdateTest {
                 telescopeId = 1L
         )
         appointmentId = appointment.id
+
+        baseRequest = Update.Request(
+                id = appointmentId,
+                startTime = Date(appointment.endTime.time + twoHours),
+                endTime = Date(appointment.endTime.time + (twoHours * 2)),
+                telescopeId = 1L,
+                isPublic = true,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
+                declination = 69.0
+        )
     }
 
     @Test
     fun testValid_CorrectConstraints_Guest_Success(){
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
 
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(appointment.endTime.time + twoHours),
-                        endTime = Date(appointment.endTime.time + (twoHours * 2)),
-                        telescopeId = 1L,
-                        isPublic = false,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = baseRequest,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
@@ -119,21 +125,13 @@ internal class UpdateTest {
     fun testValid_CorrectConstraints_Other_Success() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
 
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(appointment.endTime.time + twoHours),
-                        endTime = Date(appointment.endTime.time + (twoHours * 25)),
-                        telescopeId = 1L,
-                        isPublic = false,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = baseRequest,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
@@ -147,17 +145,13 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_AppointmentDoesNotExist_Failure() {
-        val (id, errors) = Update(
-                request = Update.Request(
-                        id = 123456789,
-                        startTime = Date(appointment.endTime.time + 10000L),
-                        endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = 1L,
-                        isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
-                        declination = 69.0
+        // Create a copy of the request with an invalid id
+        val requestCopy = baseRequest.copy(
+                id = 311
+        )
 
-                ),
+        val (id, errors) = Update(
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
@@ -173,17 +167,14 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_StartTimeGreaterThanEndTime_Failure() {
-        val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(appointment.endTime.time + 40000L),
-                        endTime = Date(appointment.endTime.time + 10000L),
-                        telescopeId = 1L,
-                        isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
-                        declination = 69.0
+        // Create a copy of the request with a start time after the end time
+        val requestCopy = baseRequest.copy(
+                startTime = Date(appointment.endTime.time + 40000L),
+                endTime = Date(appointment.endTime.time + 10000L)
+        )
 
-                ),
+        val (id, errors) = Update(
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
@@ -199,16 +190,14 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_StartTimeInPast_Failure() {
+        // Create a copy of the request with a start time in the past
+        val requestCopy = baseRequest.copy(
+                startTime = Date(appointment.startTime.time - 40000L),
+                endTime = Date(appointment.endTime.time + 10000L)
+        )
+
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(System.currentTimeMillis() - 10000L),
-                        endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = 1L,
-                        isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
@@ -224,16 +213,13 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_TelescopeDoesNotExist_Failure() {
+        // Create a copy of the request with an invalid telescope
+        val requestCopy = baseRequest.copy(
+                telescopeId = 311L
+        )
+
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(appointment.endTime.time + 10000L),
-                        endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = 123456789,
-                        isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
@@ -251,21 +237,19 @@ internal class UpdateTest {
     fun testInvalid_ExceedAllottedGuestLimit_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
 
+        // Create a copy of the request with an appointment time over the limit
+        val requestCopy = baseRequest.copy(
+                startTime = Date(appointment.endTime.time + twoHours),
+                endTime = Date(appointment.endTime.time + (twoHours * 5))
+        )
+
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(appointment.endTime.time + twoHours),
-                        endTime = Date(appointment.endTime.time + (twoHours * 5)),
-                        telescopeId = 1L,
-                        isPublic = false,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
@@ -284,21 +268,19 @@ internal class UpdateTest {
     fun testInvalid_ExceededAllottedOtherLimit_Failure() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
 
+        // Create a copy of the request with an appointment time over the limit
+        val requestCopy = baseRequest.copy(
+                startTime = Date(appointment.endTime.time + twoHours),
+                endTime = Date(appointment.endTime.time + (twoHours * 29))
+        )
+
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(appointment.endTime.time + twoHours),
-                        endTime = Date(appointment.endTime.time + (twoHours * 29)),
-                        telescopeId = 1L,
-                        isPublic = false,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
@@ -315,23 +297,22 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_NoCategoryOfService_Failure() {
-        // Make the user a researcher
+        // Make the user a researcher (unapproved)
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = false
         )
 
+        // Create a copy of the request with an appointment time over the limit
+        val requestCopy = baseRequest.copy(
+                startTime = Date(appointment.endTime.time + twoHours),
+                endTime = Date(appointment.endTime.time + (twoHours * 29))
+        )
+
+
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(appointment.endTime.time + twoHours),
-                        endTime = Date(appointment.endTime.time + (twoHours * 29)),
-                        telescopeId = 1L,
-                        isPublic = false,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
@@ -351,10 +332,11 @@ internal class UpdateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
+
         appointment = testUtil.createAppointment(
                 user = user,
                 startTime = Date(startTime),
@@ -370,7 +352,9 @@ internal class UpdateTest {
                 startTime = Date(startTime + 1L),
                 endTime = Date(endTime + 1L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -406,7 +390,9 @@ internal class UpdateTest {
                 startTime = Date(startTime),
                 endTime = Date(startTime + 1000L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -446,7 +432,9 @@ internal class UpdateTest {
                 startTime = Date(startTime + 1000L),
                 endTime = Date(endTime - 1000L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -486,7 +474,9 @@ internal class UpdateTest {
                 startTime = Date(endTime - 1000L),
                 endTime = Date(endTime),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -526,7 +516,9 @@ internal class UpdateTest {
                 startTime = Date(startTime - 2000L),
                 endTime = Date(startTime + 500L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -566,7 +558,9 @@ internal class UpdateTest {
                 startTime = Date(endTime - 500L),
                 endTime = Date(endTime + 1000L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -606,7 +600,9 @@ internal class UpdateTest {
                 startTime = Date(startTime - 1000L),
                 endTime = Date(startTime),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -646,7 +642,9 @@ internal class UpdateTest {
                 startTime = Date(endTime),
                 endTime = Date(endTime + 2000L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -686,7 +684,9 @@ internal class UpdateTest {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -711,7 +711,7 @@ internal class UpdateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -730,7 +730,9 @@ internal class UpdateTest {
                 startTime = Date(startTime + 1L),
                 endTime = Date(endTime + 1L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -751,7 +753,7 @@ internal class UpdateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -770,7 +772,9 @@ internal class UpdateTest {
                 startTime = Date(startTime + 1L),
                 endTime = Date(endTime + 1L),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -815,7 +819,9 @@ internal class UpdateTest {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -864,7 +870,9 @@ internal class UpdateTest {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
-                rightAscension = 311.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
                 declination = 69.0
         )
 
@@ -884,69 +892,153 @@ internal class UpdateTest {
         assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
     }
 
-
     @Test
-    fun testInvalid_RightAscensionTooLow_Failure() {
+    fun testInvalid_HoursTooLow_Failure() {
+        // Create a copy of the request with hours below 0
+        val requestCopy = baseRequest.copy(
+                hours = -311
+        )
+
+        // Execute the command
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(System.currentTimeMillis() - 10000L),
-                        endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = 1L,
-                        isPublic = appointment.isPublic,
-                        rightAscension = -311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
         ).execute()
 
-        // Make sure it was an error
+        // Make sure the command was a failure
         assertNotNull(errors)
         assertNull(id)
 
         // Make sure it was for the expected reason
-        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+        assertTrue(errors!![ErrorTag.HOURS].isNotEmpty())
     }
 
     @Test
-    fun testInvalid_RightAscensionTooGreat_Failure() {
+    fun testInvalid_HoursTooHigh_Failure() {
+        // Create a copy of the request with hours above 24
+        val requestCopy = baseRequest.copy(
+                hours = 311
+        )
+
+        // Execute the command
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(System.currentTimeMillis() - 10000L),
-                        endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = 1L,
-                        isPublic = appointment.isPublic,
-                        rightAscension = 420.0,
-                        declination = 19.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
         ).execute()
 
-        // Make sure it was an error
+        // Make sure the command was a failure
         assertNotNull(errors)
         assertNull(id)
 
         // Make sure it was for the expected reason
-        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+        assertTrue(errors!![ErrorTag.HOURS].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_MinutesTooLow_Failure() {
+        // Create a copy of the request with minutes below 0
+        val requestCopy = baseRequest.copy(
+                minutes = -311
+        )
+
+        // Execute the command
+        val (id, errors) = Update(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it was for the expected reason
+        assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_MinutesTooHigh_Failure() {
+        // Create a copy of the request with minutes above 60
+        val requestCopy = baseRequest.copy(
+                minutes = 311
+        )
+
+        // Execute the command
+        val (id, errors) = Update(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it was for the expected reason
+        assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_SecondsTooLow_Failure() {
+        // Create a copy of the request with seconds below 0
+        val requestCopy = baseRequest.copy(
+                seconds = -311
+        )
+
+        // Execute the command
+        val (id, errors) = Update(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it was for the expected reason
+        assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
+    }
+
+    @Test
+    fun testInvalid_SecondsTooHigh_Failure() {
+        // Create a copy of the request with seconds above 60
+        val requestCopy = baseRequest.copy(
+                seconds = 311
+        )
+
+        // Execute the command
+        val (id, errors) = Update(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it was for the expected reason
+        assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
     }
 
     @Test
     fun testInvalid_DeclinationTooLow_Failure() {
+        // Create a copy of the request with a declination below 0
+        val requestCopy = baseRequest.copy(
+                declination = -99.0
+        )
+
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(System.currentTimeMillis() - 10000L),
-                        endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = 1L,
-                        isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
-                        declination = -99.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo
@@ -962,16 +1054,13 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_DeclinationTooGreat_Failure() {
+        // Create a copy of the request with a declination below 0
+        val requestCopy = baseRequest.copy(
+                declination = 99.0
+        )
+
         val (id, errors) = Update(
-                request = Update.Request(
-                        id = appointmentId,
-                        startTime = Date(System.currentTimeMillis() - 10000L),
-                        endTime = Date(appointment.endTime.time + 40000L),
-                        telescopeId = 1L,
-                        isPublic = appointment.isPublic,
-                        rightAscension = 311.0,
-                        declination = 99.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo

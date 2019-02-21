@@ -53,7 +53,7 @@ internal class RetrieveTest {
         )
 
         val roles = testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )

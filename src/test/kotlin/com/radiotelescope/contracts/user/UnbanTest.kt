@@ -54,7 +54,7 @@ internal class UnbanTest {
         )
 
         userId = theUser.id
-        testUtil.setInactiveStatus(theUser)
+        testUtil.banUser(theUser)
 
         userId2 = theUser2.id
     }
@@ -63,7 +63,7 @@ internal class UnbanTest {
     fun inactiveUserTest(){
         val theUser = userRepo.findById(userId)
 
-        assertTrue(theUser.get().status == User.Status.INACTIVE)
+        assertTrue(theUser.get().status == User.Status.BANNED)
         assertTrue(!theUser.get().active)
     }
 

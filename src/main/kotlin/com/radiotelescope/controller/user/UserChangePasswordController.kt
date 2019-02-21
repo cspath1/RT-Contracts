@@ -55,7 +55,7 @@ class UserChangePasswordController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
-                                    action = "User change password",
+                                    action = "User Change Password",
                                     affectedRecordId = id
                             )
                     )
@@ -68,7 +68,7 @@ class UserChangePasswordController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
-                                    action = "User change password",
+                                    action = "User Change Password",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -82,7 +82,7 @@ class UserChangePasswordController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
-                                action = "User change password",
+                                action = "User Change Password",
                                 affectedRecordId = null
                         ),
                         errors = if (report.missingRoles != null) report.toStringMap() else report.invalidResourceId!!

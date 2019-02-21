@@ -13,6 +13,15 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
+/**
+ * Override of the [Command] interface used to request an appointment.
+ *
+ * @param request the [Request] data class
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param userRepo the [IUserRepository] interface
+ * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param coordinateRepo the [ICoordinateRepository] interface
+ */
 class Request(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
@@ -67,10 +76,14 @@ class Request(
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime < Date())
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
-            if (rightAscension > 360 || rightAscension < 0)
-                errors.put(ErrorTag.RIGHT_ASCENSION, "Right Ascension must be between 0 - 360")
-            if (declination > 90 || declination < 0)
-                errors.put(ErrorTag.DECLINATION, "Declination must be between 0 - 90")
+            if (hours < 0 || hours >= 24)
+                errors.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
+            if (minutes < 0 || minutes >= 60)
+                errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
+            if (seconds < 0 || seconds >= 60)
+                errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
+            if (declination > 90 || declination < -90)
+                errors.put(ErrorTag.DECLINATION, "Declination must be between -90 - 90")
         }
         return if (errors.isEmpty) null else errors
     }
@@ -85,7 +98,9 @@ class Request(
             val endTime: Date,
             val telescopeId: Long,
             val isPublic: Boolean,
-            val rightAscension: Double,
+            val hours: Int,
+            val minutes: Int,
+            val seconds: Int,
             val declination: Double
     ) : BaseCreateRequest<Appointment> {
         /**
@@ -101,9 +116,19 @@ class Request(
             )
         }
 
+        /**
+         * Method that will adapt the request into a [Coordinate] entity object
+         */
         fun toCoordinate(): Coordinate {
             return Coordinate(
-                    rightAscension = rightAscension,
+                    hours = hours,
+                    minutes = minutes,
+                    seconds = seconds,
+                    rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                            hours = hours,
+                            minutes = minutes,
+                            seconds = seconds
+                    ),
                     declination = declination
             )
         }

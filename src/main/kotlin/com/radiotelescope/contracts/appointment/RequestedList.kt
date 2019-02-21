@@ -16,7 +16,7 @@ import org.springframework.data.domain.Pageable
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
  */
-class ListRequest(
+class RequestedList(
         private val pageable: Pageable,
         private val appointmentRepo : IAppointmentRepository,
         private val userRepo : IUserRepository

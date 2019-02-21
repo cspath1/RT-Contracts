@@ -79,6 +79,5 @@ data class User(
         fun generateAccountHash(): String {
             return UUID.randomUUID().toString().replace("-", "")
         }
-
     }
 }

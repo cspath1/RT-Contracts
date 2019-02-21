@@ -1,7 +1,6 @@
 package com.radiotelescope.controller.model.appointment
 
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.repository.coordinate.Coordinate
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
@@ -23,17 +22,14 @@ internal class UpdateFormTest {
         assertNull(baseForm.validateRequest())
 
         val theRequest = baseForm.toRequest()
-        val rightAscensionInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
-                hours = baseForm.hours!!,
-                minutes = baseForm.hours!!,
-                seconds = baseForm.seconds!!
-        )
 
         assertEquals(baseForm.startTime!!, theRequest.startTime)
         assertEquals(baseForm.endTime!!, theRequest.endTime)
         assertEquals(baseForm.telescopeId!!, theRequest.telescopeId)
         assertEquals(baseForm.isPublic!!, theRequest.isPublic)
-        assertEquals(rightAscensionInDegrees, theRequest.rightAscension, 0.00001)
+        assertEquals(baseForm.hours!!, theRequest.hours)
+        assertEquals(baseForm.minutes!!, theRequest.minutes)
+        assertEquals(baseForm.seconds!!, theRequest.seconds)
         assertEquals(baseForm.declination!!, theRequest.declination, 0.00001)
     }
 

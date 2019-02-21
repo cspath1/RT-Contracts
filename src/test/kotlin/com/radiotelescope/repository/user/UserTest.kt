@@ -1,10 +1,13 @@
 package com.radiotelescope.repository.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.model.user.Filter
+import com.radiotelescope.repository.model.user.SearchCriteria
+import com.radiotelescope.repository.model.user.UserSpecificationBuilder
 import com.radiotelescope.repository.role.UserRole
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -13,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
@@ -47,18 +51,27 @@ internal class UserTest {
                 email = "cspath1@ycp.edu",
                 accountHash = "Test Account 1"
         )
+        testUtil.createUserRolesForUser(user, UserRole.Role.MEMBER, true)
+
         val admin1 = testUtil.createUser(
                 email = "rpim@ycp.edu",
                 accountHash = "Test Account 2"
         )
-        testUtil.createUserRolesForUser(admin1.id, UserRole.Role.ADMIN, true)
+        testUtil.createUserRolesForUser(
+                user = admin1,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
 
         val admin2 = testUtil.createUser(
                 email = "rpim2@ycp.edu",
                 accountHash = "Test Account 3"
         )
-        testUtil.createUserRolesForUser(admin2.id, UserRole.Role.ADMIN, true)
-
+        testUtil.createUserRolesForUser(
+                user = admin2,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
 
         // Set the email variable to be used used in the IUserRepository existsByEmail query
         email = user.email
@@ -114,5 +127,61 @@ internal class UserTest {
         val adminEmailList = userRepo.findAllAdminEmail()
 
         assertTrue(adminEmailList.size == 2)
+    }
+
+    @Test
+    fun findAllNonAdminUser() {
+        val userPage = userRepo.findAllNonAdminUsers(PageRequest.of(0, 25))
+
+        assertNotNull(userPage)
+        assertEquals(1, userPage.content.size)
+
+        // Should be the email of the non-admin user
+        assertEquals(email, userPage.content[0].email)
+    }
+
+    @Test
+    fun testSearchEmail() {
+        val searchCriteria = SearchCriteria(Filter.EMAIL, "rpim")
+        val specification = UserSpecificationBuilder().with(searchCriteria).build()
+
+        val userList = userRepo.findAll(specification)
+
+        assertNotNull(userList)
+        assertEquals(2, userList.size)
+
+        for (user in userList) {
+            assertTrue(user.email.contains("rpim"))
+        }
+    }
+
+    @Test
+    fun testSearchFirstNameOrLastName() {
+        val searchCriteriaOne = SearchCriteria(Filter.FIRST_NAME, "Fir")
+        val searchCriteriaTwo = SearchCriteria(Filter.LAST_NAME, "La")
+
+        val specification = UserSpecificationBuilder().with(searchCriteriaOne).with(searchCriteriaTwo).build()
+
+        val userList = userRepo.findAll(specification)
+
+        assertNotNull(userList)
+        assertEquals(3, userList.size)
+    }
+
+    @Test
+    fun testSearchCompanyName() {
+        val user = userRepo.findByEmail(email)!!
+        user.company = "York College of PA"
+
+        // Should still return the above user
+        val searchCriteria = SearchCriteria(Filter.COMPANY, "york college")
+
+        val specification = UserSpecificationBuilder().with(searchCriteria).build()
+
+        val userList = userRepo.findAll(specification)
+
+        assertNotNull(userList)
+        assertEquals(1, userList.size)
+        assertEquals(user.email, userList[0].email)
     }
 }

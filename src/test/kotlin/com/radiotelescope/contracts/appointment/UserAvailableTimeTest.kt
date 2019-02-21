@@ -66,7 +66,7 @@ internal class UserAvailableTimeTest {
     fun testValid_Guess_Success(){
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -99,7 +99,7 @@ internal class UserAvailableTimeTest {
     fun testValid_OtherUser_Success(){
         // Make the user role other than guess
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -132,7 +132,7 @@ internal class UserAvailableTimeTest {
     fun testInvalid_UserDoesNotExist_Failure(){
         // Make a user role
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )

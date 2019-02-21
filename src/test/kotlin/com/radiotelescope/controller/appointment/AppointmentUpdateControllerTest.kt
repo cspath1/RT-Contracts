@@ -66,7 +66,7 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
         )
 
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )

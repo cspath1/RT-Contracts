@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -199,14 +200,14 @@ class BaseAppointmentFactory(
     }
 
     /**
-     * Override of the [AppointmentFactory.listRequest] method that will return a [ListRequest]
+     * Override of the [AppointmentFactory.listRequest] method that will return a [RequestedList]
      * command object
      *
      * @param pageable the [Pageable] object that has the page number and page size
-     * @return a [ListRequest] command
+     * @return a [RequestedList] command
      */
-    override fun listRequest(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
-        return ListRequest(
+    override fun requestedList(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        return RequestedList(
                 pageable = pageable,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo
@@ -214,7 +215,7 @@ class BaseAppointmentFactory(
     }
 
     /**
-     * Override of the [AppointmentFactory.approveDenyRequest] method that will return a [ListRequest]
+     * Override of the [AppointmentFactory.approveDenyRequest] method that will return a [RequestedList]
      * command object
      *
      * @param request the [ApproveDenyRequest.Request] object
@@ -240,6 +241,19 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
+        )
+    }
+
+    /**
+     * Override of the [AppointmentFactory.search] method that will return a [Search] command object
+     *
+     * @return a [Search] command object
+     */
+    override fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+        return Search(
+                searchCriteria = searchCriteria,
+                pageable = pageable,
+                appointmentRepo = appointmentRepo
         )
     }
 }

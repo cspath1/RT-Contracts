@@ -60,7 +60,9 @@ internal class RequestTest {
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             isPublic = true,
-            rightAscension = 311.0,
+            hours = 12,
+            minutes = 12,
+            seconds = 12,
             declination = 69.0
     )
 
@@ -80,18 +82,15 @@ internal class RequestTest {
     }
 
     @Test
-    fun testValid_CorrectConstraints_Success(){
+    fun testValid_CorrectConstraints_Success() {
+        // Create a copy of the request with a valid id
+        val requestCopy = baseRequest.copy(
+                userId = user.id
+        )
+
         // Execute the command
         val (id, errors) = Request(
-                request =  Request.Request(
-                        userId = user.id,
-                        telescopeId = telescope.getId(),
-                        startTime = baseRequest.startTime,
-                        endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -104,18 +103,15 @@ internal class RequestTest {
     }
 
     @Test
-    fun testInvalid_UserDoesNotExist_Failure(){
+    fun testInvalid_UserDoesNotExist_Failure() {
+        // Create a copy of the request with an invalid id
+        val requestCopy = baseRequest.copy(
+                userId = 123456789
+        )
+
         // Execute the command
         val (id, errors) = Request(
-                request =  Request.Request(
-                        userId = 123456789,
-                        telescopeId = telescope.getId(),
-                        startTime = baseRequest.startTime,
-                        endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -131,18 +127,16 @@ internal class RequestTest {
     }
 
     @Test
-    fun testInvalid_TelescopeDoesNotExist_Failure(){
+    fun testInvalid_TelescopeDoesNotExist_Failure() {
+        // Create a copy of the request with an invalid telescope id
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                telescopeId = 311L
+        )
+
         // Execute the command
         val (id, errors) = Request(
-                request =  Request.Request(
-                        userId = user.id,
-                        telescopeId = 123456789,
-                        startTime = baseRequest.startTime,
-                        endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -158,18 +152,16 @@ internal class RequestTest {
     }
 
     @Test
-    fun testInvalid_StartTimeIsBeforeCurrentTime_Failure(){
+    fun testInvalid_StartTimeIsBeforeCurrentTime_Failure() {
+        // Create a copy of the request with an start time before now
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                startTime = Date(System.currentTimeMillis() - 1000L)
+        )
+
         // Execute the command
         val (id, errors) = Request(
-                request =  Request.Request(
-                        userId = user.id,
-                        telescopeId = telescope.getId(),
-                        startTime = Date(System.currentTimeMillis() - 1000L),
-                        endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -185,18 +177,17 @@ internal class RequestTest {
     }
 
     @Test
-    fun testInvalid_StartTimeIsAfterEndTime_Failure(){
+    fun testInvalid_StartTimeIsAfterEndTime_Failure() {
+        // Create a copy of the request with a start time before the end time
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                startTime = baseRequest.endTime,
+                endTime = baseRequest.startTime
+        )
+
         // Execute the command
         val (id, errors) = Request(
-                request =  Request.Request(
-                        userId = user.id,
-                        telescopeId = telescope.getId(),
-                        startTime = baseRequest.endTime,
-                        endTime = baseRequest.startTime,
-                        isPublic = baseRequest.isPublic,
-                        rightAscension = 311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -212,18 +203,16 @@ internal class RequestTest {
     }
 
     @Test
-    fun testRightAscensionTooLow_Failure() {
+    fun testHoursTooLow_Failure() {
+        // Create a copy of the request with hours below 0
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                hours = -311
+        )
+
         // Execute the command
         val (id, errors) = Request(
-                request = Request.Request(
-                        userId = user.id,
-                        telescopeId = telescope.getId(),
-                        startTime = baseRequest.startTime,
-                        endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic,
-                        rightAscension = -311.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -235,22 +224,20 @@ internal class RequestTest {
         assertNotNull(errors)
 
         // Make sure it failed for the correct reason
-        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+        assertTrue(errors!![ErrorTag.HOURS].isNotEmpty())
     }
 
     @Test
-    fun testRightAscensionTooGreat_Failure() {
+    fun testHoursTooHigh_Failure() {
+        // Create a copy of the request with hours above 24
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                hours = 311
+        )
+
         // Execute the command
         val (id, errors) = Request(
-                request = Request.Request(
-                        userId = user.id,
-                        telescopeId = telescope.getId(),
-                        startTime = baseRequest.startTime,
-                        endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic,
-                        rightAscension = 666.0,
-                        declination = 69.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -262,22 +249,120 @@ internal class RequestTest {
         assertNotNull(errors)
 
         // Make sure it failed for the correct reason
-        assertTrue(errors!![ErrorTag.RIGHT_ASCENSION].isNotEmpty())
+        assertTrue(errors!![ErrorTag.HOURS].isNotEmpty())
+    }
+
+    @Test
+    fun testMinutesTooLow_Failure() {
+        // Create a copy of the request with minutes below 0
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                minutes = -311
+        )
+
+        // Execute the command
+        val (id, errors) = Request(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
+    }
+
+    @Test
+    fun testMinutesTooHigh_Failure() {
+        // Create a copy of the request with minutes above 60
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                hours = 311
+        )
+
+        // Execute the command
+        val (id, errors) = Request(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertTrue(errors!![ErrorTag.HOURS].isNotEmpty())
+    }
+
+    @Test
+    fun testSecondsTooLow_Failure() {
+        // Create a copy of the request with seconds below 0
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                seconds = -311
+        )
+
+        // Execute the command
+        val (id, errors) = Request(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
+    }
+
+    @Test
+    fun testSecondsTooHigh_Failure() {
+        // Create a copy of the request with seconds above 60
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                seconds = 311
+        )
+
+        // Execute the command
+        val (id, errors) = Request(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNull(id)
+        assertNotNull(errors)
+
+        // Make sure it failed for the correct reason
+        assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
     }
 
     @Test
     fun testDeclinationTooLow_Failure() {
+        // Create a copy of the request with a declination below 0
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                declination = -311.0
+        )
+
         // Execute the command
         val (id, errors) = Request(
-                request = Request.Request(
-                        userId = user.id,
-                        telescopeId = telescope.getId(),
-                        startTime = baseRequest.startTime,
-                        endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic,
-                        rightAscension = 311.0,
-                        declination = -311.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -294,17 +379,15 @@ internal class RequestTest {
 
     @Test
     fun testDeclinationTooGreat_Failure() {
+        // Create a copy of the request with a declination above 90
+        val requestCopy = baseRequest.copy(
+                userId = user.id,
+                declination = 311.0
+        )
+
         // Execute the command
         val (id, errors) = Request(
-                request = Request.Request(
-                        userId = user.id,
-                        telescopeId = telescope.getId(),
-                        startTime = baseRequest.startTime,
-                        endTime = baseRequest.endTime,
-                        isPublic = baseRequest.isPublic,
-                        rightAscension = 311.0,
-                        declination = 666.0
-                ),
+                request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,

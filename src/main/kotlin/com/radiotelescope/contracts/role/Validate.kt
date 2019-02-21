@@ -34,7 +34,7 @@ class Validate(
             val id = updateRole()
 
             // Delete any old roles or any other requested roles
-            val roleList = userRoleRepo.findAllByUserId(userRoleRepo.findById(request.id).get().userId!!)
+            val roleList = userRoleRepo.findAllByUserId(userRoleRepo.findById(request.id).get().user.id)
             roleList.forEach { theRole ->
                 if(theRole.id != request.id && theRole.role != UserRole.Role.USER)
                     userRoleRepo.delete(theRole)
@@ -90,7 +90,7 @@ class Validate(
     /**
      * Data class containing all fields necessary for role approval
      *
-     * @param id the [UserRole.id]
+     * @param id the [UserRole.user]'s id
      * @param role the desired [UserRole.Role] value
      */
     data class Request(

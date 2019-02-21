@@ -8,6 +8,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 
 /**
  * Override of the [Command] interface for a user to request new user role
@@ -36,7 +37,7 @@ class RequestRole(
             return SimpleResult(null, errors)
 
         // Delete any old request
-        val roleList = userRoleRepo.findAllByUserId(request.userId)
+        val roleList = userRoleRepo.findAllByUserId(request.user.id)
         roleList.forEach { role ->
             if(!role.approved)
                 userRoleRepo.delete(role)
@@ -57,11 +58,11 @@ class RequestRole(
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
         with(request) {
-            if(!userRepo.existsById(userId))
+            if(!userRepo.existsById(user.id))
                 errors.put(ErrorTag.USER_ID, "User does not exist")
             else{
-                if(userRoleRepo.findMembershipRoleByUserId(userId) != null)
-                    if(userRoleRepo.findMembershipRoleByUserId(userId)!!.role == role)
+                if(userRoleRepo.findMembershipRoleByUserId(user.id) != null)
+                    if(userRoleRepo.findMembershipRoleByUserId(user.id)!!.role == role)
                         errors.put(ErrorTag.ROLE, "New role is the same as the current role")
                 if(role == UserRole.Role.ADMIN)
                     errors.put(ErrorTag.ROLE, "Cannot set request admin role")
@@ -79,11 +80,11 @@ class RequestRole(
      * Data class containing all fields necessary for requesting
      * a new role
      *
-     * @param userId the User's id
+     * @param user the User
      * @param role the desired [UserRole.Role] value
      */
     data class Request(
-            val userId: Long,
+            val user: User,
             val role: UserRole.Role
     ) : BaseCreateRequest<UserRole> {
         /**
@@ -92,7 +93,7 @@ class RequestRole(
          */
         override fun toEntity(): UserRole {
             val theUserRole = UserRole(
-                    userId = userId,
+                    user = user,
                     role = role
             )
 

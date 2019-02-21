@@ -22,7 +22,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class ListRequestTest {
+internal class RequestedListTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -67,7 +67,7 @@ internal class ListRequestTest {
 
     @Test
     fun testValid_Success(){
-        val(infoPage, error) = ListRequest(
+        val(infoPage, error) = RequestedList(
                 pageable = PageRequest.of(0, 10),
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo

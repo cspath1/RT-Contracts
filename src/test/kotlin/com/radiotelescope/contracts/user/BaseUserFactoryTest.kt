@@ -183,4 +183,27 @@ internal class BaseUserFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is ChangePassword)
     }
+
+    @Test
+    fun search() {
+        // Call the factory method
+        val cmd = factory.search(
+                searchCriteria = listOf(),
+                pageable = PageRequest.of(0, 10)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Search)
+    }
+
+    @Test
+    fun invite(){
+        // Call the factory method
+        val cmd = factory.invite(
+                email = "email@email.email"
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Invite)
+    }
 }

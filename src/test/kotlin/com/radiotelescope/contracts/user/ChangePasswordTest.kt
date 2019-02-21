@@ -2,7 +2,6 @@ package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.repository.user.User
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.junit.Assert.*

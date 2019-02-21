@@ -8,7 +8,6 @@ import com.radiotelescope.controller.model.ses.AppLink
 import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
-import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.web.bind.annotation.*

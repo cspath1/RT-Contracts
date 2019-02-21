@@ -138,7 +138,7 @@ internal class ApproveDenyRequestTest {
                 appointmentRepo = appointmentRepo
         ).execute()
 
-        // Make sure the command was a success
+        // Make sure the command was not a success
         assertNull(id)
         assertNotNull(errors)
 
@@ -514,7 +514,7 @@ internal class ApproveDenyRequestTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -555,7 +555,7 @@ internal class ApproveDenyRequestTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )

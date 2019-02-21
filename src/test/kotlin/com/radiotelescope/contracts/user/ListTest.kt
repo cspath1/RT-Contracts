@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
@@ -47,18 +48,23 @@ internal class ListTest {
     @Before
     fun setUp() {
         // Create a few user's
-        testUtil.createUser(
+        val user1 = testUtil.createUser(
                 email = "cspath1@ycp.edu",
                 accountHash = "Test Account 1"
         )
-        testUtil.createUser(
+        testUtil.createUserRolesForUser(user1, UserRole.Role.MEMBER, true)
+
+        val user2 = testUtil.createUser(
                 email = "spathcody@gmail.com",
                 accountHash = "Test Account 2"
         )
-        testUtil.createUser(
+        testUtil.createUserRolesForUser(user2, UserRole.Role.RESEARCHER, true)
+
+        val user3 = testUtil.createUser(
                 email = "codyspath@gmail.com",
                 accountHash = "Test Account 3"
         )
+        testUtil.createUserRolesForUser(user3, UserRole.Role.GUEST, true)
     }
 
     @Test
@@ -76,6 +82,7 @@ internal class ListTest {
 
     @Test
     fun testEmptyRepo_Success() {
+        userRoleRepo.deleteAll()
         userRepo.deleteAll()
 
         val (page, errors) = List(

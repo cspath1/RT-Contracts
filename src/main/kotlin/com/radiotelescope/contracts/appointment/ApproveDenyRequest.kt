@@ -7,6 +7,12 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 
+/**
+ * Override of the [Command] interface used to approve or deny appointment requests.
+ *
+ * @param request the [ApproveDenyRequest.Request] data class
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ */
 class ApproveDenyRequest(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository
@@ -15,7 +21,7 @@ class ApproveDenyRequest(
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
      *
-     * If validation passes, it will set [Appointment.status] to SCHEDULED
+     * If validation passes, it will set [Appointment.status] to Scheduled
      * and return the id in the [SimpleResult] object.
      *
      * If validation fails, it will return a [SimpleResult] with the errors

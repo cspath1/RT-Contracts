@@ -18,14 +18,14 @@ class BaseLogFactory(
         private val userRepo: IUserRepository
 ) : LogFactory {
     /**
-     * Override of the [LogFactory.list] method that will return a [LogList]
+     * Override of the [LogFactory.list] method that will return a [List]
      * command object
      *
      * @param pageable the [Pageable] interface
-     * @return a [LogList] command object
+     * @return a [List] command object
      */
     override fun list(pageable: Pageable): Command<Page<LogInfo>, Multimap<ErrorTag, String>> {
-        return LogList(
+        return List(
                 pageable = pageable,
                 logRepo = logRepo,
                 userRepo = userRepo
@@ -39,7 +39,7 @@ class BaseLogFactory(
      * @param logId the Log id
      * @return a [RetrieveErrors]
      */
-    override fun retrieveErrors(logId: Long): Command<List<ErrorInfo>, Multimap<ErrorTag, String>> {
+    override fun retrieveErrors(logId: Long): Command<kotlin.collections.List<ErrorInfo>, Multimap<ErrorTag, String>> {
         return RetrieveErrors(
                 logId = logId,
                 logRepo = logRepo

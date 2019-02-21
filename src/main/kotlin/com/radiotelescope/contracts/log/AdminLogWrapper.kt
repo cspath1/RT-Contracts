@@ -7,6 +7,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import kotlin.collections.List
 
 /**
  * Wrapper that takes a [LogFactory] and is responsible for all
@@ -22,7 +23,7 @@ class AdminLogWrapper(
 ) {
     /**
      * Wrapper method for the [LogFactory.list] method that adds Spring Security
-     * authentication to the [LogList] command object.
+     * authentication to the [List] command object.
      *
      * @param pageable the [Pageable] interface
      * @return An [AccessReport] if authentication fails or null

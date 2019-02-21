@@ -81,7 +81,7 @@ internal class AppointmentRequestControllerTest : BaseAppointmentRestControllerT
         )
 
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.MEMBER,
                 isApproved = true
         )

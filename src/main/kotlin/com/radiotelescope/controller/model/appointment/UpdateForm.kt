@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.Update
 import com.radiotelescope.controller.model.BaseForm
-import com.radiotelescope.repository.coordinate.Coordinate
 import java.util.*
 
 /**
@@ -39,11 +38,9 @@ data class UpdateForm (
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
                 isPublic = isPublic!!,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
-                        hours = hours!!,
-                        minutes = minutes!!,
-                        seconds = seconds!!
-                ),
+                hours = hours!!,
+                minutes = minutes!!,
+                seconds = seconds!!,
                 declination = declination!!
         )
     }

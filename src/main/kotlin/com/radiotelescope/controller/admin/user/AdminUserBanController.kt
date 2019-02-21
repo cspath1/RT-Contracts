@@ -9,7 +9,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.AccessReport
-import com.radiotelescope.service.ses.AwsSesSendService
+import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.*
  *
  * @param userWrapper the [UserUserWrapper]
  * @param userRepo the [IUserRepository]
- * @param awsSesSendService the [AwsSesSendService]
+ * @param awsSesSendService the [IAwsSesSendService]
  * @param logger the [Logger] service
  */
 @RestController
 class AdminUserBanController(
         private val userWrapper: UserUserWrapper,
         private val userRepo: IUserRepository,
-        private val awsSesSendService: AwsSesSendService,
+        private val awsSesSendService: IAwsSesSendService,
         logger: Logger
 ): BaseRestController(logger) {
     /**
@@ -42,7 +42,10 @@ class AdminUserBanController(
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["api/users/{userId}/ban"])
     fun execute(@PathVariable("userId") userId: Long,
-                @RequestParam message: String
+                @RequestParam(
+                        value = "message",
+                        required = false,
+                        defaultValue = "") message: String?
     ): Result {
         userWrapper.ban(id = userId) { it->
             // If the command was a success
@@ -91,14 +94,25 @@ class AdminUserBanController(
         return result
     }
 
-    private fun sendEmail(email: String, message: String) {
-        val sendForm = SendForm(
-                toAddresses = listOf(email),
-                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
-                subject = "Banned By Admin",
-                htmlBody = "<p>You have been banned. The reason for your ban is as follows: " +
-                        "$message</p>"
-        )
+    private fun sendEmail(email: String, message: String?) {
+        val sendForm: SendForm
+        if(!message.isNullOrBlank()) {
+            sendForm = SendForm(
+                    toAddresses = listOf(email),
+                    fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                    subject = "Banned By Admin",
+                    htmlBody = "<p>You have been banned. The reason for your ban is as follows: " +
+                            "$message</p>"
+            )
+        }
+        else {
+            sendForm = SendForm(
+                    toAddresses = listOf(email),
+                    fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                    subject = "Banned By Admin",
+                    htmlBody = "<p>You have been banned.</p>"
+            )
+        }
 
         awsSesSendService.execute(sendForm)
     }

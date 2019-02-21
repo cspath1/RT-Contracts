@@ -27,7 +27,7 @@ class UserRetrieveController(
 ) : BaseRestController(logger) {
     /**
      * Execute method that is in charge of taking the id [PathVariable]
-     * and making sure it is not null. If it is, respond with and error.
+     * and making sure it is not null. If it is, respond with an error.
      *
      * Otherwise, execute the [UserUserWrapper.retrieve] method. If this
      * method returns an [AccessReport] respond with the errors. If not,

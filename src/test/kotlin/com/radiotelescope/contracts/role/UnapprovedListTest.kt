@@ -58,13 +58,13 @@ internal class UnapprovedListTest {
         )
 
         val firstRoles = testUtil.createUserRolesForUser(
-                userId = firstUser.id,
+                user = firstUser,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = false
         )
 
         val secondRoles = testUtil.createUserRolesForUser(
-                userId = secondUser.id,
+                user = secondUser,
                 role = UserRole.Role.MEMBER,
                 isApproved = false
         )

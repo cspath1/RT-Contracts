@@ -25,9 +25,9 @@ import org.springframework.stereotype.Component
  */
 @Component("userContext")
 class UserContextImpl(
-        private var userRepo: IUserRepository,
-        private var userRoleRepo: IUserRoleRepository,
-        private var retrieveAuthUserService: RetrieveAuthUserService
+        private val userRepo: IUserRepository,
+        private val userRoleRepo: IUserRoleRepository,
+        private val retrieveAuthUserService: RetrieveAuthUserService
 ) : UserContext {
 
     /**
@@ -50,7 +50,7 @@ class UserContextImpl(
             }
 
 
-            // Check if the token's user id is null or refers to a non-existent user
+            // Check if the token's user id refers to a non-existent user
             if (!userRepo.existsById(session.userId))
                 missingRoles?.add(UserRole.Role.USER)
             // Otherwise, we can check if the proper roles

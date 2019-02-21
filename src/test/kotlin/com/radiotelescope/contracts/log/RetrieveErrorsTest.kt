@@ -57,7 +57,7 @@ internal class RetrieveErrorsTest {
 
         // Persist an error log
         theLog = testUtil.createErrorLog(
-                userId = null,
+                user = null,
                 affectedRecordId = null,
                 affectedTable = Log.AffectedTable.USER,
                 action = "User Registration",

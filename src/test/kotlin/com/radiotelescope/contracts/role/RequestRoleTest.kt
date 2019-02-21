@@ -55,7 +55,7 @@ internal class RequestRoleTest {
         )
 
         baseRole = testUtil.createUserRoleForUser(
-                user.id,
+                user,
                 UserRole.Role.USER,
                 true
         )
@@ -66,7 +66,7 @@ internal class RequestRoleTest {
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.GUEST,
-                        userId = user.id
+                        user = user
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
@@ -81,7 +81,7 @@ internal class RequestRoleTest {
     fun testValid_OlderRequestIsRemove_Success() {
         // Make a request for Student user role
         testUtil.createUserRoleForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )
@@ -92,7 +92,7 @@ internal class RequestRoleTest {
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.GUEST,
-                        userId = user.id
+                        user = user
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
@@ -117,36 +117,17 @@ internal class RequestRoleTest {
     }
 
     @Test
-    fun testInvalid_UserDoesNotExist_Failure() {
-        val(id, errors) = RequestRole(
-                request = RequestRole.Request(
-                        role = UserRole.Role.GUEST,
-                        userId = 123456789
-                ),
-                userRepo = userRepo,
-                userRoleRepo = userRoleRepo
-        ).execute()
-
-        // Make sure the command was a success
-        assertNull(id)
-        assertNotNull(errors)
-
-        // Make sure it fail because of the correct reason
-        assertTrue(errors!![ErrorTag.USER_ID].isNotEmpty())
-    }
-
-    @Test
     fun testInvalid_SameRole_Failure() {
         // Persist a User Role
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.RESEARCHER,
-                        userId = user.id
+                        user = user
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
@@ -165,7 +146,7 @@ internal class RequestRoleTest {
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.ADMIN,
-                        userId = user.id
+                        user = user
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
@@ -184,7 +165,7 @@ internal class RequestRoleTest {
         val(id, errors) = RequestRole(
                 request = RequestRole.Request(
                         role = UserRole.Role.USER,
-                        userId = user.id
+                        user = user
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo

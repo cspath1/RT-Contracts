@@ -9,6 +9,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Rest Controller to handle retrieving a list of logs
+ * Rest Controller to handle retrieving a [Page] of logs
  *
  * @param logWrapper the [AdminLogWrapper]
  * @param logger the [Logger] service
@@ -43,7 +44,7 @@ class AdminLogListController(
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.USER,
+                            affectedTable = Log.AffectedTable.LOG,
                             action = "Log List Retrieval",
                             affectedRecordId = null
                     ),
@@ -59,13 +60,11 @@ class AdminLogListController(
             logWrapper.list(
                     pageable = pageRequest
             ) { it ->
+                // NOTE: This command currently only has a success scenario
+                // (given the user is authenticated)
                 // If the command was a success
                 it.success?.let {
                     result = Result(data = it)
-                }
-                // If the command was a failure
-                it.error?.let {
-                    result = Result(errors = it.toStringMap())
                 }
             }?.let {
                 // If we get here, this means the User did not pass validation

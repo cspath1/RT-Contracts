@@ -3,6 +3,8 @@ package com.radiotelescope.contracts.user
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.profilePicture.IProfilePictureRepository
+import com.radiotelescope.repository.model.user.Filter
+import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -111,10 +113,22 @@ internal class UserUserWrapperTest {
                 accountHash = "Test Account 1"
         )
 
+        testUtil.createUserRolesForUser(
+                user = user,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
         val otherUser = testUtil.createUserWithEncodedPassword(
                 email = "codyspath@gmail.com",
                 password = "Password",
                 accountHash = "Test Account 2"
+        )
+
+        testUtil.createUserRolesForUser(
+                user = otherUser,
+                role = UserRole.Role.MEMBER,
+                isApproved = true
         )
 
         userId = user.id
@@ -631,5 +645,70 @@ internal class UserUserWrapperTest {
         }
 
         assertNull(error)
+    }
+
+    @Test
+    fun testSearch_User_Success() {
+        // Log the user in
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Create the SearchCriteria list
+        val searchCriteria = arrayListOf<SearchCriteria>()
+        searchCriteria.add(SearchCriteria(Filter.FIRST_NAME, "First"))
+
+        val error = wrapper.search(
+                searchCriteria = searchCriteria,
+                pageable = PageRequest.of(0, 20)
+        ) {
+            assertNull(it.error)
+            assertNotNull(it.success)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testSearch_NotLoggedIn_Failure() {
+        // Create the SearchCriteria list
+        val searchCriteria = arrayListOf<SearchCriteria>()
+        searchCriteria.add(SearchCriteria(Filter.FIRST_NAME, "First"))
+
+        val error = wrapper.search(
+                searchCriteria = searchCriteria,
+                pageable = PageRequest.of(0, 10)
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+    }
+
+    @Test
+    fun testInvite_User_Success() {
+        // Log the user in and make them an admin
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.invite(
+                email = "whatever@email.mail"
+        ) {
+            assertTrue(it.success!!)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testInvite_NotLoggedIn_Failure() {
+        val error = wrapper.invite(
+                email = "whatever@email.mail"
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 }
