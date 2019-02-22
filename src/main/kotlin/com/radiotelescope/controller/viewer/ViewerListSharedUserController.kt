@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
- * REST Controller to handle grabbing a list of shared Appointment
+ * REST Controller to handle grabbing a list of shared User
  *
  * @param viewerWrapper the [UserViewerWrapper]
  * @param logger the [Logger] service
  */
-class ViewerListSharedAppointmentController(
+class ViewerListSharedUserController(
         private val viewerWrapper: UserViewerWrapper,
         logger: Logger
-) : BaseRestController(logger) {
+) : BaseRestController(logger){
     /**
      * Execute method that is in charge of checking if the page parameters are
      * not null. If they are, it will instead respond with errors
@@ -33,7 +33,7 @@ class ViewerListSharedAppointmentController(
      * Otherwise, it will execute the [UserViewerWrapper.listSharedAppointment] method.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/user/{id}/sharedAppointment"])
+    @GetMapping(value = ["/api/appointment/{id}/sharedUser"])
     fun execute(@PathVariable("id") id: Long,
                 @RequestParam("page") pageNumber: Int,
                 @RequestParam("size") pageSize: Int): Result {
@@ -42,19 +42,19 @@ class ViewerListSharedAppointmentController(
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Shared Appointment List Retrieval",
+                            affectedTable = Log.AffectedTable.USER,
+                            action = "Shared User List Retrieval",
                             affectedRecordId = null
                     ),
                     errors = errors.toStringMap()
             )
 
-            result = Result(errors = errors.toStringMap())
+            result = com.radiotelescope.controller.model.Result(errors = errors.toStringMap())
         } else {
             // Sort by most recent
-            val sort = Sort(Sort.Direction.DESC, "end_time")
-            viewerWrapper.listSharedAppointment(
-                    userId = id,
+            val sort = Sort(Sort.Direction.DESC, "id")
+            viewerWrapper.listSharedUser(
+                    appointmentId = id,
                     pageable = PageRequest.of(pageNumber, pageSize, sort)
             ) {
                 // If the command was a success
@@ -63,33 +63,32 @@ class ViewerListSharedAppointmentController(
                     page.forEach{ info ->
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
-                                        affectedTable = Log.AffectedTable.APPOINTMENT,
-                                        action = "Shared Appointment List Retrieval",
+                                        affectedTable = Log.AffectedTable.USER,
+                                        action = "Shared User List Retrieval",
                                         affectedRecordId = info.id
                                 )
                         )
                     }
                     result = Result(data = page)
                 }
-                // If the command was a failure
-                it.error?.let { errors ->
+                it.error?.let {errors ->
                     logger.createErrorLogs(
                             info = Logger.createInfo(
-                                    affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Shared Appointment List Retrieval",
+                                    affectedTable = Log.AffectedTable.USER,
+                                    action = "Shared User List Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
                     )
                     result = Result(errors = errors.toStringMap())
                 }
-            }?.let {
+            } ?.let {
                 // If we get here, this means the User did not pass validation
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Shared Appointment List Retrieval",
+                                affectedTable = Log.AffectedTable.USER,
+                                action = "Shared User List Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

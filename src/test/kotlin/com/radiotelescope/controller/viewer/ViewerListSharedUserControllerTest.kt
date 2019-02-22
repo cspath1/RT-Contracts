@@ -1,10 +1,10 @@
 package com.radiotelescope.controller.viewer
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -24,7 +24,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControllerTest() {
+internal class ViewerListSharedUserControllerTest : BaseViewerRestControllerTest()  {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -44,7 +44,7 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private lateinit var viewerListSharedAppointmentController: ViewerListSharedAppointmentController
+    private lateinit var viewerListSharedUserController: ViewerListSharedUserController
     private lateinit var user: User
     private lateinit var researcher: User
     private lateinit var appointment: Appointment
@@ -53,7 +53,7 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
     override fun init() {
         super.init()
 
-        viewerListSharedAppointmentController = ViewerListSharedAppointmentController(
+        viewerListSharedUserController = ViewerListSharedUserController(
                 viewerWrapper = getWrapper(),
                 logger = getLogger()
         )
@@ -80,11 +80,11 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         // the result object is correctly set
 
         // Simulate a login
-        getContext().login(user.id)
-        getContext().currentRoles.addAll(listOf(UserRole.Role.USER))
+        getContext().login(researcher.id)
+        getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
-        val result = viewerListSharedAppointmentController.execute(
-                id = user.id,
+        val result = viewerListSharedUserController.execute(
+                id = appointment.id,
                 pageNumber = 0,
                 pageSize = 25
         )
@@ -104,11 +104,11 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         // the result object is correctly set
 
         // Simulate a login
-        getContext().login(user.id)
-        getContext().currentRoles.addAll(listOf(UserRole.Role.USER))
+        getContext().login(researcher.id)
+        getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
-        val result = viewerListSharedAppointmentController.execute(
-                id = user.id,
+        val result = viewerListSharedUserController.execute(
+                id = appointment.id,
                 pageNumber = -1,
                 pageSize = 25
         )
@@ -120,7 +120,6 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
-
     }
 
     @Test
@@ -129,9 +128,8 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         // the result object is correctly set
 
         // Do not simulate a login
-
-        val result = viewerListSharedAppointmentController.execute(
-                id = user.id,
+        val result = viewerListSharedUserController.execute(
+                id = appointment.id,
                 pageNumber = 0,
                 pageSize = 25
         )
@@ -144,4 +142,5 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
     }
+
 }
