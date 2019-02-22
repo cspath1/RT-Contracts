@@ -49,9 +49,10 @@ class RoleRequestController (
                 userId = userId,
                 role = role
         )
+
         // If any of the request params are null, respond with errors
         val errors = form.validateRequest()
-        if(errors != null) {
+        if (errors != null) {
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
@@ -67,9 +68,9 @@ class RoleRequestController (
         // Otherwise, call the wrapper method
         else {
             val request = form.toRequest()
-            roleWrapper.requestRole(request) { it ->
+            roleWrapper.requestRole(request) { response ->
                 //If the command was a success
-                it.success?.let{
+                response.success?.let{
                     // Create success logs
                     logger.createSuccessLog(
                             info = Logger.createInfo(
@@ -84,7 +85,7 @@ class RoleRequestController (
 
                 }
                 // If the command was a failure
-                it.error?.let{ errors ->
+                response.error?.let{ errors ->
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     Log.AffectedTable.USER_ROLE,

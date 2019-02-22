@@ -22,6 +22,7 @@ internal class AppointmentInfoTest {
                 userId = 1L,
                 userFirstName = "Cody",
                 userLastName = "Spath",
+                userEmail = "cspath1@ycp.edu",
                 status = Appointment.Status.SCHEDULED.label,
                 hours = 12,
                 minutes = 12,
@@ -42,6 +43,7 @@ internal class AppointmentInfoTest {
         assertEquals(1L, appointmentInfo.userId)
         assertEquals("Cody", appointmentInfo.userFirstName)
         assertEquals("Spath", appointmentInfo.userLastName)
+        assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
 
         if (appointmentInfo.rightAscension == null || appointmentInfo.declination == null)
@@ -105,6 +107,7 @@ internal class AppointmentInfoTest {
         assertEquals(1L, appointmentInfo.userId)
         assertEquals("Cody", appointmentInfo.userFirstName)
         assertEquals("Spath", appointmentInfo.userLastName)
+        assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
 
         if (appointmentInfo.declination == null || appointmentInfo.rightAscension == null)

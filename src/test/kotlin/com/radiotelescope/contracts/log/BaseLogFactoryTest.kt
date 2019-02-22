@@ -57,7 +57,7 @@ internal class BaseLogFactoryTest {
         )
 
         // Ensure it is the correct command
-        assertTrue(cmd is LogList)
+        assertTrue(cmd is List)
     }
 
     @Test

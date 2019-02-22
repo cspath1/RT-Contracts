@@ -59,12 +59,12 @@ class AppointmentFutureTelescopeListController(
             ) {
                 // If the command was a success
                 it.success?.let { page ->
-                    page.content.forEach { it ->
+                    page.content.forEach { info ->
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.APPOINTMENT,
                                         action = "Future Telescope Appointments List Retrieval",
-                                        affectedRecordId = it.id
+                                        affectedRecordId = info.id
                                 )
                         )
                     }
@@ -90,7 +90,7 @@ class AppointmentFutureTelescopeListController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Future Telescope Appointments LogList Retrieval",
+                                action = "Future Telescope Appointments List Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

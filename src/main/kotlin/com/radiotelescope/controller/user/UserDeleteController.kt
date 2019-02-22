@@ -40,23 +40,23 @@ class UserDeleteController(
     @DeleteMapping(value = ["/users/{userId}"])
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@PathVariable("userId") id: Long): Result {
-        userWrapper.delete(id) { it ->
+        userWrapper.delete(id) {
             // If the command called after successful validation
             // is a success
-            it.success?.let {
+            it.success?.let {id ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Delete",
-                                affectedRecordId = it
+                                affectedRecordId = id
                         )
                 )
 
-                result = Result(data = it)
+                result = Result(data = id)
             }
             // Otherwise, it was an error
-            it.error?.let {
+            it.error?.let { errors ->
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
@@ -64,10 +64,10 @@ class UserDeleteController(
                                 action = "User Delete",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = errors.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap())
+                result = Result(errors = errors.toStringMap())
             }
         }?.let {
             // If we get here, this means the User did not pass validation

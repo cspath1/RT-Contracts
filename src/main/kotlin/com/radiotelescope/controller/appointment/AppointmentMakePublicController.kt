@@ -36,22 +36,22 @@ class AppointmentMakePublicController (
      */
     @PutMapping(value = ["/api/appointments/{appointmentId}/makePublic"])
     fun execute(@PathVariable("appointmentId") id: Long) : Result {
-        appointmentWrapper.makePublic(id) { it ->
+        appointmentWrapper.makePublic(id) {
             // If the command was a success
-            it.success?.let {
+            it.success?.let { id ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Make Appointment Public",
-                                affectedRecordId = it
+                                affectedRecordId = id
                         )
                 )
 
-                result = Result(data = it)
+                result = Result(data = id)
             }
             // Otherwise, it was an error
-            it.error?.let {
+            it.error?.let { errors ->
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
@@ -59,10 +59,10 @@ class AppointmentMakePublicController (
                                 action = "Make Appointment Public",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = errors.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap())
+                result = Result(errors = errors.toStringMap())
             }
         }?.let {
             // If we get here, that means the User did not pass authentication

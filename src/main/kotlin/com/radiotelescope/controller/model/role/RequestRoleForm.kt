@@ -12,7 +12,7 @@ import com.radiotelescope.repository.role.UserRole
  * It is in charge of making sure these values are not null before adapting it
  * to a [RequestRole.Request] object
  *
- * @param userId the User's Id
+ * @param userId the User id
  * @param role the User's role
  */
 data class RequestRoleForm(

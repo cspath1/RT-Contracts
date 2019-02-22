@@ -49,13 +49,13 @@ internal class ListTest {
     fun setUp() {
         // Create a few user's
         val user1 = testUtil.createUser("cspath1@ycp.edu")
-        testUtil.createUserRolesForUser(user1.id, UserRole.Role.MEMBER, true)
+        testUtil.createUserRolesForUser(user1, UserRole.Role.MEMBER, true)
 
         val user2 = testUtil.createUser("spathcody@gmail.com")
-        testUtil.createUserRolesForUser(user2.id, UserRole.Role.RESEARCHER, true)
+        testUtil.createUserRolesForUser(user2, UserRole.Role.RESEARCHER, true)
 
         val user3 = testUtil.createUser("codyspath@gmail.com")
-        testUtil.createUserRolesForUser(user3.id, UserRole.Role.GUEST, true)
+        testUtil.createUserRolesForUser(user3, UserRole.Role.GUEST, true)
     }
 
     @Test
@@ -73,6 +73,7 @@ internal class ListTest {
 
     @Test
     fun testEmptyRepo_Success() {
+        userRoleRepo.deleteAll()
         userRepo.deleteAll()
 
         val (page, errors) = List(

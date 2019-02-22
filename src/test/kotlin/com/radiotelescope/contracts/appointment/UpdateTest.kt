@@ -102,7 +102,7 @@ internal class UpdateTest {
     fun testValid_CorrectConstraints_Guest_Success(){
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -124,7 +124,7 @@ internal class UpdateTest {
     fun testValid_CorrectConstraints_Other_Success() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -236,7 +236,7 @@ internal class UpdateTest {
     fun testInvalid_ExceedAllottedGuestLimit_Failure() {
         // Make the user a guest
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
@@ -267,7 +267,7 @@ internal class UpdateTest {
     fun testInvalid_ExceededAllottedOtherLimit_Failure() {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -298,7 +298,7 @@ internal class UpdateTest {
     fun testInvalid_NoCategoryOfService_Failure() {
         // Make the user a researcher (unapproved)
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = false
         )
@@ -331,7 +331,7 @@ internal class UpdateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -710,7 +710,7 @@ internal class UpdateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
@@ -752,7 +752,7 @@ internal class UpdateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
         testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )

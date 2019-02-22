@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.role
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
@@ -36,6 +37,9 @@ internal class ValidateTest {
     private lateinit var testUtil: TestUtil
 
     @Autowired
+    private lateinit var userRepo: IUserRepository
+
+    @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
     private val baseValidateRequest = Validate.Request(
@@ -54,7 +58,7 @@ internal class ValidateTest {
         userId = user.id
 
         val roles = testUtil.createUserRolesForUser(
-                userId = user.id,
+                user = user,
                 role = UserRole.Role.MEMBER,
                 isApproved = false
         )
@@ -168,12 +172,12 @@ internal class ValidateTest {
     @Test
     fun testValid_RemoveOldRole_Success() {
         testUtil.createUserRoleForUser(
-                userId = userId,
+                user = userRepo.findById(userId).get(),
                 role = UserRole.Role.STUDENT,
                 isApproved = false
         )
         testUtil.createUserRoleForUser(
-                userId = userId,
+                user = userRepo.findById(userId).get(),
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )

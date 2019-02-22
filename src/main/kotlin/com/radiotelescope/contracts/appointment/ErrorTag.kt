@@ -20,5 +20,6 @@ enum class ErrorTag{
     MINUTES,
     SECONDS,
     DECLINATION,
-    IS_APPROVE
+    IS_APPROVE,
+    SEARCH
 }

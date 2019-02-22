@@ -43,6 +43,7 @@ class RequestRole(
         }
 
         val newRole = request.toEntity()
+        newRole.user = userRepo.findById(request.userId).get()
         userRoleRepo.save(newRole)
         return SimpleResult(newRole.id, null)
 
@@ -79,7 +80,7 @@ class RequestRole(
      * Data class containing all fields necessary for requesting
      * a new role
      *
-     * @param userId the User's id
+     * @param userId the User id
      * @param role the desired [UserRole.Role] value
      */
     data class Request(
@@ -92,7 +93,6 @@ class RequestRole(
          */
         override fun toEntity(): UserRole {
             val theUserRole = UserRole(
-                    userId = userId,
                     role = role
             )
 

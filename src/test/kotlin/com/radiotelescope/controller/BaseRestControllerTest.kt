@@ -3,6 +3,7 @@ package com.radiotelescope.controller
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +16,9 @@ abstract class BaseRestControllerTest {
 
     @Autowired
     private lateinit var errorRepo: IErrorRepository
+
+    @Autowired
+    private lateinit var userRepo: IUserRepository
 
     private lateinit var logger: Logger
 
@@ -29,6 +33,7 @@ abstract class BaseRestControllerTest {
         logger = Logger(
                 logRepo = logRepo,
                 errorRepo = errorRepo,
+                userRepo = userRepo,
                 userContext = context
         )
     }

@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.model.appointment.SearchCriteria
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -106,7 +107,7 @@ interface AppointmentFactory {
      * @param pageable the [Pageable] object, that has the page number and page size
      * @return a [Command] object
      */
-    fun listRequest(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
+    fun requestedList(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to approve or deny an appointment request
@@ -117,10 +118,19 @@ interface AppointmentFactory {
     fun approveDenyRequest(request: ApproveDenyRequest.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
-     * Abstract command user to retrieve the available time for a user
+     * Abstract command used to retrieve the available time for a user
      *
      * @param userId the User's Id
      * @return a [Command] object
      */
     fun userAvailableTime(userId: Long): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to search for appointments
+     *
+     * @param searchCriteria a [List] of [SearchCriteria]
+     * @param pageable the [Pageable] object
+     * @return a [Command] object
+     */
+    fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
 }

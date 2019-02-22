@@ -58,17 +58,17 @@ class AdminUnapprovedUserRoleListController(
         }
         // Otherwise call the wrapper method
         else {
-            roleWrapper.unapprovedList(PageRequest.of(pageNumber, pageSize)) { it ->
+            roleWrapper.unapprovedList(PageRequest.of(pageNumber, pageSize)) {
                 // NOTE: This command currently only has a success scenario
                 // (given the user is authenticated)
                 // If the command was a success
                 it.success?.let { page ->
-                    page.content.forEach {
+                    page.content.forEach { info ->
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.USER_ROLE,
                                         action = "Retrieve Unapproved Role List",
-                                        affectedRecordId = it.id
+                                        affectedRecordId = info.id
                                 )
                         )
                     }

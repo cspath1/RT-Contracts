@@ -3,8 +3,10 @@ package com.radiotelescope.contracts.user
 import com.google.common.collect.Multimap
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.repository.model.user.SearchCriteria
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import kotlin.collections.List
 
 /**
  * Abstract factory interface with methods for all [User] CRUD operations.
@@ -81,4 +83,19 @@ interface UserFactory {
      */
     fun changePassword(request: ChangePassword.Request): Command<Long, Multimap<ErrorTag, String>>
 
+    /**
+     * Abstract command used to search for users
+     *
+     * @param searchCriteria a [List] of [SearchCriteria]
+     * @param pageable the [Pageable] object
+     * @return a [Command] object
+     */
+    fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to invite users by email
+     *
+     * @param email the email address to send an invite to
+     */
+    fun invite(email: String): Command<Boolean, Multimap<ErrorTag, String>>
 }

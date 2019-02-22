@@ -40,23 +40,23 @@ class AdminUserUnbanController(
     @PutMapping(value = ["/api/users/{userId}/unban"])
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@PathVariable("userId") id: Long): Result {
-        userWrapper.unban(id) { it ->
+        userWrapper.unban(id) {
             // If the command called after successful validation
             // is a success
-            it.success?.let {
+            it.success?.let { id ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Unban",
-                                affectedRecordId = it
+                                affectedRecordId = id
                         )
                 )
 
-                result = Result(data = it)
+                result = Result(data = id)
             }
             // Otherwise, it was an error
-            it.error?.let {
+            it.error?.let { errors ->
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
@@ -64,10 +64,10 @@ class AdminUserUnbanController(
                                 action = "User Unban",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = errors.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap())
+                result = Result(errors = errors.toStringMap())
             }
         }?.let {
             // If we get here, this means the User did not pass validation

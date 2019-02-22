@@ -60,15 +60,15 @@ class AppointmentListFutureAppointmentsByUserController(
         // Otherwise, call the wrapper method
         else {
             val sort = Sort(Sort.Direction.ASC, "start_time")
-            appointmentWrapper.userFutureList(userId, PageRequest.of(pageNumber, pageSize, sort)) { it ->
+            appointmentWrapper.userFutureList(userId, PageRequest.of(pageNumber, pageSize, sort)) {
                 //If the command was a success
                 it.success?.let{ page ->
                     // Create success logs
-                    page.content.forEach{
+                    page.content.forEach { info ->
                         logger.createSuccessLog(
                                 info = Logger.createInfo(Log.AffectedTable.APPOINTMENT,
                                         action = "User Future Appointment List Retrieval",
-                                        affectedRecordId = it.id
+                                        affectedRecordId = info.id
                                 )
                         )
                     }
@@ -79,7 +79,7 @@ class AppointmentListFutureAppointmentsByUserController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "User Future Appointment LogList Retrieval",
+                                    action = "User Future Appointment List Retrieval",
                                     affectedRecordId = null
                             ),
                             errors = errors.toStringMap()
@@ -93,7 +93,7 @@ class AppointmentListFutureAppointmentsByUserController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "User Future Appointment LogList Retrieval",
+                                action = "User Future Appointment List Retrieval",
                                 affectedRecordId = null
                         ),
                         errors = it.toStringMap()

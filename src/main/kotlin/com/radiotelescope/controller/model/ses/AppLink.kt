@@ -8,7 +8,7 @@ abstract class AppLink {
             return if (profile == Profile.LOCAL || profile == Profile.DEV)
                 "http://localhost:8081"
             else
-                "https://www.ycpradiotelescope.com/#/"
+                "https://www.ycpradiotelescope.com/#"
         }
     }
 }

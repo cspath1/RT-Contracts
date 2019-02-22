@@ -65,7 +65,7 @@ internal class AdminLogWrapperTest {
 
         // Persist a log
         testUtil.createLog(
-                userId = user.id,
+                user = user,
                 affectedRecordId = 1L,
                 affectedTable = Log.AffectedTable.USER,
                 action = "User Registered",
@@ -81,7 +81,7 @@ internal class AdminLogWrapperTest {
 
         // Persist an error log
         errorLog = testUtil.createErrorLog(
-                userId = null,
+                user = null,
                 affectedRecordId = null,
                 affectedTable = Log.AffectedTable.USER,
                 action = "User Registration",

@@ -61,12 +61,12 @@ class AppointmentCompletedUserListController(
                 // If the command was a success
                 it.success?.let { page ->
                     // Create success logs
-                    page.content.forEach { it ->
+                    page.content.forEach { info ->
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.APPOINTMENT,
                                         action = "User Completed Appointment List",
-                                        affectedRecordId = it.id
+                                        affectedRecordId = info.id
                                 )
                         )
                     }

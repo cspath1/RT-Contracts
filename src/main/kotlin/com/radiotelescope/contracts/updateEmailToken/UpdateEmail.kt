@@ -40,7 +40,7 @@ class UpdateEmail (
             return SimpleResult(null, errors)
 
         val theToken = updateEmailTokenRepo.findByToken(token)
-        val user = theToken.user!!
+        val user = theToken.user
         user.email = theToken.email
         val updatedUser = userRepo.save(user)
         updateEmailTokenRepo.delete(theToken)

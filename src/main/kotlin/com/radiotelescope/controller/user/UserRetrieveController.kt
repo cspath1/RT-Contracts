@@ -27,7 +27,7 @@ class UserRetrieveController(
 ) : BaseRestController(logger) {
     /**
      * Execute method that is in charge of taking the id [PathVariable]
-     * and making sure it is not null. If it is, respond with and error.
+     * and making sure it is not null. If it is, respond with an error.
      *
      * Otherwise, execute the [UserUserWrapper.retrieve] method. If this
      * method returns an [AccessReport] respond with the errors. If not,
@@ -41,23 +41,23 @@ class UserRetrieveController(
     fun execute(@PathVariable("id") id: Long): Result {
         // If the supplied path variable is not null, call the
         // retrieve
-        userWrapper.retrieve(id) { it ->
+        userWrapper.retrieve(id) {
             // If the command called after successful validation is a
             // success
-            it.success?.let {
+            it.success?.let { info ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Retrieval",
-                                affectedRecordId = it.id
+                                affectedRecordId = info.id
                         )
                 )
 
-                result = Result(data = it)
+                result = Result(data = info)
             }
             // Otherwise, it was an error
-            it.error?.let {
+            it.error?.let { errors ->
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
@@ -65,10 +65,10 @@ class UserRetrieveController(
                                 action = "User Retrieval",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = errors.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap())
+                result = Result(errors = errors.toStringMap())
             }
         }?.let {
             // If we get here, this means the User did not pass validation

@@ -65,18 +65,18 @@ class AdminUserListController(
         else {
             val sort = Sort(Sort.Direction.DESC, "id")
             val pageRequest = PageRequest.of(pageNumber, pageSize, sort)
-            userWrapper.list(pageRequest) { it ->
+            userWrapper.list(pageRequest) {
                 // NOTE: This command currently only has a success scenario
                 // (given the user is authenticated)
                 // If the command was a success
                 it.success?.let { page ->
                     // Create success logs
-                    page.content.forEach {
+                    page.content.forEach { info ->
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.USER,
                                         action = "User List Retrieval",
-                                        affectedRecordId = it.id
+                                        affectedRecordId = info.id
                                 )
                         )
                     }

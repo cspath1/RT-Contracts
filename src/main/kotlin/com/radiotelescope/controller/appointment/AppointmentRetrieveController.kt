@@ -36,22 +36,22 @@ class AppointmentRetrieveController(
      */
     @GetMapping(value = ["/api/appointments/{appointmentId}/retrieve"])
     fun execute(@PathVariable("appointmentId") id: Long): Result {
-        appointmentWrapper.retrieve(id) { it ->
+        appointmentWrapper.retrieve(id) {
             // If the command was a success
-            it.success?.let {
+            it.success?.let { info ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Appointment Retrieval",
-                                affectedRecordId = it.id
+                                affectedRecordId = info.id
                         )
                 )
 
-                result = Result(data = it)
+                result = Result(data = info)
             }
             // Otherwise, it was an error
-            it.error?.let {
+            it.error?.let { errors ->
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
@@ -59,10 +59,10 @@ class AppointmentRetrieveController(
                                 action = "Appointment Retrieval",
                                 affectedRecordId = null
                         ),
-                        errors = it.toStringMap()
+                        errors = errors.toStringMap()
                 )
 
-                result = Result(errors = it.toStringMap())
+                result = Result(errors = errors.toStringMap())
             }
         }?.let {
             // If we get here, that means the User did not pass authentication

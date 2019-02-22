@@ -43,4 +43,11 @@ interface IUserRoleRepository : PagingAndSortingRepository<UserRole, Long> {
             "LIMIT 1",
             nativeQuery = true)
     fun findMembershipRoleByUserId(userId: Long): UserRole?
+
+    @Query(value = "SELECT * " +
+            "FROM user_role " +
+            "WHERE approved = '1' " +
+            "AND user_id = ?1",
+            nativeQuery = true)
+    fun findAllApprovedRolesByUserId(userId: Long): List<UserRole>
 }
