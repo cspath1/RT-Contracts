@@ -108,10 +108,10 @@ internal class UserViewerWrapperTest {
 
         val error = wrapper.sharePrivateAppointment(
                 request = SharePrivateAppointment.Request(
-                        userId = user.id,
+                        email = user.email,
                         appointmentId = appointment.id
                 )
-        ){
+        ) {
             assertNotNull(it.success)
             assertNull(it.error)
         }
@@ -129,7 +129,7 @@ internal class UserViewerWrapperTest {
 
         val error = wrapper.sharePrivateAppointment(
                 request = SharePrivateAppointment.Request(
-                        userId = user.id,
+                        email = user.email,
                         appointmentId = appointment.id
                 )
         ){
@@ -147,7 +147,7 @@ internal class UserViewerWrapperTest {
 
         val error = wrapper.sharePrivateAppointment(
                 request = SharePrivateAppointment.Request(
-                        userId = user.id,
+                        email = user.email,
                         appointmentId = appointment.id
                 )
         ){
@@ -169,7 +169,7 @@ internal class UserViewerWrapperTest {
 
         val error = wrapper.sharePrivateAppointment(
                 request = SharePrivateAppointment.Request(
-                        userId = user.id,
+                        email = user.email,
                         appointmentId = appointment.id
                 )
         ){

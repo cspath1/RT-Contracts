@@ -72,7 +72,7 @@ internal class SharePrivateAppointmentTest {
     fun testValidConstraints_Success() {
         //Create the request
         val request = SharePrivateAppointment.Request(
-                userId = user.id,
+                email = user.email,
                 appointmentId = appointment.id
         )
 
@@ -93,7 +93,7 @@ internal class SharePrivateAppointmentTest {
         assertTrue(theViewer.isPresent)
 
         // Make sure the correct information was persisted
-        assertEquals(request.userId, theViewer.get().user.id)
+        assertEquals(request.email, theViewer.get().user.email)
         assertEquals(request.appointmentId, theViewer.get().appointment.id)
     }
 
@@ -101,7 +101,7 @@ internal class SharePrivateAppointmentTest {
     fun testInvalid_UserDoesNotExist_Failure(){
         //Create the request
         val request = SharePrivateAppointment.Request(
-                userId = -1L,
+                email = "michaelscott@dundermifflin.com",
                 appointmentId = appointment.id
         )
 
@@ -124,9 +124,9 @@ internal class SharePrivateAppointmentTest {
 
     @Test
     fun testInvalid_AppointmentDoesNotExist_Failure(){
-        //Create the request
+        // Create the request
         val request = SharePrivateAppointment.Request(
-                userId = user.id,
+                email = user.email,
                 appointmentId = -1L
         )
 
@@ -157,9 +157,10 @@ internal class SharePrivateAppointmentTest {
                 endTime = Date(System.currentTimeMillis() + 500000L),
                 isPublic = true
         )
-        //Create the request
+
+        // Create the request
         val request = SharePrivateAppointment.Request(
-                userId = user.id,
+                email = user.email,
                 appointmentId = publicAppointment.id
         )
 
@@ -179,6 +180,4 @@ internal class SharePrivateAppointmentTest {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.PRIVATE].isNotEmpty())
     }
-
-
 }

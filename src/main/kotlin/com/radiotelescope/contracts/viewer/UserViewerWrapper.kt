@@ -25,7 +25,7 @@ class UserViewerWrapper (
         private val context: UserContext,
         private val factory: ViewerFactory,
         private val appointmentRepo: IAppointmentRepository
-){
+) {
     /**
      * Wrapper method for the [ViewerFactory.sharePrivateAppointment] method that adds Spring
      * Security authentication to the [SharePrivateAppointment] command object.
@@ -41,9 +41,9 @@ class UserViewerWrapper (
         val theAppointment = appointmentRepo.findById(request.appointmentId).get()
 
         if (context.currentUserId() != null) {
-            return if (context.currentUserId() == theAppointment.user!!.id) {
-                context.require(
-                        requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+            return if (context.currentUserId() == theAppointment.user.id) {
+                context.requireAny(
+                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
                         successCommand = factory.sharePrivateAppointment(
                                 request = request
                         )
@@ -109,7 +109,7 @@ class UserViewerWrapper (
         val theAppointment = appointmentRepo.findById(appointmentId).get()
 
         if (context.currentUserId() != null) {
-            return if(context.currentUserId() == theAppointment.user!!.id) {
+            return if(context.currentUserId() == theAppointment.user.id) {
                 context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.listSharedUser(

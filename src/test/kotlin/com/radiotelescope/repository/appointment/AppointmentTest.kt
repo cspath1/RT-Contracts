@@ -450,7 +450,7 @@ internal class AppointmentTest {
 
     @Test
     fun testFindSharedAppointmentsByUser() {
-        var appointmentPage = appointmentRepo.findSharedAppointmentsByUser(
+        val appointmentPage = appointmentRepo.findSharedAppointmentsByUser(
                 userId = otherUser.id,
                 pageable = PageRequest.of(0, 25)
         )
