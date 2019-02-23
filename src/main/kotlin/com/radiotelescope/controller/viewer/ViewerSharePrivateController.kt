@@ -75,15 +75,26 @@ class ViewerSharePrivateController(
         }?.let {
             // If we get here, this means the User did not pass validation
             // Create error logs
+            // Set the errors depending on if the user was not authenticated or the
+            // record did not exists
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.VIEWER,
+                            affectedTable = Log.AffectedTable.RF_DATA,
                             action = "Share Private Appointment",
                             affectedRecordId = null
                     ),
-                    errors = it.toStringMap()
+                    errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
             )
-            result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+
+            // Set the errors depending on if the user was not authenticated or the
+            // record did not exists
+            result = if (it.missingRoles == null) {
+                Result(errors = it.invalidResourceId!!, status = HttpStatus.NOT_FOUND)
+            }
+            // user did not have access to the resource
+            else {
+                Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+            }
         }
 
         return result

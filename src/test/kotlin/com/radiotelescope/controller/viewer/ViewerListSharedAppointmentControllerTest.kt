@@ -84,7 +84,7 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER))
 
         val result = viewerListSharedAppointmentController.execute(
-                id = user.id,
+                userId = user.id,
                 pageNumber = 0,
                 pageSize = 25
         )
@@ -108,7 +108,7 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN))
 
         val result = viewerListSharedAppointmentController.execute(
-                id = 311L,
+                userId = 311L,
                 pageNumber = 0,
                 pageSize = 25
         )
@@ -133,7 +133,7 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN))
 
         val result = viewerListSharedAppointmentController.execute(
-                id = 311L,
+                userId = 311L,
                 pageNumber = -1,
                 pageSize = 25
         )
@@ -155,7 +155,7 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         // Do not simulate a login
 
         val result = viewerListSharedAppointmentController.execute(
-                id = user.id,
+                userId = user.id,
                 pageNumber = 0,
                 pageSize = 25
         )

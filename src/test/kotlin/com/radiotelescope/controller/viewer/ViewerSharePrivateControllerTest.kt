@@ -144,5 +144,21 @@ internal class ViewerSharePrivateControllerTest : BaseViewerRestControllerTest()
         assertEquals(1, logRepo.count())
     }
 
+    @Test
+    fun testInvalidResourceIdResponse() {
+        // Test the failure scenario where the
+        // appointment id does not exist
+        val result = viewerSharePrivateController.execute(
+                appointmentId = 311L,
+                email = user.email
+        )
 
+        assertNotNull(result)
+        assertNull(result.data)
+        assertEquals(HttpStatus.NOT_FOUND, result.status)
+        assertNotNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+    }
 }

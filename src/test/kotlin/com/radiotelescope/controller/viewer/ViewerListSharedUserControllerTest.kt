@@ -84,7 +84,7 @@ internal class ViewerListSharedUserControllerTest : BaseViewerRestControllerTest
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
         val result = viewerListSharedUserController.execute(
-                id = appointment.id,
+                appointmentId = appointment.id,
                 pageNumber = 0,
                 pageSize = 25
         )
@@ -108,7 +108,7 @@ internal class ViewerListSharedUserControllerTest : BaseViewerRestControllerTest
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
         val result = viewerListSharedUserController.execute(
-                id = appointment.id,
+                appointmentId = appointment.id,
                 pageNumber = -1,
                 pageSize = 25
         )
@@ -129,7 +129,7 @@ internal class ViewerListSharedUserControllerTest : BaseViewerRestControllerTest
 
         // Do not simulate a login
         val result = viewerListSharedUserController.execute(
-                id = appointment.id,
+                appointmentId = appointment.id,
                 pageNumber = 0,
                 pageSize = 25
         )
@@ -143,4 +143,22 @@ internal class ViewerListSharedUserControllerTest : BaseViewerRestControllerTest
         assertEquals(1, logRepo.count())
     }
 
+    @Test
+    fun testInvalidResourceIdResponse() {
+        // Test the failure scenario where the
+        // resource id is invalid
+        val result = viewerListSharedUserController.execute(
+                appointmentId = 311L,
+                pageNumber = 0,
+                pageSize = 25
+        )
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertEquals(HttpStatus.NOT_FOUND, result.status)
+        assertNotNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+    }
 }
