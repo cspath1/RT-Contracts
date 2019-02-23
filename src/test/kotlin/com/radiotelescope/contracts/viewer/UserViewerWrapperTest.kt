@@ -183,6 +183,21 @@ internal class UserViewerWrapperTest {
     }
 
     @Test
+    fun testSharePrivateAppointment_InvalidId_Failure() {
+        val error = wrapper.sharePrivateAppointment(
+                request = SharePrivateAppointment.Request(
+                        email = user.email,
+                        appointmentId = 311L
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId != null)
+    }
+
+    @Test
     fun testListSharedAppointment_ValidConstraints_Success(){
         // Simulate a login
         context.login(otherUser.id)
@@ -296,5 +311,16 @@ internal class UserViewerWrapperTest {
 
     }
 
+    @Test
+    fun testListSharedUser_InvalidId_Failure() {
+        val error = wrapper.listSharedUser(
+                appointmentId = 311L,
+                pageable = PageRequest.of(0, 25)
+        ) {
+            fail("Should fail on precondition")
+        }
 
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId != null)
+    }
 }

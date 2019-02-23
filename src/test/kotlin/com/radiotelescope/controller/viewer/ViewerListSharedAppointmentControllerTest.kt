@@ -105,11 +105,11 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
 
         // Simulate a login
         getContext().login(user.id)
-        getContext().currentRoles.addAll(listOf(UserRole.Role.USER))
+        getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN))
 
         val result = viewerListSharedAppointmentController.execute(
-                id = user.id,
-                pageNumber = -1,
+                id = 311L,
+                pageNumber = 0,
                 pageSize = 25
         )
 
@@ -121,6 +121,30 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
 
+    }
+
+    @Test
+    fun testInvalidPageParametersResponse() {
+        // Test the failure scenario to ensure
+        // the result object is correctly set
+
+        // Simulate a login
+        getContext().login(user.id)
+        getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN))
+
+        val result = viewerListSharedAppointmentController.execute(
+                id = 311L,
+                pageNumber = -1,
+                pageSize = 25
+        )
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertNotNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
     }
 
     @Test
