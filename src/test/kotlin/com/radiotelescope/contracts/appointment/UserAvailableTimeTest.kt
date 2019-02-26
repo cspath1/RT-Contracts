@@ -93,39 +93,6 @@ internal class UserAvailableTimeTest {
     }
 
     @Test
-    fun testValid_OtherUser_Success(){
-        // Make the user role other than guess
-        testUtil.createUserRolesForUser(
-                user = user,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = true
-        )
-
-        testUtil.createAppointment(
-                user = user,
-                telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED,
-                startTime = Date(System.currentTimeMillis() + oneHour),
-                endTime = Date(System.currentTimeMillis() + oneHour + oneHour),
-                isPublic = true
-        )
-
-        val(time, errors) = UserAvailableTime(
-                userId = user.id,
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                userRoleRepo = userRoleRepo
-        ).execute()
-
-        // Make sure it was a success
-        assertNotNull(time)
-        assertNull(errors)
-
-        // Make sure the available time is correct
-        assertEquals(Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP - oneHour, time)
-    }
-
-    @Test
     fun testInvalid_UserDoesNotExist_Failure(){
         // Make a user role
         testUtil.createUserRolesForUser(

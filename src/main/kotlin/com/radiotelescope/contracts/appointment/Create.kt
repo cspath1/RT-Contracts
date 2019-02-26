@@ -120,10 +120,16 @@ class Create(
                     if ((totalTime + newAppointmentTime) > Appointment.GUEST_APPOINTMENT_TIME_CAP)
                         errors.put(ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
                 }
-                // Everyone else -> 50 hours
+                UserRole.Role.STUDENT -> {
+                    if((totalTime + newAppointmentTime) > Appointment.STUDENT_APPOINTMENT_TIME_CAP)
+                        errors.put(ErrorTag.ALLOTTED_TIME, "Your max allotted observation time is 24 hours")
+                }
+                UserRole.Role.MEMBER -> {
+                    if((totalTime + newAppointmentTime) > Appointment.MEMBER_APPOINTMENT_TIME_CAP)
+                        errors.put(ErrorTag.ALLOTTED_TIME, "Your max allotted observation time is 48 hours")
+                }
                 else -> {
-                    if ((totalTime + newAppointmentTime) > Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP)
-                        errors.put(ErrorTag.ALLOTTED_TIME, "Max allotted observation time is 50 hours at any given time")
+                    // Do nothing, admin and researcher have unlimited, shouldn't get here for User
                 }
             }
         }

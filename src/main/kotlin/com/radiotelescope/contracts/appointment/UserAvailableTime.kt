@@ -46,20 +46,26 @@ class UserAvailableTime(
         totalTime = totalTime ?: 0
 
         val theUserRole = userRoleRepo.findMembershipRoleByUserId(userId)
-        var availableTime: Long
+        var availableTime: Long?
 
         availableTime = when (theUserRole!!.role) {
             // Guest -> 5 hours
             UserRole.Role.GUEST -> {
                 Appointment.GUEST_APPOINTMENT_TIME_CAP - totalTime
             }
-            // Everyone else -> 50 hours
+            UserRole.Role.STUDENT -> {
+                Appointment.STUDENT_APPOINTMENT_TIME_CAP - totalTime
+            }
+            UserRole.Role.MEMBER -> {
+                Appointment.MEMBER_APPOINTMENT_TIME_CAP - totalTime
+            }
+            // Everyone else (researcher + admin) -> unlimited
             else -> {
-                Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP - totalTime
+                null
             }
         }
 
-        if(availableTime < 0)
+        if(availableTime != null && availableTime < 0)
             availableTime = 0
 
         return SimpleResult(availableTime, null)

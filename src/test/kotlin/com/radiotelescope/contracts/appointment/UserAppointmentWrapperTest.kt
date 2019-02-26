@@ -1363,7 +1363,7 @@ internal class UserAppointmentWrapperTest {
     fun testValidUserAvailableTime_LoggedIn_Success(){
         testUtil.createUserRolesForUser(
                 user = user,
-                role = UserRole.Role.RESEARCHER,
+                role = UserRole.Role.MEMBER,
                 isApproved = true
         )
 

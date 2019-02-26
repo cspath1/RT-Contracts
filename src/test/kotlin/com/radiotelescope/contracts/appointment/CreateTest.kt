@@ -303,7 +303,7 @@ internal class CreateTest {
         // Make the user a researcher
         testUtil.createUserRolesForUser(
                 user = user,
-                role = UserRole.Role.RESEARCHER,
+                role = UserRole.Role.MEMBER,
                 isApproved = true
         )
 
