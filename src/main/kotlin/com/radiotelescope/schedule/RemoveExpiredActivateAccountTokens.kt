@@ -51,20 +51,22 @@ class RemoveExpiredActivateAccountTokens(
      */
     private fun createLogs(accountActivateToken: AccountActivateToken) {
         val activateAccountTokenLog = Log(
-                affectedTable = Log.AffectedTable.ACTIVATE_ACCOUNT_TOKEN,
                 action = "Remove Expired Token",
                 timestamp = Date(),
                 affectedRecordId = accountActivateToken.id,
                 status = HttpStatus.OK.value()
         )
 
+        activateAccountTokenLog.affectedTable = Log.AffectedTable.ACTIVATE_ACCOUNT_TOKEN
+
         val userLog = Log(
-                affectedTable = Log.AffectedTable.USER,
                 action = "Remove Non-Activated User",
                 timestamp = Date(),
                 affectedRecordId = accountActivateToken.user.id,
                 status = HttpStatus.OK.value()
         )
+
+        userLog.affectedTable = Log.AffectedTable.USER
 
         logRepo.saveAll(listOf(userLog, activateAccountTokenLog))
     }

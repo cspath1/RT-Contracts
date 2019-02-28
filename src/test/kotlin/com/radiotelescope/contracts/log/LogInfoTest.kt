@@ -52,13 +52,13 @@ internal class LogInfoTest {
     @Test
     fun testFirstSecondaryConstructor() {
         val log = Log(
-                affectedTable = Log.AffectedTable.USER,
                 action = "User Registration",
                 timestamp = date,
                 affectedRecordId = 1L,
                 status = HttpStatus.OK.value()
         )
 
+        log.affectedTable = Log.AffectedTable.USER
         log.isSuccess = true
         log.id = 1L
 
@@ -67,7 +67,7 @@ internal class LogInfoTest {
         assertEquals(log.id, logInfo.id)
         assertEquals(log.isSuccess, logInfo.isSuccess)
         assertEquals(log.affectedRecordId, logInfo.affectedRecordId)
-        assertEquals(log.affectedTable.label, logInfo.affectedTable)
+        assertEquals(log.affectedTable!!.label, logInfo.affectedTable)
         assertEquals(log.action, logInfo.action)
         assertEquals(log.timestamp, logInfo.timestamp)
         assertEquals(HttpStatus.OK.value(), logInfo.status)
@@ -79,13 +79,13 @@ internal class LogInfoTest {
     @Test
     fun testSecondSecondaryConstructor() {
         val log = Log(
-                affectedTable = Log.AffectedTable.USER,
                 action = "User Registration",
                 timestamp = date,
                 affectedRecordId = 1L,
                 status = HttpStatus.OK.value()
         )
 
+        log.affectedTable = Log.AffectedTable.USER
         log.isSuccess = true
         log.id = 1L
 
@@ -105,7 +105,7 @@ internal class LogInfoTest {
         assertEquals(log.user, logInfo.user)
         assertEquals(log.isSuccess, logInfo.isSuccess)
         assertEquals(log.action, logInfo.action)
-        assertEquals(log.affectedTable.label, logInfo.affectedTable)
+        assertEquals(log.affectedTable!!.label, logInfo.affectedTable)
         assertEquals(log.affectedRecordId, logInfo.affectedRecordId)
         assertEquals(log.timestamp, logInfo.timestamp)
         assertEquals(log.status, logInfo.status)

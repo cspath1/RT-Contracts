@@ -171,13 +171,13 @@ internal class TestUtil {
             isSuccess: Boolean
     ): Log {
         val theLog = Log(
-                affectedTable = affectedTable,
                 action = action,
                 timestamp = timestamp,
                 affectedRecordId = null,
                 status = HttpStatus.OK.value()
         )
 
+        theLog.affectedTable = affectedTable
         theLog.user = user
         theLog.isSuccess = isSuccess
 

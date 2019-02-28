@@ -95,7 +95,7 @@ class Logger(
      * It implements the [BaseCreateRequest] interface
      */
     data class Info(
-            var affectedTable: Log.AffectedTable,
+            var affectedTable: Log.AffectedTable?,
             var action: String,
             var timestamp: Date,
             var affectedRecordId: Long?,
@@ -105,13 +105,16 @@ class Logger(
          * Override of the [BaseCreateRequest.toEntity] method to return a [Log] Entity
          */
         override fun toEntity(): Log {
-            return Log(
-                    affectedTable = affectedTable,
+            val log =  Log(
                     action = action,
                     timestamp = timestamp,
                     affectedRecordId = affectedRecordId,
                     status = status
             )
+
+            log.affectedTable = affectedTable
+
+            return log
         }
     }
 

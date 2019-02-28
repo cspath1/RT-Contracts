@@ -24,13 +24,13 @@ internal class ErrorInfoTest {
     @Test
     fun testSecondaryConstructor() {
         val log = Log(
-                affectedTable = Log.AffectedTable.USER,
                 action = "User Registration",
                 timestamp = Date(),
                 affectedRecordId = 1L,
                 status = HttpStatus.OK.value()
         )
 
+        log.affectedTable = Log.AffectedTable.USER
         log.isSuccess
         log.id = 1L
 
