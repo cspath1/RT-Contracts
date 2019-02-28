@@ -1,7 +1,6 @@
 package com.radiotelescope.repository.telescope
 
 import com.radiotelescope.TestUtil
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -23,13 +22,6 @@ internal class TelescopeTest {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired

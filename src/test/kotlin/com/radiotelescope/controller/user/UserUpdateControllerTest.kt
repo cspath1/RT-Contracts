@@ -5,7 +5,6 @@ import com.radiotelescope.controller.model.user.UpdateForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -26,13 +25,6 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired
