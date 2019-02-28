@@ -1,6 +1,5 @@
 package com.radiotelescope.controller
 
-import com.radiotelescope.TestUtil
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import com.radiotelescope.controller.admin.user.AdminUserListController
 import com.radiotelescope.controller.spring.Logger
@@ -9,7 +8,6 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.FakeUserContext
 import com.radiotelescope.security.UserContext
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -21,8 +19,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -34,16 +30,6 @@ import java.lang.RuntimeException
 @DataJpaTest
 @ActiveProfiles("test")
 internal class ExceptionLoggerTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
-    }
-
     private lateinit var mockMvc: MockMvc
 
     @Mock

@@ -2,7 +2,6 @@ package com.radiotelescope.contracts.rfdata
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.rfdata.IRFDataRepository
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,13 +23,6 @@ internal class RFDataInfoTest {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired

@@ -3,7 +3,6 @@ package com.radiotelescope.contracts.user
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
@@ -24,13 +23,6 @@ internal class RetrieveTest {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired
