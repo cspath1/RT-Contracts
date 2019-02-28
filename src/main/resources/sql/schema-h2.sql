@@ -16,11 +16,11 @@ CREATE TABLE appointment(
 CREATE TABLE coordinate(
   id INT(11) NOT NULL AUTO_INCREMENT,
   right_ascension DOUBLE NOT NULL,
-  declination DOUBLE NOT NULL
+  declination DOUBLE NOT NULL,
   hours INT(11) NOT NULL,
   minutes INT(11) NOT NULL,
   seconds INT(11) NOT NULL
-)
+);
 
 CREATE TABLE error (
   id        INT(11)      NOT NULL AUTO_INCREMENT,
@@ -36,7 +36,8 @@ CREATE TABLE log(
   action VARCHAR(100) NOT NULL,
   timestamp DATETIME NOT NULL,
   affected_record_id INT(11),
-  success TINYINT(1) DEFAULT '1'
+  success TINYINT(1) DEFAULT 1,
+  status INT(11) NOT NULL
 );
 
 CREATE TABLE rf_data (
@@ -75,7 +76,7 @@ CREATE TABLE reset_password_token (
   user_id INT(11) NOT NULL,
   token VARCHAR(100) NOT NULL,
   expiration_date DATETIME NOT NULL
-)
+);
 
 CREATE TABLE account_activate_token (
   id INT(11) NOT NULL AUTO_INCREMENT,

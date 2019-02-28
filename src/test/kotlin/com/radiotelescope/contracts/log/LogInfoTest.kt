@@ -5,6 +5,7 @@ import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import org.springframework.http.HttpStatus
 import java.util.*
 
 internal class LogInfoTest {
@@ -32,7 +33,8 @@ internal class LogInfoTest {
                 affectedTable = Log.AffectedTable.USER.label,
                 action = "User Registration",
                 timestamp = date,
-                isSuccess = true
+                isSuccess = true,
+                status = HttpStatus.OK.value()
         )
 
         assertEquals(1L, logInfo.id)
@@ -43,6 +45,7 @@ internal class LogInfoTest {
         assertEquals(Log.AffectedTable.USER.label, logInfo.affectedTable)
         assertEquals("User Registration", logInfo.action)
         assertEquals(date, logInfo.timestamp)
+        assertEquals(HttpStatus.OK.value(), logInfo.status)
         assertTrue(logInfo.isSuccess)
     }
 
@@ -52,7 +55,8 @@ internal class LogInfoTest {
                 affectedTable = Log.AffectedTable.USER,
                 action = "User Registration",
                 timestamp = date,
-                affectedRecordId = 1L
+                affectedRecordId = 1L,
+                status = HttpStatus.OK.value()
         )
 
         log.isSuccess = true
@@ -66,6 +70,7 @@ internal class LogInfoTest {
         assertEquals(log.affectedTable.label, logInfo.affectedTable)
         assertEquals(log.action, logInfo.action)
         assertEquals(log.timestamp, logInfo.timestamp)
+        assertEquals(HttpStatus.OK.value(), logInfo.status)
         assertNull(logInfo.user)
         assertNull(logInfo.userFirstName)
         assertNull(logInfo.userLastName)
@@ -77,7 +82,8 @@ internal class LogInfoTest {
                 affectedTable = Log.AffectedTable.USER,
                 action = "User Registration",
                 timestamp = date,
-                affectedRecordId = 1L
+                affectedRecordId = 1L,
+                status = HttpStatus.OK.value()
         )
 
         log.isSuccess = true
@@ -102,6 +108,7 @@ internal class LogInfoTest {
         assertEquals(log.affectedTable.label, logInfo.affectedTable)
         assertEquals(log.affectedRecordId, logInfo.affectedRecordId)
         assertEquals(log.timestamp, logInfo.timestamp)
+        assertEquals(log.status, logInfo.status)
         assertEquals(user.firstName, logInfo.userFirstName)
         assertEquals(user.lastName, logInfo.userLastName)
     }

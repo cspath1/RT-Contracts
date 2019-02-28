@@ -59,7 +59,8 @@ class UserSearchController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
                                     action = "User Search",
-                                    affectedRecordId = info.id
+                                    affectedRecordId = info.id,
+                                    status = HttpStatus.OK.value()
                             )
                     )
                 }
@@ -73,7 +74,8 @@ class UserSearchController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Search",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = error.toStringMap()
                 )
@@ -89,7 +91,8 @@ class UserSearchController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User Search",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.FORBIDDEN.value()
                     ),
                     errors = it.toStringMap()
             )

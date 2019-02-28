@@ -39,7 +39,8 @@ class UserChangePasswordController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User Change Password",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = it.toStringMap()
             )
@@ -56,7 +57,8 @@ class UserChangePasswordController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
                                     action = "User Change Password",
-                                    affectedRecordId = id
+                                    affectedRecordId = id,
+                                    status = HttpStatus.OK.value()
                             )
                     )
 
@@ -69,7 +71,8 @@ class UserChangePasswordController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
                                     action = "User Change Password",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
                             ),
                             errors = errors.toStringMap()
                     )
@@ -83,7 +86,8 @@ class UserChangePasswordController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Change Password",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = if (report.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                         ),
                         errors = if (report.missingRoles != null) report.toStringMap() else report.invalidResourceId!!
                 )

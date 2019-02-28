@@ -22,7 +22,9 @@ data class Log(
         @Column(name = "timestamp")
         var timestamp: Date,
         @Column(name = "affected_record_id")
-        var affectedRecordId: Long? = null
+        var affectedRecordId: Long? = null,
+        @Column(name = "status")
+        var status: Int
 ) {
 
     @Id

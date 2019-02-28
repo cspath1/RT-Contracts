@@ -27,7 +27,8 @@ data class LogInfo(
         val affectedTable: String,
         val action: String,
         val timestamp: Date,
-        val isSuccess: Boolean
+        val isSuccess: Boolean,
+        val status: Int
 ) {
     /**
      * Secondary constructor used when there was no logged
@@ -44,7 +45,8 @@ data class LogInfo(
             affectedTable = log.affectedTable.label,
             action = log.action,
             timestamp = log.timestamp,
-            isSuccess = log.isSuccess
+            isSuccess = log.isSuccess,
+            status = log.status
     )
 
     /**
@@ -63,6 +65,7 @@ data class LogInfo(
             affectedTable = log.affectedTable.label,
             action = log.action,
             timestamp = log.timestamp,
-            isSuccess = log.isSuccess
+            isSuccess = log.isSuccess,
+            status = log.status
     )
 }

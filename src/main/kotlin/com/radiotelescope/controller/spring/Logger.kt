@@ -98,7 +98,8 @@ class Logger(
             var affectedTable: Log.AffectedTable,
             var action: String,
             var timestamp: Date,
-            var affectedRecordId: Long?
+            var affectedRecordId: Long?,
+            var status: Int
     ) : BaseCreateRequest<Log> {
         /**
          * Override of the [BaseCreateRequest.toEntity] method to return a [Log] Entity
@@ -108,7 +109,8 @@ class Logger(
                     affectedTable = affectedTable,
                     action = action,
                     timestamp = timestamp,
-                    affectedRecordId = affectedRecordId
+                    affectedRecordId = affectedRecordId,
+                    status = status
             )
         }
     }
@@ -117,12 +119,15 @@ class Logger(
         fun createInfo(
                 affectedTable: Log.AffectedTable,
                 action: String,
-                affectedRecordId: Long?) : Info {
+                affectedRecordId: Long?,
+                status: Int
+        ) : Info {
             return Info(
                     affectedTable = affectedTable,
                     action = action,
                     timestamp = Date(),
-                    affectedRecordId = affectedRecordId
+                    affectedRecordId = affectedRecordId,
+                    status = status
             )
         }
     }

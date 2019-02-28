@@ -21,6 +21,7 @@ import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -173,7 +174,8 @@ internal class TestUtil {
                 affectedTable = affectedTable,
                 action = action,
                 timestamp = timestamp,
-                affectedRecordId = null
+                affectedRecordId = null,
+                status = HttpStatus.OK.value()
         )
 
         theLog.user = user

@@ -6,6 +6,7 @@ import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -37,7 +38,8 @@ class UserUpdateEmailController (
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User Update Email",
-                            affectedRecordId = it
+                            affectedRecordId = it,
+                            status = HttpStatus.OK.value()
                     )
             )
 
@@ -50,7 +52,8 @@ class UserUpdateEmailController (
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User Update Email",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = it.toStringMap()
             )

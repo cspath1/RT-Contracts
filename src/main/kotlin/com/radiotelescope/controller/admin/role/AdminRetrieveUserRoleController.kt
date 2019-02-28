@@ -43,7 +43,8 @@ class AdminRetrieveUserRoleController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
                                 action = "Retrieve",
-                                affectedRecordId = info.id
+                                affectedRecordId = info.id,
+                                status = HttpStatus.OK.value()
                         )
                 )
 
@@ -56,7 +57,8 @@ class AdminRetrieveUserRoleController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
                                 action = "Retrieve",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = errors.toStringMap()
                 )
@@ -70,7 +72,8 @@ class AdminRetrieveUserRoleController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER_ROLE,
                             action = "Retrieve",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.FORBIDDEN.value()
                     ),
                     errors = it.toStringMap()
             )

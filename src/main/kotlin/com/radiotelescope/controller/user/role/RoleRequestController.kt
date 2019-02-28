@@ -58,7 +58,8 @@ class RoleRequestController (
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER_ROLE,
                             action = "Request New User Role",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -76,7 +77,8 @@ class RoleRequestController (
                             info = Logger.createInfo(
                                     Log.AffectedTable.USER_ROLE,
                                     action = "Request New User Role",
-                                    affectedRecordId = it
+                                    affectedRecordId = it,
+                                    status = HttpStatus.OK.value()
                             )
                     )
                     result = Result(data = it)
@@ -90,7 +92,8 @@ class RoleRequestController (
                             info = Logger.createInfo(
                                     Log.AffectedTable.USER_ROLE,
                                     action = "Request New User Role",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
                             ),
                             errors = errors.toStringMap()
                     )
@@ -104,7 +107,8 @@ class RoleRequestController (
                         info = Logger.createInfo(
                                 Log.AffectedTable.USER_ROLE,
                                 action = "Request New User Role",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = it.toStringMap()
                 )

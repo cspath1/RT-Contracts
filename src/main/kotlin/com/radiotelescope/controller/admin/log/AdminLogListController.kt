@@ -46,7 +46,8 @@ class AdminLogListController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.LOG,
                             action = "Log List Retrieval",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -73,7 +74,8 @@ class AdminLogListController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.LOG,
                                 action = "Log List Retrieval",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = it.toStringMap()
                 )

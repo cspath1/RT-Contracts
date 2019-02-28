@@ -41,7 +41,8 @@ class AdminUserRoleValidateController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER_ROLE,
                             action = "User Role Validation",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -59,7 +60,8 @@ class AdminUserRoleValidateController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER_ROLE,
                                     action = "User Role Validation",
-                                    affectedRecordId = id
+                                    affectedRecordId = id,
+                                    status = HttpStatus.OK.value()
                             )
                     )
 
@@ -72,7 +74,8 @@ class AdminUserRoleValidateController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER_ROLE,
                                     action = "User Role Validation",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
                             ),
                             errors = errors.toStringMap()
                     )
@@ -86,7 +89,8 @@ class AdminUserRoleValidateController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
                                 action = "User Role Validation",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = report.toStringMap()
                 )

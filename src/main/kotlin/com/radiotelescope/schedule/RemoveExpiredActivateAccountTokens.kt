@@ -6,6 +6,7 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
+import org.springframework.http.HttpStatus
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.util.*
@@ -53,14 +54,16 @@ class RemoveExpiredActivateAccountTokens(
                 affectedTable = Log.AffectedTable.ACTIVATE_ACCOUNT_TOKEN,
                 action = "Remove Expired Token",
                 timestamp = Date(),
-                affectedRecordId = accountActivateToken.id
+                affectedRecordId = accountActivateToken.id,
+                status = HttpStatus.OK.value()
         )
 
         val userLog = Log(
                 affectedTable = Log.AffectedTable.USER,
                 action = "Remove Non-Activated User",
                 timestamp = Date(),
-                affectedRecordId = accountActivateToken.user.id
+                affectedRecordId = accountActivateToken.user.id,
+                status = HttpStatus.OK.value()
         )
 
         logRepo.saveAll(listOf(userLog, activateAccountTokenLog))
