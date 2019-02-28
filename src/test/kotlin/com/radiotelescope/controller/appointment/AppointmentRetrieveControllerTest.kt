@@ -83,6 +83,10 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -101,6 +105,10 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.NOT_FOUND.value(), it.status)
+        }
     }
 
     @Test
@@ -116,5 +124,9 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+        }
     }
 }

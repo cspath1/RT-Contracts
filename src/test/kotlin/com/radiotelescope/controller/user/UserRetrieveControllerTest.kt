@@ -2,6 +2,7 @@ package com.radiotelescope.controller.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.user.UserInfo
+import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
@@ -37,6 +38,9 @@ internal class UserRetrieveControllerTest : BaseUserRestControllerTest() {
     @Autowired
     private lateinit var testUtil: TestUtil
 
+    @Autowired
+    private lateinit var logRepo: ILogRepository
+
     private lateinit var userRetrieveController: UserRetrieveController
 
     private lateinit var user: User
@@ -69,6 +73,13 @@ internal class UserRetrieveControllerTest : BaseUserRestControllerTest() {
         assertTrue(result.data is UserInfo)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -82,6 +93,13 @@ internal class UserRetrieveControllerTest : BaseUserRestControllerTest() {
         assertNotNull(result.errors)
         assertEquals(HttpStatus.NOT_FOUND, result.status)
         assertEquals(1, result.errors!!.size)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.NOT_FOUND.value(), it.status)
+        }
     }
 
     @Test
@@ -99,6 +117,12 @@ internal class UserRetrieveControllerTest : BaseUserRestControllerTest() {
         assertNotNull(result.errors)
         assertEquals(HttpStatus.FORBIDDEN, result.status)
         assertEquals(1, result.errors!!.size)
-    }
 
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+        }
+    }
 }

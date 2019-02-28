@@ -88,6 +88,10 @@ internal class UserInviteControllerTest: BaseUserRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -107,6 +111,10 @@ internal class UserInviteControllerTest: BaseUserRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
     }
 
     @Test
@@ -127,5 +135,9 @@ internal class UserInviteControllerTest: BaseUserRestControllerTest() {
         assertNotNull(result.errors)
         assertEquals(HttpStatus.FORBIDDEN, result.status)
         assertEquals(1, result.errors!!.size)
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+        }
     }
 }

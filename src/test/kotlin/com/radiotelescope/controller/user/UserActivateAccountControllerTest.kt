@@ -2,6 +2,7 @@ package com.radiotelescope.controller.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
+import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -36,6 +37,9 @@ internal class UserActivateAccountControllerTest : BaseActivateAccountRestContro
     @Autowired
     private lateinit var testUtil: TestUtil
 
+    @Autowired
+    private lateinit var logRepo: ILogRepository
+
     private lateinit var userActivateAccountController: UserActivateAccountController
 
     private lateinit var user: User
@@ -69,6 +73,13 @@ internal class UserActivateAccountControllerTest : BaseActivateAccountRestContro
         assertEquals(user.id, result.data)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+
+        // Ensure a log was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -82,6 +93,12 @@ internal class UserActivateAccountControllerTest : BaseActivateAccountRestContro
         assertNotNull(result.errors)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
-    }
 
+        // Ensure a log was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
+    }
 }

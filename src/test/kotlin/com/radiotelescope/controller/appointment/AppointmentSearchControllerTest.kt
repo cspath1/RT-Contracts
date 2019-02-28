@@ -2,6 +2,7 @@ package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import liquibase.integration.spring.SpringLiquibase
@@ -41,6 +42,9 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
 
     @Autowired
     private lateinit var userRepo: IUserRepository
+
+    @Autowired
+    private lateinit var logRepo: ILogRepository
 
     private lateinit var appointmentSearchController: AppointmentSearchController
 
@@ -90,6 +94,12 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
         assertTrue(result.data is Page<*>)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+
+        assertEquals(logRepo.count(), 1)
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -107,6 +117,12 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
         assertTrue(result.data is Page<*>)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+
+        assertEquals(logRepo.count(), 1)
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -124,6 +140,13 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
         assertNotNull(result.errors)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
+
+        assertEquals(logRepo.count(), 1)
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
+
     }
 
     @Test
@@ -146,5 +169,11 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
         assertNotNull(result.errors)
         assertEquals(HttpStatus.FORBIDDEN, result.status)
         assertEquals(1, result.errors!!.size)
+
+        assertEquals(logRepo.count(), 1)
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+        }
     }
 }

@@ -1,7 +1,9 @@
 package com.radiotelescope.controller.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
@@ -36,6 +38,12 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
     @Autowired
     private lateinit var testUtil: TestUtil
 
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
+    @Autowired
+    private lateinit var logRepo: ILogRepository
+
     private lateinit var userSearchController: UserSearchController
 
     private val userContext = getContext()
@@ -45,6 +53,8 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
         super.init()
 
         val user = testUtil.createUser("cspath1@ycp.edu")
+        user.company = "York College of PA"
+        userRepo.save(user)
 
         // Simulate a login
         userContext.login(user.id)
@@ -67,10 +77,16 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
                 value = "First"
         )
 
-        assertNotNull(result)
         assertTrue(result.data is Page<*>)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -88,6 +104,13 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
         assertTrue(result.data is Page<*>)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -105,6 +128,13 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
         assertTrue(result.data is Page<*>)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -139,6 +169,13 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
         assertNotNull(result.errors)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
     }
 
     @Test
@@ -161,5 +198,12 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
         assertNotNull(result.errors)
         assertEquals(HttpStatus.FORBIDDEN, result.status)
         assertEquals(1, result.errors!!.size)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+        }
     }
 }

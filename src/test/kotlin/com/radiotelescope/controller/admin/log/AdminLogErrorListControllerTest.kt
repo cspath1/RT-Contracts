@@ -110,9 +110,6 @@ internal class AdminLogErrorListControllerTest : BaseLogRestControllerTest() {
         assertNull(result.data)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertNotNull(result.errors)
-
-        // Ensure a log record was created
-        assertEquals(1, logRepo.count())
     }
 
     @Test
@@ -128,6 +125,12 @@ internal class AdminLogErrorListControllerTest : BaseLogRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(2, logRepo.count())
+
+        logRepo.findAll().forEach {
+            if (it.id != log.id) {
+                assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+            }
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package com.radiotelescope.controller.user
 import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.controller.model.user.LoginForm
+import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -36,6 +37,9 @@ internal class UserLoginControllerTest : BaseUserRestControllerTest() {
 
     @Autowired
     private lateinit var testUtil: TestUtil
+
+    @Autowired
+    private lateinit var logRepo: ILogRepository
 
     private lateinit var userLoginController: UserLoginController
 
@@ -73,6 +77,13 @@ internal class UserLoginControllerTest : BaseUserRestControllerTest() {
         assertTrue(result.data is UserInfo)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+
+        // Ensure a log was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -89,6 +100,13 @@ internal class UserLoginControllerTest : BaseUserRestControllerTest() {
         assertNotNull(result.errors)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
+
+        // Ensure a log was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
     }
 
     @Test
@@ -104,6 +122,12 @@ internal class UserLoginControllerTest : BaseUserRestControllerTest() {
         assertNotNull(result.errors)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
-    }
 
+        // Ensure a log was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
+    }
 }

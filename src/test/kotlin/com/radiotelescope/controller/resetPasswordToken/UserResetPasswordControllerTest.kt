@@ -78,6 +78,10 @@ internal class UserResetPasswordControllerTest : BaseResetPasswordTokenRestContr
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -100,6 +104,10 @@ internal class UserResetPasswordControllerTest : BaseResetPasswordTokenRestContr
         assertNotNull(result.errors)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
     }
 
     @Test
@@ -121,5 +129,9 @@ internal class UserResetPasswordControllerTest : BaseResetPasswordTokenRestContr
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
     }
 }

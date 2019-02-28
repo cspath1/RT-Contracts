@@ -46,6 +46,7 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
 
     private lateinit var adminLogListController: AdminLogListController
     private lateinit var admin: User
+    private lateinit var log: Log
 
     @Before
     override fun init() {
@@ -63,7 +64,7 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
                 isApproved = true
         )
 
-        testUtil.createLog(
+        log = testUtil.createLog(
                 user = admin,
                 action = "Creating log",
                 affectedRecordId = null,
@@ -110,6 +111,12 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(2, logRepo.count())
+
+        logRepo.findAll().forEach {
+            if (it.id != log.id) {
+                assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+            }
+        }
     }
 
     @Test
@@ -129,6 +136,12 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(2, logRepo.count())
+
+        logRepo.findAll().forEach {
+            if (it.id != log.id) {
+                assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+            }
+        }
     }
 
     @Test
@@ -145,5 +158,11 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(2, logRepo.count())
+
+        logRepo.findAll().forEach {
+            if (it.id != log.id) {
+                assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+            }
+        }
     }
 }
