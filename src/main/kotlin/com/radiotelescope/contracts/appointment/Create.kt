@@ -178,6 +178,10 @@ class Create(
             )
         }
 
+        /**
+         * Method that will take the [Request] hours, minutes, seconds, and declination
+         * and returns a [Coordinate] object
+         */
         fun toCoordinate(): Coordinate {
             return Coordinate(
                     hours = hours,

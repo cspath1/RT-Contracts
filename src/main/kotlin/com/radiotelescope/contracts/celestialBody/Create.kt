@@ -12,11 +12,28 @@ import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.model.celestialBody.SolarSystemBodies
 
+/**
+ * Override of the [Command] interface used for Celestial Body creation
+ *
+ * @param request the [Request] object
+ * @param coordinateRepo the [ICoordinateRepository] interface
+ * @param celestialBodyRepo the [ICelestialBodyRepository] interface
+ */
 class Create(
         private val request: Request,
         private val coordinateRepo: ICoordinateRepository,
         private val celestialBodyRepo: ICelestialBodyRepository
 ) : Command<Long, Multimap<ErrorTag, String>> {
+    /**
+     * Override of the [Command.execute] method. Calls the [validateRequest] method
+     * that will handle all constraint checking and validation.
+     *
+     * If validation passes, it will create and persist a [CelestialBody] object and,
+     * if this particular [CelestialBody] is not within our solar system, a [Coordinate]
+     * object as well, signifying the right ascension and declination.
+     *
+     * If validation fails, it will return a [SimpleResult] with the errors.
+     */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             // Adapt the request into a celestial body (and potentially a coordinate)
@@ -35,6 +52,20 @@ class Create(
         }
     }
 
+    /**
+     * Method responsible for constraint checking and validation for the
+     * [Request]. It will ensure that the name is neither blank nor longer
+     * than the database column.
+     *
+     * From there, it will determine if the name pertains to a celestial body
+     * within our solar system. If it is outside of our solar system, it will
+     * make sure the right ascension and declination is valid.
+     *
+     * If any validation fails, it will return a [Multimap] of the errors, otherwise
+     * it will return null
+     *
+     * @return a [Multimap] of errors or null
+     */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
@@ -83,6 +114,13 @@ class Create(
         return if (errors.isEmpty) null else errors
     }
 
+    /**
+     * Private method to determine if the [CelestialBody] name falls within
+     * our solar system.
+     *
+     * @param name the [CelestialBody] name
+     * @return true or false
+     */
     private fun isInSolarSystem(name: String): Boolean {
         return SolarSystemBodies.values().any {
             it.label.toLowerCase().contains(name.trim().toLowerCase()) ||
@@ -90,6 +128,10 @@ class Create(
         }
     }
 
+    /**
+     * Data class containing all fields necessary for [CelestialBody] creation.
+     * Implements the [BaseCreateRequest] interface
+     */
     data class Request(
             val name: String,
             val hours: Int?,
@@ -97,12 +139,22 @@ class Create(
             val seconds: Int?,
             val declination: Double?
     ) : BaseCreateRequest<CelestialBody> {
+        /**
+         * Concrete implementation of the [BaseCreateRequest.toEntity] method
+         * that returns a [CelestialBody] object
+         */
         override fun toEntity(): CelestialBody {
             return CelestialBody(name)
         }
 
-        // NOTE: This is only called after validation
-        // so we can guarantee no values are null
+        /**
+         * Method that will take the [Request] hours, minutes, seconds, and declination
+         * and return a [Coordinate] object.
+         *
+         * NOTE: This is only called in the event that the request has been validated and
+         * a [Coordinate] is required for the particular [CelestialBody], guaranteeing that
+         * none of the fields are null
+         */
         fun toCoordinate(): Coordinate {
             return Coordinate(
                     hours = hours!!,
