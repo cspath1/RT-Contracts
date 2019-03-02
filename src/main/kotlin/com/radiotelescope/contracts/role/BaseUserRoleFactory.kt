@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.role
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
@@ -12,10 +13,12 @@ import org.springframework.data.domain.Pageable
  *
  * @param userRepo the [IUserRepository]
  * @param userRoleRepo the [IUserRoleRepository]
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository]
  */
 class BaseUserRoleFactory(
         private val userRoleRepo: IUserRoleRepository,
-        private val userRepo: IUserRepository
+        private val userRepo: IUserRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : UserRoleFactory {
     /**
      * Override of the [UserRoleFactory.unapprovedList] method that will return a [UnapprovedList]
@@ -42,7 +45,8 @@ class BaseUserRoleFactory(
     override fun validate(request: Validate.Request): Command<Long, Multimap<ErrorTag, String>> {
         return Validate(
                 request = request,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
