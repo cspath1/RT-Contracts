@@ -75,6 +75,77 @@ internal class ValidateTest {
     }
 
     @Test
+    fun testAllottedTimeCap_Set_Guest(){
+        val requestCopy = baseValidateRequest.copy(
+                role = UserRole.Role.GUEST,
+                id = unapprovedId
+        )
+        val (id, errors) = Validate(
+                request = requestCopy,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        assertNotNull(id)
+        assertNull(errors)
+
+        assertEquals(Appointment.GUEST_APPOINTMENT_TIME_CAP, allottedTimeCapRepo.findByUserId(userId).allottedTime)
+    }
+
+    @Test
+    fun testAllottedTimeCap_Set_Student(){
+        val requestCopy = baseValidateRequest.copy(
+                role = UserRole.Role.STUDENT,
+                id = unapprovedId
+        )
+        val (id, errors) = Validate(
+                request = requestCopy,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        assertNotNull(id)
+        assertNull(errors)
+
+        assertEquals(Appointment.STUDENT_APPOINTMENT_TIME_CAP, allottedTimeCapRepo.findByUserId(userId).allottedTime)
+    }
+
+    @Test
+    fun testAllottedTimeCap_Set_Member(){
+        val requestCopy = baseValidateRequest.copy(
+                id = unapprovedId
+        )
+        val (id, errors) = Validate(
+                request = requestCopy,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        assertNotNull(id)
+        assertNull(errors)
+
+        assertEquals(Appointment.MEMBER_APPOINTMENT_TIME_CAP, allottedTimeCapRepo.findByUserId(userId).allottedTime)
+    }
+
+    @Test
+    fun testAllottedTimeCap_Set_Researcher(){
+        val requestCopy = baseValidateRequest.copy(
+                role = UserRole.Role.RESEARCHER,
+                id = unapprovedId
+        )
+        val (id, errors) = Validate(
+                request = requestCopy,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        assertNotNull(id)
+        assertNull(errors)
+
+        assertNull(allottedTimeCapRepo.findByUserId(userId).allottedTime)
+    }
+
+    @Test
     fun testValidConstraints_SameRole_Success() {
         // Keep the role the same
         val requestCopy = baseValidateRequest.copy(
