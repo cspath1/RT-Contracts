@@ -28,6 +28,7 @@ deploy:
   region: "us-east-1"
   app: "ycp-radio-telescope-api-dev"
   env: "YcpRadioTelescopeApiDev-env-1"
+  zip_file: "/build/libs/radio-telescope-2.13.2-dev.jar"
   bucket_name: "elasticbeanstalk-us-east-1-317377631261"
   on:
     branch: develop
