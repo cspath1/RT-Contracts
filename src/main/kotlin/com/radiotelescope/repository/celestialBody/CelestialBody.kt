@@ -22,4 +22,8 @@ data class CelestialBody(
     @OneToOne
     @JoinColumn(name = "coordinate_id")
     var coordinate: Coordinate? = null
+
+    companion object {
+
+    }
 }
