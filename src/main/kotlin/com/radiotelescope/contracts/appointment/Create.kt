@@ -7,10 +7,10 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -21,15 +21,19 @@ import java.util.*
  * @param request the [Request] object
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
  * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param coordinateRepo the [ICoordinateRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class Create(
-    private val request: Request,
-    private val appointmentRepo: IAppointmentRepository,
-    private val userRepo: IUserRepository,
-    private val userRoleRepo: IUserRoleRepository,
-    private val telescopeRepo: ITelescopeRepository,
-    private val coordinateRepo: ICoordinateRepository
+        private val request: Request,
+        private val appointmentRepo: IAppointmentRepository,
+        private val userRepo: IUserRepository,
+        private val userRoleRepo: IUserRoleRepository,
+        private val telescopeRepo: ITelescopeRepository,
+        private val coordinateRepo: ICoordinateRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<Long, Multimap<ErrorTag,String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -66,6 +70,10 @@ class Create(
         with(request) {
             if (!userRepo.existsById(userId)) {
                 errors.put(ErrorTag.USER_ID, "User #$userId could not be found")
+                return errors
+            }
+            if(userRoleRepo.findMembershipRoleByUserId(userId) == null) {
+                errors.put(ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
                 return errors
             }
             if (!telescopeRepo.existsById(telescopeId)) {
@@ -107,30 +115,12 @@ class Create(
         with(request) {
             val newAppointmentTime = endTime.time - startTime.time
             val totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(userId) ?: 0
-            val theUserRole = userRoleRepo.findMembershipRoleByUserId(userId)
+            val allottedTime = allottedTimeCapRepo.findByUserId(userId).allottedTime
 
-            if (theUserRole == null) {
-                errors.put(ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
-                return errors
-            }
-
-            when (theUserRole.role) {
-                // Guest -> 5 hours
-                UserRole.Role.GUEST -> {
-                    if ((totalTime + newAppointmentTime) > Appointment.GUEST_APPOINTMENT_TIME_CAP)
-                        errors.put(ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
-                }
-                UserRole.Role.STUDENT -> {
-                    if((totalTime + newAppointmentTime) > Appointment.STUDENT_APPOINTMENT_TIME_CAP)
-                        errors.put(ErrorTag.ALLOTTED_TIME, "Your max allotted observation time is 24 hours")
-                }
-                UserRole.Role.MEMBER -> {
-                    if((totalTime + newAppointmentTime) > Appointment.MEMBER_APPOINTMENT_TIME_CAP)
-                        errors.put(ErrorTag.ALLOTTED_TIME, "Your max allotted observation time is 48 hours")
-                }
-                else -> {
-                    // Do nothing, admin and researcher have unlimited, shouldn't get here for User
-                }
+            // If allottedTime = null, they have no limit, otherwise check it
+            if(allottedTime != null && (totalTime + newAppointmentTime) > allottedTime) {
+                val hours = allottedTime / (60*60*1000)
+                errors.put(ErrorTag.ALLOTTED_TIME, "You may only have $hours hours of observation time.")
             }
         }
 

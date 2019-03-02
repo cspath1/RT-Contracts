@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -51,6 +52,9 @@ internal class UserAvailableTimeTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private lateinit var user: User
     private val oneHour = 60 * 60 * 1000
 
@@ -60,7 +64,12 @@ internal class UserAvailableTimeTest {
     }
 
     @Test
-    fun testValid_Guess_Success(){
+    fun testValid_Guest_Success(){
+        // Give the user a 5 hour time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 5 * 60 * 60 * 1000
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -81,7 +90,8 @@ internal class UserAvailableTimeTest {
                 userId = user.id,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was a success
@@ -114,7 +124,8 @@ internal class UserAvailableTimeTest {
                 userId = 123456789,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was a failure
@@ -142,7 +153,8 @@ internal class UserAvailableTimeTest {
                 userId = user.id,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was a failure

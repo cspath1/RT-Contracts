@@ -67,6 +67,10 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
 
         appointment = testUtil.createAppointment(
                 user = user,

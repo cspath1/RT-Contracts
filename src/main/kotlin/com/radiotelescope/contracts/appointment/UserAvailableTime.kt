@@ -4,10 +4,9 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
@@ -17,13 +16,14 @@ import com.radiotelescope.repository.user.IUserRepository
  * @param userId the User's Id
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
- * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class UserAvailableTime(
         private val userId: Long,
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
@@ -45,27 +45,12 @@ class UserAvailableTime(
         var totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(userId)
         totalTime = totalTime ?: 0
 
-        val theUserRole = userRoleRepo.findMembershipRoleByUserId(userId)
-        var availableTime: Long?
+        // Get allotted time, if it's null, return it as null
+        val allottedTime = allottedTimeCapRepo.findByUserId(userId).allottedTime ?: return SimpleResult(null, null)
 
-        availableTime = when (theUserRole!!.role) {
-            // Guest -> 5 hours
-            UserRole.Role.GUEST -> {
-                Appointment.GUEST_APPOINTMENT_TIME_CAP - totalTime
-            }
-            UserRole.Role.STUDENT -> {
-                Appointment.STUDENT_APPOINTMENT_TIME_CAP - totalTime
-            }
-            UserRole.Role.MEMBER -> {
-                Appointment.MEMBER_APPOINTMENT_TIME_CAP - totalTime
-            }
-            // Everyone else (researcher + admin) -> unlimited
-            else -> {
-                null
-            }
-        }
+        var availableTime = allottedTime - totalTime
 
-        if(availableTime != null && availableTime < 0)
+        if(availableTime < 0)
             availableTime = 0
 
         return SimpleResult(availableTime, null)

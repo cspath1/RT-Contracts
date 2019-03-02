@@ -7,6 +7,7 @@ import org.junit.runner.RunWith
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -20,7 +21,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import java.util.*
-
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -47,11 +47,13 @@ internal class UpdateTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var userRoleRepo: IUserRoleRepository
-
-    @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
+    @Autowired
+    private lateinit var userRoleRepo: IUserRoleRepository
 
     private lateinit var appointment: Appointment
     private lateinit var user: User
@@ -99,9 +101,14 @@ internal class UpdateTest {
     }
 
     @Test
-    fun testValid_CorrectConstraints_Guest_Success(){
-        // Make the user a guest
-        testUtil.createUserRolesForUser(
+    fun testValid_CorrectConstraints_Success(){
+        // Give the user 5 hours of allotted time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 5 * 60 * 60 * 1000
+        )
+        // Make the user a Guest
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
@@ -111,7 +118,8 @@ internal class UpdateTest {
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
 
         ).execute()
 
@@ -121,9 +129,14 @@ internal class UpdateTest {
     }
 
     @Test
-    fun testValid_CorrectConstraints_Other_Success() {
-        // Make the user a researcher
-        testUtil.createUserRolesForUser(
+    fun testValid_CorrectConstraints_UnlimitedTimeCap_Success() {
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
@@ -133,8 +146,8 @@ internal class UpdateTest {
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
-
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was not error
@@ -153,7 +166,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -176,7 +190,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -199,7 +214,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -221,7 +237,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -233,14 +250,18 @@ internal class UpdateTest {
     }
 
     @Test
-    fun testInvalid_ExceedAllottedGuestLimit_Failure() {
-        // Make the user a guest
-        testUtil.createUserRolesForUser(
+    fun testInvalid_ExceedAllottedLimit_Failure() {
+        // Give the user a 5 hour time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 5 * 60 * 60 * 1000
+        )
+        // Make the user a Guest
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
-
         // Create a copy of the request with an appointment time over the limit
         val requestCopy = baseRequest.copy(
                 startTime = Date(appointment.endTime.time + twoHours),
@@ -251,39 +272,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
-
-        ).execute()
-
-        // Make sure it was an error
-        assertNotNull(errors)
-        assertNull(id)
-
-        // Make sure it failed for the expected reason
-        assertTrue(errors!![ErrorTag.ALLOTTED_TIME].isNotEmpty())
-    }
-
-    @Test
-    fun testInvalid_ExceededAllottedOtherLimit_Failure() {
-        // Make the user a researcher
-        testUtil.createUserRolesForUser(
-                user = user,
-                role = UserRole.Role.MEMBER,
-                isApproved = true
-        )
-
-        // Create a copy of the request with an appointment time over the limit
-        val requestCopy = baseRequest.copy(
-                startTime = Date(appointment.endTime.time + twoHours),
-                endTime = Date(appointment.endTime.time + (twoHours * 29))
-        )
-
-        val (id, errors) = Update(
-                request = requestCopy,
-                appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
-
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -296,12 +286,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_NoCategoryOfService_Failure() {
-        // Make the user a researcher (unapproved)
-        testUtil.createUserRolesForUser(
-                user = user,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = false
-        )
+        // Don't give a role to the user
 
         // Create a copy of the request with an appointment time over the limit
         val requestCopy = baseRequest.copy(
@@ -314,8 +299,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
-
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -330,7 +315,12 @@ internal class UpdateTest {
     fun testValidSC_SameAppointment_Success(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
-        testUtil.createUserRolesForUser(
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
@@ -360,8 +350,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
@@ -373,6 +364,13 @@ internal class UpdateTest {
     fun testInvalidSC_StartAtStart_EndBeforeEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         appointment = testUtil.createAppointment(
                 user = user,
@@ -398,8 +396,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -415,6 +414,13 @@ internal class UpdateTest {
     fun testInvalidSC_BetweenEndAndStart_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         appointment = testUtil.createAppointment(
                 user = user,
@@ -440,8 +446,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -457,6 +464,13 @@ internal class UpdateTest {
     fun testInvalidSC_StartAfterStart_EndAtEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         appointment = testUtil.createAppointment(
                 user = user,
@@ -482,8 +496,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -499,6 +514,13 @@ internal class UpdateTest {
     fun testInvalidSC_StartBeforeStart_EndBeforeEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         appointment = testUtil.createAppointment(
                 user = user,
@@ -524,8 +546,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -541,6 +564,13 @@ internal class UpdateTest {
     fun testInvalidSC_StartBeforeEnd_EndAfterEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         appointment = testUtil.createAppointment(
                 user = user,
@@ -566,8 +596,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -583,6 +614,13 @@ internal class UpdateTest {
     fun testInvalidSC_EndAtStart_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         appointment = testUtil.createAppointment(
                 user = user,
@@ -608,8 +646,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -625,6 +664,13 @@ internal class UpdateTest {
     fun testInvalidSC_StartAtEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         appointment = testUtil.createAppointment(
                 user = user,
@@ -650,8 +696,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -667,6 +714,13 @@ internal class UpdateTest {
     fun testInvalidSC_StartAtStart_EndAtEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         appointment = testUtil.createAppointment(
                 user = user,
@@ -692,8 +746,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -709,7 +764,12 @@ internal class UpdateTest {
     fun testValidSC_Requested_Success(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
-        testUtil.createUserRolesForUser(
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
@@ -738,8 +798,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
@@ -751,7 +812,12 @@ internal class UpdateTest {
     fun testValidSC_Canceled_Success(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
-        testUtil.createUserRolesForUser(
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
@@ -780,8 +846,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
@@ -793,6 +860,13 @@ internal class UpdateTest {
     fun testInvalidSC_OneConflictAndOneIsAppointment_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -827,8 +901,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -844,6 +919,13 @@ internal class UpdateTest {
     fun testInvalidSC_NoneConflicts_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -878,8 +960,9 @@ internal class UpdateTest {
         val (id, errors) = Update(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -903,7 +986,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -926,7 +1010,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -949,7 +1034,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -972,7 +1058,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -995,7 +1082,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -1018,7 +1106,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -1040,7 +1129,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was for the expected reason
@@ -1062,7 +1152,8 @@ internal class UpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was for the expected reason
