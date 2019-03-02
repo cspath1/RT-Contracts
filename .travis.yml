@@ -19,3 +19,15 @@ branches:
 
 notifications:
   slack: radio-tele-back-end:BZ7Jptb9v5i7YA46sS9V0fG6
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: $ACCESSKEYID
+  secret_access_key:
+    secure: "$SECRETACCESSKEY"
+  region: "us-east-1"
+  app: "ycp-radio-telescope-api-dev"
+  env: "YcpRadioTelescopeApiDev-env-1"
+  bucket_name: "elasticbeanstalk-us-east-1-317377631261"
+  on:
+    branch: develop

@@ -85,7 +85,7 @@ class Create(
             if (seconds < 0 || seconds >= 60)
                 errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
             if (declination > 90 || declination < -90)
-                errors.put(ErrorTag.DECLINATION, "Declination must be between -90 - 90")
+                errors.put(ErrorTag.DECLINATION, "Declination must be between -90 and 90")
 
             if (!errors.isEmpty)
                 return errors
