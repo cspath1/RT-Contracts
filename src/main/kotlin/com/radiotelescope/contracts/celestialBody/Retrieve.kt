@@ -11,11 +11,11 @@ import com.radiotelescope.repository.celestialBody.CelestialBody
  * Override of the [Command] interface used to retrieve [CelestialBody]
  * information.
  *
- * @param celestialBodyId the request [CelestialBody] id
+ * @param id the request [CelestialBody] id
  * @param celestialBodyRepo the [ICelestialBodyRepository] interface
  */
 class Retrieve(
-        private val celestialBodyId: Long,
+        private val id: Long,
         private val celestialBodyRepo: ICelestialBodyRepository
 ) : Command<CelestialBodyInfo, Multimap<ErrorTag, String>> {
     /**
@@ -28,13 +28,13 @@ class Retrieve(
      * in the [SimpleResult]
      */
     override fun execute(): SimpleResult<CelestialBodyInfo, Multimap<ErrorTag, String>> {
-        if (!celestialBodyRepo.existsById(celestialBodyId)) {
+        if (!celestialBodyRepo.existsById(id)) {
             val errors = HashMultimap.create<ErrorTag, String>()
-            errors.put(ErrorTag.ID, "Celestial Body Id #$celestialBodyId not found")
+            errors.put(ErrorTag.ID, "Celestial Body Id #$id not found")
             return SimpleResult(null, errors)
         }
 
-        val theCelestialBody = celestialBodyRepo.findById(celestialBodyId).get()
+        val theCelestialBody = celestialBodyRepo.findById(id).get()
         val theInfo = CelestialBodyInfo(theCelestialBody)
         return SimpleResult(theInfo, null)
     }

@@ -64,7 +64,7 @@ internal class RetrieveTest {
     fun testValidConstraints_Success() {
         // Execute the command with a valid id
         val (info, errors) = Retrieve(
-                celestialBodyId = celestialBody.id,
+                id = celestialBody.id,
                 celestialBodyRepo = celestialBodyRepo
         ).execute()
 
@@ -77,7 +77,7 @@ internal class RetrieveTest {
     fun testInvalidId_Failure() {
         // Execute the command with an invalid id
         val (info, errors) = Retrieve(
-                celestialBodyId = 311L,
+                id = 311L,
                 celestialBodyRepo = celestialBodyRepo
         ).execute()
 
