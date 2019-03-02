@@ -22,13 +22,14 @@ notifications:
 
 deploy:
   provider: elasticbeanstalk
+  skip_cleanup: true
   access_key_id: $ACCESSKEYID
   secret_access_key:
     secure: "$SECRETACCESSKEY"
   region: "us-east-1"
   app: "ycp-radio-telescope-api-dev"
   env: "YcpRadioTelescopeApiDev-env-1"
-  zip_file: "/build/libs/radio-telescope-2.13.2-dev.jar"
+  zip_file: "/build/libs/radio-telescope-2.13.3-dev.jar"
   bucket_name: "elasticbeanstalk-us-east-1-317377631261"
   on:
     branch: develop
