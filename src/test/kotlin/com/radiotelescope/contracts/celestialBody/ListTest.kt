@@ -69,7 +69,6 @@ internal class ListTest {
                 ),
                 declination = -60.5
         )
-
         coordinateRepo.save(coordinateTwo)
 
         testUtil.createCelestialBody(

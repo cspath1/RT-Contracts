@@ -3,6 +3,8 @@ package com.radiotelescope.contracts.celestialBody
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.celestialBody.CelestialBody
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 /**
  * Abstract factory interface with methods for all [CelestialBody] operations
@@ -23,4 +25,12 @@ interface CelestialBodyFactory {
      * @return a [Command] object
      */
     fun retrieve(id: Long): Command<CelestialBodyInfo, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve a list of [CelestialBody] objects
+     *
+     * @param pageable the [Pageable] object
+     * @return a [Command] object
+     */
+    fun list(pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>
 }

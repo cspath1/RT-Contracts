@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
@@ -67,5 +68,16 @@ internal class BaseCelestialBodyFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is Retrieve)
+    }
+
+    @Test
+    fun list() {
+        // Call the factory method
+        val cmd = factory.list(
+                pageable = PageRequest.of(0, 15)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is List)
     }
 }

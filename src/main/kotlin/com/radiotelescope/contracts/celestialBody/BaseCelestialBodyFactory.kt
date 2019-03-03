@@ -4,6 +4,8 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 /**
  * Base concrete implementation of the [CelestialBodyFactory] interface
@@ -38,6 +40,19 @@ class BaseCelestialBodyFactory(
     override fun retrieve(id: Long): Command<CelestialBodyInfo, Multimap<ErrorTag, String>> {
         return Retrieve(
                 id = id,
+                celestialBodyRepo = celestialBodyRepo
+        )
+    }
+
+    /**
+     * Override of the [CelestialBodyFactory.list] method that will return a [List] command object
+     *
+     * @param pageable the [Pageable] object
+     * @return a [List] command object
+     */
+    override fun list(pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>> {
+        return List(
+                pageable = pageable,
                 celestialBodyRepo = celestialBodyRepo
         )
     }
