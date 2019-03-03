@@ -6,6 +6,7 @@ package com.radiotelescope.contracts.celestialBody
 enum class ErrorTag {
     ID,
     NAME,
+    STATUS,
     HOURS,
     MINUTES,
     SECONDS,
