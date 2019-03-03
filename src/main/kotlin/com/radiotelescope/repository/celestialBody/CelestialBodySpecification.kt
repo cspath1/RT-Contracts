@@ -11,6 +11,9 @@ class CelestialBodySpecification(
         private val searchCriteria: SearchCriteria
 ) : Specification<CelestialBody> {
     override fun toPredicate(root: Root<CelestialBody>, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder): Predicate? {
-        return criteriaBuilder.like(criteriaBuilder.lower(root.get(searchCriteria.filter.field)), "%" + searchCriteria.value.toString().toLowerCase() + "%")
+        return criteriaBuilder.and(
+                criteriaBuilder.like(criteriaBuilder.lower(root.get(searchCriteria.filter.field)), "%" + searchCriteria.value.toString().toLowerCase() + "%"),
+                criteriaBuilder.notEqual(root.get<String>("status"), CelestialBody.Status.HIDDEN)
+        )
     }
 }

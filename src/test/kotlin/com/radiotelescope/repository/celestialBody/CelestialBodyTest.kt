@@ -37,6 +37,8 @@ internal class CelestialBodyTest {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    private lateinit var celestialBody: CelestialBody
+
     @Before
     fun setUp() {
         // Create a coordinate and celestial body
@@ -54,13 +56,14 @@ internal class CelestialBodyTest {
 
         coordinateRepo.save(coordinate)
 
-        testUtil.createCelestialBody(
+        celestialBody = testUtil.createCelestialBody(
                 name = "Crab Nebula",
                 coordinate = coordinate
         )
 
         // Create another one (this will not have a coordinate)
         // and will not be searched for
+
         testUtil.createCelestialBody(
                 name = "The Sun",
                 coordinate = null
@@ -78,5 +81,21 @@ internal class CelestialBodyTest {
         assertNotNull(celestialBodyList)
         assertEquals(1, celestialBodyList.content.size)
         assertEquals("Crab Nebula".toLowerCase(), celestialBodyList.content[0].name.toLowerCase())
+    }
+
+    @Test
+    fun testSearch_Hidden() {
+        // Make the celestial body hidden
+        celestialBody.status = CelestialBody.Status.HIDDEN
+        celestialBodyRepo.save(celestialBody)
+
+        val searchCriteria = SearchCriteria(Filter.NAME, "Crab Nebula")
+
+        val specification = CelestialBodySpecificationBuilder().with(searchCriteria).build()
+
+        val celestialBodyList = celestialBodyRepo.findAll(specification, PageRequest.of(0, 10))
+
+        assertNotNull(celestialBodyList)
+        assertEquals(0, celestialBodyList.content.size)
     }
 }
