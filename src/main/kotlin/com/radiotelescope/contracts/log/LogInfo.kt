@@ -24,10 +24,11 @@ data class LogInfo(
         val userFirstName: String?,
         val userLastName: String?,
         val affectedRecordId: Long?,
-        val affectedTable: String,
+        val affectedTable: String?,
         val action: String,
         val timestamp: Date,
-        val isSuccess: Boolean
+        val isSuccess: Boolean,
+        val status: Int
 ) {
     /**
      * Secondary constructor used when there was no logged
@@ -41,10 +42,11 @@ data class LogInfo(
             userFirstName = null,
             userLastName = null,
             affectedRecordId = log.affectedRecordId,
-            affectedTable = log.affectedTable.label,
+            affectedTable = log.affectedTable?.label,
             action = log.action,
             timestamp = log.timestamp,
-            isSuccess = log.isSuccess
+            isSuccess = log.isSuccess,
+            status = log.status
     )
 
     /**
@@ -60,9 +62,10 @@ data class LogInfo(
             userFirstName = user.firstName,
             userLastName = user.lastName,
             affectedRecordId = log.affectedRecordId,
-            affectedTable = log.affectedTable.label,
+            affectedTable = log.affectedTable?.label,
             action = log.action,
             timestamp = log.timestamp,
-            isSuccess = log.isSuccess
+            isSuccess = log.isSuccess,
+            status = log.status
     )
 }

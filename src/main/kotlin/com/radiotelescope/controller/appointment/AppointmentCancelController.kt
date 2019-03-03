@@ -40,7 +40,8 @@ class AppointmentCancelController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Appointment Cancellation",
-                                affectedRecordId = id
+                                affectedRecordId = id,
+                                status = HttpStatus.OK.value()
                         )
                 )
 
@@ -53,7 +54,8 @@ class AppointmentCancelController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Appointment Cancellation",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = error.toStringMap()
                 )
@@ -67,7 +69,8 @@ class AppointmentCancelController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
                             action = "Appointment Cancellation",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = if (it.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                     ),
                     errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
             )

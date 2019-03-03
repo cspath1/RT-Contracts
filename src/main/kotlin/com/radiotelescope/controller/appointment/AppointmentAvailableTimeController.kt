@@ -47,7 +47,8 @@ class AppointmentAvailableTimeController (
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Appointment Remaining Scheduling Time",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.OK.value()
                         )
                 )
 
@@ -60,7 +61,8 @@ class AppointmentAvailableTimeController (
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Appointment Remaining Scheduling Time",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = error.toStringMap()
                 )
@@ -74,7 +76,8 @@ class AppointmentAvailableTimeController (
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
                             action = "Appointment Remaining Scheduling Time",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.FORBIDDEN.value()
                     ),
                     errors = it.toStringMap()
             )

@@ -3,7 +3,6 @@ package com.radiotelescope.contracts.resetPasswordToken
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -23,13 +22,6 @@ internal class BaseResetPasswordTokenFactoryTest {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired

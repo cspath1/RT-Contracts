@@ -45,7 +45,8 @@ class RFDataRetrieveAppointmentDataController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.RF_DATA,
                                     action = "Appointment RF Data Retrieval",
-                                    affectedRecordId = info.id
+                                    affectedRecordId = info.id,
+                                    status = HttpStatus.OK.value()
                             )
                     )
                 }
@@ -59,7 +60,8 @@ class RFDataRetrieveAppointmentDataController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.RF_DATA,
                                 action = "Appointment RF Data Retrieval",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = errors.toStringMap()
                 )
@@ -75,7 +77,8 @@ class RFDataRetrieveAppointmentDataController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.RF_DATA,
                             action = "Appointment RF Data Retrieval",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = if (it.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                     ),
                     errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
             )

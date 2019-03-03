@@ -54,7 +54,8 @@ class AdminUserListController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User List Retrieval",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -76,7 +77,8 @@ class AdminUserListController(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.USER,
                                         action = "User List Retrieval",
-                                        affectedRecordId = info.id
+                                        affectedRecordId = info.id,
+                                        status = HttpStatus.OK.value()
                                 )
                         )
                     }
@@ -90,7 +92,8 @@ class AdminUserListController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User List Retrieval",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = it.toStringMap()
                 )

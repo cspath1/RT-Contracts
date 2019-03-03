@@ -50,7 +50,8 @@ class UserRetrieveController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Retrieval",
-                                affectedRecordId = info.id
+                                affectedRecordId = info.id,
+                                status = HttpStatus.OK.value()
                         )
                 )
 
@@ -63,7 +64,8 @@ class UserRetrieveController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Retrieval",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = errors.toStringMap()
                 )
@@ -77,7 +79,8 @@ class UserRetrieveController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User Retrieval",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = if (it.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                     ),
                     errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
             )

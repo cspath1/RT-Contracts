@@ -49,7 +49,8 @@ class AdminAppointmentListRequestController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
                             action = "User Request List Of Appointment Request",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -68,7 +69,8 @@ class AdminAppointmentListRequestController(
                         logger.createSuccessLog(
                                 info = Logger.createInfo(Log.AffectedTable.APPOINTMENT,
                                         action = "Requested Appointment List",
-                                        affectedRecordId = info.id
+                                        affectedRecordId = info.id,
+                                        status = HttpStatus.OK.value()
                                 )
                         )
                     }
@@ -81,7 +83,8 @@ class AdminAppointmentListRequestController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Requested Appointment List",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = it.toStringMap()
                 )

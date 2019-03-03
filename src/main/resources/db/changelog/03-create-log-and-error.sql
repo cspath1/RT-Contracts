@@ -8,7 +8,8 @@ CREATE TABLE log (
   action VARCHAR(100) NOT NULL,
   timestamp DATETIME NOT NULL,
   affected_record_id INT(11),
-  success TINYINT(1) DEFAULT '1',
+  success TINYINT(1) DEFAULT 1,
+  status INT(11) NOT NULL,
 
   PRIMARY KEY (id)
 );

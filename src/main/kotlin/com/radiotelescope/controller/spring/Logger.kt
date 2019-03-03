@@ -95,21 +95,26 @@ class Logger(
      * It implements the [BaseCreateRequest] interface
      */
     data class Info(
-            var affectedTable: Log.AffectedTable,
+            var affectedTable: Log.AffectedTable?,
             var action: String,
             var timestamp: Date,
-            var affectedRecordId: Long?
+            var affectedRecordId: Long?,
+            var status: Int
     ) : BaseCreateRequest<Log> {
         /**
          * Override of the [BaseCreateRequest.toEntity] method to return a [Log] Entity
          */
         override fun toEntity(): Log {
-            return Log(
-                    affectedTable = affectedTable,
+            val log =  Log(
                     action = action,
                     timestamp = timestamp,
-                    affectedRecordId = affectedRecordId
+                    affectedRecordId = affectedRecordId,
+                    status = status
             )
+
+            log.affectedTable = affectedTable
+
+            return log
         }
     }
 
@@ -117,12 +122,15 @@ class Logger(
         fun createInfo(
                 affectedTable: Log.AffectedTable,
                 action: String,
-                affectedRecordId: Long?) : Info {
+                affectedRecordId: Long?,
+                status: Int
+        ) : Info {
             return Info(
                     affectedTable = affectedTable,
                     action = action,
                     timestamp = Date(),
-                    affectedRecordId = affectedRecordId
+                    affectedRecordId = affectedRecordId,
+                    status = status
             )
         }
     }

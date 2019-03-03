@@ -7,7 +7,6 @@ import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -29,13 +28,6 @@ internal class UserUpdateEmailTokenWrapperTest {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired

@@ -44,7 +44,8 @@ class AppointmentMakePublicController (
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Make Appointment Public",
-                                affectedRecordId = id
+                                affectedRecordId = id,
+                                status = HttpStatus.OK.value()
                         )
                 )
 
@@ -57,7 +58,8 @@ class AppointmentMakePublicController (
                         info = Logger.createInfo(
                                 Log.AffectedTable.APPOINTMENT,
                                 action = "Make Appointment Public",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = errors.toStringMap()
                 )
@@ -73,7 +75,8 @@ class AppointmentMakePublicController (
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
                             action = "Make Appointment Public",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = if (it.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                     ),
                     errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
             )

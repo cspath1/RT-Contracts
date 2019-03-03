@@ -4,6 +4,7 @@ import com.radiotelescope.repository.error.Error
 import com.radiotelescope.repository.log.Log
 import org.junit.Assert.*
 import org.junit.Test
+import org.springframework.http.HttpStatus
 import java.util.*
 
 internal class ErrorInfoTest {
@@ -23,12 +24,13 @@ internal class ErrorInfoTest {
     @Test
     fun testSecondaryConstructor() {
         val log = Log(
-                affectedTable = Log.AffectedTable.USER,
                 action = "User Registration",
                 timestamp = Date(),
-                affectedRecordId = 1L
+                affectedRecordId = 1L,
+                status = HttpStatus.OK.value()
         )
 
+        log.affectedTable = Log.AffectedTable.USER
         log.isSuccess
         log.id = 1L
 

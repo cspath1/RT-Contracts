@@ -14,21 +14,24 @@ import javax.persistence.*
 @Entity
 @Table(name = "log")
 data class Log(
-        @Column(name = "affected_table")
-        @Enumerated(value = EnumType.STRING)
-        var affectedTable: AffectedTable,
         @Column(name = "action")
         var action: String,
         @Column(name = "timestamp")
         var timestamp: Date,
         @Column(name = "affected_record_id")
-        var affectedRecordId: Long? = null
+        var affectedRecordId: Long? = null,
+        @Column(name = "status")
+        var status: Int
 ) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
+
+    @Column(name = "affected_table")
+    @Enumerated(value = EnumType.STRING)
+    var affectedTable: AffectedTable? = null
 
     @OneToOne
     @JoinColumn(name = "user_id")

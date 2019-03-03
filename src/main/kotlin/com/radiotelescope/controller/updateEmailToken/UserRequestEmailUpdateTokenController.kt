@@ -46,7 +46,8 @@ class UserRequestEmailUpdateTokenController (
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.UPDATE_EMAIL_TOKEN,
                             action = "User Update Email Request",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = it.toStringMap()
             )
@@ -71,7 +72,8 @@ class UserRequestEmailUpdateTokenController (
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.UPDATE_EMAIL_TOKEN,
                                     action = "User Update Email Request",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.OK.value()
                             )
                     )
 
@@ -87,7 +89,8 @@ class UserRequestEmailUpdateTokenController (
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.UPDATE_EMAIL_TOKEN,
                                     action = "User Update Email Request",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
                             ),
                             errors = error.toStringMap()
                     )
@@ -102,7 +105,8 @@ class UserRequestEmailUpdateTokenController (
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.UPDATE_EMAIL_TOKEN,
                                 action = "User Update Email Request",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = report.toStringMap()
                 )

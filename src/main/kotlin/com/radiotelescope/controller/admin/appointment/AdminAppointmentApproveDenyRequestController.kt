@@ -51,7 +51,8 @@ class AdminAppointmentApproveDenyRequestController (
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
                             action = "Requested Appointment Review",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -71,7 +72,8 @@ class AdminAppointmentApproveDenyRequestController (
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action = "Requested Appointment Review",
-                                    affectedRecordId = id
+                                    affectedRecordId = id,
+                                    status = HttpStatus.OK.value()
                             )
                     )
 
@@ -90,7 +92,8 @@ class AdminAppointmentApproveDenyRequestController (
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action = "Requested Appointment Review",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
                             ),
                             errors = errors.toStringMap()
                     )
@@ -104,7 +107,8 @@ class AdminAppointmentApproveDenyRequestController (
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Requested Appointment Review",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = it.toStringMap()
                 )

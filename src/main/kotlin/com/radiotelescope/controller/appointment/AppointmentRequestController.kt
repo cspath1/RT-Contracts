@@ -52,7 +52,8 @@ class AppointmentRequestController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
                             action = "Appointment Request",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = it.toStringMap()
             )
@@ -71,7 +72,8 @@ class AppointmentRequestController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action = "Appointment Request",
-                                    affectedRecordId = data
+                                    affectedRecordId = data,
+                                    status = HttpStatus.OK.value()
                             )
                     )
                     result = Result(data = data)
@@ -85,7 +87,8 @@ class AppointmentRequestController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action ="Appointment Request",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
                             ),
                             errors = errors.toStringMap()
                     )
@@ -99,7 +102,8 @@ class AppointmentRequestController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Appointment Request",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = report.toStringMap()
                 )

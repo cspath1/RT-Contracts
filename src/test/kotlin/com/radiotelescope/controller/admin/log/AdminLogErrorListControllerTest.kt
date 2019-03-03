@@ -8,7 +8,6 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.toStringMap
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -30,13 +29,6 @@ internal class AdminLogErrorListControllerTest : BaseLogRestControllerTest() {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired
@@ -110,9 +102,6 @@ internal class AdminLogErrorListControllerTest : BaseLogRestControllerTest() {
         assertNull(result.data)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertNotNull(result.errors)
-
-        // Ensure a log record was created
-        assertEquals(1, logRepo.count())
     }
 
     @Test
@@ -128,6 +117,12 @@ internal class AdminLogErrorListControllerTest : BaseLogRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(2, logRepo.count())
+
+        logRepo.findAll().forEach {
+            if (it.id != log.id) {
+                assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+            }
+        }
     }
 
 }
