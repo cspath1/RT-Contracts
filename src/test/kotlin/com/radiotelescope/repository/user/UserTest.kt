@@ -4,7 +4,6 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.model.user.Filter
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.model.user.UserSpecificationBuilder
-import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import org.junit.Assert
 import org.junit.Assert.*
@@ -34,9 +33,6 @@ internal class UserTest {
 
     @Autowired
     private lateinit var userRepo: IUserRepository
-
-    @Autowired
-    private lateinit var userRoleRepository: IUserRoleRepository
 
     private var email: String = ""
     private lateinit var user: User
