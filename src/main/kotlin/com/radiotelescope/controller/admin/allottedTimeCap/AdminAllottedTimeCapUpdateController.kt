@@ -47,7 +47,8 @@ class AdminAllottedTimeCapUpdateController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.ALLOTTED_TIME_CAP,
                                 action = "Update Alloted Time Cap",
-                                affectedRecordId = timeCap.id
+                                affectedRecordId = timeCap.id,
+                                status = HttpStatus.OK.value()
                         )
                 )
 
@@ -60,7 +61,8 @@ class AdminAllottedTimeCapUpdateController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.ALLOTTED_TIME_CAP,
                                 action = "Update Allotted Time Cap",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = errors.toStringMap()
                 )
@@ -74,7 +76,8 @@ class AdminAllottedTimeCapUpdateController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.ALLOTTED_TIME_CAP,
                             action = "Update Allotted Time Cap",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.FORBIDDEN.value()
                     ),
                     errors = it.toStringMap()
             )
