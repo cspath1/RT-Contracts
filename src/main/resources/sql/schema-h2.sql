@@ -14,6 +14,7 @@ CREATE TABLE appointment(
 );
 
 CREATE TABLE celestial_body(
+  id INT(11) NOT NULL AUTO_INCREMENT,
   name VARCHAR(150) NOT NULL,
   coordinate_id INT(11) DEFAULT NULL,
   status ENUM('HIDDEN', 'VISIBLE') NOT NULL
