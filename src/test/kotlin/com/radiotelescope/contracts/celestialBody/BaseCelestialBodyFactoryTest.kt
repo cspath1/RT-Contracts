@@ -3,6 +3,8 @@ package com.radiotelescope.contracts.celestialBody
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.model.celestialBody.Filter
+import com.radiotelescope.repository.model.celestialBody.SearchCriteria
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -12,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
@@ -101,5 +104,17 @@ internal class BaseCelestialBodyFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is MarkVisible)
+    }
+
+    @Test
+    fun search() {
+        // Call the factory method
+        val cmd = factory.search(
+                searchCriteria = SearchCriteria(Filter.NAME, "Crab"),
+                pageable = PageRequest.of(0, 15)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Search)
     }
 }

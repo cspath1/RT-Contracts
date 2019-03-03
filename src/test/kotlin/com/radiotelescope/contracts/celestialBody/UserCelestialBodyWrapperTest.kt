@@ -5,6 +5,8 @@ import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.model.celestialBody.Filter
+import com.radiotelescope.repository.model.celestialBody.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Assert.*
@@ -323,5 +325,39 @@ internal class UserCelestialBodyWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testSearch_LoggedIn_Success() {
+        // Simulate a login
+        context.login(userId)
+        context.currentRoles.addAll(listOf(UserRole.Role.RESEARCHER, UserRole.Role.USER))
+
+        val error = wrapper.search(
+                searchCriteria = SearchCriteria(Filter.NAME, "Crab"),
+                pageable = PageRequest.of(0, 15)
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testSearch_NotLoggedIn_Failure() {
+        // Simulate a logout
+        context.logout()
+        context.currentRoles = mutableListOf()
+
+        val error = wrapper.search(
+                searchCriteria = SearchCriteria(Filter.NAME, "Crab"),
+                pageable = PageRequest.of(0, 15)
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
     }
 }

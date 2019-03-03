@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.model.celestialBody.SearchCriteria
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -79,6 +80,20 @@ class BaseCelestialBodyFactory(
     override fun markVisible(id: Long): Command<Long, Multimap<ErrorTag, String>> {
         return MarkVisible(
                 id = id,
+                celestialBodyRepo = celestialBodyRepo
+        )
+    }
+
+    /**
+     * Override of the [CelestialBodyFactory.search] method that will return a [Search] command
+     *
+     * @param searchCriteria the [SearchCriteria]
+     * @param pageable the [Pageable] object
+     */
+    override fun search(searchCriteria: SearchCriteria, pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>> {
+        return Search(
+                searchCriteria = searchCriteria,
+                pageable = pageable,
                 celestialBodyRepo = celestialBodyRepo
         )
     }

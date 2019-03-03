@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.celestialBody
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.model.celestialBody.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
@@ -87,5 +88,24 @@ class UserCelestialBodyWrapper(
                 requiredRoles = listOf(UserRole.Role.ADMIN),
                 successCommand = factory.markVisible(id)
         ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for [CelestialBodyFactory.search] method used to add Spring
+     * Security authentication to the [Search] command object
+     *
+     * @param searchCriteria the [SearchCriteria]
+     * @param pageable the [Pageable] object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun search(searchCriteria: SearchCriteria, pageable: Pageable, withAccess: (result: SimpleResult<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(),
+                    successCommand = factory.search(searchCriteria, pageable)
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 }

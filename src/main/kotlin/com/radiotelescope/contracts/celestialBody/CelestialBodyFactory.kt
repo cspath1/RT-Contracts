@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.celestialBody
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.celestialBody.CelestialBody
+import com.radiotelescope.repository.model.celestialBody.SearchCriteria
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -49,4 +50,12 @@ interface CelestialBodyFactory {
      * @return a [Command] object
      */
     fun markVisible(id: Long): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to search for [CelestialBody] objects
+     *
+     * @param searchCriteria the [SearchCriteria] object
+     * @param pageable the [Pageable] object
+     */
+    fun search(searchCriteria: SearchCriteria, pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>
 }
