@@ -52,11 +52,40 @@ class UserCelestialBodyWrapper(
      * authentication to the [List] command object
      *
      * @param pageable the [Pageable]
+     * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun list(pageable: Pageable, withAccess: (result: SimpleResult<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.ADMIN),
                 successCommand = factory.list(pageable)
+        ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for the [CelestialBodyFactory.markHidden] method used to add Spring
+     * Security authentication to the [MarkHidden] command object
+     *
+     * @param id the Celestial Body id
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun markHidden(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.ADMIN),
+                successCommand = factory.markHidden(id)
+        ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for the [CelestialBodyFactory.markVisible] method used to add Spring
+     * Security authentication to the [MarkVisible] command object
+     *
+     * @param id the Celestial Body id
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun markVisible(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.ADMIN),
+                successCommand = factory.markVisible(id)
         ).execute(withAccess)
     }
 }
