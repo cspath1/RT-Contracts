@@ -4,7 +4,7 @@
 CREATE TABLE log (
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11),
-  affected_table VARCHAR(100) NOT NULL,
+  affected_table VARCHAR(100) DEFAULT NULL,
   action VARCHAR(100) NOT NULL,
   timestamp DATETIME NOT NULL,
   affected_record_id INT(11),
