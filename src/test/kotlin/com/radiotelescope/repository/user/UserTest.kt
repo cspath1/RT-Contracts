@@ -4,6 +4,7 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.model.user.Filter
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.model.user.UserSpecificationBuilder
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import org.junit.Assert
 import org.junit.Assert.*
@@ -34,12 +35,16 @@ internal class UserTest {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
+    @Autowired
+    private lateinit var userRoleRepository: IUserRoleRepository
+
     private var email: String = ""
+    private lateinit var user: User
 
     @Before
     fun setUp() {
         // Instantiate and persist a User Entity Object
-        val user = testUtil.createUser("cspath1@ycp.edu")
+        user = testUtil.createUser("cspath1@ycp.edu")
         testUtil.createUserRolesForUser(user, UserRole.Role.MEMBER, true)
         val admin1 = testUtil.createUser("rpim@ycp.edu")
         testUtil.createUserRolesForUser(admin1, UserRole.Role.ADMIN, true)
@@ -104,6 +109,12 @@ internal class UserTest {
 
     @Test
     fun findAllNonAdminUser() {
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = false
+        )
+
         val userPage = userRepo.findAllNonAdminUsers(PageRequest.of(0, 25))
 
         assertNotNull(userPage)
