@@ -1,5 +1,7 @@
 package com.radiotelescope.repository.model.celestialBody
 
+import com.radiotelescope.repository.celestialBody.CelestialBody
+
 /**
  * Due to the proximity of celestial bodies within our solar system,
  * right ascension and declination must be calculated. This is different
@@ -21,5 +23,21 @@ enum class SolarSystemBodies(val label: String) {
     JUPITER("Jupiter"),
     URANUS("Uranus"),
     NEPTUNE("Neptune"),
-    PLUTO("Pluto")
+    PLUTO("Pluto");
+
+    companion object {
+        /**
+         * Method to determine if the [CelestialBody] name falls within
+         * our solar system.
+         *
+         * @param name the [CelestialBody] name
+         * @return true or false
+         */
+        fun isInSolarSystem(name: String): Boolean {
+            return SolarSystemBodies.values().any {
+                it.label.toLowerCase().contains(name.trim().toLowerCase()) ||
+                        it.label.toLowerCase() == name.trim().toLowerCase()
+            }
+        }
+    }
 }

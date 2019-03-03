@@ -40,7 +40,7 @@ class Create(
             // and return the new record's id
             val celestialBody = request.toEntity()
 
-            if (!isInSolarSystem(request.name)) {
+            if (!SolarSystemBodies.isInSolarSystem(request.name)) {
                 val coordinate = request.toCoordinate()
                 coordinateRepo.save(coordinate)
                 celestialBody.coordinate = coordinate
@@ -83,7 +83,7 @@ class Create(
 
             // Determine if the Celestial Body entered is within
             // our solar system
-            val isInSolarSystem = isInSolarSystem(name)
+            val isInSolarSystem = SolarSystemBodies.isInSolarSystem(name)
 
             // If the object is not in the solar system
             // right ascension and declination are required
@@ -112,20 +112,6 @@ class Create(
         }
 
         return if (errors.isEmpty) null else errors
-    }
-
-    /**
-     * Private method to determine if the [CelestialBody] name falls within
-     * our solar system.
-     *
-     * @param name the [CelestialBody] name
-     * @return true or false
-     */
-    private fun isInSolarSystem(name: String): Boolean {
-        return SolarSystemBodies.values().any {
-            it.label.toLowerCase().contains(name.trim().toLowerCase()) ||
-                    it.label.toLowerCase() == name.trim().toLowerCase()
-        }
     }
 
     /**
