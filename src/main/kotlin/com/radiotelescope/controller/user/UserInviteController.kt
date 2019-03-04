@@ -55,25 +55,27 @@ class UserInviteController(
         // If the supplied path variable is not null, call the invite
         userWrapper.invite(email) {
             // If the command called after successful validation is a success
-            it.success?.let {value ->
+            it.success?.let { value ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "Invite User",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.OK.value()
                         )
                 )
                 result = Result(data = value)
             }
             // Otherwise, it was an error
-            it.error?.let{error ->
+            it.error?.let{ error ->
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "Invite User",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = error.toStringMap()
                 )
@@ -89,7 +91,8 @@ class UserInviteController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "Invite User",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.FORBIDDEN.value()
                     ),
                     errors = it.toStringMap()
             )

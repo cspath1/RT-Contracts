@@ -55,7 +55,8 @@ class AdminUserBanController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Ban",
-                                affectedRecordId = id
+                                affectedRecordId = id,
+                                status = HttpStatus.OK.value()
                         )
                 )
                 sendEmail(userRepo.findById(id).get().email, message)
@@ -69,7 +70,8 @@ class AdminUserBanController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Ban",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = errors.toStringMap()
                 )
@@ -83,7 +85,8 @@ class AdminUserBanController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User Ban",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.FORBIDDEN.value()
                     ),
                     errors = it.toStringMap()
             )

@@ -6,6 +6,7 @@ import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -40,7 +41,8 @@ class UserActivateAccountController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User Account Activation",
-                            affectedRecordId = it
+                            affectedRecordId = it,
+                            status = HttpStatus.OK.value()
                     )
             )
 
@@ -53,7 +55,8 @@ class UserActivateAccountController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User Account Activation",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = it.toStringMap()
             )

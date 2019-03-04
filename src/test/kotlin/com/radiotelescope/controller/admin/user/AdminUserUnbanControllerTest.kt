@@ -5,7 +5,6 @@ import com.radiotelescope.controller.user.BaseUserRestControllerTest
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -26,13 +25,6 @@ internal class AdminUserUnbanControllerTest : BaseUserRestControllerTest() {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired
@@ -87,6 +79,10 @@ internal class AdminUserUnbanControllerTest : BaseUserRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -107,6 +103,10 @@ internal class AdminUserUnbanControllerTest : BaseUserRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
     }
 
     @Test
@@ -125,6 +125,10 @@ internal class AdminUserUnbanControllerTest : BaseUserRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+        }
     }
 
 }

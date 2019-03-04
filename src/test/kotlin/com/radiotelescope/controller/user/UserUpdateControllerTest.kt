@@ -2,10 +2,10 @@ package com.radiotelescope.controller.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.controller.model.user.UpdateForm
+import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
-import liquibase.integration.spring.SpringLiquibase
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,17 +25,13 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired
     private lateinit var testUtil: TestUtil
+
+    @Autowired
+    private lateinit var logRepo: ILogRepository
 
     private lateinit var userUpdateController: UserUpdateController
 
@@ -77,10 +73,17 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 form = baseForm
         )
 
-        Assert.assertNotNull(result)
-        Assert.assertEquals(user.id, result.data)
-        Assert.assertEquals(HttpStatus.OK, result.status)
-        Assert.assertNull(result.errors)
+        assertNotNull(result)
+        assertEquals(user.id, result.data)
+        assertEquals(HttpStatus.OK, result.status)
+        assertNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -94,11 +97,11 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 userId = user.id,
                 form = formCopy
         )
-        Assert.assertNotNull(result)
-        Assert.assertNull(result.data)
-        Assert.assertNotNull(result.errors)
-        Assert.assertEquals(HttpStatus.BAD_REQUEST, result.status)
-        Assert.assertEquals(1, result.errors!!.size)
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertEquals(1, result.errors!!.size)
     }
 
     @Test
@@ -113,11 +116,18 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 userId = user.id,
                 form = formCopy
         )
-        Assert.assertNotNull(result)
-        Assert.assertNull(result.data)
-        Assert.assertNotNull(result.errors)
-        Assert.assertEquals(HttpStatus.BAD_REQUEST, result.status)
-        Assert.assertEquals(1, result.errors!!.size)
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertEquals(1, result.errors!!.size)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
     }
 
     @Test
@@ -133,11 +143,18 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 form = baseForm
         )
 
-        Assert.assertNotNull(result)
-        Assert.assertNull(result.data)
-        Assert.assertNotNull(result.errors)
-        Assert.assertEquals(HttpStatus.FORBIDDEN, result.status)
-        Assert.assertEquals(1, result.errors!!.size)
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.FORBIDDEN, result.status)
+        assertEquals(1, result.errors!!.size)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+        }
     }
 
     @Test
@@ -153,10 +170,17 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 form = formCopy
         )
 
-        Assert.assertNotNull(result)
-        Assert.assertNull(result.data)
-        Assert.assertNotNull(result.errors)
-        Assert.assertEquals(HttpStatus.NOT_FOUND, result.status)
-        Assert.assertEquals(1, result.errors!!.size)
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.NOT_FOUND, result.status)
+        assertEquals(1, result.errors!!.size)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.NOT_FOUND.value(), it.status)
+        }
     }
 }

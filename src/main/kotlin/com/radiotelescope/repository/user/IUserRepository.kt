@@ -49,7 +49,7 @@ interface IUserRepository : PagingAndSortingRepository<User, Long>, JpaSpecifica
      * @param pageable a [Pageable] object
      * @return a [Page] of [User] objects
      */
-    @Query(value = "SELECT * " +
+    @Query(value = "SELECT DISTINCT u.* " +
             "FROM user u " +
             "JOIN user_role ON u.id = user_role.user_id " +
             "WHERE user_role.role NOT IN ('ADMIN', 'USER')",

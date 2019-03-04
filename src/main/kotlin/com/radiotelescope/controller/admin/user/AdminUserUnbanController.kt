@@ -49,7 +49,8 @@ class AdminUserUnbanController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Unban",
-                                affectedRecordId = id
+                                affectedRecordId = id,
+                                status = HttpStatus.OK.value()
                         )
                 )
 
@@ -62,7 +63,8 @@ class AdminUserUnbanController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Unban",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = errors.toStringMap()
                 )
@@ -76,7 +78,8 @@ class AdminUserUnbanController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User Unban",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.FORBIDDEN.value()
                     ),
                     errors = it.toStringMap()
             )

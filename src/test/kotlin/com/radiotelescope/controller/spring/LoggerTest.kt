@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpStatus
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
@@ -74,7 +75,8 @@ internal class LoggerTest {
                         affectedTable = Log.AffectedTable.USER,
                         action = "User Registration",
                         timestamp = Date(),
-                        affectedRecordId = null
+                        affectedRecordId = null,
+                        status = HttpStatus.OK.value()
                 )
         )
 
@@ -88,6 +90,7 @@ internal class LoggerTest {
             assertNull(it.affectedRecordId)
             assertNull(it.user)
             assertEquals(0, it.errors.size)
+            assertEquals(HttpStatus.OK.value(), it.status)
         }
     }
 
@@ -104,7 +107,8 @@ internal class LoggerTest {
                         affectedTable = Log.AffectedTable.APPOINTMENT,
                         action = "User Registration",
                         timestamp = Date(),
-                        affectedRecordId = null
+                        affectedRecordId = null,
+                        status = HttpStatus.OK.value()
                 )
         )
 
@@ -118,6 +122,7 @@ internal class LoggerTest {
             assertNull(it.affectedRecordId)
             assertEquals(user, it.user)
             assertEquals(0, it.errors.size)
+            assertEquals(HttpStatus.OK.value(), it.status)
         }
     }
 
@@ -135,7 +140,8 @@ internal class LoggerTest {
                         affectedTable = Log.AffectedTable.USER,
                         action = "Appointment Creation",
                         timestamp = Date(),
-                        affectedRecordId = null
+                        affectedRecordId = null,
+                        status = HttpStatus.BAD_REQUEST.value()
                 ),
                 errors = errors.toStringMap()
         )
@@ -152,6 +158,7 @@ internal class LoggerTest {
             assertNull(it.affectedRecordId)
             assertNull(it.user)
             assertEquals(2, it.errors.size)
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
         }
 
         val iterableErrors = errorRepo.findAll()
@@ -179,7 +186,8 @@ internal class LoggerTest {
                         affectedTable = Log.AffectedTable.USER,
                         action = "User Registration",
                         timestamp = Date(),
-                        affectedRecordId = null
+                        affectedRecordId = null,
+                        status = HttpStatus.BAD_REQUEST.value()
                 ),
                 errors = errors.toStringMap()
         )
@@ -196,6 +204,7 @@ internal class LoggerTest {
             assertNull(it.affectedRecordId)
             assertEquals(user, it.user)
             assertEquals(2, it.errors.size)
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
         }
 
         val iterableErrors = errorRepo.findAll()

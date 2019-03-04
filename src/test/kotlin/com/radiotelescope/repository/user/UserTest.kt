@@ -6,7 +6,6 @@ import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.model.user.UserSpecificationBuilder
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.UserRole
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
@@ -17,23 +16,18 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
+@ActiveProfiles("test")
 internal class UserTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired
@@ -127,6 +121,12 @@ internal class UserTest {
 
     @Test
     fun findAllNonAdminUser() {
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = false
+        )
+
         val userPage = userRepo.findAllNonAdminUsers(PageRequest.of(0, 25))
 
         assertNotNull(userPage)

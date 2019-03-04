@@ -44,7 +44,8 @@ class ViewerListSharedAppointmentController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
                             action = "Shared Appointment List Retrieval",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -65,7 +66,8 @@ class ViewerListSharedAppointmentController(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.APPOINTMENT,
                                         action = "Shared Appointment List Retrieval",
-                                        affectedRecordId = info.id
+                                        affectedRecordId = info.id,
+                                        status = HttpStatus.OK.value()
                                 )
                         )
                     }
@@ -77,24 +79,27 @@ class ViewerListSharedAppointmentController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action = "Shared Appointment List Retrieval",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
                             ),
                             errors = errors.toStringMap()
                     )
                     result = Result(errors = errors.toStringMap())
                 }
-            }?.let {
+            }?.let { report ->
                 // If we get here, this means the User did not pass validation
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Shared Appointment List Retrieval",
-                                affectedRecordId = null
-                        ),
-                        errors = it.toStringMap()
+                                affectedRecordId = null,
+                                status = if (report.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
+
+                ),
+                        errors = report.toStringMap()
                 )
-                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+                result = Result(errors = report.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
 

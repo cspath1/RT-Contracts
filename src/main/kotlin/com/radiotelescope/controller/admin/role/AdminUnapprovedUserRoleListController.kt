@@ -49,7 +49,8 @@ class AdminUnapprovedUserRoleListController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER_ROLE,
                             action = "Retrieve Unapproved Role List",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -68,7 +69,8 @@ class AdminUnapprovedUserRoleListController(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.USER_ROLE,
                                         action = "Retrieve Unapproved Role List",
-                                        affectedRecordId = info.id
+                                        affectedRecordId = info.id,
+                                        status = HttpStatus.OK.value()
                                 )
                         )
                     }
@@ -82,7 +84,8 @@ class AdminUnapprovedUserRoleListController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER_ROLE,
                                 action = "Retrieve Unapproved Role List",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = it.toStringMap()
                 )

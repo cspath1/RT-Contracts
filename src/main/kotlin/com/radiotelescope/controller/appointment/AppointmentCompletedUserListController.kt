@@ -44,7 +44,8 @@ class AppointmentCompletedUserListController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
                             action = "User Completed Appointment List",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -66,7 +67,8 @@ class AppointmentCompletedUserListController(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.APPOINTMENT,
                                         action = "User Completed Appointment List",
-                                        affectedRecordId = info.id
+                                        affectedRecordId = info.id,
+                                        status = HttpStatus.OK.value()
                                 )
                         )
                     }
@@ -80,7 +82,8 @@ class AppointmentCompletedUserListController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action = "User Completed Appointment List",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
                             ),
                             errors = error.toStringMap()
                     )
@@ -94,7 +97,8 @@ class AppointmentCompletedUserListController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "User Completed Appointment List",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = it.toStringMap()
                 )

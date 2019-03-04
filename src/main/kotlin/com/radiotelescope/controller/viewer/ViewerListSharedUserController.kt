@@ -44,7 +44,8 @@ class ViewerListSharedUserController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "Shared User List Retrieval",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -65,7 +66,8 @@ class ViewerListSharedUserController(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.USER,
                                         action = "Shared User List Retrieval",
-                                        affectedRecordId = info.id
+                                        affectedRecordId = info.id,
+                                        status = HttpStatus.OK.value()
                                 )
                         )
                     }
@@ -76,7 +78,8 @@ class ViewerListSharedUserController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
                                     action = "Shared User List Retrieval",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
                             ),
                             errors = errors.toStringMap()
                     )
@@ -89,7 +92,8 @@ class ViewerListSharedUserController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "Shared User List Retrieval",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = it.toStringMap()
                 )

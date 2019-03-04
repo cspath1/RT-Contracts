@@ -50,7 +50,8 @@ class ViewerSharePrivateController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(Log.AffectedTable.VIEWER,
                                 action = "Share Private Appointment",
-                                affectedRecordId = id
+                                affectedRecordId = id,
+                                status = HttpStatus.OK.value()
                         )
                 )
                 result = Result(data = id)
@@ -64,7 +65,8 @@ class ViewerSharePrivateController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.VIEWER,
                                 action = "Share Private Appointment",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = errors.toStringMap()
                 )
@@ -77,7 +79,8 @@ class ViewerSharePrivateController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.VIEWER,
                             action = "Share Private Appointment",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.FORBIDDEN.value()
                     ),
                     errors = it.toStringMap()
             )

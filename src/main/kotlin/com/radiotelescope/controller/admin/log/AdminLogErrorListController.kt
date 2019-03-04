@@ -51,7 +51,8 @@ class AdminLogErrorListController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.LOG,
                             action = "Log Error List Retrieval",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.FORBIDDEN.value()
                     ),
                     errors = it.toStringMap()
             )

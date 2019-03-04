@@ -5,7 +5,6 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -28,13 +27,6 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired
@@ -46,6 +38,7 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
 
     private lateinit var adminLogListController: AdminLogListController
     private lateinit var admin: User
+    private lateinit var log: Log
 
     @Before
     override fun init() {
@@ -63,7 +56,7 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
                 isApproved = true
         )
 
-        testUtil.createLog(
+        log = testUtil.createLog(
                 user = admin,
                 action = "Creating log",
                 affectedRecordId = null,
@@ -110,6 +103,12 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(2, logRepo.count())
+
+        logRepo.findAll().forEach {
+            if (it.id != log.id) {
+                assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+            }
+        }
     }
 
     @Test
@@ -129,6 +128,12 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(2, logRepo.count())
+
+        logRepo.findAll().forEach {
+            if (it.id != log.id) {
+                assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+            }
+        }
     }
 
     @Test
@@ -145,5 +150,11 @@ internal class AdminLogListControllerTest : BaseLogRestControllerTest() {
 
         // Ensure a log record was created
         assertEquals(2, logRepo.count())
+
+        logRepo.findAll().forEach {
+            if (it.id != log.id) {
+                assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+            }
+        }
     }
 }

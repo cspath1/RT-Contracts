@@ -8,6 +8,7 @@ import com.radiotelescope.controller.model.resetPasswordToken.UpdateForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -46,7 +47,8 @@ class UserResetPasswordController (
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.USER,
                             action = "User Password Reset",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = it.toStringMap()
             )
@@ -69,7 +71,8 @@ class UserResetPasswordController (
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Password Reset",
-                                affectedRecordId = data
+                                affectedRecordId = data,
+                                status = HttpStatus.OK.value()
                         )
                 )
             }
@@ -80,7 +83,8 @@ class UserResetPasswordController (
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Password Reset",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
                         ),
                         errors = error.toStringMap()
                 )

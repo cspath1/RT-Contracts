@@ -45,7 +45,8 @@ class AppointmentUpdateController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
                             action = "Appointment Update",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = it.toStringMap()
             )
@@ -69,7 +70,8 @@ class AppointmentUpdateController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action = "Appointment Update",
-                                    affectedRecordId = data
+                                    affectedRecordId = data,
+                                    status = HttpStatus.OK.value()
                             )
                     )
                 }
@@ -79,10 +81,12 @@ class AppointmentUpdateController(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
                                     action = "Appointment Retrieval",
-                                    affectedRecordId = null
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
                             ),
                             errors = errors.toStringMap()
                     )
+
                     result = Result(
                             errors = errors.toStringMap()
                     )
@@ -96,7 +100,8 @@ class AppointmentUpdateController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Appointment Update",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = if (report.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                         ),
                         errors = if (report.missingRoles != null) report.toStringMap() else report.invalidResourceId!!
                 )

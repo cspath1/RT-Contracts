@@ -42,7 +42,8 @@ class AppointmentPublicCompletedController(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
                             action = "Completed Public Appointment List Retrieval",
-                            affectedRecordId = null
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
                     errors = errors.toStringMap()
             )
@@ -65,7 +66,8 @@ class AppointmentPublicCompletedController(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.APPOINTMENT,
                                         action = "Completed Public Appointment List Retrieval",
-                                        affectedRecordId = info.id
+                                        affectedRecordId = info.id,
+                                        status = HttpStatus.OK.value()
                                 )
                         )
                     }
@@ -79,7 +81,8 @@ class AppointmentPublicCompletedController(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Completed Public Appointment List Retrieval",
-                                affectedRecordId = null
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = it.toStringMap()
                 )

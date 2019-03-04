@@ -1,9 +1,9 @@
 package com.radiotelescope.controller.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -24,17 +24,13 @@ internal class UserDeleteControllerTest : BaseUserRestControllerTest() {
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
     }
 
     @Autowired
     private lateinit var testUtil: TestUtil
+
+    @Autowired
+    private lateinit var logRepo: ILogRepository
 
     private lateinit var userDeleteController: UserDeleteController
 
@@ -68,6 +64,13 @@ internal class UserDeleteControllerTest : BaseUserRestControllerTest() {
         assertEquals(user.id, result.data)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
+
+        // Ensure a log was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
     }
 
     @Test
@@ -83,6 +86,13 @@ internal class UserDeleteControllerTest : BaseUserRestControllerTest() {
         assertNotNull(result.errors)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
         assertEquals(1, result.errors!!.size)
+
+        // Ensure a log was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
     }
 
     @Test
@@ -100,6 +110,12 @@ internal class UserDeleteControllerTest : BaseUserRestControllerTest() {
         assertNotNull(result.errors)
         assertEquals(HttpStatus.FORBIDDEN, result.status)
         assertEquals(1, result.errors!!.size)
-    }
 
+        // Ensure a log was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+        }
+    }
 }
