@@ -32,7 +32,11 @@ class AppointmentCreateController(
      * any are, it will instead respond with errors.
      *
      * Otherwise, it will execute the [UserAppointmentWrapper.create] method.
-     * If this method returns an [AccessReport]
+     * If this method returns an [AccessReport], this means the user did not pass
+     * authentication and the method will respond with errors.
+     *
+     * Otherwise, the [Create] command was executed, and the controller will check
+     * whether this command was a success or not, responding appropriately.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
     @PostMapping(value = ["/api/appointments/schedule"])

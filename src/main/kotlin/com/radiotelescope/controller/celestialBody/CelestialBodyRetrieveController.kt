@@ -1,7 +1,7 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.celestialBody
 
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.appointment.Retrieve
+import com.radiotelescope.contracts.celestialBody.Retrieve
+import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
@@ -14,36 +14,36 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Rest Controller to handle Appointment retrieval
+ * Rest Controller to handle Celestial Body retrieval
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param celestialBodyWrapper the [UserCelestialBodyWrapper]
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentRetrieveController(
-        private val appointmentWrapper: UserAppointmentWrapper,
+class CelestialBodyRetrieveController(
+        private val celestialBodyWrapper: UserCelestialBodyWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of taking the appointmentId [PathVariable]
-     * and executing the [UserAppointmentWrapper.retrieve] method. If this method
+     * Execute method that is in charge of taking the celestialBodyId [PathVariable]
+     * and execute the [UserCelestialBodyWrapper.retrieve] method. If this method
      * returns an [AccessReport], this means they did not pass authentication and
-     * we should respond with errors.
+     * the method will respond with errors.
      *
      * Otherwise, this means the [Retrieve] command was executed, and the controller
      * will check whether or not this command was a success or not, responding
      * appropriately.
      */
-    @GetMapping(value = ["/api/appointments/{appointmentId}/retrieve"])
-    fun execute(@PathVariable("appointmentId") id: Long): Result {
-        appointmentWrapper.retrieve(id) {
+    @GetMapping(value = ["/api/celestial-bodies/{celestialBodyId}"])
+    fun execute(@PathVariable("celestialBodyId") id: Long): Result {
+        celestialBodyWrapper.retrieve(id) {
             // If the command was a success
             it.success?.let { info ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Appointment Retrieval",
+                                affectedTable = Log.AffectedTable.CELESTIAL_BODY,
+                                action = "Celestial Body Retrieval",
                                 affectedRecordId = info.id,
                                 status = HttpStatus.OK.value()
                         )
@@ -56,8 +56,8 @@ class AppointmentRetrieveController(
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Appointment Retrieval",
+                                affectedTable = Log.AffectedTable.CELESTIAL_BODY,
+                                action = "Celestial Body Retrieval",
                                 affectedRecordId = null,
                                 status = HttpStatus.BAD_REQUEST.value()
                         ),
@@ -67,29 +67,19 @@ class AppointmentRetrieveController(
                 result = Result(errors = errors.toStringMap())
             }
         }?.let {
-            // If we get here, that means the User did not pass authentication
-
-            // Set the errors depending on if the user was not authenticated or the
-            // record did not exists
+            // If we get here, that means the user did not pass authentication
+            // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment Retrieval",
+                            affectedTable = Log.AffectedTable.CELESTIAL_BODY,
+                            action = "Celestial Body Retrieval",
                             affectedRecordId = null,
-                            status = if (it.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
+                            status = HttpStatus.FORBIDDEN.value()
                     ),
-                    errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
+                    errors = it.toStringMap()
             )
 
-            // Set the errors depending on if the user was not authenticated or the
-            // record did not exists
-            result = if (it.missingRoles == null) {
-                Result(errors = it.invalidResourceId!!, status = HttpStatus.NOT_FOUND)
-            }
-            // user did not have access to the resource
-            else {
-                Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
-            }
+            result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
         }
 
         return result
