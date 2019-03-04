@@ -55,7 +55,16 @@ interface CelestialBodyFactory {
      * Abstract command used to search for [CelestialBody] objects
      *
      * @param searchCriteria the [SearchCriteria] object
-     * @param pageable the [Pageable] object
+     * @param pageable the [Pageable] interface
+     * @return a [Command] object
      */
     fun search(searchCriteria: SearchCriteria, pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to update an existing [CelestialBody] record
+     *
+     * @param request the [Update.Request] object
+     * @return a [Command] object
+     */
+    fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
 }

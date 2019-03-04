@@ -108,4 +108,15 @@ class UserCelestialBodyWrapper(
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
+
+    /**
+     * Wrapper method for the [CelestialBodyFactory.update] method used to add Spring
+     * Security authentication to the [Update] command object
+     */
+    fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.ADMIN),
+                successCommand = factory.update(request)
+        ).execute(withAccess)
+    }
 }

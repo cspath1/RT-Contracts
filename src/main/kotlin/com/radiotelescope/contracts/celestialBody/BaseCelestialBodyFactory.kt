@@ -89,11 +89,26 @@ class BaseCelestialBodyFactory(
      *
      * @param searchCriteria the [SearchCriteria]
      * @param pageable the [Pageable] object
+     * @return a [Search] command object
      */
     override fun search(searchCriteria: SearchCriteria, pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>> {
         return Search(
                 searchCriteria = searchCriteria,
                 pageable = pageable,
+                celestialBodyRepo = celestialBodyRepo
+        )
+    }
+
+    /**
+     * Override of the [CelestialBodyFactory.update] method that will return an [Update] command
+     *
+     * @param request the [Update.Request] object
+     * @return an [Update] command object
+     */
+    override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return Update(
+                request = request,
+                coordinateRepo = coordinateRepo,
                 celestialBodyRepo = celestialBodyRepo
         )
     }

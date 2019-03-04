@@ -117,4 +117,21 @@ internal class BaseCelestialBodyFactoryTest {
         // Ensure it is the correct command
         assertTrue(cmd is Search)
     }
+
+    @Test
+    fun update() {
+        val cmd = factory.update(
+                request = Update.Request(
+                        id = 311,
+                        name = "Investigate 311",
+                        hours = 3,
+                        minutes = 11,
+                        seconds = 311,
+                        declination = 311.0
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Update)
+    }
 }

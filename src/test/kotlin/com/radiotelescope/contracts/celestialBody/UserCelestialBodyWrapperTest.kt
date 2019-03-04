@@ -48,6 +48,15 @@ internal class UserCelestialBodyWrapperTest {
             declination = 22.0
     )
 
+    private val baseUpdateRequest = Update.Request(
+            id = -1,
+            name = "Crab Nebula",
+            hours = 5,
+            minutes = 34,
+            seconds = 32,
+            declination = 22.0
+    )
+
     private var userId = -1L
     private var adminId = -1L
     private lateinit var celestialBody: CelestialBody
@@ -359,5 +368,57 @@ internal class UserCelestialBodyWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testUpdate_Admin_Success() {
+        // Simulate a login
+        context.login(adminId)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val requestCopy = baseUpdateRequest.copy(
+                id = celestialBody.id
+        )
+
+        val error = wrapper.update(
+                request = requestCopy
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testUpdate_NotAdmin_Failure() {
+        // Simulate a login
+        context.login(userId)
+        context.currentRoles.add(UserRole.Role.GUEST)
+
+        val error = wrapper.update(
+                request = baseUpdateRequest
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testUpdate_NotLoggedIn_Failure() {
+        // Simulate a logout
+        context.logout()
+        context.currentRoles = mutableListOf()
+
+        val error = wrapper.update(
+                request = baseUpdateRequest
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
     }
 }
