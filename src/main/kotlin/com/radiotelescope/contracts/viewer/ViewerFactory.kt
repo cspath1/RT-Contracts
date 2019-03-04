@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.AppointmentInfo
 import com.radiotelescope.contracts.user.UserInfo
+import com.radiotelescope.repository.viewer.Viewer
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

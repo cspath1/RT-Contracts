@@ -59,7 +59,7 @@ internal class BaseViewerFactoryTest {
         // Call the factory method
         val cmd = factory.sharePrivateAppointment(
                 SharePrivateAppointment.Request(
-                        userId = 1L,
+                        email = "cspath1@ycp.edu",
                         appointmentId = 1L
                 )
         )

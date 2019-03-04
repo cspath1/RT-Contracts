@@ -108,10 +108,10 @@ internal class UserViewerWrapperTest {
 
         val error = wrapper.sharePrivateAppointment(
                 request = SharePrivateAppointment.Request(
-                        userId = user.id,
+                        email = user.email,
                         appointmentId = appointment.id
                 )
-        ){
+        ) {
             assertNotNull(it.success)
             assertNull(it.error)
         }
@@ -129,7 +129,7 @@ internal class UserViewerWrapperTest {
 
         val error = wrapper.sharePrivateAppointment(
                 request = SharePrivateAppointment.Request(
-                        userId = user.id,
+                        email = user.email,
                         appointmentId = appointment.id
                 )
         ){
@@ -147,7 +147,7 @@ internal class UserViewerWrapperTest {
 
         val error = wrapper.sharePrivateAppointment(
                 request = SharePrivateAppointment.Request(
-                        userId = user.id,
+                        email = user.email,
                         appointmentId = appointment.id
                 )
         ){
@@ -169,7 +169,7 @@ internal class UserViewerWrapperTest {
 
         val error = wrapper.sharePrivateAppointment(
                 request = SharePrivateAppointment.Request(
-                        userId = user.id,
+                        email = user.email,
                         appointmentId = appointment.id
                 )
         ){
@@ -180,6 +180,21 @@ internal class UserViewerWrapperTest {
         // Make sure it was a failure and the correct reason
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testSharePrivateAppointment_InvalidId_Failure() {
+        val error = wrapper.sharePrivateAppointment(
+                request = SharePrivateAppointment.Request(
+                        email = user.email,
+                        appointmentId = 311L
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId != null)
     }
 
     @Test
@@ -296,5 +311,16 @@ internal class UserViewerWrapperTest {
 
     }
 
+    @Test
+    fun testListSharedUser_InvalidId_Failure() {
+        val error = wrapper.listSharedUser(
+                appointmentId = 311L,
+                pageable = PageRequest.of(0, 25)
+        ) {
+            fail("Should fail on precondition")
+        }
 
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId != null)
+    }
 }

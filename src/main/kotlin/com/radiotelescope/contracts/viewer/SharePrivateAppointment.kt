@@ -37,7 +37,7 @@ class SharePrivateAppointment(
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theViewer = request.toEntity()
 
-            theViewer.user = userRepo.findById(request.userId).get()
+            theViewer.user = userRepo.findByEmail(request.email)!!
             theViewer.appointment = appointmentRepo.findById(request.appointmentId).get()
 
             viewerRepo.save(theViewer)
@@ -51,15 +51,14 @@ class SharePrivateAppointment(
      * id exists.
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-        var errors = HashMultimap.create<ErrorTag, String>()
+        val errors = HashMultimap.create<ErrorTag, String>()
         with(request) {
-            if(!userRepo.existsById(userId))
-                errors.put(ErrorTag.USER_ID, "User #$userId could not be found")
+            if(!userRepo.existsByEmail(email))
+                errors.put(ErrorTag.USER_ID, "User with email address ($email) could not be found")
             if(!appointmentRepo.existsById(appointmentId))
                 errors.put(ErrorTag.ID, "Appointment #$appointmentId could not be found")
-            if(appointmentRepo.existsById(appointmentId))
-                if(appointmentRepo.findById(appointmentId).get().isPublic)
-                    errors.put(ErrorTag.PRIVATE, "Appointment #$appointmentId is not private")
+            if(appointmentRepo.existsById(appointmentId) && appointmentRepo.findById(appointmentId).get().isPublic)
+                errors.put(ErrorTag.PRIVATE, "Appointment #$appointmentId is not private")
         }
         return if(errors.isEmpty) null else errors
     }
@@ -68,7 +67,7 @@ class SharePrivateAppointment(
      * the [BaseCreateRequest] interface.
      */
     data class Request(
-            val userId: Long,
+            val email: String,
             val appointmentId: Long
     ) : BaseCreateRequest<Viewer> {
         /**

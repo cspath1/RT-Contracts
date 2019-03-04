@@ -33,8 +33,8 @@ class ViewerListSharedUserController(
      * Otherwise, it will execute the [UserViewerWrapper.listSharedAppointment] method.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/appointment/{id}/sharedUser"])
-    fun execute(@PathVariable("id") id: Long,
+    @GetMapping(value = ["/api/appointments/{appointmentId}/users"])
+    fun execute(@PathVariable("appointmentId") appointmentId: Long,
                 @RequestParam("page") pageNumber: Int,
                 @RequestParam("size") pageSize: Int): Result {
         if (pageNumber < 0 || pageSize <= 0) {
@@ -55,13 +55,13 @@ class ViewerListSharedUserController(
             // Sort by most recent
             val sort = Sort(Sort.Direction.DESC, "id")
             viewerWrapper.listSharedUser(
-                    appointmentId = id,
+                    appointmentId = appointmentId,
                     pageable = PageRequest.of(pageNumber, pageSize, sort)
             ) {
                 // If the command was a success
-                it.success?.let {page ->
+                it.success?.let { page ->
                     // Create success logs
-                    page.forEach{ info ->
+                    page.forEach { info ->
                         logger.createSuccessLog(
                                 info = Logger.createInfo(
                                         affectedTable = Log.AffectedTable.USER,
@@ -73,7 +73,7 @@ class ViewerListSharedUserController(
                     }
                     result = Result(data = page)
                 }
-                it.error?.let {errors ->
+                it.error?.let { errors ->
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER,
@@ -85,19 +85,31 @@ class ViewerListSharedUserController(
                     )
                     result = Result(errors = errors.toStringMap())
                 }
-            } ?.let {
+            }?.let {
                 // If we get here, this means the User did not pass validation
                 // Create error logs
+
+                // Set the errors depending on if the user was not authenticated or the
+                // record did not exists
                 logger.createErrorLogs(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.USER,
+                                affectedTable = Log.AffectedTable.RF_DATA,
                                 action = "Shared User List Retrieval",
                                 affectedRecordId = null,
                                 status = HttpStatus.FORBIDDEN.value()
                         ),
-                        errors = it.toStringMap()
+                        errors = if (it.missingRoles != null) it.toStringMap() else it.invalidResourceId!!
                 )
-                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+
+                // Set the errors depending on if the user was not authenticated or the
+                // record did not exists
+                result = if (it.missingRoles == null) {
+                    Result(errors = it.invalidResourceId!!, status = HttpStatus.NOT_FOUND)
+                }
+                // user did not have access to the resource
+                else {
+                    Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+                }
             }
         }
 

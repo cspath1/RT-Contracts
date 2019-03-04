@@ -2,6 +2,7 @@ package com.radiotelescope.controller.viewer
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -45,7 +46,7 @@ internal class ViewerSharePrivateControllerTest : BaseViewerRestControllerTest()
     private lateinit var logRepo: ILogRepository
 
     @Autowired
-    private lateinit var userRepo: IUserRepository
+    private lateinit var appointmentRepo: IAppointmentRepository
 
     private lateinit var viewerSharePrivateController: ViewerSharePrivateController
     private lateinit var user: User
@@ -57,7 +58,7 @@ internal class ViewerSharePrivateControllerTest : BaseViewerRestControllerTest()
         super.init()
 
         viewerSharePrivateController = ViewerSharePrivateController(
-                userRepo = userRepo,
+                appointmentRepo = appointmentRepo,
                 viewerWrapper = getWrapper(),
                 logger = getLogger(),
                 awsSesSendService = MockAwsSesSendService(true)
@@ -85,9 +86,8 @@ internal class ViewerSharePrivateControllerTest : BaseViewerRestControllerTest()
         getContext().currentRoles.addAll(listOf(UserRole.Role.RESEARCHER, UserRole.Role.USER))
 
         val result = viewerSharePrivateController.execute(
-                id = researcher.id,
                 appointmentId = appointment.id,
-                userId = user.id
+                email = user.email
         )
 
         assertNotNull(result)
@@ -109,9 +109,8 @@ internal class ViewerSharePrivateControllerTest : BaseViewerRestControllerTest()
         getContext().currentRoles.addAll(listOf(UserRole.Role.RESEARCHER, UserRole.Role.USER))
 
         val result = viewerSharePrivateController.execute(
-                id = researcher.id,
                 appointmentId = appointment.id,
-                userId = 123456789
+                email = "thom@yorke.com"
         )
 
         assertNotNull(result)
@@ -132,9 +131,8 @@ internal class ViewerSharePrivateControllerTest : BaseViewerRestControllerTest()
         // Do not simulate a login
 
         val result = viewerSharePrivateController.execute(
-                id = researcher.id,
                 appointmentId = appointment.id,
-                userId = user.id
+                email = user.email
         )
 
         assertNotNull(result)
@@ -146,5 +144,21 @@ internal class ViewerSharePrivateControllerTest : BaseViewerRestControllerTest()
         assertEquals(1, logRepo.count())
     }
 
+    @Test
+    fun testInvalidResourceIdResponse() {
+        // Test the failure scenario where the
+        // appointment id does not exist
+        val result = viewerSharePrivateController.execute(
+                appointmentId = 311L,
+                email = user.email
+        )
 
+        assertNotNull(result)
+        assertNull(result.data)
+        assertEquals(HttpStatus.NOT_FOUND, result.status)
+        assertNotNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+    }
 }

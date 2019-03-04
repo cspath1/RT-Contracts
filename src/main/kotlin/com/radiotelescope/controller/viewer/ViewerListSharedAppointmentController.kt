@@ -33,8 +33,8 @@ class ViewerListSharedAppointmentController(
      * Otherwise, it will execute the [UserViewerWrapper.listSharedAppointment] method.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/user/{id}/sharedAppointment"])
-    fun execute(@PathVariable("id") id: Long,
+    @GetMapping(value = ["/api/users/{userId}/appointments/shared"])
+    fun execute(@PathVariable("userId") userId: Long,
                 @RequestParam("page") pageNumber: Int,
                 @RequestParam("size") pageSize: Int): Result {
         if (pageNumber < 0 || pageSize <= 0) {
@@ -55,7 +55,7 @@ class ViewerListSharedAppointmentController(
             // Sort by most recent
             val sort = Sort(Sort.Direction.DESC, "end_time")
             viewerWrapper.listSharedAppointment(
-                    userId = id,
+                    userId = userId,
                     pageable = PageRequest.of(pageNumber, pageSize, sort)
             ) {
                 // If the command was a success

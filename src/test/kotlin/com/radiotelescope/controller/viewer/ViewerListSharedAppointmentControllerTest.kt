@@ -84,7 +84,7 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER))
 
         val result = viewerListSharedAppointmentController.execute(
-                id = user.id,
+                userId = user.id,
                 pageNumber = 0,
                 pageSize = 25
         )
@@ -105,11 +105,11 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
 
         // Simulate a login
         getContext().login(user.id)
-        getContext().currentRoles.addAll(listOf(UserRole.Role.USER))
+        getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN))
 
         val result = viewerListSharedAppointmentController.execute(
-                id = user.id,
-                pageNumber = -1,
+                userId = 311L,
+                pageNumber = 0,
                 pageSize = 25
         )
 
@@ -124,6 +124,30 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
     }
 
     @Test
+    fun testInvalidPageParametersResponse() {
+        // Test the failure scenario to ensure
+        // the result object is correctly set
+
+        // Simulate a login
+        getContext().login(user.id)
+        getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN))
+
+        val result = viewerListSharedAppointmentController.execute(
+                userId = 311L,
+                pageNumber = -1,
+                pageSize = 25
+        )
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertNotNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+    }
+
+    @Test
     fun testFailedAuthenticationResponse() {
         // Test the failure scenario to ensure
         // the result object is correctly set
@@ -131,7 +155,7 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
         // Do not simulate a login
 
         val result = viewerListSharedAppointmentController.execute(
-                id = user.id,
+                userId = user.id,
                 pageNumber = 0,
                 pageSize = 25
         )
