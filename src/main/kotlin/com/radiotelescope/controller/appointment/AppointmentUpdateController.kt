@@ -32,7 +32,9 @@ class AppointmentUpdateController(
      * any are, it will instead respond with errors.
      *
      * Otherwise, it will execute the [UserAppointmentWrapper.update] method.
-     * If this method returns an [AccessReport]
+     * If this method returns an [AccessReport], the user was not authenticated.
+     * If not, this means the [Update] method was executed, and the controller
+     * should respond based on if the command was a success or not
      */
     @PutMapping(value = ["/api/appointments/{appointmentId}"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long,
@@ -50,6 +52,7 @@ class AppointmentUpdateController(
                     ),
                     errors = it.toStringMap()
             )
+
             result = Result(errors = it.toStringMap())
         }?: let {
             // Otherwise call the factory command

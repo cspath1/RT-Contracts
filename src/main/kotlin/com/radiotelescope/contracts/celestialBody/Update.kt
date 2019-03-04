@@ -165,7 +165,7 @@ class Update(
      * @param declination the [Coordinate] declination
      */
     data class Request(
-            val id: Long,
+            var id: Long,
             val name: String,
             val hours: Int?,
             val minutes: Int?,
