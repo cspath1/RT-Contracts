@@ -9,4 +9,14 @@ import com.radiotelescope.repository.celestialBody.CelestialBody
  */
 enum class Filter(val field: String) {
     NAME("name");
+
+    companion object {
+        fun fromField(field: String): Filter? {
+            return if (field == "name") {
+                NAME
+            } else {
+                null
+            }
+        }
+    }
 }

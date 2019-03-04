@@ -110,7 +110,7 @@ internal class BaseCelestialBodyFactoryTest {
     fun search() {
         // Call the factory method
         val cmd = factory.search(
-                searchCriteria = SearchCriteria(Filter.NAME, "Crab"),
+                searchCriteria = listOf(SearchCriteria(Filter.NAME, "Crab")),
                 pageable = PageRequest.of(0, 15)
         )
 

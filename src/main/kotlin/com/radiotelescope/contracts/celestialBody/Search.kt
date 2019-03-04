@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.celestialBody
 
+import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
@@ -9,6 +10,7 @@ import com.radiotelescope.repository.model.celestialBody.SearchCriteria
 import com.radiotelescope.toInfoPage
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import kotlin.collections.List
 
 /**
  * Override of the [Command] interface used for Celestial Body searching
@@ -18,7 +20,7 @@ import org.springframework.data.domain.Pageable
  * @param celestialBodyRepo the [ICelestialBodyRepository] interface
  */
 class Search(
-        private val searchCriteria: SearchCriteria,
+        private val searchCriteria: List<SearchCriteria>,
         private val pageable: Pageable,
         private val celestialBodyRepo: ICelestialBodyRepository
 ) : Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>> {
@@ -27,16 +29,39 @@ class Search(
      * based on the user's specification.
      */
     override fun execute(): SimpleResult<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>> {
-        // Build the specification
-        val specificationBuilder = CelestialBodySpecificationBuilder()
-        val specification = specificationBuilder.with(searchCriteria).build()
+        validateSearch(searchCriteria)?.let { return SimpleResult(null, it) } ?: let {
+            // Build the specification
+            val specificationBuilder = CelestialBodySpecificationBuilder()
 
-        // Make the call using the specification
-        val celestialBodyPage = celestialBodyRepo.findAll(specification, pageable)
+            searchCriteria.forEach { criteria ->
+                specificationBuilder.with(criteria)
+            }
 
-        // Adapt that Celestial Body page into an info page
-        val infoPage = celestialBodyPage.toInfoPage()
+            val specification = specificationBuilder.build()
 
-        return SimpleResult(infoPage, null)
+            // Make the call using the specification
+            val celestialBodyPage = celestialBodyRepo.findAll(specification, pageable)
+
+            // Adapt that Celestial Body page into an info page
+            val infoPage = celestialBodyPage.toInfoPage()
+
+            return SimpleResult(infoPage, null)
+        }
+    }
+
+    /**
+     * Method responsible for constraint checking and validations for the [List] of [SearchCriteria].
+     * Currently, it just checks to ensure the list is not empty
+     *
+     * @param searchCriteria the [List] of [SearchCriteria]
+     * @return a [Multimap] of errors or null
+     */
+    private fun validateSearch(searchCriteria: List<SearchCriteria>): Multimap<ErrorTag, String>? {
+        val errors = HashMultimap.create<ErrorTag, String>()
+
+        if (searchCriteria.isEmpty())
+            errors.put(ErrorTag.SEARCH, "No search parameters specified")
+
+        return if (errors.isEmpty) null else errors
     }
 }

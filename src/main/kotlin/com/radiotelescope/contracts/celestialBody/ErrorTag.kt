@@ -11,5 +11,6 @@ enum class ErrorTag {
     MINUTES,
     SECONDS,
     DECLINATION,
-    PAGE_PARAMS
+    PAGE_PARAMS,
+    SEARCH
 }

@@ -87,7 +87,7 @@ internal class SearchTest {
     @Test
     fun testValidConstraints_Success() {
         val (page, errors) = Search(
-                searchCriteria = searchCriteria,
+                searchCriteria = listOf(searchCriteria),
                 pageable = pageable,
                 celestialBodyRepo = celestialBodyRepo
         ).execute()
@@ -97,5 +97,21 @@ internal class SearchTest {
 
         // There should be one result
         assertEquals(1, page!!.content.size)
+    }
+
+    @Test
+    fun testInvalidConstraints_NoSearchParameters_Failure() {
+        val (page, errors) = Search(
+                searchCriteria = listOf(),
+                pageable = pageable,
+                celestialBodyRepo = celestialBodyRepo
+        ).execute()
+
+        assertNull(page)
+        assertNotNull(errors)
+
+        // Make sure it failed for the suspected reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.SEARCH].isNotEmpty())
     }
 }

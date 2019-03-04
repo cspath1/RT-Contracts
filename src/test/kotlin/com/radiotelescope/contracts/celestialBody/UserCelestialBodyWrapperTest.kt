@@ -343,7 +343,7 @@ internal class UserCelestialBodyWrapperTest {
         context.currentRoles.addAll(listOf(UserRole.Role.RESEARCHER, UserRole.Role.USER))
 
         val error = wrapper.search(
-                searchCriteria = SearchCriteria(Filter.NAME, "Crab"),
+                searchCriteria = listOf(SearchCriteria(Filter.NAME, "Crab")),
                 pageable = PageRequest.of(0, 15)
         ) {
             assertNotNull(it.success)
@@ -360,7 +360,7 @@ internal class UserCelestialBodyWrapperTest {
         context.currentRoles = mutableListOf()
 
         val error = wrapper.search(
-                searchCriteria = SearchCriteria(Filter.NAME, "Crab"),
+                searchCriteria = listOf(SearchCriteria(Filter.NAME, "Crab")),
                 pageable = PageRequest.of(0, 15)
         ) {
             fail("Should fail on precondition")

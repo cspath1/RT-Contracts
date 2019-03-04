@@ -6,6 +6,7 @@ import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.model.celestialBody.SearchCriteria
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import kotlin.collections.List
 
 /**
  * Abstract factory interface with methods for all [CelestialBody] operations
@@ -58,7 +59,7 @@ interface CelestialBodyFactory {
      * @param pageable the [Pageable] interface
      * @return a [Command] object
      */
-    fun search(searchCriteria: SearchCriteria, pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>
+    fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to update an existing [CelestialBody] record

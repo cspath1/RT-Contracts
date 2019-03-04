@@ -8,6 +8,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import kotlin.collections.List
 
 /**
  * Wrapper that takes a [CelestialBodyFactory] and is responsible for all
@@ -98,7 +99,7 @@ class UserCelestialBodyWrapper(
      * @param pageable the [Pageable] object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun search(searchCriteria: SearchCriteria, pageable: Pageable, withAccess: (result: SimpleResult<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable, withAccess: (result: SimpleResult<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null) {
             return context.require(
                     requiredRoles = listOf(),

@@ -91,7 +91,7 @@ class BaseCelestialBodyFactory(
      * @param pageable the [Pageable] object
      * @return a [Search] command object
      */
-    override fun search(searchCriteria: SearchCriteria, pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>> {
+    override fun search(searchCriteria: kotlin.collections.List<SearchCriteria>, pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>> {
         return Search(
                 searchCriteria = searchCriteria,
                 pageable = pageable,
