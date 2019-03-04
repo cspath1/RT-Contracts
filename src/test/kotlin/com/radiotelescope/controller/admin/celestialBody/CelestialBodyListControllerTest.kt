@@ -1,9 +1,7 @@
-package com.radiotelescope.controller.celestialBody
+package com.radiotelescope.controller.admin.celestialBody
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.celestialBody.CelestialBodyInfo
-import com.radiotelescope.controller.admin.celestialBody.CelestialBodyRetrieveController
-import com.radiotelescope.repository.celestialBody.CelestialBody
+import com.radiotelescope.controller.celestialBody.BaseCelestialBodyRestControllerTest
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.log.ILogRepository
@@ -17,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
@@ -24,7 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class CelestialBodyRetrieveControllerTest : BaseCelestialBodyRestControllerTest() {
+internal class CelestialBodyListControllerTest : BaseCelestialBodyRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -40,22 +39,20 @@ internal class CelestialBodyRetrieveControllerTest : BaseCelestialBodyRestContro
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
-    private lateinit var celestialBodyRetrieveController: CelestialBodyRetrieveController
+    private lateinit var celestialBodyListController: CelestialBodyListController
     private lateinit var user: User
-    private lateinit var celestialBody: CelestialBody
 
     @Before
     override fun init() {
         super.init()
 
-        celestialBodyRetrieveController = CelestialBodyRetrieveController(
+        celestialBodyListController = CelestialBodyListController(
                 celestialBodyWrapper = getWrapper(),
                 logger = getLogger()
         )
 
         user = testUtil.createUser("cspath1@ycp.edu")
 
-        // Simulate a login
         getContext().login(user.id)
         getContext().currentRoles.add(UserRole.Role.ADMIN)
 
@@ -73,32 +70,38 @@ internal class CelestialBodyRetrieveControllerTest : BaseCelestialBodyRestContro
         )
         coordinateRepo.save(coordinate)
 
-        celestialBody = testUtil.createCelestialBody(
+        // Persist a celestial body with a coordinate
+        testUtil.createCelestialBody(
                 name = "Crab Nebula",
                 coordinate = coordinate
+        )
+
+        // Persist another one without a coordinate
+        testUtil.createCelestialBody(
+                name = "The Sun",
+                coordinate = null
         )
     }
 
     @Test
     fun testSuccessResponse() {
-        val result = celestialBodyRetrieveController.execute(celestialBody.id)
+        val result = celestialBodyListController.execute(
+                pageNumber = 0,
+                pageSize = 20
+        )
 
         assertNotNull(result)
-        assertTrue(result.data is CelestialBodyInfo)
+        assertTrue(result.data is Page<*>)
         assertEquals(HttpStatus.OK, result.status)
         assertNull(result.errors)
-
-        // Ensure a log record was created
-        assertEquals(1, logRepo.count())
-
-        logRepo.findAll().forEach {
-            assertEquals(HttpStatus.OK.value(), it.status)
-        }
     }
 
     @Test
-    fun testFailedValidationResponse() {
-        val result = celestialBodyRetrieveController.execute(311L)
+    fun testInvalidPageParamsResponse() {
+        val result = celestialBodyListController.execute(
+                pageNumber = -1,
+                pageSize = -1
+        )
 
         assertNotNull(result)
         assertNull(result.data)
@@ -119,7 +122,10 @@ internal class CelestialBodyRetrieveControllerTest : BaseCelestialBodyRestContro
         getContext().logout()
         getContext().currentRoles = mutableListOf()
 
-        val result = celestialBodyRetrieveController.execute(celestialBody.id)
+        val result = celestialBodyListController.execute(
+                pageSize = 10,
+                pageNumber = 0
+        )
 
         assertNotNull(result)
         assertNull(result.data)

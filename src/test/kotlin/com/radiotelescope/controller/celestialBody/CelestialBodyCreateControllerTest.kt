@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.celestialBody
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.controller.admin.celestialBody.CelestialBodyCreateController
 import com.radiotelescope.controller.model.celestialBody.CreateForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole

@@ -1,4 +1,4 @@
-package com.radiotelescope.controller.celestialBody
+package com.radiotelescope.controller.admin.celestialBody
 
 import com.radiotelescope.contracts.celestialBody.Retrieve
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
