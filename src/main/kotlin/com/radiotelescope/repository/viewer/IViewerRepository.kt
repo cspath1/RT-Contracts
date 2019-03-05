@@ -37,4 +37,20 @@ interface IViewerRepository : PagingAndSortingRepository<Viewer, Long> {
             nativeQuery = true)
     fun findAllByUser(userId: Long): List<Viewer>
 
+    /**
+     * Spring Repository method that will check if the appointment
+     * is shared with the user
+     *
+     * @param userId the User's Id
+     * @param appointmentId the Appointment's Id
+     * @return True if appointment is shared, false otherwise
+     */
+    @Query(value = "SELECT CASE WHEN EXISTS (" +
+            "SELECT * FROM viewer " +
+            "WHERE user_id=?1 AND appointment_id=?2 ) " +
+            "THEN CAST(1 AS BIT) " +
+            "ELSE CAST(0 AS BIT) END",
+            nativeQuery = true)
+    fun isAppointmentSharedWithUser(userId: Long, appointmentId: Long): Boolean
+
 }

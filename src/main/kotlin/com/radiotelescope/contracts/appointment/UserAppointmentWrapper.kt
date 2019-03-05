@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import com.radiotelescope.toStringMap
@@ -23,7 +24,8 @@ import org.springframework.data.domain.Pageable
 class UserAppointmentWrapper(
         private val context: UserContext,
         private val factory: AppointmentFactory,
-        private val appointmentRepo: IAppointmentRepository
+        private val appointmentRepo: IAppointmentRepository,
+        private val viewerRepo: IViewerRepository
 ) {
     /**
      * Wrapper method for the [AppointmentFactory.create] method that adds Spring
@@ -67,6 +69,12 @@ class UserAppointmentWrapper(
 
         if (context.currentUserId() != null &&
                 context.currentUserId() == theAppointment.user.id) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.USER),
+                    successCommand = factory.retrieve(id)
+            ).execute(withAccess)
+        } else if(context.currentUserId() != null &&
+                viewerRepo.isAppointmentSharedWithUser(context.currentUserId()!!, theAppointment.id)) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.USER),
                     successCommand = factory.retrieve(id)

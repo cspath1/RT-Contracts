@@ -92,3 +92,9 @@ CREATE TABLE update_email_token (
   expiration_date DATETIME NOT NULL,
   email_address VARCHAR(100) NOT NULL
 );
+
+CREATE TABLE viewer (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  appointment_id INT(11) NOT NULL,
+  user_id INT(11) NOT NULL
+);

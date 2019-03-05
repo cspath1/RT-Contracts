@@ -2,6 +2,7 @@ package com.radiotelescope.repository.viewer
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.User
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
@@ -53,7 +54,7 @@ internal class ViewerTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() + 300000L),
-                isPublic = true
+                isPublic = false
         )
 
         testUtil.createViewer(otherUser, appointment)
@@ -76,5 +77,16 @@ internal class ViewerTest {
         assertEquals(1, viewer.size)
         assertEquals(otherUser.id, viewer[0].user.id)
         assertEquals(appointment.id, viewer[0].appointment.id)
+    }
+
+    @Test
+    fun testIsSharedWithUser() {
+
+        val isShared = viewerRepo.isAppointmentSharedWithUser(
+                userId = otherUser.id,
+                appointmentId = appointment.id
+        )
+
+        assertTrue(isShared)
     }
 }

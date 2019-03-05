@@ -91,7 +91,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         coordinateRepo = repositories.coordinateRepo
                 ),
-                appointmentRepo = repositories.appointmentRepo
+                appointmentRepo = repositories.appointmentRepo,
+                viewerRepo = repositories.viewerRepo
         )
     }
 
@@ -107,7 +108,8 @@ class FactoryBeans(
                         appointmentRepo = repositories.appointmentRepo,
                         rfDataRepo = repositories.rfDataRepo
                 ),
-                appointmentRepo = repositories.appointmentRepo
+                appointmentRepo = repositories.appointmentRepo,
+                viewerRepo = repositories.viewerRepo
         )
     }
 

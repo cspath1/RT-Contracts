@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import com.radiotelescope.toStringMap
@@ -20,7 +21,8 @@ import com.radiotelescope.toStringMap
 class UserRFDataWrapper(
         private val context: UserContext,
         private val factory: RFDataFactory,
-        private val appointmentRepo: IAppointmentRepository
+        private val appointmentRepo: IAppointmentRepository,
+        private val viewerRepo: IViewerRepository
 ) {
     /**
      * Wrapper method for the [RFDataFactory.retrieveAppointmentData] method that adds
@@ -38,12 +40,17 @@ class UserRFDataWrapper(
         if (context.currentUserId() != null) {
             val theAppointment = appointmentRepo.findById(appointmentId).get()
             // If the user id matches the appointment's user id
-            return if (context.currentUserId() == theAppointment.user.id)
-                context.require(
+            if (context.currentUserId() == theAppointment.user.id)
+                return context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.retrieveAppointmentData(appointmentId)
                 ).execute(withAccess)
-            else {
+            else if(viewerRepo.isAppointmentSharedWithUser(context.currentUserId()!!, theAppointment.id)) {
+                return context.require(
+                        requiredRoles = listOf(UserRole.Role.USER),
+                        successCommand = factory.retrieveAppointmentData(appointmentId)
+                ).execute(withAccess)
+            } else {
                 // Otherwise, if the appointment is public, anyone
                 // can view it
                 return if (theAppointment.isPublic) {
