@@ -3,6 +3,7 @@ com.radiotelescope.config
 com.radiotelescope.contracts
 com.radiotelescope.contracts.accountActivateToken
 com.radiotelescope.contracts.appointment
+com.radiotelescope.contracts.celestialBody
 com.radiotelescope.contracts.log
 com.radiotelescope.contracts.resetPasswordToken
 com.radiotelescope.contracts.rfdata
@@ -11,12 +12,15 @@ com.radiotelescope.contracts.updateEmailToken
 com.radiotelescope.contracts.user
 com.radiotelescope.controller
 com.radiotelescope.controller.admin.appointment
+com.radiotelescope.controller.admin.celestialBody
 com.radiotelescope.controller.admin.log
 com.radiotelescope.controller.admin.role
 com.radiotelescope.controller.admin.user
 com.radiotelescope.controller.appointment
+com.radiotelescope.controller.celestialBody
 com.radiotelescope.controller.model
 com.radiotelescope.controller.model.appointment
+com.radiotelescope.controller.model.celestialBody
 com.radiotelescope.controller.model.resetPasswordToken
 com.radiotelescope.controller.model.role
 com.radiotelescope.controller.model.ses
@@ -30,10 +34,12 @@ com.radiotelescope.controller.user
 com.radiotelescope.controller.user.role
 com.radiotelescope.repository.accountActivateToken
 com.radiotelescope.repository.appointment
+com.radiotelescope.repository.celestialBody
 com.radiotelescope.repository.coordinate
 com.radiotelescope.repository.error
 com.radiotelescope.repository.log
 com.radiotelescope.repository.model.appointment
+com.radiotelescope.repository.model.celestialBody
 com.radiotelescope.repository.model.user
 com.radiotelescope.repository.resetPasswordToken
 com.radiotelescope.repository.rfdata
