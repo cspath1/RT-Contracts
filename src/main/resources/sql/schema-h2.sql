@@ -13,6 +13,13 @@ CREATE TABLE appointment(
   public TINYINT(1) DEFAULT 1
 );
 
+CREATE TABLE celestial_body(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(150) NOT NULL,
+  coordinate_id INT(11) DEFAULT NULL,
+  status ENUM('HIDDEN', 'VISIBLE') NOT NULL
+);
+
 CREATE TABLE coordinate(
   id INT(11) NOT NULL AUTO_INCREMENT,
   right_ascension DOUBLE NOT NULL,

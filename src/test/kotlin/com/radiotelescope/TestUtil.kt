@@ -4,6 +4,8 @@ import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.celestialBody.CelestialBody
+import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.error.Error
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
@@ -56,6 +58,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var celestialBodyRepo: ICelestialBodyRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -270,11 +275,17 @@ internal class TestUtil {
         return telescopeRepo.save(telescope)
     }
 
-    fun banUser(
-            user: User
-    ): User{
+    fun banUser(user: User): User{
         user.active = false
         user.status = User.Status.BANNED
+
         return userRepo.save(user)
+    }
+
+    fun createCelestialBody(name: String, coordinate: Coordinate?): CelestialBody {
+        val celestialBody = CelestialBody(name)
+        celestialBody.coordinate = coordinate
+
+        return celestialBodyRepo.save(celestialBody)
     }
 }

@@ -2,8 +2,10 @@ package com.radiotelescope
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.AppointmentInfo
+import com.radiotelescope.contracts.celestialBody.CelestialBodyInfo
 import com.radiotelescope.contracts.rfdata.RFDataInfo
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.rfdata.RFData
 import com.radiotelescope.security.AccessReport
 import org.springframework.data.domain.Page
@@ -51,4 +53,13 @@ fun String.Companion.generateToken(): String {
 
 fun <K, V> Multimap<K, V>.isNotEmpty(): Boolean {
     return !isEmpty
+}
+
+fun Page<CelestialBody>.toInfoPage(): Page<CelestialBodyInfo> {
+    val infoList = arrayListOf<CelestialBodyInfo>()
+    forEach {
+        infoList.add(CelestialBodyInfo(it))
+    }
+
+    return PageImpl(infoList, pageable, totalElements)
 }
