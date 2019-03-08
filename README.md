@@ -16,6 +16,11 @@ GitHub Account: cspath1
 
 Email Address: cspath1@ycp.edu
 
+### Amazon Web Services Account Owner
+Name: Cody Spath
+
+Email Address: cspath1@ycp.edu
+
 ### Installation
 
 The following technologies are used in the development of the back-end application:
@@ -132,3 +137,11 @@ which will automate the above process for you (recommended):
 
 The docs can be viewed [here](https://cspath1.github.io/RT-Contracts). As a general rule of thumb, the docs
 should be published whenever code is merged into master and deployed to the production server.
+
+### Amazon Web Service Management Console
+
+The management console for the web application (along with the services used for this project) can be 
+accessed [here](https://317377631261.signin.aws.amazon.com/console).
+
+In order to access the management console, you need an IAM User account. If you do not have one, contact the 
+console root user (mentioned above) and they will create an IAM user for you and send you the credentials.
