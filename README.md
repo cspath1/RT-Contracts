@@ -1,30 +1,115 @@
-# RT-Contracts
-Back-end architecture for the Radio Telescope Senior Software Design Project for the 2018-2019 academic year
+#RT-Contracts
 
-1. Install MySQL
-* https://dev.mysql.com/downloads/mysql/
-* username and password for the localhost db should be "root"
-* start mysql - "mysql.server start"
-* for linux, the command "sudo systemctl start mysql" or "sudo systemctl start mysqld" depedning on the linux distro
-* use "stop" and "restart" when needed
+##Web-Application Back-End Server for YCAS Radio Telescope
 
-2. Install Gradle
-* https://gradle.org/install
+###GitHub Repository
+Website URL: https://github.com/cspath1/RT-Contracts
 
-3. Initialize Database
-* Open Database Tab in IntelliJ
-* Add New MySQL Datasource & Test Connection (using credentials used for MySQL installation)
+Clone command (https): ```git clone https://github.com/cspath1/RT-Contracts```
+
+Clone command (git): ```git@github.com:cspath1/RT-Contracts```
+
+###Repository Owner
+Name: Cody Spath
+
+GitHub Account: cspath1
+
+Email Address: cspath1@ycp.edu
+
+###Installation
+
+The following technologies are used in the development of the back-end application:
+
+* MySQL Database
+* Gradle
+* IntelliJ IDEA Ultimate Edition
+
+###GitHub Repository Setup
+
+You can clone the repository using either the https or the git commands supplied above, but in order to contribute
+to the repository, you must be added as a contributor. To achieve this, contact the repository owner (mentioned 
+above), and they will handle this.
+
+###IntelliJ IDEA Setup
+
+IntelliJ IDEA Ultimate Edition is free for anyone with a student license, which thankfully, applies to anyone
+with an ".edu" email address. All you need to do is create an account on [their website](https://account.jetbrains.com),
+and from there, you can access all software that applies to you via the student license. The process on windows
+is rather straightforward, and is primarily handled through an installer/setup wizard. 
+
+The steps needed to install via Linux are as follows:
+
+1. Download the latest version IntelliJ IDEA Ultimate Edition
+2. Extract the tar file using (tar -xvf <filename>)
+3. Move the newly extracted folder to the /opt folder (sudo mv <folder-name> /opt/)
+4. Go to the folder location in the opt folder (cd /opt/<folder-name>)
+5. Go inside of the IntelliJ IDEA bin folder (cd bin)
+6. Run the idea.sh script. This will run the initial setup for IntelliJ IDEA (./idea.sh)
+7. You will then be prompted by IntelliJ to enter some user-specific preferences for IntelliJ IDEA.
+8. After choosing your preferences, verify your installation using your JetBrains account 
+
+###Gradle Setup
+
+For Windows users, you should be able to follow the steps [here](https://gradle.org/install) to install Gradle.
+If you are using Linux, it is highly recommended to [install SDKMAN](https://sdkman.io/), which allows you
+to then easily install Gradle using SDKMAN. The list of steps to install Gradle on linux are:
+
+1. Install SDKMAN (curl -s “https://get.sdkman.io” | bash)
+2. Initialize SDKMAN (source "$HOME/.sdkman/bin/sdkman-init.sh")
+3. Verify the installation was a success (sdk version)
+4. Use SDKMAN to install Gradle (sdk install gradle) 
+    1. Note: This will install the most recent version
+    2. To install a specific version, supply the version (sdk install gradle 4.7)
+5. Verify the installation was a success (gradle -v)
+
+
+###Install MySQL
+
+For Windows users, you should be able to follow the steps/setup wizard [here](https://dev.mysql.com/downloads/mysql/)
+If you are using linux, do the following:
+
+1. Update package lists (sudo apt-get update)
+2. Install MySQL Server (sudo apt-get install mysql-server)
+3. Start MySQL Server (sudo systemctl start mysql) or (sudo systemctl start mysqld) depending on your linux distro
+4. Secure the installation (sudo mysql_secure_installation). This will have you enter the root username and password
+Verify your credentials (mysql -u root -p). This will prompt you to enter the password you entered in step 4.
+
+###Initialize Database in IntelliJ
+
+IntelliJ has a built-in database tab that allows you to manage the contents of your database from within the IDE.
+In order to add your localhost database to IntelliJ, do the following:
+
+1. Open Database Tab in IntelliJ
+2. Add New MySQL Datasource & Test Connection (using credentials used for MySQL installation)
 Note: specify the database url as the one found in the local application properties file
-* If the connection works, you're good to go!
+3. If the connection works, you're good to go!
 
-4. Setup Gradle Wrapper 
-* Open IntelliJ Terminal and type "gradle wrapper" command
+###Install Gradle Wrapper
 
-5. Publishing Javadocs
-* Publishing javadocs in kotlin is done via [dokka](https://github.com/Kotlin/dokka)
-* In the build.gradle file, run the dokka task, or in the terminal run 'gradle dokka' to generate the documentation folder
-* Take the contents of the 'docs' folder that was created and put it in the gh-pages branch
-* **NOTE**: overwrite any existing files in the gh-pages branch with the contents of the newly generate docs folder
-* Still on the gh-pages branch, add, commit, and push the changes and GitHub will handle the rest
-* **ANOTHER NOTE** there is a publish-api-docs.sh file that will handle all of this work for you. Simply run "gradle dokka" and then "./publish-api.docs.sh" and you're good to go (as long as you have the project clone via ssh. Cloning via HTTPS **WILL NOT** work).
-* Go [here](https://cspath1.github.io/RT-Contracts) to view the docs
+In order to install the gradle wrapper (needed to boot up the application locally), issue the following
+command in the terminal inside of IntelliJ:
+```gradle wrapper```
+
+###Properties Files
+
+The application depends on certain application properties files that unfortunately cannot be added to GitHub.
+These files must be obtained from the repository owner.
+
+###Javadocs
+
+The Radio Telescope Contracts/Back-End application uses javadocs to publish documentation. This process can be
+done manually via the following process: 
+
+1. Publishing javadocs in kotlin is done via [dokka](https://github.com/Kotlin/dokka)
+2. In the build.gradle file, run the dokka task, or in the terminal run 'gradle dokka' to generate the documentation folder
+3. Take the contents of the 'docs' folder that was created and put it in the gh-pages branch
+4. **NOTE**: overwrite any existing files in the gh-pages branch with the contents of the newly generate docs folder
+5. Still on the gh-pages branch, add, commit, and push the changes and GitHub will handle the rest
+
+Alternatively, if you cloned the repository via git/ssh, you can simply run the following command,
+which will automate the above process for you (recommended):
+
+1. Run the ```./publish-api-docs.sh``` script
+
+The docs can be viewed [here](https://cspath1.github.io/RT-Contracts). As a general rule of thumb, the docs
+should be published whenever code is merged into master and deployed to the production server.
