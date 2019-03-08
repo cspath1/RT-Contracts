@@ -56,9 +56,12 @@ class SharePrivateAppointment(
             if(!userRepo.existsByEmail(email))
                 errors.put(ErrorTag.USER_ID, "User with email address ($email) could not be found")
             if(!appointmentRepo.existsById(appointmentId))
-                errors.put(ErrorTag.ID, "Appointment #$appointmentId could not be found")
+                errors.put(ErrorTag.APPOINTMENT_ID, "Appointment #$appointmentId could not be found")
             if(appointmentRepo.existsById(appointmentId) && appointmentRepo.findById(appointmentId).get().isPublic)
                 errors.put(ErrorTag.PRIVATE, "Appointment #$appointmentId is not private")
+            if(userRepo.existsByEmail(email))
+                if(viewerRepo.isAppointmentSharedWithUser(userRepo.findByEmail(email)!!.id, appointmentId))
+                    errors.put(ErrorTag.ID, "Appointment #$appointmentId has already been shared with $email")
         }
         return if(errors.isEmpty) null else errors
     }
@@ -71,7 +74,7 @@ class SharePrivateAppointment(
             val appointmentId: Long
     ) : BaseCreateRequest<Viewer> {
         /**
-         * Concrete implementation of the [BaseCreateRequest.toEntity] mehtod that
+         * Concrete implementation of the [BaseCreateRequest.toEntity] method that
          * returns a Viewer object
          */
         override fun toEntity(): Viewer {

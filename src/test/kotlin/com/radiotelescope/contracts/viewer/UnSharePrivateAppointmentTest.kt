@@ -6,6 +6,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.repository.viewer.IViewerRepository
+import com.radiotelescope.repository.viewer.Viewer
 import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
@@ -24,7 +25,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 @ActiveProfiles(value = ["test"])
-internal class SharePrivateAppointmentTest {
+internal class UnSharePrivateAppointmentTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -53,6 +54,7 @@ internal class SharePrivateAppointmentTest {
     private lateinit var user: User
     private lateinit var otherUser: User
     private lateinit var appointment: Appointment
+    private lateinit var viewer: Viewer
 
     @Before
     fun setUp() {
@@ -66,18 +68,20 @@ internal class SharePrivateAppointmentTest {
                 endTime = Date(System.currentTimeMillis() + 300000L),
                 isPublic = false
         )
+
+        viewer = testUtil.createViewer(user, appointment)
     }
 
     @Test
     fun testValidConstraints_Success() {
-        //Create the request
-        val request = SharePrivateAppointment.Request(
-                email = user.email,
+        // Create the request
+        val request = UnSharePrivateAppointment.Request(
+                userId = user.id,
                 appointmentId = appointment.id
         )
 
         // Execute the command
-        val (id, errors) = SharePrivateAppointment(
+        val (id, errors) = UnSharePrivateAppointment(
                 request = request,
                 viewerRepo = viewerRepo,
                 userRepo = userRepo,
@@ -88,25 +92,19 @@ internal class SharePrivateAppointmentTest {
         assertNotNull(id)
         assertNull(errors)
 
-        // Make sure the viewer was persisted
-        val theViewer = viewerRepo.findById(id!!)
-        assertTrue(theViewer.isPresent)
-
-        // Make sure the correct information was persisted
-        assertEquals(request.email, theViewer.get().user.email)
-        assertEquals(request.appointmentId, theViewer.get().appointment.id)
+        assertEquals(viewer.id, id)
     }
 
     @Test
-    fun testInvalid_UserDoesNotExist_Failure(){
-        //Create the request
-        val request = SharePrivateAppointment.Request(
-                email = "michaelscott@dundermifflin.com",
+    fun testInvalid_UserDoesNotExist_Failure() {
+        // Create the request
+        val request = UnSharePrivateAppointment.Request(
+                userId = 1234L,
                 appointmentId = appointment.id
         )
 
         // Execute the command
-        val (id, errors) = SharePrivateAppointment(
+        val (id, errors) = UnSharePrivateAppointment(
                 request = request,
                 viewerRepo = viewerRepo,
                 userRepo = userRepo,
@@ -123,15 +121,15 @@ internal class SharePrivateAppointmentTest {
     }
 
     @Test
-    fun testInvalid_AppointmentDoesNotExist_Failure(){
+    fun testInvalid_AppointmentDoesNotExist_Failure() {
         // Create the request
-        val request = SharePrivateAppointment.Request(
-                email = user.email,
-                appointmentId = -1L
+        val request = UnSharePrivateAppointment.Request(
+                userId = user.id,
+                appointmentId = 1234L
         )
 
         // Execute the command
-        val (id, errors) = SharePrivateAppointment(
+        val (id, errors) = UnSharePrivateAppointment(
                 request = request,
                 viewerRepo = viewerRepo,
                 userRepo = userRepo,
@@ -148,52 +146,17 @@ internal class SharePrivateAppointmentTest {
     }
 
     @Test
-    fun testInvalid_AppointmentIsNotPrivate_Failure(){
-        val publicAppointment = testUtil.createAppointment(
-                user = otherUser,
-                telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED,
-                startTime = Date(System.currentTimeMillis() + 400000L),
-                endTime = Date(System.currentTimeMillis() + 500000L),
-                isPublic = true
-        )
+    fun testInvalid_NotShared_Failure() {
+        viewerRepo.delete(viewer)
 
         // Create the request
-        val request = SharePrivateAppointment.Request(
-                email = user.email,
-                appointmentId = publicAppointment.id
-        )
-
-        // Execute the command
-        val (id, errors) = SharePrivateAppointment(
-                request = request,
-                viewerRepo = viewerRepo,
-                userRepo = userRepo,
-                appointmentRepo = appointmentRepo
-        ).execute()
-
-        // Make sure the command was a failure
-        assertNull(id)
-        assertNotNull(errors)
-
-        // Make sure it failed for the correct reason
-        assertEquals(1, errors!!.size())
-        assertTrue(errors[ErrorTag.PRIVATE].isNotEmpty())
-    }
-
-    @Test
-    fun testInvalid_AppointmentIsAlreadyShared_Failure(){
-        //Create viewer
-        testUtil.createViewer(user, appointment)
-
-        //Create the request
-        val request = SharePrivateAppointment.Request(
-                email = user.email,
+        val request = UnSharePrivateAppointment.Request(
+                userId = user.id,
                 appointmentId = appointment.id
         )
 
         // Execute the command
-        val (id, errors) = SharePrivateAppointment(
+        val (id, errors) = UnSharePrivateAppointment(
                 request = request,
                 viewerRepo = viewerRepo,
                 userRepo = userRepo,

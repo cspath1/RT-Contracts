@@ -53,4 +53,12 @@ interface IViewerRepository : PagingAndSortingRepository<Viewer, Long> {
             nativeQuery = true)
     fun isAppointmentSharedWithUser(userId: Long, appointmentId: Long): Boolean
 
+    /**
+     * Spring Repository method that will grab a [List] of [Viewer]
+     * with the given User's Id and Appointment's Id
+     */
+    @Query(value = "SELECT * FROM viewer " +
+            "WHERE user_id=?1 AND appointment_id=?2",
+            nativeQuery = true)
+    fun findByUserAndAppointment(userId: Long, appointmentId: Long): List<Viewer>
 }

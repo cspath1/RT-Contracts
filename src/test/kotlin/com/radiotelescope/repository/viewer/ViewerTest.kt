@@ -89,4 +89,16 @@ internal class ViewerTest {
 
         assertTrue(isShared)
     }
+
+    @Test
+    fun testFindByUserAndAppointment() {
+        val viewer = viewerRepo.findByUserAndAppointment(
+                userId = otherUser.id,
+                appointmentId = appointment.id
+        )
+
+        assertEquals(1, viewer.size)
+        assertEquals(otherUser.id, viewer[0].user.id)
+        assertEquals(appointment.id, viewer[0].appointment.id)
+    }
 }
