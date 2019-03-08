@@ -43,7 +43,7 @@ class UserViewerWrapper (
         if (context.currentUserId() != null) {
             return if (context.currentUserId() == theAppointment.user.id) {
                 context.requireAny(
-                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
+                        requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
                         successCommand = factory.sharePrivateAppointment(
                                 request = request
                         )
@@ -111,7 +111,7 @@ class UserViewerWrapper (
         if (context.currentUserId() != null) {
             return if(context.currentUserId() == theAppointment.user.id) {
                 context.require(
-                        requiredRoles = listOf(UserRole.Role.USER),
+                        requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
                         successCommand = factory.listSharedUser(
                                 appointmentId = appointmentId,
                                 pageable = pageable
@@ -123,6 +123,41 @@ class UserViewerWrapper (
                         successCommand = factory.listSharedUser(
                                 appointmentId = appointmentId,
                                 pageable = pageable
+                        )
+                ).execute(withAccess)
+            }
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
+     * Wrapper method for the [ViewerFactory.unSharePrivateAppointment] method that adds Spring
+     * Security authentication to the [UnSharePrivateAppointment] command object.
+     *
+     * @param request the [UnSharePrivateAppointment.Request] command object
+     * @return an [AccessReport] if the authentication fails, null otherwise
+     */
+    fun unSharePrivateAppointment(request: UnSharePrivateAppointment.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (!appointmentRepo.existsById(request.appointmentId)) {
+            return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(request.appointmentId))
+        }
+
+        val theAppointment = appointmentRepo.findById(request.appointmentId).get()
+
+        if (context.currentUserId() != null) {
+            return if (context.currentUserId() == theAppointment.user.id) {
+                context.requireAny(
+                        requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                        successCommand = factory.unSharePrivateAppointment(
+                                request = request
+                        )
+                ).execute(withAccess)
+            } else {
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.ADMIN),
+                        successCommand = factory.unSharePrivateAppointment(
+                                request = request
                         )
                 ).execute(withAccess)
             }

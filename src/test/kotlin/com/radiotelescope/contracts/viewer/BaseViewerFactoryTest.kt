@@ -90,4 +90,19 @@ internal class BaseViewerFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is ListSharedUser)
-    }}
+    }
+
+    @Test
+    fun unSharePrivateAppointment(){
+        // Call the factory method
+        val cmd = factory.unSharePrivateAppointment(
+                UnSharePrivateAppointment.Request(
+                        userId = 1L,
+                        appointmentId = 1L
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is UnSharePrivateAppointment)
+    }
+}

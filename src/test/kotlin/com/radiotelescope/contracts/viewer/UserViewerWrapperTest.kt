@@ -259,6 +259,7 @@ internal class UserViewerWrapperTest {
         // Simulate a login
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
+        context.currentRoles.add(UserRole.Role.RESEARCHER)
 
         val error = wrapper.listSharedUser(
                 appointmentId = appointment.id,
@@ -278,6 +279,7 @@ internal class UserViewerWrapperTest {
         // Simulate a login
         context.login(123L)
         context.currentRoles.add(UserRole.Role.USER)
+        context.currentRoles.add(UserRole.Role.RESEARCHER)
 
         val error = wrapper.listSharedUser(
                 appointmentId = appointment.id,
@@ -323,4 +325,103 @@ internal class UserViewerWrapperTest {
         assertNotNull(error)
         assertTrue(error!!.invalidResourceId != null)
     }
+
+    @Test
+    fun testUnSharePrivateAppointment_ValidConstraints_Success(){
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+        context.currentRoles.add(UserRole.Role.RESEARCHER)
+
+        val error = wrapper.unSharePrivateAppointment(
+                request = UnSharePrivateAppointment.Request(
+                        userId = otherUser.id,
+                        appointmentId = appointment.id
+                )
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        // Make sure it was a success
+        assertNull(error)
+    }
+
+    @Test
+    fun testUnSharePrivateAppointment_Admin_Success(){
+        // Simulate a login
+        context.login(admin.id)
+        context.currentRoles.add(UserRole.Role.USER)
+        context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.unSharePrivateAppointment(
+                request = UnSharePrivateAppointment.Request(
+                        userId = otherUser.id,
+                        appointmentId = appointment.id
+                )
+        ){
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        // Make sure it was a success
+        assertNull(error)
+    }
+
+    @Test
+    fun testUnSharePrivateAppointment_Researcher_NotLogIn_Failure(){
+        // Don't simulate a login
+
+        val error = wrapper.unSharePrivateAppointment(
+                request = UnSharePrivateAppointment.Request(
+                        userId = otherUser.id,
+                        appointmentId = appointment.id
+                )
+        ){
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        // Make sure it was a failure and the correct reason
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
+    }
+
+    @Test
+    fun testUnSharePrivateAppointment_Researcher_NotOwner_Failure(){
+        // Simulate a login
+        context.login(123L)
+        context.currentRoles.add(UserRole.Role.USER)
+        context.currentRoles.add(UserRole.Role.RESEARCHER)
+
+        val error = wrapper.unSharePrivateAppointment(
+                request = UnSharePrivateAppointment.Request(
+                        userId = otherUser.id,
+                        appointmentId = appointment.id
+                )
+        ){
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        // Make sure it was a failure and the correct reason
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testUnSharePrivateAppointment_InvalidId_Failure() {
+        val error = wrapper.unSharePrivateAppointment(
+                request = UnSharePrivateAppointment.Request(
+                        userId = otherUser.id,
+                        appointmentId = 311L
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.invalidResourceId != null)
+    }
+
 }

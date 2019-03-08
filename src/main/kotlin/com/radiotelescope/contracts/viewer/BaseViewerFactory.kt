@@ -26,7 +26,7 @@ class BaseViewerFactory (
      * Override of the [ViewerFactory.sharePrivateAppointment] method that will return a
      * [SharePrivateAppointment] command object
      *
-     * @param request [SharePrivateAppointment.Request] object
+     * @param request the [SharePrivateAppointment.Request] object
      * @return a [SharePrivateAppointment] command object
      */
     override fun sharePrivateAppointment(request: SharePrivateAppointment.Request): Command<Long, Multimap<ErrorTag, String>> {
@@ -41,6 +41,10 @@ class BaseViewerFactory (
     /**
      * Override of the [ViewerFactory.listSharedAppointment] method that will return a
      * [ListSharedAppointment] command object
+     *
+     * @param userId the User's Id
+     * @param pageable the [Pageable] object
+     * @return a [ListSharedAppointment] command object
      */
     override fun listSharedAppointment(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return ListSharedAppointment(
@@ -54,11 +58,31 @@ class BaseViewerFactory (
     /**
      * Override of the [ViewerFactory.listSharedUser] method that will return a
      * [ListSharedUser] command object
+     *
+     * @param appointmentId the Appointment's Id
+     * @param pageable the [Pageable] object
+     * @return a [ListSharedUser] command object
      */
     override fun listSharedUser(appointmentId: Long, pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
         return ListSharedUser(
                 appointmentId = appointmentId,
                 pageable = pageable,
+                userRepo = userRepo,
+                appointmentRepo = appointmentRepo
+        )
+    }
+
+    /**
+     * Overrid of the [ViewerFactory.unSharePrivateAppointment] method that will
+     * return a [UnSharePrivateAppointment] command object
+     *
+     * @param request the [UnSharePrivateAppointment.Request] object
+     * @return a [UnSharePrivateAppointment] command object
+     */
+    override fun unSharePrivateAppointment(request: UnSharePrivateAppointment.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return UnSharePrivateAppointment(
+                request = request,
+                viewerRepo = viewerRepo,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo
         )

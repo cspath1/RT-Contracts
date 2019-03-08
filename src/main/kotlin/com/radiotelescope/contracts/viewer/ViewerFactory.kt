@@ -26,4 +26,9 @@ interface ViewerFactory {
      * Abstract command used to list the shared users
      */
     fun listSharedUser(appointmentId: Long, pageable: Pageable): Command<Page<UserInfo>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to un-share private appointment
+     */
+    fun unSharePrivateAppointment(request: UnSharePrivateAppointment.Request): Command<Long, Multimap<ErrorTag, String>>
 }
