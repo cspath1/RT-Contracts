@@ -34,8 +34,13 @@ above), and they will handle this.
 
 IntelliJ IDEA Ultimate Edition is free for anyone with a student license, which thankfully, applies to anyone
 with an ".edu" email address. All you need to do is create an account on [their website](https://account.jetbrains.com),
-and from there, you can access all software that applies to you via the student license. The process on windows
-is rather straightforward, and is primarily handled through an installer/setup wizard. 
+and from there, you can access all software that applies to you via the student license. 
+
+#### Windows Setup
+
+The process on windows is rather straightforward, and is primarily handled through an installer/setup wizard. 
+
+#### Linux Setup
 
 The steps needed to install via Linux are as follows:
 
@@ -48,9 +53,15 @@ The steps needed to install via Linux are as follows:
 7. You will then be prompted by IntelliJ to enter some user-specific preferences for IntelliJ IDEA.
 8. After choosing your preferences, verify your installation using your JetBrains account 
 
+#### Mac Setup
+**CURRENTLY UNKNOWN**
+
 ### Gradle Setup
 
+#### Windows Setup
 For Windows users, you should be able to follow the steps [here](https://gradle.org/install) to install Gradle.
+
+#### Linux Setup
 If you are using Linux, it is highly recommended to [install SDKMAN](https://sdkman.io/), which allows you
 to then easily install Gradle using SDKMAN. The list of steps to install Gradle on linux are:
 
@@ -62,10 +73,15 @@ to then easily install Gradle using SDKMAN. The list of steps to install Gradle 
     2. To install a specific version, supply the version (sdk install gradle 4.7)
 5. Verify the installation was a success (gradle -v)
 
+#### Mac Setup
+**CURRENTLY UNKNOWN**
 
 ### Install MySQL
 
+#### Windows Setup
 For Windows users, you should be able to follow the steps/setup wizard [here](https://dev.mysql.com/downloads/mysql/)
+
+#### Linux Setup
 If you are using linux, do the following:
 
 1. Update package lists (sudo apt-get update)
@@ -73,6 +89,9 @@ If you are using linux, do the following:
 3. Start MySQL Server (sudo systemctl start mysql) or (sudo systemctl start mysqld) depending on your linux distro
 4. Secure the installation (sudo mysql_secure_installation). This will have you enter the root username and password
 Verify your credentials (mysql -u root -p). This will prompt you to enter the password you entered in step 4.
+
+#### Mac Setup
+**CURRENTLY UNKNOWN**
 
 ### Initialize Database in IntelliJ
 
