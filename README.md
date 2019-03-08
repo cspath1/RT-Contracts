@@ -1,22 +1,22 @@
-#RT-Contracts
+# RT-Contracts
 
-##Web-Application Back-End Server for YCAS Radio Telescope
+## Web-Application Back-End Server for YCAS Radio Telescope
 
-###GitHub Repository
+### GitHub Repository
 Website URL: https://github.com/cspath1/RT-Contracts
 
 Clone command (https): ```git clone https://github.com/cspath1/RT-Contracts```
 
 Clone command (git): ```git@github.com:cspath1/RT-Contracts```
 
-###Repository Owner
+### Repository Owner
 Name: Cody Spath
 
 GitHub Account: cspath1
 
 Email Address: cspath1@ycp.edu
 
-###Installation
+### Installation
 
 The following technologies are used in the development of the back-end application:
 
@@ -24,13 +24,13 @@ The following technologies are used in the development of the back-end applicati
 * Gradle
 * IntelliJ IDEA Ultimate Edition
 
-###GitHub Repository Setup
+### GitHub Repository Setup
 
 You can clone the repository using either the https or the git commands supplied above, but in order to contribute
 to the repository, you must be added as a contributor. To achieve this, contact the repository owner (mentioned 
 above), and they will handle this.
 
-###IntelliJ IDEA Setup
+### IntelliJ IDEA Setup
 
 IntelliJ IDEA Ultimate Edition is free for anyone with a student license, which thankfully, applies to anyone
 with an ".edu" email address. All you need to do is create an account on [their website](https://account.jetbrains.com),
@@ -48,7 +48,7 @@ The steps needed to install via Linux are as follows:
 7. You will then be prompted by IntelliJ to enter some user-specific preferences for IntelliJ IDEA.
 8. After choosing your preferences, verify your installation using your JetBrains account 
 
-###Gradle Setup
+### Gradle Setup
 
 For Windows users, you should be able to follow the steps [here](https://gradle.org/install) to install Gradle.
 If you are using Linux, it is highly recommended to [install SDKMAN](https://sdkman.io/), which allows you
@@ -63,7 +63,7 @@ to then easily install Gradle using SDKMAN. The list of steps to install Gradle 
 5. Verify the installation was a success (gradle -v)
 
 
-###Install MySQL
+### Install MySQL
 
 For Windows users, you should be able to follow the steps/setup wizard [here](https://dev.mysql.com/downloads/mysql/)
 If you are using linux, do the following:
@@ -74,7 +74,7 @@ If you are using linux, do the following:
 4. Secure the installation (sudo mysql_secure_installation). This will have you enter the root username and password
 Verify your credentials (mysql -u root -p). This will prompt you to enter the password you entered in step 4.
 
-###Initialize Database in IntelliJ
+### Initialize Database in IntelliJ
 
 IntelliJ has a built-in database tab that allows you to manage the contents of your database from within the IDE.
 In order to add your localhost database to IntelliJ, do the following:
@@ -84,18 +84,18 @@ In order to add your localhost database to IntelliJ, do the following:
 Note: specify the database url as the one found in the local application properties file
 3. If the connection works, you're good to go!
 
-###Install Gradle Wrapper
+### Install Gradle Wrapper
 
 In order to install the gradle wrapper (needed to boot up the application locally), issue the following
 command in the terminal inside of IntelliJ:
 ```gradle wrapper```
 
-###Properties Files
+### Properties Files
 
 The application depends on certain application properties files that unfortunately cannot be added to GitHub.
 These files must be obtained from the repository owner.
 
-###Javadocs
+### Javadocs
 
 The Radio Telescope Contracts/Back-End application uses javadocs to publish documentation. This process can be
 done manually via the following process: 
