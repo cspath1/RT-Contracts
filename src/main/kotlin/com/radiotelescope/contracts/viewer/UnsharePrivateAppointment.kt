@@ -14,11 +14,11 @@ import com.radiotelescope.repository.viewer.Viewer
 /**
  * Override of the [Command] interface method used for unsharing private appointment
  *
- * @param request the [UnSharePrivateAppointment.Request] object
+ * @param request the [UnsharePrivateAppointment.Request] object
  * @param viewerRepo the [IViewerRepository] interface
  * @param userRepo the [IUserRepository] interface
  * @param appointmentRepo the [IAppointmentRepository] interface */
-class UnSharePrivateAppointment(
+class UnsharePrivateAppointment(
         private val request: Request,
         private val viewerRepo: IViewerRepository,
         private val userRepo: IUserRepository,
@@ -45,7 +45,7 @@ class UnSharePrivateAppointment(
 
     /**
      * Method responsible for constraint checking and validations for the
-     * UnSharePrivateAppointment request. It will ensure that both the user and appointment
+     * UnsharePrivateAppointment request. It will ensure that both the user and appointment
      * id exists.
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {

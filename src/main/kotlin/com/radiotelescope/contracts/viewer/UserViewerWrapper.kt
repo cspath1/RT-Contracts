@@ -133,12 +133,12 @@ class UserViewerWrapper (
 
     /**
      * Wrapper method for the [ViewerFactory.unSharePrivateAppointment] method that adds Spring
-     * Security authentication to the [UnSharePrivateAppointment] command object.
+     * Security authentication to the [UnsharePrivateAppointment] command object.
      *
-     * @param request the [UnSharePrivateAppointment.Request] command object
+     * @param request the [UnsharePrivateAppointment.Request] command object
      * @return an [AccessReport] if the authentication fails, null otherwise
      */
-    fun unSharePrivateAppointment(request: UnSharePrivateAppointment.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun unsharePrivateAppointment(request: UnsharePrivateAppointment.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (!appointmentRepo.existsById(request.appointmentId)) {
             return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(request.appointmentId))
         }
@@ -149,14 +149,14 @@ class UserViewerWrapper (
             return if (context.currentUserId() == theAppointment.user.id) {
                 context.requireAny(
                         requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
-                        successCommand = factory.unSharePrivateAppointment(
+                        successCommand = factory.unsharePrivateAppointment(
                                 request = request
                         )
                 ).execute(withAccess)
             } else {
                 context.require(
                         requiredRoles = listOf(UserRole.Role.ADMIN),
-                        successCommand = factory.unSharePrivateAppointment(
+                        successCommand = factory.unsharePrivateAppointment(
                                 request = request
                         )
                 ).execute(withAccess)

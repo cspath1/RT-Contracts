@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.viewer
 
-import com.radiotelescope.contracts.viewer.UnSharePrivateAppointment
+import com.radiotelescope.contracts.viewer.UnsharePrivateAppointment
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -11,25 +11,24 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class ViewerUnSharePrivateController(
+class ViewerUnsharePrivateController(
         private val viewerWrapper: UserViewerWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
-
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/appointments/{appointmentId}/viewers"])
+    @DeleteMapping(value = ["/api/appointments/{appointmentId}/viewers"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long,
                 @RequestParam("userId") userId: Long): Result {
-        val request = UnSharePrivateAppointment.Request(
+        val request = UnsharePrivateAppointment.Request(
                 userId = userId,
                 appointmentId = appointmentId
         )
-        viewerWrapper.unSharePrivateAppointment(request) {
+        viewerWrapper.unsharePrivateAppointment(request) {
             // If the command was a success
             it.success?.let {id ->
                 logger.createSuccessLog(
                         info = Logger.createInfo(Log.AffectedTable.VIEWER,
-                                action = "UnShare Private Appointment",
+                                action = "Unshare Private Appointment",
                                 affectedRecordId = id,
                                 status = HttpStatus.OK.value()
                         )
@@ -41,7 +40,7 @@ class ViewerUnSharePrivateController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.VIEWER,
-                                action = "UnShare Private Appointment",
+                                action = "Unshare Private Appointment",
                                 affectedRecordId = null,
                                 status = HttpStatus.BAD_REQUEST.value()
                         ),
@@ -57,7 +56,7 @@ class ViewerUnSharePrivateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.VIEWER,
-                            action = "UnShare Private Appointment",
+                            action = "Unshare Private Appointment",
                             affectedRecordId = null,
                             status = HttpStatus.FORBIDDEN.value()
                     ),

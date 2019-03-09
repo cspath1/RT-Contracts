@@ -23,7 +23,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class ViewerUnSharePrivateAppointmentTest : BaseViewerRestControllerTest() {
+internal class ViewerUnsharePrivateAppointmentTest : BaseViewerRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -39,7 +39,7 @@ internal class ViewerUnSharePrivateAppointmentTest : BaseViewerRestControllerTes
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private lateinit var viewerUnSharePrivateController: ViewerUnSharePrivateController
+    private lateinit var viewerUnSharePrivateController: ViewerUnsharePrivateController
     private lateinit var user: User
     private lateinit var researcher: User
     private lateinit var appointment: Appointment
@@ -48,7 +48,7 @@ internal class ViewerUnSharePrivateAppointmentTest : BaseViewerRestControllerTes
     override fun init() {
         super.init()
 
-        viewerUnSharePrivateController = ViewerUnSharePrivateController(
+        viewerUnSharePrivateController = ViewerUnsharePrivateController(
                 viewerWrapper = getWrapper(),
                 logger = getLogger()
         )

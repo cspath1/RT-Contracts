@@ -74,13 +74,13 @@ class BaseViewerFactory (
 
     /**
      * Overrid of the [ViewerFactory.unSharePrivateAppointment] method that will
-     * return a [UnSharePrivateAppointment] command object
+     * return a [UnsharePrivateAppointment] command object
      *
-     * @param request the [UnSharePrivateAppointment.Request] object
-     * @return a [UnSharePrivateAppointment] command object
+     * @param request the [UnsharePrivateAppointment.Request] object
+     * @return a [UnsharePrivateAppointment] command object
      */
-    override fun unSharePrivateAppointment(request: UnSharePrivateAppointment.Request): Command<Long, Multimap<ErrorTag, String>> {
-        return UnSharePrivateAppointment(
+    override fun unsharePrivateAppointment(request: UnsharePrivateAppointment.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return UnsharePrivateAppointment(
                 request = request,
                 viewerRepo = viewerRepo,
                 userRepo = userRepo,

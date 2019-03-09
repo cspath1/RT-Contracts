@@ -7,7 +7,6 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.repository.viewer.Viewer
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -68,13 +67,13 @@ internal class UnSharePrivateAppointmentTest {
     @Test
     fun testValidConstraints_Success() {
         // Create the request
-        val request = UnSharePrivateAppointment.Request(
+        val request = UnsharePrivateAppointment.Request(
                 userId = user.id,
                 appointmentId = appointment.id
         )
 
         // Execute the command
-        val (id, errors) = UnSharePrivateAppointment(
+        val (id, errors) = UnsharePrivateAppointment(
                 request = request,
                 viewerRepo = viewerRepo,
                 userRepo = userRepo,
@@ -91,13 +90,13 @@ internal class UnSharePrivateAppointmentTest {
     @Test
     fun testInvalid_UserDoesNotExist_Failure() {
         // Create the request
-        val request = UnSharePrivateAppointment.Request(
+        val request = UnsharePrivateAppointment.Request(
                 userId = 1234L,
                 appointmentId = appointment.id
         )
 
         // Execute the command
-        val (id, errors) = UnSharePrivateAppointment(
+        val (id, errors) = UnsharePrivateAppointment(
                 request = request,
                 viewerRepo = viewerRepo,
                 userRepo = userRepo,
@@ -116,13 +115,13 @@ internal class UnSharePrivateAppointmentTest {
     @Test
     fun testInvalid_AppointmentDoesNotExist_Failure() {
         // Create the request
-        val request = UnSharePrivateAppointment.Request(
+        val request = UnsharePrivateAppointment.Request(
                 userId = user.id,
                 appointmentId = 1234L
         )
 
         // Execute the command
-        val (id, errors) = UnSharePrivateAppointment(
+        val (id, errors) = UnsharePrivateAppointment(
                 request = request,
                 viewerRepo = viewerRepo,
                 userRepo = userRepo,
@@ -143,13 +142,13 @@ internal class UnSharePrivateAppointmentTest {
         viewerRepo.delete(viewer)
 
         // Create the request
-        val request = UnSharePrivateAppointment.Request(
+        val request = UnsharePrivateAppointment.Request(
                 userId = user.id,
                 appointmentId = appointment.id
         )
 
         // Execute the command
-        val (id, errors) = UnSharePrivateAppointment(
+        val (id, errors) = UnsharePrivateAppointment(
                 request = request,
                 viewerRepo = viewerRepo,
                 userRepo = userRepo,

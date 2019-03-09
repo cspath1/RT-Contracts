@@ -4,7 +4,6 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -88,14 +87,14 @@ internal class BaseViewerFactoryTest {
     @Test
     fun unSharePrivateAppointment(){
         // Call the factory method
-        val cmd = factory.unSharePrivateAppointment(
-                UnSharePrivateAppointment.Request(
+        val cmd = factory.unsharePrivateAppointment(
+                UnsharePrivateAppointment.Request(
                         userId = 1L,
                         appointmentId = 1L
                 )
         )
 
         // Ensure it is the correct command
-        assertTrue(cmd is UnSharePrivateAppointment)
+        assertTrue(cmd is UnsharePrivateAppointment)
     }
 }

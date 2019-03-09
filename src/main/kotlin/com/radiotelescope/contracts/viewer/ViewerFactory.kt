@@ -30,5 +30,5 @@ interface ViewerFactory {
     /**
      * Abstract command used to un-share private appointment
      */
-    fun unSharePrivateAppointment(request: UnSharePrivateAppointment.Request): Command<Long, Multimap<ErrorTag, String>>
+    fun unsharePrivateAppointment(request: UnsharePrivateAppointment.Request): Command<Long, Multimap<ErrorTag, String>>
 }

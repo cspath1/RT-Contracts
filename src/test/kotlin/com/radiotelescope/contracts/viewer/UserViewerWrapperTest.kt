@@ -8,7 +8,6 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.security.FakeUserContext
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -326,8 +325,8 @@ internal class UserViewerWrapperTest {
         context.currentRoles.add(UserRole.Role.USER)
         context.currentRoles.add(UserRole.Role.RESEARCHER)
 
-        val error = wrapper.unSharePrivateAppointment(
-                request = UnSharePrivateAppointment.Request(
+        val error = wrapper.unsharePrivateAppointment(
+                request = UnsharePrivateAppointment.Request(
                         userId = otherUser.id,
                         appointmentId = appointment.id
                 )
@@ -347,8 +346,8 @@ internal class UserViewerWrapperTest {
         context.currentRoles.add(UserRole.Role.USER)
         context.currentRoles.add(UserRole.Role.ADMIN)
 
-        val error = wrapper.unSharePrivateAppointment(
-                request = UnSharePrivateAppointment.Request(
+        val error = wrapper.unsharePrivateAppointment(
+                request = UnsharePrivateAppointment.Request(
                         userId = otherUser.id,
                         appointmentId = appointment.id
                 )
@@ -365,8 +364,8 @@ internal class UserViewerWrapperTest {
     fun testUnSharePrivateAppointment_Researcher_NotLogIn_Failure(){
         // Don't simulate a login
 
-        val error = wrapper.unSharePrivateAppointment(
-                request = UnSharePrivateAppointment.Request(
+        val error = wrapper.unsharePrivateAppointment(
+                request = UnsharePrivateAppointment.Request(
                         userId = otherUser.id,
                         appointmentId = appointment.id
                 )
@@ -387,8 +386,8 @@ internal class UserViewerWrapperTest {
         context.currentRoles.add(UserRole.Role.USER)
         context.currentRoles.add(UserRole.Role.RESEARCHER)
 
-        val error = wrapper.unSharePrivateAppointment(
-                request = UnSharePrivateAppointment.Request(
+        val error = wrapper.unsharePrivateAppointment(
+                request = UnsharePrivateAppointment.Request(
                         userId = otherUser.id,
                         appointmentId = appointment.id
                 )
@@ -404,8 +403,8 @@ internal class UserViewerWrapperTest {
 
     @Test
     fun testUnSharePrivateAppointment_InvalidId_Failure() {
-        val error = wrapper.unSharePrivateAppointment(
-                request = UnSharePrivateAppointment.Request(
+        val error = wrapper.unsharePrivateAppointment(
+                request = UnsharePrivateAppointment.Request(
                         userId = otherUser.id,
                         appointmentId = 311L
                 )
