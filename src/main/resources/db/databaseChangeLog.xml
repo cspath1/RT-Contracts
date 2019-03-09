@@ -15,4 +15,5 @@
     <include file="classpath:/db/changelog/09-create-update-email-token.sql"/>
     <include file="classpath:/db/changelog/11-create-coordinate.sql"/>
     <include file="classpath:/db/changelog/12-add-hours-minutes-seconds.sql"/>
+    <include file="classpath:/db/changelog/13-create-celestial-body.sql"/>
 </databaseChangeLog>

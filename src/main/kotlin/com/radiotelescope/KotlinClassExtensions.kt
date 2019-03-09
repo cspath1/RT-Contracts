@@ -2,9 +2,11 @@ package com.radiotelescope
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.AppointmentInfo
+import com.radiotelescope.contracts.celestialBody.CelestialBodyInfo
 import com.radiotelescope.contracts.rfdata.RFDataInfo
 import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.rfdata.RFData
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
@@ -60,5 +62,14 @@ fun Page<User>.toUserInfoPage(): Page<UserInfo> {
     content.forEach {
         infoList.add(UserInfo(it, null))
     }
+    return PageImpl(infoList, pageable, totalElements)
+}
+
+fun Page<CelestialBody>.toInfoPage(): Page<CelestialBodyInfo> {
+    val infoList = arrayListOf<CelestialBodyInfo>()
+    forEach {
+        infoList.add(CelestialBodyInfo(it))
+    }
+
     return PageImpl(infoList, pageable, totalElements)
 }

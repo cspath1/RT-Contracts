@@ -16,7 +16,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 class Cancel(
         private val appointmentId: Long,
         private val appointmentRepo: IAppointmentRepository
-): Command<Long, Multimap<ErrorTag, String>> {
+) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Checks if the user exists.
      *
@@ -36,7 +36,7 @@ class Cancel(
     }
 
     /**
-     * Method in charge of handle error constraints and validation
+     * Method in charge of handling constraints and validation
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()

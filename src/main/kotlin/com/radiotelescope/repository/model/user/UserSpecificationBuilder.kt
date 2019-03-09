@@ -25,7 +25,7 @@ class UserSpecificationBuilder {
     /**
      * Will build the [Specification] based on the [params] list
      *
-     * @return a [Specification] object
+     * @return a [Specification] object or null if the list is empty
      */
     fun build(): Specification<User>? {
         if (params.isEmpty())

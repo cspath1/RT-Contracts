@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Rest Controller used to cancel an appointment
+ *
+ * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param logger the [Logger] service
  */
 @RestController
 class AppointmentCancelController(

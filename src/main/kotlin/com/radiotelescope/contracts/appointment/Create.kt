@@ -30,7 +30,7 @@ class Create(
     private val userRoleRepo: IUserRoleRepository,
     private val telescopeRepo: ITelescopeRepository,
     private val coordinateRepo: ICoordinateRepository
-) : Command<Long, Multimap<ErrorTag,String>> {
+) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
@@ -178,6 +178,10 @@ class Create(
             )
         }
 
+        /**
+         * Method that will take the [Request] hours, minutes, seconds, and declination
+         * and returns a [Coordinate] object
+         */
         fun toCoordinate(): Coordinate {
             return Coordinate(
                     hours = hours,

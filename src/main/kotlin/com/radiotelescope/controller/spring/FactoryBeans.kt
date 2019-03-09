@@ -4,6 +4,8 @@ import com.radiotelescope.contracts.accountActivateToken.BaseAccountActivateToke
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
 import com.radiotelescope.contracts.appointment.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.celestialBody.BaseCelestialBodyFactory
+import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.log.BaseLogFactory
 import com.radiotelescope.contracts.resetPasswordToken.BaseResetPasswordTokenFactory
@@ -186,6 +188,21 @@ class FactoryBeans(
                 ),
                 context = userContext,
                 appointmentRepo = repositories.appointmentRepo
+        )
+    }
+
+    /**
+     * Returns a [UserCelestialBodyWrapper] object, allowing it to be autowired
+     * in the controller
+     */
+    @Bean
+    override fun getCelestialBodyWrapper(): UserCelestialBodyWrapper {
+        return UserCelestialBodyWrapper(
+                context = userContext,
+                factory = BaseCelestialBodyFactory(
+                        celestialBodyRepo = repositories.celestialBodyRepo,
+                        coordinateRepo = repositories.coordinateRepo
+                )
         )
     }
 }
