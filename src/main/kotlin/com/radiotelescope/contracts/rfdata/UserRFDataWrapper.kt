@@ -40,32 +40,30 @@ class UserRFDataWrapper(
         if (context.currentUserId() != null) {
             val theAppointment = appointmentRepo.findById(appointmentId).get()
             // If the user id matches the appointment's user id
-            if (context.currentUserId() == theAppointment.user.id)
-                return context.require(
+            when {
+                context.currentUserId() == theAppointment.user.id -> return context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.retrieveAppointmentData(appointmentId)
                 ).execute(withAccess)
-            else if(viewerRepo.isAppointmentSharedWithUser(context.currentUserId()!!, theAppointment.id)) {
-                return context.require(
+                viewerRepo.isAppointmentSharedWithUser(context.currentUserId()!!, theAppointment.id) -> return context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.retrieveAppointmentData(appointmentId)
                 ).execute(withAccess)
-            } else {
-                // Otherwise, if the appointment is public, anyone
-                // can view it
-                return if (theAppointment.isPublic) {
-                    context.require(
-                            requiredRoles = listOf(UserRole.Role.USER),
-                            successCommand = factory.retrieveAppointmentData(appointmentId)
-                    ).execute(withAccess)
-                }
-                // If not, they must be an admin
-                else {
-                    context.require(
-                            requiredRoles = listOf(UserRole.Role.ADMIN),
-                            successCommand = factory.retrieveAppointmentData(appointmentId)
-                    ).execute(withAccess)
-                }
+                else -> // Otherwise, if the appointment is public, anyone
+                    // can view it
+                    return if (theAppointment.isPublic) {
+                        context.require(
+                                requiredRoles = listOf(UserRole.Role.USER),
+                                successCommand = factory.retrieveAppointmentData(appointmentId)
+                        ).execute(withAccess)
+                    }
+                    // If not, they must be an admin
+                    else {
+                        context.require(
+                                requiredRoles = listOf(UserRole.Role.ADMIN),
+                                successCommand = factory.retrieveAppointmentData(appointmentId)
+                        ).execute(withAccess)
+                    }
             }
         }
 
