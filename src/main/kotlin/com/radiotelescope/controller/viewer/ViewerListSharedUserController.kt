@@ -33,7 +33,7 @@ class ViewerListSharedUserController(
      * Otherwise, it will execute the [UserViewerWrapper.listSharedAppointment] method.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/appointments/{appointmentId}/users"])
+    @GetMapping(value = ["/api/appointments/{appointmentId}/viewers"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long,
                 @RequestParam("page") pageNumber: Int,
                 @RequestParam("size") pageSize: Int): Result {
