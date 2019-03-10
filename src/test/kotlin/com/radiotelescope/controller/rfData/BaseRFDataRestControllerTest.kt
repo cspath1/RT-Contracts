@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.rfdata.IRFDataRepository
+import com.radiotelescope.repository.viewer.IViewerRepository
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -14,6 +15,9 @@ abstract class BaseRFDataRestControllerTest : BaseRestControllerTest() {
 
     @Autowired
     private lateinit var rfDataRepo: IRFDataRepository
+
+    @Autowired
+    private lateinit var viewerRepo: IViewerRepository
 
     // These will both be needed in all rf data
     // controller tests, so instantiate them here
@@ -32,7 +36,8 @@ abstract class BaseRFDataRestControllerTest : BaseRestControllerTest() {
         wrapper = UserRFDataWrapper(
                 context = getContext(),
                 factory = factory,
-                appointmentRepo = appointmentRepo
+                appointmentRepo = appointmentRepo,
+                viewerRepo = viewerRepo
         )
     }
 

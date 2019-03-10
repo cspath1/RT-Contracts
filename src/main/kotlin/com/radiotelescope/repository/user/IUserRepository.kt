@@ -59,4 +59,18 @@ interface IUserRepository : PagingAndSortingRepository<User, Long>, JpaSpecifica
                     "WHERE user_role.role NOT IN ('ADMIN', 'USER')",
             nativeQuery = true)
     fun findAllNonAdminUsers(pageable: Pageable): Page<User>
+
+    /**
+     * Spring Repository method that will return a list of users
+     * that the appointment was ahared with
+     *
+     * @param appointmentId the Appointment's Id
+     * @return a [Page] of [User] records
+     */
+    @Query(value = "SELECT * FROM user " +
+            "WHERE id IN (SELECT user_id FROM viewer WHERE appointment_id=?1)",
+            countQuery = "SELECT COUNT(*) FROM user " +
+                    "WHERE id IN (SELECT user_id FROM viewer WHERE appointment_id=?1)",
+            nativeQuery = true)
+    fun findSharedUserByAppointment(appointmentId: Long, pageable: Pageable): Page<User>
 }

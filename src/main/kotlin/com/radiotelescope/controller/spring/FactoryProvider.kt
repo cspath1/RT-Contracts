@@ -9,6 +9,7 @@ import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.viewer.UserViewerWrapper
 
 /**
  * Interface to get instantiations of all User Wrappers
@@ -53,6 +54,11 @@ interface FactoryProvider {
      * Abstract method to return the [UserUpdateEmailTokenWrapper] class
      */
     fun getUpdateEmailTokenWrapper(): UserUpdateEmailTokenWrapper
+
+    /**
+     * Abstract method to return the [UserViewerWrapper] class
+     */
+    fun getViewerWrapper(): UserViewerWrapper
 
     /**
      * Abstract method to return the [UserCelestialBodyWrapper] class

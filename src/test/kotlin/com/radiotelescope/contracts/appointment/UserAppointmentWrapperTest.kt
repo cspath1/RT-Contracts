@@ -11,6 +11,7 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Assert.*
 import org.junit.Before
@@ -56,6 +57,9 @@ internal class UserAppointmentWrapperTest {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var viewerRepo: IViewerRepository
 
     private val baseCreateRequest = Create.Request(
             userId = -1L,
@@ -158,7 +162,8 @@ internal class UserAppointmentWrapperTest {
         wrapper = UserAppointmentWrapper(
                 context = context,
                 factory = factory,
-                appointmentRepo = appointmentRepo
+                appointmentRepo = appointmentRepo,
+                viewerRepo = viewerRepo
         )
     }
 
@@ -421,6 +426,46 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
+    fun testRetrieve_SharedWith_Success() {
+        // Share the appointment with a user
+        val sharedUser = testUtil.createUser("rpim2@ycp.edu")
+        testUtil.createViewer(sharedUser, appointmentNotPublic)
+
+        // Simulate a login
+        context.login(sharedUser.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.retrieve(
+                id = appointmentNotPublic.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testRetrieve_NotSharedWith_Failure() {
+        // Don't share the appointment with a user
+        val notSharedUser = testUtil.createUser("rpim2@ycp.edu")
+
+        // Simulate a login
+        context.login(notSharedUser.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val error = wrapper.retrieve(
+                id = appointmentNotPublic.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
     fun testValidGetFutureAppointmentsForUser_SameUser_Success() {
         // Simulate a login
         context.login(user.id)
@@ -514,6 +559,7 @@ internal class UserAppointmentWrapperTest {
         // Initialize the rapper with the context
         wrapper = UserAppointmentWrapper(
                 appointmentRepo = appointmentRepo,
+                viewerRepo = viewerRepo,
                 context = context,
                 factory = factory
         )

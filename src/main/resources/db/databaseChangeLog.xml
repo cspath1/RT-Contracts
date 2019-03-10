@@ -16,4 +16,5 @@
     <include file="classpath:/db/changelog/11-create-coordinate.sql"/>
     <include file="classpath:/db/changelog/12-add-hours-minutes-seconds.sql"/>
     <include file="classpath:/db/changelog/13-create-celestial-body.sql"/>
+    <include file="classpath:/db/changelog/14-create-viewer-table.sql"/>
 </databaseChangeLog>

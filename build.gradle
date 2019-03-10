@@ -114,7 +114,7 @@ jacocoTestCoverageVerification {
 task verify(type: GradleBuild) {
 	group 'Verification'
 	description 'Verify the build by building, testing, and validation coverage ratio (80 or above).'
-	tasks = ['build', 'test', 'jacocoTestCoverageVerification']
+	tasks = ['test', 'jacocoTestCoverageVerification']
 }
 
 
@@ -147,7 +147,7 @@ dependencies {
 	runtime group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
 }
 
-test{
-	minHeapSize = "128m"
+test {
 	maxHeapSize = "2048m"
+	exclude 'com/radiotelescope/controller/**'
 }
