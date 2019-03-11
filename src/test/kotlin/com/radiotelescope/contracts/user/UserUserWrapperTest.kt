@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.model.user.Filter
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -47,6 +48,9 @@ internal class UserUserWrapperTest {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private val baseCreateRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
@@ -84,7 +88,8 @@ internal class UserUserWrapperTest {
         factory = BaseUserFactory(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
 
         wrapper = UserUserWrapper(

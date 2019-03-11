@@ -8,6 +8,8 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.generateToken
 import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.allottedTimeCap.AllottedTimeCap
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -20,12 +22,14 @@ import java.util.*
  * @param request the [Request] object
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class Register(
         private val request: Request,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val accountActivateTokenRepo: IAccountActivateTokenRepository
+        private val accountActivateTokenRepo: IAccountActivateTokenRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<Register.Response, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
@@ -49,6 +53,12 @@ class Register(
             val theToken = generateActivateAccountToken(newUser)
 
             generateUserRoles(newUser)
+
+            val timeCap = AllottedTimeCap(
+                    user = newUser,
+                    allottedTime = 0L
+            )
+            allottedTimeCapRepo.save(timeCap)
 
             val theResponse = Response(
                     id = newUser.id,
