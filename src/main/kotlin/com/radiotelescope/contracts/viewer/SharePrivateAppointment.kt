@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.isNotEmpty
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
@@ -57,14 +58,19 @@ class SharePrivateAppointment(
                 errors.put(ErrorTag.USER_ID, "User with email address ($email) could not be found")
             if(!appointmentRepo.existsById(appointmentId))
                 errors.put(ErrorTag.APPOINTMENT_ID, "Appointment #$appointmentId could not be found")
-            if(appointmentRepo.existsById(appointmentId) && appointmentRepo.findById(appointmentId).get().isPublic)
+
+            if (errors.isNotEmpty())
+                return errors
+
+            if(appointmentRepo.findById(appointmentId).get().isPublic)
                 errors.put(ErrorTag.PRIVATE, "Appointment #$appointmentId is not private")
-            if(userRepo.existsByEmail(email))
-                if(viewerRepo.isAppointmentSharedWithUser(userRepo.findByEmail(email)!!.id, appointmentId))
-                    errors.put(ErrorTag.ID, "Appointment #$appointmentId has already been shared with $email")
+            if(viewerRepo.existsByUserIdAndAppointmentId(userRepo.findByEmail(email)!!.id, appointmentId))
+                errors.put(ErrorTag.ID, "Appointment #$appointmentId has already been shared with $email")
         }
+
         return if(errors.isEmpty) null else errors
     }
+
     /**
      * Data class containing all the fields necessary for viewer creation. Implement
      * the [BaseCreateRequest] interface.

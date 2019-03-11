@@ -77,7 +77,7 @@ internal class ViewerTest {
     @Test
     fun testIsSharedWithUser() {
 
-        val isShared = viewerRepo.isAppointmentSharedWithUser(
+        val isShared = viewerRepo.existsByUserIdAndAppointmentId(
                 userId = otherUser.id,
                 appointmentId = appointment.id
         )
