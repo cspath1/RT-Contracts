@@ -56,7 +56,7 @@ class AppointmentRetrieveController(
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
-                                Log.AffectedTable.APPOINTMENT,
+                                affectedTable = Log.AffectedTable.APPOINTMENT,
                                 action = "Appointment Retrieval",
                                 affectedRecordId = null,
                                 status = HttpStatus.BAD_REQUEST.value()

@@ -14,7 +14,7 @@ internal class UserSpecificationBuilderTest {
     }
 
     @Test
-    fun testBuildWIthOneParam() {
+    fun testBuildWithOneParam() {
         val specification = specificationBuilder.with(SearchCriteria(Filter.FIRST_NAME, "Cody")).build()
 
         assertNotNull(specification)

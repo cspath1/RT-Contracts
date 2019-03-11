@@ -6,6 +6,8 @@ import com.radiotelescope.repository.allottedTimeCap.AllottedTimeCap
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.celestialBody.CelestialBody
+import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.error.Error
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
@@ -22,6 +24,8 @@ import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepositor
 import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.viewer.IViewerRepository
+import com.radiotelescope.repository.viewer.Viewer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -61,6 +65,12 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var viewerRepo: IViewerRepository
+
+    @Autowired
+    private lateinit var celestialBodyRepo: ICelestialBodyRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -287,11 +297,28 @@ internal class TestUtil {
         return telescopeRepo.save(telescope)
     }
 
-    fun banUser(
-            user: User
-    ): User{
+    fun banUser(user: User): User{
         user.active = false
         user.status = User.Status.BANNED
+
         return userRepo.save(user)
+    }
+
+    fun createCelestialBody(name: String, coordinate: Coordinate?): CelestialBody {
+        val celestialBody = CelestialBody(name)
+        celestialBody.coordinate = coordinate
+
+        return celestialBodyRepo.save(celestialBody)
+    }
+
+    fun createViewer(
+            user: User,
+            appointment: Appointment
+    ): Viewer {
+        val viewer = Viewer()
+        viewer.user = user
+        viewer.appointment = appointment
+
+        return viewerRepo.save(viewer)
     }
 }

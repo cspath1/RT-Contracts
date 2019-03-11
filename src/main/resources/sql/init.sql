@@ -152,3 +152,14 @@ CREATE TABLE appointment (
   KEY public_idx (public)
 
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS viewer;
+CREATE TABLE viewer (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  appointment_id INT(11) NOT NULL,
+  user_id INT(11) NOT NULL,
+
+  PRIMARY KEY (id),
+  KEY appointment_id_idx (appointment_id),
+  KEY user_id_idx (user_id)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;

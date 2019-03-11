@@ -2,12 +2,14 @@ package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.viewer.UserViewerWrapper
 
 /**
  * Interface to get instantiations of all User Wrappers
@@ -52,4 +54,14 @@ interface FactoryProvider {
      * Abstract method to return the [UserUpdateEmailTokenWrapper] class
      */
     fun getUpdateEmailTokenWrapper(): UserUpdateEmailTokenWrapper
+
+    /**
+     * Abstract method to return the [UserViewerWrapper] class
+     */
+    fun getViewerWrapper(): UserViewerWrapper
+
+    /**
+     * Abstract method to return the [UserCelestialBodyWrapper] class
+     */
+    fun getCelestialBodyWrapper(): UserCelestialBodyWrapper
 }

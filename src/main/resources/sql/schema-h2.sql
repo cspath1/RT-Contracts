@@ -13,6 +13,13 @@ CREATE TABLE appointment(
   public TINYINT(1) DEFAULT 1
 );
 
+CREATE TABLE celestial_body(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(150) NOT NULL,
+  coordinate_id INT(11) DEFAULT NULL,
+  status ENUM('HIDDEN', 'VISIBLE') NOT NULL
+);
+
 CREATE TABLE coordinate(
   id INT(11) NOT NULL AUTO_INCREMENT,
   right_ascension DOUBLE NOT NULL,
@@ -91,4 +98,10 @@ CREATE TABLE update_email_token (
   token VARCHAR (100) NOT NULL,
   expiration_date DATETIME NOT NULL,
   email_address VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE viewer (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  appointment_id INT(11) NOT NULL,
+  user_id INT(11) NOT NULL
 );

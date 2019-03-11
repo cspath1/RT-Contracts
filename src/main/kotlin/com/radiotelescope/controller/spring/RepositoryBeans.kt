@@ -3,6 +3,7 @@ package com.radiotelescope.controller.spring
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -12,6 +13,7 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.viewer.IViewerRepository
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Component
 
@@ -28,6 +30,10 @@ import org.springframework.stereotype.Component
  * @param resetPasswordTokenRepo the [IResetPasswordTokenRepository] interface
  * @param accountActivateTokenRepo the [IAccountActivateTokenRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
+ * @param updateEmailTokenRepo the [IUpdateEmailTokenRepository] interface
+ * @param coordinateRepo the [ICoordinateRepository] interface
+ * @param celestialBodyRepo the [ICelestialBodyRepository] interface
+ * @param viewerRepo the [IViewerRepository] interface
  *
  */
 @Component
@@ -43,6 +49,8 @@ class RepositoryBeans(
         val resetPasswordTokenRepo: IResetPasswordTokenRepository,
         val accountActivateTokenRepo: IAccountActivateTokenRepository,
         val updateEmailTokenRepo: IUpdateEmailTokenRepository,
+        val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        val viewerRepo: IViewerRepository,
         val coordinateRepo: ICoordinateRepository,
-        val allottedTimeCapRepo: IAllottedTimeCapRepository
+        val celestialBodyRepo: ICelestialBodyRepository
 )

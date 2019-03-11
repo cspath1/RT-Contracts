@@ -8,6 +8,7 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Assert.*
 import org.junit.Before
@@ -47,6 +48,9 @@ internal class UserRFDataWrapperTest {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
+    @Autowired
+    private lateinit var viewerRepo: IViewerRepository
+
     private val context = FakeUserContext()
     private lateinit var factory: RFDataFactory
     private lateinit var wrapper: UserRFDataWrapper
@@ -79,7 +83,8 @@ internal class UserRFDataWrapperTest {
         wrapper = UserRFDataWrapper(
                 context = context,
                 factory = factory,
-                appointmentRepo = appointmentRepo
+                appointmentRepo = appointmentRepo,
+                viewerRepo = viewerRepo
         )
 
         // Grab the appointment and make sure it is public
@@ -186,4 +191,49 @@ internal class UserRFDataWrapperTest {
         assertNull(error!!.missingRoles)
         assertNotNull(error.invalidResourceId)
     }
+
+    @Test
+    fun testRetrieve_SharedWith_Success() {
+        // Share with a user
+        val sharedUser = testUtil.createUser("rpim2@ycp.edu")
+        testUtil.createViewer(sharedUser, completedAppointment)
+        completedAppointment.isPublic = false
+
+        // Simulate a login and add the necessary role
+        context.login(sharedUser.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Call the factory method
+        val error = wrapper.retrieveAppointmentData(
+                appointmentId = completedAppointment.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testRetrieve_NotSharedWith_Failure() {
+        // Don't share with a user
+        val notSharedUser = testUtil.createUser("rpim2@ycp.edu")
+        completedAppointment.isPublic = false
+
+        // Simulate a login and add the necessary role
+        context.login(notSharedUser.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Call the factory method
+        val error = wrapper.retrieveAppointmentData(
+                appointmentId = completedAppointment.id
+        ) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
 }

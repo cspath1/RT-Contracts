@@ -31,7 +31,7 @@ class UserCompletedList(
      * If user exists it will create a [Page] of [AppointmentInfo] objects and
      * return this in the [SimpleResult.success] value.
      *
-     * If user does not exist, it will will return the errors in a [SimpleResult.error]
+     * If user does not exist, it will return the errors in a [SimpleResult.error]
      * value with a null success.
      */
     override fun execute(): SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
