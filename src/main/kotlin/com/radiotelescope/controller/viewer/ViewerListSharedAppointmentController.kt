@@ -11,10 +11,7 @@ import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
 /**
  * REST Controller to handle grabbing a list of shared Appointment
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam
  * @param viewerWrapper the [UserViewerWrapper]
  * @param logger the [Logger] service
  */
+@RestController
 class ViewerListSharedAppointmentController(
         private val viewerWrapper: UserViewerWrapper,
         logger: Logger
