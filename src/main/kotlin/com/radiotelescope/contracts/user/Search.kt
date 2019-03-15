@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.model.user.UserSpecificationBuilder
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -21,12 +22,14 @@ import kotlin.collections.List
  * @param pageable the [Pageable] interface
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class Search(
         private val searchCriteria: List<SearchCriteria>,
         private val pageable: Pageable,
         private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateSearch] method that will
@@ -66,7 +69,8 @@ class Search(
 
                 // Ignore adding admin users
                 if (theRole != UserRole.Role.ADMIN) {
-                    infoList.add(UserInfo(user, theRole?.label))
+                    val allottedTime = allottedTimeCapRepo.findByUserId(user.id).allottedTime
+                    infoList.add(UserInfo(user, theRole?.label, allottedTime))
 
                 } else {
                     // When there is an admin user, subtract

@@ -1,6 +1,7 @@
 package com.radiotelescope.security
 
 import com.radiotelescope.contracts.user.Authenticate
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.service.UserDetailsImpl
@@ -18,14 +19,17 @@ import org.springframework.stereotype.Component
  * Concrete implementation of the [AuthenticationProvider]
  *
  * @param userDetailsService the [UserDetailsServiceImpl] service
- * @param userRepo the [IUserRepository]
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 @Component
 class AuthenticationProviderImpl(
         @Qualifier("UserDetailsService")
         private var userDetailsService: UserDetailsService,
         private var userRepo: IUserRepository,
-        private var userRoleRepo: IUserRoleRepository
+        private var userRoleRepo: IUserRoleRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : AuthenticationProvider {
     /**
      * Performs the user authentication using Spring Security
@@ -81,7 +85,8 @@ class AuthenticationProviderImpl(
                         password = password
                 ),
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         return simpleResult.success != null

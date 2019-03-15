@@ -31,7 +31,8 @@ class BaseUserRoleFactory(
         return UnapprovedList(
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -61,7 +62,8 @@ class BaseUserRoleFactory(
         return Retrieve(
                 roleId = id,
                 userRoleRepo = userRoleRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 

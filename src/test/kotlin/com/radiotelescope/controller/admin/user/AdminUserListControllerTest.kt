@@ -2,6 +2,7 @@ package com.radiotelescope.controller.admin.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.controller.user.BaseUserRestControllerTest
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
@@ -52,12 +53,20 @@ internal class AdminUserListControllerTest : BaseUserRestControllerTest() {
                 role = UserRole.Role.ADMIN,
                 isApproved = true
         )
+        testUtil.createAllottedTimeCapForUser(
+                user = admin,
+                allottedTime = null
+        )
 
         val user = testUtil.createUser("rpim2@ycp.edu")
         testUtil.createUserRolesForUser(
                 user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
+        )
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
         )
     }
 

@@ -50,7 +50,8 @@ class BaseUserFactory(
         return Authenticate(
                 request = request,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -64,7 +65,8 @@ class BaseUserFactory(
         return Retrieve(
                 id = id,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -78,7 +80,8 @@ class BaseUserFactory(
         return List(
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -159,7 +162,8 @@ class BaseUserFactory(
                 searchCriteria = searchCriteria,
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 

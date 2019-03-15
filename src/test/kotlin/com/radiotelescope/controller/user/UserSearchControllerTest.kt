@@ -47,6 +47,10 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
         val user = testUtil.createUser("cspath1@ycp.edu")
         user.company = "York College of PA"
         userRepo.save(user)
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 0L
+        )
 
         // Simulate a login
         userContext.login(user.id)

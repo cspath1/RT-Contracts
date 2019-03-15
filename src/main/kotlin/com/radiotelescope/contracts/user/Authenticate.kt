@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -13,11 +14,14 @@ import com.radiotelescope.repository.user.User
  *
  * @param request the [Request] object
  * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class Authenticate(
         private val request: Request,
         private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<UserInfo, Multimap<ErrorTag, String>>{
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -36,8 +40,9 @@ class Authenticate(
         val theUser = userRepo.findByEmail(request.email)
         val theUserRole = userRoleRepo.findMembershipRoleByUserId(theUser!!.id)
         val theRole = theUserRole?.role
+        val allottedTime = allottedTimeCapRepo.findByUserId(theUser.id).allottedTime
 
-        return SimpleResult(UserInfo(theUser, theRole?.label), null)
+        return SimpleResult(UserInfo(theUser, theRole?.label, allottedTime), null)
     }
 
     /**
