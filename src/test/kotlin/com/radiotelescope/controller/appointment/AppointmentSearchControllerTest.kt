@@ -46,7 +46,7 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
     override fun init() {
         super.init()
 
-        // Create a user and an appointment
+        // CoordinateCreate a user and an appointment
         val user = testUtil.createUser("cspath1@ycp.edu")
         user.firstName = "Cody"
         user.lastName = "Spath"
@@ -66,7 +66,7 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
         userContext.currentRoles.add(UserRole.Role.USER)
 
         appointmentSearchController = AppointmentSearchController(
-                appointmentWrapper = getWrapper(),
+                appointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
     }

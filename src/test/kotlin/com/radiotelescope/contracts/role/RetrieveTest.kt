@@ -38,7 +38,7 @@ internal class RetrieveTest {
 
     @Before
     fun setUp() {
-        // Create a user and some roles
+        // CoordinateCreate a user and some roles
         val user = testUtil.createUser("cspath1@ycp.edu")
         val roles = testUtil.createUserRolesForUser(
                 user = user,

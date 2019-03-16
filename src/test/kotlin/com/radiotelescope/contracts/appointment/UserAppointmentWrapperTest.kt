@@ -61,7 +61,7 @@ internal class UserAppointmentWrapperTest {
     @Autowired
     private lateinit var viewerRepo: IViewerRepository
 
-    private val baseCreateRequest = Create.Request(
+    private val baseCreateRequest = CoordinateCreate.Request(
             userId = -1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
@@ -151,7 +151,7 @@ internal class UserAppointmentWrapperTest {
                 isPublic = false
         )
 
-        factory = BaseAppointmentFactory(
+        factory = CoordinateAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -171,7 +171,7 @@ internal class UserAppointmentWrapperTest {
     fun testCreatePublic_NotUser_Failure() {
         // Do not log the user in
 
-        // Create a base request copy with a valid id
+        // CoordinateCreate a base request copy with a valid id
         val requestCopy = baseCreateRequest.copy(
                 userId = user.id
         )
@@ -199,7 +199,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // Create a base request copy with a valid id
+        // CoordinateCreate a base request copy with a valid id
         val requestCopy = baseCreateRequest.copy(
                 userId = user.id,
                 startTime = Date(Date().time + 100000),
@@ -222,7 +222,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user2.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // Create a base request copy with a valid id
+        // CoordinateCreate a base request copy with a valid id
         val requestCopy = baseCreateRequest.copy(
                 userId = user.id
         )
@@ -243,7 +243,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // Create a base request copy with a valid id that
+        // CoordinateCreate a base request copy with a valid id that
         // is also private
         val requestCopy = baseCreateRequest.copy(
                 userId = user.id,
@@ -273,7 +273,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
-        // Create a base request copy with a valid id that
+        // CoordinateCreate a base request copy with a valid id that
         // is also private
         val requestCopy = baseCreateRequest.copy(
                 userId = user.id,
@@ -305,7 +305,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
 
-        // Create a base request copy with a valid id that
+        // CoordinateCreate a base request copy with a valid id that
         // is also private
         val requestCopy = baseCreateRequest.copy(
                 userId = user.id,
@@ -1193,7 +1193,7 @@ internal class UserAppointmentWrapperTest {
     fun testRequestPublic_NotUser_Failure() {
         // Do not log the user in
 
-        // Create a base request copy with a valid id
+        // CoordinateCreate a base request copy with a valid id
         val requestCopy = baseRequestRequest.copy(
                 userId = user.id
         )
@@ -1214,7 +1214,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user2.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // Create a base request copy with a valid id
+        // CoordinateCreate a base request copy with a valid id
         val requestCopy = baseRequestRequest.copy(
                 userId = user.id
         )
@@ -1235,7 +1235,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // Create a base request copy with a valid id
+        // CoordinateCreate a base request copy with a valid id
         val requestCopy = baseRequestRequest.copy(
                 userId = user.id
         )
@@ -1256,7 +1256,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // Create a base request copy with a valid id that
+        // CoordinateCreate a base request copy with a valid id that
         // is also private
         val requestCopy = baseRequestRequest.copy(
                 userId = user.id,
@@ -1279,7 +1279,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
-        // Create a base request copy with a valid id that
+        // CoordinateCreate a base request copy with a valid id that
         // is also private
         val requestCopy = baseRequestRequest.copy(
                 userId = user.id,

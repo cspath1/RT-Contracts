@@ -41,7 +41,7 @@ internal class CelestialBodyTest {
 
     @Before
     fun setUp() {
-        // Create a coordinate and celestial body
+        // CoordinateCreate a coordinate and celestial body
         val coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,
@@ -61,7 +61,7 @@ internal class CelestialBodyTest {
                 coordinate = coordinate
         )
 
-        // Create another one (this will not have a coordinate)
+        // CoordinateCreate another one (this will not have a coordinate)
         // and will not be searched for
 
         testUtil.createCelestialBody(

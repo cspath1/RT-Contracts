@@ -66,7 +66,7 @@ internal class UnSharePrivateAppointmentTest {
 
     @Test
     fun testValidConstraints_Success() {
-        // Create the request
+        // CoordinateCreate the request
         val request = UnsharePrivateAppointment.Request(
                 userId = user.id,
                 appointmentId = appointment.id
@@ -89,7 +89,7 @@ internal class UnSharePrivateAppointmentTest {
 
     @Test
     fun testInvalid_UserDoesNotExist_Failure() {
-        // Create the request
+        // CoordinateCreate the request
         val request = UnsharePrivateAppointment.Request(
                 userId = 1234L,
                 appointmentId = appointment.id
@@ -114,7 +114,7 @@ internal class UnSharePrivateAppointmentTest {
 
     @Test
     fun testInvalid_AppointmentDoesNotExist_Failure() {
-        // Create the request
+        // CoordinateCreate the request
         val request = UnsharePrivateAppointment.Request(
                 userId = user.id,
                 appointmentId = 1234L
@@ -141,7 +141,7 @@ internal class UnSharePrivateAppointmentTest {
     fun testInvalid_NotShared_Failure() {
         viewerRepo.delete(viewer)
 
-        // Create the request
+        // CoordinateCreate the request
         val request = UnsharePrivateAppointment.Request(
                 userId = user.id,
                 appointmentId = appointment.id

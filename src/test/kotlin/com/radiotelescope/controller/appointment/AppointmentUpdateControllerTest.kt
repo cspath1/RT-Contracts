@@ -48,7 +48,7 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
         super.init()
 
         appointmentUpdateController = AppointmentUpdateController(
-                appointmentWrapper = getWrapper(),
+                appointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 
@@ -111,7 +111,7 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
-        // Create a copy of the form
+        // CoordinateCreate a copy of the form
         val formCopy = updateForm.copy(
                 startTime = null
         )
@@ -140,7 +140,7 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
-        // Create a copy of the form
+        // CoordinateCreate a copy of the form
         val formCopy = updateForm.copy(
                 telescopeId = 420L
         )

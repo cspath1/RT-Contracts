@@ -29,9 +29,9 @@ class UserAppointmentWrapper(
 ) {
     /**
      * Wrapper method for the [AppointmentFactory.create] method that adds Spring
-     * Security authentication to the [Create] command object.
+     * Security authentication to the [CoordinateCreate] command object.
      *
-     * @param request the [Create.Request] object
+     * @param request the [CoordinateCreate.Request] object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun create(request: Create.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

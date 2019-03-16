@@ -44,7 +44,7 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
         super.init()
 
         appointmentRetrieveController = AppointmentRetrieveController(
-                appointmentWrapper = getWrapper(),
+                appointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

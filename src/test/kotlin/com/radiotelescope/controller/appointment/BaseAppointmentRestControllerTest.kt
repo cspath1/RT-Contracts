@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.contracts.appointment.BaseAppointmentFactory
+import com.radiotelescope.contracts.appointment.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -40,15 +41,21 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
     override fun init() {
         super.init()
 
-        factory = BaseAppointmentFactory(
+        // The factory used for most of the tests does not matter
+        // It only matters for different appointment types
+        factory = CoordinateAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo
         )
+    }
 
-        wrapper = UserAppointmentWrapper(
+    // Once instantiated, this will not be altered
+    // so only supply a getter for it
+    fun getCoordinateCreateWrapper(): UserAppointmentWrapper {
+        return UserAppointmentWrapper(
                 getContext(),
                 factory = factory,
                 appointmentRepo = appointmentRepo,
@@ -56,9 +63,5 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
         )
     }
 
-    // Once instantiated, this will not be altered
-    // so only supply a getter for it
-    fun getWrapper(): UserAppointmentWrapper {
-        return wrapper
-    }
+    // Add other wrappers here (i.e. wrapper that will create a Celestial Body appointment)
 }

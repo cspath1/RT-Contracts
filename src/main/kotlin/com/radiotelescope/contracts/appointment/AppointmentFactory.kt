@@ -14,7 +14,7 @@ interface AppointmentFactory {
     /**
      * Abstract command used to schedule an appointment
      *
-     * @param request the [Create.Request] request
+     * @param request the [CoordinateCreate.Request] request
      * @return a [Command] object
      */
     fun create(request: Create.Request): Command<Long, Multimap<ErrorTag, String>>

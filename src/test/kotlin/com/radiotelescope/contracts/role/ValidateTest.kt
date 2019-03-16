@@ -45,7 +45,7 @@ internal class ValidateTest {
 
     @Before
     fun setUp() {
-        // Create a user and a role that needs approval
+        // CoordinateCreate a user and a role that needs approval
         val user = testUtil.createUser("cspath1@ycp.edu")
         userId = user.id
 

@@ -43,7 +43,7 @@ internal class LogListTest {
         // Persist a user
         val theUser = testUtil.createUser("cspath1@ycp.edu")
 
-        // Create a few logs without user ids
+        // CoordinateCreate a few logs without user ids
         for (i in 0..9) {
             testUtil.createLog(
                     user = null,
@@ -55,7 +55,7 @@ internal class LogListTest {
             )
         }
 
-        // Create a few logs with user ids
+        // CoordinateCreate a few logs with user ids
         for (i in 0..9) {
             testUtil.createLog(
                     user = theUser,

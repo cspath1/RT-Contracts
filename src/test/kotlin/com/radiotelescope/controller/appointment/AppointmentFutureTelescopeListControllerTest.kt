@@ -45,13 +45,13 @@ internal class AppointmentFutureTelescopeListControllerTest : BaseAppointmentRes
         super.init()
 
         appointmentFutureTelescopeListController = AppointmentFutureTelescopeListController(
-                appointmentWrapper = getWrapper(),
+                appointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 
         user = testUtil.createUser("cspath1@ycp.edu")
 
-        // Create two future appointments for the telescope
+        // CoordinateCreate two future appointments for the telescope
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,

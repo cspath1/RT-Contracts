@@ -1,7 +1,7 @@
 -- Start by seeding a telescope that is online --
 INSERT INTO telescope VALUES(1, 1);
 
--- Create an coordinate --
+-- CoordinateCreate an coordinate --
 INSERT INTO coordinate VALUES(1, 311.0, 69.0, 12, 12, 12);
 
 -- Then create a user --

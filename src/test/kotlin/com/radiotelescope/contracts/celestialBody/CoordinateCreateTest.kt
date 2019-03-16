@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class CreateTest {
+internal class CoordinateCreateTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean

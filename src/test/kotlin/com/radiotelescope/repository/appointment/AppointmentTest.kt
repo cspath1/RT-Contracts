@@ -410,7 +410,7 @@ internal class AppointmentTest {
         user.lastName = "Spath"
         userRepo.save(user)
 
-        // Create a search criteria for the user's full name
+        // CoordinateCreate a search criteria for the user's full name
         val searchCriteria = SearchCriteria(Filter.USER_FULL_NAME, "cody spath")
 
         val specification = AppointmentSpecificationBuilder().with(searchCriteria).build()
@@ -427,7 +427,7 @@ internal class AppointmentTest {
         user.lastName = "Henry"
         userRepo.save(user)
 
-        // Create a search criteria for the first and last name
+        // CoordinateCreate a search criteria for the first and last name
         val searchCriteriaOne = SearchCriteria(Filter.USER_FIRST_NAME, "Henry")
         val searchCriteriaTwo = SearchCriteria(Filter.USER_LAST_NAME, "Henry")
 

@@ -44,7 +44,7 @@ internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRest
         super.init()
 
         adminAppointmentListRequestController = AdminAppointmentListRequestController(
-                appointmentWrapper = getWrapper(),
+                appointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

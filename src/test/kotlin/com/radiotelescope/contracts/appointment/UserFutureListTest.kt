@@ -37,7 +37,7 @@ internal class UserFutureListTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private val baseCreateRequest = Create.Request(
+    private val baseCreateRequest = CoordinateCreate.Request(
             startTime=Date(12012019120000),
             endTime = Date(12012019130011),
             isPublic = false,

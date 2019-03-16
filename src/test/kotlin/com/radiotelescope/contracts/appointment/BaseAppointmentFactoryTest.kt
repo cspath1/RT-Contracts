@@ -48,7 +48,7 @@ internal class BaseAppointmentFactoryTest {
 
     @Before
     fun init() {
-        factory = BaseAppointmentFactory(
+        factory = CoordinateAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -57,11 +57,14 @@ internal class BaseAppointmentFactoryTest {
         )
     }
 
+    // NOTE: For other appointment creates, we need to instantiate
+    // a different factory
+
     @Test
-    fun create() {
+    fun coordinate_create() {
         // Call the factory method
         val cmd = factory.create(
-                request = Create.Request(
+                request = CoordinateCreate.Request(
                         userId = 1L,
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
@@ -75,7 +78,7 @@ internal class BaseAppointmentFactoryTest {
         )
 
         // Ensure it is the correct command
-        assertTrue(cmd is Create)
+        assertTrue(cmd is CoordinateCreate)
     }
 
     @Test

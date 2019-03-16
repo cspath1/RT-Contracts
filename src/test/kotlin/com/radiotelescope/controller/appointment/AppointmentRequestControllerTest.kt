@@ -61,7 +61,7 @@ internal class AppointmentRequestControllerTest : BaseAppointmentRestControllerT
         super.init()
 
         appointmentRequestController = AppointmentRequestController(
-                appointmentWrapper = getWrapper(),
+                appointmentWrapper = getCoordinateCreateWrapper(),
                 awsSesSendService = MockAwsSesSendService(true),
                 logger = getLogger(),
                 userRepo = userRepo

@@ -69,7 +69,7 @@ internal class AuthenticateTest {
 
     @Test
     fun testBlankEmail_Failure() {
-        // Create a copy of the request with a blank email
+        // CoordinateCreate a copy of the request with a blank email
         val requestCopy = baseRequest.copy(
                 email = ""
         )
@@ -90,7 +90,7 @@ internal class AuthenticateTest {
 
     @Test
     fun testBlankPassword_Failure() {
-        // Create a copy of the request with a blank password
+        // CoordinateCreate a copy of the request with a blank password
         val requestCopy = baseRequest.copy(
                 password = ""
         )
@@ -111,7 +111,7 @@ internal class AuthenticateTest {
 
     @Test
     fun testNonExistentEmail_Failure() {
-        // Create a copy of the request with a non-existent email
+        // CoordinateCreate a copy of the request with a non-existent email
         val requestCopy = baseRequest.copy(
                 email = "spathcody@gmail.com"
         )
@@ -132,7 +132,7 @@ internal class AuthenticateTest {
 
     @Test
     fun testPasswordsDoNotMatch_Failure() {
-        // Create a copy of the request with a bad password
+        // CoordinateCreate a copy of the request with a bad password
         val requestCopy = baseRequest.copy(
                 password = "Passwrod"
         )

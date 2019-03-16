@@ -50,7 +50,7 @@ internal class SearchTest {
 
     @Before
     fun setUp() {
-        // Create two users
+        // CoordinateCreate two users
         user = testUtil.createUser("cspath1@ycp.edu")
         user.firstName = "Cody"
         user.lastName = "Spath"
@@ -73,7 +73,7 @@ internal class SearchTest {
                 isApproved = true
         )
 
-        // Create a scheduled and completed appointment for each user
+        // CoordinateCreate a scheduled and completed appointment for each user
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,

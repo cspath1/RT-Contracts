@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class CreateResetPasswordTokenTest {
+internal class CoordinateCreateResetPasswordTokenTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean

@@ -43,13 +43,13 @@ internal class AppointmentListFutureAppointmentsByUserControllerTest : BaseAppoi
         super.init()
 
         appointmentListFutureAppointmentsByUserController = AppointmentListFutureAppointmentsByUserController(
-                appointmentWrapper = getWrapper(),
+                appointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 
         user = testUtil.createUser("cspath1@ycp.edu")
 
-        // Create two appointments for the user
+        // CoordinateCreate two appointments for the user
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,

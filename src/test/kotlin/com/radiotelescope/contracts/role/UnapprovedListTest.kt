@@ -39,7 +39,7 @@ internal class UnapprovedListTest {
 
     @Before
     fun setUp() {
-        // Create two users and roles for those users
+        // CoordinateCreate two users and roles for those users
         val firstUser = testUtil.createUser("cspath1@ycp.edu")
         val secondUser = testUtil.createUser("spathcody@gmail.com")
 

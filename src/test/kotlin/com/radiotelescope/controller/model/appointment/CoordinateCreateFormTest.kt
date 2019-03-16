@@ -5,8 +5,8 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class CreateFormTest {
-    private val baseForm = CreateForm(
+internal class CoordinateCreateFormTest {
+    private val baseForm = CoordinateCreateForm(
             userId = 1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
@@ -44,7 +44,7 @@ internal class CreateFormTest {
 
     @Test
     fun testNullUserId_Failure() {
-        // Create a copy of the form with a null user id
+        // CoordinateCreate a copy of the form with a null user id
         val baseFormCopy = baseForm.copy(
                 userId = null
         )
@@ -59,7 +59,7 @@ internal class CreateFormTest {
 
     @Test
     fun testNullStartTime_Failure() {
-        // Create a copy of the form with a null start time
+        // CoordinateCreate a copy of the form with a null start time
         val baseFormCopy = baseForm.copy(
                 startTime = null
         )
@@ -74,7 +74,7 @@ internal class CreateFormTest {
 
     @Test
     fun testNullEndTime_Failure() {
-        // Create a copy of the form with a null end time
+        // CoordinateCreate a copy of the form with a null end time
         val baseFormCopy = baseForm.copy(
                 endTime = null
         )
@@ -89,7 +89,7 @@ internal class CreateFormTest {
 
     @Test
     fun testNullTelescopeId_Failure() {
-        // Create a copy of the form with a null telescope id
+        // CoordinateCreate a copy of the form with a null telescope id
         val baseFormCopy = baseForm.copy(
                 telescopeId = null
         )
@@ -104,7 +104,7 @@ internal class CreateFormTest {
 
     @Test
     fun testNullPublicFlag_Failure() {
-        // Create a copy of the form with a null isPublic flag
+        // CoordinateCreate a copy of the form with a null isPublic flag
         val baseFormCopy = baseForm.copy(
                 isPublic = null
         )
@@ -119,7 +119,7 @@ internal class CreateFormTest {
 
     @Test
     fun testNullHours_Failure() {
-        // Create a copy of the form with a null hours field
+        // CoordinateCreate a copy of the form with a null hours field
         val baseFormCopy = baseForm.copy(
                 hours = null
         )
@@ -134,7 +134,7 @@ internal class CreateFormTest {
 
     @Test
     fun testHoursBelowZero_Failure() {
-        // Create a copy of the form with hours below zero
+        // CoordinateCreate a copy of the form with hours below zero
         val baseFormCopy = baseForm.copy(
                 hours = -1
         )
@@ -149,7 +149,7 @@ internal class CreateFormTest {
 
     @Test
     fun testHoursAboveTwentyFour_Failure() {
-        // Create a copy of the form with hours below twenty four
+        // CoordinateCreate a copy of the form with hours below twenty four
         val baseFormCopy = baseForm.copy(
                 hours = 25
         )
@@ -164,7 +164,7 @@ internal class CreateFormTest {
 
     @Test
     fun testNullMinutes_Failure() {
-        // Create a copy of the form with a null minutes field
+        // CoordinateCreate a copy of the form with a null minutes field
         val baseFormCopy = baseForm.copy(
                 minutes = null
         )
@@ -179,7 +179,7 @@ internal class CreateFormTest {
 
     @Test
     fun testMinutesBelowZero_Failure() {
-        // Create a copy of the form with a minutes field below zero
+        // CoordinateCreate a copy of the form with a minutes field below zero
         val baseFormCopy = baseForm.copy(
                 minutes = -1
         )
@@ -194,7 +194,7 @@ internal class CreateFormTest {
 
     @Test
     fun testMinutesAboveSixty_Failure() {
-        // Create a copy of the form with a minutes field above sixty
+        // CoordinateCreate a copy of the form with a minutes field above sixty
         val baseFormCopy = baseForm.copy(
                 minutes = 61
         )
@@ -209,7 +209,7 @@ internal class CreateFormTest {
 
     @Test
     fun testNullSeconds_Failure() {
-        // Create a copy of the form with a null seconds field
+        // CoordinateCreate a copy of the form with a null seconds field
         val baseFormCopy = baseForm.copy(
                 seconds = null
         )
@@ -224,7 +224,7 @@ internal class CreateFormTest {
 
     @Test
     fun testSecondsBelowZero_Failure() {
-        // Create a copy of the form with a seconds field below zero
+        // CoordinateCreate a copy of the form with a seconds field below zero
         val baseFormCopy = baseForm.copy(
                 seconds = -1
         )
@@ -239,7 +239,7 @@ internal class CreateFormTest {
 
     @Test
     fun testSecondsAboveSixty_Failure() {
-        // Create a copy of the form with a seconds field above sixty
+        // CoordinateCreate a copy of the form with a seconds field above sixty
         val baseFormCopy = baseForm.copy(
                 seconds = 61
         )
@@ -254,7 +254,7 @@ internal class CreateFormTest {
 
     @Test
     fun testNullDeclination_Failure() {
-        // Create a copy of the form with a null declination
+        // CoordinateCreate a copy of the form with a null declination
         val baseFormCopy = baseForm.copy(
                 declination = null
         )

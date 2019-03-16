@@ -31,7 +31,7 @@ internal class CancelTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private var appointmentRequest = Create.Request(
+    private var appointmentRequest = CoordinateCreate.Request(
             startTime = Date(Date().time + 5000),
             endTime = Date(Date().time + 10000),
             isPublic = true,
@@ -43,7 +43,7 @@ internal class CancelTest {
             declination = 69.0
     )
 
-    private var appointmentRequest2 = Create.Request(
+    private var appointmentRequest2 = CoordinateCreate.Request(
             startTime = Date(),
             endTime = Date(Date().time + 2500),
             isPublic = true,
@@ -55,7 +55,7 @@ internal class CancelTest {
             declination = 69.0
     )
 
-    private var appointmentRequest3 = Create.Request(
+    private var appointmentRequest3 = CoordinateCreate.Request(
             startTime = Date(Date().time + 12500) ,
             endTime = Date(Date().time + 15000),
             isPublic = true,
@@ -67,7 +67,7 @@ internal class CancelTest {
             declination = 69.0
     )
 
-    private var appointmentRequest4 = Create.Request(
+    private var appointmentRequest4 = CoordinateCreate.Request(
             startTime = Date(Date().time + 16000) ,
             endTime = Date(Date().time + 17000),
             isPublic = true,

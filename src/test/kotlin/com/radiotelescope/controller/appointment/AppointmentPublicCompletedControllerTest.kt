@@ -43,13 +43,13 @@ internal class AppointmentPublicCompletedControllerTest : BaseAppointmentRestCon
         super.init()
 
         appointmentPublicCompletedController = AppointmentPublicCompletedController(
-                appointmentWrapper = getWrapper(),
+                appointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 
        user = testUtil.createUser("cspath1@ycp.edu")
 
-        // Create two public completed appointments
+        // CoordinateCreate two public completed appointments
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,

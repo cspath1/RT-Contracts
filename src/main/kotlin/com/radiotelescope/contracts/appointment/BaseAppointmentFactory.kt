@@ -20,7 +20,7 @@ import org.springframework.data.domain.Pageable
  * @param userRepo the [IUserRepository] interface
  * @param telescopeRepo the [ITelescopeRepository] interface
  */
-class BaseAppointmentFactory(
+abstract class BaseAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
@@ -55,24 +55,6 @@ class BaseAppointmentFactory(
                 userId = userId,
                 userRepo = userRepo,
                 pageable = pageable
-        )
-    }
-
-    /**
-     * Override of the [AppointmentFactory.create] method that will return a [Create]
-     * command object
-     *
-     * @param request the [Create.Request] object
-     * @return a [Create] command
-     */
-    override fun create(request: Create.Request): Command<Long, Multimap<ErrorTag, String>>  {
-        return Create(
-                request = request,
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
         )
     }
 
@@ -187,7 +169,7 @@ class BaseAppointmentFactory(
      * command object
      *
      * @param request the [Request.Request] object
-     * @return a [Create] command
+     * @return a [CoordinateCreate] command
      */
     override fun request(request: Request.Request): Command<Long, Multimap<ErrorTag, String>> {
         return Request(

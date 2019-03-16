@@ -50,7 +50,7 @@ internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmen
 
         adminAppointmentApproveDenyRequestController = AdminAppointmentApproveDenyRequestController(
                 appointmentRepo = appointmentRepo,
-                appointmentWrapper = getWrapper(),
+                appointmentWrapper = getCoordinateCreateWrapper(),
                 awsSesSendService = MockAwsSesSendService(true),
                 logger = getLogger()
         )

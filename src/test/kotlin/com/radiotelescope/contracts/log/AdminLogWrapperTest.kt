@@ -65,7 +65,7 @@ internal class AdminLogWrapperTest {
                 isSuccess = true
         )
 
-        // Create an error map
+        // CoordinateCreate an error map
         val errors = HashMultimap.create<ErrorTag, String>()
 
         errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")

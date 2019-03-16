@@ -39,7 +39,7 @@ internal class MarkVisibleTest {
 
     @Before
     fun setUp() {
-        // Create a coordinate
+        // CoordinateCreate a coordinate
         val coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,
@@ -53,7 +53,7 @@ internal class MarkVisibleTest {
         )
         coordinateRepo.save(coordinate)
 
-        // Create a Celestial Body object
+        // CoordinateCreate a Celestial Body object
         celestialBody = testUtil.createCelestialBody(
                 name = "Crab Nebula",
                 coordinate = coordinate

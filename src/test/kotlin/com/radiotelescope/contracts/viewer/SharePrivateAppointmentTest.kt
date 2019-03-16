@@ -63,7 +63,7 @@ internal class SharePrivateAppointmentTest {
 
     @Test
     fun testValidConstraints_Success() {
-        //Create the request
+        //CoordinateCreate the request
         val request = SharePrivateAppointment.Request(
                 email = user.email,
                 appointmentId = appointment.id
@@ -92,7 +92,7 @@ internal class SharePrivateAppointmentTest {
 
     @Test
     fun testInvalid_UserDoesNotExist_Failure(){
-        //Create the request
+        //CoordinateCreate the request
         val request = SharePrivateAppointment.Request(
                 email = "michaelscott@dundermifflin.com",
                 appointmentId = appointment.id
@@ -117,7 +117,7 @@ internal class SharePrivateAppointmentTest {
 
     @Test
     fun testInvalid_AppointmentDoesNotExist_Failure(){
-        // Create the request
+        // CoordinateCreate the request
         val request = SharePrivateAppointment.Request(
                 email = user.email,
                 appointmentId = -1L
@@ -151,7 +151,7 @@ internal class SharePrivateAppointmentTest {
                 isPublic = true
         )
 
-        // Create the request
+        // CoordinateCreate the request
         val request = SharePrivateAppointment.Request(
                 email = user.email,
                 appointmentId = publicAppointment.id
@@ -176,10 +176,10 @@ internal class SharePrivateAppointmentTest {
 
     @Test
     fun testInvalid_AppointmentIsAlreadyShared_Failure(){
-        //Create viewer
+        //CoordinateCreate viewer
         testUtil.createViewer(user, appointment)
 
-        //Create the request
+        //CoordinateCreate the request
         val request = SharePrivateAppointment.Request(
                 email = user.email,
                 appointmentId = appointment.id

@@ -44,7 +44,7 @@ class CreateUpdateEmailToken(
         while(updateEmailTokenRepo.existsByToken(token))
             token = String.generateToken()
 
-        // Create the Entity, sets its' values and save it
+        // Create the Entity, sets its values and save it
         val theUpdateEmailToken = request.toEntity()
 
         theUpdateEmailToken.token = token

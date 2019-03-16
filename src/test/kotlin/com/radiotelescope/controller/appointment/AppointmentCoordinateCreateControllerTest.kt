@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.controller.model.appointment.CreateForm
+import com.radiotelescope.controller.model.appointment.CoordinateCreateForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
@@ -23,7 +23,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class AppointmentCreateControllerTest : BaseAppointmentRestControllerTest() {
+internal class AppointmentCoordinateCreateControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -39,7 +39,7 @@ internal class AppointmentCreateControllerTest : BaseAppointmentRestControllerTe
     private lateinit var appointmentCreateController: AppointmentCreateController
     private lateinit var user: User
 
-    private val baseForm = CreateForm(
+    private val baseForm = CoordinateCreateForm(
             userId = -1L,
             startTime = Date(System.currentTimeMillis() + 50000L),
             endTime = Date(System.currentTimeMillis() + 100000L),
@@ -56,7 +56,7 @@ internal class AppointmentCreateControllerTest : BaseAppointmentRestControllerTe
         super.init()
 
         appointmentCreateController = AppointmentCreateController(
-                appointmentWrapper = getWrapper(),
+                appointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 
