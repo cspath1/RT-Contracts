@@ -67,10 +67,17 @@ interface IUserRepository : PagingAndSortingRepository<User, Long>, JpaSpecifica
      * @param appointmentId the Appointment's Id
      * @return a [Page] of [User] records
      */
-    @Query(value = "SELECT * FROM user " +
-            "WHERE id IN (SELECT user_id FROM viewer WHERE appointment_id=?1)",
-            countQuery = "SELECT COUNT(*) FROM user " +
-                    "WHERE id IN (SELECT user_id FROM viewer WHERE appointment_id=?1)",
+//    @Query(value = "SELECT * FROM user " +
+//            "WHERE id IN (SELECT user_id FROM viewer WHERE appointment_id=?1)",
+//            countQuery = "SELECT COUNT(*) FROM user " +
+//                    "WHERE id IN (SELECT user_id FROM viewer WHERE appointment_id=?1)",
+//            nativeQuery = true)
+    @Query(value = "SELECT u.* FROM user u " +
+            "JOIN viewer ON u.id = viewer.user_id " +
+            "WHERE viewer.appointment_id=?1",
+            countQuery = "SELECT COUNT(u.id) FROM user u " +
+                    "JOIN viewer ON u.id = viewer.user_id " +
+                    "WHERE viewer.appointment_id=?1",
             nativeQuery = true)
     fun findSharedUserByAppointment(appointmentId: Long, pageable: Pageable): Page<User>
 }
