@@ -3,7 +3,7 @@ package com.radiotelescope.repository.coordinate
 import javax.persistence.*
 
 /**
- * Entity Class representing an Coordinate for the web-application
+ * Entity Class representing a Coordinate for the web-application
  *
  * This Entity correlates to the Coordinate SQL Table
  */

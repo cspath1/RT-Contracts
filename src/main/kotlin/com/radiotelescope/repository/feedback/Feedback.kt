@@ -2,6 +2,11 @@ package com.radiotelescope.repository.feedback
 
 import javax.persistence.*
 
+/**
+ * Entity Class representing an user feedback for the web-application
+ *
+ * This Entity correlates to the Feedback SQL Table
+ */
 @Entity
 @Table(name = "table")
 data class Feedback(
