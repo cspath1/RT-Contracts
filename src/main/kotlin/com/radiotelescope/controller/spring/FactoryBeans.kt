@@ -84,8 +84,8 @@ class FactoryBeans(
      * Returns a [UserAppointmentWrapper] object, allowing it to be autowired
      * in the controllers
      */
-    @Bean(value = ["coordinateCreateAppointmentWrapper"])
-    override fun getCoordinateCreateAppointmentWrapper(): UserAppointmentWrapper {
+    @Bean(value = ["coordinateAppointmentWrapper"])
+    override fun getCoordinateAppointmentWrapper(): UserAppointmentWrapper {
         return UserAppointmentWrapper(
                 context = userContext,
                 factory = CoordinateAppointmentFactory(

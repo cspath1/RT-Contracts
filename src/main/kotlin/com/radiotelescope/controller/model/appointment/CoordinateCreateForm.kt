@@ -2,15 +2,15 @@ package com.radiotelescope.controller.model.appointment
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
-import com.radiotelescope.contracts.appointment.create.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.controller.model.BaseForm
 import java.util.*
 
 /**
- * Create form that takes nullable versions of the [CoordinateCreate.Request] object.
+ * Create form that takes nullable versions of the [CoordinateAppointmentCreate.Request] object.
  * It is in charge of making sure these values are not null before adapting it
- * to a [CoordinateCreate.Request] object
+ * to a [CoordinateAppointmentCreate.Request] object
  *
  * @param userId the User id
  * @param startTime the Appointment start time
@@ -27,15 +27,15 @@ data class CoordinateCreateForm(
         val minutes: Int?,
         val seconds: Int?,
         val declination: Double?
-) : CreateForm<CoordinateCreate.Request>() {
+) : CreateForm<CoordinateAppointmentCreate.Request>() {
     /**
      * Override of the [BaseForm.toRequest] method that
-     * adapts the form into a [CoordinateCreate.Request] object
+     * adapts the form into a [CoordinateAppointmentCreate.Request] object
      *
-     * @return the [CoordinateCreate.Request] object
+     * @return the [CoordinateAppointmentCreate.Request] object
      */
-    override fun toRequest(): CoordinateCreate.Request {
-        return CoordinateCreate.Request(
+    override fun toRequest(): CoordinateAppointmentCreate.Request {
+        return CoordinateAppointmentCreate.Request(
                 userId = userId!!,
                 startTime = startTime!!,
                 endTime = endTime!!,

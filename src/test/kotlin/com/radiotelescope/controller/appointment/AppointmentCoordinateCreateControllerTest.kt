@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.controller.appointment.create.CoordinateAppointmentCreateController
 import com.radiotelescope.controller.model.appointment.CoordinateCreateForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
@@ -36,7 +37,7 @@ internal class AppointmentCoordinateCreateControllerTest : BaseAppointmentRestCo
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private lateinit var appointmentCreateController: AppointmentCreateController
+    private lateinit var coordinateAppointmentCreateController: CoordinateAppointmentCreateController
     private lateinit var user: User
 
     private val baseForm = CoordinateCreateForm(
@@ -55,7 +56,7 @@ internal class AppointmentCoordinateCreateControllerTest : BaseAppointmentRestCo
     override fun init() {
         super.init()
 
-        appointmentCreateController = AppointmentCreateController(
+        coordinateAppointmentCreateController = CoordinateAppointmentCreateController(
                 appointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
@@ -78,7 +79,7 @@ internal class AppointmentCoordinateCreateControllerTest : BaseAppointmentRestCo
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
 
-        val result = appointmentCreateController.execute(formCopy)
+        val result = coordinateAppointmentCreateController.execute(formCopy)
 
         assertNotNull(result)
         assertTrue(result.data is Long)
@@ -105,7 +106,7 @@ internal class AppointmentCoordinateCreateControllerTest : BaseAppointmentRestCo
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
 
-        val result = appointmentCreateController.execute(formCopy)
+        val result = coordinateAppointmentCreateController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -133,7 +134,7 @@ internal class AppointmentCoordinateCreateControllerTest : BaseAppointmentRestCo
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
 
-        val result = appointmentCreateController.execute(formCopy)
+        val result = coordinateAppointmentCreateController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -156,7 +157,7 @@ internal class AppointmentCoordinateCreateControllerTest : BaseAppointmentRestCo
                 userId = user.id
         )
 
-        val result = appointmentCreateController.execute(formCopy)
+        val result = coordinateAppointmentCreateController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)

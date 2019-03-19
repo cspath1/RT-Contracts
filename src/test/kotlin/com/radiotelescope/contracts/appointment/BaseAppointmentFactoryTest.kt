@@ -1,7 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.create.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -67,7 +67,7 @@ internal class BaseAppointmentFactoryTest {
     fun coordinate_create() {
         // Call the factory method
         val cmd = factory.create(
-                request = CoordinateCreate.Request(
+                request = CoordinateAppointmentCreate.Request(
                         userId = 1L,
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
@@ -81,7 +81,7 @@ internal class BaseAppointmentFactoryTest {
         )
 
         // Ensure it is the correct command
-        assertTrue(cmd is CoordinateCreate)
+        assertTrue(cmd is CoordinateAppointmentCreate)
     }
 
     @Test

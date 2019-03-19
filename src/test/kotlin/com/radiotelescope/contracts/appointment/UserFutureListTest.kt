@@ -1,7 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.create.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -38,7 +38,7 @@ internal class UserFutureListTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private val baseCreateRequest = CoordinateCreate.Request(
+    private val baseCreateRequest = CoordinateAppointmentCreate.Request(
             startTime=Date(12012019120000),
             endTime = Date(12012019130011),
             isPublic = false,

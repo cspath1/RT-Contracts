@@ -1,7 +1,7 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.appointment.create
 
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.appointment.create.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.CoordinateCreateForm
@@ -23,25 +23,25 @@ import org.springframework.web.bind.annotation.RestController
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentCreateController(
-        @Qualifier(value = "coordinateCreateAppointmentWrapper")
+class CoordinateAppointmentCreateController(
+        @Qualifier(value = "coordinateAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
      * Execute method that is in charge of adapting the [CoordinateCreateForm]
-     * into a [CoordinateCreate.Request] after ensuring no fields are null. If
+     * into a [CoordinateAppointmentCreate.Request] after ensuring no fields are null. If
      * any are, it will instead respond with errors.
      *
      * Otherwise, it will execute the [UserAppointmentWrapper.create] method.
      * If this method returns an [AccessReport], this means the user did not pass
      * authentication and the method will respond with errors.
      *
-     * Otherwise, the [CoordinateCreate] command was executed, and the controller will check
+     * Otherwise, the [CoordinateAppointmentCreate] command was executed, and the controller will check
      * whether this command was a success or not, responding appropriately.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/appointments/schedule"])
+    @PostMapping(value = ["/api/appointments/schedule/coordinate"])
     fun execute(@RequestBody form: CoordinateCreateForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {

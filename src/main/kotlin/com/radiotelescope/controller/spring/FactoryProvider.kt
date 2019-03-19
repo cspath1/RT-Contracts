@@ -2,7 +2,7 @@ package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.appointment.create.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
@@ -29,9 +29,9 @@ interface FactoryProvider {
 
     /**
      * Abstract method to return the [UserAppointmentWrapper] class
-     * with the [CoordinateCreate]
+     * with the [CoordinateAppointmentCreate]
      */
-    fun getCoordinateCreateAppointmentWrapper(): UserAppointmentWrapper
+    fun getCoordinateAppointmentWrapper(): UserAppointmentWrapper
 
     // NOTE: We need a bean for each different concrete factory implementation
     // so each different create can be autowired

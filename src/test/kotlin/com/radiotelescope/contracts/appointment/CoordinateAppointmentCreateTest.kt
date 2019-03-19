@@ -1,7 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.create.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -27,7 +27,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 @ActiveProfiles(value = ["test"])
-internal class CoordinateCreateTest {
+internal class CoordinateAppointmentCreateTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -52,7 +52,7 @@ internal class CoordinateCreateTest {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
-    private val baseRequest = CoordinateCreate.Request(
+    private val baseRequest = CoordinateAppointmentCreate.Request(
             userId = -1L,
             telescopeId = 1L,
             startTime = Date(System.currentTimeMillis() + 100000L),
@@ -88,7 +88,7 @@ internal class CoordinateCreateTest {
         val requestCopy = baseRequest.copy(userId = user.id)
 
         // Execute the command
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -140,7 +140,7 @@ internal class CoordinateCreateTest {
                 endTime = Date( date.time + (twoHours * 2) + (twoHours * 5))
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -163,7 +163,7 @@ internal class CoordinateCreateTest {
                 telescopeId = 311L
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -185,7 +185,7 @@ internal class CoordinateCreateTest {
     fun testInvalidUserId_Failure() {
         // Since the is in the base request is
         // already invalid, just execute the command
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -214,7 +214,7 @@ internal class CoordinateCreateTest {
         )
 
         // Execute the command
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -240,7 +240,7 @@ internal class CoordinateCreateTest {
         )
 
         // Execute the command
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -274,7 +274,7 @@ internal class CoordinateCreateTest {
                 endTime = Date(date.time + (twoHours * 5))
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -308,7 +308,7 @@ internal class CoordinateCreateTest {
                 endTime = Date(date.time + (twoHours * 27))
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -334,7 +334,7 @@ internal class CoordinateCreateTest {
         // user id
         val requestCopy = baseRequest.copy(userId = user.id)
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -367,7 +367,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(startTime),
@@ -378,7 +378,7 @@ internal class CoordinateCreateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -411,7 +411,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(startTime + 1000L),
@@ -423,7 +423,7 @@ internal class CoordinateCreateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -456,7 +456,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(endTime - 1000L),
@@ -468,7 +468,7 @@ internal class CoordinateCreateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -501,7 +501,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(startTime - 2000L),
@@ -513,7 +513,7 @@ internal class CoordinateCreateTest {
                 declination = 11.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -546,7 +546,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(endTime - 500L),
@@ -558,7 +558,7 @@ internal class CoordinateCreateTest {
                 declination = 42.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -591,7 +591,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(startTime - 1000L),
@@ -603,7 +603,7 @@ internal class CoordinateCreateTest {
                 declination = 42.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -636,7 +636,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(endTime),
@@ -648,7 +648,7 @@ internal class CoordinateCreateTest {
                 declination = 21.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -681,7 +681,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(startTime - 1111L),
@@ -693,7 +693,7 @@ internal class CoordinateCreateTest {
                 declination = 23.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -726,7 +726,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(startTime),
@@ -738,7 +738,7 @@ internal class CoordinateCreateTest {
                 declination = 42.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -775,7 +775,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(startTime + 1L),
@@ -787,7 +787,7 @@ internal class CoordinateCreateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -820,7 +820,7 @@ internal class CoordinateCreateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = CoordinateCreate.Request(
+        val conflict = CoordinateAppointmentCreate.Request(
                 userId = user.id,
                 telescopeId = 1L,
                 startTime = Date(startTime + 1L),
@@ -832,7 +832,7 @@ internal class CoordinateCreateTest {
                 declination = 42.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -861,7 +861,7 @@ internal class CoordinateCreateTest {
                 hours = -311
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -894,7 +894,7 @@ internal class CoordinateCreateTest {
                 hours = 311
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -927,7 +927,7 @@ internal class CoordinateCreateTest {
                 minutes = -311
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -960,7 +960,7 @@ internal class CoordinateCreateTest {
                 minutes = 311
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -993,7 +993,7 @@ internal class CoordinateCreateTest {
                 seconds = -311
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -1026,7 +1026,7 @@ internal class CoordinateCreateTest {
                 seconds = 311
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -1059,7 +1059,7 @@ internal class CoordinateCreateTest {
                 declination = -666.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -1092,7 +1092,7 @@ internal class CoordinateCreateTest {
                 declination = 666.0
         )
 
-        val (id, errors) = CoordinateCreate(
+        val (id, errors) = CoordinateAppointmentCreate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,

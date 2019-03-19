@@ -7,7 +7,7 @@ import org.junit.runner.RunWith
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.create.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.repository.appointment.Appointment
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,7 +32,7 @@ internal class CancelTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private var appointmentRequest = CoordinateCreate.Request(
+    private var appointmentRequest = CoordinateAppointmentCreate.Request(
             startTime = Date(Date().time + 5000),
             endTime = Date(Date().time + 10000),
             isPublic = true,
@@ -44,7 +44,7 @@ internal class CancelTest {
             declination = 69.0
     )
 
-    private var appointmentRequest2 = CoordinateCreate.Request(
+    private var appointmentRequest2 = CoordinateAppointmentCreate.Request(
             startTime = Date(),
             endTime = Date(Date().time + 2500),
             isPublic = true,
@@ -56,7 +56,7 @@ internal class CancelTest {
             declination = 69.0
     )
 
-    private var appointmentRequest3 = CoordinateCreate.Request(
+    private var appointmentRequest3 = CoordinateAppointmentCreate.Request(
             startTime = Date(Date().time + 12500) ,
             endTime = Date(Date().time + 15000),
             isPublic = true,
@@ -68,7 +68,7 @@ internal class CancelTest {
             declination = 69.0
     )
 
-    private var appointmentRequest4 = CoordinateCreate.Request(
+    private var appointmentRequest4 = CoordinateAppointmentCreate.Request(
             startTime = Date(Date().time + 16000) ,
             endTime = Date(Date().time + 17000),
             isPublic = true,

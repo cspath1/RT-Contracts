@@ -24,7 +24,7 @@ import java.util.*
  * @param userRepo the [IUserRepository] interface
  * @param telescopeRepo the [ITelescopeRepository] interface
  */
-class CoordinateCreate(
+class CoordinateAppointmentCreate(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,

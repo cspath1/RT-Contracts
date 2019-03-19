@@ -5,7 +5,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class CoordinateCreateFormTest {
+internal class CoordinateAppointmentCreateFormTest {
     private val baseForm = CoordinateCreateForm(
             userId = 1L,
             startTime = Date(System.currentTimeMillis() + 10000L),

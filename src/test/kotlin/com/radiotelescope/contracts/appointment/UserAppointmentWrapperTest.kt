@@ -1,7 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.create.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.repository.appointment.Appointment
@@ -64,7 +64,7 @@ internal class UserAppointmentWrapperTest {
     @Autowired
     private lateinit var viewerRepo: IViewerRepository
 
-    private val baseCreateRequest = CoordinateCreate.Request(
+    private val baseCreateRequest = CoordinateAppointmentCreate.Request(
             userId = -1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
