@@ -11,6 +11,7 @@ CREATE TABLE appointment(
   telescope_id INT(11) NOT NULL,
   coordinate_id INT(11) DEFAULT NULL,
   orientation_id INT(11) DEFAULT NULL,
+  celestial_body_id INT(11) DEFAULT NULL,
   public TINYINT(1) DEFAULT 1,
   type VARCHAR(100) NOT NULL
 );

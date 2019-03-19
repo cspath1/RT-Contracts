@@ -3,6 +3,16 @@ package com.radiotelescope.contracts.appointment.info
 import com.radiotelescope.repository.appointment.Appointment
 import java.util.*
 
+/**
+ * Subclass of [AppointmentInfo] for the "Celestial Body" Appointment type
+ *
+ * @param celestialBodyName the Celestial Body name
+ * @param hours the Celestial Body right ascension hours
+ * @param minutes the Celestial Body right ascension minutes
+ * @param seconds the Celestial Body right ascension seconds
+ * @param rightAscension the Celestial Body right ascension in degrees
+ * @param declination the Celestial Body declination
+ */
 data class CelestialBodyAppointmentInfo(
         override val id: Long,
         override val startTime: Date,

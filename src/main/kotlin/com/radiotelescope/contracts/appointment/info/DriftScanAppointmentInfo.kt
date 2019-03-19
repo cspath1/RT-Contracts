@@ -3,6 +3,12 @@ package com.radiotelescope.contracts.appointment.info
 import com.radiotelescope.repository.appointment.Appointment
 import java.util.*
 
+/**
+ * Subclass of [AppointmentInfo] for the "Drift Scan" Appointment type
+ *
+ * @param azimuth the Telescope's azimuth
+ * @param elevation the Telescope's elevation
+ */
 data class DriftScanAppointmentInfo(
         override val id: Long,
         override val startTime: Date,
