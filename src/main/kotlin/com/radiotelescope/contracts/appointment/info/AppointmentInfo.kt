@@ -18,6 +18,7 @@ import java.util.*
  * @param userLastName the Appointment owner's last name
  * @param userEmail the Appointment owner's email address
  * @param status the Appointment's Status
+ * @param type the Appointment's Type
  */
 abstract class AppointmentInfo(
         open val id: Long,

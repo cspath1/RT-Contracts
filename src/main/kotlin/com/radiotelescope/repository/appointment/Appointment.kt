@@ -1,5 +1,6 @@
 package com.radiotelescope.repository.appointment
 
+import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.user.User
@@ -43,6 +44,10 @@ data class Appointment(
     @OneToOne
     @JoinColumn(name = "orientation_id")
     var orientation: Orientation? = null
+
+    @OneToOne
+    @JoinColumn(name = "celestial_body_id")
+    var celestialBody: CelestialBody? = null
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)

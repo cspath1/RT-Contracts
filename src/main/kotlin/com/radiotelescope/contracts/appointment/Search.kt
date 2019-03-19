@@ -5,7 +5,10 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.info.AppointmentInfo
+import com.radiotelescope.contracts.appointment.info.CelestialBodyAppointmentInfo
+import com.radiotelescope.contracts.appointment.info.DriftScanAppointmentInfo
 import com.radiotelescope.contracts.appointment.info.PointAppointmentInfo
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.AppointmentSpecificationBuilder
 import com.radiotelescope.repository.model.appointment.Filter
@@ -55,7 +58,13 @@ class Search(
 
             appointmentPage.forEach { appointment ->
                 // TODO: Change when other types are implemented
-                infoList.add(PointAppointmentInfo(appointment))
+                when (appointment.type) {
+                    Appointment.Type.POINT -> infoList.add(PointAppointmentInfo(appointment))
+                    Appointment.Type.DRIFT_SCAN -> infoList.add(DriftScanAppointmentInfo(appointment))
+                    Appointment.Type.CELESTIAL_BODY -> infoList.add(CelestialBodyAppointmentInfo(appointment))
+                    Appointment.Type.RASTER_SCAN -> TODO()
+                    Appointment.Type.FREE_CONTROL -> TODO()
+                }
             }
 
             val infoPage = PageImpl(infoList, appointmentPage.pageable, appointmentPage.totalElements)

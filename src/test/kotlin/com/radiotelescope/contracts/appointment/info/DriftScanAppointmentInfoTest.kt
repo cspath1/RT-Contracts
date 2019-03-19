@@ -1,19 +1,19 @@
 package com.radiotelescope.contracts.appointment.info
 
 import com.radiotelescope.repository.appointment.Appointment
-import com.radiotelescope.repository.coordinate.Coordinate
+import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class PointAppointmentInfoTest {
+internal class DriftScanAppointmentInfoTest {
     private var startTime = Date(System.currentTimeMillis() + 10000L)
     private var endTime = Date(System.currentTimeMillis() + 30000L)
 
     @Test
     fun testPrimaryConstructor() {
-        val info = PointAppointmentInfo(
+        val info = DriftScanAppointmentInfo(
                 id = 1L,
                 startTime = startTime,
                 endTime = endTime,
@@ -24,16 +24,9 @@ internal class PointAppointmentInfoTest {
                 userLastName = "Spath",
                 userEmail = "cspath1@ycp.edu",
                 status = Appointment.Status.SCHEDULED.label,
-                type = Appointment.Type.POINT.label,
-                hours = 12,
-                minutes = 12,
-                seconds = 12,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12
-                ),
-                declination = 69.0
+                type = Appointment.Type.DRIFT_SCAN.label,
+                azimuth = 311.0,
+                elevation = 45.0
         )
 
         assertEquals(1L, info.id)
@@ -46,19 +39,9 @@ internal class PointAppointmentInfoTest {
         assertEquals("Spath", info.userLastName)
         assertEquals("cspath1@ycp.edu", info.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, info.status)
-        assertEquals(Appointment.Type.POINT.label, info.type)
-
-        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
-                hours = 12,
-                minutes = 12,
-                seconds = 12
-        )
-
-        assertEquals(hoursMinutesSecondsInDegrees, info.rightAscension, 0.00001)
-        assertEquals(12, info.hours)
-        assertEquals(12, info.minutes)
-        assertEquals(12, info.seconds)
-        assertEquals(69.0, info.declination, 0.00001)
+        assertEquals(Appointment.Type.DRIFT_SCAN.label, info.type)
+        assertEquals(info.azimuth, 311.0, 0.0001)
+        assertEquals(info.elevation, 45.0, 0.0001)
     }
 
     @Test
@@ -77,27 +60,20 @@ internal class PointAppointmentInfoTest {
                 endTime = endTime,
                 telescopeId = 1L,
                 isPublic = true,
-                type = Appointment.Type.POINT
+                type = Appointment.Type.DRIFT_SCAN
         )
 
-        val coordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12
-                ),
-                declination = 69.0,
-                hours = 12,
-                minutes = 12,
-                seconds = 12
+        val orientation = Orientation(
+                azimuth = 311.0,
+                elevation = 45.0
         )
 
         appointment.user = user
         appointment.id = 1L
         appointment.status = Appointment.Status.SCHEDULED
-        appointment.coordinate = coordinate
+        appointment.orientation = orientation
 
-        val appointmentInfo = PointAppointmentInfo(appointment)
+        val appointmentInfo = DriftScanAppointmentInfo(appointment)
 
         assertEquals(1L, appointmentInfo.id)
         assertEquals(startTime, appointmentInfo.startTime)
@@ -109,11 +85,8 @@ internal class PointAppointmentInfoTest {
         assertEquals("Spath", appointmentInfo.userLastName)
         assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
-        assertEquals(Appointment.Type.POINT.label, appointmentInfo.type)
-        assertEquals(appointment.coordinate!!.rightAscension, appointmentInfo.rightAscension, 0.00001)
-        assertEquals(appointment.coordinate!!.declination, appointmentInfo.declination, 0.00001)
-        assertEquals(appointment.coordinate!!.hours, appointmentInfo.hours)
-        assertEquals(appointment.coordinate!!.minutes, appointmentInfo.minutes)
-        assertEquals(appointment.coordinate!!.seconds, appointmentInfo.seconds)
+        assertEquals(Appointment.Type.DRIFT_SCAN.label, appointmentInfo.type)
+        assertEquals(appointment.orientation!!.azimuth, appointmentInfo.azimuth, 0.00001)
+        assertEquals(appointment.orientation!!.elevation, appointmentInfo.elevation, 0.00001)
     }
 }

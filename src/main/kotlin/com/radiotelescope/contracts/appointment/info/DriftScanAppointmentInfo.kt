@@ -3,16 +3,7 @@ package com.radiotelescope.contracts.appointment.info
 import com.radiotelescope.repository.appointment.Appointment
 import java.util.*
 
-/**
- * Subclass of [AppointmentInfo] for the "Point" Appointment type
- *
- * @param hours the right ascension hours
- * @param minutes the right ascension minutes
- * @param seconds the right ascension seconds
- * @param rightAscension the right ascension in degrees
- * @param declination the declination
- */
-data class PointAppointmentInfo(
+data class DriftScanAppointmentInfo(
         override val id: Long,
         override val startTime: Date,
         override val endTime: Date,
@@ -24,11 +15,8 @@ data class PointAppointmentInfo(
         override val userEmail: String,
         override val status: String,
         override val type: String,
-        val hours: Int,
-        val minutes: Int,
-        val seconds: Int,
-        val rightAscension: Double,
-        val declination: Double
+        val azimuth: Double,
+        val elevation: Double
 ) : AppointmentInfo(
         id = id,
         startTime = startTime,
@@ -60,10 +48,7 @@ data class PointAppointmentInfo(
             userEmail = appointment.user.email,
             status = appointment.status.label,
             type = appointment.type.label,
-            hours = appointment.coordinate!!.hours,
-            minutes = appointment.coordinate!!.minutes,
-            seconds = appointment.coordinate!!.seconds,
-            rightAscension = appointment.coordinate!!.rightAscension,
-            declination = appointment.coordinate!!.declination
+            azimuth = appointment.orientation!!.azimuth,
+            elevation = appointment.orientation!!.elevation
     )
 }
