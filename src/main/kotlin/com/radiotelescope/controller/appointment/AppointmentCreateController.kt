@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.appointment.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateCreate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.CoordinateCreateForm

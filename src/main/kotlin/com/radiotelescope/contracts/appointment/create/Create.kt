@@ -1,4 +1,4 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.create
 
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.repository.appointment.Appointment

@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.appointment
 
-import com.radiotelescope.contracts.appointment.BaseAppointmentFactory
-import com.radiotelescope.contracts.appointment.CoordinateAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.appointment.IAppointmentRepository

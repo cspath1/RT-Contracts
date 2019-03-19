@@ -1,6 +1,9 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.contracts.appointment.create.CoordinateCreate
+import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository

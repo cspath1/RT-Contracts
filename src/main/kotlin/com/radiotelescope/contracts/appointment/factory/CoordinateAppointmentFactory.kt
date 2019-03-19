@@ -1,7 +1,10 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.factory
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.contracts.appointment.create.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.Create
+import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository

@@ -2,7 +2,7 @@ package com.radiotelescope.controller.model.appointment
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
-import com.radiotelescope.contracts.appointment.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateCreate
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.controller.model.BaseForm
 import java.util.*

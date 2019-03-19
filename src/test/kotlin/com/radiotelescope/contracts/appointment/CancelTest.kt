@@ -7,6 +7,7 @@ import org.junit.runner.RunWith
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
 import com.radiotelescope.TestUtil
+import com.radiotelescope.contracts.appointment.create.CoordinateCreate
 import com.radiotelescope.repository.appointment.Appointment
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired

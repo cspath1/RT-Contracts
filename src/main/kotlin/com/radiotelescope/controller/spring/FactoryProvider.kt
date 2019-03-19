@@ -2,7 +2,7 @@ package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.appointment.CoordinateCreate
+import com.radiotelescope.contracts.appointment.create.CoordinateCreate
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper

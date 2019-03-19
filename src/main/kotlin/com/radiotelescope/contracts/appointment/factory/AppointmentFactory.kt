@@ -1,7 +1,9 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.factory
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.contracts.appointment.*
+import com.radiotelescope.contracts.appointment.create.Create
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import org.springframework.data.domain.Page

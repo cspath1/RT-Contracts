@@ -2,8 +2,7 @@ package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.accountActivateToken.BaseAccountActivateTokenFactory
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
-import com.radiotelescope.contracts.appointment.BaseAppointmentFactory
-import com.radiotelescope.contracts.appointment.CoordinateAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.celestialBody.BaseCelestialBodyFactory
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper

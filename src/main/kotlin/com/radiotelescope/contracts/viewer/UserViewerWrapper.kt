@@ -3,7 +3,7 @@ package com.radiotelescope.contracts.viewer
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.contracts.appointment.AppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
 import com.radiotelescope.contracts.appointment.AppointmentInfo
 import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.repository.appointment.IAppointmentRepository

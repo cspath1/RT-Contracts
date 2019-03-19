@@ -1,4 +1,4 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.create
 
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
@@ -7,6 +7,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -24,12 +25,12 @@ import java.util.*
  * @param telescopeRepo the [ITelescopeRepository] interface
  */
 class CoordinateCreate(
-    private val request: Request,
-    private val appointmentRepo: IAppointmentRepository,
-    private val userRepo: IUserRepository,
-    private val userRoleRepo: IUserRoleRepository,
-    private val telescopeRepo: ITelescopeRepository,
-    private val coordinateRepo: ICoordinateRepository
+        private val request: Request,
+        private val appointmentRepo: IAppointmentRepository,
+        private val userRepo: IUserRepository,
+        private val userRoleRepo: IUserRoleRepository,
+        private val telescopeRepo: ITelescopeRepository,
+        private val coordinateRepo: ICoordinateRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, Create {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
