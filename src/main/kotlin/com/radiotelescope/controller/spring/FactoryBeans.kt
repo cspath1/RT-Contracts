@@ -7,6 +7,8 @@ import com.radiotelescope.contracts.appointment.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.celestialBody.BaseCelestialBodyFactory
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
+import com.radiotelescope.contracts.feedback.BaseFeedbackFactory
+import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.log.BaseLogFactory
 import com.radiotelescope.contracts.resetPasswordToken.BaseResetPasswordTokenFactory
@@ -203,6 +205,19 @@ class FactoryBeans(
                 factory = BaseCelestialBodyFactory(
                         celestialBodyRepo = repositories.celestialBodyRepo,
                         coordinateRepo = repositories.coordinateRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [UserFeedbackWrapper] object, allowing it to be autowired
+     * in controllers
+     */
+    @Bean
+    override fun getFeedbackWrapper(): UserFeedbackWrapper {
+        return UserFeedbackWrapper(
+                factory = BaseFeedbackFactory(
+                        feedbackRepo = repositories.feedbackRepo
                 )
         )
     }

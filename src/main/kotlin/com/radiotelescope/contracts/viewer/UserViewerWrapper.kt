@@ -111,8 +111,8 @@ class UserViewerWrapper (
 
         if (context.currentUserId() != null) {
             return if(context.currentUserId() == theAppointment.user.id) {
-                context.require(
-                        requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                context.requireAny(
+                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
                         successCommand = factory.listSharedUser(
                                 appointmentId = appointmentId,
                                 pageable = pageable
@@ -149,7 +149,7 @@ class UserViewerWrapper (
         if (context.currentUserId() != null) {
             return if (context.currentUserId() == theAppointment.user.id) {
                 context.requireAny(
-                        requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
                         successCommand = factory.unsharePrivateAppointment(
                                 request = request
                         )

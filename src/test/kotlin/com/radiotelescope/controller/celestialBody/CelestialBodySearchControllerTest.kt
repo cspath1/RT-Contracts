@@ -146,4 +146,28 @@ internal class CelestialBodySearchControllerTest : BaseCelestialBodyRestControll
             assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
         }
     }
+
+    @Test
+    fun testInvalidPageParametersResponse() {
+        // Test the scenario where the page parameters supplied
+        // are invalid
+        val result = celestialBodySearchController.execute(
+                pageNumber = -1,
+                pageSize = -1,
+                value = "eowignweogni",
+                search = "name"
+        )
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertNotNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
+    }
 }

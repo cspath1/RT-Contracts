@@ -48,7 +48,7 @@ class ViewerListSharedUserController(
                     errors = errors.toStringMap()
             )
 
-            result = com.radiotelescope.controller.model.Result(errors = errors.toStringMap())
+            result = Result(errors = errors.toStringMap())
         } else {
             // Sort by most recent
             val sort = Sort(Sort.Direction.DESC, "id")

@@ -1,6 +1,8 @@
 package com.radiotelescope.controller.celestialBody
 
+import com.google.common.collect.HashMultimap
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
+import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
@@ -44,59 +46,83 @@ class CelestialBodySearchController(
                 @RequestParam(value = "size") pageSize: Int,
                 @RequestParam(value = "value") value: Any,
                 @RequestParam(value = "search") search: String): Result {
-        val searchCriteria = getSearchCriteriaFromParam(value, search)
-        val pageable = PageRequest.of(pageNumber, pageSize)
-
-        celestialBodyWrapper.search(searchCriteria, pageable) {
-            // If the command was a success
-            it.success?.let { page ->
-                // Create success logs
-                page.forEach { info ->
-                    logger.createSuccessLog(
-                            info = Logger.createInfo(
-                                    affectedTable = Log.AffectedTable.CELESTIAL_BODY,
-                                    action = "Celestial Body Search",
-                                    affectedRecordId = info.id,
-                                    status = HttpStatus.OK.value()
-                            )
-                    )
-                }
-
-                result = Result(data = page)
-            }
-            // Otherwise, it was a failure
-            it.error?.let { errors ->
-                logger.createErrorLogs(
-                        info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.CELESTIAL_BODY,
-                                action = "Celestial Body Search",
-                                affectedRecordId = null,
-                                status = HttpStatus.BAD_REQUEST.value()
-                        ),
-                        errors = errors.toStringMap()
-                )
-
-                result = Result(errors = errors.toStringMap())
-            }
-        }?.let {
-            // If we get here, this means the user did not pass validation
+        if (pageNumber < 0 || pageSize <= 0) {
+            val errors = pageErrors()
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.CELESTIAL_BODY,
                             action = "Celestial Body Search",
                             affectedRecordId = null,
-                            status = HttpStatus.FORBIDDEN.value()
+                            status = HttpStatus.BAD_REQUEST.value()
                     ),
-                    errors = it.toStringMap()
+                    errors = errors.toStringMap()
             )
 
-            result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+            result = Result(errors = errors.toStringMap())
+        } else {
+            val searchCriteria = getSearchCriteriaFromParam(value, search)
+            val pageable = PageRequest.of(pageNumber, pageSize)
+
+            celestialBodyWrapper.search(searchCriteria, pageable) {
+                // If the command was a success
+                it.success?.let { page ->
+                    // Create success logs
+                    page.forEach { info ->
+                        logger.createSuccessLog(
+                                info = Logger.createInfo(
+                                        affectedTable = Log.AffectedTable.CELESTIAL_BODY,
+                                        action = "Celestial Body Search",
+                                        affectedRecordId = info.id,
+                                        status = HttpStatus.OK.value()
+                                )
+                        )
+                    }
+
+                    result = Result(data = page)
+                }
+                // Otherwise, it was a failure
+                it.error?.let { errors ->
+                    logger.createErrorLogs(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.CELESTIAL_BODY,
+                                    action = "Celestial Body Search",
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
+                            ),
+                            errors = errors.toStringMap()
+                    )
+
+                    result = Result(errors = errors.toStringMap())
+                }
+            }?.let {
+                // If we get here, this means the user did not pass validation
+                // Create error logs
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.CELESTIAL_BODY,
+                                action = "Celestial Body Search",
+                                affectedRecordId = null,
+                                status = HttpStatus.FORBIDDEN.value()
+                        ),
+                        errors = it.toStringMap()
+                )
+
+                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
+            }
         }
 
         return result
     }
 
+    /**
+     * Private method that will take the search string and value from the request
+     * and adapt them into a [List] of [SearchCriteria].
+     *
+     * @param value the search value
+     * @param search the search criteria
+     * @return a [List] of [SearchCriteria]
+     */
     private fun getSearchCriteriaFromParam(value: Any, search: String): List<SearchCriteria> {
         val tokenizer = StringTokenizer(search, "+")
         val filters = arrayListOf<Filter>()
@@ -115,5 +141,15 @@ class CelestialBodySearchController(
         }
 
         return searchCriteria
+    }
+
+    /**
+     * Private method to return a [HashMultimap] of errors in the event
+     * that the page size and page number are invalid
+     */
+    private fun pageErrors(): HashMultimap<ErrorTag, String> {
+        val errors = HashMultimap.create<ErrorTag, String>()
+        errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")
+        return errors
     }
 }
