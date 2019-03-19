@@ -4,10 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.contracts.appointment.info.AppointmentInfo
-import com.radiotelescope.contracts.appointment.info.CelestialBodyAppointmentInfo
-import com.radiotelescope.contracts.appointment.info.DriftScanAppointmentInfo
-import com.radiotelescope.contracts.appointment.info.PointAppointmentInfo
+import com.radiotelescope.contracts.appointment.info.*
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.AppointmentSpecificationBuilder
@@ -56,14 +53,14 @@ class Search(
             val appointmentPage = appointmentRepo.findAll(specification, pageable)
             val infoList = arrayListOf<AppointmentInfo>()
 
+            // Type-based info assignment
             appointmentPage.forEach { appointment ->
-                // TODO: Change when other types are implemented
                 when (appointment.type) {
                     Appointment.Type.POINT -> infoList.add(PointAppointmentInfo(appointment))
                     Appointment.Type.DRIFT_SCAN -> infoList.add(DriftScanAppointmentInfo(appointment))
                     Appointment.Type.CELESTIAL_BODY -> infoList.add(CelestialBodyAppointmentInfo(appointment))
-                    Appointment.Type.RASTER_SCAN -> TODO()
-                    Appointment.Type.FREE_CONTROL -> TODO()
+                    Appointment.Type.RASTER_SCAN -> MultiPointAppointmentInfo(appointment)
+                    Appointment.Type.FREE_CONTROL -> MultiPointAppointmentInfo(appointment)
                 }
             }
 

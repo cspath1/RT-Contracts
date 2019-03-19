@@ -6,10 +6,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.contracts.appointment.info.AppointmentInfo
-import com.radiotelescope.contracts.appointment.info.CelestialBodyAppointmentInfo
-import com.radiotelescope.contracts.appointment.info.DriftScanAppointmentInfo
-import com.radiotelescope.contracts.appointment.info.PointAppointmentInfo
+import com.radiotelescope.contracts.appointment.info.*
 
 /**
  * Override of the [Command] interface method used to retrieve [Appointment]
@@ -39,15 +36,14 @@ class Retrieve(
         }
 
         val theAppointment = appointmentRepo.findById(appointmentId).get()
-        // TODO: Change when other types are implemented
+
+        // Type-based info assignment
         val theInfo = when (theAppointment.type) {
             Appointment.Type.POINT -> PointAppointmentInfo(theAppointment)
             Appointment.Type.DRIFT_SCAN -> DriftScanAppointmentInfo(theAppointment)
             Appointment.Type.CELESTIAL_BODY -> CelestialBodyAppointmentInfo(theAppointment)
-            else -> {
-                // TODO: Handle all cases explicitly
-                PointAppointmentInfo(theAppointment)
-            }
+            Appointment.Type.RASTER_SCAN -> MultiPointAppointmentInfo(theAppointment)
+            Appointment.Type.FREE_CONTROL -> MultiPointAppointmentInfo(theAppointment)
         }
 
         return SimpleResult(theInfo, null)

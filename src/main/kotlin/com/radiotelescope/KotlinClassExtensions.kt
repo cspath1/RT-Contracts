@@ -1,10 +1,7 @@
 package com.radiotelescope
 
 import com.google.common.collect.Multimap
-import com.radiotelescope.contracts.appointment.info.AppointmentInfo
-import com.radiotelescope.contracts.appointment.info.CelestialBodyAppointmentInfo
-import com.radiotelescope.contracts.appointment.info.DriftScanAppointmentInfo
-import com.radiotelescope.contracts.appointment.info.PointAppointmentInfo
+import com.radiotelescope.contracts.appointment.info.*
 import com.radiotelescope.contracts.celestialBody.CelestialBodyInfo
 import com.radiotelescope.contracts.rfdata.RFDataInfo
 import com.radiotelescope.contracts.user.UserInfo
@@ -29,14 +26,15 @@ fun AccessReport.toStringMap(): Map<String, Collection<String>> {
 
 fun Page<Appointment>.toAppointmentInfoPage(): Page<AppointmentInfo> {
     val infoList = arrayListOf<AppointmentInfo>()
+
+    // Type-based info assignment
     content.forEach {
-        // TODO: Change when other types are implemented
         when (it.type) {
             Appointment.Type.POINT -> infoList.add(PointAppointmentInfo(it))
             Appointment.Type.DRIFT_SCAN -> infoList.add(DriftScanAppointmentInfo(it))
             Appointment.Type.CELESTIAL_BODY -> infoList.add(CelestialBodyAppointmentInfo(it))
-            Appointment.Type.RASTER_SCAN -> TODO()
-            Appointment.Type.FREE_CONTROL -> TODO()
+            Appointment.Type.RASTER_SCAN -> MultiPointAppointmentInfo(it)
+            Appointment.Type.FREE_CONTROL -> MultiPointAppointmentInfo(it)
         }
     }
 
@@ -52,14 +50,15 @@ fun List<RFData>.toInfoList(): List<RFDataInfo> {
 
 fun List<Appointment>.toAppointmentInfoList(): List<AppointmentInfo> {
     val infoList = arrayListOf<AppointmentInfo>()
+
+    // Type-based info assignment
     forEach {
-        // TODO: Change when other types are implemented
         when (it.type) {
             Appointment.Type.POINT -> infoList.add(PointAppointmentInfo(it))
             Appointment.Type.DRIFT_SCAN -> infoList.add(DriftScanAppointmentInfo(it))
             Appointment.Type.CELESTIAL_BODY -> infoList.add(CelestialBodyAppointmentInfo(it))
-            Appointment.Type.RASTER_SCAN -> TODO()
-            Appointment.Type.FREE_CONTROL -> TODO()
+            Appointment.Type.RASTER_SCAN -> MultiPointAppointmentInfo(it)
+            Appointment.Type.FREE_CONTROL -> MultiPointAppointmentInfo(it)
         }
     }
 
