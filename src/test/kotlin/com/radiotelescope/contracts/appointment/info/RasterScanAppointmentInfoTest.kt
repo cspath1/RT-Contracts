@@ -7,13 +7,13 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class PointAppointmentInfoTest {
+internal class RasterScanAppointmentInfoTest {
     private var startTime = Date(System.currentTimeMillis() + 10000L)
     private var endTime = Date(System.currentTimeMillis() + 30000L)
 
     @Test
     fun testPrimaryConstructor() {
-        val info = PointAppointmentInfo(
+        val info = RasterScanAppointmentInfo(
                 id = 1L,
                 startTime = startTime,
                 endTime = endTime,
@@ -24,16 +24,8 @@ internal class PointAppointmentInfoTest {
                 userLastName = "Spath",
                 userEmail = "cspath1@ycp.edu",
                 status = Appointment.Status.SCHEDULED.label,
-                type = Appointment.Type.POINT.label,
-                hours = 12,
-                minutes = 12,
-                seconds = 12,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12
-                ),
-                declination = 69.0
+                type = Appointment.Type.RASTER_SCAN.label,
+                coordinates = arrayListOf()
         )
 
         assertEquals(1L, info.id)
@@ -46,19 +38,8 @@ internal class PointAppointmentInfoTest {
         assertEquals("Spath", info.userLastName)
         assertEquals("cspath1@ycp.edu", info.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, info.status)
-        assertEquals(Appointment.Type.POINT.label, info.type)
-
-        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
-                hours = 12,
-                minutes = 12,
-                seconds = 12
-        )
-
-        assertEquals(hoursMinutesSecondsInDegrees, info.rightAscension, 0.00001)
-        assertEquals(12, info.hours)
-        assertEquals(12, info.minutes)
-        assertEquals(12, info.seconds)
-        assertEquals(69.0, info.declination, 0.00001)
+        assertEquals(Appointment.Type.RASTER_SCAN.label, info.type)
+        assertEquals(0, info.coordinates.size)
     }
 
     @Test
@@ -77,10 +58,11 @@ internal class PointAppointmentInfoTest {
                 endTime = endTime,
                 telescopeId = 1L,
                 isPublic = true,
-                type = Appointment.Type.POINT
+                type = Appointment.Type.RASTER_SCAN
         )
 
-        val coordinate = Coordinate(
+        // Two coordinates
+        val coordinateOne = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
                         minutes = 12,
@@ -92,13 +74,29 @@ internal class PointAppointmentInfoTest {
                 seconds = 12
         )
 
+        coordinateOne.appointment = appointment
+        appointment.coordinateList.add(coordinateOne)
+
+        val coordinateTwo = Coordinate(
+                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = 13,
+                        minutes = 13,
+                        seconds = 13
+                ),
+                declination = 70.0,
+                hours = 13,
+                minutes = 13,
+                seconds = 13
+        )
+
+        coordinateTwo.appointment = appointment
+        appointment.coordinateList.add(coordinateTwo)
+
         appointment.user = user
         appointment.id = 1L
         appointment.status = Appointment.Status.SCHEDULED
-        appointment.coordinateList = mutableListOf()
-        appointment.coordinateList.add(coordinate)
 
-        val appointmentInfo = PointAppointmentInfo(appointment)
+        val appointmentInfo = RasterScanAppointmentInfo(appointment)
 
         assertEquals(1L, appointmentInfo.id)
         assertEquals(startTime, appointmentInfo.startTime)
@@ -110,11 +108,7 @@ internal class PointAppointmentInfoTest {
         assertEquals("Spath", appointmentInfo.userLastName)
         assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
-        assertEquals(Appointment.Type.POINT.label, appointmentInfo.type)
-        assertEquals(appointment.coordinateList[0].rightAscension, appointmentInfo.rightAscension, 0.00001)
-        assertEquals(appointment.coordinateList[0].declination, appointmentInfo.declination, 0.00001)
-        assertEquals(appointment.coordinateList[0].hours, appointmentInfo.hours)
-        assertEquals(appointment.coordinateList[0].minutes, appointmentInfo.minutes)
-        assertEquals(appointment.coordinateList[0].seconds, appointmentInfo.seconds)
+        assertEquals(Appointment.Type.RASTER_SCAN.label, appointmentInfo.type)
+        assertEquals(2, appointmentInfo.coordinates.size)
     }
 }

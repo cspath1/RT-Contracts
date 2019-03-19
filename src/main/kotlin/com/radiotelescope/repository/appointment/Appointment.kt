@@ -39,7 +39,7 @@ data class Appointment(
     lateinit var user: User
 
     @OneToMany(mappedBy = "appointment")
-    var coordinateList: List<Coordinate> = mutableListOf()
+    var coordinateList: MutableList<Coordinate> = mutableListOf()
 
     @OneToOne
     @JoinColumn(name = "orientation_id")
