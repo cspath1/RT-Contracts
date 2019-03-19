@@ -45,7 +45,7 @@ data class Appointment(
     @JoinColumn(name = "orientation_id")
     var orientation: Orientation? = null
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "celestial_body_id")
     var celestialBody: CelestialBody? = null
 

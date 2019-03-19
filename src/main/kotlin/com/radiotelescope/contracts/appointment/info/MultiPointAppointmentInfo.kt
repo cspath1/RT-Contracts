@@ -6,11 +6,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * Subclass of [AppointmentInfo] for the "Raster Scan" Appointment type
+ * Subclass of [AppointmentInfo] for the both "Raster Scan"
+ * and "Free Control" Appointment types, as they will have
+ * more than one coordinate
  *
  * @param coordinates a list of [CoordinateInfo] objects
  */
-data class RasterScanAppointmentInfo(
+data class MultiPointAppointmentInfo(
         override val id: Long,
         override val startTime: Date,
         override val endTime: Date,

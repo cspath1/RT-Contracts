@@ -7,13 +7,13 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class RasterScanAppointmentInfoTest {
+internal class MultiPointAppointmentInfoTest {
     private var startTime = Date(System.currentTimeMillis() + 10000L)
     private var endTime = Date(System.currentTimeMillis() + 30000L)
 
     @Test
     fun testPrimaryConstructor() {
-        val info = RasterScanAppointmentInfo(
+        val info = MultiPointAppointmentInfo(
                 id = 1L,
                 startTime = startTime,
                 endTime = endTime,
@@ -96,7 +96,7 @@ internal class RasterScanAppointmentInfoTest {
         appointment.id = 1L
         appointment.status = Appointment.Status.SCHEDULED
 
-        val appointmentInfo = RasterScanAppointmentInfo(appointment)
+        val appointmentInfo = MultiPointAppointmentInfo(appointment)
 
         assertEquals(1L, appointmentInfo.id)
         assertEquals(startTime, appointmentInfo.startTime)
