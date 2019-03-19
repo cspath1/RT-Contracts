@@ -56,7 +56,8 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 10000L),
                 endTime = Date(System.currentTimeMillis() - 5000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -65,7 +66,8 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 20000L),
                 endTime = Date(System.currentTimeMillis() - 15000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

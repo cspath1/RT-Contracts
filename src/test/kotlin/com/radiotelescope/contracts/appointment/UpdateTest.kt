@@ -73,7 +73,8 @@ internal class UpdateTest {
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true,
                 status = Appointment.Status.SCHEDULED,
-                telescopeId = 1L
+                telescopeId = 1L,
+                type = Appointment.Type.POINT
         )
         appointmentId = appointment.id
 
@@ -334,7 +335,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -372,7 +374,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -414,7 +417,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -456,7 +460,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -498,7 +503,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -540,7 +546,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -582,7 +589,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -624,7 +632,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -666,7 +675,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -712,7 +722,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -754,7 +765,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.CANCELED
+                status = Appointment.Status.CANCELED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -792,7 +804,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         appointment = testUtil.createAppointment(
@@ -801,7 +814,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(
@@ -843,7 +857,8 @@ internal class UpdateTest {
                 endTime = Date(endTime + 4444L),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         appointment = testUtil.createAppointment(
@@ -852,7 +867,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = Update.Request(

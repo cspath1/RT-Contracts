@@ -72,7 +72,8 @@ internal class UserFutureListTest {
                 status = Appointment.Status.REQUESTED,
                 startTime = baseCreateRequest.startTime,
                 endTime = baseCreateRequest.endTime,
-                isPublic = baseCreateRequest.isPublic
+                isPublic = baseCreateRequest.isPublic,
+                type = Appointment.Type.POINT
         )
 
 

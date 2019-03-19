@@ -66,7 +66,8 @@ internal class UserAvailableTimeTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + oneHour),
                 endTime = Date(System.currentTimeMillis() + oneHour + Appointment.GUEST_APPOINTMENT_TIME_CAP),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         val(time, errors) = UserAvailableTime(
@@ -99,7 +100,8 @@ internal class UserAvailableTimeTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + oneHour),
                 endTime = Date(System.currentTimeMillis() + oneHour + oneHour),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         val(time, errors) = UserAvailableTime(
@@ -132,7 +134,8 @@ internal class UserAvailableTimeTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + oneHour),
                 endTime = Date(System.currentTimeMillis() + oneHour + oneHour),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         val(time, errors) = UserAvailableTime(
@@ -160,7 +163,8 @@ internal class UserAvailableTimeTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + oneHour),
                 endTime = Date(System.currentTimeMillis() + oneHour + oneHour),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         val(time, errors) = UserAvailableTime(

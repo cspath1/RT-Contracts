@@ -49,7 +49,8 @@ internal class RequestedListTest {
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(System.currentTimeMillis() + 1000L),
                 endTime = Date(System.currentTimeMillis() + 4000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

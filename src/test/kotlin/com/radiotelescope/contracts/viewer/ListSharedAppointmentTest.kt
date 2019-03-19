@@ -55,7 +55,8 @@ internal class ListSharedAppointmentTest {
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() + 200000L),
                 status = Appointment.Status.SCHEDULED,
-                isPublic = false
+                isPublic = false,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createViewer(

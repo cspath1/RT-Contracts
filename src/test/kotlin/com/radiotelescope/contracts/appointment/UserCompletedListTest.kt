@@ -49,7 +49,8 @@ internal class UserCompletedListTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 10000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
         firstUserId = user.id
 

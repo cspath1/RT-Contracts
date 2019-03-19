@@ -52,6 +52,7 @@ internal class ViewerUnsharePrivateAppointmentTest : BaseViewerRestControllerTes
                 viewerWrapper = getWrapper(),
                 logger = getLogger()
         )
+
         user = testUtil.createUser("rpim@ycp.edu")
         researcher = testUtil.createUser("rpim1@ycp.edu")
 
@@ -61,7 +62,8 @@ internal class ViewerUnsharePrivateAppointmentTest : BaseViewerRestControllerTes
                 endTime = Date(System.currentTimeMillis()  +  200000L),
                 status = Appointment.Status.SCHEDULED,
                 isPublic = false,
-                telescopeId = 1L
+                telescopeId = 1L,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createViewer(user, appointment)

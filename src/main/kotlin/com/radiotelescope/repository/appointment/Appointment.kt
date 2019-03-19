@@ -22,7 +22,10 @@ data class Appointment(
         @Column(name = "telescope_id", nullable = false)
         var telescopeId: Long,
         @Column(name = "public", nullable = false)
-        var isPublic: Boolean
+        var isPublic: Boolean,
+        @Column(name = "type", nullable = false)
+        @Enumerated(value = EnumType.STRING)
+        var type: Type
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +54,14 @@ data class Appointment(
         IN_PROGRESS("In Progress"),
         COMPLETED("Completed"),
         CANCELED("Canceled")
+    }
+    
+    enum class Type(val label: String) {
+        POINT("Point"),
+        CELESTIAL_BODY("Celestial Body"),
+        RASTER_SCAN("Raster Scan"),
+        DRIFT_SCAN("Drift Scan"),
+        FREE_CONTROL("Free Control")
     }
 
     companion object {

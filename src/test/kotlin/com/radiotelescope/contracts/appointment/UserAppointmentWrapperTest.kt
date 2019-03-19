@@ -133,7 +133,8 @@ internal class UserAppointmentWrapperTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         appointmentNotPublic = testUtil.createAppointment(
@@ -142,7 +143,8 @@ internal class UserAppointmentWrapperTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 40000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
-                isPublic = false
+                isPublic = false,
+                type = Appointment.Type.POINT
         )
 
         appointmentRequested = testUtil.createAppointment(
@@ -151,7 +153,8 @@ internal class UserAppointmentWrapperTest {
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(System.currentTimeMillis() + 60000L),
                 endTime = Date(System.currentTimeMillis() + 70000L),
-                isPublic = false
+                isPublic = false,
+                type = Appointment.Type.POINT
         )
 
         factory = CoordinateAppointmentFactory(

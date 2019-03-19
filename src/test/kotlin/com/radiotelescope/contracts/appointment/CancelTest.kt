@@ -96,7 +96,8 @@ internal class CancelTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = appointmentRequest.startTime,
                 endTime = appointmentRequest.endTime,
-                isPublic = appointmentRequest.isPublic
+                isPublic = appointmentRequest.isPublic,
+                type = Appointment.Type.POINT
         )
 
         // In Progress to Canceled
@@ -105,7 +106,8 @@ internal class CancelTest {
                 status = Appointment.Status.IN_PROGRESS,
                 startTime = appointmentRequest2.startTime,
                 endTime = appointmentRequest2.endTime,
-                isPublic = appointmentRequest2.isPublic
+                isPublic = appointmentRequest2.isPublic,
+                type = Appointment.Type.POINT
         )
 
         // Should result in error: Canceled to Canceled
@@ -114,7 +116,8 @@ internal class CancelTest {
                 status = Appointment.Status.CANCELED,
                 startTime = appointmentRequest3.startTime,
                 endTime = appointmentRequest3.endTime,
-                isPublic = appointmentRequest3.isPublic
+                isPublic = appointmentRequest3.isPublic,
+                type = Appointment.Type.POINT
         )
 
         // Already completed appointments cannot be canceled
@@ -123,7 +126,8 @@ internal class CancelTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = appointmentRequest4.startTime,
                 endTime = appointmentRequest4.endTime,
-                isPublic = appointmentRequest4.isPublic
+                isPublic = appointmentRequest4.isPublic,
+                type = Appointment.Type.POINT
         )
 
         scheduledAppointmentId = appointmentOne.id

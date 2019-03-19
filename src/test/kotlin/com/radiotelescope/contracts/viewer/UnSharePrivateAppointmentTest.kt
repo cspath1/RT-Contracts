@@ -58,7 +58,8 @@ internal class UnSharePrivateAppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() + 300000L),
-                isPublic = false
+                isPublic = false,
+                type = Appointment.Type.POINT
         )
 
         viewer = testUtil.createViewer(user, appointment)

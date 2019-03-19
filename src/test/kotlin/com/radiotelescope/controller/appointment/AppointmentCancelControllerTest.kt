@@ -60,7 +60,8 @@ internal class AppointmentCancelControllerTest : BaseAppointmentRestControllerTe
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 50000L),
                 endTime = Date(System.currentTimeMillis() + 100000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

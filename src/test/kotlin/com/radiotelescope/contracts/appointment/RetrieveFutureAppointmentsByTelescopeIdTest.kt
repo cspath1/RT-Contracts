@@ -56,7 +56,8 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(Date().time + 200000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -65,7 +66,8 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 300000L),
                 endTime = Date(System.currentTimeMillis() + 400000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

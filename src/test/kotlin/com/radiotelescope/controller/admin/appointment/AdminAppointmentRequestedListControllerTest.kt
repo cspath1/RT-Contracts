@@ -62,7 +62,8 @@ internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRest
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         val user2 = testUtil.createUser("rpim2@ycp.edu")
@@ -72,7 +73,8 @@ internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRest
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(System.currentTimeMillis() + 80000L),
                 endTime = Date(System.currentTimeMillis() + 90000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

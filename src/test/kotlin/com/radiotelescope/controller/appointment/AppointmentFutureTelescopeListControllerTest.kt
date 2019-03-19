@@ -58,7 +58,8 @@ internal class AppointmentFutureTelescopeListControllerTest : BaseAppointmentRes
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 5000L),
                 endTime = Date(System.currentTimeMillis() + 10000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -67,7 +68,8 @@ internal class AppointmentFutureTelescopeListControllerTest : BaseAppointmentRes
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 15000L),
                 endTime = Date(System.currentTimeMillis() + 20000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

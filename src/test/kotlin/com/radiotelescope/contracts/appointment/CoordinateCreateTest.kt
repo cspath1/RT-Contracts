@@ -129,7 +129,8 @@ internal class CoordinateCreateTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = date,
                 endTime = Date(date.time + twoHours),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // 8 hour appointment
@@ -362,7 +363,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(
@@ -405,7 +407,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(
@@ -449,7 +452,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(
@@ -493,7 +497,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(
@@ -537,7 +542,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(
@@ -581,7 +587,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(
@@ -625,7 +632,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(
@@ -669,7 +677,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(
@@ -713,7 +722,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(
@@ -761,7 +771,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(
@@ -805,7 +816,8 @@ internal class CoordinateCreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.CANCELED
+                status = Appointment.Status.CANCELED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = CoordinateCreate.Request(

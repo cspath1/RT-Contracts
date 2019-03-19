@@ -57,7 +57,8 @@ internal class SharePrivateAppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() + 300000L),
-                isPublic = false
+                isPublic = false,
+                type = Appointment.Type.POINT
         )
     }
 
@@ -148,7 +149,8 @@ internal class SharePrivateAppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 400000L),
                 endTime = Date(System.currentTimeMillis() + 500000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // CoordinateCreate the request

@@ -9,8 +9,10 @@ CREATE TABLE appointment(
               'COMPLETED',
               'CANCELED'),
   telescope_id INT(11) NOT NULL,
-  coordinate_id INT(11) NOT NULL,
-  public TINYINT(1) DEFAULT 1
+  coordinate_id INT(11) DEFAULT NULL,
+  orientation_id INT(11) DEFAULT NULL,
+  public TINYINT(1) DEFAULT 1,
+  type VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE celestial_body(
@@ -36,6 +38,13 @@ CREATE TABLE error (
   message   VARCHAR(200) NOT NULL
 );
 
+CREATE TABLE feedback (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) DEFAULT NULL,
+  priority INT(11) NOT NULL,
+  comments TEXT NOT NULL
+);
+
 CREATE TABLE log(
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11),
@@ -45,6 +54,12 @@ CREATE TABLE log(
   affected_record_id INT(11),
   success TINYINT(1) DEFAULT 1,
   status INT(11) NOT NULL
+);
+
+CREATE TABLE orientation (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  azimuth DOUBLE NOT NULL,
+  elevation DOUBLE NOT NULL
 );
 
 CREATE TABLE rf_data (

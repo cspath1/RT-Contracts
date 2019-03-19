@@ -77,7 +77,8 @@ internal class AppointmentInfoTest {
                 startTime = startTime,
                 endTime = endTime,
                 telescopeId = 1L,
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         val coordinate = Coordinate(

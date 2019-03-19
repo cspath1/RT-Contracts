@@ -47,7 +47,8 @@ internal class PublicCompletedAppointmentsTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 50000L),
                 endTime = Date(System.currentTimeMillis() - 40000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -56,7 +57,8 @@ internal class PublicCompletedAppointmentsTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 20000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -65,7 +67,8 @@ internal class PublicCompletedAppointmentsTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 15000L),
                 endTime = Date(System.currentTimeMillis() - 5000L),
-                isPublic = false
+                isPublic = false,
+                type = Appointment.Type.POINT
         )
     }
 

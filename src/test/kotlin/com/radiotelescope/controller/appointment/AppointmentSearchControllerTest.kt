@@ -58,7 +58,8 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() + 200000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Simulate a login

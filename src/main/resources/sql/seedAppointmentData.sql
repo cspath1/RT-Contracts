@@ -1,7 +1,7 @@
 -- Start by seeding a telescope that is online --
 INSERT INTO telescope VALUES(1, 1);
 
--- CoordinateCreate an coordinate --
+-- Create a coordinate --
 INSERT INTO coordinate VALUES(1, 311.0, 69.0, 12, 12, 12);
 
 -- Then create a user --
@@ -9,8 +9,8 @@ INSERT INTO user(id, first_name, last_name, email_address, company, phone_number
 VALUES(1, 'Cody', 'Spath', 'cspath1@ycp.edu', 'York College of PA', '717-823-2216', 'pass1234', 1, 'ACTIVE');
 
 -- Then an appointment --
-INSERT INTO appointment(id, user_id, start_time, end_time, status, telescope_id, public, coordinate_id)
-VALUES(1, 1, '2018-10-10 12:00:00', '2018-10-10 15:00:00', 'COMPLETED', 1, 1, 1);
+INSERT INTO appointment(id, user_id, start_time, end_time, status, telescope_id, public, coordinate_id, orientation_id, type)
+VALUES(1, 1, '2018-10-10 12:00:00', '2018-10-10 15:00:00', 'COMPLETED', 1, 1, 1, NULL, 'POINT');
 
 -- Then some seed RF Data --
 INSERT INTO rf_data(id, appointment_id, intensity, time_captured) VALUES(1, 1, 1, CURRENT_TIMESTAMP);

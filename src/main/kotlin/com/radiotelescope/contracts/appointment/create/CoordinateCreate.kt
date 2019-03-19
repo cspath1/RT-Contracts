@@ -175,7 +175,8 @@ class CoordinateCreate(
                     startTime = startTime,
                     endTime = endTime,
                     telescopeId = telescopeId,
-                    isPublic = isPublic
+                    isPublic = isPublic,
+                    type = Appointment.Type.POINT
             )
         }
 

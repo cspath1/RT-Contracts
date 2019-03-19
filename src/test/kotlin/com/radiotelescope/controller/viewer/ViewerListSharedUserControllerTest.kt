@@ -50,6 +50,7 @@ internal class ViewerListSharedUserControllerTest : BaseViewerRestControllerTest
                 viewerWrapper = getWrapper(),
                 logger = getLogger()
         )
+
         user = testUtil.createUser("rpim@ycp.edu")
         researcher = testUtil.createUser("rpim1@ycp.edu")
 
@@ -59,8 +60,10 @@ internal class ViewerListSharedUserControllerTest : BaseViewerRestControllerTest
                 endTime = Date(System.currentTimeMillis()  +  200000L),
                 status = Appointment.Status.SCHEDULED,
                 isPublic = false,
-                telescopeId = 1L
+                telescopeId = 1L,
+                type = Appointment.Type.POINT
         )
+
         testUtil.createViewer(
                 user = user,
                 appointment = appointment

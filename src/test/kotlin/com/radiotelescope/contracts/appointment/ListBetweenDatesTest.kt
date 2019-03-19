@@ -67,7 +67,8 @@ class ListBetweenDatesTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime + 100L),
                 endTime = Date(startTime + 200L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -76,7 +77,8 @@ class ListBetweenDatesTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime + 300L),
                 endTime = Date(startTime + 400L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

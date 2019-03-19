@@ -70,7 +70,8 @@ internal class UserViewerWrapperTest {
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() +   200000L),
                 isPublic = false,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createViewer(

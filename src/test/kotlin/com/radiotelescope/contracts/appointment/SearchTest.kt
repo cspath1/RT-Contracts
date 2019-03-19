@@ -80,7 +80,8 @@ internal class SearchTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() + 200000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -89,7 +90,8 @@ internal class SearchTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 200000L),
                 endTime = Date(System.currentTimeMillis() - 100000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -98,7 +100,8 @@ internal class SearchTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 300000L),
                 endTime = Date(System.currentTimeMillis() + 400000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -107,7 +110,8 @@ internal class SearchTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 400000L),
                 endTime = Date(System.currentTimeMillis() - 300000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         pageable = PageRequest.of(0, 25)

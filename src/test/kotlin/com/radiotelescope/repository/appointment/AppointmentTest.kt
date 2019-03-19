@@ -61,7 +61,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(currentTime + 100000L),
                 endTime = Date(currentTime + 300000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         pastAppointment = testUtil.createAppointment(
@@ -70,7 +71,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(currentTime - 30000L),
                 endTime = Date(currentTime - 10000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -79,7 +81,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.CANCELED,
                 startTime = Date(currentTime + 10000L),
                 endTime = Date(currentTime + 30000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
 
         )
 
@@ -89,8 +92,10 @@ internal class AppointmentTest {
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(currentTime + 1000000000L),
                 endTime = Date(currentTime +   3000000000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
+
         testUtil.createViewer(
                 user = otherUser,
                 appointment = futureAppointment
@@ -134,7 +139,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(currentTime + 15200000L),
                 endTime = Date(currentTime + 18272500L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(user.id)
@@ -155,8 +161,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime),
                 endTime = Date(startTime + 1000L),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment between the start and end time
@@ -166,8 +172,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime + 2000L),
                 endTime = Date(startTime + 3000L),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment end at the endTime and start after the startTime
@@ -177,8 +183,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(endTime - 1000L),
                 endTime = Date(endTime),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start before startTime and end before endTime
@@ -188,8 +194,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime - 2000L),
                 endTime = Date(startTime + 500L),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start before endTime and end after endTime
@@ -199,8 +205,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(endTime - 500L),
                 endTime = Date(endTime + 1000L),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment status is requested
@@ -210,8 +216,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(startTime + 1010L),
                 endTime = Date(startTime + 1020L),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment status is canceled
@@ -221,8 +227,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.CANCELED,
                 startTime = Date(startTime + 1030L),
                 endTime = Date(startTime + 1040L),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
 
@@ -246,7 +252,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 10000L),
                 endTime = Date(System.currentTimeMillis() - 5000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -255,7 +262,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 15000L),
-                isPublic = false
+                isPublic = false,
+                type = Appointment.Type.POINT
         )
 
         val pageRequest = PageRequest.of(0, 5)
@@ -295,8 +303,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime),
                 endTime = Date(startTime + 1000L),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment between the start and end time
@@ -306,8 +314,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime + 2000L),
                 endTime = Date(startTime + 3000L),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment end at the endTime and start after the startTime
@@ -317,8 +325,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(endTime - 1000L),
                 endTime = Date(endTime),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start before startTime and end before endTime
@@ -328,8 +336,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime - 2000L),
                 endTime = Date(startTime + 500L),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start before endTime and end after endTime
@@ -339,8 +347,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(endTime - 500L),
                 endTime = Date(endTime + 1000L),
-                isPublic = true
-
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment end at the start time
@@ -350,7 +358,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime - 1000L),
                 endTime = Date(startTime),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start at the end time
@@ -360,7 +369,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(endTime),
                 endTime = Date(endTime + 2000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start before start and end after end
@@ -370,7 +380,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime - 1111L),
                 endTime = Date(endTime + 1111L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment status is REQUESTED
@@ -380,7 +391,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(startTime + 1010L),
                 endTime = Date(startTime + 1020L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Appointment status is CANCELED
@@ -390,7 +402,8 @@ internal class AppointmentTest {
                 status = Appointment.Status.CANCELED,
                 startTime = Date(startTime + 1030L),
                 endTime = Date(startTime + 1040L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
 
         )
 

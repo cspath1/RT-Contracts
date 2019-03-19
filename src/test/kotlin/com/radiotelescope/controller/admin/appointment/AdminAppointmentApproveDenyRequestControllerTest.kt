@@ -75,7 +75,8 @@ internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmen
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

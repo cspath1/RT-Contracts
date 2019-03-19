@@ -56,7 +56,8 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 50000L),
                 endTime = Date(System.currentTimeMillis() + 100000L),
-                isPublic = false
+                isPublic = false,
+                type = Appointment.Type.POINT
         )
     }
 
