@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.AppointmentInfo
+import com.radiotelescope.contracts.appointment.info.AppointmentInfo
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole

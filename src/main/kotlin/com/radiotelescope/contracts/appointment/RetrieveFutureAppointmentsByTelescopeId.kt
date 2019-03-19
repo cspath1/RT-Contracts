@@ -7,6 +7,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.contracts.appointment.info.AppointmentInfo
 import com.radiotelescope.toAppointmentInfoPage
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

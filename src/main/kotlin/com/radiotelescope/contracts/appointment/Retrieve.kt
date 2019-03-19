@@ -6,6 +6,8 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.contracts.appointment.info.AppointmentInfo
+import com.radiotelescope.contracts.appointment.info.PointAppointmentInfo
 
 /**
  * Override of the [Command] interface method used to retrieve [Appointment]
@@ -35,7 +37,8 @@ class Retrieve(
         }
 
         val theAppointment = appointmentRepo.findById(appointmentId).get()
-        val theInfo = AppointmentInfo(theAppointment)
+        // TODO: Change when other types are implemented
+        val theInfo = PointAppointmentInfo(theAppointment)
         return SimpleResult(theInfo, null)
     }
 }

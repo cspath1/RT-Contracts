@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.create.Create
 import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
+import com.radiotelescope.contracts.appointment.info.AppointmentInfo
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.UserRole

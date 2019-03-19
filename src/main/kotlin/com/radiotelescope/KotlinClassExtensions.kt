@@ -1,7 +1,8 @@
 package com.radiotelescope
 
 import com.google.common.collect.Multimap
-import com.radiotelescope.contracts.appointment.AppointmentInfo
+import com.radiotelescope.contracts.appointment.info.AppointmentInfo
+import com.radiotelescope.contracts.appointment.info.PointAppointmentInfo
 import com.radiotelescope.contracts.celestialBody.CelestialBodyInfo
 import com.radiotelescope.contracts.rfdata.RFDataInfo
 import com.radiotelescope.contracts.user.UserInfo
@@ -27,7 +28,8 @@ fun AccessReport.toStringMap(): Map<String, Collection<String>> {
 fun Page<Appointment>.toAppointmentInfoPage(): Page<AppointmentInfo> {
     val infoList = arrayListOf<AppointmentInfo>()
     content.forEach {
-        infoList.add(AppointmentInfo(it))
+        // TODO: Change when other types are implemented
+        infoList.add(PointAppointmentInfo(it))
     }
 
     return PageImpl(infoList, pageable, totalElements)
@@ -43,7 +45,8 @@ fun List<RFData>.toInfoList(): List<RFDataInfo> {
 fun List<Appointment>.toAppointmentInfoList(): List<AppointmentInfo> {
     val infoList = arrayListOf<AppointmentInfo>()
     forEach {
-        infoList.add(AppointmentInfo(it))
+        // TODO: Change when other types are implemented
+        infoList.add(PointAppointmentInfo(it))
     }
 
     return infoList

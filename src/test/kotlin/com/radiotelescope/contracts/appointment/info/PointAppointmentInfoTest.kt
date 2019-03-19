@@ -1,4 +1,4 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.info
 
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.coordinate.Coordinate
@@ -7,13 +7,13 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class AppointmentInfoTest {
+internal class PointAppointmentInfoTest {
     private var startTime = Date(System.currentTimeMillis() + 10000L)
     private var endTime = Date(System.currentTimeMillis() + 30000L)
 
     @Test
     fun testPrimaryConstructor() {
-        val appointmentInfo = AppointmentInfo(
+        val info = PointAppointmentInfo(
                 id = 1L,
                 startTime = startTime,
                 endTime = endTime,
@@ -24,6 +24,7 @@ internal class AppointmentInfoTest {
                 userLastName = "Spath",
                 userEmail = "cspath1@ycp.edu",
                 status = Appointment.Status.SCHEDULED.label,
+                type = Appointment.Type.POINT.label,
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
@@ -35,31 +36,29 @@ internal class AppointmentInfoTest {
                 declination = 69.0
         )
 
-        assertEquals(1L, appointmentInfo.id)
-        assertEquals(startTime, appointmentInfo.startTime)
-        assertEquals(endTime, appointmentInfo.endTime)
-        assertEquals(1L, appointmentInfo.telescopeId)
-        assertTrue(appointmentInfo.isPublic)
-        assertEquals(1L, appointmentInfo.userId)
-        assertEquals("Cody", appointmentInfo.userFirstName)
-        assertEquals("Spath", appointmentInfo.userLastName)
-        assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
-        assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
+        assertEquals(1L, info.id)
+        assertEquals(startTime, info.startTime)
+        assertEquals(endTime, info.endTime)
+        assertEquals(1L, info.telescopeId)
+        assertTrue(info.isPublic)
+        assertEquals(1L, info.userId)
+        assertEquals("Cody", info.userFirstName)
+        assertEquals("Spath", info.userLastName)
+        assertEquals("cspath1@ycp.edu", info.userEmail)
+        assertEquals(Appointment.Status.SCHEDULED.label, info.status)
+        assertEquals(Appointment.Type.POINT.label, info.type)
 
-        if (appointmentInfo.rightAscension == null || appointmentInfo.declination == null)
-            fail("Should not be null")
-        else {
-            val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
-                    hours = 12,
-                    minutes = 12,
-                    seconds = 12
-            )
-            assertEquals(hoursMinutesSecondsInDegrees, appointmentInfo.rightAscension!!, 0.00001)
-            assertEquals(12, appointmentInfo.hours)
-            assertEquals(12, appointmentInfo.minutes)
-            assertEquals(12, appointmentInfo.seconds)
-            assertEquals(69.0, appointmentInfo.declination!!, 0.00001)
-        }
+        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
+                hours = 12,
+                minutes = 12,
+                seconds = 12
+        )
+
+        assertEquals(hoursMinutesSecondsInDegrees, info.rightAscension, 0.00001)
+        assertEquals(12, info.hours)
+        assertEquals(12, info.minutes)
+        assertEquals(12, info.seconds)
+        assertEquals(69.0, info.declination, 0.00001)
     }
 
     @Test
@@ -98,7 +97,7 @@ internal class AppointmentInfoTest {
         appointment.status = Appointment.Status.SCHEDULED
         appointment.coordinate = coordinate
 
-        val appointmentInfo = AppointmentInfo(appointment)
+        val appointmentInfo = PointAppointmentInfo(appointment)
 
         assertEquals(1L, appointmentInfo.id)
         assertEquals(startTime, appointmentInfo.startTime)
@@ -110,18 +109,11 @@ internal class AppointmentInfoTest {
         assertEquals("Spath", appointmentInfo.userLastName)
         assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
-
-        if (appointmentInfo.declination == null || appointmentInfo.rightAscension == null)
-            fail("Should not be null")
-        else {
-
-            assertEquals(appointment.coordinate?.rightAscension!!, appointmentInfo.rightAscension!!, 0.00001)
-            assertEquals(appointment.coordinate?.declination!!, appointmentInfo.declination!!, 0.00001)
-            assertEquals(appointment.coordinate?.hours, appointmentInfo.hours)
-            assertEquals(appointment.coordinate?.minutes, appointmentInfo.minutes)
-            assertEquals(appointment.coordinate?.seconds, appointmentInfo.seconds)
-        }
+        assertEquals(Appointment.Type.POINT.label, appointmentInfo.type)
+        assertEquals(appointment.coordinate?.rightAscension!!, appointmentInfo.rightAscension, 0.00001)
+        assertEquals(appointment.coordinate?.declination!!, appointmentInfo.declination, 0.00001)
+        assertEquals(appointment.coordinate?.hours, appointmentInfo.hours)
+        assertEquals(appointment.coordinate?.minutes, appointmentInfo.minutes)
+        assertEquals(appointment.coordinate?.seconds, appointmentInfo.seconds)
     }
-
-
 }

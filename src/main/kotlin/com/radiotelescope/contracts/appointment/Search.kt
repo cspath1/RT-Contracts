@@ -4,6 +4,8 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.contracts.appointment.info.AppointmentInfo
+import com.radiotelescope.contracts.appointment.info.PointAppointmentInfo
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.AppointmentSpecificationBuilder
 import com.radiotelescope.repository.model.appointment.Filter
@@ -52,7 +54,8 @@ class Search(
             val infoList = arrayListOf<AppointmentInfo>()
 
             appointmentPage.forEach { appointment ->
-                infoList.add(AppointmentInfo(appointment))
+                // TODO: Change when other types are implemented
+                infoList.add(PointAppointmentInfo(appointment))
             }
 
             val infoPage = PageImpl(infoList, appointmentPage.pageable, appointmentPage.totalElements)

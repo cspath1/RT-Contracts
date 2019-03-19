@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.*
 import com.radiotelescope.contracts.appointment.create.Create
+import com.radiotelescope.contracts.appointment.info.AppointmentInfo
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import org.springframework.data.domain.Page
@@ -16,7 +17,7 @@ interface AppointmentFactory {
     /**
      * Abstract command used to schedule an appointment
      *
-     * @param request the [CoordinateCreate.Request] request
+     * @param request the [Create.Request] request
      * @return a [Command] object
      */
     fun create(request: Create.Request): Command<Long, Multimap<ErrorTag, String>>
