@@ -81,7 +81,7 @@ class AppointmentCreateController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action ="Appointment Creation",
+                                    action = "Appointment Creation",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
                             ),
