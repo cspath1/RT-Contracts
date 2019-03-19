@@ -60,10 +60,10 @@ data class PointAppointmentInfo(
             userEmail = appointment.user.email,
             status = appointment.status.label,
             type = appointment.type.label,
-            hours = appointment.coordinate!!.hours,
-            minutes = appointment.coordinate!!.minutes,
-            seconds = appointment.coordinate!!.seconds,
-            rightAscension = appointment.coordinate!!.rightAscension,
-            declination = appointment.coordinate!!.declination
+            hours = appointment.coordinateList[0].hours,
+            minutes = appointment.coordinateList[0].minutes,
+            seconds = appointment.coordinateList[0].seconds,
+            rightAscension = appointment.coordinateList[0].rightAscension,
+            declination = appointment.coordinateList[0].declination
     )
 }

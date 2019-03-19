@@ -9,7 +9,6 @@ CREATE TABLE appointment(
               'COMPLETED',
               'CANCELED'),
   telescope_id INT(11) NOT NULL,
-  coordinate_id INT(11) DEFAULT NULL,
   orientation_id INT(11) DEFAULT NULL,
   celestial_body_id INT(11) DEFAULT NULL,
   public TINYINT(1) DEFAULT 1,
@@ -29,7 +28,8 @@ CREATE TABLE coordinate(
   declination DOUBLE NOT NULL,
   hours INT(11) NOT NULL,
   minutes INT(11) NOT NULL,
-  seconds INT(11) NOT NULL
+  seconds INT(11) NOT NULL,
+  appointment_id INT(11) DEFAULT NULL
 );
 
 CREATE TABLE error (

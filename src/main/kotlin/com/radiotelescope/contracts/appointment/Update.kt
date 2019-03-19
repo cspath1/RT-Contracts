@@ -194,17 +194,15 @@ class Update(
             entity.endTime = endTime
             entity.isPublic = isPublic
 
-            if (entity.coordinate != null) {
-                entity.coordinate!!.hours = hours
-                entity.coordinate!!.minutes = minutes
-                entity.coordinate!!.seconds = seconds
-                entity.coordinate!!.declination = declination
-                entity.coordinate!!.rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
-                        hours = hours,
-                        minutes = minutes,
-                        seconds = seconds
-                )
-            }
+            entity.coordinateList.iterator().next().hours = hours
+            entity.coordinateList[0].minutes = minutes
+            entity.coordinateList[0].seconds = seconds
+            entity.coordinateList[0].declination = declination
+            entity.coordinateList[0].rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                    hours = hours,
+                    minutes = minutes,
+                    seconds = seconds
+            )
 
             return entity
         }

@@ -1,5 +1,6 @@
 package com.radiotelescope.repository.coordinate
 
+import com.radiotelescope.repository.appointment.Appointment
 import javax.persistence.*
 
 /**
@@ -25,6 +26,10 @@ data class Coordinate(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
+
+    @ManyToOne
+    @JoinColumn(name = "appointment_id")
+    var appointment: Appointment? = null
 
     companion object {
         fun hoursMinutesSecondsToDegrees(hours: Int, minutes: Int, seconds: Int): Double {

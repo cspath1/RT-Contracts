@@ -6,6 +6,7 @@ import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -37,9 +38,8 @@ data class Appointment(
     @JoinColumn(name = "user_id", nullable = false)
     lateinit var user: User
 
-    @OneToOne
-    @JoinColumn(name = "coordinate_id")
-    var coordinate: Coordinate? = null
+    @OneToMany(mappedBy = "appointment")
+    var coordinateList: List<Coordinate> = mutableListOf()
 
     @OneToOne
     @JoinColumn(name = "orientation_id")

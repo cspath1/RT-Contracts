@@ -47,7 +47,10 @@ class Request(
 
             theAppointment.user = userRepo.findById(request.userId).get()
             theAppointment.status = Appointment.Status.REQUESTED
-            theAppointment.coordinate = theCoordinate
+            theAppointment.coordinateList = arrayListOf(theCoordinate)
+
+            theCoordinate.appointment = theAppointment
+            coordinateRepo.save(theCoordinate)
 
             appointmentRepo.save(theAppointment)
             return SimpleResult(theAppointment.id, null)

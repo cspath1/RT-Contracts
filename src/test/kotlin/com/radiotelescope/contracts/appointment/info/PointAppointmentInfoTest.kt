@@ -95,7 +95,8 @@ internal class PointAppointmentInfoTest {
         appointment.user = user
         appointment.id = 1L
         appointment.status = Appointment.Status.SCHEDULED
-        appointment.coordinate = coordinate
+        appointment.coordinateList = mutableListOf()
+        (appointment.coordinateList as MutableList<Coordinate>).add(coordinate)
 
         val appointmentInfo = PointAppointmentInfo(appointment)
 
@@ -110,10 +111,10 @@ internal class PointAppointmentInfoTest {
         assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
         assertEquals(Appointment.Type.POINT.label, appointmentInfo.type)
-        assertEquals(appointment.coordinate!!.rightAscension, appointmentInfo.rightAscension, 0.00001)
-        assertEquals(appointment.coordinate!!.declination, appointmentInfo.declination, 0.00001)
-        assertEquals(appointment.coordinate!!.hours, appointmentInfo.hours)
-        assertEquals(appointment.coordinate!!.minutes, appointmentInfo.minutes)
-        assertEquals(appointment.coordinate!!.seconds, appointmentInfo.seconds)
+        assertEquals(appointment.coordinateList[0].rightAscension, appointmentInfo.rightAscension, 0.00001)
+        assertEquals(appointment.coordinateList[0].declination, appointmentInfo.declination, 0.00001)
+        assertEquals(appointment.coordinateList[0].hours, appointmentInfo.hours)
+        assertEquals(appointment.coordinateList[0].minutes, appointmentInfo.minutes)
+        assertEquals(appointment.coordinateList[0].seconds, appointmentInfo.seconds)
     }
 }

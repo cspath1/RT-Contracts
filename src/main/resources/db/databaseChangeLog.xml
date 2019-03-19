@@ -20,4 +20,5 @@
     <include file="classpath:/db/changelog/15-create-feedback-table.sql"/>
     <include file="classpath:/db/changelog/16-create-orientation-table.sql"/>
     <include file="classpath:/db/changelog/17-update-appointment-table.sql"/>
+    <include file="classpath:/db/changelog/18-update-coordinate-table.sql"/>
 </databaseChangeLog>

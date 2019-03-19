@@ -169,9 +169,12 @@ internal class TestUtil {
 
         theAppointment.status = status
         theAppointment.user = user
-        theAppointment.coordinate = coordinate
+        theAppointment.coordinateList = arrayListOf(coordinate)
+        appointmentRepo.save(theAppointment)
 
-        return appointmentRepo.save(theAppointment)
+        coordinate.appointment = theAppointment
+
+        return theAppointment
     }
 
     fun createLog(

@@ -49,9 +49,12 @@ class CoordinateCreate(
             coordinateRepo.save(theCoordinate)
 
             theAppointment.user = userRepo.findById(request.userId).get()
-            theAppointment.coordinate = theCoordinate
-
+            theAppointment.coordinateList = arrayListOf(theCoordinate)
             appointmentRepo.save(theAppointment)
+
+            theCoordinate.appointment = theAppointment
+            coordinateRepo.save(theCoordinate)
+
             return SimpleResult(theAppointment.id, null)
         }
     }
