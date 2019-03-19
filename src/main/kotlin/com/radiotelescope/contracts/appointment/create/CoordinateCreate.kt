@@ -49,6 +49,8 @@ class CoordinateCreate(
             coordinateRepo.save(theCoordinate)
 
             theAppointment.user = userRepo.findById(request.userId).get()
+
+            // "Point" Appointments will have a single Coordinate
             theAppointment.coordinateList = arrayListOf(theCoordinate)
             appointmentRepo.save(theAppointment)
 
