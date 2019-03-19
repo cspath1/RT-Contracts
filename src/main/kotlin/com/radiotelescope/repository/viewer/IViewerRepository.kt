@@ -45,13 +45,7 @@ interface IViewerRepository : PagingAndSortingRepository<Viewer, Long> {
      * @param appointmentId the Appointment's Id
      * @return True if appointment is shared, false otherwise
      */
-    @Query(value = "SELECT CASE WHEN EXISTS (" +
-            "SELECT * FROM viewer " +
-            "WHERE user_id=?1 AND appointment_id=?2 ) " +
-            "THEN CAST(1 AS BIT) " +
-            "ELSE CAST(0 AS BIT) END",
-            nativeQuery = true)
-    fun isAppointmentSharedWithUser(userId: Long, appointmentId: Long): Boolean
+    fun existsByUserIdAndAppointmentId(userId: Long, appointmentId: Long): Boolean
 
     /**
      * Spring Repository method that will grab a [List] of [Viewer]

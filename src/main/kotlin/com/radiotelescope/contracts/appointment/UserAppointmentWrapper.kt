@@ -74,7 +74,7 @@ class UserAppointmentWrapper(
                     successCommand = factory.retrieve(id)
             ).execute(withAccess)
         } else if(context.currentUserId() != null &&
-                viewerRepo.isAppointmentSharedWithUser(context.currentUserId()!!, theAppointment.id)) {
+                viewerRepo.existsByUserIdAndAppointmentId(context.currentUserId()!!, theAppointment.id)) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.USER),
                     successCommand = factory.retrieve(id)

@@ -45,7 +45,7 @@ class UserRFDataWrapper(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.retrieveAppointmentData(appointmentId)
                 ).execute(withAccess)
-                viewerRepo.isAppointmentSharedWithUser(context.currentUserId()!!, theAppointment.id) -> return context.require(
+                viewerRepo.existsByUserIdAndAppointmentId(context.currentUserId()!!, theAppointment.id) -> return context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.retrieveAppointmentData(appointmentId)
                 ).execute(withAccess)

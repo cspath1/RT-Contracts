@@ -11,10 +11,7 @@ import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
 /**
  * REST Controller to handle grabbing a list of shared User
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam
  * @param viewerWrapper the [UserViewerWrapper]
  * @param logger the [Logger] service
  */
+@RestController
 class ViewerListSharedUserController(
         private val viewerWrapper: UserViewerWrapper,
         logger: Logger
@@ -33,7 +31,7 @@ class ViewerListSharedUserController(
      * Otherwise, it will execute the [UserViewerWrapper.listSharedAppointment] method.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/appointments/{appointmentId}/users"])
+    @GetMapping(value = ["/api/appointments/{appointmentId}/viewers"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long,
                 @RequestParam("page") pageNumber: Int,
                 @RequestParam("size") pageSize: Int): Result {
@@ -50,7 +48,7 @@ class ViewerListSharedUserController(
                     errors = errors.toStringMap()
             )
 
-            result = com.radiotelescope.controller.model.Result(errors = errors.toStringMap())
+            result = Result(errors = errors.toStringMap())
         } else {
             // Sort by most recent
             val sort = Sort(Sort.Direction.DESC, "id")

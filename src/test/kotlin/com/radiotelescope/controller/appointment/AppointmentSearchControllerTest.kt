@@ -138,7 +138,6 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
         logRepo.findAll().forEach {
             assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
         }
-
     }
 
     @Test
@@ -166,6 +165,30 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
 
         logRepo.findAll().forEach {
             assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+        }
+    }
+
+    @Test
+    fun testInvalidPageParametersResponse() {
+        // Test the scenario where the page parameters supplied
+        // are invalid
+        val result = appointmentSearchController.execute(
+                pageNumber = -1,
+                pageSize = -1,
+                search = "firstName",
+                value = "weibuwibeion"
+        )
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertEquals(1, result.errors!!.size)
+
+        assertEquals(logRepo.count(), 1)
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
         }
     }
 }

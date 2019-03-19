@@ -42,8 +42,9 @@ class UserViewerWrapper (
 
         if (context.currentUserId() != null) {
             return if (context.currentUserId() == theAppointment.user.id) {
+                // Admins or researchers can share their own appointments
                 context.requireAny(
-                        requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                        requiredRoles = listOf(UserRole.Role.RESEARCHER, UserRole.Role.ADMIN),
                         successCommand = factory.sharePrivateAppointment(
                                 request = request
                         )
@@ -110,8 +111,8 @@ class UserViewerWrapper (
 
         if (context.currentUserId() != null) {
             return if(context.currentUserId() == theAppointment.user.id) {
-                context.require(
-                        requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                context.requireAny(
+                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
                         successCommand = factory.listSharedUser(
                                 appointmentId = appointmentId,
                                 pageable = pageable
@@ -132,7 +133,7 @@ class UserViewerWrapper (
     }
 
     /**
-     * Wrapper method for the [ViewerFactory.unSharePrivateAppointment] method that adds Spring
+     * Wrapper method for the [ViewerFactory.unsharePrivateAppointment] method that adds Spring
      * Security authentication to the [UnsharePrivateAppointment] command object.
      *
      * @param request the [UnsharePrivateAppointment.Request] command object
@@ -148,7 +149,7 @@ class UserViewerWrapper (
         if (context.currentUserId() != null) {
             return if (context.currentUserId() == theAppointment.user.id) {
                 context.requireAny(
-                        requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
+                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
                         successCommand = factory.unsharePrivateAppointment(
                                 request = request
                         )

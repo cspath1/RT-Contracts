@@ -55,7 +55,7 @@ class UnsharePrivateAppointment(
                 errors.put(ErrorTag.APPOINTMENT_ID, "Appointment #$appointmentId could not be found")
             if(!userRepo.existsById(userId))
                 errors.put(ErrorTag.USER_ID, "User #$userId could not be found")
-            if(userRepo.existsById(userId) && appointmentRepo.existsById(appointmentId) && !viewerRepo.isAppointmentSharedWithUser(userId, appointmentId))
+            if(userRepo.existsById(userId) && appointmentRepo.existsById(appointmentId) && !viewerRepo.existsByUserIdAndAppointmentId(userId, appointmentId))
                 errors.put(ErrorTag.ID, "Appointment #$appointmentId is not shared with user #$userId")
         }
         return if(errors.isEmpty) null else errors

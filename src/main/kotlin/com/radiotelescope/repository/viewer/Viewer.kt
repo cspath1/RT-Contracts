@@ -18,11 +18,11 @@ class Viewer{
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "appointment_id", nullable = false)
     lateinit var appointment: Appointment
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     lateinit var user: User
 }
