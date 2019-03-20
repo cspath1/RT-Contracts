@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentAvailableTimeController (
+class UserAvailableTimeController (
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
@@ -36,7 +36,7 @@ class AppointmentAvailableTimeController (
      * If not, the command object was executed, and was either a success or failure,
      * and the method should respond accordingly based on each scenario.
      */
-    @GetMapping(value = ["/api/users/{userId}/appointments/remainingSchedulingTime"])
+    @GetMapping(value = ["/api/users/{userId}/available-time"])
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@PathVariable("userId") userId: Long): Result {
         appointmentWrapper.userAvailableTime(userId) {

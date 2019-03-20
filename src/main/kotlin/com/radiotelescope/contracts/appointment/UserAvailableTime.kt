@@ -46,7 +46,7 @@ class UserAvailableTime(
         totalTime = totalTime ?: 0
 
         // Get allotted time, if it's null, return it as null
-        val allottedTime = allottedTimeCapRepo.findByUserId(userId).allottedTime ?: return SimpleResult(null, null)
+        val allottedTime = allottedTimeCapRepo.findByUserId(userId).allottedTime ?: return SimpleResult(Long.MAX_VALUE, null)
 
         var availableTime = allottedTime - totalTime
 

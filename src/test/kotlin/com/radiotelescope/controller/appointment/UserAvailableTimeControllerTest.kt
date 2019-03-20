@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestControllerTest() {
+internal class UserAvailableTimeControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -36,14 +36,14 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
-    private lateinit var appointmentAvailableTimeController: AppointmentAvailableTimeController
+    private lateinit var userAvailableTimeController: UserAvailableTimeController
     private lateinit var user: User
 
     @Before
     override fun init() {
         super.init()
 
-        appointmentAvailableTimeController = AppointmentAvailableTimeController(
+        userAvailableTimeController = UserAvailableTimeController(
                 appointmentWrapper = getWrapper(),
                 logger = getLogger()
         )
@@ -71,7 +71,7 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
 
-        val result = appointmentAvailableTimeController.execute(user.id)
+        val result = userAvailableTimeController.execute(user.id)
 
         assertNotNull(result)
         assertTrue(result.data is Long)
@@ -99,7 +99,7 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
         getContext().login(user.id)
         getContext().currentRoles.add(UserRole.Role.USER)
 
-        val result = appointmentAvailableTimeController.execute(user.id)
+        val result = userAvailableTimeController.execute(user.id)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -117,7 +117,7 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
     @Test
     fun testFailedAuthenticationResponse() {
         // Do not log the user in
-        val result = appointmentAvailableTimeController.execute(user.id)
+        val result = userAvailableTimeController.execute(user.id)
 
         assertNotNull(result)
         assertNull(result.data)
