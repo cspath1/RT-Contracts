@@ -11,7 +11,6 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -96,45 +95,15 @@ class CoordinateAppointmentCreate(
             if (!errors.isEmpty)
                 return errors
 
-            errors = validateAvailableAllottedTime()
+            errors = validateAvailableAllottedTime(
+                    request = request,
+                    appointmentRepo = appointmentRepo,
+                    userRoleRepo = userRoleRepo
+            )
 
         }
 
       return if (errors.isEmpty) null else errors
-    }
-
-    /**
-     * Method responsible for checking if a user has enough available time
-     * to schedule the new observation, as well as having a membership role
-     */
-    private fun validateAvailableAllottedTime(): HashMultimap<ErrorTag, String>? {
-        val errors = HashMultimap.create<ErrorTag, String>()
-
-        with(request) {
-            val newAppointmentTime = endTime.time - startTime.time
-            val totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(userId) ?: 0
-            val theUserRole = userRoleRepo.findMembershipRoleByUserId(userId)
-
-            if (theUserRole == null) {
-                errors.put(ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
-                return errors
-            }
-
-            when (theUserRole.role) {
-                // Guest -> 5 hours
-                UserRole.Role.GUEST -> {
-                    if ((totalTime + newAppointmentTime) > Appointment.GUEST_APPOINTMENT_TIME_CAP)
-                        errors.put(ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
-                }
-                // Everyone else -> 50 hours
-                else -> {
-                    if ((totalTime + newAppointmentTime) > Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP)
-                        errors.put(ErrorTag.ALLOTTED_TIME, "Max allotted observation time is 50 hours at any given time")
-                }
-            }
-        }
-
-        return errors
     }
 
     /**
