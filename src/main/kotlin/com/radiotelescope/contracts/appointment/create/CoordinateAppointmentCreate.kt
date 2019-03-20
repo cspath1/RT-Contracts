@@ -82,7 +82,7 @@ class CoordinateAppointmentCreate(
                 errors.put(ErrorTag.END_TIME, "Start time must be before end time")
             if (startTime.before(Date()))
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
-            if (isOverlap())
+            if (isOverlap(request, appointmentRepo))
                 errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
             if (hours < 0 || hours >= 24)
                 errors.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
@@ -136,7 +136,7 @@ class CoordinateAppointmentCreate(
 
         return errors
     }
-
+/*
     /**
      * Method responsible for check if the requested appointment
      * conflict with the one that are already scheduled
@@ -155,7 +155,7 @@ class CoordinateAppointmentCreate(
 
         return isOverlap
     }
-
+*/
     /**
      * Data class containing all fields necessary for appointment creation. Implements
      * the [BaseCreateRequest] interface.
