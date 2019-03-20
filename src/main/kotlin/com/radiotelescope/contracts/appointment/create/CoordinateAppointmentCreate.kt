@@ -136,26 +136,7 @@ class CoordinateAppointmentCreate(
 
         return errors
     }
-/*
-    /**
-     * Method responsible for check if the requested appointment
-     * conflict with the one that are already scheduled
-     */
-    private fun isOverlap(): Boolean {
-        var isOverlap = false
-        val appointmentList = appointmentRepo.findConflict(
-                endTime = request.endTime,
-                startTime = request.startTime,
-                telescopeId = request.telescopeId
-        )
 
-        if (!appointmentList.isEmpty()) {
-            isOverlap = true
-        }
-
-        return isOverlap
-    }
-*/
     /**
      * Data class containing all fields necessary for appointment creation. Implements
      * the [BaseCreateRequest] interface.
