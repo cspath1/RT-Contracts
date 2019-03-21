@@ -4,6 +4,7 @@ import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.appointment.factory.CelestialBodyAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.RasterScanAppointmentFactory
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
@@ -79,6 +80,21 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                         telescopeRepo = telescopeRepo,
                         coordinateRepo = coordinateRepo,
                         celestialBodyRepo = celestialBodyRepo
+                ),
+                appointmentRepo = appointmentRepo,
+                viewerRepo = viewerRepo
+        )
+    }
+
+    fun getRasterScanCreateWrapper(): UserAppointmentWrapper {
+        return UserAppointmentWrapper(
+                context = getContext(),
+                factory = RasterScanAppointmentFactory(
+                        appointmentRepo = appointmentRepo,
+                        userRepo = userRepo,
+                        userRoleRepo = userRoleRepo,
+                        telescopeRepo = telescopeRepo,
+                        coordinateRepo = coordinateRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo

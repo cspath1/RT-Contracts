@@ -1,4 +1,4 @@
-package com.radiotelescope.controller.model.appointment
+package com.radiotelescope.controller.model.appointment.create
 
 import com.radiotelescope.controller.model.BaseForm
 import java.util.*

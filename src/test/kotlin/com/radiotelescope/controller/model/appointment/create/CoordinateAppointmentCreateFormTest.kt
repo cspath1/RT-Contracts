@@ -1,7 +1,6 @@
-package com.radiotelescope.controller.model.appointment
+package com.radiotelescope.controller.model.appointment.create
 
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.controller.model.appointment.create.CoordinateAppointmentCreateForm
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
@@ -32,6 +31,9 @@ internal class CoordinateAppointmentCreateFormTest {
         assertEquals(theRequest.startTime, baseForm.startTime!!)
         assertEquals(theRequest.isPublic, baseForm.isPublic!!)
         assertEquals(theRequest.declination, baseForm.declination!!, 0.00001)
+        assertEquals(theRequest.hours, baseForm.hours)
+        assertEquals(theRequest.minutes, baseForm.minutes)
+        assertEquals(theRequest.seconds, baseForm.seconds)
     }
 
     @Test
