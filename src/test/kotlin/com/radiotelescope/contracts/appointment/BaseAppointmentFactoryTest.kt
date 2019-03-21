@@ -3,9 +3,11 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentCreate
 import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
+import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
 import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.CelestialBodyAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.RasterScanAppointmentFactory
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -115,6 +117,32 @@ internal class BaseAppointmentFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is CelestialBodyAppointmentCreate)
+    }
+
+    @Test
+    fun raster_scan_create() {
+        // Instantiate the proper factory
+        factory = RasterScanAppointmentFactory(
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo
+        )
+
+        val cmd = factory.create(
+                request = RasterScanAppointmentCreate.Request(
+                        userId = 1L,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 30000L),
+                        isPublic = true,
+                        telescopeId = 1L,
+                        coordinates = listOf()
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is RasterScanAppointmentCreate)
     }
 
     @Test
