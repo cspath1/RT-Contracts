@@ -17,7 +17,7 @@ import java.util.*
  * @param endTime the Appointment end time
  * @param telescopeId the Appointment's telescope
  */
-data class CoordinateCreateForm(
+data class CoordinateAppointmentCreateForm(
         override val userId: Long?,
         override val startTime: Date?,
         override val endTime: Date?,

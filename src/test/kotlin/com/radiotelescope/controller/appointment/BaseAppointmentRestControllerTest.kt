@@ -3,8 +3,10 @@ package com.radiotelescope.controller.appointment
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.factory.CelestialBodyAppointmentFactory
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -28,6 +30,9 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var celestialBodyRepo: ICelestialBodyRepository
 
     @Autowired
     private lateinit var viewerRepo: IViewerRepository
@@ -64,4 +69,19 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
     }
 
     // Add other wrappers here (i.e. wrapper that will create a Celestial Body appointment)
+    fun getCelestialBodyCreateWrapper(): UserAppointmentWrapper {
+        return UserAppointmentWrapper(
+                context = getContext(),
+                factory = CelestialBodyAppointmentFactory(
+                        appointmentRepo = appointmentRepo,
+                        userRepo = userRepo,
+                        userRoleRepo = userRoleRepo,
+                        telescopeRepo = telescopeRepo,
+                        coordinateRepo = coordinateRepo,
+                        celestialBodyRepo = celestialBodyRepo
+                ),
+                appointmentRepo = appointmentRepo,
+                viewerRepo = viewerRepo
+        )
+    }
 }
