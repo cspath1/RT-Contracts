@@ -22,5 +22,6 @@ enum class ErrorTag{
     DECLINATION,
     IS_APPROVE,
     SEARCH,
-    CELESTIAL_BODY
+    CELESTIAL_BODY,
+    COORDINATES
 }
