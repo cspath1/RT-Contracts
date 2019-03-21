@@ -1,10 +1,13 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentCreate
 import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.CelestialBodyAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -47,6 +50,9 @@ internal class BaseAppointmentFactoryTest {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var celestialBodyRepo: ICelestialBodyRepository
+
     private lateinit var factory: AppointmentFactory
 
     @Before
@@ -82,6 +88,33 @@ internal class BaseAppointmentFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is CoordinateAppointmentCreate)
+    }
+
+    @Test
+    fun celestial_body_create() {
+        // Instantiate the proper factory
+        factory = CelestialBodyAppointmentFactory(
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                celestialBodyRepo = celestialBodyRepo
+        )
+
+        val cmd = factory.create(
+                request = CelestialBodyAppointmentCreate.Request(
+                        userId = 1L,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 30000L),
+                        isPublic = true,
+                        telescopeId = 1L,
+                        celestialBodyId = 1L
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is CelestialBodyAppointmentCreate)
     }
 
     @Test

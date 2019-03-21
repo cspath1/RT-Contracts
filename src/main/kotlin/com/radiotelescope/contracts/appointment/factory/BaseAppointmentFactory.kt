@@ -171,7 +171,7 @@ abstract class BaseAppointmentFactory(
      * command object
      *
      * @param request the [Request.Request] object
-     * @return a [CoordinateCreate] command
+     * @return a [Request] command
      */
     override fun request(request: Request.Request): Command<Long, Multimap<ErrorTag, String>> {
         return Request(
