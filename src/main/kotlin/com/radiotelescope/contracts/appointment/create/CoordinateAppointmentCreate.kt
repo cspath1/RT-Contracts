@@ -72,16 +72,14 @@ class CoordinateAppointmentCreate(
      * declination supplied are valid.
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-        var errors = basicValidateRequest(
+        basicValidateRequest(
                 request = request,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 appointmentRepo = appointmentRepo
-        )
-        if (errors == null)
-            errors = HashMultimap.create<ErrorTag, String>()
-        else if (errors.containsKey(ErrorTag.USER_ID) || errors.containsKey(ErrorTag.TELESCOPE_ID))
-            return errors
+        )?.let { return it }
+
+        var errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
             if (hours < 0 || hours >= 24)

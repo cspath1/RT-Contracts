@@ -78,7 +78,14 @@ class RasterScanAppointmentCreate(
      * right ascension and declination are valid.
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-        var errors = HashMultimap.create<ErrorTag,String>()
+        basicValidateRequest(
+                request = request,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                appointmentRepo = appointmentRepo
+        )?.let { return it }
+
+        var errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
             if (!userRepo.existsById(userId)) {

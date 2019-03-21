@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.appointment.create
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
+import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
@@ -66,16 +67,14 @@ class CelestialBodyAppointmentCreate(
      * exists.
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-        var errors = basicValidateRequest(
+        basicValidateRequest(
                 request = request,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 appointmentRepo = appointmentRepo
-        )
-        if (errors == null)
-            errors = HashMultimap.create<ErrorTag, String>()
-        else if (errors.containsKey(ErrorTag.USER_ID) || errors.containsKey(ErrorTag.TELESCOPE_ID))
-            return errors
+        )?.let { return it }
+
+        var errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
             if (!celestialBodyRepo.existsById(celestialBodyId)) {
@@ -96,6 +95,10 @@ class CelestialBodyAppointmentCreate(
         return if (errors!!.isEmpty) null else errors
     }
 
+    /**
+     * Data class representing all fields necessary for appointment creation.
+     * Implements [BaseCreateRequest] interface
+     */
     data class Request(
             override val userId: Long,
             override val startTime: Date,
@@ -104,6 +107,10 @@ class CelestialBodyAppointmentCreate(
             override val isPublic: Boolean,
             val celestialBodyId: Long
     ) : Create.Request() {
+        /**
+         * Concrete implementation of the [BaseCreateRequest.toEntity] method
+         * that returns an Appointment object
+         */
         override fun toEntity(): Appointment {
             return Appointment(
                     startTime = startTime,

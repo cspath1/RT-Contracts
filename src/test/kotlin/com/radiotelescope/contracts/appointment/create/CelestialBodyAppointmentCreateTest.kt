@@ -175,6 +175,8 @@ internal class CelestialBodyAppointmentCreateTest {
         assertEquals(requestCopy.userId, theAppointment.user.id)
         assertTrue(theAppointment.isPublic)
         assertEquals(Appointment.Type.CELESTIAL_BODY, theAppointment.type)
+        assertNotNull(theAppointment.celestialBody)
+        assertEquals(requestCopy.celestialBodyId, theAppointment.celestialBody!!.id)
     }
 
     @Test
