@@ -4,6 +4,7 @@ import com.radiotelescope.contracts.accountActivateToken.BaseAccountActivateToke
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
 import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.factory.CelestialBodyAppointmentFactory
 import com.radiotelescope.contracts.celestialBody.BaseCelestialBodyFactory
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.BaseFeedbackFactory
@@ -93,6 +94,23 @@ class FactoryBeans(
                         appointmentRepo = repositories.appointmentRepo,
                         telescopeRepo = repositories.telescopeRepo,
                         userRoleRepo = repositories.userRoleRepo,
+                        coordinateRepo = repositories.coordinateRepo
+                ),
+                appointmentRepo = repositories.appointmentRepo,
+                viewerRepo = repositories.viewerRepo
+        )
+    }
+
+    @Bean(value = ["celestialBodyAppointmentWrapper"])
+    override fun getCelestialBodyAppointmentWrapper(): UserAppointmentWrapper {
+        return UserAppointmentWrapper(
+                context = userContext,
+                factory = CelestialBodyAppointmentFactory(
+                        userRepo = repositories.userRepo,
+                        appointmentRepo = repositories.appointmentRepo,
+                        telescopeRepo = repositories.telescopeRepo,
+                        userRoleRepo = repositories.userRoleRepo,
+                        celestialBodyRepo = repositories.celestialBodyRepo,
                         coordinateRepo = repositories.coordinateRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,

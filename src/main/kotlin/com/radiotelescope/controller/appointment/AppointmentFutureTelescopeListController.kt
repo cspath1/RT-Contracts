@@ -8,6 +8,7 @@ import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 class AppointmentFutureTelescopeListController(
+        @Qualifier(value = "coordinateAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {

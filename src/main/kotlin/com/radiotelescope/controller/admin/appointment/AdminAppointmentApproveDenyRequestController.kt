@@ -12,6 +12,7 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 class AdminAppointmentApproveDenyRequestController (
+        @Qualifier(value = "coordinateAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         private val appointmentRepo: IAppointmentRepository,
         private val awsSesSendService: IAwsSesSendService,

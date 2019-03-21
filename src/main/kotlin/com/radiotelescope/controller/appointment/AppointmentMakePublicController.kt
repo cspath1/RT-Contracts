@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 import com.radiotelescope.contracts.appointment.MakePublic
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PutMapping
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping
  */
 @RestController
 class AppointmentMakePublicController (
+        @Qualifier(value = "coordinateAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ): BaseRestController(logger){

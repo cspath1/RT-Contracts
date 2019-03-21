@@ -8,6 +8,7 @@ import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
@@ -16,11 +17,15 @@ import org.springframework.web.bind.annotation.*
 /**
  * Rest Controller used to retrieve a list of the users completed appointments
  *
+ * Note that for actions done to the Appointment Table that
+ * are not creates, the specific [UserAppointmentWrapper]
+ * does not matter.
  * @param appointmentWrapper the [UserAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class AppointmentCompletedUserListController(
+        @Qualifier(value = "coordinateAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {

@@ -13,6 +13,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 class AppointmentRequestController(
+        @Qualifier(value = "coordinateAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         private val awsSesSendService: IAwsSesSendService,
         private val userRepo: IUserRepository,

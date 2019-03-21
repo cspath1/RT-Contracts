@@ -10,6 +10,7 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.model.appointment.Filter
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -26,6 +27,7 @@ import java.util.*
  */
 @RestController
 class AppointmentSearchController(
+        @Qualifier(value = "coordinateAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
