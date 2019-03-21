@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.model.appointment
 
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.appointment.create.CoordinateAppointmentCreateForm
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*

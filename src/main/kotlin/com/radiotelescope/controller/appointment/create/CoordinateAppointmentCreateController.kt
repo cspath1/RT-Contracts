@@ -4,7 +4,7 @@ import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.appointment.CoordinateAppointmentCreateForm
+import com.radiotelescope.controller.model.appointment.create.CoordinateAppointmentCreateForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle Appointment Creation
+ * REST Controller to handle Point Appointment Creation
  *
  * @param appointmentWrapper the [UserAppointmentWrapper]
  * @param logger the [Logger] service

@@ -2,7 +2,7 @@ package com.radiotelescope.controller.appointment.create
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
-import com.radiotelescope.controller.model.appointment.CelestialBodyAppointmentCreateForm
+import com.radiotelescope.controller.model.appointment.create.CelestialBodyAppointmentCreateForm
 import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository

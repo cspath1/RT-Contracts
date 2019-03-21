@@ -1,10 +1,12 @@
 package com.radiotelescope.controller.appointment.create
 
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentCreate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.appointment.CelestialBodyAppointmentCreateForm
+import com.radiotelescope.controller.model.appointment.create.CelestialBodyAppointmentCreateForm
 import com.radiotelescope.controller.spring.Logger
+import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
@@ -13,12 +15,30 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * REST Controller to handle Celestial Body Appointment Creation
+ *
+ * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param logger the [Logger] service
+ */
 @RestController
 class CelestialBodyAppointmentCreateController(
         @Qualifier(value = "celestialBodyAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of adapting the [CelestialBodyAppointmentCreateForm]
+     * into a [CelestialBodyAppointmentCreate.Request] after ensuring no fields are null. If
+     * any are, it will instead respond with errors.
+     *
+     * Otherwise, it will execute the [UserAppointmentWrapper.create] method. If this method
+     * returns an [AccessReport], this means the user did not pass authorization and the
+     * method will respond with errors.
+     *
+     * Otherwise, the [CelestialBodyAppointmentCreate] command was executed, and the controller
+     * will check whether this command was a success or not, responding accordingly.
+     */
     @PostMapping(value = ["/api/appointments/schedule/celestial-body"])
     fun execute(@RequestBody form: CelestialBodyAppointmentCreateForm): Result {
         // If the form validation fails, respond with errors

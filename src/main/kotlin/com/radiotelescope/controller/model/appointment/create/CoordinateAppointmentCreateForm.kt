@@ -1,10 +1,11 @@
-package com.radiotelescope.controller.model.appointment
+package com.radiotelescope.controller.model.appointment.create
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.controller.model.BaseForm
+import com.radiotelescope.controller.model.appointment.CreateForm
 import java.util.*
 
 /**
@@ -16,6 +17,11 @@ import java.util.*
  * @param startTime the Appointment start time
  * @param endTime the Appointment end time
  * @param telescopeId the Appointment's telescope
+ * @param isPublic whether the Appointment is public or not
+ * @param hours the Right Ascension hours
+ * @param minutes the Right Ascension minutes
+ * @param seconds the Right Ascension seconds
+ * @param declination the Declination
  */
 data class CoordinateAppointmentCreateForm(
         override val userId: Long?,
