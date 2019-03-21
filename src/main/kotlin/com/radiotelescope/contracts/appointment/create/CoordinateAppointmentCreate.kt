@@ -72,32 +72,28 @@ class CoordinateAppointmentCreate(
      * declination supplied are valid.
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-        var errors = HashMultimap.create<ErrorTag,String>()
-        with(request) {
-            if (!userRepo.existsById(userId)) {
-                errors.put(ErrorTag.USER_ID, "User #$userId could not be found")
-                return errors
-            }
-            if (!telescopeRepo.existsById(telescopeId)) {
-                errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
-                return errors
-            }
-            if (startTime.after(endTime))
-                errors.put(ErrorTag.END_TIME, "Start time must be before end time")
-            if (startTime.before(Date()))
-                errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
-            if (isOverlap(request, appointmentRepo))
-                errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
-            if (hours < 0 || hours >= 24)
-                errors.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
-            if (minutes < 0 || minutes >= 60)
-                errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
-            if (seconds < 0 || seconds >= 60)
-                errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
-            if (declination > 90 || declination < -90)
-                errors.put(ErrorTag.DECLINATION, "Declination must be between -90 and 90")
+        var errors = basicValidateRequest(
+                request = request,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                appointmentRepo = appointmentRepo
+        )
+        if (errors == null)
+            errors = HashMultimap.create<ErrorTag, String>()
+        else if (errors.containsKey(ErrorTag.USER_ID) || errors.containsKey(ErrorTag.TELESCOPE_ID))
+            return errors
 
-            if (!errors.isEmpty)
+        with(request) {
+            if (hours < 0 || hours >= 24)
+                errors!!.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
+            if (minutes < 0 || minutes >= 60)
+                errors!!.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
+            if (seconds < 0 || seconds >= 60)
+                errors!!.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
+            if (declination > 90 || declination < -90)
+                errors!!.put(ErrorTag.DECLINATION, "Declination must be between -90 and 90")
+
+            if (!errors!!.isEmpty)
                 return errors
 
             errors = validateAvailableAllottedTime(
@@ -108,7 +104,8 @@ class CoordinateAppointmentCreate(
 
         }
 
-      return if (errors.isEmpty) null else errors
+
+      return if (errors!!.isEmpty) null else errors
     }
 
     /**

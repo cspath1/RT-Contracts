@@ -66,29 +66,24 @@ class CelestialBodyAppointmentCreate(
      * exists.
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-        var errors = HashMultimap.create<ErrorTag, String>()
+        var errors = basicValidateRequest(
+                request = request,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                appointmentRepo = appointmentRepo
+        )
+        if (errors == null)
+            errors = HashMultimap.create<ErrorTag, String>()
+        else if (errors.containsKey(ErrorTag.USER_ID) || errors.containsKey(ErrorTag.TELESCOPE_ID))
+            return errors
 
         with(request) {
-            if (!userRepo.existsById(userId)) {
-                errors.put(ErrorTag.USER_ID, "User #$userId could not be found")
-                return errors
-            }
-            if (!telescopeRepo.existsById(telescopeId)) {
-                errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
-                return errors
-            }
             if (!celestialBodyRepo.existsById(celestialBodyId)) {
-                errors.put(ErrorTag.CELESTIAL_BODY, "Celestial Body #$celestialBodyId could not be found")
+                errors = HashMultimap.create<ErrorTag, String>()
+                errors!!.put(ErrorTag.CELESTIAL_BODY, "Celestial Body #$celestialBodyId could not be found")
                 return errors
             }
-            if (startTime.before(Date()))
-                errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
-            if (startTime.after(endTime))
-                errors.put(ErrorTag.END_TIME, "Start time must be before end time")
-            if (isOverlap(request, appointmentRepo))
-                errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
-
-            if (!errors.isEmpty)
+            if (!errors!!.isEmpty)
                 return errors
 
             errors = validateAvailableAllottedTime(
@@ -98,7 +93,7 @@ class CelestialBodyAppointmentCreate(
             )
         }
 
-        return if (errors.isEmpty) null else errors
+        return if (errors!!.isEmpty) null else errors
     }
 
     data class Request(
