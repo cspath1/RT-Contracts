@@ -42,7 +42,7 @@ internal class UserRoleTest {
 
     @Before
     fun setUp() {
-        // CoordinateCreate two users and roles for those users
+        // Create two users and roles for those users
         firstUser = testUtil.createUser("cspath1@ycp.edu")
         val secondUser = testUtil.createUser("spathcody@gmail.com")
 

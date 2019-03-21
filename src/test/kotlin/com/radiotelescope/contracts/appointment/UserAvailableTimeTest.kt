@@ -44,6 +44,7 @@ internal class UserAvailableTimeTest {
     private lateinit var userRoleRepo: IUserRoleRepository
 
     private lateinit var user: User
+    private val currentTime = System.currentTimeMillis()
     private val oneHour = 60 * 60 * 1000
 
     @Before
@@ -64,8 +65,8 @@ internal class UserAvailableTimeTest {
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
-                startTime = Date(System.currentTimeMillis() + oneHour),
-                endTime = Date(System.currentTimeMillis() + oneHour + Appointment.GUEST_APPOINTMENT_TIME_CAP),
+                startTime = Date(currentTime + oneHour),
+                endTime = Date(currentTime + oneHour + Appointment.GUEST_APPOINTMENT_TIME_CAP),
                 isPublic = true,
                 type = Appointment.Type.POINT
         )
@@ -98,8 +99,8 @@ internal class UserAvailableTimeTest {
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
-                startTime = Date(System.currentTimeMillis() + oneHour),
-                endTime = Date(System.currentTimeMillis() + oneHour + oneHour),
+                startTime = Date(currentTime + oneHour.toLong()),
+                endTime = Date(currentTime + oneHour.toLong() + oneHour.toLong()),
                 isPublic = true,
                 type = Appointment.Type.POINT
         )

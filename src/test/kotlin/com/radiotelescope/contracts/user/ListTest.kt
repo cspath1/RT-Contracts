@@ -39,7 +39,7 @@ internal class ListTest {
 
     @Before
     fun setUp() {
-        // CoordinateCreate a few user's
+        // Create a few user's
         val user1 = testUtil.createUser("cspath1@ycp.edu")
         testUtil.createUserRolesForUser(user1, UserRole.Role.MEMBER, true)
 

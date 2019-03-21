@@ -49,7 +49,7 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
 
         user = testUtil.createUser("cspath1@ycp.edu")
 
-        // CoordinateCreate two appointments for the user
+        // Create two appointments for the user
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,

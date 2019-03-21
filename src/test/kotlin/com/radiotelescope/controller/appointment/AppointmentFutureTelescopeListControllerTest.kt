@@ -51,7 +51,7 @@ internal class AppointmentFutureTelescopeListControllerTest : BaseAppointmentRes
 
         user = testUtil.createUser("cspath1@ycp.edu")
 
-        // CoordinateCreate two future appointments for the telescope
+        // Create two future appointments for the telescope
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,

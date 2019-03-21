@@ -42,7 +42,7 @@ internal class RetrieveErrorsTest {
 
     @Before
     fun setUp() {
-        // CoordinateCreate an error map
+        // Create an error map
         val errors = HashMultimap.create<ErrorTag, String>()
 
         errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")

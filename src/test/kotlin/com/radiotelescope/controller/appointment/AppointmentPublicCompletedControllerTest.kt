@@ -49,7 +49,7 @@ internal class AppointmentPublicCompletedControllerTest : BaseAppointmentRestCon
 
        user = testUtil.createUser("cspath1@ycp.edu")
 
-        // CoordinateCreate two public completed appointments
+        // Create two public completed appointments
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,

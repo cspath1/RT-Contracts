@@ -96,7 +96,7 @@ internal class UserCelestialBodyWrapperTest {
         )
         adminId = admin.id
 
-        // CoordinateCreate a Celestial Body
+        // Create a Celestial Body
         val coordinate = Coordinate(
                 hours = 14,
                 minutes = 39,

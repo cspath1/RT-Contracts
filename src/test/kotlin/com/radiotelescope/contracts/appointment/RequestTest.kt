@@ -71,7 +71,7 @@ internal class RequestTest {
 
     @Test
     fun testValid_CorrectConstraints_Success() {
-        // CoordinateCreate a copy of the request with a valid id
+        // Create a copy of the request with a valid id
         val requestCopy = baseRequest.copy(
                 userId = user.id
         )
@@ -92,7 +92,7 @@ internal class RequestTest {
 
     @Test
     fun testInvalid_UserDoesNotExist_Failure() {
-        // CoordinateCreate a copy of the request with an invalid id
+        // Create a copy of the request with an invalid id
         val requestCopy = baseRequest.copy(
                 userId = 123456789
         )
@@ -116,7 +116,7 @@ internal class RequestTest {
 
     @Test
     fun testInvalid_TelescopeDoesNotExist_Failure() {
-        // CoordinateCreate a copy of the request with an invalid telescope id
+        // Create a copy of the request with an invalid telescope id
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 telescopeId = 311L
@@ -141,7 +141,7 @@ internal class RequestTest {
 
     @Test
     fun testInvalid_StartTimeIsBeforeCurrentTime_Failure() {
-        // CoordinateCreate a copy of the request with an start time before now
+        // Create a copy of the request with an start time before now
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 startTime = Date(System.currentTimeMillis() - 1000L)
@@ -166,7 +166,7 @@ internal class RequestTest {
 
     @Test
     fun testInvalid_StartTimeIsAfterEndTime_Failure() {
-        // CoordinateCreate a copy of the request with a start time before the end time
+        // Create a copy of the request with a start time before the end time
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 startTime = baseRequest.endTime,
@@ -192,7 +192,7 @@ internal class RequestTest {
 
     @Test
     fun testHoursTooLow_Failure() {
-        // CoordinateCreate a copy of the request with hours below 0
+        // Create a copy of the request with hours below 0
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 hours = -311
@@ -217,7 +217,7 @@ internal class RequestTest {
 
     @Test
     fun testHoursTooHigh_Failure() {
-        // CoordinateCreate a copy of the request with hours above 24
+        // Create a copy of the request with hours above 24
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 hours = 311
@@ -242,7 +242,7 @@ internal class RequestTest {
 
     @Test
     fun testMinutesTooLow_Failure() {
-        // CoordinateCreate a copy of the request with minutes below 0
+        // Create a copy of the request with minutes below 0
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 minutes = -311
@@ -267,7 +267,7 @@ internal class RequestTest {
 
     @Test
     fun testMinutesTooHigh_Failure() {
-        // CoordinateCreate a copy of the request with minutes above 60
+        // Create a copy of the request with minutes above 60
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 hours = 311
@@ -292,7 +292,7 @@ internal class RequestTest {
 
     @Test
     fun testSecondsTooLow_Failure() {
-        // CoordinateCreate a copy of the request with seconds below 0
+        // Create a copy of the request with seconds below 0
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 seconds = -311
@@ -317,7 +317,7 @@ internal class RequestTest {
 
     @Test
     fun testSecondsTooHigh_Failure() {
-        // CoordinateCreate a copy of the request with seconds above 60
+        // Create a copy of the request with seconds above 60
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 seconds = 311
@@ -342,7 +342,7 @@ internal class RequestTest {
 
     @Test
     fun testDeclinationTooLow_Failure() {
-        // CoordinateCreate a copy of the request with a declination below 0
+        // Create a copy of the request with a declination below 0
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 declination = -311.0
@@ -367,7 +367,7 @@ internal class RequestTest {
 
     @Test
     fun testDeclinationTooGreat_Failure() {
-        // CoordinateCreate a copy of the request with a declination above 90
+        // Create a copy of the request with a declination above 90
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 declination = 311.0

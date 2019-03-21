@@ -39,7 +39,7 @@ internal class ListTest {
 
     @Before
     fun setUp() {
-        // CoordinateCreate a few Celestial Bodies
+        // Create a few Celestial Bodies
         val coordinateOne = Coordinate(
                 hours = 5,
                 minutes = 34,

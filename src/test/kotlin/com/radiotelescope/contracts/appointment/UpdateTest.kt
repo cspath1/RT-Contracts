@@ -137,7 +137,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_AppointmentDoesNotExist_Failure() {
-        // CoordinateCreate a copy of the request with an invalid id
+        // Create a copy of the request with an invalid id
         val requestCopy = baseRequest.copy(
                 id = 311
         )
@@ -159,7 +159,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_StartTimeGreaterThanEndTime_Failure() {
-        // CoordinateCreate a copy of the request with a start time after the end time
+        // Create a copy of the request with a start time after the end time
         val requestCopy = baseRequest.copy(
                 startTime = Date(appointment.endTime.time + 40000L),
                 endTime = Date(appointment.endTime.time + 10000L)
@@ -182,7 +182,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_StartTimeInPast_Failure() {
-        // CoordinateCreate a copy of the request with a start time in the past
+        // Create a copy of the request with a start time in the past
         val requestCopy = baseRequest.copy(
                 startTime = Date(appointment.startTime.time - 40000L),
                 endTime = Date(appointment.endTime.time + 10000L)
@@ -205,7 +205,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_TelescopeDoesNotExist_Failure() {
-        // CoordinateCreate a copy of the request with an invalid telescope
+        // Create a copy of the request with an invalid telescope
         val requestCopy = baseRequest.copy(
                 telescopeId = 311L
         )
@@ -234,7 +234,7 @@ internal class UpdateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the request with an appointment time over the limit
+        // Create a copy of the request with an appointment time over the limit
         val requestCopy = baseRequest.copy(
                 startTime = Date(appointment.endTime.time + twoHours),
                 endTime = Date(appointment.endTime.time + (twoHours * 5))
@@ -265,7 +265,7 @@ internal class UpdateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the request with an appointment time over the limit
+        // Create a copy of the request with an appointment time over the limit
         val requestCopy = baseRequest.copy(
                 startTime = Date(appointment.endTime.time + twoHours),
                 endTime = Date(appointment.endTime.time + (twoHours * 29))
@@ -296,7 +296,7 @@ internal class UpdateTest {
                 isApproved = false
         )
 
-        // CoordinateCreate a copy of the request with an appointment time over the limit
+        // Create a copy of the request with an appointment time over the limit
         val requestCopy = baseRequest.copy(
                 startTime = Date(appointment.endTime.time + twoHours),
                 endTime = Date(appointment.endTime.time + (twoHours * 29))
@@ -901,7 +901,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_HoursTooLow_Failure() {
-        // CoordinateCreate a copy of the request with hours below 0
+        // Create a copy of the request with hours below 0
         val requestCopy = baseRequest.copy(
                 hours = -311
         )
@@ -924,7 +924,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_HoursTooHigh_Failure() {
-        // CoordinateCreate a copy of the request with hours above 24
+        // Create a copy of the request with hours above 24
         val requestCopy = baseRequest.copy(
                 hours = 311
         )
@@ -947,7 +947,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_MinutesTooLow_Failure() {
-        // CoordinateCreate a copy of the request with minutes below 0
+        // Create a copy of the request with minutes below 0
         val requestCopy = baseRequest.copy(
                 minutes = -311
         )
@@ -970,7 +970,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_MinutesTooHigh_Failure() {
-        // CoordinateCreate a copy of the request with minutes above 60
+        // Create a copy of the request with minutes above 60
         val requestCopy = baseRequest.copy(
                 minutes = 311
         )
@@ -993,7 +993,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_SecondsTooLow_Failure() {
-        // CoordinateCreate a copy of the request with seconds below 0
+        // Create a copy of the request with seconds below 0
         val requestCopy = baseRequest.copy(
                 seconds = -311
         )
@@ -1016,7 +1016,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_SecondsTooHigh_Failure() {
-        // CoordinateCreate a copy of the request with seconds above 60
+        // Create a copy of the request with seconds above 60
         val requestCopy = baseRequest.copy(
                 seconds = 311
         )
@@ -1039,7 +1039,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_DeclinationTooLow_Failure() {
-        // CoordinateCreate a copy of the request with a declination below 0
+        // Create a copy of the request with a declination below 0
         val requestCopy = baseRequest.copy(
                 declination = -99.0
         )
@@ -1061,7 +1061,7 @@ internal class UpdateTest {
 
     @Test
     fun testInvalid_DeclinationTooGreat_Failure() {
-        // CoordinateCreate a copy of the request with a declination below 0
+        // Create a copy of the request with a declination below 0
         val requestCopy = baseRequest.copy(
                 declination = 99.0
         )

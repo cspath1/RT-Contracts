@@ -546,7 +546,7 @@ internal class UserUserWrapperTest {
     fun testChangePassword_NotLoggedIn_Failure() {
         // Do not log the user in
 
-        // CoordinateCreate a request object
+        // Create a request object
         val requestCopy = baseChangePasswordRequest.copy(id = userId)
 
         // Execute the wrapper method
@@ -566,7 +566,7 @@ internal class UserUserWrapperTest {
         context.login(otherUserId)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // CoordinateCreate a request object
+        // Create a request object
         val requestCopy = baseChangePasswordRequest.copy(
                 id = userId
         )
@@ -588,7 +588,7 @@ internal class UserUserWrapperTest {
         context.login(userId)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // CoordinateCreate a request object
+        // Create a request object
         val requestCopy = baseChangePasswordRequest.copy(
                 id = 311L
         )
@@ -610,7 +610,7 @@ internal class UserUserWrapperTest {
         context.login(userId)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // CoordinateCreate a request object
+        // Create a request object
         val requestCopy = baseChangePasswordRequest.copy(
                 id = userId
         )
@@ -638,7 +638,7 @@ internal class UserUserWrapperTest {
         context.login(userId)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // CoordinateCreate the SearchCriteria list
+        // Create the SearchCriteria list
         val searchCriteria = arrayListOf<SearchCriteria>()
         searchCriteria.add(SearchCriteria(Filter.FIRST_NAME, "First"))
 
@@ -655,7 +655,7 @@ internal class UserUserWrapperTest {
 
     @Test
     fun testSearch_NotLoggedIn_Failure() {
-        // CoordinateCreate the SearchCriteria list
+        // Create the SearchCriteria list
         val searchCriteria = arrayListOf<SearchCriteria>()
         searchCriteria.add(SearchCriteria(Filter.FIRST_NAME, "First"))
 

@@ -21,5 +21,6 @@ enum class ErrorTag{
     SECONDS,
     DECLINATION,
     IS_APPROVE,
-    SEARCH
+    SEARCH,
+    CELESTIAL_BODY
 }

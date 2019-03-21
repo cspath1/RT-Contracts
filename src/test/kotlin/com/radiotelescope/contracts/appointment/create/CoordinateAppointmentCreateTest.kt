@@ -1,7 +1,7 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.create
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
+import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -83,7 +83,7 @@ internal class CoordinateAppointmentCreateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the baseRequest with the correct
+        // Create a copy of the baseRequest with the correct
         // user id
         val requestCopy = baseRequest.copy(userId = user.id)
 
@@ -111,6 +111,7 @@ internal class CoordinateAppointmentCreateTest {
         assertEquals(requestCopy.telescopeId, theAppointment.get().telescopeId)
         assertEquals(requestCopy.userId, theAppointment.get().user.id)
         assertTrue(theAppointment.get().isPublic)
+        assertEquals(Appointment.Type.POINT, theAppointment.get().type)
     }
 
     @Test
@@ -122,7 +123,7 @@ internal class CoordinateAppointmentCreateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate an appointment for two hours
+        // Create an appointment for two hours
         testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,
@@ -156,7 +157,7 @@ internal class CoordinateAppointmentCreateTest {
 
     @Test
     fun testInvalidTelescopeId_Failure() {
-        // CoordinateCreate a copy of the baseRequest with the correct
+        // Create a copy of the baseRequest with the correct
         // user id but an invalid telescope id
         val requestCopy = baseRequest.copy(
                 userId = user.id,
@@ -205,7 +206,7 @@ internal class CoordinateAppointmentCreateTest {
 
     @Test
     fun testStartAfterEnd_Failure() {
-        // CoordinateCreate a copy of the baseRequest with the
+        // Create a copy of the baseRequest with the
         // start time before the end time
         val requestCopy = baseRequest.copy(
                 userId = user.id,
@@ -330,7 +331,7 @@ internal class CoordinateAppointmentCreateTest {
     fun testNoMembershipRole_Failure() {
         // Do not create an approved category of service for the user
 
-        // CoordinateCreate a copy of the baseRequest with the correct
+        // Create a copy of the baseRequest with the correct
         // user id
         val requestCopy = baseRequest.copy(userId = user.id)
 
@@ -855,7 +856,7 @@ internal class CoordinateAppointmentCreateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the request with an invalid hours
+        // Create a copy of the request with an invalid hours
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 hours = -311
@@ -888,7 +889,7 @@ internal class CoordinateAppointmentCreateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the request with an invalid hours
+        // Create a copy of the request with an invalid hours
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 hours = 311
@@ -921,7 +922,7 @@ internal class CoordinateAppointmentCreateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the request with an invalid hours
+        // Create a copy of the request with an invalid hours
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 minutes = -311
@@ -954,7 +955,7 @@ internal class CoordinateAppointmentCreateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the request with an invalid hours
+        // Create a copy of the request with an invalid hours
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 minutes = 311
@@ -987,7 +988,7 @@ internal class CoordinateAppointmentCreateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the request with an invalid hours
+        // Create a copy of the request with an invalid hours
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 seconds = -311
@@ -1020,7 +1021,7 @@ internal class CoordinateAppointmentCreateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the request with an invalid hours
+        // Create a copy of the request with an invalid hours
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 seconds = 311
@@ -1053,7 +1054,7 @@ internal class CoordinateAppointmentCreateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the request with an invalid declination
+        // Create a copy of the request with an invalid declination
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 declination = -666.0
@@ -1086,7 +1087,7 @@ internal class CoordinateAppointmentCreateTest {
                 isApproved = true
         )
 
-        // CoordinateCreate a copy of the request with an invalid declination
+        // Create a copy of the request with an invalid declination
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 declination = 666.0

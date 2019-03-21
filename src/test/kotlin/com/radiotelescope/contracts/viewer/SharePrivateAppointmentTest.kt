@@ -118,7 +118,7 @@ internal class SharePrivateAppointmentTest {
 
     @Test
     fun testInvalid_AppointmentDoesNotExist_Failure(){
-        // CoordinateCreate the request
+        // Create the request
         val request = SharePrivateAppointment.Request(
                 email = user.email,
                 appointmentId = -1L
@@ -153,7 +153,7 @@ internal class SharePrivateAppointmentTest {
                 type = Appointment.Type.POINT
         )
 
-        // CoordinateCreate the request
+        // Create the request
         val request = SharePrivateAppointment.Request(
                 email = user.email,
                 appointmentId = publicAppointment.id

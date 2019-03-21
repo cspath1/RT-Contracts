@@ -44,7 +44,7 @@ internal class SearchTest {
     @Before
     fun setUp() {
         // Persist two different celestial bodies
-        // CoordinateCreate a few Celestial Bodies
+        // Create a few Celestial Bodies
         val coordinateOne = Coordinate(
                 hours = 5,
                 minutes = 34,
