@@ -1,56 +1,52 @@
 package com.radiotelescope.controller.appointment.request
 
-import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.appointment.request.CoordinateAppointmentRequestForm
+import com.radiotelescope.controller.model.appointment.request.CelestialBodyAppointmentRequestForm
 import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
-import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.security.AccessReport
 import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle Coordinate Appointment Request
+ * REST Controller to handle Celestial Body Appointment Request
  *
  * @param appointmentWrapper the [UserAppointmentWrapper]
  * @param awsSesSendService the [AwsSesSendService]
- * @param userRepo the [IUserRepository]
+ * @param userRepo the [IUserRepository] interface
  * @param logger the [Logger] service
  */
 @RestController
-class CoordinateAppointmentRequestController(
-        @Qualifier(value = "coordinateAppointmentWrapper")
+class CelestialBodyAppointmentRequestController(
+        @Qualifier(value = "celestialBodyAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         private val awsSesSendService: IAwsSesSendService,
         private val userRepo: IUserRepository,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of adapting the [CoordinateAppointmentRequestForm]
-     * into a [CoordinateAppointmentRequest.Request] after ensuring no fields are null. If
-     * any are, it will instead respond with errors.
+     * Execute method that is in charge of adapting the [CelestialBodyAppointmentRequestForm]
+     * into a [CelestialBodyAppointmentRequest.Request] after ensuring no fields are null. If
+     * any are, it will instead respond with errors
      *
      * Otherwise, it will execute the [UserAppointmentWrapper.request] method.
      *
      * If this method returns an [AccessReport], this means the user was not
-     * authorized and the controller will return errors. Otherwise, the [CoordinateAppointmentRequest]
+     * authorized and the controller will return errors. Otherwise, the [CelestialBodyAppointmentRequest]
      * command was executed, and the controller will respond based on if the command
      * was a success or not
      */
-    @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/appointments/request/coordinate"])
-    fun execute(@RequestBody form: CoordinateAppointmentRequestForm): Result {
+    fun execute(@RequestBody form: CelestialBodyAppointmentRequestForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
             // Create error logs
