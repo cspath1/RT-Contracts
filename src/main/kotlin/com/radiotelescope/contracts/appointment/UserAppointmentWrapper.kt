@@ -3,9 +3,11 @@ package com.radiotelescope.contracts.appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.contracts.appointment.create.Create
+import com.radiotelescope.contracts.appointment.create.AppointmentCreate
 import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
 import com.radiotelescope.contracts.appointment.info.AppointmentInfo
+import com.radiotelescope.contracts.appointment.request.AppointmentRequest
+import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
@@ -32,12 +34,12 @@ class UserAppointmentWrapper(
 ) {
     /**
      * Wrapper method for the [AppointmentFactory.create] method that adds Spring
-     * Security authentication to the [Create] command object.
+     * Security authentication to the [AppointmentCreate] command object.
      *
-     * @param request the [Create.Request] object
+     * @param request the [AppointmentCreate.Request] object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun create(request: Create.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun create(request: AppointmentCreate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null && context.currentUserId() == request.userId) {
             // If public, they only need to be a base user
             return if (request.isPublic)
@@ -329,12 +331,12 @@ class UserAppointmentWrapper(
 
     /**
      * Wrapper method for the [AppointmentFactory.request] method that adds Spring
-     * Security authentication to the [Request] command object.
+     * Security authentication to the [CoordinateAppointmentRequest] command object.
      *
-     * @param request the [Request.Request] object
+     * @param request the [CoordinateAppointmentRequest.Request] object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun request(request: Request.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun request(request: AppointmentRequest.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null && context.currentUserId() == request.userId) {
             // If public, they only need to be a base user
             return if (request.isPublic)

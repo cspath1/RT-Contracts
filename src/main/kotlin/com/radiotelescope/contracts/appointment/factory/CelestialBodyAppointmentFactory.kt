@@ -4,7 +4,8 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentCreate
-import com.radiotelescope.contracts.appointment.create.Create
+import com.radiotelescope.contracts.appointment.create.AppointmentCreate
+import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -26,7 +27,7 @@ class CelestialBodyAppointmentFactory(
         userRoleRepo = userRoleRepo,
         coordinateRepo = coordinateRepo
 ) {
-    override fun create(request: Create.Request): Command<Long, Multimap<ErrorTag, String>> {
+    override fun create(request: AppointmentCreate.Request): Command<Long, Multimap<ErrorTag, String>> {
         return CelestialBodyAppointmentCreate(
                 request = request as CelestialBodyAppointmentCreate.Request,
                 appointmentRepo = appointmentRepo,
@@ -35,5 +36,9 @@ class CelestialBodyAppointmentFactory(
                 userRoleRepo = userRoleRepo,
                 celestialBodyRepo = celestialBodyRepo
         )
+    }
+
+    override fun request(request: AppointmentRequest.Request): Command<Long, Multimap<ErrorTag, String>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

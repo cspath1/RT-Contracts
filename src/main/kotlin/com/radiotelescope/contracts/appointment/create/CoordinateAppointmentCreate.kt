@@ -32,7 +32,7 @@ class CoordinateAppointmentCreate(
         private val userRoleRepo: IUserRoleRepository,
         private val telescopeRepo: ITelescopeRepository,
         private val coordinateRepo: ICoordinateRepository
-) : Command<Long, Multimap<ErrorTag, String>>, Create {
+) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
@@ -120,7 +120,7 @@ class CoordinateAppointmentCreate(
             val minutes: Int,
             val seconds: Int,
             val declination: Double
-    ) : Create.Request() {
+    ) : AppointmentCreate.Request() {
         /**
          * Concrete implementation of the [BaseCreateRequest.toEntity] method that
          * returns an Appointment object

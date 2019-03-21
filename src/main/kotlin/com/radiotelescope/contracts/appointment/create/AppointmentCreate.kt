@@ -11,7 +11,7 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
-interface Create {
+interface AppointmentCreate {
     abstract class Request : BaseCreateRequest<Appointment> {
         abstract val userId: Long
         abstract val startTime: Date

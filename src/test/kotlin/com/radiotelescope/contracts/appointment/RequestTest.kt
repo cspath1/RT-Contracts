@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -46,7 +47,7 @@ internal class RequestTest {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
-    private val baseRequest = Request.Request(
+    private val baseRequest = CoordinateAppointmentRequest.Request(
             userId = -1L,
             telescopeId = 1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
@@ -77,7 +78,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -98,7 +99,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -123,7 +124,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -148,7 +149,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -174,7 +175,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -199,7 +200,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -224,7 +225,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -249,7 +250,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -274,7 +275,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -299,7 +300,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -324,7 +325,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -349,7 +350,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
@@ -374,7 +375,7 @@ internal class RequestTest {
         )
 
         // Execute the command
-        val (id, errors) = Request(
+        val (id, errors) = CoordinateAppointmentRequest(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,

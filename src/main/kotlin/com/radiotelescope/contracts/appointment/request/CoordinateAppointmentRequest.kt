@@ -1,10 +1,11 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.request
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -14,7 +15,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
 /**
- * Override of the [Command] interface used to request an appointment.
+ * Override of the [Command] interface used to request a Point/Coordinate Appointment.
  *
  * @param request the [Request] data class
  * @param appointmentRepo the [IAppointmentRepository] interface
@@ -22,13 +23,13 @@ import java.util.*
  * @param telescopeRepo the [ITelescopeRepository] interface
  * @param coordinateRepo the [ICoordinateRepository] interface
  */
-class Request(
+class CoordinateAppointmentRequest(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
         private val coordinateRepo: ICoordinateRepository
-) : Command<Long, Multimap<ErrorTag, String>> {
+) : Command<Long, Multimap<ErrorTag, String>>, AppointmentRequest {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
@@ -64,21 +65,16 @@ class Request(
      * It also ensures that the start time is not before the current date
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
+        baseRequestValidation(
+                request = request,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                appointmentRepo = appointmentRepo
+        )?.let { return it }
+
         val errors = HashMultimap.create<ErrorTag,String>()
 
         with(request) {
-            if (!userRepo.existsById(userId)) {
-                errors.put(ErrorTag.USER_ID, "User Id #$userId could not be found")
-                return errors
-            }
-            if (!telescopeRepo.existsById(telescopeId)) {
-                errors.put(ErrorTag.TELESCOPE_ID, "Telescope Id #$telescopeId could not be found")
-                return errors
-            }
-            if (startTime >= endTime)
-                errors.put(ErrorTag.END_TIME, "Start time must be before end time")
-            if (startTime < Date())
-                errors.put(ErrorTag.START_TIME, "Start time must be after the current time" )
             if (hours < 0 || hours >= 24)
                 errors.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
             if (minutes < 0 || minutes >= 60)
@@ -88,6 +84,7 @@ class Request(
             if (declination > 90 || declination < -90)
                 errors.put(ErrorTag.DECLINATION, "Declination must be between -90 - 90")
         }
+
         return if (errors.isEmpty) null else errors
     }
 
@@ -96,16 +93,16 @@ class Request(
      * the [BaseCreateRequest] interface.
      */
     data class Request(
-            val userId: Long,
-            val startTime: Date,
-            val endTime: Date,
-            val telescopeId: Long,
-            val isPublic: Boolean,
+            override val userId: Long,
+            override val startTime: Date,
+            override val endTime: Date,
+            override val telescopeId: Long,
+            override val isPublic: Boolean,
             val hours: Int,
             val minutes: Int,
             val seconds: Int,
             val declination: Double
-    ) : BaseCreateRequest<Appointment> {
+    ) : AppointmentRequest.Request() {
         /**
          * Concrete implementation of the [BaseCreateRequest.toEntity] method that
          * returns an Appointment object

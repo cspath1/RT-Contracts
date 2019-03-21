@@ -3,8 +3,9 @@ package com.radiotelescope.contracts.appointment.factory
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.contracts.appointment.create.Create
+import com.radiotelescope.contracts.appointment.create.AppointmentCreate
 import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
+import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -34,7 +35,7 @@ class RasterScanAppointmentFactory(
      * @param request the [RasterScanAppointmentCreate.Request] object
      * @return a [RasterScanAppointmentCreate] command
      */
-    override fun create(request: Create.Request): Command<Long, Multimap<ErrorTag, String>> {
+    override fun create(request: AppointmentCreate.Request): Command<Long, Multimap<ErrorTag, String>> {
         return RasterScanAppointmentCreate(
                 request = request as RasterScanAppointmentCreate.Request,
                 appointmentRepo = appointmentRepo,
@@ -43,5 +44,9 @@ class RasterScanAppointmentFactory(
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo
         )
+    }
+
+    override fun request(request: AppointmentRequest.Request): Command<Long, Multimap<ErrorTag, String>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

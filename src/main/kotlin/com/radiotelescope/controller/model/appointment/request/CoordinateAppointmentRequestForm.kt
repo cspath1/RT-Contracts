@@ -1,41 +1,41 @@
-package com.radiotelescope.controller.model.appointment
+package com.radiotelescope.controller.model.appointment.request
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.contracts.appointment.Request
+import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.controller.model.BaseForm
 import java.util.*
 
 /**
- * Request form that takes nullable versions of the [Request.Request] object.
+ * Request form that takes nullable versions of the [CoordinateAppointmentRequest.Request] object.
  * It is in charge of making sure these values are not null before adapting it
- * to a [Request.Request] object
+ * to a [CoordinateAppointmentRequest.Request] object
  *
  * @param userId the User id
  * @param startTime the Appointment start time
  * @param endTime the Appointment end time
  * @param telescopeId the Appointment's telescope
  */
-data class RequestForm(
-        val userId: Long?,
-        val startTime: Date?,
-        val endTime: Date?,
-        val telescopeId: Long?,
-        val isPublic: Boolean?,
+data class CoordinateAppointmentRequestForm(
+        override val userId: Long?,
+        override val startTime: Date?,
+        override val endTime: Date?,
+        override val telescopeId: Long?,
+        override val isPublic: Boolean?,
         val hours: Int?,
         val minutes: Int?,
         val seconds: Int?,
         val declination: Double?
-) : BaseForm<Request.Request> {
+) : RequestForm<CoordinateAppointmentRequest.Request>() {
     /**
      * Override of the [BaseForm.toRequest] method that
-     * adapts the form into a [Request.Request] object
+     * adapts the form into a [CoordinateAppointmentRequest.Request] object
      *
-     * @return the [Request.Request] object
+     * @return the [CoordinateAppointmentRequest.Request] object
      */
-    override fun toRequest(): Request.Request {
-        return Request.Request(
+    override fun toRequest(): CoordinateAppointmentRequest.Request {
+        return CoordinateAppointmentRequest.Request(
                 userId = userId!!,
                 startTime = startTime!!,
                 endTime = endTime!!,

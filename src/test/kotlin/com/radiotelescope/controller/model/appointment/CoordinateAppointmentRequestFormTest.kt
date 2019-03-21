@@ -1,12 +1,13 @@
 package com.radiotelescope.controller.model.appointment
 
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.appointment.request.CoordinateAppointmentRequestForm
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class RequestFormTest {
-    val baseForm = RequestForm(
+internal class CoordinateAppointmentRequestFormTest {
+    val baseForm = CoordinateAppointmentRequestForm(
             userId = 1L,
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),

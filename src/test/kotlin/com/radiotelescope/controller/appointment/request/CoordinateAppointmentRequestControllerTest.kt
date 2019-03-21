@@ -1,7 +1,8 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.appointment.request
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.controller.model.appointment.RequestForm
+import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
+import com.radiotelescope.controller.model.appointment.request.CoordinateAppointmentRequestForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -25,7 +26,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class AppointmentRequestControllerTest : BaseAppointmentRestControllerTest() {
+internal class CoordinateAppointmentRequestControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -41,10 +42,10 @@ internal class AppointmentRequestControllerTest : BaseAppointmentRestControllerT
     @Autowired
     private lateinit var userRepo: IUserRepository
 
-    private lateinit var appointmentRequestController: AppointmentRequestController
+    private lateinit var coordinateAppointmentRequestController: CoordinateAppointmentRequestController
     private lateinit var user: User
 
-    private val baseForm = RequestForm(
+    private val baseForm = CoordinateAppointmentRequestForm(
             userId = -1L,
             startTime = Date(System.currentTimeMillis() + 50000L),
             endTime = Date(System.currentTimeMillis() + 100000L),
@@ -60,7 +61,7 @@ internal class AppointmentRequestControllerTest : BaseAppointmentRestControllerT
     override fun init() {
         super.init()
 
-        appointmentRequestController = AppointmentRequestController(
+        coordinateAppointmentRequestController = CoordinateAppointmentRequestController(
                 appointmentWrapper = getCoordinateCreateWrapper(),
                 awsSesSendService = MockAwsSesSendService(true),
                 logger = getLogger(),
@@ -85,7 +86,7 @@ internal class AppointmentRequestControllerTest : BaseAppointmentRestControllerT
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
 
-        val result = appointmentRequestController.execute(formCopy)
+        val result = coordinateAppointmentRequestController.execute(formCopy)
 
         assertNotNull(result)
         assertTrue(result.data is Long)
@@ -112,7 +113,7 @@ internal class AppointmentRequestControllerTest : BaseAppointmentRestControllerT
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
 
-        val result = appointmentRequestController.execute(formCopy)
+        val result = coordinateAppointmentRequestController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -140,7 +141,7 @@ internal class AppointmentRequestControllerTest : BaseAppointmentRestControllerT
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
 
-        val result = appointmentRequestController.execute(formCopy)
+        val result = coordinateAppointmentRequestController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -163,7 +164,7 @@ internal class AppointmentRequestControllerTest : BaseAppointmentRestControllerT
                 userId = user.id
         )
 
-        val result = appointmentRequestController.execute(formCopy)
+        val result = coordinateAppointmentRequestController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)

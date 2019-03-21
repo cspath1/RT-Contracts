@@ -3,8 +3,10 @@ package com.radiotelescope.contracts.appointment.factory
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.*
-import com.radiotelescope.contracts.appointment.create.Create
+import com.radiotelescope.contracts.appointment.create.AppointmentCreate
 import com.radiotelescope.contracts.appointment.info.AppointmentInfo
+import com.radiotelescope.contracts.appointment.request.AppointmentRequest
+import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import org.springframework.data.domain.Page
@@ -17,10 +19,10 @@ interface AppointmentFactory {
     /**
      * Abstract command used to schedule an appointment
      *
-     * @param request the [Create.Request] request
+     * @param request the [AppointmentCreate.Request] request
      * @return a [Command] object
      */
-    fun create(request: Create.Request): Command<Long, Multimap<ErrorTag, String>>
+    fun create(request: AppointmentCreate.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to cancel an appointment
@@ -99,10 +101,10 @@ interface AppointmentFactory {
     /**
      * Abstract command used to request an appointment
      *
-     * @param request the [Request.Request] request
+     * @param request the [CoordinateAppointmentRequest.Request] request
      * @return a [Command] object
      */
-    fun request(request: Request.Request): Command<Long, Multimap<ErrorTag, String>>
+    fun request(request: AppointmentRequest.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command user to retrieve completed appointments for a user

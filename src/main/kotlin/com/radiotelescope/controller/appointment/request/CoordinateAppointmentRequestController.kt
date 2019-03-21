@@ -1,10 +1,10 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.appointment.request
 
-import com.radiotelescope.contracts.appointment.Request
+import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.appointment.RequestForm
+import com.radiotelescope.controller.model.appointment.request.CoordinateAppointmentRequestForm
 import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentRequestController(
+class CoordinateAppointmentRequestController(
         @Qualifier(value = "coordinateAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         private val awsSesSendService: IAwsSesSendService,
@@ -37,8 +37,8 @@ class AppointmentRequestController(
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of adapting the [RequestForm]
-     * into a [Request.Request] after ensuring no fields are null. If
+     * Execute method that is in charge of adapting the [CoordinateAppointmentRequestForm]
+     * into a [CoordinateAppointmentRequest.Request] after ensuring no fields are null. If
      * any are, it will instead respond with errors.
      *
      * Otherwise, it will execute the [UserAppointmentWrapper.request] method.
@@ -46,7 +46,7 @@ class AppointmentRequestController(
      */
     @CrossOrigin(value = ["http://localhost:8081"])
     @PostMapping(value = ["/api/appointments/request"])
-    fun execute(@RequestBody form: RequestForm): Result {
+    fun execute(@RequestBody form: CoordinateAppointmentRequestForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
             // Create error logs

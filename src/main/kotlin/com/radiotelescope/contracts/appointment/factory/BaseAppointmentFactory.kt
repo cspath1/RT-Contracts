@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.*
 import com.radiotelescope.contracts.appointment.info.AppointmentInfo
+import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -163,23 +164,6 @@ abstract class BaseAppointmentFactory(
         return PublicCompletedAppointments(
                 pageable = pageable,
                 appointmentRepo = appointmentRepo
-        )
-    }
-
-    /**
-     * Override of the [AppointmentFactory.request] method that will return a [Request]
-     * command object
-     *
-     * @param request the [Request.Request] object
-     * @return a [Request] command
-     */
-    override fun request(request: Request.Request): Command<Long, Multimap<ErrorTag, String>> {
-        return Request(
-                request = request,
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
         )
     }
 
