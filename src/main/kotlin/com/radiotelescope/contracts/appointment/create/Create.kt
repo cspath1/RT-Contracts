@@ -1,11 +1,14 @@
 package com.radiotelescope.contracts.appointment.create
 
 import com.google.common.collect.HashMultimap
+import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
 interface Create {
@@ -72,6 +75,39 @@ interface Create {
         }
 
         return errors
+    }
+
+    /**
+     * Method responsible for constraint checking and validations for the
+     * appointment create request. It will ensure that both the user and telescope
+     * id exists and that the appointment's end time is not before its start time.
+     * It also ensures that the start time is not before the current date.
+     */
+    fun basicValidateRequest(
+            request: Request,
+            userRepo: IUserRepository,
+            telescopeRepo: ITelescopeRepository,
+            appointmentRepo: IAppointmentRepository
+    ): Multimap<ErrorTag, String>? {
+        val errors = HashMultimap.create<ErrorTag, String>()
+        with(request) {
+            if (!userRepo.existsById(userId)) {
+                errors.put(ErrorTag.USER_ID, "User #$userId could not be found")
+                return errors
+            }
+            if (!telescopeRepo.existsById(telescopeId)) {
+                errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
+                return errors
+            }
+            if (startTime.after(endTime))
+                errors.put(ErrorTag.END_TIME, "Start time must be before end time")
+            if (startTime.before(Date()))
+                errors.put(ErrorTag.START_TIME, "Start time must be after the current time")
+            if (isOverlap(request, appointmentRepo))
+                errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
+        }
+
+        return if (errors.isEmpty) null else errors
     }
 
 
