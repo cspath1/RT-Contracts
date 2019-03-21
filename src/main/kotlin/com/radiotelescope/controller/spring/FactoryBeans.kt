@@ -111,8 +111,7 @@ class FactoryBeans(
                         appointmentRepo = repositories.appointmentRepo,
                         telescopeRepo = repositories.telescopeRepo,
                         userRoleRepo = repositories.userRoleRepo,
-                        celestialBodyRepo = repositories.celestialBodyRepo,
-                        coordinateRepo = repositories.coordinateRepo
+                        celestialBodyRepo = repositories.celestialBodyRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo

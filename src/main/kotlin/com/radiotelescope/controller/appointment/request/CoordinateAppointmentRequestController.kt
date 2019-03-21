@@ -45,7 +45,7 @@ class CoordinateAppointmentRequestController(
      * If this method returns an [AccessReport]
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/appointments/request"])
+    @PostMapping(value = ["/api/appointments/request/coordinate"])
     fun execute(@RequestBody form: CoordinateAppointmentRequestForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {

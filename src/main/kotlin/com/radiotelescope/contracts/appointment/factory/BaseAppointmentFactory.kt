@@ -27,8 +27,7 @@ abstract class BaseAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
-        private val userRoleRepo: IUserRoleRepository,
-        private val coordinateRepo: ICoordinateRepository
+        private val userRoleRepo: IUserRoleRepository
 ) : AppointmentFactory {
     /**
      * Override of the [AppointmentFactory.retrieve] method that will return a [Retrieve]

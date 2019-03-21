@@ -8,6 +8,7 @@ import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.CelestialBodyAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.RasterScanAppointmentFactory
+import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
@@ -101,7 +102,6 @@ internal class BaseAppointmentFactoryTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo,
                 celestialBodyRepo = celestialBodyRepo
         )
 
@@ -278,6 +278,32 @@ internal class BaseAppointmentFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is CoordinateAppointmentRequest)
+    }
+
+    @Test
+    fun celestial_body_request() {
+        // Instantiate the proper factory
+        factory = CelestialBodyAppointmentFactory(
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo,
+                celestialBodyRepo = celestialBodyRepo
+        )
+
+        val cmd = factory.request(
+                request = CelestialBodyAppointmentRequest.Request(
+                        userId = 1L,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 30000L),
+                        isPublic = true,
+                        telescopeId = 1L,
+                        celestialBodyId = 1L
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is CelestialBodyAppointmentRequest)
     }
 
     @Test

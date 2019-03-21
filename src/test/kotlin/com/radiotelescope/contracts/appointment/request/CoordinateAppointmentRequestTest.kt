@@ -1,7 +1,8 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.request
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
+import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -25,7 +26,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 @ActiveProfiles(value = ["test"])
-internal class RequestTest {
+internal class CoordinateAppointmentRequestTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -61,13 +62,10 @@ internal class RequestTest {
 
     private lateinit var user: User
 
-    private lateinit var telescope: Telescope
-
     @Before
     fun setUp() {
         // Persist User and Telescope
         user = testUtil.createUser("rpim@ycp.edu")
-        telescope = testUtil.createTelescope()
     }
 
     @Test
@@ -89,6 +87,17 @@ internal class RequestTest {
         // Make sure the command was a success
         assertNotNull(id)
         assertNull(errors)
+
+        // Make sure everything was persisted correctly
+        val theAppointment = appointmentRepo.findById(id!!).get()
+
+        assertEquals(requestCopy.isPublic, theAppointment.isPublic)
+        assertEquals(requestCopy.startTime, theAppointment.startTime)
+        assertEquals(requestCopy.endTime, theAppointment.endTime)
+        assertEquals(requestCopy.telescopeId, theAppointment.telescopeId)
+        assertEquals(requestCopy.userId, theAppointment.user.id)
+        assertEquals(Appointment.Type.POINT, theAppointment.type)
+        assertEquals(Appointment.Status.REQUESTED, theAppointment.status)
     }
 
     @Test

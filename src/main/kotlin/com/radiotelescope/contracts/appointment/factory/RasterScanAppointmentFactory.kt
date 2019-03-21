@@ -25,8 +25,7 @@ class RasterScanAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
         telescopeRepo = telescopeRepo,
-        userRoleRepo = userRoleRepo,
-        coordinateRepo = coordinateRepo
+        userRoleRepo = userRoleRepo
 ) {
     /**
      * Override of the [AppointmentFactory.create] method that will return a [RasterScanAppointmentCreate]

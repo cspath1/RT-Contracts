@@ -14,7 +14,7 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
- * Concrete implementation of the [BaseAppointmentFactory]
+ * Concrete implementation of the [BaseAppointmentFactory] for Coordinate Appointments
  */
 class CoordinateAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
@@ -26,8 +26,7 @@ class CoordinateAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
         telescopeRepo = telescopeRepo,
-        userRoleRepo = userRoleRepo,
-        coordinateRepo = coordinateRepo
+        userRoleRepo = userRoleRepo
 ) {
     /**
      * Override of the [AppointmentFactory.create] method that will return a [CoordinateAppointmentCreate]
