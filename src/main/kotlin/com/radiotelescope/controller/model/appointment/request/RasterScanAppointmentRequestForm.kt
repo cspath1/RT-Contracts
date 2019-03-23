@@ -1,19 +1,18 @@
-package com.radiotelescope.controller.model.appointment.create
+package com.radiotelescope.controller.model.appointment.request
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
+import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
 import com.radiotelescope.contracts.coordinate.CoordinateRequest
 import com.radiotelescope.controller.model.coordinate.CoordinateForm
-import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.isNotEmpty
 import java.util.*
 
 /**
- * Create form that takes nullable versions of the [RasterScanAppointmentCreate.Request] object.
- * It is in charge of making sure these values are not null before adapting the form into
- * a [RasterScanAppointmentCreate.Request] object
+ * Request form that takes nullable versions of the [RasterScanAppointmentRequest.Request] object.
+ * It is in charge of making sure these values are not null before adapting the form into a
+ * [RasterScanAppointmentRequest.Request] object
  *
  * @param userId the User id
  * @param startTime the Appointment start time
@@ -22,31 +21,31 @@ import java.util.*
  * @param isPublic whether the Appointment is public or not
  * @param coordinates the List of [CoordinateForm] objects
  */
-data class RasterScanAppointmentCreateForm(
+data class RasterScanAppointmentRequestForm(
         override val userId: Long?,
         override val startTime: Date?,
         override val endTime: Date?,
         override val telescopeId: Long?,
         override val isPublic: Boolean?,
         val coordinates: List<CoordinateForm>?
-) : CreateForm<RasterScanAppointmentCreate.Request>() {
+) : RequestForm<RasterScanAppointmentRequest.Request>() {
     /**
-     * Override of the [BaseForm.toRequest] method that
-     * adapts the form into a [RasterScanAppointmentCreate.Request] object
+     * Override of the [RequestForm.toRequest] method that adapts the
+     * form into a [RasterScanAppointmentRequest.Request] object
      *
-     * @return the [RasterScanAppointmentCreate.Request] object
+     * @return the [RasterScanAppointmentRequest.Request] object
      */
-    override fun toRequest(): RasterScanAppointmentCreate.Request {
-        val coordinateRequests: MutableList<CoordinateRequest> = mutableListOf()
-        coordinates!!.forEach { coordinateRequests.add(it.toRequest()) }
+    override fun toRequest(): RasterScanAppointmentRequest.Request {
+        val coordinatesRequests: MutableList<CoordinateRequest> = mutableListOf()
+        coordinates!!.forEach { coordinatesRequests.add(it.toRequest()) }
 
-        return RasterScanAppointmentCreate.Request(
+        return RasterScanAppointmentRequest.Request(
                 userId = userId!!,
                 startTime = startTime!!,
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
                 isPublic = isPublic!!,
-                coordinates = coordinateRequests
+                coordinates = coordinatesRequests
         )
     }
 

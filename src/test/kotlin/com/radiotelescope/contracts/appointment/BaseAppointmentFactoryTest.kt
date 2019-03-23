@@ -10,6 +10,7 @@ import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFac
 import com.radiotelescope.contracts.appointment.factory.RasterScanAppointmentFactory
 import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
+import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -304,6 +305,32 @@ internal class BaseAppointmentFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is CelestialBodyAppointmentRequest)
+    }
+
+    @Test
+    fun raster_scan_request() {
+        // Instantiate the proper factory
+        factory = RasterScanAppointmentFactory(
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                userRoleRepo = userRoleRepo
+        )
+
+        val cmd = factory.request(
+                request = RasterScanAppointmentRequest.Request(
+                        userId = 1L,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 30000L),
+                        isPublic = true,
+                        telescopeId = 1L,
+                        coordinates = mutableListOf()
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is RasterScanAppointmentRequest)
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.radiotelescope.controller.model.appointment.create
+package com.radiotelescope.controller.model.appointment.request
 
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.controller.model.coordinate.CoordinateForm
@@ -6,7 +6,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class RasterScanAppointmentCreateFormTest {
+internal class RasterScanAppointmentRequestFormTest {
     private var coordinateFormOne = CoordinateForm(
             hours = 12,
             minutes = 12,
@@ -21,7 +21,7 @@ internal class RasterScanAppointmentCreateFormTest {
             declination = 50.0
     )
 
-    private val baseForm = RasterScanAppointmentCreateForm(
+    private val baseForm = RasterScanAppointmentRequestForm(
             userId = 1L,
             telescopeId = 1L,
             startTime = Date(System.currentTimeMillis() + 100000L),

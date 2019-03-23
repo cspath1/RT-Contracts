@@ -1,8 +1,9 @@
-package com.radiotelescope.controller.appointment.create
+package com.radiotelescope.controller.appointment.request
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
-import com.radiotelescope.controller.model.appointment.create.RasterScanAppointmentCreateForm
+import com.radiotelescope.controller.model.appointment.request.RasterScanAppointmentRequestForm
 import com.radiotelescope.controller.model.coordinate.CoordinateForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
@@ -25,7 +26,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class RasterScanAppointmentCreateControllerTest : BaseAppointmentRestControllerTest() {
+internal class RasterScanAppointmentRequestControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -38,7 +39,7 @@ internal class RasterScanAppointmentCreateControllerTest : BaseAppointmentRestCo
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private lateinit var rasterScanAppointmentCreateController: RasterScanAppointmentCreateController
+    private lateinit var rasterScanAppointmentRequestController: RasterScanAppointmentRequestController
     private lateinit var user: User
 
     private val coordinateFormOne = CoordinateForm(
@@ -55,7 +56,7 @@ internal class RasterScanAppointmentCreateControllerTest : BaseAppointmentRestCo
             declination = 50.0
     )
 
-    private val baseForm = RasterScanAppointmentCreateForm(
+    private val baseForm = RasterScanAppointmentRequestForm(
             userId = -1L,
             telescopeId = 1L,
             startTime = Date(System.currentTimeMillis() + 100000L),
@@ -68,7 +69,7 @@ internal class RasterScanAppointmentCreateControllerTest : BaseAppointmentRestCo
     override fun init() {
         super.init()
 
-        rasterScanAppointmentCreateController = RasterScanAppointmentCreateController(
+        rasterScanAppointmentRequestController = RasterScanAppointmentRequestController(
                 appointmentWrapper = getRasterScanCreateWrapper(),
                 logger = getLogger()
         )
@@ -93,7 +94,7 @@ internal class RasterScanAppointmentCreateControllerTest : BaseAppointmentRestCo
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
 
-        val result = rasterScanAppointmentCreateController.execute(formCopy)
+        val result = rasterScanAppointmentRequestController.execute(formCopy)
 
         assertNotNull(result)
         assertTrue(result.data is Long)
@@ -120,7 +121,7 @@ internal class RasterScanAppointmentCreateControllerTest : BaseAppointmentRestCo
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
 
-        val result = rasterScanAppointmentCreateController.execute(formCopy)
+        val result = rasterScanAppointmentRequestController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -148,7 +149,7 @@ internal class RasterScanAppointmentCreateControllerTest : BaseAppointmentRestCo
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
 
-        val result = rasterScanAppointmentCreateController.execute(formCopy)
+        val result = rasterScanAppointmentRequestController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -171,7 +172,7 @@ internal class RasterScanAppointmentCreateControllerTest : BaseAppointmentRestCo
                 userId = user.id
         )
 
-        val result = rasterScanAppointmentCreateController.execute(formCopy)
+        val result = rasterScanAppointmentRequestController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)
