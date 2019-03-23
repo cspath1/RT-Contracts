@@ -7,6 +7,8 @@ import com.radiotelescope.contracts.appointment.create.AppointmentCreate
 import com.radiotelescope.contracts.appointment.info.AppointmentInfo
 import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
+import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
+import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import org.springframework.data.domain.Page
@@ -51,10 +53,10 @@ interface AppointmentFactory {
     /**
      * Abstract command used to update an appointment
      *
-     * @param request the [Update.Request]
-     * @return [Update] [Command] object
+     * @param request the [CoordinateAppointmentUpdate.Request]
+     * @return [CoordinateAppointmentUpdate] [Command] object
      */
-    fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
+    fun update(request: AppointmentUpdate.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to retrieve all future appointments for a telescope

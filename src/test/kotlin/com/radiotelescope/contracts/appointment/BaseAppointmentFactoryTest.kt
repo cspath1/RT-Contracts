@@ -11,6 +11,7 @@ import com.radiotelescope.contracts.appointment.factory.RasterScanAppointmentFac
 import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
+import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -206,10 +207,10 @@ internal class BaseAppointmentFactoryTest {
     }
 
     @Test
-    fun update(){
+    fun coordinate_update(){
         // Call the factory method
         val cmd = factory.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = 123456789,
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 40000L),
@@ -223,7 +224,7 @@ internal class BaseAppointmentFactoryTest {
         )
 
         //Ensure it is the correct command
-        assertTrue(cmd is Update)
+        assertTrue(cmd is CoordinateAppointmentUpdate)
     }
 
     @Test

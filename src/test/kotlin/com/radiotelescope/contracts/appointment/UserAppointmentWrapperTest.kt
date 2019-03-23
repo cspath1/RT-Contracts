@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCrea
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
+import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -756,7 +757,7 @@ internal class UserAppointmentWrapperTest {
         context.login(user.id)
 
         val error = wrapper.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = appointment.id,
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
@@ -780,7 +781,7 @@ internal class UserAppointmentWrapperTest {
     fun testInvalidUpdate_NotLoggedIn_Failure(){
         // Don't simulate a log in
         val error = wrapper.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = appointment.id,
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
@@ -807,7 +808,7 @@ internal class UserAppointmentWrapperTest {
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.GUEST))
 
         val error = wrapper.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = appointment.id,
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
@@ -840,7 +841,7 @@ internal class UserAppointmentWrapperTest {
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
 
         val error = wrapper.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = 420L,
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
@@ -873,7 +874,7 @@ internal class UserAppointmentWrapperTest {
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
         val error = wrapper.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = appointment.id,
                         startTime = Date(appointment.startTime.time + 10L),
                         endTime = Date(appointment.endTime.time -10L),
@@ -907,7 +908,7 @@ internal class UserAppointmentWrapperTest {
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
 
         val error = wrapper.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = appointment.id,
                         startTime = Date(appointment.startTime.time + 10L),
                         endTime = Date(appointment.endTime.time -10L),
@@ -941,7 +942,7 @@ internal class UserAppointmentWrapperTest {
         context.currentRoles.add(UserRole.Role.USER)
 
         val error = wrapper.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = appointment.id,
                         startTime = Date(appointment.startTime.time + 10L),
                         endTime = Date(appointment.endTime.time -10L),
@@ -975,7 +976,7 @@ internal class UserAppointmentWrapperTest {
         context.currentRoles.add(UserRole.Role.ADMIN)
 
         val error = wrapper.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = appointment.id,
                         startTime = Date(System.currentTimeMillis() + 100000L),
                         endTime = Date(System.currentTimeMillis() + 110000L),
@@ -1002,7 +1003,7 @@ internal class UserAppointmentWrapperTest {
         context.currentRoles.add(UserRole.Role.USER)
 
         val error = wrapper.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = appointment.id,
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),
@@ -1030,7 +1031,7 @@ internal class UserAppointmentWrapperTest {
         context.currentRoles.add(UserRole.Role.USER)
 
         val error = wrapper.update(
-                request = Update.Request(
+                request = CoordinateAppointmentUpdate.Request(
                         id = appointment.id,
                         startTime = Date(System.currentTimeMillis() + 20000L),
                         endTime = Date(System.currentTimeMillis() + 50000L),

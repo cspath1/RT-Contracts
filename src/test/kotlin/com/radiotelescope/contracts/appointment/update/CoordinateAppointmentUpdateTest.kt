@@ -1,4 +1,4 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.update
 
 import org.junit.Assert.*
 import org.junit.Before
@@ -7,6 +7,7 @@ import org.junit.runner.RunWith
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
 import com.radiotelescope.TestUtil
+import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -25,7 +26,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class UpdateTest {
+internal class CoordinateAppointmentUpdateTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -53,7 +54,7 @@ internal class UpdateTest {
 
     private val twoHours = 2 * 60 * 60 * 1000
 
-    private lateinit var baseRequest: Update.Request
+    private lateinit var baseRequest: CoordinateAppointmentUpdate.Request
 
     @Before
     fun setUp() {
@@ -78,7 +79,7 @@ internal class UpdateTest {
         )
         appointmentId = appointment.id
 
-        baseRequest = Update.Request(
+        baseRequest = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 startTime = Date(appointment.endTime.time + twoHours),
                 endTime = Date(appointment.endTime.time + (twoHours * 2)),
@@ -100,7 +101,7 @@ internal class UpdateTest {
                 isApproved = true
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -122,7 +123,7 @@ internal class UpdateTest {
                 isApproved = true
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -142,7 +143,7 @@ internal class UpdateTest {
                 id = 311
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -165,7 +166,7 @@ internal class UpdateTest {
                 endTime = Date(appointment.endTime.time + 10000L)
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -188,7 +189,7 @@ internal class UpdateTest {
                 endTime = Date(appointment.endTime.time + 10000L)
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -210,7 +211,7 @@ internal class UpdateTest {
                 telescopeId = 311L
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -240,7 +241,7 @@ internal class UpdateTest {
                 endTime = Date(appointment.endTime.time + (twoHours * 5))
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -271,7 +272,7 @@ internal class UpdateTest {
                 endTime = Date(appointment.endTime.time + (twoHours * 29))
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -303,7 +304,7 @@ internal class UpdateTest {
         )
 
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -339,7 +340,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointment.id,
                 telescopeId = 1L,
                 startTime = Date(startTime + 1L),
@@ -351,7 +352,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -378,7 +379,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(startTime),
@@ -390,7 +391,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -421,7 +422,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(startTime + 1000L),
@@ -433,7 +434,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -464,7 +465,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(endTime - 1000L),
@@ -476,7 +477,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -507,7 +508,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(startTime - 2000L),
@@ -519,7 +520,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -550,7 +551,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(endTime - 500L),
@@ -562,7 +563,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -593,7 +594,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(startTime - 1000L),
@@ -605,7 +606,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -636,7 +637,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(endTime),
@@ -648,7 +649,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -679,7 +680,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(startTime),
@@ -691,7 +692,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -726,7 +727,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(startTime + 1L),
@@ -738,7 +739,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -769,7 +770,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(startTime + 1L),
@@ -781,7 +782,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -818,7 +819,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(startTime),
@@ -830,7 +831,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -871,7 +872,7 @@ internal class UpdateTest {
                 type = Appointment.Type.POINT
         )
 
-        val conflict = Update.Request(
+        val conflict = CoordinateAppointmentUpdate.Request(
                 id = appointmentId,
                 telescopeId = 1L,
                 startTime = Date(startTime),
@@ -883,7 +884,7 @@ internal class UpdateTest {
                 declination = 69.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
@@ -907,7 +908,7 @@ internal class UpdateTest {
         )
 
         // Execute the command
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -930,7 +931,7 @@ internal class UpdateTest {
         )
 
         // Execute the command
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -953,7 +954,7 @@ internal class UpdateTest {
         )
 
         // Execute the command
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -976,7 +977,7 @@ internal class UpdateTest {
         )
 
         // Execute the command
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -999,7 +1000,7 @@ internal class UpdateTest {
         )
 
         // Execute the command
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -1022,7 +1023,7 @@ internal class UpdateTest {
         )
 
         // Execute the command
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -1044,7 +1045,7 @@ internal class UpdateTest {
                 declination = -99.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
@@ -1066,7 +1067,7 @@ internal class UpdateTest {
                 declination = 99.0
         )
 
-        val (id, errors) = Update(
+        val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,

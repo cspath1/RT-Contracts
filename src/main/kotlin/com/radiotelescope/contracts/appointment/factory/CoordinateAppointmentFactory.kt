@@ -7,6 +7,8 @@ import com.radiotelescope.contracts.appointment.create.AppointmentCreate
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
+import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
+import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -61,6 +63,21 @@ class CoordinateAppointmentFactory(
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 coordinateRepo = coordinateRepo
+        )
+    }
+
+    /**
+     * Override of the [AppointmentFactory.update] method that will return a [CoordinateAppointmentUpdate] command object
+     *
+     * @param request the [CoordinateAppointmentUpdate.Request]
+     * @return a [CoordinateAppointmentUpdate] command object
+     */
+    override fun update(request: AppointmentUpdate.Request): Command<Long, Multimap<ErrorTag, String>>  {
+        return CoordinateAppointmentUpdate(
+                request = request as CoordinateAppointmentUpdate.Request,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo
         )
     }
 }

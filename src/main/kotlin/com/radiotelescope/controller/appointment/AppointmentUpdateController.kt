@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.appointment.Update
+import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.UpdateForm
@@ -30,12 +30,12 @@ class AppointmentUpdateController(
 ): BaseRestController(logger){
     /**
      * Execute method that is in charge of adapting the [UpdateForm]
-     * into a [Update.Request] after ensuring no fields are null. If
+     * into a [CoordinateAppointmentUpdate.Request] after ensuring no fields are null. If
      * any are, it will instead respond with errors.
      *
      * Otherwise, it will execute the [UserAppointmentWrapper.update] method.
      * If this method returns an [AccessReport], the user was not authenticated.
-     * If not, this means the [Update] method was executed, and the controller
+     * If not, this means the [CoordinateAppointmentUpdate] method was executed, and the controller
      * should respond based on if the command was a success or not
      */
     @PutMapping(value = ["/api/appointments/{appointmentId}"])

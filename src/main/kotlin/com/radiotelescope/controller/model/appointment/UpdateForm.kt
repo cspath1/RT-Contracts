@@ -3,14 +3,14 @@ package com.radiotelescope.controller.model.appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.contracts.appointment.Update
+import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.controller.model.BaseForm
 import java.util.*
 
 /**
- * Update form that takes nullable versions of the [Update.Request] object.
+ * Update form that takes nullable versions of the [CoordinateAppointmentUpdate.Request] object.
  * It is in charge of making sure these values are not null before adapting it
- * to a [Update.Request] object
+ * to a [CoordinateAppointmentUpdate.Request] object
  *
  * @param startTime the Appointment's new start time
  * @param endTime the Appointment's new end time
@@ -26,13 +26,13 @@ data class UpdateForm (
         val minutes: Int?,
         val seconds: Int?,
         val declination: Double?
-) : BaseForm<Update.Request> {
+) : BaseForm<CoordinateAppointmentUpdate.Request> {
     /**
      * Override of the [BaseForm.toRequest] method that
-     * adapts the form into a [Update.Request] object
+     * adapts the form into a [CoordinateAppointmentUpdate.Request] object
      */
-    override fun toRequest(): Update.Request {
-        return Update.Request(
+    override fun toRequest(): CoordinateAppointmentUpdate.Request {
+        return CoordinateAppointmentUpdate.Request(
                 id = -1L,
                 startTime = startTime!!,
                 endTime = endTime!!,

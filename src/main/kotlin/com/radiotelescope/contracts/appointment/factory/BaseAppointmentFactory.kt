@@ -4,10 +4,9 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.*
 import com.radiotelescope.contracts.appointment.info.AppointmentInfo
-import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
+import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -57,21 +56,6 @@ abstract class BaseAppointmentFactory(
                 userId = userId,
                 userRepo = userRepo,
                 pageable = pageable
-        )
-    }
-
-    /**
-     * Override of the [AppointmentFactory.update] method that will return a [Update] command object
-     *
-     * @param request the [Update.Request]
-     * @return a [Update] command object
-     */
-    override fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>  {
-        return Update(
-                request = request,
-                appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
         )
     }
 

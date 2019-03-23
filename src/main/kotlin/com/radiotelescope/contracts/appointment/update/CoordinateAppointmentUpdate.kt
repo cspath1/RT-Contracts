@@ -1,4 +1,4 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.update
 
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -7,6 +7,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
@@ -16,17 +17,17 @@ import java.util.*
 /**
  * Command class for editing an appointment
  *
- * @param request of type [Update.Request]
+ * @param request of type [CoordinateAppointmentUpdate.Request]
  * @param appointmentRepo of type [IAppointmentRepository]
  * @param telescopeRepo of type [ITelescopeRepository]
  *
  */
-class Update(
-        private val request: Update.Request,
+class CoordinateAppointmentUpdate(
+        private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
         private val telescopeRepo: ITelescopeRepository,
         private val userRoleRepo: IUserRoleRepository
-):  Command<Long, Multimap<ErrorTag,String>> {
+):  Command<Long, Multimap<ErrorTag,String>>, AppointmentUpdate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
@@ -54,15 +55,17 @@ class Update(
      * endTime is after the startTime.
      */
     private fun validateRequest(): Multimap<ErrorTag, String> {
+        baseRequestValidation(
+                request = request,
+                telescopeRepo = telescopeRepo,
+                appointmentRepo = appointmentRepo
+        )?.let { return it }
+
         var errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
             if (appointmentRepo.existsById(id)) {
                 if(telescopeRepo.existsById(telescopeId)) {
-                    if (startTime.before(Date()))
-                        errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
-                    if (endTime.before(startTime) || endTime == startTime)
-                        errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
                     if (hours < 0 || hours >= 24)
                         errors.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
                     if (minutes < 0 || minutes >= 60)
@@ -71,10 +74,7 @@ class Update(
                         errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
                     if (declination > 90 || declination < -90)
                         errors.put(ErrorTag.DECLINATION, "Declination must be between -90 - 90")
-                    if (isOverlap())
-                        errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
-                }
-                else{
+                } else {
                     errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId not found")
                     return errors
                 }
@@ -148,41 +148,21 @@ class Update(
     }
 
     /**
-     * Method responsible for check if the requested appointment
-     * conflict with the one that are already scheduled
-     */
-    private fun isOverlap(): Boolean {
-        var isOverlap = false
-        val appointmentList = appointmentRepo.findConflict(
-                endTime = request.endTime,
-                startTime = request.startTime,
-                telescopeId = request.telescopeId
-        )
-
-        if (appointmentList.size > 1)
-            isOverlap = true
-        else if (appointmentList.size == 1 && appointmentList[0].id != request.id)
-            isOverlap = true
-
-        return isOverlap
-    }
-
-    /**
      * Data class containing all fields necessary for appointment update. Implements the
      * [BaseUpdateRequest] interface and overrides the [BaseUpdateRequest.updateEntity]
      * method
      */
     data class Request(
-            var id: Long,
-            val telescopeId: Long,
-            val startTime: Date,
-            val endTime: Date,
-            val isPublic: Boolean,
+            override var id: Long,
+            override val telescopeId: Long,
+            override val startTime: Date,
+            override val endTime: Date,
+            override val isPublic: Boolean,
             val hours: Int,
             val minutes: Int,
             val seconds: Int,
             val declination: Double
-    ): BaseUpdateRequest<Appointment> {
+    ): AppointmentUpdate.Request() {
         /**
          * Override of the [BaseUpdateRequest.updateEntity] method that
          * takes an [Appointment] and will update all of its values to the
@@ -194,7 +174,7 @@ class Update(
             entity.endTime = endTime
             entity.isPublic = isPublic
 
-            entity.coordinateList.iterator().next().hours = hours
+            entity.coordinateList[0].hours = hours
             entity.coordinateList[0].minutes = minutes
             entity.coordinateList[0].seconds = seconds
             entity.coordinateList[0].declination = declination

@@ -7,6 +7,8 @@ import com.radiotelescope.contracts.appointment.create.AppointmentCreate
 import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
 import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
+import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
+import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -54,5 +56,9 @@ class RasterScanAppointmentFactory(
                 telescopeRepo = telescopeRepo,
                 coordinateRepo = coordinateRepo
         )
+    }
+
+    override fun update(request: AppointmentUpdate.Request): Command<Long, Multimap<ErrorTag, String>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
