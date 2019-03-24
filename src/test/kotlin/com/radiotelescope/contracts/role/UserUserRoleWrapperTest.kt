@@ -1,6 +1,8 @@
 package com.radiotelescope.contracts.role
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -38,6 +40,9 @@ internal class UserUserRoleWrapperTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     val context = FakeUserContext()
     lateinit var factory: BaseUserRoleFactory
     lateinit var wrapper: UserUserRoleWrapper
@@ -57,7 +62,8 @@ internal class UserUserRoleWrapperTest {
         // Initialize the factory and wrapper
         factory = BaseUserRoleFactory(
                 userRoleRepo = userRoleRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
 
         wrapper = UserUserRoleWrapper(
@@ -67,12 +73,16 @@ internal class UserUserRoleWrapperTest {
                 userRoleRepo = userRoleRepo
         )
 
-        // Persist a user and give them some roles
+        // Persist a user and give them some roles and a time cap
         val user = testUtil.createUser("cspath1@ycp.edu")
         val roles = testUtil.createUserRolesForUser(
                 user = user,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
+        )
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.STUDENT_APPOINTMENT_TIME_CAP
         )
 
         roles.forEach {

@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.appointment
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -19,13 +20,17 @@ import org.springframework.data.domain.Pageable
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
  * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param coordinateRepo the [ICoordinateRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class BaseAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val coordinateRepo: ICoordinateRepository
+        private val coordinateRepo: ICoordinateRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : AppointmentFactory {
     /**
      * Override of the [AppointmentFactory.retrieve] method that will return a [Retrieve]
@@ -70,9 +75,10 @@ class BaseAppointmentFactory(
                 request = request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -87,7 +93,8 @@ class BaseAppointmentFactory(
                 request = request,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -240,7 +247,8 @@ class BaseAppointmentFactory(
                 userId = userId,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 

@@ -7,25 +7,27 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import java.util.*
 
 /**
  * Command class for editing an appointment
  *
- * @param request of type [Update.Request]
- * @param appointmentRepo of type [IAppointmentRepository]
- * @param telescopeRepo of type [ITelescopeRepository]
- *
+ * @param request the [Update.Request] object
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class Update(
         private val request: Update.Request,
         private val appointmentRepo: IAppointmentRepository,
         private val telescopeRepo: ITelescopeRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ):  Command<Long, Multimap<ErrorTag,String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -78,6 +80,9 @@ class Update(
                     errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId not found")
                     return errors
                 }
+                val userId = appointmentRepo.findById(id).get().user.id
+                if(userRoleRepo.findMembershipRoleByUserId(userId) == null)
+                    errors.put(ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
             } else {
                 errors.put(ErrorTag.ID, "Appointment #$id not found")
                 return errors
@@ -102,26 +107,16 @@ class Update(
         with(request) {
             val theAppointment = appointmentRepo.findById(id).get()
             val newTime = endTime.time - startTime.time
-            val theUserRole = userRoleRepo.findMembershipRoleByUserId(theAppointment.user.id)
-
-            if (theUserRole == null) {
-                errors.put(ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
-                return errors
-            }
+            val allottedTime = allottedTimeCapRepo.findByUserId(theAppointment.user.id).allottedTime
 
             // Free up the time associated with this appointment since it
             // may have changed
             val totalTime = determineCurrentUsedTime(theAppointment)
 
-            when (theUserRole.role) {
-                UserRole.Role.GUEST -> {
-                    if ((totalTime + newTime) > Appointment.GUEST_APPOINTMENT_TIME_CAP)
-                        errors.put(ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
-                }
-                else -> {
-                    if ((totalTime + newTime) > Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP)
-                        errors.put(ErrorTag.ALLOTTED_TIME, "Max allotted observation time is 50 hours at any given time")
-                }
+            // If allottedTime = null, they have no limit, otherwise check it
+            if(allottedTime != null && (totalTime + newTime) > allottedTime){
+                val hours = allottedTime / (60*60*1000)
+                errors.put(ErrorTag.ALLOTTED_TIME, "You may only have $hours hours of observation time.")
             }
         }
 

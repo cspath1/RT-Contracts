@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -34,6 +35,9 @@ internal class RegisterTest {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private val baseRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
@@ -53,7 +57,8 @@ internal class RegisterTest {
                 request = baseRequest,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should not have failed
@@ -85,6 +90,9 @@ internal class RegisterTest {
             if (it.role == UserRole.Role.STUDENT)
                 assertFalse(it.approved)
         }
+
+        // Ensure allotted time cap was set as 0 (default)
+        assertEquals(0L, allottedTimeCapRepo.findByUserId(user.id).allottedTime)
     }
 
     @Test
@@ -100,7 +108,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should not have failed
@@ -132,6 +141,9 @@ internal class RegisterTest {
             if (it.role == UserRole.Role.STUDENT)
                 assertFalse(it.approved)
         }
+
+        // Ensure allotted time cap was set as 0 (default)
+        assertEquals(0L, allottedTimeCapRepo.findByUserId(user.id).allottedTime)
     }
 
     @Test
@@ -147,7 +159,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should not have failed
@@ -168,6 +181,9 @@ internal class RegisterTest {
         roles.forEach {
             assertTrue(it.approved)
         }
+
+        // Ensure allotted time cap was set as 0 (default)
+        assertEquals(0L, allottedTimeCapRepo.findByUserId(theUser.id).allottedTime)
     }
 
     @Test
@@ -182,7 +198,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
@@ -205,7 +222,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
@@ -228,7 +246,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
@@ -251,7 +270,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
@@ -274,7 +294,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
@@ -297,7 +318,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
@@ -320,7 +342,8 @@ internal class RegisterTest {
                 request = baseRequest,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
@@ -343,7 +366,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
@@ -366,7 +390,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
@@ -389,7 +414,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
@@ -412,7 +438,8 @@ internal class RegisterTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed

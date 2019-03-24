@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -36,6 +37,9 @@ internal class BaseUserFactoryTest {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private lateinit var factory: UserFactory
 
     @Before
@@ -44,7 +48,8 @@ internal class BaseUserFactoryTest {
         factory = BaseUserFactory(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 

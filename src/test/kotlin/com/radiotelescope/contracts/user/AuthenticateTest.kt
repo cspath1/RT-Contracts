@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.*
@@ -33,6 +34,9 @@ internal class AuthenticateTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private val baseRequest = Authenticate.Request(
             email = "cspath1@ycp.edu",
             password = "Password"
@@ -44,6 +48,11 @@ internal class AuthenticateTest {
         val user = testUtil.createUserWithEncodedPassword(
                 email = "cspath1@ycp.edu",
                 password = "Password"
+        )
+        // Create a 0 timecap for the user
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 0L
         )
 
         // Make sure this was correctly executed
@@ -57,7 +66,8 @@ internal class AuthenticateTest {
         val (info, errors) = Authenticate(
                 request = baseRequest,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // The info class should not be null
@@ -78,7 +88,8 @@ internal class AuthenticateTest {
         val (info, errors) = Authenticate(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // The errors should not be null
@@ -99,7 +110,8 @@ internal class AuthenticateTest {
         val (info, errors) = Authenticate(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // The errors should not be null
@@ -120,7 +132,8 @@ internal class AuthenticateTest {
         val (info, errors) = Authenticate(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // The errors should not be null
@@ -141,7 +154,8 @@ internal class AuthenticateTest {
         val (info, errors) = Authenticate(
                 request = requestCopy,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // The errors should not be null

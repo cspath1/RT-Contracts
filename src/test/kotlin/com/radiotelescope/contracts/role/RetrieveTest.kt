@@ -1,6 +1,8 @@
 package com.radiotelescope.contracts.role
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -34,16 +36,23 @@ internal class RetrieveTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private var roleId: Long? = null
 
     @Before
     fun setUp() {
-        // Create a user and some roles
+        // Create a user and some roles and timecap
         val user = testUtil.createUser("cspath1@ycp.edu")
         val roles = testUtil.createUserRolesForUser(
                 user = user,
                 role = UserRole.Role.STUDENT,
                 isApproved = false
+        )
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.STUDENT_APPOINTMENT_TIME_CAP
         )
 
         roles.forEach {
@@ -57,7 +66,8 @@ internal class RetrieveTest {
         val (info, errors) = Retrieve(
                 roleId = roleId!!,
                 userRoleRepo = userRoleRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         assertNotNull(info)
@@ -71,7 +81,8 @@ internal class RetrieveTest {
         val (info, errors) = Retrieve(
                 roleId = 311L,
                 userRoleRepo = userRoleRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         assertNotNull(errors)

@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -57,6 +58,9 @@ internal class UserAppointmentWrapperTest {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
     @Autowired
     private lateinit var viewerRepo: IViewerRepository
@@ -156,7 +160,8 @@ internal class UserAppointmentWrapperTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
 
         wrapper = UserAppointmentWrapper(
@@ -188,8 +193,13 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testCreatePublic_User_Success() {
-        // Make the user a guest
-        testUtil.createUserRolesForUser(
+        // Give the user a 5 hour time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 5 * 60 * 60 * 1000
+        )
+        // Make the user a Guest
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
@@ -262,8 +272,13 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testCreatePrivate_Researcher_Success() {
-        // Make the user a researcher
-        testUtil.createUserRolesForUser(
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
@@ -294,10 +309,15 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testCreatePrivate_Admin_Success() {
-        // Make the user an admin
-        testUtil.createUserRolesForUser(
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
                 user = user,
-                role = UserRole.Role.RESEARCHER,
+                allottedTime = null
+        )
+        // Make the user an Admin
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.ADMIN,
                 isApproved = true
         )
 
@@ -854,8 +874,13 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testValidUpdate_Private_Researcher_Success() {
-        // Make the user a researcher
-        testUtil.createUserRolesForUser(
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
@@ -888,8 +913,13 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testValidUpdate_Admin_Private_Success() {
-        // Make the user an admin
-        testUtil.createUserRolesForUser(
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user an Admin
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
@@ -922,10 +952,15 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testValidUpdate_UserIsOwner_Success(){
-        // Make the user a researcher
-        testUtil.createUserRolesForUser(
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
                 user = user,
-                role = UserRole.Role.RESEARCHER,
+                allottedTime = null
+        )
+        // Make the user an Admin
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.ADMIN,
                 isApproved = true
         )
 
@@ -956,8 +991,13 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testValidUpdate_Admin_Success(){
-        // Make the user a admin
-        testUtil.createUserRolesForUser(
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.ADMIN,
                 isApproved = true
@@ -1397,9 +1437,16 @@ internal class UserAppointmentWrapperTest {
 
     @Test
     fun testValidUserAvailableTime_LoggedIn_Success(){
-        testUtil.createUserRolesForUser(
+        // Give the user a 48 hour time cap
+        testUtil.createAllottedTimeCapForUser(
                 user = user,
-                role = UserRole.Role.RESEARCHER,
+                allottedTime = 48 * 60 * 60 * 1000
+        )
+
+        // Give the user the member role
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.MEMBER,
                 isApproved = true
         )
 

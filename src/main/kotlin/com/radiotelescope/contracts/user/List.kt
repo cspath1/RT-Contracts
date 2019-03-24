@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.user
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
@@ -15,11 +16,13 @@ import org.springframework.data.domain.Pageable
  * @param pageable the [Pageable] interface
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class List(
         private val pageable: Pageable,
         private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<Page<UserInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method that calls the [IUserRepository.findAll]
@@ -34,7 +37,8 @@ class List(
             val theUserRole = userRoleRepo.findMembershipRoleByUserId(it.id)
 
             val theRole = theUserRole?.role
-            infoList.add(UserInfo(it, theRole?.label))
+            val allottedTime = allottedTimeCapRepo.findByUserId(it.id).allottedTime
+            infoList.add(UserInfo(it, theRole?.label, allottedTime))
         }
 
         val infoPage = PageImpl(infoList, userPage.pageable, userPage.totalElements)

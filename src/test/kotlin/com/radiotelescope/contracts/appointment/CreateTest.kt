@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -51,6 +52,9 @@ internal class CreateTest {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private val baseRequest = Create.Request(
             userId = -1L,
             telescopeId = 1L,
@@ -74,9 +78,14 @@ internal class CreateTest {
     }
 
     @Test
-    fun testValidConstraintsGuest_EnoughTime_Success() {
-        // Make the user a guest
-        testUtil.createUserRolesForUser(
+    fun testValidConstraints_EnoughTime_Success() {
+        // Give the user 5 hours of allotted time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 5 * 60 * 60 * 1000
+        )
+        // Make the user a Guest
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
@@ -93,7 +102,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
@@ -113,9 +123,14 @@ internal class CreateTest {
     }
 
     @Test
-    fun test_Researcher_EnoughTime_Success() {
-        // Make the user a researcher
-        testUtil.createUserRolesForUser(
+    fun test_unlimitedTime_EnoughTime_Success() {
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
@@ -141,10 +156,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
@@ -154,6 +170,18 @@ internal class CreateTest {
 
     @Test
     fun testInvalidTelescopeId_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user a Researcher
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
         // Create a copy of the baseRequest with the correct
         // user id but an invalid telescope id
         val requestCopy = baseRequest.copy(
@@ -167,7 +195,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -189,7 +218,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -203,6 +233,17 @@ internal class CreateTest {
 
     @Test
     fun testStartAfterEnd_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
         // Create a copy of the baseRequest with the
         // start time before the end time
         val requestCopy = baseRequest.copy(
@@ -218,7 +259,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -232,6 +274,17 @@ internal class CreateTest {
 
     @Test
     fun testStartBeforeNow_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
+
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 startTime = Date(System.currentTimeMillis() - 10000L)
@@ -244,7 +297,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -257,9 +311,14 @@ internal class CreateTest {
     }
 
     @Test
-    fun testNotEnoughTime_Guest_Failure() {
-        // Make the user a guest
-        testUtil.createUserRolesForUser(
+    fun testNotEnoughTime_Failure() {
+        // Give the user 5 hours of allotted time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 5 * 60 * 60 * 1000
+        )
+        // Make the user a Guest
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.GUEST,
                 isApproved = true
@@ -275,44 +334,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
-        ).execute()
-
-        // Make sure the command was a failure
-        assertNull(id)
-        assertNotNull(errors)
-
-        // Make sure it failed for the correct reason
-        assertEquals(1, errors!!.size())
-        assertTrue(errors[ErrorTag.ALLOTTED_TIME].isNotEmpty())
-    }
-
-    @Test
-    fun testNotEnoughTime_Other_Failure() {
-        // Make the user a researcher
-        testUtil.createUserRolesForUser(
-                user = user,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = true
-        )
-
-        // 52 hour appointment
-        val requestCopy = baseRequest.copy(
-                userId = user.id,
-                startTime = Date(date.time + twoHours),
-                endTime = Date(date.time + (twoHours * 27))
-        )
-
-        val (id, errors) = Create(
-                request = requestCopy,
-                appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -335,10 +361,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -354,6 +381,18 @@ internal class CreateTest {
     fun testInvalidSC_StartAtStart_EndBeforeEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -378,10 +417,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -397,6 +437,18 @@ internal class CreateTest {
     fun testInvalidSC_BetweenEndAndStart_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -422,10 +474,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -441,6 +494,18 @@ internal class CreateTest {
     fun testInvalidSC_StartAfterStart_EndAtEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -466,10 +531,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -485,6 +551,18 @@ internal class CreateTest {
     fun testInvalidSC_StartBeforeStart_EndBeforeEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -510,10 +588,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -529,6 +608,18 @@ internal class CreateTest {
     fun testInvalidSC_StartBeforeEnd_EndAfterEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -554,10 +645,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -573,6 +665,18 @@ internal class CreateTest {
     fun testInvalidSC_EndAtStart_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -598,10 +702,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -617,6 +722,18 @@ internal class CreateTest {
     fun testInvalidSC_StartAtEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -642,10 +759,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -661,6 +779,18 @@ internal class CreateTest {
     fun testInvalidSC_StartBeforeStart_EndAfterEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -686,10 +816,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -705,6 +836,18 @@ internal class CreateTest {
     fun testInvalidSC_StartAtStart_EndAtEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
         testUtil.createAppointment(
                 user = user,
@@ -730,10 +873,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -749,11 +893,16 @@ internal class CreateTest {
     fun testValidSC_Requested_Success(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
-        testUtil.createUserRolesForUser(
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
+
         testUtil.createAppointment(
                 user = user,
                 startTime = Date(startTime),
@@ -778,10 +927,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
@@ -793,11 +943,16 @@ internal class CreateTest {
     fun testValidSC_Canceled_Success(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
-        testUtil.createUserRolesForUser(
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
         )
+
         testUtil.createAppointment(
                 user = user,
                 startTime = Date(startTime),
@@ -822,10 +977,11 @@ internal class CreateTest {
         val (id, errors) = Create(
                 request = conflict,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
@@ -835,6 +991,11 @@ internal class CreateTest {
 
     @Test
     fun testHoursTooLow_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -854,7 +1015,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -868,6 +1030,11 @@ internal class CreateTest {
 
     @Test
     fun testHoursTooHigh_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -887,7 +1054,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -901,6 +1069,11 @@ internal class CreateTest {
 
     @Test
     fun testMinutesTooLow_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -920,7 +1093,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -934,6 +1108,11 @@ internal class CreateTest {
 
     @Test
     fun testMinutesTooHigh_Failure() {
+        // Give the user a guest time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -953,7 +1132,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -967,6 +1147,11 @@ internal class CreateTest {
 
     @Test
     fun testSecondsTooLow_Failure() {
+        // Give the user a guest time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -986,7 +1171,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -1000,6 +1186,11 @@ internal class CreateTest {
 
     @Test
     fun testSecondsTooHigh_Failure() {
+        // Give the user a guest time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -1019,7 +1210,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -1033,6 +1225,12 @@ internal class CreateTest {
 
     @Test
     fun testDeclinationTooLow_Failure() {
+        // Give the user a guest time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
+
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -1052,7 +1250,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -1066,6 +1265,11 @@ internal class CreateTest {
 
     @Test
     fun testDeclinationTooGreat_Failure() {
+        // Give the user a guest time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -1085,7 +1289,8 @@ internal class CreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -1095,5 +1300,38 @@ internal class CreateTest {
         // Make sure it failed for the correct reason
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.DECLINATION].isNotEmpty())
+    }
+
+    @Test
+    fun testNoAllottedTimeCap_Failure() {
+        // Make the user a Guest
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Create a copy of the baseRequest with the correct
+        // user id
+        val requestCopy = baseRequest.copy(userId = user.id)
+
+        // Run the command
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.ALLOTTED_TIME_CAP].isNotEmpty())
     }
 }

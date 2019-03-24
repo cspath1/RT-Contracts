@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -43,6 +44,9 @@ internal class UserAvailableTimeTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private lateinit var user: User
     private val oneHour = 60 * 60 * 1000
 
@@ -52,7 +56,12 @@ internal class UserAvailableTimeTest {
     }
 
     @Test
-    fun testValid_Guess_Success(){
+    fun testValid_Guest_Success(){
+        // Give the user a 5 hour time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 5 * 60 * 60 * 1000
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -73,7 +82,8 @@ internal class UserAvailableTimeTest {
                 userId = user.id,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was a success
@@ -82,39 +92,6 @@ internal class UserAvailableTimeTest {
 
         // Make sure the available time is correct
         assertEquals(0L, time)
-    }
-
-    @Test
-    fun testValid_OtherUser_Success(){
-        // Make the user role other than guess
-        testUtil.createUserRolesForUser(
-                user = user,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = true
-        )
-
-        testUtil.createAppointment(
-                user = user,
-                telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED,
-                startTime = Date(System.currentTimeMillis() + oneHour),
-                endTime = Date(System.currentTimeMillis() + oneHour + oneHour),
-                isPublic = true
-        )
-
-        val(time, errors) = UserAvailableTime(
-                userId = user.id,
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                userRoleRepo = userRoleRepo
-        ).execute()
-
-        // Make sure it was a success
-        assertNotNull(time)
-        assertNull(errors)
-
-        // Make sure the available time is correct
-        assertEquals(Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP - oneHour, time)
     }
 
     @Test
@@ -139,7 +116,8 @@ internal class UserAvailableTimeTest {
                 userId = 123456789,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was a failure
@@ -167,7 +145,8 @@ internal class UserAvailableTimeTest {
                 userId = user.id,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was a failure

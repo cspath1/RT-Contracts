@@ -47,6 +47,10 @@ internal class UserLoginControllerTest : BaseUserRestControllerTest() {
                 email = "rpim@ycp.edu",
                 password = "Password"
         )
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 0L
+        )
 
         userLoginController = UserLoginController(
                 userWrapper = getWrapper(),

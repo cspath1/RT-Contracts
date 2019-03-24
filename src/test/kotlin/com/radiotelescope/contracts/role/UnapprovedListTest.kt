@@ -1,6 +1,8 @@
 package com.radiotelescope.contracts.role
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -35,6 +37,9 @@ internal class UnapprovedListTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private val nonApprovedRoles = arrayListOf<UserRole>()
 
     @Before
@@ -48,11 +53,19 @@ internal class UnapprovedListTest {
                 role = UserRole.Role.RESEARCHER,
                 isApproved = false
         )
+        testUtil.createAllottedTimeCapForUser(
+                user = firstUser,
+                allottedTime = null
+        )
 
         val secondRoles = testUtil.createUserRolesForUser(
                 user = secondUser,
                 role = UserRole.Role.MEMBER,
                 isApproved = false
+        )
+        testUtil.createAllottedTimeCapForUser(
+                user = secondUser,
+                allottedTime = Appointment.MEMBER_APPOINTMENT_TIME_CAP
         )
 
         firstRoles.forEach {
@@ -74,7 +87,8 @@ internal class UnapprovedListTest {
         val (infos, errors) = UnapprovedList(
                 pageable = PageRequest.of(0, 5),
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         assertNotNull(infos)

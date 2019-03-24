@@ -67,6 +67,11 @@ internal class AppointmentCreateControllerTest : BaseAppointmentRestControllerTe
                 role = UserRole.Role.MEMBER,
                 isApproved = true
         )
+
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 48*60*60*1000
+        )
     }
 
     @Test

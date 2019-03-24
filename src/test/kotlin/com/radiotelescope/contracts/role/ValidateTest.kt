@@ -1,6 +1,8 @@
 package com.radiotelescope.contracts.role
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -34,6 +36,9 @@ internal class ValidateTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private val baseValidateRequest = Validate.Request(
             id = -1L,
             role = UserRole.Role.MEMBER
@@ -62,6 +67,77 @@ internal class ValidateTest {
     }
 
     @Test
+    fun testAllottedTimeCap_Set_Guest(){
+        val requestCopy = baseValidateRequest.copy(
+                role = UserRole.Role.GUEST,
+                id = unapprovedId
+        )
+        val (id, errors) = Validate(
+                request = requestCopy,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        assertNotNull(id)
+        assertNull(errors)
+
+        assertEquals(Appointment.GUEST_APPOINTMENT_TIME_CAP, allottedTimeCapRepo.findByUserId(userId).allottedTime)
+    }
+
+    @Test
+    fun testAllottedTimeCap_Set_Student(){
+        val requestCopy = baseValidateRequest.copy(
+                role = UserRole.Role.STUDENT,
+                id = unapprovedId
+        )
+        val (id, errors) = Validate(
+                request = requestCopy,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        assertNotNull(id)
+        assertNull(errors)
+
+        assertEquals(Appointment.STUDENT_APPOINTMENT_TIME_CAP, allottedTimeCapRepo.findByUserId(userId).allottedTime)
+    }
+
+    @Test
+    fun testAllottedTimeCap_Set_Member(){
+        val requestCopy = baseValidateRequest.copy(
+                id = unapprovedId
+        )
+        val (id, errors) = Validate(
+                request = requestCopy,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        assertNotNull(id)
+        assertNull(errors)
+
+        assertEquals(Appointment.MEMBER_APPOINTMENT_TIME_CAP, allottedTimeCapRepo.findByUserId(userId).allottedTime)
+    }
+
+    @Test
+    fun testAllottedTimeCap_Set_Researcher(){
+        val requestCopy = baseValidateRequest.copy(
+                role = UserRole.Role.RESEARCHER,
+                id = unapprovedId
+        )
+        val (id, errors) = Validate(
+                request = requestCopy,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        assertNotNull(id)
+        assertNull(errors)
+
+        assertNull(allottedTimeCapRepo.findByUserId(userId).allottedTime)
+    }
+
+    @Test
     fun testValidConstraints_SameRole_Success() {
         // Keep the role the same
         val requestCopy = baseValidateRequest.copy(
@@ -70,7 +146,8 @@ internal class ValidateTest {
 
         val (id, errors) = Validate(
                 request = requestCopy,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         assertNotNull(id)
@@ -79,6 +156,9 @@ internal class ValidateTest {
 
         val theRole = userRoleRepo.findById(id!!).get()
         assertEquals(requestCopy.role, theRole.role)
+
+        val allottedTimeCap = allottedTimeCapRepo.findByUserId(userId)
+        assertEquals(Appointment.MEMBER_APPOINTMENT_TIME_CAP, allottedTimeCap.allottedTime)
     }
 
     @Test
@@ -92,7 +172,8 @@ internal class ValidateTest {
 
         val (id, errors) = Validate(
                 request = requestCopy,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         assertNotNull(id)
@@ -102,6 +183,9 @@ internal class ValidateTest {
         val theRole = userRoleRepo.findById(id!!).get()
         assertEquals(requestCopy.role, theRole.role)
         assertNotEquals(baseValidateRequest.role, theRole.role)
+
+        val allottedTimeCap = allottedTimeCapRepo.findByUserId(userId)
+        assertEquals(Appointment.GUEST_APPOINTMENT_TIME_CAP, allottedTimeCap.allottedTime)
     }
 
     @Test
@@ -113,7 +197,8 @@ internal class ValidateTest {
 
         val (id, errors) = Validate(
                 request = requestCopy,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         assertNull(id)
@@ -134,7 +219,8 @@ internal class ValidateTest {
 
         val (id, errors) = Validate(
                 request = requestCopy,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         assertNull(id)
@@ -152,7 +238,8 @@ internal class ValidateTest {
 
         val (id, errors) = Validate(
                 request = requestCopy,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         assertNull(id)
@@ -180,7 +267,8 @@ internal class ValidateTest {
         )
         val (id, errors) = Validate(
                 request = requestCopy,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
@@ -201,5 +289,7 @@ internal class ValidateTest {
             }
         }
 
+        val allottedTimeCap = allottedTimeCapRepo.findByUserId(userId)
+        assertEquals(Appointment.MEMBER_APPOINTMENT_TIME_CAP, allottedTimeCap.allottedTime)
     }
 }

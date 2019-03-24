@@ -3,6 +3,7 @@ package com.radiotelescope.controller.appointment
 import com.radiotelescope.contracts.appointment.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -29,6 +30,9 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
     private lateinit var coordinateRepo: ICoordinateRepository
 
     @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+    
+    @Autowired
     private lateinit var viewerRepo: IViewerRepository
 
     // These will both be needed in all appointment
@@ -45,7 +49,8 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
 
         wrapper = UserAppointmentWrapper(

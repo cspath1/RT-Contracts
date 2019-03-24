@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.user.UserInfo
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 
@@ -15,11 +16,13 @@ import com.radiotelescope.repository.user.IUserRepository
  * @param roleId the Role id
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param userRepo the [IUserRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class Retrieve(
         private val roleId: Long,
         private val userRoleRepo: IUserRoleRepository,
-        private val userRepo: IUserRepository
+        private val userRepo: IUserRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<UserRoleInfo, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
@@ -33,9 +36,10 @@ class Retrieve(
     override fun execute(): SimpleResult<UserRoleInfo, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theRole = userRoleRepo.findById(roleId).get()
+            val allottedTime = allottedTimeCapRepo.findByUserId(theRole.user.id).allottedTime
             // Since this is used to retrieve an unapproved role, the userRoleLabel field will
             // always be null
-            val userInfo = UserInfo(userRepo.findById(theRole.user.id).get(), null)
+            val userInfo = UserInfo(userRepo.findById(theRole.user.id).get(), null, allottedTime)
 
             val roleInfo = UserRoleInfo(
                     userInfo = userInfo,
