@@ -16,6 +16,10 @@ import java.util.*
  * @param endTime the Appointment's new end time
  * @param telescopeId the Appointment's new telescope id
  * @param isPublic whether the Appointment is to be public or not
+ * @param hours the right ascension hours
+ * @param minutes the right ascension minutes
+ * @param seconds the right ascension seconds
+ * @param declination the declination
  */
 data class CoordinateAppointmentUpdateForm (
         override val startTime: Date?,
@@ -59,7 +63,7 @@ data class CoordinateAppointmentUpdateForm (
             errors.put(ErrorTag.END_TIME, "Required field")
         if (telescopeId == null)
             errors.put(ErrorTag.TELESCOPE_ID, "Required field")
-        if(isPublic == null)
+        if (isPublic == null)
             errors.put(ErrorTag.PUBLIC, "Required field")
         if (hours == null)
             errors.put(ErrorTag.HOURS, "Required field")

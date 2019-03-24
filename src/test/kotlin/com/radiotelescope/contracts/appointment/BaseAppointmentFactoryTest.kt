@@ -11,6 +11,7 @@ import com.radiotelescope.contracts.appointment.factory.RasterScanAppointmentFac
 import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
+import com.radiotelescope.contracts.appointment.update.CelestialBodyAppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
@@ -109,7 +110,9 @@ internal class BaseAppointmentFactoryTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                orienationRepo = orientationRepo,
+                coordinateRepo = coordinateRepo
         )
 
         val cmd = factory.create(
@@ -233,6 +236,34 @@ internal class BaseAppointmentFactoryTest {
     }
 
     @Test
+    fun celestial_body_update() {
+        // Instantiate the proper factory
+        factory = CelestialBodyAppointmentFactory(
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo,
+                celestialBodyRepo = celestialBodyRepo,
+                orienationRepo = orientationRepo,
+                coordinateRepo = coordinateRepo
+        )
+
+        val cmd = factory.update(
+                request = CelestialBodyAppointmentUpdate.Request(
+                        id = 1L,
+                        telescopeId = 1L,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 20000L),
+                        isPublic = true,
+                        celestialBodyId = 1L
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is CelestialBodyAppointmentUpdate)
+    }
+
+    @Test
     fun listBetweenDates(){
         val cmd = factory.listBetweenDates(
                 request = ListBetweenDates.Request(
@@ -295,7 +326,9 @@ internal class BaseAppointmentFactoryTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                orienationRepo = orientationRepo,
+                coordinateRepo = coordinateRepo
         )
 
         val cmd = factory.request(

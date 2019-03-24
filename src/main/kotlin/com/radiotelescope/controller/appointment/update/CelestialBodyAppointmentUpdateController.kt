@@ -1,10 +1,10 @@
 package com.radiotelescope.controller.appointment.update
 
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
+import com.radiotelescope.contracts.appointment.update.CelestialBodyAppointmentUpdate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.appointment.update.CoordinateAppointmentUpdateForm
+import com.radiotelescope.controller.model.appointment.update.CelestialBodyAppointmentUpdateForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
@@ -17,30 +17,33 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle Appointment Update
+ * REST Controller to handle Celestial Body Appointment Udpate
  *
  * @param appointmentWrapper the [UserAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
-class CoordinateAppointmentUpdateController(
-        @Qualifier(value = "coordinateAppointmentWrapper")
+class CelestialBodyAppointmentUpdateController(
+        @Qualifier(value = "celestialBodyAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
-) : BaseRestController(logger){
+) : BaseRestController(logger) {
     /**
-     * Execute method that is in charge of adapting the [CoordinateAppointmentUpdateForm]
-     * into a [CoordinateAppointmentUpdate.Request] after ensuring no fields are null. If
-     * any are, it will instead respond with errors.
+     * Execute method that is in charge of adapting a [CelestialBodyAppointmentUpdateForm]
+     * into a [CelestialBodyAppointmentUpdate.Request] after ensuring no fields are null. If
+     * any are, it will respond with errors.
      *
-     * Otherwise, it will execute the [UserAppointmentWrapper.update] method.
-     * If this method returns an [AccessReport], the user was not authenticated.
-     * If not, this means the [CoordinateAppointmentUpdate] method was executed, and the controller
-     * should respond based on if the command was a success or not
+     * Otherwise, it will execute the [UserAppointmentWrapper.update] method. If this method
+     * returns an [AccessReport], the user was not authenticated. If not, this means the
+     * [CelestialBodyAppointmentUpdate] method was executed, and the controller will respond
+     * based on if the command was a success or not
+     *
+     * @param appointmentId the Appointment id
+     * @param form the [CelestialBodyAppointmentUpdateForm]
      */
-    @PutMapping(value = ["/api/appointments/{appointmentId}/coordinate"])
+    @PutMapping(value = ["/api/appointments/{appointmentId}/celestial-body"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long,
-                @RequestBody form: CoordinateAppointmentUpdateForm
+                @RequestBody form: CelestialBodyAppointmentUpdateForm
     ): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {

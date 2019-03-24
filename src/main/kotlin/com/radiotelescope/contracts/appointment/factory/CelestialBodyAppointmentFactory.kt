@@ -8,10 +8,12 @@ import com.radiotelescope.contracts.appointment.create.AppointmentCreate
 import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
+import com.radiotelescope.contracts.appointment.update.CelestialBodyAppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -24,7 +26,9 @@ class CelestialBodyAppointmentFactory(
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val celestialBodyRepo: ICelestialBodyRepository
+        private val celestialBodyRepo: ICelestialBodyRepository,
+        private val coordinateRepo: ICoordinateRepository,
+        private val orienationRepo: IOrientationRepository
 ) : BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
@@ -50,7 +54,15 @@ class CelestialBodyAppointmentFactory(
     }
 
     override fun update(request: AppointmentUpdate.Request): Command<Long, Multimap<ErrorTag, String>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return CelestialBodyAppointmentUpdate(
+                request = request as CelestialBodyAppointmentUpdate.Request,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orienationRepo,
+                celestialBodyRepo = celestialBodyRepo
+        )
     }
 
     /**

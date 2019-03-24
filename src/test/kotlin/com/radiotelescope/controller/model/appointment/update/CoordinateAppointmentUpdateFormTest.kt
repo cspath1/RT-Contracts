@@ -42,7 +42,6 @@ internal class CoordinateAppointmentUpdateFormTest {
         assertNull(errors)
     }
 
-
     @Test
     fun testInvalid_NullStartTime_Failure(){
         // Create a copy of the form with a null appointmentId

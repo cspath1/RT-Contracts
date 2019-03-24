@@ -112,7 +112,9 @@ class FactoryBeans(
                         appointmentRepo = repositories.appointmentRepo,
                         telescopeRepo = repositories.telescopeRepo,
                         userRoleRepo = repositories.userRoleRepo,
-                        celestialBodyRepo = repositories.celestialBodyRepo
+                        celestialBodyRepo = repositories.celestialBodyRepo,
+                        coordinateRepo = repositories.coordinateRepo,
+                        orienationRepo = repositories.orientationRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo

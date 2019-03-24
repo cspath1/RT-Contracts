@@ -8,6 +8,7 @@ import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
 import com.radiotelescope.contracts.appointment.info.AppointmentInfo
 import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
+import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.SearchCriteria
@@ -224,7 +225,7 @@ class UserAppointmentWrapper(
      * @param request the user Id of the appointment
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun update(request: CoordinateAppointmentUpdate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
+    fun update(request: AppointmentUpdate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
         if (!appointmentRepo.existsById(request.id)) {
             return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(request.id))
         }
