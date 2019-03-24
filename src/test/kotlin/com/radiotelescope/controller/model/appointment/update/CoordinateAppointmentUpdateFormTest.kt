@@ -1,22 +1,20 @@
-package com.radiotelescope.controller.model.appointment
+package com.radiotelescope.controller.model.appointment.update
 
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.controller.model.appointment.request.CoordinateAppointmentRequestForm
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class CoordinateAppointmentRequestFormTest {
-    val baseForm = CoordinateAppointmentRequestForm(
-            userId = 1L,
+internal class CoordinateAppointmentUpdateFormTest {
+    private val baseForm = CoordinateAppointmentUpdateForm(
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
-            isPublic = true,
+            isPublic = false,
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 21.0
     )
 
     @Test
@@ -25,79 +23,61 @@ internal class CoordinateAppointmentRequestFormTest {
 
         val theRequest = baseForm.toRequest()
 
-        assertEquals(theRequest.userId, baseForm.userId!!)
-        assertEquals(theRequest.telescopeId, baseForm.telescopeId!!)
-        assertEquals(theRequest.endTime, baseForm.endTime!!)
-        assertEquals(theRequest.startTime, baseForm.startTime!!)
-        assertEquals(theRequest.isPublic, baseForm.isPublic!!)
-        assertEquals(theRequest.hours, baseForm.hours!!)
-        assertEquals(theRequest.minutes, baseForm.minutes!!)
-        assertEquals(theRequest.seconds, baseForm.seconds!!)
-        assertEquals(theRequest.declination, baseForm.declination!!, 0.00001)
+        assertEquals(baseForm.startTime!!, theRequest.startTime)
+        assertEquals(baseForm.endTime!!, theRequest.endTime)
+        assertEquals(baseForm.telescopeId!!, theRequest.telescopeId)
+        assertEquals(baseForm.isPublic!!, theRequest.isPublic)
+        assertEquals(baseForm.hours!!, theRequest.hours)
+        assertEquals(baseForm.minutes!!, theRequest.minutes)
+        assertEquals(baseForm.seconds!!, theRequest.seconds)
+        assertEquals(baseForm.declination!!, theRequest.declination, 0.00001)
     }
 
     @Test
-    fun testValidConstraints_Success() {
-        // Call the validate request method
+    fun testValidConstraints_Success(){
+        // Call the validateRequest method
         val errors = baseForm.validateRequest()
 
         // Make sure there were no errors
         assertNull(errors)
     }
 
-    @Test
-    fun testNullUserId_Failure() {
-        // Create a copy of the form with a null user id
-        val baseFormCopy = baseForm.copy(
-                userId = null
-        )
-
-        // Call the validate request method
-        val errors = baseFormCopy.validateRequest()
-
-        // Make sure the user id field was the reason for failure
-        assertNotNull(errors)
-        assertTrue(errors!![ErrorTag.USER_ID].isNotEmpty())
-    }
 
     @Test
-    fun testNullStartTime_Failure() {
-        // Create a copy of the form with a null start time
+    fun testInvalid_NullStartTime_Failure(){
+        // Create a copy of the form with a null appointmentId
         val baseFormCopy = baseForm.copy(
                 startTime = null
         )
-
-        // Call the validate request method
+        // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure the start time was the reason for failure
+        // Make sure start time was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.START_TIME].isNotEmpty())
     }
 
     @Test
-    fun testNullEndTime_Failure() {
-        // Create a copy of the form with a null end time
+    fun testInvalid_NullEndTime_Failure(){
+        // Create a copy of the form with a null appointmentId
         val baseFormCopy = baseForm.copy(
                 endTime = null
         )
-
-        // Call the validate request method
+        // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure the end time was the reason for failure
+        // Make sure end time was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.END_TIME].isNotEmpty())
     }
 
     @Test
-    fun testNullTelescopeId_Failure() {
-        // Create a copy of the form with a null telescope id
+    fun testInvalid_NullTelescopeId_Failure(){
+        // Create a copy of the form with a null appointmentId
         val baseFormCopy = baseForm.copy(
                 telescopeId = null
         )
-
-        // Call the validate request method
+        // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
         // Make sure the telescope id was the reason for failure
@@ -106,16 +86,15 @@ internal class CoordinateAppointmentRequestFormTest {
     }
 
     @Test
-    fun testNullPublicFlag_Failure() {
-        // Create a copy of the form with a null isPublic flag
+    fun testInvalid_NullIsPublic_Failure(){
+        // Create a copy of the form with a null appointmentId
         val baseFormCopy = baseForm.copy(
                 isPublic = null
         )
-
-        // Call the validate request method
+        // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure the isPublic field was the reason for failure
+        // Make sure the isPublic was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.PUBLIC].isNotEmpty())
     }
@@ -256,16 +235,15 @@ internal class CoordinateAppointmentRequestFormTest {
     }
 
     @Test
-    fun testNullDeclination_Failure() {
+    fun testInvalid_NullDeclination_Failure() {
         // Create a copy of the form with a null declination
         val baseFormCopy = baseForm.copy(
                 declination = null
         )
-
-        // Call the validate request method
+        // Call the validateRequest method
         val errors = baseFormCopy.validateRequest()
 
-        // Make sure the right ascension was the reason for failure
+        // Make sure the declination was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
     }
