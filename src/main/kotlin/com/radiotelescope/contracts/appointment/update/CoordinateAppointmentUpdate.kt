@@ -9,6 +9,8 @@ import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.coordinate.Coordinate
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -26,7 +28,9 @@ class CoordinateAppointmentUpdate(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
         private val telescopeRepo: ITelescopeRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val coordinateRepo: ICoordinateRepository,
+        private val orientationRepo: IOrientationRepository
 ):  Command<Long, Multimap<ErrorTag,String>>, AppointmentUpdate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -44,7 +48,7 @@ class CoordinateAppointmentUpdate(
             return SimpleResult(null, errors)
 
         val appointment = appointmentRepo.findById(request.id).get()
-        val updatedAppointment = appointmentRepo.save(request.updateEntity(appointment))
+        val updatedAppointment = handleEntityUpdate(appointment, request)
         return SimpleResult(updatedAppointment.id, null)
     }
 
@@ -96,7 +100,41 @@ class CoordinateAppointmentUpdate(
         return errors
     }
 
+    private fun handleEntityUpdate(
+            appointment: Appointment,
+            request: Request
+    ): Appointment {
+        // If the type is the same, the entity can be updated
+        if (appointment.type == Appointment.Type.POINT) {
+            return appointmentRepo.save(request.updateEntity(appointment))
+        } else {
+            // The type is being changed, and we must delete the
+            // old record and persist a new one
+            val theUser = appointment.user
 
+            deleteAppointment(
+                    appointment = appointment,
+                    appointmentRepo = appointmentRepo,
+                    coordinateRepo = coordinateRepo,
+                    orientationRepo = orientationRepo
+            )
+            val theAppointment = request.toEntity()
+
+            val theCoordinate = request.toCoordinate()
+            coordinateRepo.save(theCoordinate)
+
+            theAppointment.user = theUser
+
+            // "Point" Appointments will have a single Coordinate
+            theAppointment.coordinateList = arrayListOf(theCoordinate)
+            appointmentRepo.save(theAppointment)
+
+            theCoordinate.appointment = theAppointment
+            coordinateRepo.save(theCoordinate)
+
+            return theAppointment
+        }
+    }
 
     /**
      * Data class containing all fields necessary for appointment update. Implements the
@@ -136,6 +174,44 @@ class CoordinateAppointmentUpdate(
             )
 
             return entity
+        }
+
+        /**
+         * Method used when changing appointment types, since when the type
+         * changes, the existing record is deleted and a new one is persisted.
+         * Returns a new [Appointment] record
+         *
+         * @return a new [Appointment] record
+         */
+        fun toEntity(): Appointment {
+            return Appointment(
+                    startTime = startTime,
+                    endTime = endTime,
+                    telescopeId = telescopeId,
+                    isPublic = isPublic,
+                    type = Appointment.Type.POINT
+            )
+        }
+
+        /**
+         * Method used when changing appointment types, since when the type
+         * changes, the existing record is deleted and a new one is persisted.
+         * Returns a new [Coordinate] record
+         *
+         * @return a new [Coordinate] record
+         */
+        fun toCoordinate(): Coordinate {
+            return Coordinate(
+                    hours = hours,
+                    minutes = minutes,
+                    seconds = seconds,
+                    rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                            hours = hours,
+                            minutes = minutes,
+                            seconds = seconds
+                    ),
+                    declination = declination
+            )
         }
     }
 }

@@ -12,6 +12,8 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
+import com.radiotelescope.repository.orientation.IOrientationRepository
+import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -66,6 +68,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var celestialBodyRepo: ICelestialBodyRepository
+
+    @Autowired
+    private lateinit var orientationRepo: IOrientationRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -145,6 +150,209 @@ internal class TestUtil {
             isPublic: Boolean,
             type: Appointment.Type
     ): Appointment {
+        when (type) {
+            Appointment.Type.POINT -> return createPointAppointment(
+                    user = user,
+                    telescopeId = telescopeId,
+                    status = status,
+                    startTime = startTime,
+                    endTime = endTime,
+                    isPublic = isPublic
+            )
+            Appointment.Type.CELESTIAL_BODY -> return createCelestialBodyAppointment(
+                    user = user,
+                    telescopeId = telescopeId,
+                    status = status,
+                    startTime = startTime,
+                    endTime = endTime,
+                    isPublic = isPublic
+            )
+            Appointment.Type.RASTER_SCAN -> return createRasterScanAppointment(
+                    user = user,
+                    telescopeId = telescopeId,
+                    status = status,
+                    startTime = startTime,
+                    endTime = endTime,
+                    isPublic = isPublic
+            )
+            Appointment.Type.DRIFT_SCAN -> return createDriftScanAppointment(
+                    user = user,
+                    telescopeId = telescopeId,
+                    status = status,
+                    startTime = startTime,
+                    endTime = endTime,
+                    isPublic = isPublic
+            )
+            Appointment.Type.FREE_CONTROL -> return createFreeControlAppointment(
+                    user = user,
+                    telescopeId = telescopeId,
+                    status = status,
+                    startTime = startTime,
+                    endTime = endTime,
+                    isPublic = isPublic
+            )
+        }
+    }
+
+    private fun createFreeControlAppointment(
+            user: User,
+            telescopeId: Long,
+            status: Appointment.Status,
+            startTime: Date,
+            endTime: Date,
+            isPublic: Boolean
+    ): Appointment {
+        val theAppointment = Appointment(
+                startTime = startTime,
+                endTime = endTime,
+                telescopeId = telescopeId,
+                isPublic = isPublic,
+                type = Appointment.Type.FREE_CONTROL
+        )
+
+        theAppointment.status = status
+        theAppointment.user = user
+
+        return appointmentRepo.save(theAppointment)
+    }
+
+    private fun createDriftScanAppointment(
+            user: User,
+            telescopeId: Long,
+            status: Appointment.Status,
+            startTime: Date,
+            endTime: Date,
+            isPublic: Boolean
+    ): Appointment {
+        val orientation = Orientation(
+                azimuth = 66.6,
+                elevation = 45.0
+        )
+
+        orientationRepo.save(orientation)
+
+        val theAppointment = Appointment(
+                startTime = startTime,
+                endTime = endTime,
+                telescopeId = telescopeId,
+                isPublic = isPublic,
+                type = Appointment.Type.DRIFT_SCAN
+        )
+
+        theAppointment.status = status
+        theAppointment.user = user
+        theAppointment.orientation = orientation
+
+        return appointmentRepo.save(theAppointment)
+    }
+
+    private fun createRasterScanAppointment(
+            user: User,
+            telescopeId: Long,
+            status: Appointment.Status,
+            startTime: Date,
+            endTime: Date,
+            isPublic: Boolean
+    ): Appointment {
+        val coordinateOne = Coordinate(
+                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12
+                ),
+                declination = 69.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12
+        )
+
+        coordinateRepo.save(coordinateOne)
+
+        val coordinateTwo = Coordinate(
+                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12
+                ),
+                declination = 69.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12
+        )
+
+        coordinateRepo.save(coordinateTwo)
+
+        val theAppointment = Appointment(
+                startTime = startTime,
+                endTime = endTime,
+                telescopeId = telescopeId,
+                isPublic = isPublic,
+                type = Appointment.Type.RASTER_SCAN
+        )
+
+        theAppointment.status = status
+        theAppointment.user = user
+        theAppointment.coordinateList = arrayListOf(coordinateOne, coordinateTwo)
+        appointmentRepo.save(theAppointment)
+
+        coordinateOne.appointment = theAppointment
+        coordinateTwo.appointment = theAppointment
+        coordinateRepo.save(coordinateOne)
+        coordinateRepo.save(coordinateTwo)
+
+        return appointmentRepo.save(theAppointment)
+    }
+
+    private fun createCelestialBodyAppointment(
+            user: User,
+            telescopeId: Long,
+            status: Appointment.Status,
+            startTime: Date,
+            endTime: Date,
+            isPublic: Boolean
+    ): Appointment {
+        val coordinate = Coordinate(
+                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12
+                ),
+                declination = 69.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12
+        )
+
+        coordinateRepo.save(coordinate)
+
+        val celestialBody = createCelestialBody(
+                name = "A Celestial Body",
+                coordinate = coordinate
+        )
+
+        val theAppointment = Appointment(
+                startTime = startTime,
+                endTime = endTime,
+                telescopeId = telescopeId,
+                isPublic = isPublic,
+                type = Appointment.Type.POINT
+        )
+
+        theAppointment.status = status
+        theAppointment.user = user
+        theAppointment.celestialBody = celestialBody
+
+        return appointmentRepo.save(theAppointment)
+    }
+
+    private fun createPointAppointment(
+            user: User,
+            telescopeId: Long,
+            status: Appointment.Status,
+            startTime: Date,
+            endTime: Date,
+            isPublic: Boolean
+    ): Appointment {
         val coordinate = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
@@ -164,7 +372,7 @@ internal class TestUtil {
                 endTime = endTime,
                 telescopeId = telescopeId,
                 isPublic = isPublic,
-                type = type
+                type = Appointment.Type.POINT
         )
 
         theAppointment.status = status
@@ -173,8 +381,9 @@ internal class TestUtil {
         appointmentRepo.save(theAppointment)
 
         coordinate.appointment = theAppointment
+        coordinateRepo.save(coordinate)
 
-        return theAppointment
+        return appointmentRepo.save(theAppointment)
     }
 
     fun createLog(

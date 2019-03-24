@@ -11,6 +11,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.model.appointment.Filter
 import com.radiotelescope.repository.model.appointment.SearchCriteria
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -65,6 +66,9 @@ internal class UserAppointmentWrapperTest {
 
     @Autowired
     private lateinit var viewerRepo: IViewerRepository
+
+    @Autowired
+    private lateinit var orientationRepo: IOrientationRepository
 
     private val baseCreateRequest = CoordinateAppointmentCreate.Request(
             userId = -1L,
@@ -164,7 +168,8 @@ internal class UserAppointmentWrapperTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         )
 
         wrapper = UserAppointmentWrapper(

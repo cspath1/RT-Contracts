@@ -15,6 +15,7 @@ import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpda
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -59,6 +60,9 @@ internal class BaseAppointmentFactoryTest {
     @Autowired
     private lateinit var celestialBodyRepo: ICelestialBodyRepository
 
+    @Autowired
+    private lateinit var orientationRepo: IOrientationRepository
+
     private lateinit var factory: AppointmentFactory
 
     @Before
@@ -68,7 +72,8 @@ internal class BaseAppointmentFactoryTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         )
     }
 

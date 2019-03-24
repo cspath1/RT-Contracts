@@ -7,6 +7,7 @@ import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.feedback.IFeedbackRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.rfdata.IRFDataRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -52,5 +53,6 @@ class RepositoryBeans(
         val viewerRepo: IViewerRepository,
         val coordinateRepo: ICoordinateRepository,
         val celestialBodyRepo: ICelestialBodyRepository,
-        val feedbackRepo: IFeedbackRepository
+        val feedbackRepo: IFeedbackRepository,
+        val orientationRepo: IOrientationRepository
 )

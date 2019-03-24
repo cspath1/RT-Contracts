@@ -10,6 +10,8 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -45,6 +47,11 @@ internal class CoordinateAppointmentUpdateTest {
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
 
+    @Autowired
+    private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var orientationRepo: IOrientationRepository
 
     private lateinit var appointment: Appointment
     private lateinit var user: User
@@ -105,8 +112,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
-
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was not error
@@ -127,13 +135,20 @@ internal class CoordinateAppointmentUpdateTest {
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
-
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was not error
         assertNotNull(id)
         assertNull(errors)
+    }
+
+    @Test
+    fun testValidConstraints_ChangedType_Success() {
+        // Create an appointment that is a different type
+
     }
 
     @Test
@@ -147,7 +162,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was an error
@@ -170,7 +187,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was an error
@@ -193,7 +212,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was an error
@@ -215,7 +236,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was an error
@@ -245,8 +268,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
-
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was an error
@@ -276,8 +300,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
-
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was an error
@@ -308,8 +333,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
-
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was an error
@@ -356,7 +382,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a success
@@ -395,7 +423,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -438,7 +468,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -481,7 +513,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -524,7 +558,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -567,7 +603,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -610,7 +648,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -653,7 +693,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -696,7 +738,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -743,7 +787,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a success
@@ -786,7 +832,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a success
@@ -835,7 +883,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -888,7 +938,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -912,7 +964,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -935,7 +989,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -958,7 +1014,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -981,7 +1039,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -1004,7 +1064,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -1027,7 +1089,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -1049,7 +1113,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was for the expected reason
@@ -1071,7 +1137,9 @@ internal class CoordinateAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
         ).execute()
 
         // Make sure it was for the expected reason
