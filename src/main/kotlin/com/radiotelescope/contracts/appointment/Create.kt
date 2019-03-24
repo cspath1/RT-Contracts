@@ -94,6 +94,8 @@ class Create(
                 errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
             if (declination > 90 || declination < -90)
                 errors.put(ErrorTag.DECLINATION, "Declination must be between -90 and 90")
+            if(!allottedTimeCapRepo.existsByUserId(userId))
+                errors.put(ErrorTag.ALLOTTED_TIME_CAP, "Allotted Time Cap for userId $userId could not be found")
 
             if (!errors.isEmpty)
                 return errors

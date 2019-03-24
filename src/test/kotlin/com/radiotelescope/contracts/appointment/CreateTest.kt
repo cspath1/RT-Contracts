@@ -170,6 +170,11 @@ internal class CreateTest {
 
     @Test
     fun testInvalidTelescopeId_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
         // Make the user a Researcher
         testUtil.createUserRoleForUser(
                 user = user,
@@ -228,6 +233,11 @@ internal class CreateTest {
 
     @Test
     fun testStartAfterEnd_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
         testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
@@ -264,6 +274,11 @@ internal class CreateTest {
 
     @Test
     fun testStartBeforeNow_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
         testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
@@ -367,6 +382,12 @@ internal class CreateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
 
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
         testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
@@ -416,6 +437,12 @@ internal class CreateTest {
     fun testInvalidSC_BetweenEndAndStart_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
 
         testUtil.createUserRoleForUser(
                 user = user,
@@ -468,6 +495,12 @@ internal class CreateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
 
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
         testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
@@ -518,6 +551,12 @@ internal class CreateTest {
     fun testInvalidSC_StartBeforeStart_EndBeforeEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
 
         testUtil.createUserRoleForUser(
                 user = user,
@@ -570,6 +609,12 @@ internal class CreateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
 
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
         testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
@@ -620,6 +665,12 @@ internal class CreateTest {
     fun testInvalidSC_EndAtStart_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
 
         testUtil.createUserRoleForUser(
                 user = user,
@@ -672,6 +723,12 @@ internal class CreateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
 
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
         testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
@@ -723,6 +780,12 @@ internal class CreateTest {
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
 
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
         testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.RESEARCHER,
@@ -773,6 +836,12 @@ internal class CreateTest {
     fun testInvalidSC_StartAtStart_EndAtEnd_Failure(){
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
 
         testUtil.createUserRoleForUser(
                 user = user,
@@ -922,6 +991,11 @@ internal class CreateTest {
 
     @Test
     fun testHoursTooLow_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -956,6 +1030,11 @@ internal class CreateTest {
 
     @Test
     fun testHoursTooHigh_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -990,6 +1069,11 @@ internal class CreateTest {
 
     @Test
     fun testMinutesTooLow_Failure() {
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -1024,6 +1108,11 @@ internal class CreateTest {
 
     @Test
     fun testMinutesTooHigh_Failure() {
+        // Give the user a guest time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -1058,6 +1147,11 @@ internal class CreateTest {
 
     @Test
     fun testSecondsTooLow_Failure() {
+        // Give the user a guest time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -1092,6 +1186,11 @@ internal class CreateTest {
 
     @Test
     fun testSecondsTooHigh_Failure() {
+        // Give the user a guest time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -1126,6 +1225,12 @@ internal class CreateTest {
 
     @Test
     fun testDeclinationTooLow_Failure() {
+        // Give the user a guest time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
+
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -1160,6 +1265,11 @@ internal class CreateTest {
 
     @Test
     fun testDeclinationTooGreat_Failure() {
+        // Give the user a guest time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,
@@ -1190,5 +1300,38 @@ internal class CreateTest {
         // Make sure it failed for the correct reason
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.DECLINATION].isNotEmpty())
+    }
+
+    @Test
+    fun testNoAllottedTimeCap_Failure() {
+        // Make the user a Guest
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Create a copy of the baseRequest with the correct
+        // user id
+        val requestCopy = baseRequest.copy(userId = user.id)
+
+        // Run the command
+        val (id, errors) = Create(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        // Make sure the command was a failure
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it failed for the correct reason
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.ALLOTTED_TIME_CAP].isNotEmpty())
     }
 }
