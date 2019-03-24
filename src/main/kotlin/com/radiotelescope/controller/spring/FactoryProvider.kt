@@ -3,6 +3,7 @@ package com.radiotelescope.controller.spring
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
+import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
@@ -64,4 +65,9 @@ interface FactoryProvider {
      * Abstract method to return the [UserCelestialBodyWrapper] class
      */
     fun getCelestialBodyWrapper(): UserCelestialBodyWrapper
+
+    /**
+     * Abstract method to return the [UserFeedbackWrapper] class
+     */
+    fun getFeedbackWrapper(): UserFeedbackWrapper
 }

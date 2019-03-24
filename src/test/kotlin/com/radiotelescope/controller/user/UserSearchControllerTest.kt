@@ -202,4 +202,28 @@ internal class UserSearchControllerTest : BaseUserRestControllerTest() {
             assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
         }
     }
+
+    @Test
+    fun testInvalidPageParametersResponse() {
+        // Test the scenario where the page parameter supplied
+        // are invalid
+        val result = userSearchController.execute(
+                pageNumber = -1,
+                pageSize = -1,
+                search = "firstName",
+                value = "Michael"
+        )
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertEquals(1, result.errors!!.size)
+
+        assertEquals(logRepo.count(), 1)
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
+    }
 }

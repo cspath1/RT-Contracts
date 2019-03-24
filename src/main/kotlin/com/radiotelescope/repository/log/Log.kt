@@ -56,6 +56,7 @@ data class Log(
         ACTIVATE_ACCOUNT_TOKEN("Activate Account Token"),
         ALLOTTED_TIME_CAP("Allotted Time Cap"),
         CELESTIAL_BODY("Celestial Body"),
-        VIEWER("Viewer")
+        VIEWER("Viewer"),
+        FEEDBACK("Feedback")
     }
 }

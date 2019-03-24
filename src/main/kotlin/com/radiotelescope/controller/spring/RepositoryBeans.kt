@@ -7,6 +7,7 @@ import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.feedback.IFeedbackRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.rfdata.IRFDataRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Component
  * @param coordinateRepo the [ICoordinateRepository] interface
  * @param celestialBodyRepo the [ICelestialBodyRepository] interface
  * @param viewerRepo the [IViewerRepository] interface
+ * @param feedbackRepo the [IFeedbackRepository] interface
  *
  */
 @Component
@@ -52,5 +54,6 @@ class RepositoryBeans(
         val allottedTimeCapRepo: IAllottedTimeCapRepository,
         val viewerRepo: IViewerRepository,
         val coordinateRepo: ICoordinateRepository,
-        val celestialBodyRepo: ICelestialBodyRepository
+        val celestialBodyRepo: ICelestialBodyRepository,
+        val feedbackRepo: IFeedbackRepository
 )

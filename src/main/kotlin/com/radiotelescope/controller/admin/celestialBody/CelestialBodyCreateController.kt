@@ -39,7 +39,7 @@ class CelestialBodyCreateController(
      * whether this command was a success or not, responding accordingly
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/celestial-body"])
+    @PostMapping(value = ["/api/celestial-bodies"])
     fun execute(@RequestBody form: CreateForm): Result {
         form.validateRequest()?.let {
             // Create error logs
