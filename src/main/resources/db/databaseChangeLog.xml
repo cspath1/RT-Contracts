@@ -18,4 +18,5 @@
     <include file="classpath:/db/changelog/13-create-celestial-body.sql"/>
     <include file="classpath:/db/changelog/14-create-viewer-table.sql"/>
     <include file="classpath:/db/changelog/15-create-feedback-table.sql"/>
+    <include file="classpath:/db/changelog/16-create-user-specific-time-caps.sql"/>
 </databaseChangeLog>
