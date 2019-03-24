@@ -121,6 +121,18 @@ internal class CoordinateAppointmentUpdateTest {
         // Make sure it was not error
         assertNotNull(id)
         assertNull(errors)
+
+        // Make sure the information was updated correctly
+        val theAppointment = appointmentRepo.findById(id!!).get()
+
+        assertEquals(baseRequest.id, theAppointment.id)
+        assertNull(appointment.celestialBody)
+        assertNull(appointment.orientation)
+        assertEquals(baseRequest.endTime, theAppointment.endTime)
+        assertEquals(baseRequest.startTime, theAppointment.startTime)
+        assertEquals(baseRequest.isPublic, theAppointment.isPublic)
+        assertEquals(baseRequest.telescopeId, theAppointment.telescopeId)
+        assertEquals(1, theAppointment.coordinateList.size)
     }
 
     @Test
@@ -144,6 +156,18 @@ internal class CoordinateAppointmentUpdateTest {
         // Make sure it was not error
         assertNotNull(id)
         assertNull(errors)
+
+        // Make sure the information was updated correctly
+        val theAppointment = appointmentRepo.findById(id!!).get()
+
+        assertEquals(baseRequest.id, theAppointment.id)
+        assertNull(appointment.celestialBody)
+        assertNull(appointment.orientation)
+        assertEquals(baseRequest.endTime, theAppointment.endTime)
+        assertEquals(baseRequest.startTime, theAppointment.startTime)
+        assertEquals(baseRequest.isPublic, theAppointment.isPublic)
+        assertEquals(baseRequest.telescopeId, theAppointment.telescopeId)
+        assertEquals(1, theAppointment.coordinateList.size)
     }
 
     @Test
@@ -165,7 +189,6 @@ internal class CoordinateAppointmentUpdateTest {
                 isPublic = true,
                 type = Appointment.Type.CELESTIAL_BODY
         )
-        val theId = appointment.id
 
         // Create a copy of the request with the appointment above
         val requestCopy = baseRequest.copy(
@@ -184,9 +207,17 @@ internal class CoordinateAppointmentUpdateTest {
         assertNotNull(id)
         assertNull(errors)
 
-        // The id return should be different (since a new record was
-        // persisted in place of the old one
-        assertNotEquals(theId, id!!)
+        // Make sure the information was updated correctly
+        val theAppointment = appointmentRepo.findById(id!!).get()
+
+        assertNotEquals(baseRequest.id, theAppointment.id)
+        assertNull(appointment.celestialBody)
+        assertNull(appointment.orientation)
+        assertEquals(baseRequest.endTime, theAppointment.endTime)
+        assertEquals(baseRequest.startTime, theAppointment.startTime)
+        assertEquals(baseRequest.isPublic, theAppointment.isPublic)
+        assertEquals(baseRequest.telescopeId, theAppointment.telescopeId)
+        assertEquals(1, theAppointment.coordinateList.size)
     }
 
     @Test
@@ -365,7 +396,6 @@ internal class CoordinateAppointmentUpdateTest {
                 startTime = Date(appointment.endTime.time + twoHours),
                 endTime = Date(appointment.endTime.time + (twoHours * 29))
         )
-
 
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,

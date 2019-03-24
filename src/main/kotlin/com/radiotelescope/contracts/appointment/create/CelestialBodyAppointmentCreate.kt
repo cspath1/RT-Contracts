@@ -77,22 +77,20 @@ class CelestialBodyAppointmentCreate(
         var errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
-            if (!celestialBodyRepo.existsById(celestialBodyId)) {
-                errors = HashMultimap.create<ErrorTag, String>()
-                errors!!.put(ErrorTag.CELESTIAL_BODY, "Celestial Body #$celestialBodyId could not be found")
-                return errors
-            }
-            if (!errors!!.isEmpty)
-                return errors
-
-            errors = validateAvailableAllottedTime(
-                    request = request,
-                    appointmentRepo = appointmentRepo,
-                    userRoleRepo = userRoleRepo
-            )
+            if (!celestialBodyRepo.existsById(celestialBodyId))
+                errors.put(ErrorTag.CELESTIAL_BODY, "Celestial Body #$celestialBodyId could not be found")
         }
 
-        return if (errors!!.isEmpty) null else errors
+        if (!errors!!.isEmpty)
+            return errors
+
+        errors = validateAvailableAllottedTime(
+                request = request,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo
+        )
+
+        return if (errors.isEmpty) null else errors
     }
 
     /**

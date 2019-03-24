@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.isNotEmpty
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -56,16 +57,20 @@ interface AppointmentUpdate {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
-            if (appointmentRepo.existsById(id)) {
-                if(telescopeRepo.existsById(telescopeId)) {
-                    if (startTime.before(Date()))
-                        errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
-                    if (endTime.before(startTime) || endTime == startTime)
-                        errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
-                    if (isOverlap(this, appointmentRepo))
-                        errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
-                }
-            }
+            if (!appointmentRepo.existsById(id))
+                errors.put(ErrorTag.ID, "Appointment #$id not found")
+            if (!telescopeRepo.existsById(telescopeId))
+                errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId not found")
+
+            if (errors.isNotEmpty())
+                return errors
+
+            if (startTime.before(Date()))
+                errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
+            if (endTime.before(startTime) || endTime == startTime)
+                errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
+            if (isOverlap(this, appointmentRepo))
+                errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
         }
 
         return if (errors.isEmpty) null else errors

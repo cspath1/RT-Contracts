@@ -1,23 +1,22 @@
 package com.radiotelescope.contracts.appointment.update
 
-import com.radiotelescope.contracts.Command
-import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
-import com.radiotelescope.contracts.BaseUpdateRequest
+import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.repository.coordinate.Coordinate
+import com.radiotelescope.isNotEmpty
+import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import java.util.*
 
 /**
- * Command class for editing a Coordinate (Point) Appointment
+ * Command class for editing a Celestial Body Appointment
  *
  * @param request the [Request] object
  * @param appointmentRepo the [IAppointmentRepository] interface
@@ -26,14 +25,15 @@ import java.util.*
  * @param coordinateRepo the [ICoordinateRepository] interface
  * @param orientationRepo the [IOrientationRepository] interface
  */
-class CoordinateAppointmentUpdate(
+class CelestialBodyAppointmentUpdate(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
         private val telescopeRepo: ITelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val coordinateRepo: ICoordinateRepository,
-        private val orientationRepo: IOrientationRepository
-):  Command<Long, Multimap<ErrorTag,String>>, AppointmentUpdate {
+        private val orientationRepo: IOrientationRepository,
+        private val celestialBodyRepo: ICelestialBodyRepository
+) : Command<Long, Multimap<ErrorTag, String>>, AppointmentUpdate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
@@ -41,23 +41,23 @@ class CoordinateAppointmentUpdate(
      * If validation passes, it will update and persist the [Appointment] object and
      * return the id in the [SimpleResult] object.
      *
-     * If validation fails, it will return a [SimpleResult] with the errors
+     * If validation fails, it will return a [SimpleResult] with the errors.
      */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
-            val appointment = appointmentRepo.findById(request.id).get()
-            val updatedAppointment = handleEntityUpdate(appointment, request)
+            val theAppointment = appointmentRepo.findById(request.id).get()
+            val updatedAppointment = handleEntityUpdate(theAppointment, request)
             return SimpleResult(updatedAppointment.id, null)
         }
     }
 
     /**
      * Method responsible for constraint checking and validations for the appointment
-     * update request. Calls the [baseRequestValidation] to handle validation common
-     * to all [Appointment] update commands. From there, it will check to make sure
-     * the hours, minutes, seconds, and declination are all valid.
+     * update request. Calls the [baseRequestValidation] to handle validation common to
+     * all [Appointment] update commands. From there it will make sure the celestial body
+     * id refers to an existing record.
      *
-     * If all of these fields pass validation, it will call the [validateAvailableAllottedTime]
+     * From there, if no validation has failed thus far, it will call the [validateAvailableAllottedTime]
      * method to check if the user has enough time for the appointment.
      *
      * @return a [HashMultimap] of errors or null
@@ -72,17 +72,11 @@ class CoordinateAppointmentUpdate(
         var errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
-            if (hours < 0 || hours >= 24)
-                errors.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
-            if (minutes < 0 || minutes >= 60)
-                errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
-            if (seconds < 0 || seconds >= 60)
-                errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
-            if (declination > 90 || declination < -90)
-                errors.put(ErrorTag.DECLINATION, "Declination must be between -90 - 90")
+            if (!celestialBodyRepo.existsById(celestialBodyId))
+                errors.put(ErrorTag.CELESTIAL_BODY, "Celestial Body #$celestialBodyId could not be found")
         }
 
-        if (!errors.isEmpty)
+        if (errors.isNotEmpty())
             return errors
 
         errors = validateAvailableAllottedTime(
@@ -96,12 +90,12 @@ class CoordinateAppointmentUpdate(
 
     /**
      * Private method used to handle updating the entity. In the event that
-     * the entity being changed has had its typed changed, the current record
-     * will be deleted, and a new one will be persisted in its place.
+     * the entity is being changed has had its type changed, the current
+     * record will be deleted, and a new one will be persisted in its place.
      *
      * If it has not changed, the entity can be updated normally.
      *
-     * @param appointment current [Appointment]
+     * @param appointment the current [Appointment]
      * @param request the [Request]
      * @return the updated (or new) [Appointment]
      */
@@ -110,11 +104,11 @@ class CoordinateAppointmentUpdate(
             request: Request
     ): Appointment {
         // If the type is the same, the entity can be updated
-        if (appointment.type == Appointment.Type.POINT) {
+        if (appointment.type == Appointment.Type.CELESTIAL_BODY) {
             return appointmentRepo.save(request.updateEntity(appointment))
         } else {
-            // The type is being changed, and we must delete the
-            // old record and persist a new one
+            // The type is being changed, and we must delete the old
+            // record and persist a new one
             val theUser = appointment.user
             val theStatus = appointment.status
 
@@ -125,28 +119,18 @@ class CoordinateAppointmentUpdate(
                     orientationRepo = orientationRepo
             )
             val theAppointment = request.toEntity()
-
-            val theCoordinate = request.toCoordinate()
-            coordinateRepo.save(theCoordinate)
-
             theAppointment.user = theUser
             theAppointment.status = theStatus
 
-            // "Point" Appointments will have a single Coordinate
-            theAppointment.coordinateList = arrayListOf(theCoordinate)
-            appointmentRepo.save(theAppointment)
-
-            theCoordinate.appointment = theAppointment
-            coordinateRepo.save(theCoordinate)
-
-            return theAppointment
+            // "Celestial Body" Appointments will have a Celestial Body
+            theAppointment.celestialBody = celestialBodyRepo.findById(request.celestialBodyId).get()
+            return appointmentRepo.save(theAppointment)
         }
     }
 
     /**
-     * Data class containing all fields necessary for coordinate appointment update. Implements the
-     * [BaseUpdateRequest] interface and overrides the [BaseUpdateRequest.updateEntity]
-     * method
+     * Data class containing fields necessary for celestial body appointment update.
+     * Implements the [AppointmentUpdate.Request] abstract class.
      */
     data class Request(
             override var id: Long,
@@ -154,15 +138,15 @@ class CoordinateAppointmentUpdate(
             override val startTime: Date,
             override val endTime: Date,
             override val isPublic: Boolean,
-            val hours: Int,
-            val minutes: Int,
-            val seconds: Int,
-            val declination: Double
+            val celestialBodyId: Long
     ): AppointmentUpdate.Request() {
         /**
-         * Override of the [BaseUpdateRequest.updateEntity] method that
-         * takes an [Appointment] and will update all of its values to the
-         * values in the request
+         * Concrete implementation of the [AppointmentUpdate.Request.updateEntity]
+         * method that takes an [Appointment] and will update all of its values
+         * to the values in the request
+         *
+         * @param entity the [Appointment]
+         * @return an updated [Appointment] object
          */
         override fun updateEntity(entity: Appointment): Appointment {
             entity.telescopeId = telescopeId
@@ -170,22 +154,13 @@ class CoordinateAppointmentUpdate(
             entity.endTime = endTime
             entity.isPublic = isPublic
 
-            entity.coordinateList[0].hours = hours
-            entity.coordinateList[0].minutes = minutes
-            entity.coordinateList[0].seconds = seconds
-            entity.coordinateList[0].declination = declination
-            entity.coordinateList[0].rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
-                    hours = hours,
-                    minutes = minutes,
-                    seconds = seconds
-            )
-
             return entity
         }
 
         /**
-         * Method used when changing appointment types, since when the type
-         * changes, the existing record is deleted and a new one is persisted.
+         * Method used when changing appointment types, since when the
+         * type changes, the existing record is deleted and a new one
+         * is persisted.
          *
          * @return a new [Appointment] record
          */
@@ -195,28 +170,7 @@ class CoordinateAppointmentUpdate(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic,
-                    type = Appointment.Type.POINT
-            )
-        }
-
-        /**
-         * Method used when changing appointment types, since when the type
-         * changes, the existing record is deleted and a new one is persisted.
-         * Returns a new [Coordinate] record
-         *
-         * @return a new [Coordinate] record
-         */
-        fun toCoordinate(): Coordinate {
-            return Coordinate(
-                    hours = hours,
-                    minutes = minutes,
-                    seconds = seconds,
-                    rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
-                            hours = hours,
-                            minutes = minutes,
-                            seconds = seconds
-                    ),
-                    declination = declination
+                    type = Appointment.Type.CELESTIAL_BODY
             )
         }
     }
