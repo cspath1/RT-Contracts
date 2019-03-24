@@ -11,6 +11,7 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
+
 interface AppointmentCreate {
     abstract class Request : BaseCreateRequest<Appointment> {
         abstract val userId: Long
@@ -109,6 +110,4 @@ interface AppointmentCreate {
 
         return if (errors.isEmpty) null else errors
     }
-
-
 }

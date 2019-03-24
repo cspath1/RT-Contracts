@@ -6,6 +6,9 @@ import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import java.util.*
 
@@ -66,5 +69,96 @@ interface AppointmentUpdate {
         }
 
         return if (errors.isEmpty) null else errors
+    }
+
+    /**
+     * Delete an appointment
+     *
+     * @param appointment the Appointment
+     * @param appointmentRepo the [IAppointmentRepository] interface
+     * @param coordinateRepo the [ICoordinateRepository] interface
+     * @param orientationRepo the [IOrientationRepository] interface
+     */
+    fun deleteAppointment(
+            appointment: Appointment,
+            appointmentRepo: IAppointmentRepository,
+            coordinateRepo: ICoordinateRepository,
+            orientationRepo: IOrientationRepository
+    ) {
+        if (appointment.type == Appointment.Type.POINT || appointment.type == Appointment.Type.RASTER_SCAN) {
+            val coordinateList = appointment.coordinateList
+            appointment.coordinateList = mutableListOf()
+
+            coordinateRepo.deleteAll(coordinateList)
+            appointmentRepo.delete(appointment)
+        } else if (appointment.type == Appointment.Type.DRIFT_SCAN) {
+            orientationRepo.delete(appointment.orientation!!)
+            appointmentRepo.delete(appointment)
+        } else if (appointment.type == Appointment.Type.CELESTIAL_BODY) {
+            appointment.celestialBody = null
+            appointmentRepo.delete(appointment)
+        }
+    }
+
+    /**
+     * Method responsible for checking if a user has enough available time
+     * to schedule the new observation, as well as having a membership role
+     */
+    fun validateAvailableAllottedTime(
+            request: Request,
+            appointmentRepo: IAppointmentRepository,
+            userRoleRepo: IUserRoleRepository
+    ): HashMultimap<ErrorTag, String> {
+        val errors = HashMultimap.create<ErrorTag, String>()
+
+        with(request) {
+            val theAppointment = appointmentRepo.findById(id).get()
+            val newTime = endTime.time - startTime.time
+            val theUserRole = userRoleRepo.findMembershipRoleByUserId(theAppointment.user.id)
+
+            if (theUserRole == null) {
+                errors.put(com.radiotelescope.contracts.appointment.ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
+                return errors
+            }
+
+            // Free up the time associated with this appointment since it
+            // may have changed
+            val totalTime = determineCurrentUsedTime(theAppointment, appointmentRepo)
+
+            when (theUserRole.role) {
+                com.radiotelescope.repository.role.UserRole.Role.GUEST -> {
+                    if ((totalTime + newTime) > com.radiotelescope.repository.appointment.Appointment.GUEST_APPOINTMENT_TIME_CAP)
+                        errors.put(com.radiotelescope.contracts.appointment.ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
+                }
+                else -> {
+                    if ((totalTime + newTime) > com.radiotelescope.repository.appointment.Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP)
+                        errors.put(com.radiotelescope.contracts.appointment.ErrorTag.ALLOTTED_TIME, "Max allotted observation time is 50 hours at any given time")
+                }
+            }
+        }
+
+        return errors
+    }
+
+    /**
+     * Determine the amount of allotted time currently being used by the user.
+     * This more or less just frees up the allotted time for the database record
+     * so it can check against the new (or same) time that was passed in with the
+     * request
+     *
+     * @param theAppointment the [Appointment]
+     */
+    fun determineCurrentUsedTime(
+            theAppointment: Appointment,
+            appointmentRepo: IAppointmentRepository
+    ): Long {
+        var totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(theAppointment.user.id) ?: 0
+
+        // This could potentially be 0 if the appointment being
+        // updated is a requested appointment and no others exist
+        if (totalTime != 0L)
+            totalTime -= (theAppointment.endTime.time - theAppointment.startTime.time)
+
+        return totalTime
     }
 }

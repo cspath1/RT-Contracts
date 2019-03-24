@@ -87,65 +87,16 @@ class CoordinateAppointmentUpdate(
         if (!errors.isEmpty)
             return errors
 
-        errors = validateAvailableAllottedTime()
+        errors = validateAvailableAllottedTime(
+                request = request,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo
+        )
 
         return errors
     }
 
-    /**
-     * Method responsible for checking if a user has enough available time
-     * to schedule the new observation, as well as having a membership role
-     */
-    private fun validateAvailableAllottedTime(): HashMultimap<ErrorTag, String> {
-        val errors = HashMultimap.create<ErrorTag, String>()
 
-        with(request) {
-            val theAppointment = appointmentRepo.findById(id).get()
-            val newTime = endTime.time - startTime.time
-            val theUserRole = userRoleRepo.findMembershipRoleByUserId(theAppointment.user.id)
-
-            if (theUserRole == null) {
-                errors.put(ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
-                return errors
-            }
-
-            // Free up the time associated with this appointment since it
-            // may have changed
-            val totalTime = determineCurrentUsedTime(theAppointment)
-
-            when (theUserRole.role) {
-                UserRole.Role.GUEST -> {
-                    if ((totalTime + newTime) > Appointment.GUEST_APPOINTMENT_TIME_CAP)
-                        errors.put(ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
-                }
-                else -> {
-                    if ((totalTime + newTime) > Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP)
-                        errors.put(ErrorTag.ALLOTTED_TIME, "Max allotted observation time is 50 hours at any given time")
-                }
-            }
-        }
-
-        return errors
-    }
-
-    /**
-     * Determine the amount of allotted time currently being used by the user.
-     * This more or less just frees up the allotted time for the database record
-     * so it can check against the new (or same) time that was passed in with the
-     * request
-     *
-     * @param theAppointment the [Appointment]
-     */
-    private fun determineCurrentUsedTime(theAppointment: Appointment): Long {
-        var totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(theAppointment.user.id) ?: 0
-
-        // This could potentially be 0 if the appointment being
-        // updated is a requested appointment and no others exist
-        if (totalTime != 0L)
-            totalTime -= (theAppointment.endTime.time - theAppointment.startTime.time)
-
-        return totalTime
-    }
 
     /**
      * Data class containing all fields necessary for appointment update. Implements the
