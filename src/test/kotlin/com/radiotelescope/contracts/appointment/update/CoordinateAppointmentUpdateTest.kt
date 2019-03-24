@@ -295,6 +295,29 @@ internal class CoordinateAppointmentUpdateTest {
     }
 
     @Test
+    fun testInvalidAppointmentStatus_Failure() {
+        // Modify the appointment status to not be scheduled/requested
+        appointment.status = Appointment.Status.CANCELED
+        appointmentRepo.save(appointment)
+
+        val (id, errors) = CoordinateAppointmentUpdate(
+                request = baseRequest,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
+        ).execute()
+
+        // Make sure it was an error
+        assertNotNull(errors)
+        assertNull(id)
+
+        // Make sure it failed for the expected reason
+        assertTrue(errors!![ErrorTag.STATUS].isNotEmpty())
+    }
+
+    @Test
     fun testInvalid_TelescopeDoesNotExist_Failure() {
         // Create a copy of the request with an invalid telescope
         val requestCopy = baseRequest.copy(

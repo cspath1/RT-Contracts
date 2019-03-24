@@ -1,12 +1,13 @@
 package com.radiotelescope.controller.model.appointment
 
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.appointment.update.CoordinateAppointmentUpdateForm
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class UpdateFormTest {
-    private val baseForm = UpdateForm(
+internal class CoordinateAppointmentUpdateFormTest {
+    private val baseForm = CoordinateAppointmentUpdateForm(
             startTime = Date(System.currentTimeMillis() + 10000L),
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,

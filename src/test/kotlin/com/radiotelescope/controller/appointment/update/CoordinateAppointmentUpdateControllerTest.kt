@@ -1,7 +1,8 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.appointment.update
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.controller.model.appointment.UpdateForm
+import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
+import com.radiotelescope.controller.model.appointment.update.CoordinateAppointmentUpdateForm
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
@@ -24,7 +25,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTest() {
+internal class CoordinateAppointmentUpdateControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -37,17 +38,17 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private lateinit var appointmentUpdateController: AppointmentUpdateController
+    private lateinit var coordinateAppointmentUpdateController: CoordinateAppointmentUpdateController
     private lateinit var user: User
     private lateinit var appointment: Appointment
 
-    private lateinit var updateForm: UpdateForm
+    private lateinit var coordinateAppointmentUpdateForm: CoordinateAppointmentUpdateForm
 
     @Before
     override fun init() {
         super.init()
 
-        appointmentUpdateController = AppointmentUpdateController(
+        coordinateAppointmentUpdateController = CoordinateAppointmentUpdateController(
                 appointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
@@ -70,7 +71,7 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
                 type = Appointment.Type.POINT
         )
 
-        updateForm = UpdateForm(
+        coordinateAppointmentUpdateForm = CoordinateAppointmentUpdateForm(
                 startTime = appointment.startTime,
                 endTime = appointment.endTime,
                 telescopeId = appointment.telescopeId,
@@ -88,9 +89,9 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
-        val result = appointmentUpdateController.execute(
+        val result = coordinateAppointmentUpdateController.execute(
                 appointmentId = appointment.id,
-                form = updateForm
+                form = coordinateAppointmentUpdateForm
         )
 
         assertNotNull(result)
@@ -113,11 +114,11 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
         // Create a copy of the form
-        val formCopy = updateForm.copy(
+        val formCopy = coordinateAppointmentUpdateForm.copy(
                 startTime = null
         )
 
-        val result = appointmentUpdateController.execute(
+        val result = coordinateAppointmentUpdateController.execute(
                 appointmentId = appointment.id,
                 form = formCopy
         )
@@ -142,11 +143,11 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
         // Create a copy of the form
-        val formCopy = updateForm.copy(
+        val formCopy = coordinateAppointmentUpdateForm.copy(
                 telescopeId = 420L
         )
 
-        val result = appointmentUpdateController.execute(
+        val result = coordinateAppointmentUpdateController.execute(
                 appointmentId = appointment.id,
                 form = formCopy
         )
@@ -167,9 +168,9 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
     @Test
     fun testFailedAuthenticationResponse() {
         // Do not log the user in
-        val result = appointmentUpdateController.execute(
+        val result = coordinateAppointmentUpdateController.execute(
                 appointmentId = appointment.id,
-                form = updateForm
+                form = coordinateAppointmentUpdateForm
         )
 
         assertNotNull(result)
@@ -192,9 +193,9 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
 
-        val result = appointmentUpdateController.execute(
+        val result = coordinateAppointmentUpdateController.execute(
                 appointmentId = 311L,
-                form = updateForm
+                form = coordinateAppointmentUpdateForm
         )
 
         assertNotNull(result)

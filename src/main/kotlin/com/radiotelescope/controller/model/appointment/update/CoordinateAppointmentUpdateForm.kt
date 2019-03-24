@@ -1,4 +1,4 @@
-package com.radiotelescope.controller.model.appointment
+package com.radiotelescope.controller.model.appointment.update
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
@@ -17,16 +17,16 @@ import java.util.*
  * @param telescopeId the Appointment's new telescope id
  * @param isPublic whether the Appointment is to be public or not
  */
-data class UpdateForm (
-        val startTime: Date?,
-        val endTime: Date?,
-        val telescopeId: Long?,
-        val isPublic: Boolean?,
+data class CoordinateAppointmentUpdateForm (
+        override val startTime: Date?,
+        override val endTime: Date?,
+        override val telescopeId: Long?,
+        override val isPublic: Boolean?,
         val hours: Int?,
         val minutes: Int?,
         val seconds: Int?,
         val declination: Double?
-) : BaseForm<CoordinateAppointmentUpdate.Request> {
+) : UpdateForm<CoordinateAppointmentUpdate.Request>() {
     /**
      * Override of the [BaseForm.toRequest] method that
      * adapts the form into a [CoordinateAppointmentUpdate.Request] object

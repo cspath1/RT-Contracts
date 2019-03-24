@@ -1,10 +1,10 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.appointment.update
 
 import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.appointment.UpdateForm
+import com.radiotelescope.controller.model.appointment.update.CoordinateAppointmentUpdateForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RestController
  * @param logger the [Logger] service
  */
 @RestController
-class AppointmentUpdateController(
+class CoordinateAppointmentUpdateController(
         @Qualifier(value = "coordinateAppointmentWrapper")
         private val appointmentWrapper: UserAppointmentWrapper,
         logger: Logger
 ): BaseRestController(logger){
     /**
-     * Execute method that is in charge of adapting the [UpdateForm]
+     * Execute method that is in charge of adapting the [CoordinateAppointmentUpdateForm]
      * into a [CoordinateAppointmentUpdate.Request] after ensuring no fields are null. If
      * any are, it will instead respond with errors.
      *
@@ -40,7 +40,7 @@ class AppointmentUpdateController(
      */
     @PutMapping(value = ["/api/appointments/{appointmentId}"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long,
-                @RequestBody form: UpdateForm
+                @RequestBody form: CoordinateAppointmentUpdateForm
     ): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {

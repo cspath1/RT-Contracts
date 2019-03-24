@@ -65,6 +65,11 @@ interface AppointmentUpdate {
             if (errors.isNotEmpty())
                 return errors
 
+            val theAppointment = appointmentRepo.findById(id).get()
+
+            if (theAppointment.status != Appointment.Status.REQUESTED && theAppointment.status != Appointment.Status.SCHEDULED)
+                errors.put(ErrorTag.STATUS, "Appointment must be requested or scheduled in order to modify it")
+
             if (startTime.before(Date()))
                 errors.put(ErrorTag.START_TIME, "New start time cannot be before the current time")
             if (endTime.before(startTime) || endTime == startTime)
