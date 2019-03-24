@@ -147,6 +147,11 @@ class CoordinateAppointmentUpdate(
      * Data class containing all fields necessary for coordinate appointment update. Implements the
      * [BaseUpdateRequest] interface and overrides the [BaseUpdateRequest.updateEntity]
      * method
+     *
+     * @param hours the Right Ascension hours
+     * @param minutes the Right Ascension minutes
+     * @param seconds the Right Ascension seconds
+     * @param declination the Declination
      */
     data class Request(
             override var id: Long,

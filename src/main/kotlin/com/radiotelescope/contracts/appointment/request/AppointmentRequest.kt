@@ -10,7 +10,19 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
+/**
+ * Interface containing logic/fields common to all Appointment Request commands
+ */
 interface AppointmentRequest {
+    /**
+     * Abstract class containing all fields common to Appointment Request request objects
+     *
+     * @property userId the User id
+     * @property startTime the Appointment's start time
+     * @property endTime the Appointment's end time
+     * @property telescopeId the Telescope id
+     * @property isPublic whether the appointment is public or not
+     */
     abstract class Request : BaseCreateRequest<Appointment> {
         abstract val userId: Long
         abstract val startTime: Date
@@ -19,6 +31,17 @@ interface AppointmentRequest {
         abstract val isPublic: Boolean
     }
 
+    /**
+     * Method responsible for constraint checking and validations for the
+     * Appointment Request request. It will ensure that both the user and telescope
+     * id exist and the appointment's end time and start time are valid.
+     *
+     * @param request the [Request] object
+     * @param userRepo the [IUserRepository] interface
+     * @param telescopeRepo the [ITelescopeRepository] interface
+     * @param appointmentRepo the [ITelescopeRepository] interface
+     * @return a [HashMultimap] of errors or null
+     */
     fun baseRequestValidation(
             request: Request,
             userRepo: IUserRepository,

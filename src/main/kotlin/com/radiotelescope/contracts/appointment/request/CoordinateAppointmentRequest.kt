@@ -59,10 +59,9 @@ class CoordinateAppointmentRequest(
     }
 
     /**
-     * Method responsible for constraint checking and validations for the
-     * appointment request request. It will ensure that both the user and telescope
-     * id exists and that the appointment's end time is not before its start time.
-     * It also ensures that the start time is not before the current date
+     * Method responsible for constraint checking and validation for the [Request].
+     * It will ensure the hours, minutes, seconds, and declination are all valid
+     * after calling the [baseRequestValidation] method.
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         baseRequestValidation(
@@ -91,6 +90,11 @@ class CoordinateAppointmentRequest(
     /**
      * Data class containing all fields necessary for appointment creation. Implements
      * the [BaseCreateRequest] interface.
+     *
+     * @param hours the Right Ascension hours
+     * @param minutes the Right Ascension minutes
+     * @param seconds the Right Ascension seconds
+     * @param declination the Declination
      */
     data class Request(
             override val userId: Long,

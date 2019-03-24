@@ -16,7 +16,7 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
- * Concrete implementation of the [BaseAppointmentFactory]
+ * Concrete implementation of the [BaseAppointmentFactory] for Raster Scan Appointments
  */
 class RasterScanAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,

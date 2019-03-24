@@ -53,6 +53,13 @@ class CelestialBodyAppointmentFactory(
         )
     }
 
+    /**
+     * Override of the [AppointmentFactory.update] method that will return a [CelestialBodyAppointmentUpdate]
+     * command object
+     *
+     * @param request the [CelestialBodyAppointmentUpdate.Request] object
+     * @return a [CelestialBodyAppointmentUpdate] command
+     */
     override fun update(request: AppointmentUpdate.Request): Command<Long, Multimap<ErrorTag, String>> {
         return CelestialBodyAppointmentUpdate(
                 request = request as CelestialBodyAppointmentUpdate.Request,

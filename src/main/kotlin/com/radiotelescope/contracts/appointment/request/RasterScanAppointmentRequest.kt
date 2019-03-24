@@ -69,6 +69,13 @@ class RasterScanAppointmentRequest(
         }
     }
 
+    /**
+     * Method responsible for constraint checking and validation for the [Request].
+     * It will ensure that there are two coordinates, and the contents of each are valid
+     * after calling the [baseRequestValidation] method.
+     *
+     * @return a [HashMultimap] of errors or null
+     */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         baseRequestValidation(
                 request = request,
@@ -103,6 +110,8 @@ class RasterScanAppointmentRequest(
     /**
      * Data class containing all fields necessary for requesting an appointment.
      * Implements [BaseCreateRequest] interface.
+     *
+     * @param coordinates the [List] of [CoordinateRequest] objects
      */
     data class Request(
             override val userId: Long,

@@ -18,6 +18,12 @@ data class ApproveDenyForm (
         val appointmentId: Long?,
         val isApprove: Boolean?
 ) : BaseForm<ApproveDenyRequest.Request> {
+    /**
+     * Override of the [BaseForm.toRequest] method that adapts the form
+     * into a [ApproveDenyRequest.Request] object
+     *
+     * @return the [ApproveDenyRequest.Request] object
+     */
     override fun toRequest(): ApproveDenyRequest.Request {
         return ApproveDenyRequest.Request(
                 appointmentId = appointmentId!!,

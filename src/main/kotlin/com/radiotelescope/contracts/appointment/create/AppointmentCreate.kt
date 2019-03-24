@@ -12,7 +12,19 @@ import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
 
+/**
+ * Interface containing logic/fields common to all Appointment Create commands
+ */
 interface AppointmentCreate {
+    /**
+     * Abstract class containing all fields common to Appointment Create request objects
+     *
+     * @property userId the User id
+     * @property startTime the Appointment's start time
+     * @property endTime the Appointment's end time
+     * @property telescopeId the Telescope id
+     * @property isPublic whether the appointment is public or not
+     */
     abstract class Request : BaseCreateRequest<Appointment> {
         abstract val userId: Long
         abstract val startTime: Date
@@ -24,8 +36,15 @@ interface AppointmentCreate {
     /**
      * Method responsible for check if the requested appointment
      * conflict with the one that are already scheduled
+     *
+     * @param request the [Request]
+     * @param appointmentRepo the [IAppointmentRepository] interface
+     * @return true or false
      */
-    fun isOverlap(request: Request, appointmentRepo: IAppointmentRepository): Boolean {
+    fun isOverlap(
+            request: Request,
+            appointmentRepo: IAppointmentRepository
+    ): Boolean {
         var isOverlap = false
         val appointmentList = appointmentRepo.findConflict(
                 endTime = request.endTime,
@@ -43,12 +62,17 @@ interface AppointmentCreate {
     /**
      * Method responsible for checking if a user has enough available time
      * to schedule the new observation, as well as having a membership role
+     *
+     * @param request the [Request]
+     * @param appointmentRepo the [IAppointmentRepository] interface
+     * @param userRoleRepo the [IUserRoleRepository] interface
+     * @return a [HashMultimap] of errors or null
      */
     fun validateAvailableAllottedTime(
             request: Request,
             appointmentRepo: IAppointmentRepository,
             userRoleRepo: IUserRoleRepository
-    ): HashMultimap<ErrorTag, String>? {
+    ): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
@@ -81,8 +105,14 @@ interface AppointmentCreate {
     /**
      * Method responsible for constraint checking and validations for the
      * appointment create request. It will ensure that both the user and telescope
-     * id exists and that the appointment's end time is not before its start time.
+     * id exist and that the appointment's end time is not before its start time.
      * It also ensures that the start time is not before the current date.
+     *
+     * @param request the [Request] object
+     * @param userRepo the [IUserRepository] interface
+     * @param telescopeRepo the [ITelescopeRepository] interface
+     * @param appointmentRepo the [ITelescopeRepository] interface
+     * @return a [HashMultimap] of errors or null
      */
     fun basicValidateRequest(
             request: Request,

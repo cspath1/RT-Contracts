@@ -131,6 +131,8 @@ class CelestialBodyAppointmentUpdate(
     /**
      * Data class containing fields necessary for celestial body appointment update.
      * Implements the [AppointmentUpdate.Request] abstract class.
+     *
+     * @param celestialBodyId the Celestial Body id
      */
     data class Request(
             override var id: Long,
