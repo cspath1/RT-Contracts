@@ -25,9 +25,14 @@ Email Address: cspath1@ycp.edu
 
 The following technologies are used in the development of the back-end application:
 
-* MySQL Database
-* Gradle
-* IntelliJ IDEA Ultimate Edition
+* MySQL Database (SQL Database/Dialect)
+* Gradle (Build Management/Task Execution)
+* Spring (Application Framework)
+* IntelliJ IDEA Ultimate Edition (IDE)
+* Kotlin (Programming Language)
+* Liquibase (Database Migrations)
+* Travis CI (Continuous Integration Service)
+* GitHub (Version Control)
 
 ### GitHub Repository Setup
 
@@ -39,7 +44,7 @@ above), and they will handle this.
 
 IntelliJ IDEA Ultimate Edition is free for anyone with a student license, which thankfully, applies to anyone
 with an ".edu" email address. All you need to do is create an account on [their website](https://account.jetbrains.com),
-and from there, you can access all software that applies to you via the student license. 
+and from there, you can access all software that applies to you via the student license. It is important to note that the student license can only be used for student projects, which this project falls under.
 
 #### Windows Setup
 
