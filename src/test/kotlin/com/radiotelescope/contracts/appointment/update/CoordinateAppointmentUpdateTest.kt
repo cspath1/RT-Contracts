@@ -10,6 +10,7 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -147,8 +148,45 @@ internal class CoordinateAppointmentUpdateTest {
 
     @Test
     fun testValidConstraints_ChangedType_Success() {
-        // Create an appointment that is a different type
+        // Make the user a researcher
+        testUtil.createUserRolesForUser(
+                user = user,
+                role = UserRole.Role.RESEARCHER,
+                isApproved = true
+        )
 
+        // Create an appointment that is a different type
+        val appointment = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(System.currentTimeMillis() +  50000L),
+                endTime = Date(System.currentTimeMillis() + 100000L),
+                isPublic = true,
+                type = Appointment.Type.CELESTIAL_BODY
+        )
+        val theId = appointment.id
+
+        // Create a copy of the request with the appointment above
+        val requestCopy = baseRequest.copy(
+                id = appointment.id
+        )
+
+        val (id, errors) = CoordinateAppointmentUpdate(
+                request = requestCopy,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo
+        ).execute()
+
+        assertNotNull(id)
+        assertNull(errors)
+
+        // The id return should be different (since a new record was
+        // persisted in place of the old one
+        assertNotEquals(theId, id!!)
     }
 
     @Test

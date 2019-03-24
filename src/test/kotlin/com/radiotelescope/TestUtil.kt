@@ -335,7 +335,7 @@ internal class TestUtil {
                 endTime = endTime,
                 telescopeId = telescopeId,
                 isPublic = isPublic,
-                type = Appointment.Type.POINT
+                type = Appointment.Type.CELESTIAL_BODY
         )
 
         theAppointment.status = status
