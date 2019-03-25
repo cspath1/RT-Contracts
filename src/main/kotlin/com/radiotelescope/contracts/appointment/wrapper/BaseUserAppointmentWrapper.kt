@@ -1,15 +1,11 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.wrapper
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
-import com.radiotelescope.contracts.appointment.create.AppointmentCreate
+import com.radiotelescope.contracts.appointment.*
 import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
 import com.radiotelescope.contracts.appointment.info.AppointmentInfo
-import com.radiotelescope.contracts.appointment.request.AppointmentRequest
-import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
-import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
-import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
@@ -20,46 +16,12 @@ import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
-/**
- * Wrapper that takes an [AppointmentFactory] and is responsible for all
- * user role validations for endpoints for the Appointment Entity
- *
- * @property context the [UserContext] interface
- * @property factory the [AppointmentFactory] factory interface
- * @property appointmentRepo the [IAppointmentRepository] interface
- */
-class UserAppointmentWrapper(
+open class BaseUserAppointmentWrapper(
         private val context: UserContext,
         private val factory: AppointmentFactory,
         private val appointmentRepo: IAppointmentRepository,
         private val viewerRepo: IViewerRepository
 ) {
-    /**
-     * Wrapper method for the [AppointmentFactory.create] method that adds Spring
-     * Security authentication to the [AppointmentCreate] command object.
-     *
-     * @param request the [AppointmentCreate.Request] object
-     * @return An [AccessReport] if authentication fails, null otherwise
-     */
-    fun create(request: AppointmentCreate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        if (context.currentUserId() != null && context.currentUserId() == request.userId) {
-            // If public, they only need to be a base user
-            return if (request.isPublic)
-                context.require(
-                        requiredRoles = listOf(UserRole.Role.USER),
-                        successCommand = factory.create(request)
-                ).execute(withAccess)
-            // Otherwise, they need to be a researcher or admin
-            else
-                context.requireAny(
-                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
-                        successCommand = factory.create(request)
-                ).execute(withAccess)
-        }
-
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
-    }
-
     /**
      * Wrapper method for the [AppointmentFactory.retrieve] method that adds Spring
      * Security retrieve to the [Retrieve] command object.
@@ -219,51 +181,6 @@ class UserAppointmentWrapper(
     }
 
     /**
-     * Wrapper method for the [AppointmentFactory.update] method that adds Spring
-     * Security authentication to the [CoordinateAppointmentUpdate] command object.
-     *
-     * @param request the user Id of the appointment
-     * @return An [AccessReport] if authentication fails, null otherwise
-     */
-    fun update(request: AppointmentUpdate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
-        if (!appointmentRepo.existsById(request.id)) {
-            return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(request.id))
-        }
-
-        val theAppointment = appointmentRepo.findById(request.id).get()
-
-        if(context.currentUserId() != null) {
-            if (context.currentUserId() == theAppointment.user.id) {
-                // If public, they only need to be a base user
-                return if (request.isPublic)
-                    context.require(
-                            requiredRoles = listOf(UserRole.Role.USER),
-                            successCommand = factory.update(
-                                    request = request
-                            )
-                    ).execute(withAccess)
-                // Otherwise, they need to be a researcher
-                else
-                    context.requireAny(
-                            requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
-                            successCommand = factory.update(
-                                    request = request
-                            )
-                    ).execute(withAccess)
-            }
-            // Otherwise, they need to be an admin
-            else {
-                return context.require(
-                        requiredRoles = listOf(UserRole.Role.ADMIN),
-                        successCommand = factory.update(
-                                request = request
-                        )
-                ).execute(withAccess)
-            }
-        }
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
-    }
-    /**
      * Wrapper method for the [AppointmentFactory.makePublic] method that adds Spring
      * Security authentication to the [makePublic] command object.
      *
@@ -329,32 +246,6 @@ class UserAppointmentWrapper(
                         pageable = pageable
                 )
         ).execute(withAccess)
-    }
-
-    /**
-     * Wrapper method for the [AppointmentFactory.request] method that adds Spring
-     * Security authentication to the [CoordinateAppointmentRequest] command object.
-     *
-     * @param request the [CoordinateAppointmentRequest.Request] object
-     * @return An [AccessReport] if authentication fails, null otherwise
-     */
-    fun request(request: AppointmentRequest.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        if (context.currentUserId() != null && context.currentUserId() == request.userId) {
-            // If public, they only need to be a base user
-            return if (request.isPublic)
-                context.require(
-                        requiredRoles = listOf(UserRole.Role.USER),
-                        successCommand = factory.request(request)
-                ).execute(withAccess)
-            // Otherwise, they need to be a researcher
-            else
-                context.require(
-                        requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER),
-                        successCommand = factory.request(request)
-                ).execute(withAccess)
-        }
-
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
     }
 
     /**
@@ -442,7 +333,7 @@ class UserAppointmentWrapper(
      * @param id the Appointment id
      * @return a [Map] of errors
      */
-    private fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {
+    protected fun invalidAppointmentIdErrors(id: Long): Map<String, Collection<String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.ID, "Appointment #$id could not be found")
         return errors.toStringMap()

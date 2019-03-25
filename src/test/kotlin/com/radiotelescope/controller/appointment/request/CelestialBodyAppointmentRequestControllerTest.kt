@@ -66,7 +66,7 @@ internal class CelestialBodyAppointmentRequestControllerTest : BaseAppointmentRe
         super.init()
 
         celestialBodyAppointmentRequestController = CelestialBodyAppointmentRequestController(
-                appointmentWrapper = getCelestialBodyCreateWrapper(),
+                autoAppointmentWrapper = getCelestialBodyCreateWrapper(),
                 awsSesSendService = MockAwsSesSendService(true),
                 logger = getLogger(),
                 userRepo = userRepo

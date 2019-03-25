@@ -61,7 +61,7 @@ internal class CelestialBodyAppointmentCreateControllerTest : BaseAppointmentRes
         super.init()
 
         celestialBodyAppointmentCreateController = CelestialBodyAppointmentCreateController(
-                appointmentWrapper = getCelestialBodyCreateWrapper(),
+                autoAppointmentWrapper = getCelestialBodyCreateWrapper(),
                 logger = getLogger()
         )
 

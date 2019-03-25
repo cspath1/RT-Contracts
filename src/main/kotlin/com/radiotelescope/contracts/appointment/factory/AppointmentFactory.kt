@@ -19,14 +19,6 @@ import org.springframework.data.domain.Pageable
  */
 interface AppointmentFactory {
     /**
-     * Abstract command used to schedule an appointment
-     *
-     * @param request the [AppointmentCreate.Request] request
-     * @return a [Command] object
-     */
-    fun create(request: AppointmentCreate.Request): Command<Long, Multimap<ErrorTag, String>>
-
-    /**
      * Abstract command used to cancel an appointment
      *
      * @param appointmentId the Appointment id
@@ -49,14 +41,6 @@ interface AppointmentFactory {
      * @return a [Command] object
      */
     fun userCompletedList(userId: Long, pageable: Pageable): Command <Page<AppointmentInfo>, Multimap<ErrorTag,String>>
-
-    /**
-     * Abstract command used to update an appointment
-     *
-     * @param request the [CoordinateAppointmentUpdate.Request]
-     * @return [CoordinateAppointmentUpdate] [Command] object
-     */
-    fun update(request: AppointmentUpdate.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to retrieve all future appointments for a telescope
@@ -99,14 +83,6 @@ interface AppointmentFactory {
      * @return a [Command] object
      */
     fun publicCompletedAppointments(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>>
-
-    /**
-     * Abstract command used to request an appointment
-     *
-     * @param request the [CoordinateAppointmentRequest.Request] request
-     * @return a [Command] object
-     */
-    fun request(request: AppointmentRequest.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command user to retrieve completed appointments for a user

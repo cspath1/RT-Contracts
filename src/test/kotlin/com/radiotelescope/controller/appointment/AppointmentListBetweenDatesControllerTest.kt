@@ -46,7 +46,7 @@ internal class AppointmentListBetweenDatesControllerTest : BaseAppointmentRestCo
         super.init()
 
         appointmentListBetweenDatesController = AppointmentListBetweenDatesController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

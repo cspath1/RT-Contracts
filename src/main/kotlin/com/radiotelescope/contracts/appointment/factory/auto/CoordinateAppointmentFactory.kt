@@ -1,14 +1,15 @@
-package com.radiotelescope.contracts.appointment.factory
+package com.radiotelescope.contracts.appointment.factory.auto
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
-import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.appointment.create.AppointmentCreate
-import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
+import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.request.AppointmentRequest
-import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
+import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
-import com.radiotelescope.contracts.appointment.update.RasterScanAppointmentUpdate
+import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -18,17 +19,17 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
- * Concrete implementation of the [BaseAppointmentFactory] for Raster Scan Appointments
+ * Concrete implementation of the [BaseAppointmentFactory] for Coordinate Appointments
  */
-class RasterScanAppointmentFactory(
+class CoordinateAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val coordinateRepo: ICoordinateRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
-        private val orientationRepo: IOrientationRepository
-) : BaseAppointmentFactory(
+        private val orientationRepo: IOrientationRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+): AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
         telescopeRepo = telescopeRepo,
@@ -36,15 +37,15 @@ class RasterScanAppointmentFactory(
         allottedTimeCapRepo = allottedTimeCapRepo
 ) {
     /**
-     * Override of the [AppointmentFactory.create] method that will return a [RasterScanAppointmentCreate]
+     * Override of the [AutoAppointmentFactory.create] method that will return a [CoordinateAppointmentCreate]
      * command object
      *
-     * @param request the [RasterScanAppointmentCreate.Request] object
-     * @return a [RasterScanAppointmentCreate] command
+     * @param request the [CoordinateAppointmentCreate.Request] object
+     * @return a [CoordinateAppointmentCreate] command
      */
     override fun create(request: AppointmentCreate.Request): Command<Long, Multimap<ErrorTag, String>> {
-        return RasterScanAppointmentCreate(
-                request = request as RasterScanAppointmentCreate.Request,
+        return CoordinateAppointmentCreate(
+                request = request as CoordinateAppointmentCreate.Request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -54,9 +55,17 @@ class RasterScanAppointmentFactory(
         )
     }
 
+
+    /**
+     * Override of the [AutoAppointmentFactory.request] method that will return a [CoordinateAppointmentRequest]
+     * command object
+     *
+     * @param request the [CoordinateAppointmentRequest.Request] object
+     * @return a [CoordinateAppointmentRequest] command
+     */
     override fun request(request: AppointmentRequest.Request): Command<Long, Multimap<ErrorTag, String>> {
-        return RasterScanAppointmentRequest(
-                request = request as RasterScanAppointmentRequest.Request,
+        return CoordinateAppointmentRequest(
+                request = request as CoordinateAppointmentRequest.Request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
@@ -64,15 +73,21 @@ class RasterScanAppointmentFactory(
         )
     }
 
-    override fun update(request: AppointmentUpdate.Request): Command<Long, Multimap<ErrorTag, String>> {
-        return RasterScanAppointmentUpdate(
-                request = request as RasterScanAppointmentUpdate.Request,
+    /**
+     * Override of the [AutoAppointmentFactory.update] method that will return a [CoordinateAppointmentUpdate] command object
+     *
+     * @param request the [CoordinateAppointmentUpdate.Request]
+     * @return a [CoordinateAppointmentUpdate] command object
+     */
+    override fun update(request: AppointmentUpdate.Request): Command<Long, Multimap<ErrorTag, String>>  {
+        return CoordinateAppointmentUpdate(
+                request = request as CoordinateAppointmentUpdate.Request,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 }

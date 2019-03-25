@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.admin.appointment
 
 import com.radiotelescope.contracts.appointment.ApproveDenyRequest
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.ApproveDenyForm
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 /**
  * Rest Controller to handle listing appointment requests
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param awsSesSendService the [AwsSesSendService]
  * @param appointmentRepo the [IAppointmentRepository]
  * @param logger the [Logger] service
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class AdminAppointmentApproveDenyRequestController (
         @Qualifier(value = "coordinateAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         private val appointmentRepo: IAppointmentRepository,
         private val awsSesSendService: IAwsSesSendService,
         logger: Logger
@@ -61,7 +61,7 @@ class AdminAppointmentApproveDenyRequestController (
 
             result = Result(errors = errors.toStringMap())
         } ?: let{
-            appointmentWrapper.approveDenyRequest(
+            autoAppointmentWrapper.approveDenyRequest(
                     request = ApproveDenyRequest.Request(
                             appointmentId = appointmentId!!,
                             isApprove = isApprove!!

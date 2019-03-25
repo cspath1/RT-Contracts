@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.appointment
 
 import com.google.common.collect.HashMultimap
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -22,18 +22,18 @@ import java.util.*
 /**
  * REST Controller to handle dynamically searching for appointments
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class AppointmentSearchController(
         @Qualifier(value = "coordinateAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
      * Execute method that is in charge of taking the request parameters
-     * and adapting them into the parameters required for the [UserAppointmentWrapper.search]
+     * and adapting them into the parameters required for the [UserAutoAppointmentWrapper.search]
      *
      * Once the parameters have been adapted, it will call the method, and respond according
      * to if the request was successfully authenticated, or whether the request was
@@ -69,7 +69,7 @@ class AppointmentSearchController(
             val searchCriteria = getSearchCriteriaFromParam(value, search)
             val pageable = PageRequest.of(pageNumber, pageSize)
 
-            appointmentWrapper.search(searchCriteria, pageable) {
+            autoAppointmentWrapper.search(searchCriteria, pageable) {
                 // If the command was a success
                 it.success?.let { page ->
                     // Create success logs

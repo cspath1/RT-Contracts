@@ -62,7 +62,7 @@ internal class CoordinateAppointmentRequestControllerTest : BaseAppointmentRestC
         super.init()
 
         coordinateAppointmentRequestController = CoordinateAppointmentRequestController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 awsSesSendService = MockAwsSesSendService(true),
                 logger = getLogger(),
                 userRepo = userRepo

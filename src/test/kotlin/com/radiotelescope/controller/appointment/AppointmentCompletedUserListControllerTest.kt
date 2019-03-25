@@ -43,7 +43,7 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
         super.init()
 
         appointmentCompletedUserListController = AppointmentCompletedUserListController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

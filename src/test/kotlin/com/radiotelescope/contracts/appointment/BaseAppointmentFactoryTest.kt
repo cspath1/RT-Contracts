@@ -5,9 +5,10 @@ import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentC
 import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
 import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.CelestialBodyAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.RasterScanAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.AutoAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.CelestialBodyAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.RasterScanAppointmentFactory
 import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
@@ -69,7 +70,7 @@ internal class BaseAppointmentFactoryTest {
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
-    private lateinit var factory: AppointmentFactory
+    private lateinit var factory: AutoAppointmentFactory
 
     @Before
     fun init() {

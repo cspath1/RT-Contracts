@@ -48,7 +48,7 @@ internal class AppointmentCancelControllerTest : BaseAppointmentRestControllerTe
         super.init()
 
         appointmentCancelController = AppointmentCancelController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

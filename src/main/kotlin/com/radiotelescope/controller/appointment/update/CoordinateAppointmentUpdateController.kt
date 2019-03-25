@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.appointment.update
 
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * REST Controller to handle Appointment Update
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class CoordinateAppointmentUpdateController(
         @Qualifier(value = "coordinateAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger){
     /**
@@ -33,7 +33,7 @@ class CoordinateAppointmentUpdateController(
      * into a [CoordinateAppointmentUpdate.Request] after ensuring no fields are null. If
      * any are, it will instead respond with errors.
      *
-     * Otherwise, it will execute the [UserAppointmentWrapper.update] method.
+     * Otherwise, it will execute the [UserAutoAppointmentWrapper.update] method.
      * If this method returns an [AccessReport], the user was not authenticated.
      * If not, this means the [CoordinateAppointmentUpdate] method was executed, and the controller
      * should respond based on if the command was a success or not
@@ -63,7 +63,7 @@ class CoordinateAppointmentUpdateController(
             // Setting the appointmentId for the request
             request.id = appointmentId
 
-            appointmentWrapper.update(
+            autoAppointmentWrapper.update(
                     request = request
             ) { response ->
                 response.success?.let { data ->

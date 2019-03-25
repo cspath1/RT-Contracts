@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.appointment.request
 
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * REST Controller to handle Celestial Body Appointment Request
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param awsSesSendService the [AwsSesSendService]
  * @param userRepo the [IUserRepository] interface
  * @param logger the [Logger] service
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class CelestialBodyAppointmentRequestController(
         @Qualifier(value = "celestialBodyAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         private val awsSesSendService: IAwsSesSendService,
         private val userRepo: IUserRepository,
         logger: Logger
@@ -39,7 +39,7 @@ class CelestialBodyAppointmentRequestController(
      * into a [CelestialBodyAppointmentRequest.Request] after ensuring no fields are null. If
      * any are, it will instead respond with errors
      *
-     * Otherwise, it will execute the [UserAppointmentWrapper.request] method.
+     * Otherwise, it will execute the [UserAutoAppointmentWrapper.request] method.
      *
      * If this method returns an [AccessReport], this means the user was not
      * authorized and the controller will return errors. Otherwise, the [CelestialBodyAppointmentRequest]
@@ -64,7 +64,7 @@ class CelestialBodyAppointmentRequestController(
         } ?:
         // Otherwise, execute the wrapper command
         let {
-            appointmentWrapper.request(
+            autoAppointmentWrapper.request(
                     request = form.toRequest()
             ) { response ->
                 // If the command called was a success

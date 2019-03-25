@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.appointment
 
 import com.google.common.collect.HashMultimap
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -20,18 +20,18 @@ import org.springframework.web.bind.annotation.RestController
  * Rest Controller to handle retrieving list of future appointments
  * for a telescope
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class AppointmentFutureTelescopeListController(
         @Qualifier(value = "coordinateAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
      * Execute method that is in charge of, given the page parameters were passed in
-     * correctly, calling the [UserAppointmentWrapper.retrieveFutureAppointmentsByTelescopeId]
+     * correctly, calling the [UserAutoAppointmentWrapper.retrieveFutureAppointmentsByTelescopeId]
      * method and responding back to the client-side based on if the user was
      * not authenticated, the command was executed and was a success, or the
      * command was executed and was not a success
@@ -56,7 +56,7 @@ class AppointmentFutureTelescopeListController(
         }
         else {
             // Otherwise, call the wrapper method
-            appointmentWrapper.retrieveFutureAppointmentsByTelescopeId(
+            autoAppointmentWrapper.retrieveFutureAppointmentsByTelescopeId(
                     telescopeId = telescopeId,
                     pageable = PageRequest.of(pageNumber, pageSize)
             ) {

@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.appointment
 
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.appointment.Cancel
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -18,21 +18,21 @@ import org.springframework.web.bind.annotation.RestController
  * Rest Controller used to cancel an appointment
  *
  * Note that for actions done to the Appointment Table that
- * are not creates, the specific [UserAppointmentWrapper]
+ * are not creates, the specific [UserAutoAppointmentWrapper]
  * does not matter.
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class AppointmentCancelController(
         @Qualifier(value = "coordinateAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
      * Execute method that is in charge of taking the appointmentId [PathVariable]
-     * and executing the [UserAppointmentWrapper.cancel] method. If this method returns
+     * and executing the [UserAutoAppointmentWrapper.cancel] method. If this method returns
      * an [AccessReport], this means the user did not pass authentication and it should
      * respond with errors.
      *
@@ -41,7 +41,7 @@ class AppointmentCancelController(
      */
     @PutMapping(value = ["/api/appointments/{appointmentId}/cancel"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long): Result {
-        appointmentWrapper.cancel(appointmentId) {
+        autoAppointmentWrapper.cancel(appointmentId) {
             // If the command was a success
             it.success?.let { id ->
                 // Create success log

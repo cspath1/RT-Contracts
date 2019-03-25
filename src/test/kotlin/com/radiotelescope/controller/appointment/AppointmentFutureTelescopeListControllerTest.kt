@@ -45,7 +45,7 @@ internal class AppointmentFutureTelescopeListControllerTest : BaseAppointmentRes
         super.init()
 
         appointmentFutureTelescopeListController = AppointmentFutureTelescopeListController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

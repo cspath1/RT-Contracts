@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.appointment.request
 
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.request.RasterScanAppointmentRequestForm
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * REST Controller to handle Raster Scan Appointment requests
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class RasterScanAppointmentRequestController(
         @Qualifier(value = "rasterScanAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     @PostMapping(value = ["/api/appointments/request/raster-scan"])
@@ -44,7 +44,7 @@ class RasterScanAppointmentRequestController(
         } ?:
         // Otherwise, execute the wrapper command
         let {
-            appointmentWrapper.request(
+            autoAppointmentWrapper.request(
                     request = form.toRequest()
             ) { response ->
                 // If the command called was a success

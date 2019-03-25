@@ -43,7 +43,7 @@ internal class AppointmentPublicCompletedControllerTest : BaseAppointmentRestCon
         super.init()
 
         appointmentPublicCompletedController = AppointmentPublicCompletedController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

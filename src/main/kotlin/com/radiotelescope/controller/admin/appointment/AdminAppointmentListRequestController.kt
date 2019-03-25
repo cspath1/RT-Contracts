@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.admin.appointment
 
 import com.google.common.collect.HashMultimap
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -18,20 +18,20 @@ import org.springframework.web.bind.annotation.*
 /**
  * Rest Controller to handle listing appointment requests
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class AdminAppointmentListRequestController(
         @Qualifier(value = "coordinateAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger){
     /**
      * Execute method that is in charge of returning a user's future appointments.
      *
      * If the [pageNumber] or [pageSize] request parameters are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.requestedList]
+     * respond with errors. Otherwise, call the [UserAutoAppointmentWrapper.requestedList]
      * method. If this method returns an [AccessReport], this means that user authentication
      * failed and the method should respond with errors, setting the [Result]'s
      * [HttpStatus] to [HttpStatus.FORBIDDEN].
@@ -61,7 +61,7 @@ class AdminAppointmentListRequestController(
         // Otherwise, call the wrapper method
         else {
             val sort = Sort(Sort.Direction.ASC, "start_time")
-            appointmentWrapper.requestedList(PageRequest.of(pageNumber, pageSize, sort)) {
+            autoAppointmentWrapper.requestedList(PageRequest.of(pageNumber, pageSize, sort)) {
                 // NOTE: This command currently only has a success scenario
                 // (given the user is authenticated)
                 //If the command was a success

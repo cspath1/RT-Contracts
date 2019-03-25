@@ -1,10 +1,11 @@
 package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.appointment.factory.CelestialBodyAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.RasterScanAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.AutoAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointmentFactory
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
+import com.radiotelescope.contracts.appointment.factory.auto.CelestialBodyAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.RasterScanAppointmentFactory
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -48,8 +49,8 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
 
     // These will both be needed in all appointment
     // controller tests, so instantiate them here
-    private lateinit var wrapper: UserAppointmentWrapper
-    private lateinit var factory: BaseAppointmentFactory
+    private lateinit var wrapper: UserAutoAppointmentWrapper
+    private lateinit var factory: AutoAppointmentFactory
 
     @Before
     override fun init() {
@@ -70,8 +71,8 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
 
     // Once instantiated, this will not be altered
     // so only supply a getter for it
-    fun getCoordinateCreateWrapper(): UserAppointmentWrapper {
-        return UserAppointmentWrapper(
+    fun getCoordinateCreateWrapper(): UserAutoAppointmentWrapper {
+        return UserAutoAppointmentWrapper(
                 getContext(),
                 factory = factory,
                 appointmentRepo = appointmentRepo,
@@ -80,8 +81,8 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
     }
 
     // Add other wrappers here (i.e. wrapper that will create a Celestial Body appointment)
-    fun getCelestialBodyCreateWrapper(): UserAppointmentWrapper {
-        return UserAppointmentWrapper(
+    fun getCelestialBodyCreateWrapper(): UserAutoAppointmentWrapper {
+        return UserAutoAppointmentWrapper(
                 context = getContext(),
                 factory = CelestialBodyAppointmentFactory(
                         appointmentRepo = appointmentRepo,
@@ -98,8 +99,8 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
         )
     }
 
-    fun getRasterScanCreateWrapper(): UserAppointmentWrapper {
-        return UserAppointmentWrapper(
+    fun getRasterScanCreateWrapper(): UserAutoAppointmentWrapper {
+        return UserAutoAppointmentWrapper(
                 context = getContext(),
                 factory = RasterScanAppointmentFactory(
                         appointmentRepo = appointmentRepo,

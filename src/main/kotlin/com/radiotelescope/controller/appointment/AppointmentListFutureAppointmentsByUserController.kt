@@ -1,7 +1,7 @@
 package com.radiotelescope.controller.appointment
 
 import com.google.common.collect.HashMultimap
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -19,20 +19,20 @@ import org.springframework.web.bind.annotation.*
 /**
  * Rest Controller to handle listing future appointments for a user
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class AppointmentListFutureAppointmentsByUserController(
         @Qualifier(value = "coordinateAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
      * Execute method that is in charge of returning a user's future appointments.
      *
      * If the [pageNumber] or [pageSize] request parameters are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.userFutureList]
+     * respond with errors. Otherwise, call the [UserAutoAppointmentWrapper.userFutureList]
      * method. If this method returns an [AccessReport], this means that user authentication
      * failed and the method should respond with errors, setting the [Result]'s
      * [HttpStatus] to [HttpStatus.FORBIDDEN].
@@ -63,7 +63,7 @@ class AppointmentListFutureAppointmentsByUserController(
         // Otherwise, call the wrapper method
         else {
             val sort = Sort(Sort.Direction.ASC, "start_time")
-            appointmentWrapper.userFutureList(userId, PageRequest.of(pageNumber, pageSize, sort)) {
+            autoAppointmentWrapper.userFutureList(userId, PageRequest.of(pageNumber, pageSize, sort)) {
                 //If the command was a success
                 it.success?.let{ page ->
                     // Create success logs

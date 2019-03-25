@@ -1,15 +1,15 @@
-package com.radiotelescope.contracts.appointment.factory
+package com.radiotelescope.contracts.appointment.factory.auto
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentCreate
 import com.radiotelescope.contracts.appointment.create.AppointmentCreate
+import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CelestialBodyAppointmentUpdate
-import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
@@ -31,7 +31,7 @@ class CelestialBodyAppointmentFactory(
         private val coordinateRepo: ICoordinateRepository,
         private val orientationRepo: IOrientationRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository
-) : BaseAppointmentFactory(
+) : AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
         telescopeRepo = telescopeRepo,
@@ -39,7 +39,7 @@ class CelestialBodyAppointmentFactory(
         allottedTimeCapRepo = allottedTimeCapRepo
 ) {
     /**
-     * Override of the [AppointmentFactory.create] method that will return a [CelestialBodyAppointmentCreate]
+     * Override of the [AutoAppointmentFactory.create] method that will return a [CelestialBodyAppointmentCreate]
      * command object
      *
      * @param request the [CelestialBodyAppointmentCreate.Request] object
@@ -58,7 +58,7 @@ class CelestialBodyAppointmentFactory(
     }
 
     /**
-     * Override of the [AppointmentFactory.update] method that will return a [CelestialBodyAppointmentUpdate]
+     * Override of the [AutoAppointmentFactory.update] method that will return a [CelestialBodyAppointmentUpdate]
      * command object
      *
      * @param request the [CelestialBodyAppointmentUpdate.Request] object
@@ -78,7 +78,7 @@ class CelestialBodyAppointmentFactory(
     }
 
     /**
-     * Override of the [AppointmentFactory.request] method that will return a [CelestialBodyAppointmentRequest]
+     * Override of the [AutoAppointmentFactory.request] method that will return a [CelestialBodyAppointmentRequest]
      * command object
      *
      * @param request the [CelestialBodyAppointmentRequest.Request] object

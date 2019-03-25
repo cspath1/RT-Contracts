@@ -57,7 +57,7 @@ internal class CoordinateAppointmentCreateControllerTest : BaseAppointmentRestCo
         super.init()
 
         coordinateAppointmentCreateController = CoordinateAppointmentCreateController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

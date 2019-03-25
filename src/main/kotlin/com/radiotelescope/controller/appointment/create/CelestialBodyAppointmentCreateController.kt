@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.appointment.create
 
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentCreate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * REST Controller to handle Celestial Body Appointment Creation
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class CelestialBodyAppointmentCreateController(
         @Qualifier(value = "celestialBodyAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -32,7 +32,7 @@ class CelestialBodyAppointmentCreateController(
      * into a [CelestialBodyAppointmentCreate.Request] after ensuring no fields are null. If
      * any are, it will instead respond with errors.
      *
-     * Otherwise, it will execute the [UserAppointmentWrapper.create] method. If this method
+     * Otherwise, it will execute the [UserAutoAppointmentWrapper.create] method. If this method
      * returns an [AccessReport], this means the user did not pass authorization and the
      * method will respond with errors.
      *
@@ -58,7 +58,7 @@ class CelestialBodyAppointmentCreateController(
         } ?:
         // Otherwise, execute the wrapper command
         let {
-            appointmentWrapper.create(
+            autoAppointmentWrapper.create(
                     request = form.toRequest()
             ) { response ->
                 // If the command called was a success

@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.appointment
 
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.PutMapping
 /**
  * REST Controller to handle Appointment Update
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class AppointmentMakePublicController (
         @Qualifier(value = "coordinateAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ): BaseRestController(logger){
     /**
      * Execute method that is in charge of taking the appointmentId [PathVariable]
-     * and executing the [UserAppointmentWrapper.makePublic] method. If this method
+     * and executing the [UserAutoAppointmentWrapper.makePublic] method. If this method
      * returns an [AccessReport], this means they did not pass authentication and
      * we should respond with errors.
      *
@@ -38,7 +38,7 @@ class AppointmentMakePublicController (
      */
     @PutMapping(value = ["/api/appointments/{appointmentId}/makePublic"])
     fun execute(@PathVariable("appointmentId") id: Long) : Result {
-        appointmentWrapper.makePublic(id) {
+        autoAppointmentWrapper.makePublic(id) {
             // If the command was a success
             it.success?.let { id ->
                 // Create success logs

@@ -50,7 +50,7 @@ internal class CelestialBodyAppointmentUpdateControllerTest : BaseAppointmentRes
         super.init()
 
         celestialBodyAppointmentUpdateController = CelestialBodyAppointmentUpdateController(
-                appointmentWrapper = getCelestialBodyCreateWrapper(),
+                autoAppointmentWrapper = getCelestialBodyCreateWrapper(),
                 logger = getLogger()
         )
 

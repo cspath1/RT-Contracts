@@ -47,7 +47,7 @@ internal class AppointmentMakePublicControllerTest : BaseAppointmentRestControll
         super.init()
 
         appointmentMakePublicController = AppointmentMakePublicController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

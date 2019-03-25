@@ -1,11 +1,10 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.wrapper
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
+import com.radiotelescope.contracts.appointment.ApproveDenyRequest
+import com.radiotelescope.contracts.appointment.ListBetweenDates
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
-import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
-import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
+import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointmentFactory
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -38,7 +37,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 @ActiveProfiles(value = ["test"])
-internal class UserAppointmentWrapperTest {
+internal class BaseUserAppointmentWrapperTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -74,30 +73,6 @@ internal class UserAppointmentWrapperTest {
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
 
-    private val baseCreateRequest = CoordinateAppointmentCreate.Request(
-            userId = -1L,
-            startTime = Date(System.currentTimeMillis() + 10000L),
-            endTime = Date(System.currentTimeMillis() + 30000L),
-            telescopeId = 1L,
-            isPublic = true,
-            hours = 12,
-            minutes = 12,
-            seconds = 12,
-            declination = 69.0
-    )
-
-    private val baseRequestRequest = CoordinateAppointmentRequest.Request(
-            userId = -1L,
-            startTime = Date(System.currentTimeMillis() + 10000L),
-            endTime = Date(System.currentTimeMillis() + 30000L),
-            telescopeId = 1L,
-            isPublic = true,
-            hours = 12,
-            minutes = 12,
-            seconds = 12,
-            declination = 69.0
-    )
-
     private lateinit var user: User
     private lateinit var admin: User
     private lateinit var user2: User
@@ -108,7 +83,7 @@ internal class UserAppointmentWrapperTest {
 
     private val context = FakeUserContext()
     private lateinit var factory: BaseAppointmentFactory
-    private lateinit var wrapper: UserAppointmentWrapper
+    private lateinit var wrapper: BaseUserAppointmentWrapper
 
     @Before
     fun setUp() {
@@ -177,187 +152,12 @@ internal class UserAppointmentWrapperTest {
                 orientationRepo = orientationRepo
         )
 
-        wrapper = UserAppointmentWrapper(
+        wrapper = BaseUserAppointmentWrapper(
                 context = context,
                 factory = factory,
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo
         )
-    }
-
-    @Test
-    fun testCreatePublic_NotUser_Failure() {
-        // Do not log the user in
-
-        // Create a base request copy with a valid id
-        val requestCopy = baseCreateRequest.copy(
-                userId = user.id
-        )
-
-        val error = wrapper.create(
-                request = requestCopy
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
-    }
-
-    @Test
-    fun testCreatePublic_User_Success() {
-        // Give the user a 5 hour time cap
-        testUtil.createAllottedTimeCapForUser(
-                user = user,
-                allottedTime = 5 * 60 * 60 * 1000
-        )
-
-        // Make the user a Guest
-        testUtil.createUserRoleForUser(
-                user = user,
-                role = UserRole.Role.GUEST,
-                isApproved = true
-        )
-
-        // Simulate a login
-        context.login(user.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        // Create a base request copy with a valid id
-        val requestCopy = baseCreateRequest.copy(
-                userId = user.id,
-                startTime = Date(Date().time + 100000),
-                endTime = Date(Date().time + 150000)
-        )
-
-        val error = wrapper.create(
-                request = requestCopy
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
-    }
-
-    @Test
-    fun testCreate_DifferentUser_Failure() {
-        // Simulate a login as a different user
-        context.login(user2.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        // Create a base request copy with a valid id
-        val requestCopy = baseCreateRequest.copy(
-                userId = user.id
-        )
-
-        val error = wrapper.create(
-                request = requestCopy
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
-    }
-
-    @Test
-    fun testCreatePrivate_NotResearcher_Failure() {
-        // Simulate a login, but do not make them a researcher
-        context.login(user.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        // Create a base request copy with a valid id that
-        // is also private
-        val requestCopy = baseCreateRequest.copy(
-                userId = user.id,
-                isPublic = false
-        )
-
-        val error = wrapper.create(
-                request = requestCopy
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
-    }
-
-    @Test
-    fun testCreatePrivate_Researcher_Success() {
-        // Give the user an unlimited time cap
-        testUtil.createAllottedTimeCapForUser(
-                user = user,
-                allottedTime = null
-        )
-
-        // Make the user a Researcher
-        testUtil.createUserRoleForUser(
-                user = user,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = true
-        )
-
-        // Simulate a login and make the user a researcher
-        context.login(user.id)
-        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
-
-        // Create a base request copy with a valid id that
-        // is also private
-        val requestCopy = baseCreateRequest.copy(
-                userId = user.id,
-                startTime = Date(Date().time + 100000),
-                endTime = Date(Date().time+ 150000),
-                isPublic = false
-        )
-
-        val error = wrapper.create(
-                request = requestCopy
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
-    }
-
-    @Test
-    fun testCreatePrivate_Admin_Success() {
-        // Give the user an unlimited time cap
-        testUtil.createAllottedTimeCapForUser(
-                user = user,
-                allottedTime = null
-        )
-
-        // Make the user an Admin
-        testUtil.createUserRoleForUser(
-                user = user,
-                role = UserRole.Role.ADMIN,
-                isApproved = true
-        )
-
-        // Simulate a login and make the user an admin
-        context.login(user.id)
-        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
-
-        // Create a base request copy with a valid id that
-        // is also private
-        val requestCopy = baseCreateRequest.copy(
-                userId = user.id,
-                startTime = Date(Date().time + 100000),
-                endTime = Date(Date().time+ 150000),
-                isPublic = false
-        )
-
-        val error = wrapper.create(
-                request = requestCopy
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
     }
 
     @Test
@@ -592,14 +392,6 @@ internal class UserAppointmentWrapperTest {
         context.login(notAdminYet.id)
         context.currentRoles.add(UserRole.Role.USER)
 
-        // Initialize the rapper with the context
-        wrapper = UserAppointmentWrapper(
-                appointmentRepo = appointmentRepo,
-                viewerRepo = viewerRepo,
-                context = context,
-                factory = factory
-        )
-
         val error = wrapper.userFutureList(
                 pageable = PageRequest.of(0, 10),
                 userId = user.id
@@ -780,331 +572,6 @@ internal class UserAppointmentWrapperTest {
     }
 
     @Test
-    fun testInvalidUpdate_NoUserRole_Failure(){
-        // Simulate a login
-        context.login(user.id)
-
-        val error = wrapper.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
-    }
-
-    @Test
-    fun testInvalidUpdate_NotLoggedIn_Failure(){
-        // Don't simulate a log in
-        val error = wrapper.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
-    }
-
-    @Test
-    fun testInvalidUpdate_Private_NotResearcher_Failure() {
-        // Simulate a log in to a guest account
-        context.login(user.id)
-        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.GUEST))
-
-        val error = wrapper.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = false,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
-    }
-
-    @Test
-    fun testInvalidUpdate_InvalidId_Failure() {
-        // Make the user an admin
-        testUtil.createUserRolesForUser(
-                user = user,
-                role = UserRole.Role.ADMIN,
-                isApproved = true
-        )
-
-        // Simulate a log in to an admin account
-        context.login(user.id)
-        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
-
-        val error = wrapper.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = 420L,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = false,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.invalidResourceId!!.isNotEmpty())
-    }
-
-    @Test
-    fun testValidUpdate_Private_Researcher_Success() {
-        // Give the user an unlimited time cap
-        testUtil.createAllottedTimeCapForUser(
-                user = user,
-                allottedTime = null
-        )
-
-        // Make the user a Researcher
-        testUtil.createUserRoleForUser(
-                user = user,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = true
-        )
-
-        // Simulate a log in to a researcher account
-        context.login(user.id)
-        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
-
-        val error = wrapper.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = appointment.id,
-                        startTime = Date(appointment.startTime.time + 10L),
-                        endTime = Date(appointment.endTime.time -10L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
-    }
-
-    @Test
-    fun testValidUpdate_Admin_Private_Success() {
-        // Give the user an unlimited time cap
-        testUtil.createAllottedTimeCapForUser(
-                user = user,
-                allottedTime = null
-        )
-
-        // Make the user an Admin
-        testUtil.createUserRoleForUser(
-                user = user,
-                role = UserRole.Role.ADMIN,
-                isApproved = true
-        )
-
-        // Simulate a log in to an admin account
-        context.login(user.id)
-        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
-
-        val error = wrapper.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = appointment.id,
-                        startTime = Date(appointment.startTime.time + 10L),
-                        endTime = Date(appointment.endTime.time -10L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
-    }
-
-    @Test
-    fun testValidUpdate_UserIsOwner_Success(){
-        // Give the user an unlimited time cap
-        testUtil.createAllottedTimeCapForUser(
-                user = user,
-                allottedTime = null
-        )
-
-        // Make the user an Admin
-        testUtil.createUserRoleForUser(
-                user = user,
-                role = UserRole.Role.ADMIN,
-                isApproved = true
-        )
-
-        // Simulate a login
-        context.login(user.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        val error = wrapper.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = appointment.id,
-                        startTime = Date(appointment.startTime.time + 10L),
-                        endTime = Date(appointment.endTime.time -10L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
-    }
-
-    @Test
-    fun testValidUpdate_Admin_Success(){
-        // Give the user an unlimited time cap
-        testUtil.createAllottedTimeCapForUser(
-                user = user,
-                allottedTime = null
-        )
-
-        // Make the user a Researcher
-        testUtil.createUserRoleForUser(
-                user = user,
-                role = UserRole.Role.ADMIN,
-                isApproved = true
-        )
-
-        // Simulate a login
-        context.login(admin.id)
-        context.currentRoles.add(UserRole.Role.ADMIN)
-
-        val error = wrapper.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 100000L),
-                        endTime = Date(System.currentTimeMillis() + 110000L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
-    }
-
-    @Test
-    fun testInvalidUpdate_NotOwner_Failure(){
-        // Simulate a login
-        context.login(user2.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        val error = wrapper.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-
-        ) {
-            assertNull(it.success)
-            assertNotNull(it.error)
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
-    }
-
-    @Test
-    fun testInvalidUpdate_NotAdminYet_Failure(){
-        // Simulate a login
-        context.login(notAdminYet.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        val error = wrapper.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = appointment.id,
-                        startTime = Date(System.currentTimeMillis() + 20000L),
-                        endTime = Date(System.currentTimeMillis() + 50000L),
-                        telescopeId = appointment.telescopeId,
-                        isPublic = appointment.isPublic,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-
-        ) {
-            assertNull(it.success)
-            assertNotNull(it.error)
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
-    }
-
-    @Test
     fun testValidMakePublic_Researcher_Success(){
         // Simulate a login
         context.login(user.id)
@@ -1190,9 +657,9 @@ internal class UserAppointmentWrapperTest {
 
         val error = wrapper.listBetweenDates(
                 request = ListBetweenDates.Request(
-                    startTime = Date(System.currentTimeMillis()),
-                    endTime = Date(System.currentTimeMillis() + 200000L),
-                    telescopeId = 1L
+                        startTime = Date(System.currentTimeMillis()),
+                        endTime = Date(System.currentTimeMillis() + 200000L),
+                        telescopeId = 1L
                 )
         ) {
             assertNotNull(it.success)
@@ -1206,9 +673,9 @@ internal class UserAppointmentWrapperTest {
     fun testInvalidAppointmentListBetweenDates_NotLoggedIn_Success(){
         val error = wrapper.listBetweenDates(
                 request = ListBetweenDates.Request(
-                    startTime = Date(System.currentTimeMillis()),
-                    endTime = Date(System.currentTimeMillis() + 200000L),
-                    telescopeId = 1L
+                        startTime = Date(System.currentTimeMillis()),
+                        endTime = Date(System.currentTimeMillis() + 200000L),
+                        telescopeId = 1L
                 )
         ) {
             assertNull(it.success)
@@ -1247,113 +714,6 @@ internal class UserAppointmentWrapperTest {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
-    }
-
-    @Test
-    fun testRequestPublic_NotUser_Failure() {
-        // Do not log the user in
-
-        // Create a base request copy with a valid id
-        val requestCopy = baseRequestRequest.copy(
-                userId = user.id
-        )
-
-        val error = wrapper.request(
-                request = requestCopy
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
-    }
-
-    @Test
-    fun testRequest_DifferentUser_Failure() {
-        // Simulate a login as a different user
-        context.login(user2.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        // Create a base request copy with a valid id
-        val requestCopy = baseRequestRequest.copy(
-                userId = user.id
-        )
-
-        val error = wrapper.request(
-                request = requestCopy
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.USER))
-    }
-
-    @Test
-    fun testRequestPublic_User_Success() {
-        // Simulate a login
-        context.login(user.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        // Create a base request copy with a valid id
-        val requestCopy = baseRequestRequest.copy(
-                userId = user.id
-        )
-
-        val error = wrapper.request(
-                request = requestCopy
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
-    }
-
-    @Test
-    fun testRequestPrivate_NotResearcher_Failure() {
-        // Simulate a login, but do not make them a researcher
-        context.login(user.id)
-        context.currentRoles.add(UserRole.Role.USER)
-
-        // Create a base request copy with a valid id that
-        // is also private
-        val requestCopy = baseRequestRequest.copy(
-                userId = user.id,
-                isPublic = false
-        )
-
-        val error = wrapper.request(
-                request = requestCopy
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
-        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
-    }
-
-    @Test
-    fun testRequestPrivate_Researcher_Success() {
-        // Simulate a login and make the user a researcher
-        context.login(user.id)
-        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
-
-        // Create a base request copy with a valid id that
-        // is also private
-        val requestCopy = baseRequestRequest.copy(
-                userId = user.id,
-                isPublic = false
-        )
-
-        val error = wrapper.request(
-                request = requestCopy
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
     }
 
     @Test

@@ -1,7 +1,6 @@
 package com.radiotelescope.controller.appointment.request
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
 import com.radiotelescope.controller.model.appointment.request.RasterScanAppointmentRequestForm
 import com.radiotelescope.controller.model.coordinate.CoordinateForm
@@ -70,7 +69,7 @@ internal class RasterScanAppointmentRequestControllerTest : BaseAppointmentRestC
         super.init()
 
         rasterScanAppointmentRequestController = RasterScanAppointmentRequestController(
-                appointmentWrapper = getRasterScanCreateWrapper(),
+                autoAppointmentWrapper = getRasterScanCreateWrapper(),
                 logger = getLogger()
         )
 

@@ -67,7 +67,7 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
         userContext.currentRoles.add(UserRole.Role.USER)
 
         appointmentSearchController = AppointmentSearchController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
     }

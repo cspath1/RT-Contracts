@@ -49,7 +49,7 @@ internal class CoordinateAppointmentUpdateControllerTest : BaseAppointmentRestCo
         super.init()
 
         coordinateAppointmentUpdateController = CoordinateAppointmentUpdateController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

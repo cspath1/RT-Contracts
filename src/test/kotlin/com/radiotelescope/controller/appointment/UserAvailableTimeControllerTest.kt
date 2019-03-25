@@ -44,7 +44,7 @@ internal class UserAvailableTimeControllerTest : BaseAppointmentRestControllerTe
         super.init()
 
         userAvailableTimeController = UserAvailableTimeController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

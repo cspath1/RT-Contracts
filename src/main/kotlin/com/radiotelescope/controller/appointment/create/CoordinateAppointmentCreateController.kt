@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.appointment.create
 
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * REST Controller to handle Point Appointment Creation
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class CoordinateAppointmentCreateController(
         @Qualifier(value = "coordinateAppointmentWrapper")
-        private val appointmentWrapper: UserAppointmentWrapper,
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -33,7 +33,7 @@ class CoordinateAppointmentCreateController(
      * into a [CoordinateAppointmentCreate.Request] after ensuring no fields are null. If
      * any are, it will instead respond with errors.
      *
-     * Otherwise, it will execute the [UserAppointmentWrapper.create] method.
+     * Otherwise, it will execute the [UserAutoAppointmentWrapper.create] method.
      * If this method returns an [AccessReport], this means the user did not pass
      * authentication and the method will respond with errors.
      *
@@ -60,7 +60,7 @@ class CoordinateAppointmentCreateController(
         } ?:
         // Otherwise, execute the wrapper command
         let {
-            appointmentWrapper.create(
+            autoAppointmentWrapper.create(
                     request = form.toRequest()
             ) { response ->
                 // If the command called was a success

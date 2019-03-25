@@ -43,7 +43,7 @@ internal class AppointmentListFutureAppointmentsByUserControllerTest : BaseAppoi
         super.init()
 
         appointmentListFutureAppointmentsByUserController = AppointmentListFutureAppointmentsByUserController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 

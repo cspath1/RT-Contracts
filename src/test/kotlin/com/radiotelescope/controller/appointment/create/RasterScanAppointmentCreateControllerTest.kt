@@ -69,7 +69,7 @@ internal class RasterScanAppointmentCreateControllerTest : BaseAppointmentRestCo
         super.init()
 
         rasterScanAppointmentCreateController = RasterScanAppointmentCreateController(
-                appointmentWrapper = getRasterScanCreateWrapper(),
+                autoAppointmentWrapper = getRasterScanCreateWrapper(),
                 logger = getLogger()
         )
 

@@ -18,7 +18,8 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 /**
- * Base concrete implementation of the [AppointmentFactory] interface
+ * Base concrete implementation of the [AppointmentFactory] interface.
+ * Concretely implements all [AppointmentFactory] methods
  *
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
@@ -26,7 +27,7 @@ import org.springframework.data.domain.Pageable
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
-abstract class BaseAppointmentFactory(
+open class BaseAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
@@ -40,7 +41,7 @@ abstract class BaseAppointmentFactory(
      * @param id the [Appointment] id
      * @return a [Retrieve] command object
      */
-    override fun retrieve(id: Long): Command<AppointmentInfo, Multimap<ErrorTag, String>> {
+    final override fun retrieve(id: Long): Command<AppointmentInfo, Multimap<ErrorTag, String>> {
         return Retrieve(
                 appointmentId = id,
                 appointmentRepo = appointmentRepo
@@ -55,7 +56,7 @@ abstract class BaseAppointmentFactory(
      * @return a [UserCompletedList] command object
      */
 
-    override fun userCompletedList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>,Multimap<ErrorTag, String>> {
+    final override fun userCompletedList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>,Multimap<ErrorTag, String>> {
         return UserCompletedList(
                 appointmentRepo = appointmentRepo,
                 userId = userId,
@@ -70,7 +71,7 @@ abstract class BaseAppointmentFactory(
      * @param appointmentId the Appointment id
      * @return a [Cancel] command object
      */
-    override fun cancel(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>>  {
+    final override fun cancel(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>>  {
         return Cancel(
                 appointmentId = appointmentId,
                 appointmentRepo = appointmentRepo
@@ -85,7 +86,7 @@ abstract class BaseAppointmentFactory(
      * @param pageable the [Pageable] interface
      * @return the [UserFutureList] command object
      */
-    override fun userFutureList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    final override fun userFutureList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return UserFutureList(
                 userId = userId,
                 pageable = pageable,
@@ -102,7 +103,7 @@ abstract class BaseAppointmentFactory(
      * @param pageable the [Pageable] interface
      * @return the [RetrieveFutureAppointmentsByTelescopeId] command object
      */
-    override fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    final override fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return RetrieveFutureAppointmentsByTelescopeId(
                 appointmentRepo = appointmentRepo,
                 telescopeId = telescopeId,
@@ -118,7 +119,7 @@ abstract class BaseAppointmentFactory(
      * @param request the [ListBetweenDates.Request] object
      * @return a [ListBetweenDates] command object
      */
-    override fun listBetweenDates(request: ListBetweenDates.Request): Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    final override fun listBetweenDates(request: ListBetweenDates.Request): Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
        return ListBetweenDates(
                request = request,
                appointmentRepo = appointmentRepo,
@@ -134,7 +135,7 @@ abstract class BaseAppointmentFactory(
      * @param appointmentId the Appointment's id
      * @return the [MakePublic] command object
      */
-    override fun makePublic(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>> {
+    final override fun makePublic(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>> {
         return MakePublic(
                 appointmentId = appointmentId,
                 appointmentRepo = appointmentRepo
@@ -148,7 +149,7 @@ abstract class BaseAppointmentFactory(
      * @param pageable the Pageable interface
      * @return a [PublicCompletedAppointments] command object
      */
-    override fun publicCompletedAppointments(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    final override fun publicCompletedAppointments(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return PublicCompletedAppointments(
                 pageable = pageable,
                 appointmentRepo = appointmentRepo
@@ -162,7 +163,7 @@ abstract class BaseAppointmentFactory(
      * @param pageable the [Pageable] object that has the page number and page size
      * @return a [RequestedList] command
      */
-    override fun requestedList(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    final override fun requestedList(pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return RequestedList(
                 pageable = pageable,
                 userRepo = userRepo,
@@ -177,7 +178,7 @@ abstract class BaseAppointmentFactory(
      * @param request the [ApproveDenyRequest.Request] object
      * @return a [Command] object
      */
-    override fun approveDenyRequest(request: ApproveDenyRequest.Request): Command<Long, Multimap<ErrorTag, String>> {
+    final override fun approveDenyRequest(request: ApproveDenyRequest.Request): Command<Long, Multimap<ErrorTag, String>> {
         return ApproveDenyRequest(
                 request = request,
                 appointmentRepo = appointmentRepo
@@ -191,7 +192,7 @@ abstract class BaseAppointmentFactory(
      * @param userId the User's Id
      * @return a [Command] object
      */
-    override fun userAvailableTime(userId: Long): Command<Long, Multimap<ErrorTag, String>> {
+    final override fun userAvailableTime(userId: Long): Command<Long, Multimap<ErrorTag, String>> {
         return UserAvailableTime(
                 userId = userId,
                 appointmentRepo = appointmentRepo,
@@ -206,7 +207,7 @@ abstract class BaseAppointmentFactory(
      *
      * @return a [Search] command object
      */
-    override fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
+    final override fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
         return Search(
                 searchCriteria = searchCriteria,
                 pageable = pageable,

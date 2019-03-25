@@ -2,10 +2,10 @@ package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.accountActivateToken.BaseAccountActivateTokenFactory
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
-import com.radiotelescope.contracts.appointment.factory.CoordinateAppointmentFactory
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
-import com.radiotelescope.contracts.appointment.factory.CelestialBodyAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.RasterScanAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointmentFactory
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
+import com.radiotelescope.contracts.appointment.factory.auto.CelestialBodyAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.RasterScanAppointmentFactory
 import com.radiotelescope.contracts.celestialBody.BaseCelestialBodyFactory
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.BaseFeedbackFactory
@@ -85,12 +85,12 @@ class FactoryBeans(
     }
 
     /**
-     * Returns a [UserAppointmentWrapper] object, allowing it to be autowired
+     * Returns a [UserAutoAppointmentWrapper] object, allowing it to be autowired
      * in the controllers
      */
     @Bean(value = ["coordinateAppointmentWrapper"])
-    override fun getCoordinateAppointmentWrapper(): UserAppointmentWrapper {
-        return UserAppointmentWrapper(
+    override fun getCoordinateAppointmentWrapper(): UserAutoAppointmentWrapper {
+        return UserAutoAppointmentWrapper(
                 context = userContext,
                 factory = CoordinateAppointmentFactory(
                         userRepo = repositories.userRepo,
@@ -107,8 +107,8 @@ class FactoryBeans(
     }
 
     @Bean(value = ["celestialBodyAppointmentWrapper"])
-    override fun getCelestialBodyAppointmentWrapper(): UserAppointmentWrapper {
-        return UserAppointmentWrapper(
+    override fun getCelestialBodyAppointmentWrapper(): UserAutoAppointmentWrapper {
+        return UserAutoAppointmentWrapper(
                 context = userContext,
                 factory = CelestialBodyAppointmentFactory(
                         userRepo = repositories.userRepo,
@@ -126,8 +126,8 @@ class FactoryBeans(
     }
 
     @Bean(value = ["rasterScanAppointmentWrapper"])
-    override fun getRasterScanAppointmentWrapper(): UserAppointmentWrapper {
-        return UserAppointmentWrapper(
+    override fun getRasterScanAppointmentWrapper(): UserAutoAppointmentWrapper {
+        return UserAutoAppointmentWrapper(
                 context = userContext,
                 factory = RasterScanAppointmentFactory(
                         userRepo = repositories.userRepo,
