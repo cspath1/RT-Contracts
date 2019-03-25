@@ -107,7 +107,8 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                         userRoleRepo = userRoleRepo,
                         telescopeRepo = telescopeRepo,
                         coordinateRepo = coordinateRepo,
-                        allottedTimeCapRepo = allottedTimeCapRepo
+                        allottedTimeCapRepo = allottedTimeCapRepo,
+                        orientationRepo = orientationRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo

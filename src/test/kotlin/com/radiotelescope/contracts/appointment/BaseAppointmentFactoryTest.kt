@@ -13,6 +13,7 @@ import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentReq
 import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.CelestialBodyAppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
+import com.radiotelescope.contracts.appointment.update.RasterScanAppointmentUpdate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
@@ -145,7 +146,8 @@ internal class BaseAppointmentFactoryTest {
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                orientationRepo = orientationRepo
         )
 
         val cmd = factory.create(
@@ -240,6 +242,34 @@ internal class BaseAppointmentFactoryTest {
 
         //Ensure it is the correct command
         assertTrue(cmd is CoordinateAppointmentUpdate)
+    }
+
+    @Test
+    fun raster_scan_update() {
+        // Instantiate the proper factory
+        factory = RasterScanAppointmentFactory(
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                orientationRepo = orientationRepo
+        )
+
+        val cmd = factory.update(
+                request = RasterScanAppointmentUpdate.Request(
+                        id = 1L,
+                        startTime = Date(System.currentTimeMillis() + 100000L),
+                        endTime = Date(System.currentTimeMillis() + 200000L),
+                        telescopeId = 1L,
+                        isPublic = true,
+                        coordinates = mutableListOf()
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is RasterScanAppointmentUpdate)
     }
 
     @Test
@@ -364,7 +394,8 @@ internal class BaseAppointmentFactoryTest {
                 telescopeRepo = telescopeRepo,
                 coordinateRepo = coordinateRepo,
                 userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                orientationRepo = orientationRepo
         )
 
         val cmd = factory.request(

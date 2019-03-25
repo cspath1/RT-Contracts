@@ -134,7 +134,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val theAppointment = appointmentRepo.findById(id!!).get()
 
         assertEquals(baseRequest.id, theAppointment.id)
-        assertNotNull(appointment.celestialBody)
+        assertNotNull(theAppointment.celestialBody)
         assertEquals(baseRequest.celestialBodyId, theAppointment.celestialBody!!.id)
         assertEquals(baseRequest.endTime, theAppointment.endTime)
         assertEquals(baseRequest.startTime, theAppointment.startTime)
@@ -164,7 +164,7 @@ internal class CelestialBodyAppointmentUpdateTest {
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
-                startTime = Date(System.currentTimeMillis() +  50000L),
+                startTime = Date(System.currentTimeMillis() + 50000L),
                 endTime = Date(System.currentTimeMillis() + 100000L),
                 isPublic = true,
                 type = Appointment.Type.POINT
