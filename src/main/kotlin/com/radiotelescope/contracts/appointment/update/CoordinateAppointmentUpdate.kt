@@ -8,6 +8,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
@@ -25,6 +26,7 @@ import java.util.*
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param coordinateRepo the [ICoordinateRepository] interface
  * @param orientationRepo the [IOrientationRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class CoordinateAppointmentUpdate(
         private val request: Request,
@@ -32,7 +34,8 @@ class CoordinateAppointmentUpdate(
         private val telescopeRepo: ITelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val coordinateRepo: ICoordinateRepository,
-        private val orientationRepo: IOrientationRepository
+        private val orientationRepo: IOrientationRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ):  Command<Long, Multimap<ErrorTag,String>>, AppointmentUpdate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -66,7 +69,8 @@ class CoordinateAppointmentUpdate(
         baseRequestValidation(
                 request = request,
                 telescopeRepo = telescopeRepo,
-                appointmentRepo = appointmentRepo
+                appointmentRepo = appointmentRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )?.let { return it }
 
         var errors = HashMultimap.create<ErrorTag, String>()
@@ -88,7 +92,8 @@ class CoordinateAppointmentUpdate(
         errors = validateAvailableAllottedTime(
                 request = request,
                 appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
 
         return if (errors.isEmpty) null else errors

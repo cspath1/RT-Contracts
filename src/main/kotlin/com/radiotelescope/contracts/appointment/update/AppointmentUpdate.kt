@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.isNotEmpty
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -73,7 +74,8 @@ interface AppointmentUpdate {
     fun baseRequestValidation(
             request: Request,
             telescopeRepo: ITelescopeRepository,
-            appointmentRepo: IAppointmentRepository
+            appointmentRepo: IAppointmentRepository,
+            allottedTimeCapRepo: IAllottedTimeCapRepository
     ): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
@@ -87,6 +89,11 @@ interface AppointmentUpdate {
                 return errors
 
             val theAppointment = appointmentRepo.findById(id).get()
+
+            if(!allottedTimeCapRepo.existsByUserId(theAppointment.user.id)) {
+                errors.put(ErrorTag.ALLOTTED_TIME_CAP, "Allotted Time Cap for userId ${theAppointment.user.id} could not be found")
+                return errors
+            }
 
             if (theAppointment.status != Appointment.Status.REQUESTED && theAppointment.status != Appointment.Status.SCHEDULED)
                 errors.put(ErrorTag.STATUS, "Appointment must be requested or scheduled in order to modify it")
@@ -138,38 +145,30 @@ interface AppointmentUpdate {
      * @param request the [Request]
      * @param appointmentRepo the [IAppointmentRepository] interface
      * @param userRoleRepo the [IUserRoleRepository] interface
+     * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
      * @return a [HashMultimap] of errors or null
      */
     fun validateAvailableAllottedTime(
             request: Request,
             appointmentRepo: IAppointmentRepository,
-            userRoleRepo: IUserRoleRepository
+            userRoleRepo: IUserRoleRepository,
+            allottedTimeCapRepo: IAllottedTimeCapRepository
     ): HashMultimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
             val theAppointment = appointmentRepo.findById(id).get()
             val newTime = endTime.time - startTime.time
-            val theUserRole = userRoleRepo.findMembershipRoleByUserId(theAppointment.user.id)
-
-            if (theUserRole == null) {
-                errors.put(com.radiotelescope.contracts.appointment.ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
-                return errors
-            }
+            val allottedTime = allottedTimeCapRepo.findByUserId(theAppointment.user.id).allottedTime
 
             // Free up the time associated with this appointment since it
             // may have changed
             val totalTime = determineCurrentUsedTime(theAppointment, appointmentRepo)
 
-            when (theUserRole.role) {
-                com.radiotelescope.repository.role.UserRole.Role.GUEST -> {
-                    if ((totalTime + newTime) > com.radiotelescope.repository.appointment.Appointment.GUEST_APPOINTMENT_TIME_CAP)
-                        errors.put(com.radiotelescope.contracts.appointment.ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
-                }
-                else -> {
-                    if ((totalTime + newTime) > com.radiotelescope.repository.appointment.Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP)
-                        errors.put(com.radiotelescope.contracts.appointment.ErrorTag.ALLOTTED_TIME, "Max allotted observation time is 50 hours at any given time")
-                }
+            // If allottedTime = null, they have no limit, otherwise check it
+            if(allottedTime != null && (totalTime + newTime) > allottedTime){
+                val hours = allottedTime / (60*60*1000)
+                errors.put(ErrorTag.ALLOTTED_TIME, "You may only have $hours hours of observation time.")
             }
         }
 

@@ -9,6 +9,7 @@ import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -23,12 +24,14 @@ class RasterScanAppointmentFactory(
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val coordinateRepo: ICoordinateRepository
+        private val coordinateRepo: ICoordinateRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
         telescopeRepo = telescopeRepo,
-        userRoleRepo = userRoleRepo
+        userRoleRepo = userRoleRepo,
+        allottedTimeCapRepo = allottedTimeCapRepo
 ) {
     /**
      * Override of the [AppointmentFactory.create] method that will return a [RasterScanAppointmentCreate]
@@ -44,7 +47,8 @@ class RasterScanAppointmentFactory(
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 

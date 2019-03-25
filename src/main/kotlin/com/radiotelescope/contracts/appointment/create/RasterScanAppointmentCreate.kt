@@ -7,6 +7,7 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.coordinate.CoordinateRequest
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.Coordinate
@@ -33,7 +34,8 @@ class RasterScanAppointmentCreate(
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val telescopeRepo: ITelescopeRepository,
-        private val coordinateRepo: ICoordinateRepository
+        private val coordinateRepo: ICoordinateRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -82,7 +84,8 @@ class RasterScanAppointmentCreate(
                 request = request,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
-                appointmentRepo = appointmentRepo
+                appointmentRepo = appointmentRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )?.let { return it }
 
         var errors = HashMultimap.create<ErrorTag, String>()
@@ -111,7 +114,8 @@ class RasterScanAppointmentCreate(
             errors = validateAvailableAllottedTime(
                     request = request,
                     appointmentRepo = appointmentRepo,
-                    userRoleRepo = userRoleRepo
+                    userRoleRepo = userRoleRepo,
+                    allottedTimeCapRepo = allottedTimeCapRepo
             )
         }
 

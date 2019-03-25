@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert
@@ -34,13 +35,17 @@ internal class RetrieveTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private var id: Long = 0
 
 
     @Before
     fun setUp() {
-        // Instantiate and persist a User Entity Object
+        // Instantiate and persist a User Entity Object and give them a time cap
         val user = testUtil.createUser("cspath1@ycp.edu")
+        testUtil.createAllottedTimeCapForUser(user, 0L)
         id = user.id
     }
 
@@ -57,7 +62,8 @@ internal class RetrieveTest {
        val (info, error) = Retrieve(
                id = id,
                userRepo = userRepo,
-               userRoleRepo = userRoleRepo
+               userRoleRepo = userRoleRepo,
+               allottedTimeCapRepo = allottedTimeCapRepo
        ).execute()
         //error should be null, because id belongs to a valid user
         assertNull(error)
@@ -71,7 +77,8 @@ internal class RetrieveTest {
         val (info, error) = Retrieve(
                 id = 311,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
         //info should be null because id 311 does not exist
         assertNull(info)

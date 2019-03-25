@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -66,36 +67,26 @@ interface AppointmentCreate {
      * @param request the [Request]
      * @param appointmentRepo the [IAppointmentRepository] interface
      * @param userRoleRepo the [IUserRoleRepository] interface
+     * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
      * @return a [HashMultimap] of errors or null
      */
     fun validateAvailableAllottedTime(
             request: Request,
             appointmentRepo: IAppointmentRepository,
-            userRoleRepo: IUserRoleRepository
+            userRoleRepo: IUserRoleRepository,
+            allottedTimeCapRepo: IAllottedTimeCapRepository
     ): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
             val newAppointmentTime = endTime.time - startTime.time
             val totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(userId) ?: 0
-            val theUserRole = userRoleRepo.findMembershipRoleByUserId(userId)
+            val allottedTime = allottedTimeCapRepo.findByUserId(userId).allottedTime
 
-            if (theUserRole == null) {
-                errors.put(com.radiotelescope.contracts.appointment.ErrorTag.CATEGORY_OF_SERVICE, "User's Category of Service has not yet been approved")
-                return errors
-            }
-
-            when (theUserRole.role) {
-                // Guest -> 5 hours
-                com.radiotelescope.repository.role.UserRole.Role.GUEST -> {
-                    if ((totalTime + newAppointmentTime) > com.radiotelescope.repository.appointment.Appointment.GUEST_APPOINTMENT_TIME_CAP)
-                        errors.put(com.radiotelescope.contracts.appointment.ErrorTag.ALLOTTED_TIME, "You may only have up to 5 hours of observation time as a Guest")
-                }
-                // Everyone else -> 50 hours
-                else -> {
-                    if ((totalTime + newAppointmentTime) > com.radiotelescope.repository.appointment.Appointment.OTHER_USERS_APPOINTMENT_TIME_CAP)
-                        errors.put(com.radiotelescope.contracts.appointment.ErrorTag.ALLOTTED_TIME, "Max allotted observation time is 50 hours at any given time")
-                }
+            // If allottedTime = null, they have no limit, otherwise check it
+            if(allottedTime != null && (totalTime + newAppointmentTime) > allottedTime) {
+                val hours = allottedTime / (60*60*1000)
+                errors.put(ErrorTag.ALLOTTED_TIME, "You may only have $hours hours of observation time.")
             }
         }
 
@@ -118,7 +109,8 @@ interface AppointmentCreate {
             request: Request,
             userRepo: IUserRepository,
             telescopeRepo: ITelescopeRepository,
-            appointmentRepo: IAppointmentRepository
+            appointmentRepo: IAppointmentRepository,
+            allottedTimeCapRepo: IAllottedTimeCapRepository
     ): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
         with(request) {
@@ -128,6 +120,10 @@ interface AppointmentCreate {
             }
             if (!telescopeRepo.existsById(telescopeId)) {
                 errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
+                return errors
+            }
+            if(!allottedTimeCapRepo.existsByUserId(userId)) {
+                errors.put(ErrorTag.ALLOTTED_TIME_CAP, "Allotted Time Cap for userId $userId could not be found")
                 return errors
             }
             if (startTime.after(endTime))

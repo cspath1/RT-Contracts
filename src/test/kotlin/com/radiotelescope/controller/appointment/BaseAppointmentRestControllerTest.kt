@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
 import com.radiotelescope.contracts.appointment.factory.CelestialBodyAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.RasterScanAppointmentFactory
 import com.radiotelescope.controller.BaseRestControllerTest
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -37,6 +38,9 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
     private lateinit var celestialBodyRepo: ICelestialBodyRepository
 
     @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
+    @Autowired
     private lateinit var viewerRepo: IViewerRepository
 
     @Autowired
@@ -59,7 +63,8 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -85,7 +90,8 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                         telescopeRepo = telescopeRepo,
                         celestialBodyRepo = celestialBodyRepo,
                         coordinateRepo = coordinateRepo,
-                        orienationRepo = orientationRepo
+                        orientationRepo = orientationRepo,
+                        allottedTimeCapRepo = allottedTimeCapRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo
@@ -100,7 +106,8 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                         userRepo = userRepo,
                         userRoleRepo = userRoleRepo,
                         telescopeRepo = telescopeRepo,
-                        coordinateRepo = coordinateRepo
+                        coordinateRepo = coordinateRepo,
+                        allottedTimeCapRepo = allottedTimeCapRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo

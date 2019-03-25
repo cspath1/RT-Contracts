@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.user
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -15,11 +16,13 @@ import org.springframework.data.domain.Pageable
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param accountActivateTokenRepo the [IAccountActivateTokenRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class BaseUserFactory(
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val accountActivateTokenRepo: IAccountActivateTokenRepository
+        private val accountActivateTokenRepo: IAccountActivateTokenRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : UserFactory {
     /**
      * Override of the [UserFactory.register] method that will return a [Register] command object
@@ -32,7 +35,8 @@ class BaseUserFactory(
                 request = request,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -46,7 +50,8 @@ class BaseUserFactory(
         return Authenticate(
                 request = request,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -60,7 +65,8 @@ class BaseUserFactory(
         return Retrieve(
                 id = id,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -74,7 +80,8 @@ class BaseUserFactory(
         return List(
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -155,7 +162,8 @@ class BaseUserFactory(
                 searchCriteria = searchCriteria,
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 

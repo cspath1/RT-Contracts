@@ -59,7 +59,8 @@ class FactoryBeans(
                 factory = BaseUserFactory(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo,
-                        accountActivateTokenRepo = repositories.accountActivateTokenRepo
+                        accountActivateTokenRepo = repositories.accountActivateTokenRepo,
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
                 ),
                 userRepo = repositories.userRepo
         )
@@ -75,7 +76,8 @@ class FactoryBeans(
                 context = userContext,
                 factory = BaseUserRoleFactory(
                         userRepo = repositories.userRepo,
-                        userRoleRepo = repositories.userRoleRepo
+                        userRoleRepo = repositories.userRoleRepo,
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
                 ),
                 userRepo = repositories.userRepo,
                 userRoleRepo = repositories.userRoleRepo
@@ -96,7 +98,8 @@ class FactoryBeans(
                         telescopeRepo = repositories.telescopeRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         coordinateRepo = repositories.coordinateRepo,
-                        orientationRepo = repositories.orientationRepo
+                        orientationRepo = repositories.orientationRepo,
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -114,7 +117,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         celestialBodyRepo = repositories.celestialBodyRepo,
                         coordinateRepo = repositories.coordinateRepo,
-                        orienationRepo = repositories.orientationRepo
+                        orientationRepo = repositories.orientationRepo,
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -130,7 +134,8 @@ class FactoryBeans(
                         appointmentRepo = repositories.appointmentRepo,
                         telescopeRepo = repositories.telescopeRepo,
                         userRoleRepo = repositories.userRoleRepo,
-                        coordinateRepo = repositories.coordinateRepo
+                        coordinateRepo = repositories.coordinateRepo,
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo

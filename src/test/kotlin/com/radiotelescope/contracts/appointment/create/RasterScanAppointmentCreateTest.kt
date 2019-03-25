@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment.create
 import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.coordinate.CoordinateRequest
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -53,6 +54,9 @@ internal class RasterScanAppointmentCreateTest {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private var coordinateRequestOne = CoordinateRequest(
             hours = 12,
             minutes = 12,
@@ -97,6 +101,12 @@ internal class RasterScanAppointmentCreateTest {
                 isApproved = true
         )
 
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Create a copy of the baseRequest with the correct
         // user id
         val requestCopy = baseRequest.copy(userId = user.id)
@@ -107,7 +117,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
@@ -144,6 +155,12 @@ internal class RasterScanAppointmentCreateTest {
                 isApproved = true
         )
 
+        // Give the user 20 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (20 * 60 * 60 * 1000)
+        )
+
         // 8 hour appointment
         val requestCopy = baseRequest.copy(
                 userId = user.id,
@@ -157,7 +174,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
@@ -187,6 +205,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testInvalidTelescopeId_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Create a copy of the baseRequest with the correct
         // user id but an invalid telescope id
         val requestCopy = baseRequest.copy(
@@ -200,7 +224,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -214,6 +239,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testInvalidUserId_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Create a copy of the baseRequest with an invalid user id
         val requestCopy = baseRequest.copy(
                 userId = 311L
@@ -225,7 +256,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -239,6 +271,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testStartAfterEnd_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Create a copy of the baseRequest with the
         // start time before the end time
         val requestCopy = baseRequest.copy(
@@ -253,7 +291,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -267,6 +306,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testStartBeforeNow_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 startTime = Date(System.currentTimeMillis() - 10000L)
@@ -278,7 +323,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -299,6 +345,12 @@ internal class RasterScanAppointmentCreateTest {
                 isApproved = true
         )
 
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // 8 hour appointment
         val requestCopy = baseRequest.copy(
                 userId = user.id,
@@ -312,7 +364,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -325,33 +378,13 @@ internal class RasterScanAppointmentCreateTest {
     }
 
     @Test
-    fun testNoMembershipRole_Failure() {
-        // Do not create an approved category of service for the user
-
-        // Create a copy of the baseRequest with the correct
-        // user id
-        val requestCopy = baseRequest.copy(userId = user.id)
-
-        val (id, errors) = RasterScanAppointmentCreate(
-                request = requestCopy,
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
-        ).execute()
-
-        // Make sure the command was a failure
-        assertNotNull(errors)
-        assertNull(id)
-
-        // Make sure it failed for the correct reason
-        assertEquals(1, errors!!.size())
-        assertTrue(errors[ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
-    }
-
-    @Test
     fun testSchedulingConflict_EndAtStart_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
 
@@ -377,7 +410,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -391,6 +425,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testHoursTooLow_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val coordinateCopy = coordinateRequestOne.copy(
                 hours = -311
         )
@@ -406,7 +446,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -420,6 +461,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testHoursTooHigh_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val coordinateCopy = coordinateRequestOne.copy(
                 hours = 311
         )
@@ -435,7 +482,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -449,6 +497,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testMinutesTooLow_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val coordinateCopy = coordinateRequestOne.copy(
                 minutes = -311
         )
@@ -464,7 +518,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -478,6 +533,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testMinutesTooHigh_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val coordinateCopy = coordinateRequestOne.copy(
                 minutes = 311
         )
@@ -493,7 +554,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -507,6 +569,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testSecondsTooLow_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val coordinateCopy = coordinateRequestOne.copy(
                 seconds = -311
         )
@@ -522,7 +590,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -536,6 +605,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testSecondsTooHigh_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val coordinateCopy = coordinateRequestOne.copy(
                 seconds = 311
         )
@@ -551,7 +626,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -565,6 +641,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testDeclinationTooLow_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val coordinateCopy = coordinateRequestOne.copy(
                 declination = -311.0
         )
@@ -580,7 +662,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -594,6 +677,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testDeclinationTooHigh_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val coordinateCopy = coordinateRequestOne.copy(
                 declination = 311.0
         )
@@ -609,7 +698,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -623,6 +713,12 @@ internal class RasterScanAppointmentCreateTest {
 
     @Test
     fun testNotTwoCoordinates_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val requestCopy = baseRequest.copy(
                 userId = user.id,
                 coordinates = mutableListOf()
@@ -634,7 +730,8 @@ internal class RasterScanAppointmentCreateTest {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a failure

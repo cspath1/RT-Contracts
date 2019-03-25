@@ -73,6 +73,12 @@ internal class CelestialBodyAppointmentCreateControllerTest : BaseAppointmentRes
                 isApproved = true
         )
 
+        // Give the user a 5 hour time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 5 * 60 * 60 * 1000
+        )
+
         val coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,

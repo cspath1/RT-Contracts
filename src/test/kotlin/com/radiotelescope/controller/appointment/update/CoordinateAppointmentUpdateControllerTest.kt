@@ -61,6 +61,11 @@ internal class CoordinateAppointmentUpdateControllerTest : BaseAppointmentRestCo
                 isApproved = true
         )
 
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
         appointment = testUtil.createAppointment(
                 user = user,
                 telescopeId = 1L,

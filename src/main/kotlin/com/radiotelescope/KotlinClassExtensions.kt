@@ -76,7 +76,7 @@ fun <K, V> Multimap<K, V>.isNotEmpty(): Boolean {
 fun Page<User>.toUserInfoPage(): Page<UserInfo> {
     val infoList = arrayListOf<UserInfo>()
     content.forEach {
-        infoList.add(UserInfo(it, null))
+        infoList.add(UserInfo(it, null, 0L))
     }
     return PageImpl(infoList, pageable, totalElements)
 }

@@ -2,6 +2,8 @@ package com.radiotelescope
 
 import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.allottedTimeCap.AllottedTimeCap
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.CelestialBody
@@ -38,6 +40,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
+
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
@@ -139,6 +144,18 @@ internal class TestUtil {
         userRole.approved = isApproved
 
         return userRoleRepo.save(userRole)
+    }
+
+    fun createAllottedTimeCapForUser(
+            user: User,
+            allottedTime: Long?
+    ): AllottedTimeCap{
+        val userTimeCap = AllottedTimeCap(
+                user = user,
+                allottedTime = allottedTime
+        )
+
+        return allottedTimeCapRepo.save(userTimeCap)
     }
 
     fun createAppointment(

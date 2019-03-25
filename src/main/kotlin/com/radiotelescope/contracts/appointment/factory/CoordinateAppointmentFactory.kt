@@ -9,6 +9,7 @@ import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
@@ -25,12 +26,14 @@ class CoordinateAppointmentFactory(
         private val telescopeRepo: ITelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val coordinateRepo: ICoordinateRepository,
-        private val orientationRepo: IOrientationRepository
+        private val orientationRepo: IOrientationRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
         telescopeRepo = telescopeRepo,
-        userRoleRepo = userRoleRepo
+        userRoleRepo = userRoleRepo,
+        allottedTimeCapRepo = allottedTimeCapRepo
 ) {
     /**
      * Override of the [AppointmentFactory.create] method that will return a [CoordinateAppointmentCreate]
@@ -46,7 +49,8 @@ class CoordinateAppointmentFactory(
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -81,7 +85,8 @@ class CoordinateAppointmentFactory(
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 }

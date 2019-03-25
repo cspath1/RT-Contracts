@@ -57,7 +57,8 @@ internal class UserRoleInfoTest {
 
         userInfo = UserInfo(
                 user = user,
-                userRoleLabel = UserRole.Role.GUEST.label
+                userRoleLabel = UserRole.Role.GUEST.label,
+                allottedTime = 5*60*60*1000
         )
 
         userRepo.save(user)

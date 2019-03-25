@@ -54,6 +54,7 @@ data class Log(
         RESET_PASSWORD_TOKEN("Reset Password Token"),
         UPDATE_EMAIL_TOKEN("Update Email Token"),
         ACTIVATE_ACCOUNT_TOKEN("Activate Account Token"),
+        ALLOTTED_TIME_CAP("Allotted Time Cap"),
         CELESTIAL_BODY("Celestial Body"),
         VIEWER("Viewer"),
         FEEDBACK("Feedback")

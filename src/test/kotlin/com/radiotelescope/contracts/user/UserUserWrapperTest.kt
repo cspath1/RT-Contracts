@@ -2,6 +2,8 @@ package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.model.user.Filter
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -47,6 +49,9 @@ internal class UserUserWrapperTest {
     @Autowired
     private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private val baseCreateRequest = Register.Request(
             firstName = "Cody",
             lastName = "Spath",
@@ -84,7 +89,8 @@ internal class UserUserWrapperTest {
         factory = BaseUserFactory(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
 
         wrapper = UserUserWrapper(
@@ -105,6 +111,11 @@ internal class UserUserWrapperTest {
                 isApproved = true
         )
 
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
+
         val otherUser = testUtil.createUserWithEncodedPassword(
                 email = "codyspath@gmail.com",
                 password = "Password"
@@ -114,6 +125,11 @@ internal class UserUserWrapperTest {
                 user = otherUser,
                 role = UserRole.Role.MEMBER,
                 isApproved = true
+        )
+
+        testUtil.createAllottedTimeCapForUser(
+                user = otherUser,
+                allottedTime = Appointment.MEMBER_APPOINTMENT_TIME_CAP
         )
 
         userId = user.id

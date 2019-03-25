@@ -13,6 +13,7 @@ import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentReq
 import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.CelestialBodyAppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -64,6 +65,9 @@ internal class BaseAppointmentFactoryTest {
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private lateinit var factory: AppointmentFactory
 
     @Before
@@ -74,7 +78,8 @@ internal class BaseAppointmentFactoryTest {
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -111,8 +116,9 @@ internal class BaseAppointmentFactoryTest {
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                orienationRepo = orientationRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                orientationRepo = orientationRepo
         )
 
         val cmd = factory.create(
@@ -138,7 +144,8 @@ internal class BaseAppointmentFactoryTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
 
         val cmd = factory.create(
@@ -244,8 +251,9 @@ internal class BaseAppointmentFactoryTest {
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                orienationRepo = orientationRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                orientationRepo = orientationRepo
         )
 
         val cmd = factory.update(
@@ -327,8 +335,9 @@ internal class BaseAppointmentFactoryTest {
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                orienationRepo = orientationRepo,
-                coordinateRepo = coordinateRepo
+                orientationRepo = orientationRepo,
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
 
         val cmd = factory.request(
@@ -354,7 +363,8 @@ internal class BaseAppointmentFactoryTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 coordinateRepo = coordinateRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
 
         val cmd = factory.request(

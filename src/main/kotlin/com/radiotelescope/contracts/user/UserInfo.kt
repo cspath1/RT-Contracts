@@ -16,6 +16,7 @@ import com.radiotelescope.repository.user.User
  * @param status the User's status
  * @param membershipRole the User's membership role (i.e not the base USER role),
  * given that it has been accepted by an admin
+ * @param allottedTime the User's allotted time
  */
 data class UserInfo(
         val id: Long,
@@ -26,7 +27,8 @@ data class UserInfo(
         val phoneNumber: String?,
         val active: Boolean,
         val status: String,
-        val membershipRole: String?
+        val membershipRole: String?,
+        val allottedTime: Long?
 ) {
     /**
      * Secondary constructor that takes a user object to set
@@ -34,8 +36,9 @@ data class UserInfo(
 
      * @param user the User
      * @param userRoleLabel the UserRole string
+     * @param allottedTime The User's allotted time
      */
-    constructor(user: User, userRoleLabel: String?) : this(
+    constructor(user: User, userRoleLabel: String?, allottedTime: Long?) : this(
             id = user.id,
             firstName = user.firstName,
             lastName =  user.lastName,
@@ -44,6 +47,7 @@ data class UserInfo(
             phoneNumber = user.phoneNumber,
             active = user.active,
             status = user.status.label,
-            membershipRole = userRoleLabel
+            membershipRole = userRoleLabel,
+            allottedTime = allottedTime
     )
 }

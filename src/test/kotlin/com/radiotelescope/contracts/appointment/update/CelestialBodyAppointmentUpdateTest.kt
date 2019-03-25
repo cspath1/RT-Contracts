@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.appointment.update
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.CelestialBody
@@ -57,6 +58,9 @@ internal class CelestialBodyAppointmentUpdateTest {
     @Autowired
     private lateinit var celestialBodyRepo: ICelestialBodyRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private lateinit var appointment: Appointment
     private lateinit var user: User
     private lateinit var celestialBody: CelestialBody
@@ -105,41 +109,10 @@ internal class CelestialBodyAppointmentUpdateTest {
                 isApproved = true
         )
 
-        val (id, errors) = CelestialBodyAppointmentUpdate(
-                request = baseRequest,
-                appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
-        ).execute()
-
-        // Make sure it was not an error
-        assertNotNull(id)
-        assertNull(errors)
-
-        // Make sure the information was updated correctly
-        val theAppointment = appointmentRepo.findById(id!!).get()
-
-        assertEquals(baseRequest.id, theAppointment.id)
-        assertNotNull(appointment.celestialBody)
-        assertEquals(baseRequest.celestialBodyId, theAppointment.celestialBody!!.id)
-        assertEquals(baseRequest.endTime, theAppointment.endTime)
-        assertEquals(baseRequest.startTime, theAppointment.startTime)
-        assertEquals(baseRequest.isPublic, theAppointment.isPublic)
-        assertEquals(baseRequest.telescopeId, theAppointment.telescopeId)
-        assertNull(theAppointment.orientation)
-        assertEquals(0, theAppointment.coordinateList.size)
-    }
-
-    @Test
-    fun testValidConstraints_Researcher_Success() {
-        // Make the user a researcher
-        testUtil.createUserRolesForUser(
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
                 user = user,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = true
+                allottedTime = (5 * 60 * 60 * 1000)
         )
 
         val (id, errors) = CelestialBodyAppointmentUpdate(
@@ -149,7 +122,8 @@ internal class CelestialBodyAppointmentUpdateTest {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was not an error
@@ -172,6 +146,12 @@ internal class CelestialBodyAppointmentUpdateTest {
 
     @Test
     fun testValidConstraints_ChangedType_Success() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Make the user a researcher
         testUtil.createUserRolesForUser(
                 user = user,
@@ -201,7 +181,8 @@ internal class CelestialBodyAppointmentUpdateTest {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         assertNotNull(id)
@@ -222,6 +203,12 @@ internal class CelestialBodyAppointmentUpdateTest {
 
     @Test
     fun testInvalidCelestialBodyId_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Create a copy of the request with an invalid
         // celestial body id
         val requestCopy = baseRequest.copy(
@@ -235,7 +222,8 @@ internal class CelestialBodyAppointmentUpdateTest {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -248,6 +236,12 @@ internal class CelestialBodyAppointmentUpdateTest {
 
     @Test
     fun testInvalidTelescopeId_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val requestCopy = baseRequest.copy(
                 telescopeId = 311L
         )
@@ -259,7 +253,8 @@ internal class CelestialBodyAppointmentUpdateTest {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -272,6 +267,12 @@ internal class CelestialBodyAppointmentUpdateTest {
 
     @Test
     fun testInvalidAppointmentId_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Create a copy of the request with an invalid id
         val requestCopy = baseRequest.copy(
                 id = 311
@@ -284,7 +285,8 @@ internal class CelestialBodyAppointmentUpdateTest {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -297,6 +299,12 @@ internal class CelestialBodyAppointmentUpdateTest {
 
     @Test
     fun testInvalidStartTimeAfterEnd_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Create a copy of the request with a start time after the end time
         val requestCopy = baseRequest.copy(
                 startTime = Date(appointment.endTime.time + 40000L),
@@ -310,7 +318,8 @@ internal class CelestialBodyAppointmentUpdateTest {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -323,6 +332,12 @@ internal class CelestialBodyAppointmentUpdateTest {
 
     @Test
     fun testInvalidAppointmentStatus_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Modify the appointment status to not be scheduled/requested
         appointment.status = Appointment.Status.CANCELED
         appointmentRepo.save(appointment)
@@ -334,7 +349,8 @@ internal class CelestialBodyAppointmentUpdateTest {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -347,6 +363,12 @@ internal class CelestialBodyAppointmentUpdateTest {
 
     @Test
     fun testInvalid_StartTimeInPast_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Create a copy of the request with a start time in the past
         val requestCopy = baseRequest.copy(
                 startTime = Date(appointment.startTime.time - 40000L),
@@ -360,7 +382,8 @@ internal class CelestialBodyAppointmentUpdateTest {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -373,6 +396,12 @@ internal class CelestialBodyAppointmentUpdateTest {
 
     @Test
     fun testInvalid_TelescopeDoesNotExist_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         // Create a copy of the request with an invalid telescope
         val requestCopy = baseRequest.copy(
                 telescopeId = 311L
@@ -385,7 +414,8 @@ internal class CelestialBodyAppointmentUpdateTest {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error
@@ -397,106 +427,13 @@ internal class CelestialBodyAppointmentUpdateTest {
     }
 
     @Test
-    fun testInvalid_ExceedAllottedGuestLimit_Failure() {
-        // Make the user a guest
-        testUtil.createUserRolesForUser(
-                user = user,
-                role = UserRole.Role.GUEST,
-                isApproved = true
-        )
-
-        // Create a copy of the request with an appointment time over the limit
-        val requestCopy = baseRequest.copy(
-                startTime = Date(appointment.endTime.time + twoHours),
-                endTime = Date(appointment.endTime.time + (twoHours * 5))
-        )
-
-        val (id, errors) = CelestialBodyAppointmentUpdate(
-                request = requestCopy,
-                appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
-        ).execute()
-
-        // Make sure it was an error
-        assertNotNull(errors)
-        assertNull(id)
-
-        // Make sure it failed for the expected reason
-        assertTrue(errors!![ErrorTag.ALLOTTED_TIME].isNotEmpty())
-    }
-
-    @Test
-    fun testInvalid_ExceededAllottedResearcherLimit_Failure() {
-        // Make the user a researcher
-        testUtil.createUserRolesForUser(
-                user = user,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = true
-        )
-
-        // Create a copy of the request with an appointment time over the limit
-        val requestCopy = baseRequest.copy(
-                startTime = Date(appointment.endTime.time + twoHours),
-                endTime = Date(appointment.endTime.time + (twoHours * 29))
-        )
-
-        val (id, errors) = CelestialBodyAppointmentUpdate(
-                request = requestCopy,
-                appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
-        ).execute()
-
-        // Make sure it was an error
-        assertNotNull(errors)
-        assertNull(id)
-
-        // Make sure it failed for the expected reason
-        assertTrue(errors!![ErrorTag.ALLOTTED_TIME].isNotEmpty())
-    }
-
-    @Test
-    fun testInvalid_NoCategoryOfService_Failure() {
-        // Make the user a researcher (unapproved)
-        testUtil.createUserRolesForUser(
-                user = user,
-                role = UserRole.Role.RESEARCHER,
-                isApproved = false
-        )
-
-        // Create a copy of the request with an appointment time over the limit
-        val requestCopy = baseRequest.copy(
-                startTime = Date(appointment.endTime.time + twoHours),
-                endTime = Date(appointment.endTime.time + (twoHours * 29))
-        )
-
-        val (id, errors) = CelestialBodyAppointmentUpdate(
-                request = requestCopy,
-                appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
-        ).execute()
-
-        // Make sure it was an error
-        assertNotNull(errors)
-        assertNull(id)
-
-        // Make sure it failed for the expected reason
-        assertTrue(errors!![ErrorTag.CATEGORY_OF_SERVICE].isNotEmpty())
-    }
-
-    @Test
     fun testSchedulingConflict_BetweenEndAndStart_Failure() {
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
         val startTime = System.currentTimeMillis() + 500000L
         val endTime = System.currentTimeMillis() +   900000L
 
@@ -522,7 +459,8 @@ internal class CelestialBodyAppointmentUpdateTest {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure it was an error

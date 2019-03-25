@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.role
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -32,6 +33,9 @@ internal class BaseUserRoleFactoryTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private lateinit var factory: UserRoleFactory
 
     @Autowired
@@ -41,7 +45,8 @@ internal class BaseUserRoleFactoryTest {
     fun init() {
         factory = BaseUserRoleFactory(
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 

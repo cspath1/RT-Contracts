@@ -17,7 +17,8 @@ internal class UserInfoTest {
                 phoneNumber = "717-823-2216",
                 active = true,
                 status = User.Status.ACTIVE.label,
-                membershipRole = UserRole.Role.GUEST.label
+                membershipRole = UserRole.Role.GUEST.label,
+                allottedTime = 100L
         )
 
         assertEquals("Cody", userInfo.firstName)
@@ -29,6 +30,7 @@ internal class UserInfoTest {
         assertTrue(userInfo.active)
         assertEquals(User.Status.ACTIVE.label, userInfo.status)
         assertEquals(UserRole.Role.GUEST.label, userInfo.membershipRole)
+        assertEquals(100L, userInfo.allottedTime)
     }
 
     @Test
@@ -46,7 +48,7 @@ internal class UserInfoTest {
         user.status = User.Status.ACTIVE
         user.id = 1L
 
-        val userInfo = UserInfo(user, UserRole.Role.GUEST.label)
+        val userInfo = UserInfo(user, UserRole.Role.GUEST.label, 500L)
 
         assertEquals("Cody", userInfo.firstName)
         assertEquals("Spath", userInfo.lastName)
@@ -57,5 +59,6 @@ internal class UserInfoTest {
         assertTrue(userInfo.active)
         assertEquals(User.Status.ACTIVE.label, userInfo.status)
         assertEquals(UserRole.Role.GUEST.label, userInfo.membershipRole)
+        assertEquals(500L, userInfo.allottedTime)
     }
 }

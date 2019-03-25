@@ -1,6 +1,8 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -35,19 +37,25 @@ internal class ListTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private var pageable = PageRequest.of(0, 5)
 
     @Before
     fun setUp() {
-        // Create a few user's
+        // Create a few users with timecaps
         val user1 = testUtil.createUser("cspath1@ycp.edu")
         testUtil.createUserRolesForUser(user1, UserRole.Role.MEMBER, true)
+        testUtil.createAllottedTimeCapForUser(user1, Appointment.MEMBER_APPOINTMENT_TIME_CAP)
 
         val user2 = testUtil.createUser("spathcody@gmail.com")
         testUtil.createUserRolesForUser(user2, UserRole.Role.RESEARCHER, true)
+        testUtil.createAllottedTimeCapForUser(user2, null)
 
         val user3 = testUtil.createUser("codyspath@gmail.com")
         testUtil.createUserRolesForUser(user3, UserRole.Role.GUEST, true)
+        testUtil.createAllottedTimeCapForUser(user3, Appointment.GUEST_APPOINTMENT_TIME_CAP)
     }
 
     @Test
@@ -55,7 +63,8 @@ internal class ListTest {
         val (page, errors) = List(
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         Assert.assertNull(errors)
@@ -65,13 +74,15 @@ internal class ListTest {
 
     @Test
     fun testEmptyRepo_Success() {
+        allottedTimeCapRepo.deleteAll()
         userRoleRepo.deleteAll()
         userRepo.deleteAll()
 
         val (page, errors) = List(
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         Assert.assertNotNull(page)

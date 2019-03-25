@@ -1,10 +1,11 @@
-package com.radiotelescope.controller.appointment
+package com.radiotelescope.controller.admin.allottedTimeCap
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.controller.allottedTimeCap.BaseAllottedTimeCapRestControllerTest
 import com.radiotelescope.repository.log.ILogRepository
-import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
+import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -20,11 +21,18 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
-internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestControllerTest() {
+internal class AdminAllottedTimeCapUpdateControllerTest: BaseAllottedTimeCapRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
         fun utilService(): TestUtil { return TestUtil() }
+
+        @Bean
+        fun liquibase(): SpringLiquibase {
+            val liquibase = SpringLiquibase()
+            liquibase.setShouldRun(false)
+            return liquibase
+        }
     }
 
     @Autowired
@@ -33,40 +41,48 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    @Autowired
-    private lateinit var userRoleRepo: IUserRoleRepository
-
-    private lateinit var appointmentAvailableTimeController: AppointmentAvailableTimeController
+    private lateinit var adminAllottedTimeCapUpdateController: AdminAllottedTimeCapUpdateController
+    private lateinit var admin: User
     private lateinit var user: User
 
     @Before
-    override fun init() {
+    override fun init(){
         super.init()
 
-        appointmentAvailableTimeController = AppointmentAvailableTimeController(
-                appointmentWrapper = getCoordinateCreateWrapper(),
+        admin = testUtil.createUser("lferree@ycp.edu")
+        user = testUtil.createUser("rpim@ycp.edu")
+
+        adminAllottedTimeCapUpdateController = AdminAllottedTimeCapUpdateController(
+                allottedTimeCapWrapper = getWrapper(),
                 logger = getLogger()
         )
 
-        user = testUtil.createUser("cspath1@ycp.edu")
-
-        testUtil.createUserRolesForUser(
-                user = user,
-                role = UserRole.Role.MEMBER,
-                isApproved = true
-        )
     }
 
     @Test
-    fun testSuccessResponse() {
+    fun testSuccess_Response(){
         // Test the success scenario to ensure
         // the result object is correctly set
 
-        // Simulate a login
-        getContext().login(user.id)
-        getContext().currentRoles.addAll(listOf(UserRole.Role.MEMBER, UserRole.Role.USER))
+        // Give user Guest Role and 5 hour time cap (as they would have for an update)
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 5*60*60*1000
+        )
 
-        val result = appointmentAvailableTimeController.execute(user.id)
+        // Simulate a login
+        getContext().login(admin.id)
+        getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
+
+        val result = adminAllottedTimeCapUpdateController.execute(
+                userId = user.id,
+                allottedTime = 1L
+        )
 
         assertNotNull(result)
         assertTrue(result.data is Long)
@@ -75,27 +91,18 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
-
-        logRepo.findAll().forEach {
-            assertEquals(HttpStatus.OK.value(), it.status)
-        }
     }
 
     @Test
     fun testFailedValidationResponse() {
-        // Delete the user's category of service
-        userRoleRepo.findAll().forEach {
-            if (it.role != UserRole.Role.USER) {
-                userRoleRepo.delete(it)
-            }
-        }
-
         // Simulate a login
-        getContext().login(user.id)
-        getContext().currentRoles.add(UserRole.Role.USER)
+        getContext().login(admin.id)
+        getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
 
-        val result = appointmentAvailableTimeController.execute(user.id)
-
+        val result = adminAllottedTimeCapUpdateController.execute(
+                userId = 123456789,
+                allottedTime = -1L
+        )
         assertNotNull(result)
         assertNull(result.data)
         assertEquals(HttpStatus.BAD_REQUEST, result.status)
@@ -103,17 +110,15 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
-
-        logRepo.findAll().forEach {
-            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
-        }
     }
 
     @Test
     fun testFailedAuthenticationResponse() {
         // Do not log the user in
-        val result = appointmentAvailableTimeController.execute(user.id)
-
+        val result = adminAllottedTimeCapUpdateController.execute(
+                userId = user.id,
+                allottedTime = 1L
+        )
         assertNotNull(result)
         assertNull(result.data)
         assertEquals(HttpStatus.FORBIDDEN, result.status)
@@ -121,9 +126,6 @@ internal class AppointmentAvailableTimeControllerTest : BaseAppointmentRestContr
 
         // Ensure a log record was created
         assertEquals(1, logRepo.count())
-
-        logRepo.findAll().forEach {
-            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
-        }
     }
+
 }

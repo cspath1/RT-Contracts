@@ -44,6 +44,10 @@ internal class UserRetrieveControllerTest : BaseUserRestControllerTest() {
         super.init()
 
         user = testUtil.createUser("rpim@ycp.edu")
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 0L
+        )
 
         // Simulate a login
         userContext.login(user.id)

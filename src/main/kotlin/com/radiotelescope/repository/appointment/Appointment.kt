@@ -72,7 +72,9 @@ data class Appointment(
     companion object {
         // 5 hours for guests
         const val GUEST_APPOINTMENT_TIME_CAP: Long = (5 * 60 * 60 * 1000)
-        // 50 hours for others
-        const val OTHER_USERS_APPOINTMENT_TIME_CAP: Long = (50 * 60 * 60 * 1000)
+        // 24 hours for students
+        const val STUDENT_APPOINTMENT_TIME_CAP: Long = (24 * 60 * 60 * 1000)
+        // 48 hours for members
+        const val MEMBER_APPOINTMENT_TIME_CAP: Long = (48 * 60 * 60 * 1000)
     }
 }

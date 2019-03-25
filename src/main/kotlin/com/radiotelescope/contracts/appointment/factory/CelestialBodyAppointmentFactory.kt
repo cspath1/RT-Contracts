@@ -10,6 +10,7 @@ import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointment
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CelestialBodyAppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -28,12 +29,14 @@ class CelestialBodyAppointmentFactory(
         private val userRoleRepo: IUserRoleRepository,
         private val celestialBodyRepo: ICelestialBodyRepository,
         private val coordinateRepo: ICoordinateRepository,
-        private val orienationRepo: IOrientationRepository
+        private val orientationRepo: IOrientationRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
         telescopeRepo = telescopeRepo,
-        userRoleRepo = userRoleRepo
+        userRoleRepo = userRoleRepo,
+        allottedTimeCapRepo = allottedTimeCapRepo
 ) {
     /**
      * Override of the [AppointmentFactory.create] method that will return a [CelestialBodyAppointmentCreate]
@@ -49,7 +52,8 @@ class CelestialBodyAppointmentFactory(
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 
@@ -67,8 +71,9 @@ class CelestialBodyAppointmentFactory(
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
-                orientationRepo = orienationRepo,
-                celestialBodyRepo = celestialBodyRepo
+                orientationRepo = orientationRepo,
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 

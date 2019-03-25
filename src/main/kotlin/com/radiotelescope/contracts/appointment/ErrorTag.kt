@@ -23,5 +23,6 @@ enum class ErrorTag{
     IS_APPROVE,
     SEARCH,
     CELESTIAL_BODY,
-    COORDINATES
+    COORDINATES,
+    ALLOTTED_TIME_CAP
 }

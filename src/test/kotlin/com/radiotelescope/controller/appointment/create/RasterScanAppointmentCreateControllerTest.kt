@@ -80,6 +80,12 @@ internal class RasterScanAppointmentCreateControllerTest : BaseAppointmentRestCo
                 role = UserRole.Role.MEMBER,
                 isApproved = true
         )
+
+        // Give the user a 5 hour time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = 5 * 60 * 60 * 1000
+        )
     }
 
     @Test

@@ -5,8 +5,10 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.*
 import com.radiotelescope.contracts.appointment.info.AppointmentInfo
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -21,12 +23,15 @@ import org.springframework.data.domain.Pageable
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
  * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 abstract class BaseAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : AppointmentFactory {
     /**
      * Override of the [AppointmentFactory.retrieve] method that will return a [Retrieve]
@@ -191,7 +196,8 @@ abstract class BaseAppointmentFactory(
                 userId = userId,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
 

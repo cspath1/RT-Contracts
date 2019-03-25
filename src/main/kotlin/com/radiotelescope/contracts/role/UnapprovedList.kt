@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.user.UserInfo
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -18,11 +19,13 @@ import org.springframework.data.domain.Pageable
  * @param pageable the [Pageable] interface
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class UnapprovedList(
         private val pageable: Pageable,
         private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<Page<UserRoleInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method that will grab any [UserRole] objects
@@ -34,9 +37,10 @@ class UnapprovedList(
 
         val roleInfos = arrayListOf<UserRoleInfo>()
         unapprovedRoles.forEach {
+            val allottedTime = allottedTimeCapRepo.findByUserId(it.user.id).allottedTime
             // Since this is used to retrieve an unapproved role, the userRoleLabel field will
             // always be null
-            val userInfo = UserInfo(userRepo.findById(it.user.id).get(), null)
+            val userInfo = UserInfo(userRepo.findById(it.user.id).get(), null, allottedTime)
 
             roleInfos.add(UserRoleInfo(
                     userRole = it,

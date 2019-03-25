@@ -1,6 +1,8 @@
 package com.radiotelescope.contracts.user
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.model.user.Filter
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -38,6 +40,9 @@ internal class SearchTest {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
+    @Autowired
+    private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
     private var searchCriteria = arrayListOf<SearchCriteria>()
     private lateinit var pageable: Pageable
 
@@ -50,6 +55,10 @@ internal class SearchTest {
                 role = UserRole.Role.MEMBER,
                 isApproved = true
         )
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = Appointment.MEMBER_APPOINTMENT_TIME_CAP
+        )
         user.firstName = "Cody"
         user.lastName = "Spath"
         user.company = "York College of PA"
@@ -61,6 +70,10 @@ internal class SearchTest {
                 role = UserRole.Role.GUEST,
                 isApproved = true
         )
+        testUtil.createAllottedTimeCapForUser(
+                user = userTwo,
+                allottedTime = Appointment.GUEST_APPOINTMENT_TIME_CAP
+        )
         userTwo.firstName = "Rathana"
         userTwo.lastName = "Pim"
         userTwo.company = "York College of Pennsylvania"
@@ -71,6 +84,10 @@ internal class SearchTest {
                 user= userThree,
                 role = UserRole.Role.RESEARCHER,
                 isApproved = true
+        )
+        testUtil.createAllottedTimeCapForUser(
+                user = userThree,
+                allottedTime = null
         )
         userThree.firstName = "Charles"
         userThree.lastName = "Spath"
@@ -94,7 +111,8 @@ internal class SearchTest {
                 searchCriteria = searchCriteria,
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should not have failed
@@ -119,7 +137,8 @@ internal class SearchTest {
                 searchCriteria = searchCriteria,
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should not have failed
@@ -143,7 +162,8 @@ internal class SearchTest {
                 searchCriteria = searchCriteria,
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should not have failed
@@ -167,7 +187,8 @@ internal class SearchTest {
                 searchCriteria = searchCriteria,
                 pageable = pageable,
                 userRepo = userRepo,
-                userRoleRepo = userRoleRepo
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Should have failed
