@@ -12,5 +12,5 @@ CREATE TABLE allotted_time_cap (
 
 -- changeset cspath1:20
 INSERT INTO allotted_time_cap (user_id, allotted_time)
-SELECT id, 5 FROM user;
+SELECT id, 18000000 FROM user;
 -- rollback delete from allotted_time_cap
