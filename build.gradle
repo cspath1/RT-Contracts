@@ -89,16 +89,14 @@ jacocoTestCoverageVerification {
 	violationRules {
 		rule {
 			limit {
-				includes = ['com.radiotelescope.contract.*',
-							'com.radiotelescope.repository.*']
+				includes = ['com.radiotelescope.contract.*']
 
 				minimum = 0.7
 			}
 
 			rule {
 				element = 'PACKAGE'
-				includes = ['com.radiotelescope.contract.*',
-							'com.radiotelescope.repository.*']
+				includes = ['com.radiotelescope.contract.*']
 
 				limit {
 					counter = 'CLASS'
@@ -114,7 +112,7 @@ jacocoTestCoverageVerification {
 task verify(type: GradleBuild) {
 	group 'Verification'
 	description 'Verify the build by building, testing, and validation coverage ratio (80 or above).'
-	tasks = ['testControllers', 'test', 'jacocoTestCoverageVerification']
+	tasks = ['testControllers', 'testRepositories', 'test', 'jacocoTestCoverageVerification']
 }
 
 
@@ -150,8 +148,13 @@ dependencies {
 test {
 	maxHeapSize = "2048m"
 	exclude 'com/radiotelescope/controller/**'
+	exclude 'com/radiotelescope/repository/**'
 }
 
 task testControllers(type: Test) {
 	include 'com/radiotelescope/controller/**'
+}
+
+task testRepositories(type: Test) {
+	include 'com/radiotelescope/repository/**'
 }
