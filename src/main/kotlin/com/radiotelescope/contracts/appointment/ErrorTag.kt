@@ -26,5 +26,6 @@ enum class ErrorTag{
     COORDINATES,
     ALLOTTED_TIME_CAP,
     ELEVATION,
-    AZIMUTH
+    AZIMUTH,
+    TYPE
 }

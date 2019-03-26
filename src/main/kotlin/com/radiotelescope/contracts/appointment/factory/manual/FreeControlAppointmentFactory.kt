@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
+import com.radiotelescope.contracts.appointment.manual.AddFreeControlAppointmentCommand
 import com.radiotelescope.contracts.appointment.manual.StartFreeControlAppointment
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -42,6 +43,21 @@ class FreeControlAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 telescopeRepo = telescopeRepo,
                 userRepo = userRepo,
+                coordinateRepo = coordinateRepo
+        )
+    }
+
+    /**
+     * Override of the [ManualAppointmentFactory.addCommand] method that will return a [AddFreeControlAppointmentCommand]
+     * command object
+     *
+     * @param request the [AddFreeControlAppointmentCommand.Request] object
+     * @return an [AddFreeControlAppointmentCommand] command
+     */
+    override fun addCommand(request: AddFreeControlAppointmentCommand.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return AddFreeControlAppointmentCommand(
+                request = request,
+                appointmentRepo = appointmentRepo,
                 coordinateRepo = coordinateRepo
         )
     }

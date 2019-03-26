@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
+import com.radiotelescope.contracts.appointment.manual.AddFreeControlAppointmentCommand
 import com.radiotelescope.contracts.appointment.manual.StartFreeControlAppointment
 
 /**
@@ -18,4 +19,12 @@ interface ManualAppointmentFactory : AppointmentFactory {
      * @return a [Command] object
      */
     fun startAppointment(request: StartFreeControlAppointment.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to add a command to a manual appointment
+     *
+     * @param request the [AddFreeControlAppointmentCommand.Request] object
+     * @return a [Command] object
+     */
+    fun addCommand(request: AddFreeControlAppointmentCommand.Request): Command<Long, Multimap<ErrorTag, String>>
 }

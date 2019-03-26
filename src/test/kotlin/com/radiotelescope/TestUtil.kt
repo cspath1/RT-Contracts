@@ -227,8 +227,27 @@ internal class TestUtil {
                 type = Appointment.Type.FREE_CONTROL
         )
 
+        val startingCoordinate = Coordinate(
+                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12
+                ),
+                declination = 69.0,
+                hours = 12,
+                minutes = 12,
+                seconds = 12
+        )
+
+        coordinateRepo.save(startingCoordinate)
+
         theAppointment.status = status
         theAppointment.user = user
+        theAppointment.coordinateList = mutableListOf(startingCoordinate)
+        appointmentRepo.save(theAppointment)
+
+        startingCoordinate.appointment = theAppointment
+        coordinateRepo.save(startingCoordinate)
 
         return appointmentRepo.save(theAppointment)
     }
