@@ -27,4 +27,12 @@ interface ManualAppointmentFactory : AppointmentFactory {
      * @return a [Command] object
      */
     fun addCommand(request: AddFreeControlAppointmentCommand.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to end a manual appointment
+     *
+     * @param appointmentId the Appointment id
+     * @return a [Command] object
+     */
+    fun stopAppointment(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>>
 }

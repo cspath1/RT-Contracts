@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.appointment.factory.manual
 
 import com.radiotelescope.contracts.appointment.manual.AddFreeControlAppointmentCommand
 import com.radiotelescope.contracts.appointment.manual.StartFreeControlAppointment
+import com.radiotelescope.contracts.appointment.manual.StopFreeControlAppointment
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -86,5 +87,15 @@ internal class FreeControlAppointmentFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is AddFreeControlAppointmentCommand)
+    }
+
+    @Test
+    fun stop_free_control_appointment() {
+        val cmd = factory.stopAppointment(
+                appointmentId = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is StopFreeControlAppointment)
     }
 }

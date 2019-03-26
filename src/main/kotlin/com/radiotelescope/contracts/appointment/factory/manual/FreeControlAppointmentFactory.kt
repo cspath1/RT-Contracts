@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.manual.AddFreeControlAppointmentCommand
 import com.radiotelescope.contracts.appointment.manual.StartFreeControlAppointment
+import com.radiotelescope.contracts.appointment.manual.StopFreeControlAppointment
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -59,6 +60,20 @@ class FreeControlAppointmentFactory(
                 request = request,
                 appointmentRepo = appointmentRepo,
                 coordinateRepo = coordinateRepo
+        )
+    }
+
+    /**
+     * Override of the [ManualAppointmentFactory.stopAppointment] method that will return a [StopFreeControlAppointment]
+     * command object
+     *
+     * @param appointmentId the Appointment id
+     * @return a [StopFreeControlAppointment] command
+     */
+    override fun stopAppointment(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return StopFreeControlAppointment(
+                appointmentId = appointmentId,
+                appointmentRepo = appointmentRepo
         )
     }
 }
