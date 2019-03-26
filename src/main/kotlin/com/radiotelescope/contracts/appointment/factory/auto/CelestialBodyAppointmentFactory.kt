@@ -20,7 +20,7 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
- * Concrete implementation of the [BaseAppointmentFactory] for Celestial Body Appointments
+ * Concrete implementation of the [AutoAppointmentFactory] for Celestial Body Appointments
  */
 class CelestialBodyAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,

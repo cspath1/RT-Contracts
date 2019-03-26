@@ -464,4 +464,13 @@ internal class AppointmentTest {
 
         assertEquals(futureAppointment.id, appointmentPage.content[0].id)
     }
+
+    @Test
+    fun testFindFirstByStatusAndTelescopeId() {
+        val appointment = appointmentRepo.findFirstByStatusAndTelescopeId(Appointment.Status.COMPLETED, 1L)
+
+        assertNotNull(appointment)
+
+        assertEquals(pastAppointment.id, appointment!!.id)
+    }
 }

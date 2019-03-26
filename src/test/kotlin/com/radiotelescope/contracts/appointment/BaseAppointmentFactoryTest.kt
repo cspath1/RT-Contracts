@@ -1,18 +1,12 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentCreate
 import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
-import com.radiotelescope.contracts.appointment.factory.AppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.auto.AutoAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.auto.CelestialBodyAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.auto.RasterScanAppointmentFactory
-import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
-import com.radiotelescope.contracts.appointment.update.CelestialBodyAppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.RasterScanAppointmentUpdate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
@@ -29,8 +23,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
@@ -40,12 +32,6 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 internal class BaseAppointmentFactoryTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
     @Autowired
     private lateinit var userRepo: IUserRepository
 
@@ -62,108 +48,22 @@ internal class BaseAppointmentFactoryTest {
     private lateinit var coordinateRepo: ICoordinateRepository
 
     @Autowired
-    private lateinit var celestialBodyRepo: ICelestialBodyRepository
-
-    @Autowired
     private lateinit var orientationRepo: IOrientationRepository
 
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
-    private lateinit var factory: AutoAppointmentFactory
+    private lateinit var factory: BaseAppointmentFactory
 
     @Before
     fun init() {
-        factory = CoordinateAppointmentFactory(
+        factory = BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
-    }
-
-    // NOTE: For other appointment creates, we need to instantiate
-    // a different factory
-
-    @Test
-    fun coordinate_create() {
-        // Call the factory method
-        val cmd = factory.create(
-                request = CoordinateAppointmentCreate.Request(
-                        userId = 1L,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 30000L),
-                        isPublic = true,
-                        telescopeId = 1L,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 69.0
-                )
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is CoordinateAppointmentCreate)
-    }
-
-    @Test
-    fun celestial_body_create() {
-        // Instantiate the proper factory
-        factory = CelestialBodyAppointmentFactory(
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo,
-                celestialBodyRepo = celestialBodyRepo,
-                coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
-        )
-
-        val cmd = factory.create(
-                request = CelestialBodyAppointmentCreate.Request(
-                        userId = 1L,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 30000L),
-                        isPublic = true,
-                        telescopeId = 1L,
-                        celestialBodyId = 1L
-                )
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is CelestialBodyAppointmentCreate)
-    }
-
-    @Test
-    fun raster_scan_create() {
-        // Instantiate the proper factory
-        factory = RasterScanAppointmentFactory(
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
-        )
-
-        val cmd = factory.create(
-                request = RasterScanAppointmentCreate.Request(
-                        userId = 1L,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 30000L),
-                        isPublic = true,
-                        telescopeId = 1L,
-                        coordinates = listOf()
-                )
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is RasterScanAppointmentCreate)
     }
 
     @Test
@@ -225,84 +125,6 @@ internal class BaseAppointmentFactoryTest {
     }
 
     @Test
-    fun coordinate_update(){
-        // Call the factory method
-        val cmd = factory.update(
-                request = CoordinateAppointmentUpdate.Request(
-                        id = 123456789,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 40000L),
-                        telescopeId = 123456789,
-                        isPublic = false,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0
-                )
-        )
-
-        //Ensure it is the correct command
-        assertTrue(cmd is CoordinateAppointmentUpdate)
-    }
-
-    @Test
-    fun raster_scan_update() {
-        // Instantiate the proper factory
-        factory = RasterScanAppointmentFactory(
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
-        )
-
-        val cmd = factory.update(
-                request = RasterScanAppointmentUpdate.Request(
-                        id = 1L,
-                        startTime = Date(System.currentTimeMillis() + 100000L),
-                        endTime = Date(System.currentTimeMillis() + 200000L),
-                        telescopeId = 1L,
-                        isPublic = true,
-                        coordinates = mutableListOf()
-                )
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is RasterScanAppointmentUpdate)
-    }
-
-    @Test
-    fun celestial_body_update() {
-        // Instantiate the proper factory
-        factory = CelestialBodyAppointmentFactory(
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo,
-                celestialBodyRepo = celestialBodyRepo,
-                coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
-        )
-
-        val cmd = factory.update(
-                request = CelestialBodyAppointmentUpdate.Request(
-                        id = 1L,
-                        telescopeId = 1L,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 20000L),
-                        isPublic = true,
-                        celestialBodyId = 1L
-                )
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is CelestialBodyAppointmentUpdate)
-    }
-
-    @Test
     fun listBetweenDates(){
         val cmd = factory.listBetweenDates(
                 request = ListBetweenDates.Request(
@@ -334,84 +156,6 @@ internal class BaseAppointmentFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is PublicCompletedAppointments)
-    }
-
-    @Test
-    fun coordinate_request() {
-        // Call the factory method
-        val cmd = factory.request(
-                request = CoordinateAppointmentRequest.Request(
-                        userId = 1L,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 30000L),
-                        isPublic = true,
-                        telescopeId = 1L,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 69.0
-                )
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is CoordinateAppointmentRequest)
-    }
-
-    @Test
-    fun celestial_body_request() {
-        // Instantiate the proper factory
-        factory = CelestialBodyAppointmentFactory(
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
-                userRoleRepo = userRoleRepo,
-                celestialBodyRepo = celestialBodyRepo,
-                orientationRepo = orientationRepo,
-                coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
-        )
-
-        val cmd = factory.request(
-                request = CelestialBodyAppointmentRequest.Request(
-                        userId = 1L,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 30000L),
-                        isPublic = true,
-                        telescopeId = 1L,
-                        celestialBodyId = 1L
-                )
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is CelestialBodyAppointmentRequest)
-    }
-
-    @Test
-    fun raster_scan_request() {
-        // Instantiate the proper factory
-        factory = RasterScanAppointmentFactory(
-                appointmentRepo = appointmentRepo,
-                userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
-                coordinateRepo = coordinateRepo,
-                userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
-        )
-
-        val cmd = factory.request(
-                request = RasterScanAppointmentRequest.Request(
-                        userId = 1L,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 30000L),
-                        isPublic = true,
-                        telescopeId = 1L,
-                        coordinates = mutableListOf()
-                )
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is RasterScanAppointmentRequest)
     }
 
     @Test

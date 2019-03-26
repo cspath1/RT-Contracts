@@ -10,6 +10,10 @@ import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentReq
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 
+/**
+ * Extension of the [AppointmentFactory] containing methods necessary for all appointments
+ * that are conducted without user input (basically everything that isn't Free Control)
+ */
 interface AutoAppointmentFactory : AppointmentFactory {
     /**
      * Abstract command used to schedule an appointment

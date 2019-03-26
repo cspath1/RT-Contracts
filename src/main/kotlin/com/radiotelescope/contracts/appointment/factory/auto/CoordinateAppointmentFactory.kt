@@ -19,7 +19,7 @@ import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
- * Concrete implementation of the [BaseAppointmentFactory] for Coordinate Appointments
+ * Concrete implementation of the [AutoAppointmentFactory] for Coordinate Appointments
  */
 class CoordinateAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,

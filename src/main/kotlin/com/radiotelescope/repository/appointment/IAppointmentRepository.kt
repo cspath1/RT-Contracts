@@ -163,7 +163,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "AND status <> 'CANCELED' " +
             "AND status <> 'REQUESTED'",
             nativeQuery = true)
-    fun findConflict(endTime: Date, startTime: Date, telescopeId: Long ):List<Appointment>
+    fun findConflict(endTime: Date, startTime: Date, telescopeId: Long ): List<Appointment>
 
     /**
      * Spring Repository method that will return a list of appointments
@@ -178,4 +178,6 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
                     "WHERE id IN (SELECT appointment_id FROM viewer WHERE user_id=?1)",
             nativeQuery = true)
     fun findSharedAppointmentsByUser(userId: Long, pageable: Pageable): Page<Appointment>
+
+    fun findFirstByStatusAndTelescopeId(status: Appointment.Status, telescopeId: Long): Appointment?
 }
