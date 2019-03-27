@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateToke
 import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.appointment.factory.auto.CelestialBodyAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.DriftScanAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.auto.RasterScanAppointmentFactory
 import com.radiotelescope.contracts.celestialBody.BaseCelestialBodyFactory
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
@@ -135,6 +136,23 @@ class FactoryBeans(
                         telescopeRepo = repositories.telescopeRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         coordinateRepo = repositories.coordinateRepo,
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo,
+                        orientationRepo = repositories.orientationRepo
+                ),
+                appointmentRepo = repositories.appointmentRepo,
+                viewerRepo = repositories.viewerRepo
+        )
+    }
+
+    @Bean(value = ["driftScanAppointmentWrapper"])
+    override fun getDriftScanAppointmentWrapper(): UserAutoAppointmentWrapper {
+        return UserAutoAppointmentWrapper(
+                context = userContext,
+                factory = DriftScanAppointmentFactory(
+                        userRepo = repositories.userRepo,
+                        appointmentRepo = repositories.appointmentRepo,
+                        telescopeRepo = repositories.telescopeRepo,
+                        userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
                         orientationRepo = repositories.orientationRepo
                 ),

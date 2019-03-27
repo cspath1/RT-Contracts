@@ -1,11 +1,8 @@
 package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.auto.AutoAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.auto.*
 import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
-import com.radiotelescope.contracts.appointment.factory.auto.CelestialBodyAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.auto.RasterScanAppointmentFactory
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -108,6 +105,22 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                         userRoleRepo = userRoleRepo,
                         telescopeRepo = telescopeRepo,
                         coordinateRepo = coordinateRepo,
+                        allottedTimeCapRepo = allottedTimeCapRepo,
+                        orientationRepo = orientationRepo
+                ),
+                appointmentRepo = appointmentRepo,
+                viewerRepo = viewerRepo
+        )
+    }
+
+    fun getDriftScanCreateWrapper(): UserAutoAppointmentWrapper {
+        return UserAutoAppointmentWrapper(
+                context = getContext(),
+                factory = DriftScanAppointmentFactory(
+                        appointmentRepo = appointmentRepo,
+                        userRepo = userRepo,
+                        userRoleRepo = userRoleRepo,
+                        telescopeRepo = telescopeRepo,
                         allottedTimeCapRepo = allottedTimeCapRepo,
                         orientationRepo = orientationRepo
                 ),
