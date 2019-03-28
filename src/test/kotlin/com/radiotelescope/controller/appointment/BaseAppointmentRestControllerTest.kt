@@ -6,6 +6,8 @@ import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointme
 import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.appointment.factory.auto.CelestialBodyAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.auto.RasterScanAppointmentFactory
+import com.radiotelescope.contracts.appointment.factory.manual.FreeControlAppointmentFactory
+import com.radiotelescope.contracts.appointment.wrapper.UserManualAppointmentWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -110,6 +112,22 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                         coordinateRepo = coordinateRepo,
                         allottedTimeCapRepo = allottedTimeCapRepo,
                         orientationRepo = orientationRepo
+                ),
+                appointmentRepo = appointmentRepo,
+                viewerRepo = viewerRepo
+        )
+    }
+
+    fun getFreeControlWrapper(): UserManualAppointmentWrapper {
+        return UserManualAppointmentWrapper(
+                context = getContext(),
+                factory = FreeControlAppointmentFactory(
+                        appointmentRepo = appointmentRepo,
+                        userRepo = userRepo,
+                        telescopeRepo = telescopeRepo,
+                        coordinateRepo = coordinateRepo,
+                        userRoleRepo = userRoleRepo,
+                        allottedTimeCapRepo = allottedTimeCapRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo

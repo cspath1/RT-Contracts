@@ -8,7 +8,7 @@ import com.radiotelescope.controller.model.BaseForm
 import java.util.*
 
 /**
- * ListBetweenDates form that takes nullable versions of the [ListBetweenDates.Request] object.
+ * Form that takes nullable versions of the [ListBetweenDates.Request] object.
  * It is in charge of making sure these values are not null before adapting it
  * to a [ListBetweenDates.Request] object
  *

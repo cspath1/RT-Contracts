@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapp
 import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentCreate
 import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
+import com.radiotelescope.contracts.appointment.wrapper.UserManualAppointmentWrapper
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
@@ -31,24 +32,27 @@ interface FactoryProvider {
 
     /**
      * Abstract method to return the [UserAutoAppointmentWrapper] class
-     * with the [CoordinateAppointmentCreate] method
+     * for Point appointments
      */
     fun getCoordinateAppointmentWrapper(): UserAutoAppointmentWrapper
 
-    // NOTE: We need a bean for each different concrete factory implementation
-    // so each different create can be autowired
-
     /**
      * Abstract method to return the [UserAutoAppointmentWrapper] class
-     * with the [CelestialBodyAppointmentCreate] method
+     * for Celestial Body appointments
      */
     fun getCelestialBodyAppointmentWrapper(): UserAutoAppointmentWrapper
 
     /**
      * Abstract method to return the [UserAutoAppointmentWrapper] class
-     * with the [RasterScanAppointmentCreate] method
+     * for Raster Scan appointments
      */
     fun getRasterScanAppointmentWrapper(): UserAutoAppointmentWrapper
+
+    /**
+     * Abstract method to return the [UserManualAppointmentWrapper] class
+     * for Free Control appointments
+     */
+    fun getFreeControlAppointmentWrapper(): UserManualAppointmentWrapper
 
     /**
      * Abstract method to return the [UserRFDataWrapper] class
