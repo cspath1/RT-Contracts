@@ -36,6 +36,13 @@ CREATE TABLE error (
   message   VARCHAR(200) NOT NULL
 );
 
+CREATE TABLE feedback (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) DEFAULT NULL,
+    priority INT(11) NOT NULL,
+    comments TEXT NOT NULL
+);
+
 CREATE TABLE log(
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11),
