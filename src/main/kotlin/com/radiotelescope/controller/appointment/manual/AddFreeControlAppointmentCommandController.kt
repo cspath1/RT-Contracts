@@ -1,11 +1,13 @@
 package com.radiotelescope.controller.appointment.manual
 
 import com.radiotelescope.contracts.appointment.wrapper.UserManualAppointmentWrapper
+import com.radiotelescope.contracts.appointment.manual.AddFreeControlAppointmentCommand
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.AddFreeControlAppointmentCommandForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -14,12 +16,30 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * REST Controller to handle adding a command to a Free Control Appointment
+ *
+ * @param wrapper the [UserManualAppointmentWrapper]
+ * @param logger the [Logger] service
+ */
 @RestController
 class AddFreeControlAppointmentCommandController(
         @Qualifier(value = "freeControlAppointmentWrapper")
         private val wrapper: UserManualAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of adapting a [AddFreeControlAppointmentCommandForm]
+     * into a [AddFreeControlAppointmentCommand.Request] after ensuring no fields are null. If
+     * any are, it will instead respond with errors.
+     *
+     * Otherwise, it will execute the [UserManualAppointmentWrapper.addCommand] method. If this
+     * method returns an [AccessReport], this means the user did not pass authorization and the
+     * controller will respond with errors.
+     *
+     * Otherwise, the [AddFreeControlAppointmentCommand] command was executed, and the controller
+     * will respond based on if this command was a success or not.
+     */
     @PutMapping(value = ["/api/appointments/{appointmentId}/add-command"])
     fun execute(@RequestBody form: AddFreeControlAppointmentCommandForm,
                 @PathVariable(value = "appointmentId") id: Long): Result {
