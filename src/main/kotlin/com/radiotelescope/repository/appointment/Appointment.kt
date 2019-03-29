@@ -6,8 +6,6 @@ import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
-import kotlin.collections.ArrayList
-
 
 /**
  * Entity Class representing an Appointment for the web-application

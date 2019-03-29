@@ -1,6 +1,5 @@
 package com.radiotelescope.controller.appointment
 
-import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.auto.*
 import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.appointment.factory.auto.CelestialBodyAppointmentFactory
@@ -50,7 +49,6 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
 
     // These will both be needed in all appointment
     // controller tests, so instantiate them here
-    private lateinit var wrapper: UserAutoAppointmentWrapper
     private lateinit var factory: AutoAppointmentFactory
 
     @Before

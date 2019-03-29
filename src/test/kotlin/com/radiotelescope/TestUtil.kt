@@ -524,12 +524,6 @@ internal class TestUtil {
         return updateEmailTokenRepo.save(theUpdateEmailToken)
     }
 
-    fun createTelescope(): Telescope {
-        val telescope = Telescope()
-
-        return telescopeRepo.save(telescope)
-    }
-
     fun banUser(user: User): User{
         user.active = false
         user.status = User.Status.BANNED

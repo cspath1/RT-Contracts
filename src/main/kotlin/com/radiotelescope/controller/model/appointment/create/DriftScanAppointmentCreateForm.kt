@@ -30,7 +30,7 @@ data class DriftScanAppointmentCreateForm(
         val azimuth: Double?
 ): CreateForm<DriftScanAppointmentCreate.Request>() {
     /**
-     * Override of the [BaseForm.toRequest] method that
+     * Override of the [CreateForm.toRequest] method that
      * adapts the form into a [DriftScanAppointmentCreate.Request] object
      *
      * @return the [DriftScanAppointmentCreate.Request] object

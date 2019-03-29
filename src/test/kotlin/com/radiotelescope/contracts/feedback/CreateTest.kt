@@ -16,15 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 internal class CreateTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
     @Autowired
     private lateinit var feedbackRepo: IFeedbackRepository
 

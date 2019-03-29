@@ -43,9 +43,6 @@ internal class CelestialBodyAppointmentRequestTest {
     private lateinit var userRepo: IUserRepository
 
     @Autowired
-    private lateinit var userRoleRepo: IUserRoleRepository
-
-    @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired

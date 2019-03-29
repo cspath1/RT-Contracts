@@ -2,7 +2,6 @@ package com.radiotelescope.contracts.appointment.update
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
 import com.radiotelescope.contracts.coordinate.CoordinateRequest
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
@@ -41,9 +40,6 @@ internal class RasterScanAppointmentUpdateTest {
 
     @Autowired
     private lateinit var testUtil: TestUtil
-
-    @Autowired
-    private lateinit var userRepo: IUserRepository
 
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository

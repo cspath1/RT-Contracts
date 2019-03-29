@@ -1,19 +1,8 @@
 package com.radiotelescope.contracts.appointment
 
-import com.radiotelescope.TestUtil
-import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
-import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
-import com.radiotelescope.contracts.appointment.factory.auto.RasterScanAppointmentFactory
-import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
-import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
-import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
-import com.radiotelescope.contracts.appointment.update.RasterScanAppointmentUpdate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
-import com.radiotelescope.repository.coordinate.ICoordinateRepository
-import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -43,13 +32,6 @@ internal class BaseAppointmentFactoryTest {
 
     @Autowired
     private lateinit var telescopeRepo: ITelescopeRepository
-
-    @Autowired
-    private lateinit var coordinateRepo: ICoordinateRepository
-
-    @Autowired
-    private lateinit var orientationRepo: IOrientationRepository
-
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 

@@ -6,7 +6,6 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -35,9 +34,6 @@ internal class ViewerUnsharePrivateAppointmentTest : BaseViewerRestControllerTes
 
     @Autowired
     private lateinit var logRepo: ILogRepository
-
-    @Autowired
-    private lateinit var appointmentRepo: IAppointmentRepository
 
     private lateinit var viewerUnSharePrivateController: ViewerUnsharePrivateController
     private lateinit var user: User

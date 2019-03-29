@@ -3,12 +3,7 @@ package com.radiotelescope.contracts.appointment.factory
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.appointment.*
-import com.radiotelescope.contracts.appointment.create.AppointmentCreate
 import com.radiotelescope.contracts.appointment.info.AppointmentInfo
-import com.radiotelescope.contracts.appointment.request.AppointmentRequest
-import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
-import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
-import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import org.springframework.data.domain.Page
