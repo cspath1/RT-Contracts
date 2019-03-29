@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCrea
 import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentCreate
 import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
 import com.radiotelescope.contracts.appointment.wrapper.UserManualAppointmentWrapper
+import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreate
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
@@ -47,6 +48,12 @@ interface FactoryProvider {
      * for Raster Scan appointments
      */
     fun getRasterScanAppointmentWrapper(): UserAutoAppointmentWrapper
+
+    /**
+     * Abstract method to return the [UserAutoAppointmentWrapper] class
+     * with the [DriftScanAppointmentCreate] method
+     */
+    fun getDriftScanAppointmentWrapper(): UserAutoAppointmentWrapper
 
     /**
      * Abstract method to return the [UserManualAppointmentWrapper] class
