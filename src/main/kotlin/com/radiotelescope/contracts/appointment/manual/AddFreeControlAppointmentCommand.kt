@@ -93,7 +93,7 @@ class AddFreeControlAppointmentCommand(
      * interface.
      */
     data class Request(
-            val appointmentId: Long,
+            var appointmentId: Long,
             val hours: Int,
             val minutes: Int,
             val seconds: Int,
