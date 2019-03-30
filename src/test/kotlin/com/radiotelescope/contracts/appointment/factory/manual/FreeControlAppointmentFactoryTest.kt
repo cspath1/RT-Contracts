@@ -1,11 +1,13 @@
 package com.radiotelescope.contracts.appointment.factory.manual
 
 import com.radiotelescope.contracts.appointment.manual.AddFreeControlAppointmentCommand
+import com.radiotelescope.contracts.appointment.manual.CalibrateFreeControlAppointment
 import com.radiotelescope.contracts.appointment.manual.StartFreeControlAppointment
 import com.radiotelescope.contracts.appointment.manual.StopFreeControlAppointment
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -40,6 +42,9 @@ internal class FreeControlAppointmentFactoryTest {
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
+    @Autowired
+    private lateinit var orientationRepo: IOrientationRepository
+
     private lateinit var factory: FreeControlAppointmentFactory
 
     @Before
@@ -50,7 +55,8 @@ internal class FreeControlAppointmentFactoryTest {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                orientationRepo = orientationRepo
         )
     }
 
@@ -97,5 +103,15 @@ internal class FreeControlAppointmentFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is StopFreeControlAppointment)
+    }
+
+    @Test
+    fun calibrate_free_control_appointment() {
+        val cmd = factory.calibrateAppointment(
+                appointmentId = 1L
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is CalibrateFreeControlAppointment)
     }
 }

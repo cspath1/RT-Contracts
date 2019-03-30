@@ -181,7 +181,8 @@ class FactoryBeans(
                         radioTelescopeRepo = repositories.radioTelescopeRepo,
                         coordinateRepo = repositories.coordinateRepo,
                         userRoleRepo = repositories.userRoleRepo,
-                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo,
+                        orientationRepo = repositories.orientationRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo

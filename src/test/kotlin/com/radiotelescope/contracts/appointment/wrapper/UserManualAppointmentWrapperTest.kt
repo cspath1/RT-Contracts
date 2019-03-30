@@ -9,6 +9,7 @@ import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -66,6 +67,9 @@ internal class UserManualAppointmentWrapperTest {
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
+    @Autowired
+    private lateinit var orientationRepo: IOrientationRepository
+
     private lateinit var user: User
 
     private val context = FakeUserContext()
@@ -93,7 +97,8 @@ internal class UserManualAppointmentWrapperTest {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                orientationRepo = orientationRepo
         )
 
         wrapper = UserManualAppointmentWrapper(

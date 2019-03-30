@@ -35,4 +35,9 @@ interface ManualAppointmentFactory : AppointmentFactory {
      * @return a [Command] object
      */
     fun stopAppointment(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to calibrate a manual appointment
+     */
+    fun calibrateAppointment(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>>
 }
