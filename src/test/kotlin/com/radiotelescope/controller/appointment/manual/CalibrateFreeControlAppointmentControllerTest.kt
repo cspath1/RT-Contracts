@@ -25,7 +25,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class StopFreeControlAppointmentControllerTest : BaseAppointmentRestControllerTest() {
+internal class CalibrateFreeControlAppointmentControllerTest : BaseAppointmentRestControllerTest() {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -41,7 +41,7 @@ internal class StopFreeControlAppointmentControllerTest : BaseAppointmentRestCon
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private lateinit var stopFreeControlAppointmentController: StopFreeControlAppointmentController
+    private lateinit var calibrateFreeControlAppointmentController: CalibrateFreeControlAppointmentController
     private lateinit var user: User
     private lateinit var appointment: Appointment
 
@@ -49,7 +49,7 @@ internal class StopFreeControlAppointmentControllerTest : BaseAppointmentRestCon
     override fun init() {
         super.init()
 
-        stopFreeControlAppointmentController = StopFreeControlAppointmentController(
+        calibrateFreeControlAppointmentController = CalibrateFreeControlAppointmentController(
                 wrapper = getFreeControlWrapper(),
                 logger = getLogger()
         )
@@ -79,7 +79,7 @@ internal class StopFreeControlAppointmentControllerTest : BaseAppointmentRestCon
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
 
-        val result = stopFreeControlAppointmentController.execute(appointment.id)
+        val result = calibrateFreeControlAppointmentController.execute(appointment.id)
 
         assertNotNull(result)
         assertTrue(result.data is Long)
@@ -105,7 +105,7 @@ internal class StopFreeControlAppointmentControllerTest : BaseAppointmentRestCon
         getContext().login(user.id)
         getContext().currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
 
-        val result = stopFreeControlAppointmentController.execute(appointment.id)
+        val result = calibrateFreeControlAppointmentController.execute(appointment.id)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -124,7 +124,7 @@ internal class StopFreeControlAppointmentControllerTest : BaseAppointmentRestCon
     @Test
     fun testFailedAuthentication() {
         // Do not log the user in
-        val result = stopFreeControlAppointmentController.execute(appointment.id)
+        val result = calibrateFreeControlAppointmentController.execute(appointment.id)
 
         assertNotNull(result)
         assertNull(result.data)
