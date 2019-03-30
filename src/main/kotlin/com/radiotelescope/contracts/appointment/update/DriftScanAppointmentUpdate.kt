@@ -123,8 +123,8 @@ class DriftScanAppointmentUpdate(
         with(request) {
             if(elevation < 0 || elevation > 90)
                 errors.put(ErrorTag.ELEVATION, "Elevation must be between 0 and 90")
-            if(azimuth < 0 || azimuth > 359)
-                errors.put(ErrorTag.AZIMUTH, "Azimuth must be between 0 and 359")
+            if(azimuth < 0 || azimuth >= 360)
+                errors.put(ErrorTag.AZIMUTH, "Azimuth must be between 0 and 360")
         }
 
         if (!errors.isEmpty)
