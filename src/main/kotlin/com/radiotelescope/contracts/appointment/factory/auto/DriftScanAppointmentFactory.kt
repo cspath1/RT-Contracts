@@ -8,8 +8,10 @@ import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreat
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
+import com.radiotelescope.contracts.appointment.update.DriftScanAppointmentUpdate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -24,7 +26,8 @@ class DriftScanAppointmentFactory(
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val orientationRepo: IOrientationRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val coordinateRepo: ICoordinateRepository
 ) : AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
@@ -53,7 +56,15 @@ class DriftScanAppointmentFactory(
     }
 
     override fun update(request: AppointmentUpdate.Request): Command<Long, Multimap<ErrorTag, String>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return DriftScanAppointmentUpdate(
+                request = request as DriftScanAppointmentUpdate.Request,
+                appointmentRepo = appointmentRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
+                userRoleRepo = userRoleRepo,
+                orientationRepo = orientationRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                coordinateRepo = coordinateRepo
+        )
     }
 
     override fun request(request: AppointmentRequest.Request): Command<Long, Multimap<ErrorTag, String>> {

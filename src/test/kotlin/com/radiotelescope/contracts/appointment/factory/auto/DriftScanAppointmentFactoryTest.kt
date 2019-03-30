@@ -1,8 +1,10 @@
 package com.radiotelescope.contracts.appointment.factory.auto
 
 import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreate
+import com.radiotelescope.contracts.appointment.update.DriftScanAppointmentUpdate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -39,6 +41,9 @@ internal class DriftScanAppointmentFactoryTest {
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
+    @Autowired
+    private lateinit var coordinateRepo: ICoordinateRepository
+
     private lateinit var factory: DriftScanAppointmentFactory
 
     @Before
@@ -49,7 +54,8 @@ internal class DriftScanAppointmentFactoryTest {
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                coordinateRepo = coordinateRepo
         )
     }
 
@@ -70,5 +76,24 @@ internal class DriftScanAppointmentFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is DriftScanAppointmentCreate)
+    }
+
+    @Test
+    fun driftScan_update() {
+        // Call the factory method
+        val cmd = factory.update(
+                request = DriftScanAppointmentUpdate.Request(
+                        id = 1L,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 30000L),
+                        isPublic = true,
+                        telescopeId = 1L,
+                        elevation = 90.0,
+                        azimuth = 180.0
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is DriftScanAppointmentUpdate)
     }
 }
