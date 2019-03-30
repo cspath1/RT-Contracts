@@ -3,7 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert
@@ -37,7 +37,7 @@ class ListBetweenDatesTest {
     private lateinit var userRepo: IUserRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
@@ -92,7 +92,7 @@ class ListBetweenDatesTest {
                     telescopeId = 1L
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
+                radioTelescopeRepo = radioTelescopeRepo
         ).execute()
 
         // Should not have failed
@@ -112,7 +112,7 @@ class ListBetweenDatesTest {
                         telescopeId = 1L
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
+                radioTelescopeRepo = radioTelescopeRepo
         ).execute()
 
         // Should have failed
@@ -132,7 +132,7 @@ class ListBetweenDatesTest {
                         telescopeId = 420L
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
+                radioTelescopeRepo = radioTelescopeRepo
         ).execute()
 
         // Should have failed

@@ -4,7 +4,7 @@ import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.*
 import org.junit.Before
@@ -31,7 +31,7 @@ internal class BaseAppointmentFactoryTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
@@ -42,7 +42,7 @@ internal class BaseAppointmentFactoryTest {
         factory = BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )

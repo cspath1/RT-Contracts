@@ -8,7 +8,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
@@ -48,7 +48,7 @@ internal class CoordinateAppointmentCreateTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
@@ -102,7 +102,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -161,7 +161,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -197,7 +197,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -220,7 +220,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -261,7 +261,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -299,7 +299,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -338,7 +338,7 @@ internal class CoordinateAppointmentCreateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -380,7 +380,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -437,7 +437,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -495,7 +495,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -553,7 +553,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -611,7 +611,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -669,7 +669,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -727,7 +727,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -785,7 +785,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -843,7 +843,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -901,7 +901,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -957,7 +957,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -1009,7 +1009,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -1045,7 +1045,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -1084,7 +1084,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -1123,7 +1123,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -1162,7 +1162,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -1201,7 +1201,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -1240,7 +1240,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -1280,7 +1280,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -1319,7 +1319,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -1352,7 +1352,7 @@ internal class CoordinateAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()

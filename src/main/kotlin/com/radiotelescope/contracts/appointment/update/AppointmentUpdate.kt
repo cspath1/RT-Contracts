@@ -11,7 +11,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import java.util.*
 
 /**
@@ -67,13 +67,13 @@ interface AppointmentUpdate {
      * appointment update request.
      *
      * @param request the [Request]
-     * @param telescopeRepo the [ITelescopeRepository] interface
+     * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
      * @param appointmentRepo the [IAppointmentRepository] interface
      * @return a [HashMultimap] of errors or null
      */
     fun baseRequestValidation(
             request: Request,
-            telescopeRepo: ITelescopeRepository,
+            radioTelescopeRepo: IRadioTelescopeRepository,
             appointmentRepo: IAppointmentRepository,
             allottedTimeCapRepo: IAllottedTimeCapRepository
     ): Multimap<ErrorTag, String>? {
@@ -82,7 +82,7 @@ interface AppointmentUpdate {
         with(request) {
             if (!appointmentRepo.existsById(id))
                 errors.put(ErrorTag.ID, "Appointment #$id not found")
-            if (!telescopeRepo.existsById(telescopeId))
+            if (!radioTelescopeRepo.existsById(telescopeId))
                 errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId not found")
 
             if (errors.isNotEmpty())

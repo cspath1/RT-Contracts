@@ -12,7 +12,7 @@ import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
@@ -21,14 +21,14 @@ import com.radiotelescope.repository.user.IUserRepository
 class DriftScanAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val telescopeRepo: ITelescopeRepository,
+        private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val orientationRepo: IOrientationRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
-        telescopeRepo = telescopeRepo,
+        radioTelescopeRepo = radioTelescopeRepo,
         userRoleRepo = userRoleRepo,
         allottedTimeCapRepo = allottedTimeCapRepo
 ) {
@@ -45,7 +45,7 @@ class DriftScanAppointmentFactory(
                 request = request as DriftScanAppointmentCreate.Request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo

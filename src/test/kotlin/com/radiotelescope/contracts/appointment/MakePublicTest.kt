@@ -3,7 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert
 import org.junit.Before
@@ -36,7 +36,7 @@ internal class MakePublicTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
 
     private lateinit var appointment: Appointment
@@ -49,7 +49,7 @@ internal class MakePublicTest {
     @Before
     fun setUp() {
         // Make sure the sql script was executed
-        Assert.assertEquals(1, telescopeRepo.count())
+        Assert.assertEquals(1, radioTelescopeRepo.count())
 
         // Persist the user
         user = testUtil.createUser(

@@ -11,8 +11,7 @@ import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.telescope.ITelescopeRepository
-import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Before
@@ -48,7 +47,7 @@ internal class RasterScanAppointmentUpdateTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
@@ -131,7 +130,7 @@ internal class RasterScanAppointmentUpdateTest {
         val (id, errors) = RasterScanAppointmentUpdate(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -196,7 +195,7 @@ internal class RasterScanAppointmentUpdateTest {
         val (id, errors) = RasterScanAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -234,7 +233,7 @@ internal class RasterScanAppointmentUpdateTest {
         val (id, errors) = RasterScanAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -266,7 +265,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -298,7 +297,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -329,7 +328,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -369,7 +368,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -414,7 +413,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -449,7 +448,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -484,7 +483,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -519,7 +518,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -554,7 +553,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -589,7 +588,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -624,7 +623,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -659,7 +658,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -694,7 +693,7 @@ internal class RasterScanAppointmentUpdateTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo
@@ -726,7 +725,7 @@ internal class RasterScanAppointmentUpdateTest {
                 appointmentRepo = appointmentRepo,
                 orientationRepo = orientationRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()

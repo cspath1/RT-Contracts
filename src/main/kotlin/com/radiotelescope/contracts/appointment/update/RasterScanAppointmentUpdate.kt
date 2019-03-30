@@ -13,7 +13,7 @@ import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import java.util.*
 
 /**
@@ -21,7 +21,7 @@ import java.util.*
  *
  * @param request the [Request] object
  * @param appointmentRepo the [IAppointmentRepository] interface
- * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param coordinateRepo the [ICoordinateRepository] interface
  * @param orientationRepo the [IOrientationRepository] interface
@@ -30,7 +30,7 @@ import java.util.*
 class RasterScanAppointmentUpdate(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
-        private val telescopeRepo: ITelescopeRepository,
+        private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val coordinateRepo: ICoordinateRepository,
         private val orientationRepo: IOrientationRepository,
@@ -68,7 +68,7 @@ class RasterScanAppointmentUpdate(
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         baseRequestValidation(
                 request = request,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 appointmentRepo = appointmentRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )?.let { return it }

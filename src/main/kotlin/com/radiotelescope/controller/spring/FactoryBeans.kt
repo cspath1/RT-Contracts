@@ -97,7 +97,7 @@ class FactoryBeans(
                 factory = CoordinateAppointmentFactory(
                         userRepo = repositories.userRepo,
                         appointmentRepo = repositories.appointmentRepo,
-                        telescopeRepo = repositories.telescopeRepo,
+                        radioTelescopeRepo = repositories.radioTelescopeRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         coordinateRepo = repositories.coordinateRepo,
                         orientationRepo = repositories.orientationRepo,
@@ -118,7 +118,7 @@ class FactoryBeans(
                 factory = CelestialBodyAppointmentFactory(
                         userRepo = repositories.userRepo,
                         appointmentRepo = repositories.appointmentRepo,
-                        telescopeRepo = repositories.telescopeRepo,
+                        radioTelescopeRepo = repositories.radioTelescopeRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         celestialBodyRepo = repositories.celestialBodyRepo,
                         coordinateRepo = repositories.coordinateRepo,
@@ -140,7 +140,7 @@ class FactoryBeans(
                 factory = RasterScanAppointmentFactory(
                         userRepo = repositories.userRepo,
                         appointmentRepo = repositories.appointmentRepo,
-                        telescopeRepo = repositories.telescopeRepo,
+                        radioTelescopeRepo = repositories.radioTelescopeRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         coordinateRepo = repositories.coordinateRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
@@ -158,7 +158,7 @@ class FactoryBeans(
                 factory = DriftScanAppointmentFactory(
                         userRepo = repositories.userRepo,
                         appointmentRepo = repositories.appointmentRepo,
-                        telescopeRepo = repositories.telescopeRepo,
+                        radioTelescopeRepo = repositories.radioTelescopeRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
                         orientationRepo = repositories.orientationRepo
@@ -178,7 +178,7 @@ class FactoryBeans(
                 factory = FreeControlAppointmentFactory(
                         appointmentRepo = repositories.appointmentRepo,
                         userRepo = repositories.userRepo,
-                        telescopeRepo = repositories.telescopeRepo,
+                        radioTelescopeRepo = repositories.radioTelescopeRepo,
                         coordinateRepo = repositories.coordinateRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo

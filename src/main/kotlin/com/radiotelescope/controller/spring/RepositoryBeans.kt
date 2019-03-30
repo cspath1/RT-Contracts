@@ -12,7 +12,7 @@ import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.rfdata.IRFDataRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param logRepo the [ILogRepository] interface
  * @param errorRepo the [IErrorRepository] interface
- * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param rfDataRepo the [IRFDataRepository] interface
  * @param resetPasswordTokenRepo the [IResetPasswordTokenRepository] interface
@@ -46,7 +46,7 @@ class RepositoryBeans(
         val userRoleRepo: IUserRoleRepository,
         val logRepo: ILogRepository,
         val errorRepo: IErrorRepository,
-        val telescopeRepo: ITelescopeRepository,
+        val radioTelescopeRepo: IRadioTelescopeRepository,
         val appointmentRepo: IAppointmentRepository,
         val rfDataRepo: IRFDataRepository,
         val resetPasswordTokenRepo: IResetPasswordTokenRepository,

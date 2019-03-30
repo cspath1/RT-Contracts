@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 @ActiveProfiles(value = ["test"])
-internal class TelescopeTest {
+internal class RadioTelescopeTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -25,16 +25,16 @@ internal class TelescopeTest {
     }
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Before
     fun setUp() {
-        assertEquals(1, telescopeRepo.count())
+        assertEquals(1, radioTelescopeRepo.count())
     }
 
     @Test
     fun testRetrieveTelescope() {
-        val telescope = telescopeRepo.findById(1)
+        val telescope = radioTelescopeRepo.findById(1)
 
         assertTrue(telescope.isPresent)
         assertEquals(1, telescope.get().getId())

@@ -11,7 +11,7 @@ import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
@@ -20,14 +20,14 @@ import com.radiotelescope.repository.user.IUserRepository
 class FreeControlAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val telescopeRepo: ITelescopeRepository,
+        private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val coordinateRepo: ICoordinateRepository,
         userRoleRepo: IUserRoleRepository,
         allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : ManualAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
-        telescopeRepo = telescopeRepo,
+        radioTelescopeRepo = radioTelescopeRepo,
         userRoleRepo = userRoleRepo,
         allottedTimeCapRepo = allottedTimeCapRepo
 ) {
@@ -42,7 +42,7 @@ class FreeControlAppointmentFactory(
         return StartFreeControlAppointment(
                 request = request,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
                 coordinateRepo = coordinateRepo
         )

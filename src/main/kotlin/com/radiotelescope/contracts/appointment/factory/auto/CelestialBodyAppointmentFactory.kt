@@ -16,7 +16,7 @@ import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
@@ -25,7 +25,7 @@ import com.radiotelescope.repository.user.IUserRepository
 class CelestialBodyAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val telescopeRepo: ITelescopeRepository,
+        private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val celestialBodyRepo: ICelestialBodyRepository,
         private val coordinateRepo: ICoordinateRepository,
@@ -34,7 +34,7 @@ class CelestialBodyAppointmentFactory(
 ) : AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
-        telescopeRepo = telescopeRepo,
+        radioTelescopeRepo = radioTelescopeRepo,
         userRoleRepo = userRoleRepo,
         allottedTimeCapRepo = allottedTimeCapRepo
 ) {
@@ -50,7 +50,7 @@ class CelestialBodyAppointmentFactory(
                 request = request as CelestialBodyAppointmentCreate.Request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 celestialBodyRepo = celestialBodyRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -68,7 +68,7 @@ class CelestialBodyAppointmentFactory(
         return CelestialBodyAppointmentUpdate(
                 request = request as CelestialBodyAppointmentUpdate.Request,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -89,7 +89,7 @@ class CelestialBodyAppointmentFactory(
                 request = request as CelestialBodyAppointmentRequest.Request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo
         )
     }

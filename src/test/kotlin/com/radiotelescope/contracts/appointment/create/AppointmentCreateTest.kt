@@ -8,7 +8,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
@@ -48,7 +48,7 @@ internal class CreateTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
@@ -81,7 +81,7 @@ internal class CreateTest {
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 coordinateRepo = coordinateRepo
 
@@ -213,7 +213,7 @@ internal class CreateTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
         assertNull(errors)
@@ -240,7 +240,7 @@ internal class CreateTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
         assertNotNull(errors)
@@ -272,7 +272,7 @@ internal class CreateTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
         assertNotNull(errors)
@@ -295,7 +295,7 @@ internal class CreateTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
         assertNotNull(errors)
@@ -328,7 +328,7 @@ internal class CreateTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
         assertNotNull(errors)
@@ -360,7 +360,7 @@ internal class CreateTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
         assertNotNull(errors)
@@ -400,7 +400,7 @@ internal class CreateTest {
                 request = requestCopy,
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
         assertNotNull(errors)

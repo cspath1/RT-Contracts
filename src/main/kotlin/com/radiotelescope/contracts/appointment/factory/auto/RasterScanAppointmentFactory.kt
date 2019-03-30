@@ -15,7 +15,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
@@ -24,7 +24,7 @@ import com.radiotelescope.repository.user.IUserRepository
 class RasterScanAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val telescopeRepo: ITelescopeRepository,
+        private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val coordinateRepo: ICoordinateRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository,
@@ -32,7 +32,7 @@ class RasterScanAppointmentFactory(
 ) : AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
-        telescopeRepo = telescopeRepo,
+        radioTelescopeRepo = radioTelescopeRepo,
         userRoleRepo = userRoleRepo,
         allottedTimeCapRepo = allottedTimeCapRepo
 ) {
@@ -48,7 +48,7 @@ class RasterScanAppointmentFactory(
                 request = request as RasterScanAppointmentCreate.Request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -67,7 +67,7 @@ class RasterScanAppointmentFactory(
                 request = request as RasterScanAppointmentRequest.Request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         )
     }
@@ -84,7 +84,7 @@ class RasterScanAppointmentFactory(
                 request = request as RasterScanAppointmentUpdate.Request,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo

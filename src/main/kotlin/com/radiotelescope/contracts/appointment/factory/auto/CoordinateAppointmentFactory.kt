@@ -15,7 +15,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
 /**
@@ -24,7 +24,7 @@ import com.radiotelescope.repository.user.IUserRepository
 class CoordinateAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val telescopeRepo: ITelescopeRepository,
+        private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val coordinateRepo: ICoordinateRepository,
         private val orientationRepo: IOrientationRepository,
@@ -32,7 +32,7 @@ class CoordinateAppointmentFactory(
 ): AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
-        telescopeRepo = telescopeRepo,
+        radioTelescopeRepo = radioTelescopeRepo,
         userRoleRepo = userRoleRepo,
         allottedTimeCapRepo = allottedTimeCapRepo
 ) {
@@ -48,7 +48,7 @@ class CoordinateAppointmentFactory(
                 request = request as CoordinateAppointmentCreate.Request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -68,7 +68,7 @@ class CoordinateAppointmentFactory(
                 request = request as CoordinateAppointmentRequest.Request,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         )
     }
@@ -83,7 +83,7 @@ class CoordinateAppointmentFactory(
         return CoordinateAppointmentUpdate(
                 request = request as CoordinateAppointmentUpdate.Request,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,

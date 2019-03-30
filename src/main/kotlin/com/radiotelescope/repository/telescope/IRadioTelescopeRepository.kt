@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 /**
- * Spring Repository Interface for the [Telescope] Entity
+ * Spring Repository Interface for the [RadioTelescope] Entity
  */
 @Repository
-interface ITelescopeRepository : CrudRepository<Telescope, Long>
+interface IRadioTelescopeRepository : CrudRepository<RadioTelescope, Long>

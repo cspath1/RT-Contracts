@@ -11,7 +11,7 @@ import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Before
@@ -47,7 +47,7 @@ internal class CelestialBodyAppointmentUpdateTest {
     private lateinit var userRoleRepo: IUserRoleRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
@@ -118,7 +118,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val (id, errors) = CelestialBodyAppointmentUpdate(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -177,7 +177,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val (id, errors) = CelestialBodyAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -218,7 +218,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val (id, errors) = CelestialBodyAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -249,7 +249,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val (id, errors) = CelestialBodyAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -281,7 +281,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val (id, errors) = CelestialBodyAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -314,7 +314,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val (id, errors) = CelestialBodyAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -345,7 +345,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val (id, errors) = CelestialBodyAppointmentUpdate(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -378,7 +378,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val (id, errors) = CelestialBodyAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -410,7 +410,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val (id, errors) = CelestialBodyAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -455,7 +455,7 @@ internal class CelestialBodyAppointmentUpdateTest {
         val (id, errors) = CelestialBodyAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,

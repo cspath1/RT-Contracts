@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
@@ -23,7 +23,7 @@ import java.util.*
 @RunWith(SpringRunner::class)
 @ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class RetrieveFutureAppointmentsByTelescopeIdTest {
+internal class RetrieveFutureAppointmentsByRadioTelescopeIdTest {
     @TestConfiguration
     class UtilTestContextConfiguration {
         @Bean
@@ -36,14 +36,14 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     private var userId: Long = 0
 
     @Before
     fun setUp() {
         // Ensure the sql script was executed
-        assertEquals(1, telescopeRepo.count())
+        assertEquals(1, radioTelescopeRepo.count())
 
         // persist a user
         val user = testUtil.createUser("jamoros@ycp.edu")
@@ -77,7 +77,7 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
                 appointmentRepo = appointmentRepo,
                 telescopeId = 1L,
                 pageable = PageRequest.of(0, 2),
-                telescopeRepo = telescopeRepo
+                radioTelescopeRepo = radioTelescopeRepo
         ).execute()
 
         assertNotNull(page)
@@ -92,7 +92,7 @@ internal class RetrieveFutureAppointmentsByTelescopeIdTest {
                 appointmentRepo = appointmentRepo,
                 telescopeId = 311L,
                 pageable = PageRequest.of(0, 30),
-                telescopeRepo = telescopeRepo
+                radioTelescopeRepo = radioTelescopeRepo
         ).execute()
 
         assertNotNull(error)

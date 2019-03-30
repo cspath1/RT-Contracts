@@ -9,7 +9,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.data.domain.Page
@@ -21,14 +21,14 @@ import org.springframework.data.domain.Pageable
  *
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
- * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 open class BaseAppointmentFactory(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val telescopeRepo: ITelescopeRepository,
+        private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : AppointmentFactory {
@@ -106,7 +106,7 @@ open class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 telescopeId = telescopeId,
                 pageable = pageable,
-                telescopeRepo = telescopeRepo
+                radioTelescopeRepo = radioTelescopeRepo
         )
     }
 
@@ -121,7 +121,7 @@ open class BaseAppointmentFactory(
        return ListBetweenDates(
                request = request,
                appointmentRepo = appointmentRepo,
-               telescopeRepo = telescopeRepo
+               radioTelescopeRepo = radioTelescopeRepo
 
        )
     }

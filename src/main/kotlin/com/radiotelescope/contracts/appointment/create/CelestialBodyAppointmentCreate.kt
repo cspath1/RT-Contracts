@@ -11,7 +11,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
@@ -22,7 +22,7 @@ import java.util.*
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
- * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param celestialBodyRepo the [ICelestialBodyRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
@@ -31,7 +31,7 @@ class CelestialBodyAppointmentCreate(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val telescopeRepo: ITelescopeRepository,
+        private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val celestialBodyRepo: ICelestialBodyRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
@@ -73,7 +73,7 @@ class CelestialBodyAppointmentCreate(
         basicValidateRequest(
                 request = request,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 appointmentRepo = appointmentRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )?.let { return it }

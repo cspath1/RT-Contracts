@@ -6,7 +6,7 @@ import com.radiotelescope.contracts.coordinate.CoordinateRequest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
@@ -43,7 +43,7 @@ internal class RasterScanAppointmentRequestTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
@@ -89,7 +89,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -129,7 +129,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -156,7 +156,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -180,7 +180,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -208,7 +208,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -236,7 +236,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -264,7 +264,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -292,7 +292,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -320,7 +320,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -348,7 +348,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -376,7 +376,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -404,7 +404,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 
@@ -428,7 +428,7 @@ internal class RasterScanAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo
         ).execute()
 

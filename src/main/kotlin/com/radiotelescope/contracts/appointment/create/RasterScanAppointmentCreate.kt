@@ -13,7 +13,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
@@ -25,7 +25,7 @@ import java.util.*
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
- * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param coordinateRepo the [ICoordinateRepository] interface
  */
 class RasterScanAppointmentCreate(
@@ -33,7 +33,7 @@ class RasterScanAppointmentCreate(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val telescopeRepo: ITelescopeRepository,
+        private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val coordinateRepo: ICoordinateRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
@@ -83,7 +83,7 @@ class RasterScanAppointmentCreate(
         basicValidateRequest(
                 request = request,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 appointmentRepo = appointmentRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )?.let { return it }

@@ -11,7 +11,7 @@ import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
@@ -51,7 +51,7 @@ internal class CelestialBodyAppointmentCreateTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var celestialBodyRepo: ICelestialBodyRepository
@@ -126,7 +126,7 @@ internal class CelestialBodyAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -168,7 +168,7 @@ internal class CelestialBodyAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -200,7 +200,7 @@ internal class CelestialBodyAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -233,7 +233,7 @@ internal class CelestialBodyAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -269,7 +269,7 @@ internal class CelestialBodyAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -305,7 +305,7 @@ internal class CelestialBodyAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -347,7 +347,7 @@ internal class CelestialBodyAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
@@ -394,7 +394,7 @@ internal class CelestialBodyAppointmentCreateTest {
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()

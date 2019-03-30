@@ -8,8 +8,7 @@ import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
-import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
@@ -46,7 +45,7 @@ internal class CelestialBodyAppointmentRequestTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var celestialBodyRepo: ICelestialBodyRepository
@@ -102,7 +101,7 @@ internal class CelestialBodyAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo
         ).execute()
 
@@ -137,7 +136,7 @@ internal class CelestialBodyAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo
         ).execute()
 
@@ -162,7 +161,7 @@ internal class CelestialBodyAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo
         ).execute()
 
@@ -188,7 +187,7 @@ internal class CelestialBodyAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo
         ).execute()
 
@@ -215,7 +214,7 @@ internal class CelestialBodyAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo
         ).execute()
 
@@ -240,7 +239,7 @@ internal class CelestialBodyAppointmentRequestTest {
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo
         ).execute()
 

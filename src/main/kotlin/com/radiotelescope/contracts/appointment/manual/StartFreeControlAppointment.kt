@@ -11,7 +11,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
@@ -21,13 +21,13 @@ import java.util.*
  * @param request the [Request] object
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param userRepo the [IUserRepository] interface
- * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param coordinateRepo the [ICoordinateRepository] interface
  */
 class StartFreeControlAppointment(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
-        private val telescopeRepo: ITelescopeRepository,
+        private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val userRepo: IUserRepository,
         private val coordinateRepo: ICoordinateRepository
 ) : Command<Long, Multimap<ErrorTag, String>> {
@@ -91,7 +91,7 @@ class StartFreeControlAppointment(
         with (request) {
             if (!userRepo.existsById(userId))
                 errors.put(ErrorTag.USER_ID, "User #$userId could not be found")
-            if (!telescopeRepo.existsById(telescopeId))
+            if (!radioTelescopeRepo.existsById(telescopeId))
                 errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
             if (hours < 0 || hours >= 24)
                 errors!!.put(ErrorTag.HOURS, "Hours must be between 0 and 23")

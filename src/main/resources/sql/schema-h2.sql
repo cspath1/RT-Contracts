@@ -70,9 +70,11 @@ CREATE TABLE rf_data (
   time_captured DATETIME NOT NULL
 );
 
-CREATE TABLE telescope (
+CREATE TABLE radio_telescope (
   id INT(11) NOT NULL AUTO_INCREMENT,
-  online TINYINT(1) DEFAULT '1'
+  online TINYINT(1) DEFAULT '1',
+  current_orientation_id INT(11) NOT NULL,
+  calibration_orientation_id INT(11) NOT NULL
 );
 
 CREATE TABLE user (

@@ -6,7 +6,7 @@ import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
@@ -38,14 +38,14 @@ interface AppointmentRequest {
      *
      * @param request the [Request] object
      * @param userRepo the [IUserRepository] interface
-     * @param telescopeRepo the [ITelescopeRepository] interface
-     * @param appointmentRepo the [ITelescopeRepository] interface
+     * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
+     * @param appointmentRepo the [IRadioTelescopeRepository] interface
      * @return a [HashMultimap] of errors or null
      */
     fun baseRequestValidation(
             request: Request,
             userRepo: IUserRepository,
-            telescopeRepo: ITelescopeRepository,
+            radioTelescopeRepo: IRadioTelescopeRepository,
             appointmentRepo: IAppointmentRepository
     ): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
@@ -54,7 +54,7 @@ interface AppointmentRequest {
                 errors.put(ErrorTag.USER_ID, "User #$userId could not be found")
                 return errors
             }
-            if (!telescopeRepo.existsById(telescopeId)) {
+            if (!radioTelescopeRepo.existsById(telescopeId)) {
                 errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
                 return errors
             }

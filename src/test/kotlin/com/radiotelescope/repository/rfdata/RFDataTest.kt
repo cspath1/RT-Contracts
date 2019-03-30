@@ -2,7 +2,7 @@ package com.radiotelescope.repository.rfdata
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.*
 import org.junit.Before
@@ -28,7 +28,7 @@ internal class RFDataTest {
     }
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var userRepo: IUserRepository
@@ -42,7 +42,7 @@ internal class RFDataTest {
     @Before
     fun setUp() {
         // Ensure the SQL Script correctly persisted everything
-        assertEquals(1, telescopeRepo.count())
+        assertEquals(1, radioTelescopeRepo.count())
         assertEquals(1, userRepo.count())
         assertEquals(1, appointmentRepo.count())
         assertEquals(10, rfDataRepo.count())

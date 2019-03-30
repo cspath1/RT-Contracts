@@ -13,7 +13,7 @@ import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
 import org.junit.Before
@@ -27,7 +27,7 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
     private lateinit var userRepo: IUserRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
@@ -60,7 +60,7 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
         factory = CoordinateAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -87,7 +87,7 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                         appointmentRepo = appointmentRepo,
                         userRepo = userRepo,
                         userRoleRepo = userRoleRepo,
-                        telescopeRepo = telescopeRepo,
+                        radioTelescopeRepo = radioTelescopeRepo,
                         celestialBodyRepo = celestialBodyRepo,
                         coordinateRepo = coordinateRepo,
                         orientationRepo = orientationRepo,
@@ -105,7 +105,7 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                         appointmentRepo = appointmentRepo,
                         userRepo = userRepo,
                         userRoleRepo = userRoleRepo,
-                        telescopeRepo = telescopeRepo,
+                        radioTelescopeRepo = radioTelescopeRepo,
                         coordinateRepo = coordinateRepo,
                         allottedTimeCapRepo = allottedTimeCapRepo,
                         orientationRepo = orientationRepo
@@ -121,7 +121,7 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                 factory = FreeControlAppointmentFactory(
                         appointmentRepo = appointmentRepo,
                         userRepo = userRepo,
-                        telescopeRepo = telescopeRepo,
+                        radioTelescopeRepo = radioTelescopeRepo,
                         coordinateRepo = coordinateRepo,
                         userRoleRepo = userRoleRepo,
                         allottedTimeCapRepo = allottedTimeCapRepo
@@ -138,7 +138,7 @@ abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
                         appointmentRepo = appointmentRepo,
                         userRepo = userRepo,
                         userRoleRepo = userRoleRepo,
-                        telescopeRepo = telescopeRepo,
+                        radioTelescopeRepo = radioTelescopeRepo,
                         allottedTimeCapRepo = allottedTimeCapRepo,
                         orientationRepo = orientationRepo
                 ),

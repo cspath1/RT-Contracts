@@ -15,7 +15,7 @@ import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
@@ -42,7 +42,7 @@ internal class CoordinateAppointmentUpdateTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
@@ -69,7 +69,7 @@ internal class CoordinateAppointmentUpdateTest {
     @Before
     fun setUp() {
         // Make sure the sql script was executed
-        assertEquals(1, telescopeRepo.count())
+        assertEquals(1, radioTelescopeRepo.count())
 
         // Persist the user
         user = testUtil.createUser(
@@ -119,7 +119,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -160,7 +160,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 coordinateRepo = coordinateRepo,
@@ -218,7 +218,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -251,7 +251,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 coordinateRepo = coordinateRepo,
@@ -283,7 +283,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -315,7 +315,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -345,7 +345,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -370,7 +370,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 coordinateRepo = coordinateRepo,
@@ -408,7 +408,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -447,7 +447,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -503,7 +503,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -558,7 +558,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -617,7 +617,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -676,7 +676,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -735,7 +735,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -794,7 +794,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -854,7 +854,7 @@ internal class CoordinateAppointmentUpdateTest {
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo
         ).execute()
@@ -912,7 +912,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -971,7 +971,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -1029,7 +1029,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -1083,7 +1083,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -1148,7 +1148,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -1217,7 +1217,7 @@ internal class CoordinateAppointmentUpdateTest {
                 request = conflict,
                 appointmentRepo = appointmentRepo,
                 userRoleRepo = userRoleRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
@@ -1249,7 +1249,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -1281,7 +1281,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -1313,7 +1313,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -1345,7 +1345,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -1377,7 +1377,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -1409,7 +1409,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -1440,7 +1440,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
@@ -1471,7 +1471,7 @@ internal class CoordinateAppointmentUpdateTest {
         val (id, errors) = CoordinateAppointmentUpdate(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
