@@ -71,6 +71,7 @@ internal class UserManualAppointmentWrapperTest {
     private lateinit var orientationRepo: IOrientationRepository
 
     private lateinit var user: User
+    private lateinit var appointment: Appointment
 
     private val context = FakeUserContext()
     private lateinit var factory: ManualAppointmentFactory
@@ -108,6 +109,16 @@ internal class UserManualAppointmentWrapperTest {
                 viewerRepo = viewerRepo
         )
 
+        appointment = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.IN_PROGRESS,
+                startTime = Date(System.currentTimeMillis() - 150000L),
+                endTime = Date(System.currentTimeMillis() + 150000L),
+                isPublic = true,
+                type = Appointment.Type.FREE_CONTROL
+        )
+
         baseStartRequest = StartFreeControlAppointment.Request(
                 userId = user.id,
                 telescopeId = 1L,
@@ -122,6 +133,10 @@ internal class UserManualAppointmentWrapperTest {
 
     @Test
     fun testStartAppointment_Admin_Success() {
+        // Delete the appointment persisted above
+        coordinateRepo.deleteAll()
+        appointmentRepo.deleteAll()
+
         // Simulate a login as an admin
         context.login(user.id)
         context.currentRoles = mutableListOf(UserRole.Role.USER, UserRole.Role.ADMIN)
@@ -170,16 +185,6 @@ internal class UserManualAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles = mutableListOf(UserRole.Role.USER, UserRole.Role.ADMIN)
 
-        val appointment = testUtil.createAppointment(
-                user = user,
-                telescopeId = 1L,
-                status = Appointment.Status.IN_PROGRESS,
-                startTime = Date(System.currentTimeMillis() - 150000L),
-                endTime = Date(System.currentTimeMillis() + 150000L),
-                isPublic = true,
-                type = Appointment.Type.FREE_CONTROL
-        )
-
         val error = wrapper.stopAppointment(appointment.id) {
             assertNotNull(it.success)
             assertNull(it.error)
@@ -194,16 +199,6 @@ internal class UserManualAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles = mutableListOf(UserRole.Role.USER, UserRole.Role.STUDENT)
 
-        val appointment = testUtil.createAppointment(
-                user = user,
-                telescopeId = 1L,
-                status = Appointment.Status.IN_PROGRESS,
-                startTime = Date(System.currentTimeMillis() - 150000L),
-                endTime = Date(System.currentTimeMillis() + 150000L),
-                isPublic = true,
-                type = Appointment.Type.FREE_CONTROL
-        )
-
         val error = wrapper.stopAppointment(appointment.id) {
             fail("Should fail on precondition")
         }
@@ -214,16 +209,6 @@ internal class UserManualAppointmentWrapperTest {
 
     @Test
     fun testStopAppointment_NotLoggedIn_Failure() {
-        val appointment = testUtil.createAppointment(
-                user = user,
-                telescopeId = 1L,
-                status = Appointment.Status.IN_PROGRESS,
-                startTime = Date(System.currentTimeMillis() - 150000L),
-                endTime = Date(System.currentTimeMillis() + 150000L),
-                isPublic = true,
-                type = Appointment.Type.FREE_CONTROL
-        )
-
         val error = wrapper.stopAppointment(appointment.id) {
             fail("Should fail on precondition")
         }
@@ -237,16 +222,6 @@ internal class UserManualAppointmentWrapperTest {
         // Simulate a login as an admin
         context.login(user.id)
         context.currentRoles = mutableListOf(UserRole.Role.USER, UserRole.Role.ADMIN)
-
-        val appointment = testUtil.createAppointment(
-                user = user,
-                telescopeId = 1L,
-                status = Appointment.Status.IN_PROGRESS,
-                startTime = Date(System.currentTimeMillis() - 150000L),
-                endTime = Date(System.currentTimeMillis() + 150000L),
-                isPublic = true,
-                type = Appointment.Type.FREE_CONTROL
-        )
 
         val request = AddFreeControlAppointmentCommand.Request(
                 appointmentId = appointment.id,
@@ -270,16 +245,6 @@ internal class UserManualAppointmentWrapperTest {
         context.login(user.id)
         context.currentRoles = mutableListOf(UserRole.Role.USER, UserRole.Role.STUDENT)
 
-        val appointment = testUtil.createAppointment(
-                user = user,
-                telescopeId = 1L,
-                status = Appointment.Status.IN_PROGRESS,
-                startTime = Date(System.currentTimeMillis() - 150000L),
-                endTime = Date(System.currentTimeMillis() + 150000L),
-                isPublic = true,
-                type = Appointment.Type.FREE_CONTROL
-        )
-
         val request = AddFreeControlAppointmentCommand.Request(
                 appointmentId = appointment.id,
                 hours = 2,
@@ -298,16 +263,6 @@ internal class UserManualAppointmentWrapperTest {
 
     @Test
     fun testAddCommand_NotLoggedIn_Failure() {
-        val appointment = testUtil.createAppointment(
-                user = user,
-                telescopeId = 1L,
-                status = Appointment.Status.IN_PROGRESS,
-                startTime = Date(System.currentTimeMillis() - 150000L),
-                endTime = Date(System.currentTimeMillis() + 150000L),
-                isPublic = true,
-                type = Appointment.Type.FREE_CONTROL
-        )
-
         val request = AddFreeControlAppointmentCommand.Request(
                 appointmentId = appointment.id,
                 hours = 2,
@@ -317,6 +272,45 @@ internal class UserManualAppointmentWrapperTest {
         )
 
         val error = wrapper.addCommand(request) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testCalibrateAppointment_Admin_Success() {
+        // Simulate a login as an admin
+        context.login(user.id)
+        context.currentRoles = mutableListOf(UserRole.Role.USER, UserRole.Role.ADMIN)
+
+        val error = wrapper.calibrateAppointment(appointment.id) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testCalibrateAppointment_NotAdmin_Failure() {
+        // Simulate a login as a student
+        context.login(user.id)
+        context.currentRoles = mutableListOf(UserRole.Role.USER, UserRole.Role.STUDENT)
+
+        val error = wrapper.calibrateAppointment(appointment.id) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testCalibrateAppointment_NotLoggedIn_Failure() {
+        // Do not log the user in
+        val error = wrapper.calibrateAppointment(appointment.id) {
             fail("Should fail on precondition")
         }
 

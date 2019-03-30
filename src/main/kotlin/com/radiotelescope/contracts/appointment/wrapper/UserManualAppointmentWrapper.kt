@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.factory.manual.ManualAppointmentFactory
 import com.radiotelescope.contracts.appointment.manual.AddFreeControlAppointmentCommand
 import com.radiotelescope.contracts.appointment.manual.StartFreeControlAppointment
+import com.radiotelescope.contracts.appointment.manual.CalibrateFreeControlAppointment
 import com.radiotelescope.contracts.appointment.manual.StopFreeControlAppointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
@@ -80,6 +81,24 @@ class UserManualAppointmentWrapper(
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
                     successCommand = factory.stopAppointment(appointmentId)
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
+    }
+
+    /**
+     * Wrapper method for the [ManualAppointmentFactory.calibrateAppointment] method that adds
+     * Spring Security authorization to the [CalibrateFreeControlAppointment] command object.
+     *
+     * @param appointmentId the Appointment id
+     * @return an [AccessReport] if authorization fails, null otherwise
+     */
+    fun calibrateAppointment(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.calibrateAppointment(appointmentId)
             ).execute(withAccess)
         }
 
