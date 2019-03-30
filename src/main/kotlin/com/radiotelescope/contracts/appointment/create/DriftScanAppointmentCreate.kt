@@ -72,17 +72,17 @@ class DriftScanAppointmentCreate(
                 errors.put(ErrorTag.ELEVATION, "Elevation must be between 0 and 90")
             if(azimuth < 0 || azimuth > 359)
                 errors.put(ErrorTag.AZIMUTH, "Azimuth must be between 0 and 359")
-
-            if (!errors.isEmpty)
-                return errors
-
-            errors = validateAvailableAllottedTime(
-                    request = request,
-                    appointmentRepo = appointmentRepo,
-                    userRoleRepo = userRoleRepo,
-                    allottedTimeCapRepo = allottedTimeCapRepo
-            )
         }
+
+        if (!errors.isEmpty)
+            return errors
+
+        errors = validateAvailableAllottedTime(
+                request = request,
+                appointmentRepo = appointmentRepo,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        )
 
         return if (errors.isEmpty) null else errors
     }
