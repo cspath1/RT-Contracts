@@ -26,6 +26,7 @@ class UserCelestialBodyWrapper(
      * authentication to the [Create] command object
      *
      * @param request the [Create.Request]
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun create(request: Create.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -40,6 +41,7 @@ class UserCelestialBodyWrapper(
      * authentication to the [Retrieve] command object
      *
      * @param id the Celestial Body id
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun retrieve(id: Long, withAccess: (result: SimpleResult<CelestialBodyInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -54,6 +56,7 @@ class UserCelestialBodyWrapper(
      * authentication to the [List] command object
      *
      * @param pageable the [Pageable]
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun list(pageable: Pageable, withAccess: (result: SimpleResult<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -82,6 +85,7 @@ class UserCelestialBodyWrapper(
      * Security authentication to the [MarkVisible] command object
      *
      * @param id the Celestial Body id
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun markVisible(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -97,6 +101,7 @@ class UserCelestialBodyWrapper(
      *
      * @param searchCriteria the [SearchCriteria]
      * @param pageable the [Pageable] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable, withAccess: (result: SimpleResult<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -113,6 +118,10 @@ class UserCelestialBodyWrapper(
     /**
      * Wrapper method for the [CelestialBodyFactory.update] method used to add Spring
      * Security authentication to the [Update] command object
+     *
+     * @param request the [Update.Request] object
+     * @param withAccess anonymous function that uses the command's result object
+     * @return an [AccessReport] if authentication fails, null otherwise
      */
     fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(

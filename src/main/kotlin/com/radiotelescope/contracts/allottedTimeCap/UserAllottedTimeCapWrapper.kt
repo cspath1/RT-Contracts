@@ -24,6 +24,7 @@ class UserAllottedTimeCapWrapper(
      * Security authentication to the [Update] command object.
      *
      * @param request the user Id of the appointment
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun update(request: Update.Request, withAccess: (result: SimpleResult<AllottedTimeCap, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{

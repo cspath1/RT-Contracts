@@ -38,6 +38,7 @@ class UserManualAppointmentWrapper(
      * Spring Security authorization to the [StartFreeControlAppointment] command object.
      *
      * @param request the [StartFreeControlAppointment.Request] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if authorization fails, null otherwise
      */
     fun startAppointment(request: StartFreeControlAppointment.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -56,6 +57,7 @@ class UserManualAppointmentWrapper(
      * Spring Security authorization to the [AddFreeControlAppointmentCommand] command object.
      *
      * @param request the [AddFreeControlAppointmentCommand.Request] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if authorization fails, null otherwise
      */
     fun addCommand(request: AddFreeControlAppointmentCommand.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -74,6 +76,7 @@ class UserManualAppointmentWrapper(
      * Spring Security authorization to the [StopFreeControlAppointment] command object.
      *
      * @param appointmentId the Appointment id
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if authorization fails, null otherwise
      */
     fun stopAppointment(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -92,6 +95,7 @@ class UserManualAppointmentWrapper(
      * Spring Security authorization to the [CalibrateFreeControlAppointment] command object.
      *
      * @param appointmentId the Appointment id
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if authorization fails, null otherwise
      */
     fun calibrateAppointment(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

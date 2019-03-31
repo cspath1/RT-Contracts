@@ -40,6 +40,7 @@ class UserAutoAppointmentWrapper(
      * Security authentication to the [AppointmentCreate] command object.
      *
      * @param request the [AppointmentCreate.Request] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun create(request: AppointmentCreate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -66,6 +67,7 @@ class UserAutoAppointmentWrapper(
      * Security authentication to the [CoordinateAppointmentUpdate] command object.
      *
      * @param request the user Id of the appointment
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun update(request: AppointmentUpdate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
@@ -112,6 +114,7 @@ class UserAutoAppointmentWrapper(
      * Security authentication to the [CoordinateAppointmentRequest] command object.
      *
      * @param request the [CoordinateAppointmentRequest.Request] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun request(request: AppointmentRequest.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

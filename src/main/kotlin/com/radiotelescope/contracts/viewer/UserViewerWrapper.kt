@@ -31,6 +31,7 @@ class UserViewerWrapper (
      * Security authentication to the [SharePrivateAppointment] command object.
      *
      * @param request the [SharePrivateAppointment.Request] command object
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if the authentication fails, null otherwise
      */
     fun sharePrivateAppointment(request: SharePrivateAppointment.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -68,6 +69,7 @@ class UserViewerWrapper (
      *
      * @param userId the User's Id
      * @param pageable the [Pageable] interface
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if the authentication fails, null otherwise
      */
     fun listSharedAppointment(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -100,6 +102,7 @@ class UserViewerWrapper (
      *
      * @param appointmentId the Appointment's Id
      * @param pageable the [Pageable] interface
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if the authentication fails, null otherwise
      */
     fun listSharedUser(appointmentId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -137,6 +140,7 @@ class UserViewerWrapper (
      * Security authentication to the [UnsharePrivateAppointment] command object.
      *
      * @param request the [UnsharePrivateAppointment.Request] command object
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if the authentication fails, null otherwise
      */
     fun unsharePrivateAppointment(request: UnsharePrivateAppointment.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

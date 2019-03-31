@@ -32,6 +32,7 @@ class UserUserRoleWrapper(
      * Security authentication to the [UnapprovedList] command object
      *
      * @param pageable the [Pageable] request
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun unapprovedList(pageable: Pageable, withAccess: (result: SimpleResult<Page<UserRoleInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -49,6 +50,7 @@ class UserUserRoleWrapper(
      * Security authentication to the [Validate] command object
      *
      * @param request the [Validate.Request] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun validate(request: Validate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -85,6 +87,7 @@ class UserUserRoleWrapper(
      * Security authentication to the [RequestRole] command object
      *
      * @param request the [RequestRole.Request] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun requestRole(request: RequestRole.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

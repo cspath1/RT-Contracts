@@ -26,6 +26,7 @@ class AdminLogWrapper(
      * authentication to the [List] command object.
      *
      * @param pageable the [Pageable] interface
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails or null
      */
     fun list(pageable: Pageable, withAccess: (result: SimpleResult<Page<LogInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -42,6 +43,7 @@ class AdminLogWrapper(
      * authentication to the [RetrieveErrors] command object
      *
      * @param logId the Log id
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails or null
      */
     fun retrieveErrors(logId: Long, withAccess: (result: SimpleResult<List<ErrorInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

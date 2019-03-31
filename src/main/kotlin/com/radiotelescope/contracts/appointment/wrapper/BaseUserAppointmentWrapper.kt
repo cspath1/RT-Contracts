@@ -27,6 +27,7 @@ open class BaseUserAppointmentWrapper(
      * Security retrieve to the [Retrieve] command object.
      *
      * @param id the Appointment id
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun retrieve(id: Long, withAccess: (result: SimpleResult<AppointmentInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -67,6 +68,7 @@ open class BaseUserAppointmentWrapper(
      *
      * @param userId the user Id of the appointment
      * @param pageable contains the pageSize and pageNumber
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun userFutureList(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -101,6 +103,7 @@ open class BaseUserAppointmentWrapper(
      *
      * @param userId the User id
      * @param pageable the [Pageable] interface
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if authentication fails, null otherwise
      */
     fun userCompleteList(userId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -132,6 +135,7 @@ open class BaseUserAppointmentWrapper(
      * authentication to the [Cancel] command object
      *
      * @param appointmentId the Appointment id
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if authentication fails, null otherwise
      */
     fun cancel(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -168,6 +172,7 @@ open class BaseUserAppointmentWrapper(
      *
      * @param telescopeId the Telescope id
      * @param pageable the [Pageable] interface
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if authentication fails, null otherwise
      */
     fun retrieveFutureAppointmentsByTelescopeId(telescopeId: Long, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -185,6 +190,7 @@ open class BaseUserAppointmentWrapper(
      * Security authentication to the [makePublic] command object.
      *
      * @param appointmentId the Appointment's Id
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun makePublic(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -221,6 +227,7 @@ open class BaseUserAppointmentWrapper(
      * Security authentication to the [ListBetweenDates] command object.
      *
      * @param request the [ListBetweenDates.Request] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun listBetweenDates(request: ListBetweenDates.Request, withAccess: (result: SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -237,6 +244,7 @@ open class BaseUserAppointmentWrapper(
      * Spring Security authentication to the [PublicCompletedAppointments] command object.
      *
      * @param pageable the Pageable interface
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun publicCompletedAppointments(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -253,6 +261,7 @@ open class BaseUserAppointmentWrapper(
      * Security authentication to the [RequestedList] command object.
      *
      * @param pageable contains the pageSize and pageNumber
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun requestedList(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -273,6 +282,7 @@ open class BaseUserAppointmentWrapper(
      * Security authentication to the [ApproveDenyRequest] command object.
      *
      * @param request the [ApproveDenyRequest.Request]
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun approveDenyRequest(request: ApproveDenyRequest.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -293,6 +303,7 @@ open class BaseUserAppointmentWrapper(
      * Security authentication to the [UserAvailableTime] command object.
      *
      * @param userId the User's Id
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun userAvailableTime(userId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -313,6 +324,7 @@ open class BaseUserAppointmentWrapper(
      *
      * @param searchCriteria a [List] of [SearchCriteria]
      * @param pageable the [Pageable] interface
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if authentication fails, null otherwise
      */
     fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

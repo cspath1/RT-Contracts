@@ -1,11 +1,13 @@
 package com.radiotelescope.controller.appointment.request
 
 import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
+import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.request.RasterScanAppointmentRequestForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -25,6 +27,18 @@ class RasterScanAppointmentRequestController(
         private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of adapting the [RasterScanAppointmentRequestForm]
+     * into a [RasterScanAppointmentRequest] after ensuring no fields are null. If any are,
+     * it will instead respond with errors.
+     *
+     * Otherwise, it will execute the [UserAutoAppointmentWrapper.request] method.
+     *
+     * If this method returns an [AccessReport], this means the user was not authorized,
+     * and the controller will return errors. Otherwise, the [RasterScanAppointmentRequest]
+     * command was executed, and the controller will respond based on if the commmand was
+     * a success or not.
+     */
     @PostMapping(value = ["/api/appointments/request/raster-scan"])
     fun execute(@RequestBody form: RasterScanAppointmentRequestForm): Result {
         // If the form validation fails, respond with errors

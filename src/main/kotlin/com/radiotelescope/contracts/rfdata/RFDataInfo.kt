@@ -10,6 +10,7 @@ import java.util.*
  * @param id the RFData's id
  * @param appointmentId the RFData's appointment id
  * @param intensity the RFData's intensity reading
+ * @param timeCaptured the time the RFData was captured
  */
 data class RFDataInfo(
         val id: Long,

@@ -74,7 +74,8 @@ class CoordinateAppointmentFactory(
     }
 
     /**
-     * Override of the [AutoAppointmentFactory.update] method that will return a [CoordinateAppointmentUpdate] command object
+     * Override of the [AutoAppointmentFactory.update] method that will return a [CoordinateAppointmentUpdate]
+     * command object
      *
      * @param request the [CoordinateAppointmentUpdate.Request]
      * @return a [CoordinateAppointmentUpdate] command object
