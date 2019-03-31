@@ -1,39 +1,42 @@
-package com.radiotelescope.controller.model.appointment.update
+package com.radiotelescope.controller.model.appointment.request
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.contracts.appointment.update.DriftScanAppointmentUpdate
+import com.radiotelescope.contracts.appointment.request.DriftScanAppointmentRequest
 import com.radiotelescope.controller.model.BaseForm
 import java.util.*
 
 /**
- * Update form that takes nullable versions of the [DriftScanAppointmentUpdate.Request] object.
+ * Request form that takes nullable versions of the [DriftScanAppointmentRequest.Request] object.
  * It is in charge of making sure these values are not null before adapting it
- * to a [DriftScanAppointmentUpdate.Request] object
+ * to a [DriftScanAppointmentRequest.Request] object
  *
- * @param startTime the Appointment's new start time
- * @param endTime the Appointment's new end time
- * @param telescopeId the Appointment's new telescope id
- * @param isPublic whether the Appointment is to be public or not
+ * @param userId the User id
+ * @param startTime the Appointment start time
+ * @param endTime the Appointment end time
+ * @param telescopeId the Appointment's telescope
  * @param elevation the Elevation
  * @param azimuth the Azimuth
  */
-data class DriftScanAppointmentUpdateForm(
+data class DriftScanAppointmentRequestForm(
+        override val userId: Long?,
         override val startTime: Date?,
         override val endTime: Date?,
         override val telescopeId: Long?,
         override val isPublic: Boolean?,
         val elevation: Double?,
         val azimuth: Double?
-) : UpdateForm<DriftScanAppointmentUpdate.Request>() {
+): RequestForm<DriftScanAppointmentRequest.Request>() {
     /**
      * Override of the [BaseForm.toRequest] method that
-     * adapts the form into a [DriftScanAppointmentUpdate.Request] object
+     * adapts the form into a [DriftScanAppointmentRequest.Request] object
+     *
+     * @return the [DriftScanAppointmentRequest.Request] object
      */
-    override fun toRequest(): DriftScanAppointmentUpdate.Request {
-        return DriftScanAppointmentUpdate.Request(
-                id = -1L,
+    override fun toRequest(): DriftScanAppointmentRequest.Request {
+        return DriftScanAppointmentRequest.Request(
+                userId = userId!!,
                 startTime = startTime!!,
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
@@ -41,7 +44,6 @@ data class DriftScanAppointmentUpdateForm(
                 elevation = elevation!!,
                 azimuth = azimuth!!
         )
-
     }
 
     /**
@@ -51,7 +53,8 @@ data class DriftScanAppointmentUpdateForm(
      */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
-
+        if (userId == null)
+            errors.put(ErrorTag.USER_ID, "Invalid user id")
         if (startTime == null)
             errors.put(ErrorTag.START_TIME, "Required field")
         if (endTime == null)

@@ -1,4 +1,4 @@
-package com.radiotelescope.contracts.appointment.create
+package com.radiotelescope.contracts.appointment.request
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
@@ -6,31 +6,36 @@ import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
-import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.orientation.Orientation
-import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
-class DriftScanAppointmentCreate(
+/**
+ * Override of the [Command] interface used to request a Drift Scan Appointment.
+ *
+ * @param request the [Request] data class
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param userRepo the [IUserRepository] interface
+ * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
+ * @param orientationRepo the [IOrientationRepository] interface
+ */
+class DriftScanAppointmentRequest(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
-        private val orientationRepo: IOrientationRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
-) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
+        private val orientationRepo: IOrientationRepository
+) : Command<Long, Multimap<ErrorTag, String>>, AppointmentRequest {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
      * that will handle all constraint checking and validation.
      *
-     * If validation passes, it will create and persist the [Appointment] object and
-     * return the id in the [SimpleResult] object.
+     * If validation passes, it will create and persist the [Appointment] object, set [Appointment.status] to Requested
+     * and return the id in the [SimpleResult] object.
      *
      * If validation fails, it will return a [SimpleResult] with the errors
      */
@@ -42,6 +47,7 @@ class DriftScanAppointmentCreate(
             orientationRepo.save(theOrientation)
 
             theAppointment.user = userRepo.findById(request.userId).get()
+            theAppointment.status = Appointment.Status.REQUESTED
             theAppointment.orientation = theOrientation
 
             appointmentRepo.save(theAppointment)
@@ -57,12 +63,11 @@ class DriftScanAppointmentCreate(
      * It also ensures that the start time is not before the current date
      */
     private fun validateRequest(): Multimap<ErrorTag, String>? {
-        basicValidateRequest(
+        baseRequestValidation(
                 request = request,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                appointmentRepo = appointmentRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                appointmentRepo = appointmentRepo
         )?.let { return it }
 
         var errors = HashMultimap.create<ErrorTag, String>()
@@ -70,19 +75,9 @@ class DriftScanAppointmentCreate(
         with(request) {
             if(elevation < 0 || elevation > 90)
                 errors.put(ErrorTag.ELEVATION, "Elevation must be between 0 and 90")
-            if(azimuth < 0 || azimuth >= 360)
+            if(azimuth < 0 || azimuth >= 359)
                 errors.put(ErrorTag.AZIMUTH, "Azimuth must be between 0 and 360")
         }
-
-        if (!errors.isEmpty)
-            return errors
-
-        errors = validateAvailableAllottedTime(
-                request = request,
-                appointmentRepo = appointmentRepo,
-                userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
-        )
 
         return if (errors.isEmpty) null else errors
     }
@@ -99,7 +94,7 @@ class DriftScanAppointmentCreate(
             override val isPublic: Boolean,
             val azimuth: Double,
             val elevation: Double
-    ) : AppointmentCreate.Request() {
+    ) : AppointmentRequest.Request() {
         /**
          * Concrete implementation of the [BaseCreateRequest.toEntity] method that
          * returns an Appointment object
@@ -125,8 +120,4 @@ class DriftScanAppointmentCreate(
             )
         }
     }
-
-
 }
-
-

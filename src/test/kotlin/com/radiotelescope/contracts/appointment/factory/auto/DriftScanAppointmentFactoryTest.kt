@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.appointment.factory.auto
 
 import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreate
+import com.radiotelescope.contracts.appointment.request.DriftScanAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.DriftScanAppointmentUpdate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -95,5 +96,24 @@ internal class DriftScanAppointmentFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is DriftScanAppointmentUpdate)
+    }
+
+    @Test
+    fun driftScan_request() {
+        // Call the factory method
+        val cmd = factory.request(
+                request = DriftScanAppointmentRequest.Request(
+                        userId = 1L,
+                        startTime = Date(System.currentTimeMillis() + 10000L),
+                        endTime = Date(System.currentTimeMillis() + 30000L),
+                        isPublic = true,
+                        telescopeId = 1L,
+                        elevation = 90.0,
+                        azimuth = 180.0
+                )
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is DriftScanAppointmentRequest)
     }
 }
