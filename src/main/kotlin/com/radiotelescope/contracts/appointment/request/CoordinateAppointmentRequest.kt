@@ -54,6 +54,7 @@ class CoordinateAppointmentRequest(
             coordinateRepo.save(theCoordinate)
 
             appointmentRepo.save(theAppointment)
+
             return SimpleResult(theAppointment.id, null)
         }
     }

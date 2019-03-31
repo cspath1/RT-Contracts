@@ -157,6 +157,7 @@ class RasterScanAppointmentCreate(
             coordinates.forEach {
                 coordinateList.add(it.toEntity())
             }
+
             return coordinateList
         }
     }

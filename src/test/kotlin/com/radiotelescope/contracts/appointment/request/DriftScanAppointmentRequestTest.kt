@@ -95,6 +95,9 @@ internal class DriftScanAppointmentRequestTest {
         assertEquals(requestCopy.userId, theAppointment.user.id)
         assertEquals(Appointment.Type.DRIFT_SCAN, theAppointment.type)
         assertEquals(Appointment.Status.REQUESTED, theAppointment.status)
+        assertNotNull(theAppointment.orientation)
+        assertEquals(requestCopy.azimuth, theAppointment.orientation!!.azimuth, 0.0001)
+        assertEquals(requestCopy.elevation, theAppointment.orientation!!.elevation, 0.0001)
     }
 
     @Test

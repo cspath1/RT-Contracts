@@ -49,6 +49,7 @@ class RasterScanAppointmentUpdate(
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theAppointment = appointmentRepo.findById(request.id).get()
             val updatedAppointment = handleEntityUpdate(theAppointment, request)
+
             return SimpleResult(updatedAppointment.id, null)
         }
     }

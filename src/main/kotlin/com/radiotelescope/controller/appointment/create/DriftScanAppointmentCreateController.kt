@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle Point Appointment Creation
+ * REST Controller to handle Drift Scan Appointment Creation
  *
  * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
@@ -41,7 +41,7 @@ class DriftScanAppointmentCreateController(
      * whether this command was a success or not, responding appropriately.
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/appointments/schedule/driftScan"])
+    @PostMapping(value = ["/api/appointments/schedule/drift-scan"])
     fun execute(@RequestBody form: DriftScanAppointmentCreateForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
@@ -49,7 +49,7 @@ class DriftScanAppointmentCreateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment Creation",
+                            action = "Drift Scan Appointment Creation",
                             affectedRecordId = null,
                             status = HttpStatus.BAD_REQUEST.value()
                     ),
@@ -69,7 +69,7 @@ class DriftScanAppointmentCreateController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Creation",
+                                    action = "Drift Scan Appointment Creation",
                                     affectedRecordId = data,
                                     status = HttpStatus.OK.value()
                             )
@@ -83,7 +83,7 @@ class DriftScanAppointmentCreateController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Creation",
+                                    action = "Drift Scan Appointment Creation",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
                             ),
@@ -98,7 +98,7 @@ class DriftScanAppointmentCreateController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Appointment Creation",
+                                action = "Drift Scan Appointment Creation",
                                 affectedRecordId = null,
                                 status = HttpStatus.FORBIDDEN.value()
                         ),

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle Appointment Update
+ * REST Controller to handle Drift Scan Appointment Update
  *
  * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
@@ -38,7 +38,7 @@ class DriftScanAppointmentUpdateController(
      * If not, this means the [DriftScanAppointmentUpdate] method was executed, and the controller
      * should respond based on if the command was a success or not
      */
-    @PutMapping(value = ["/api/appointments/{appointmentId}/driftScan"])
+    @PutMapping(value = ["/api/appointments/{appointmentId}/drift-scan"])
     fun execute(@PathVariable("appointmentId") appointmentId: Long,
                 @RequestBody form: DriftScanAppointmentUpdateForm
     ): Result {
@@ -48,7 +48,7 @@ class DriftScanAppointmentUpdateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment Update",
+                            action = "Drift Scan Appointment Update",
                             affectedRecordId = null,
                             status = HttpStatus.BAD_REQUEST.value()
                     ),
@@ -74,7 +74,7 @@ class DriftScanAppointmentUpdateController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Update",
+                                    action = "Drift Scan Appointment Update",
                                     affectedRecordId = data,
                                     status = HttpStatus.OK.value()
                             )
@@ -85,7 +85,7 @@ class DriftScanAppointmentUpdateController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Retrieval",
+                                    action = "Drift Scan Appointment Retrieval",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
                             ),
@@ -104,7 +104,7 @@ class DriftScanAppointmentUpdateController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Appointment Update",
+                                action = "Drift Scan Appointment Update",
                                 affectedRecordId = null,
                                 status = if (report.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                         ),

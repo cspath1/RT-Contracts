@@ -99,6 +99,7 @@ class DriftScanAppointmentUpdate(
             return theAppointment
         }
     }
+
     /**
      * Method responsible for constraint checking and validations for the appointment
      * update request. Calls the [baseRequestValidation] to handle validation common
@@ -124,7 +125,7 @@ class DriftScanAppointmentUpdate(
             if(elevation < 0 || elevation > 90)
                 errors.put(ErrorTag.ELEVATION, "Elevation must be between 0 and 90")
             if(azimuth < 0 || azimuth >= 360)
-                errors.put(ErrorTag.AZIMUTH, "Azimuth must be between 0 and 360")
+                errors.put(ErrorTag.AZIMUTH, "Azimuth must be between 0 and 359")
         }
 
         if (!errors.isEmpty)
@@ -139,7 +140,6 @@ class DriftScanAppointmentUpdate(
 
         return if (errors.isEmpty) null else errors
     }
-
 
     /**
      * Data class containing all fields necessary for drift scan appointment update. Implements the
@@ -204,6 +204,4 @@ class DriftScanAppointmentUpdate(
             )
         }
     }
-
-
 }

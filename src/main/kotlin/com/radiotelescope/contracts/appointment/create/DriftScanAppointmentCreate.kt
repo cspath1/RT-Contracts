@@ -16,6 +16,17 @@ import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
+/**
+ * Override of the [Command] interface method used for Drift Scan Appointment creation
+ *
+ * @param request the [Request] object
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
+ * @param orientationRepo the [IOrientationRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
+ */
 class DriftScanAppointmentCreate(
         private val request: Request,
         private val appointmentRepo: IAppointmentRepository,
@@ -71,7 +82,7 @@ class DriftScanAppointmentCreate(
             if(elevation < 0 || elevation > 90)
                 errors.put(ErrorTag.ELEVATION, "Elevation must be between 0 and 90")
             if(azimuth < 0 || azimuth >= 360)
-                errors.put(ErrorTag.AZIMUTH, "Azimuth must be between 0 and 360")
+                errors.put(ErrorTag.AZIMUTH, "Azimuth must be between 0 and 359")
         }
 
         if (!errors.isEmpty)
@@ -125,8 +136,6 @@ class DriftScanAppointmentCreate(
             )
         }
     }
-
-
 }
 
 

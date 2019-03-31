@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle Celestial Body Appointment Udpate
+ * REST Controller to handle Celestial Body Appointment Update
  *
  * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
@@ -51,7 +51,7 @@ class CelestialBodyAppointmentUpdateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment Update",
+                            action = "Celestial Body Appointment Update",
                             affectedRecordId = null,
                             status = HttpStatus.BAD_REQUEST.value()
                     ),
@@ -77,7 +77,7 @@ class CelestialBodyAppointmentUpdateController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Update",
+                                    action = "Celestial Body Appointment Update",
                                     affectedRecordId = data,
                                     status = HttpStatus.OK.value()
                             )
@@ -88,7 +88,7 @@ class CelestialBodyAppointmentUpdateController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Retrieval",
+                                    action = "Celestial Body Appointment Retrieval",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
                             ),
@@ -107,7 +107,7 @@ class CelestialBodyAppointmentUpdateController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Appointment Update",
+                                action = "Celestial Body Appointment Update",
                                 affectedRecordId = null,
                                 status = if (report.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                         ),

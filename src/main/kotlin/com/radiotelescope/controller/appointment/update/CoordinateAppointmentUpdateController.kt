@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle Appointment Update
+ * REST Controller to handle Point Appointment Update
  *
  * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
@@ -48,7 +48,7 @@ class CoordinateAppointmentUpdateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment Update",
+                            action = "Point Appointment Update",
                             affectedRecordId = null,
                             status = HttpStatus.BAD_REQUEST.value()
                     ),
@@ -74,7 +74,7 @@ class CoordinateAppointmentUpdateController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Update",
+                                    action = "Point Appointment Update",
                                     affectedRecordId = data,
                                     status = HttpStatus.OK.value()
                             )
@@ -85,7 +85,7 @@ class CoordinateAppointmentUpdateController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Retrieval",
+                                    action = "Point Appointment Retrieval",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
                             ),
@@ -104,7 +104,7 @@ class CoordinateAppointmentUpdateController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Appointment Update",
+                                action = "Point Appointment Update",
                                 affectedRecordId = null,
                                 status = if (report.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                         ),

@@ -47,7 +47,7 @@ class RasterScanAppointmentCreateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment Creation",
+                            action = "Raster Scan Appointment Creation",
                             affectedRecordId = null,
                             status = HttpStatus.BAD_REQUEST.value()
                     ),
@@ -67,7 +67,7 @@ class RasterScanAppointmentCreateController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Creation",
+                                    action = "Raster Scan Appointment Creation",
                                     affectedRecordId = data,
                                     status = HttpStatus.OK.value()
                             )
@@ -81,7 +81,7 @@ class RasterScanAppointmentCreateController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Creation",
+                                    action = "Raster Scan Appointment Creation",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
                             ),
@@ -97,7 +97,7 @@ class RasterScanAppointmentCreateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment Creation",
+                            action = "Raster Scan Appointment Creation",
                             affectedRecordId = null,
                             status = HttpStatus.FORBIDDEN.value()
                     ),

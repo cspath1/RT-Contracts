@@ -120,6 +120,9 @@ internal class DriftScanAppointmentCreateTest {
         assertEquals(requestCopy.userId, theAppointment.get().user.id)
         assertTrue(theAppointment.get().isPublic)
         assertEquals(Appointment.Type.DRIFT_SCAN, theAppointment.get().type)
+        assertNotNull(theAppointment.get().orientation)
+        assertEquals(requestCopy.elevation ,theAppointment.get().orientation!!.elevation, 0.0001)
+        assertEquals(requestCopy.azimuth, theAppointment.get().orientation!!.azimuth, 0.0001)
     }
 
     @Test

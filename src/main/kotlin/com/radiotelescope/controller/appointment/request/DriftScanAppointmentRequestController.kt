@@ -49,7 +49,7 @@ class DriftScanAppointmentRequestController(
      * was a success or not
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PostMapping(value = ["/api/appointments/request/driftScan"])
+    @PostMapping(value = ["/api/appointments/request/drift-scan"])
     fun execute(@RequestBody form: DriftScanAppointmentRequestForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
@@ -57,7 +57,7 @@ class DriftScanAppointmentRequestController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment Request",
+                            action = "Drift Scan Appointment Request",
                             affectedRecordId = null,
                             status = HttpStatus.BAD_REQUEST.value()
                     ),
@@ -77,7 +77,7 @@ class DriftScanAppointmentRequestController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Request",
+                                    action = "Drift Scan Appointment Request",
                                     affectedRecordId = data,
                                     status = HttpStatus.OK.value()
                             )
@@ -92,7 +92,7 @@ class DriftScanAppointmentRequestController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action ="Appointment Request",
+                                    action ="Drift Scan Appointment Request",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
                             ),
@@ -107,7 +107,7 @@ class DriftScanAppointmentRequestController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Appointment Request",
+                                action = "Drift Scan Appointment Request",
                                 affectedRecordId = null,
                                 status = HttpStatus.FORBIDDEN.value()
                         ),

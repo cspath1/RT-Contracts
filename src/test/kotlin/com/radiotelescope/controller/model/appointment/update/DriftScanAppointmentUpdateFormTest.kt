@@ -1,13 +1,12 @@
-package com.radiotelescope.controller.model.appointment.create
+package com.radiotelescope.controller.model.appointment.update
 
 import com.radiotelescope.contracts.appointment.ErrorTag
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
 
-internal class DriftScanAppointmentCreateFormTest {
-    private val baseForm = DriftScanAppointmentCreateForm(
-            userId = -1L,
+internal class DriftScanAppointmentUpdateFormTest {
+    private val baseForm = DriftScanAppointmentUpdateForm(
             startTime = Date(System.currentTimeMillis() + 50000L),
             endTime = Date(System.currentTimeMillis() + 100000L),
             telescopeId = 1L,
@@ -19,14 +18,12 @@ internal class DriftScanAppointmentCreateFormTest {
     @Test
     fun testToRequest() {
         // First, make sure there are no errors
-        assertNull(baseForm.validateRequest())
 
         val theRequest = baseForm.toRequest()
 
-        assertEquals(theRequest.userId, baseForm.userId!!)
-        assertEquals(theRequest.telescopeId, baseForm.telescopeId!!)
-        assertEquals(theRequest.endTime, baseForm.endTime!!)
         assertEquals(theRequest.startTime, baseForm.startTime!!)
+        assertEquals(theRequest.endTime, baseForm.endTime!!)
+        assertEquals(theRequest.telescopeId, baseForm.telescopeId!!)
         assertEquals(theRequest.isPublic, baseForm.isPublic!!)
         assertEquals(theRequest.elevation, baseForm.elevation!!, 0.0001)
         assertEquals(theRequest.azimuth, baseForm.azimuth!!, 0.0001)
@@ -39,21 +36,6 @@ internal class DriftScanAppointmentCreateFormTest {
 
         // Make sure there were no errors
         assertNull(errors)
-    }
-
-    @Test
-    fun testNullUserId_Failure() {
-        // Create a copy of the form with a null user id
-        val baseFormCopy = baseForm.copy(
-                userId = null
-        )
-
-        // Call the validate request method
-        val errors = baseFormCopy.validateRequest()
-
-        // Make sure the user id field was the reason for failure
-        assertNotNull(errors)
-        assertTrue(errors!![ErrorTag.USER_ID].isNotEmpty())
     }
 
     @Test
@@ -205,5 +187,4 @@ internal class DriftScanAppointmentCreateFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.AZIMUTH].isNotEmpty())
     }
-
 }

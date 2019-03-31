@@ -53,7 +53,7 @@ class CelestialBodyAppointmentRequestController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment Request",
+                            action = "Celestial Body Appointment Request",
                             affectedRecordId = null,
                             status = HttpStatus.BAD_REQUEST.value()
                     ),
@@ -73,7 +73,7 @@ class CelestialBodyAppointmentRequestController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Request",
+                                    action = "Celestial Body Appointment Request",
                                     affectedRecordId = data,
                                     status = HttpStatus.OK.value()
                             )
@@ -88,7 +88,7 @@ class CelestialBodyAppointmentRequestController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action ="Appointment Request",
+                                    action ="Celestial Body Appointment Request",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
                             ),
@@ -103,7 +103,7 @@ class CelestialBodyAppointmentRequestController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Appointment Request",
+                                action = "Celestial Body Appointment Request",
                                 affectedRecordId = null,
                                 status = HttpStatus.FORBIDDEN.value()
                         ),

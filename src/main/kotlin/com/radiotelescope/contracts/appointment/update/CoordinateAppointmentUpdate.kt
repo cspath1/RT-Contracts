@@ -49,6 +49,7 @@ class CoordinateAppointmentUpdate(
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val appointment = appointmentRepo.findById(request.id).get()
             val updatedAppointment = handleEntityUpdate(appointment, request)
+
             return SimpleResult(updatedAppointment.id, null)
         }
     }

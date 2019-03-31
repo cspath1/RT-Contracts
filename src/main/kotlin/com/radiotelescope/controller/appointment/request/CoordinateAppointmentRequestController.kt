@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * REST Controller to handle Coordinate Appointment Request
+ * REST Controller to handle Point Appointment Request
  *
  * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param awsSesSendService the [AwsSesSendService]
@@ -57,7 +57,7 @@ class CoordinateAppointmentRequestController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.APPOINTMENT,
-                            action = "Appointment Request",
+                            action = "Point Appointment Request",
                             affectedRecordId = null,
                             status = HttpStatus.BAD_REQUEST.value()
                     ),
@@ -77,7 +77,7 @@ class CoordinateAppointmentRequestController(
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action = "Appointment Request",
+                                    action = "Point Appointment Request",
                                     affectedRecordId = data,
                                     status = HttpStatus.OK.value()
                             )
@@ -92,7 +92,7 @@ class CoordinateAppointmentRequestController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.APPOINTMENT,
-                                    action ="Appointment Request",
+                                    action ="Point Appointment Request",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
                             ),
@@ -107,7 +107,7 @@ class CoordinateAppointmentRequestController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.APPOINTMENT,
-                                action = "Appointment Request",
+                                action = "Point Appointment Request",
                                 affectedRecordId = null,
                                 status = HttpStatus.FORBIDDEN.value()
                         ),
