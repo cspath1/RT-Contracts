@@ -7,6 +7,7 @@ import com.radiotelescope.contracts.appointment.create.AppointmentCreate
 import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreate
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.request.AppointmentRequest
+import com.radiotelescope.contracts.appointment.request.DriftScanAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.DriftScanAppointmentUpdate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
@@ -55,6 +56,13 @@ class DriftScanAppointmentFactory(
         )
     }
 
+    /**
+     * Override of the [AutoAppointmentFactory.update] method that will return a [DriftScanAppointmentUpdate]
+     * command object
+     *
+     * @param request the [DriftScanAppointmentUpdate.Request] object
+     * @return a [DriftScanAppointmentUpdate] command
+     */
     override fun update(request: AppointmentUpdate.Request): Command<Long, Multimap<ErrorTag, String>> {
         return DriftScanAppointmentUpdate(
                 request = request as DriftScanAppointmentUpdate.Request,
@@ -67,8 +75,21 @@ class DriftScanAppointmentFactory(
         )
     }
 
+    /**
+     * Override of the [AutoAppointmentFactory.request] method that will return a [DriftScanAppointmentRequest]
+     * command object
+     *
+     * @param request the [DriftScanAppointmentRequest.Request] object
+     * @return a [DriftScanAppointmentRequest] command
+     */
     override fun request(request: AppointmentRequest.Request): Command<Long, Multimap<ErrorTag, String>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return DriftScanAppointmentRequest(
+                request = request as DriftScanAppointmentRequest.Request,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
+                orientationRepo = orientationRepo
+        )
     }
 
 }
