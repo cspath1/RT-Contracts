@@ -26,7 +26,7 @@ data class DriftScanAppointmentUpdateForm(
         override val isPublic: Boolean?,
         val elevation: Double?,
         val azimuth: Double?
-        ) : UpdateForm<DriftScanAppointmentUpdate.Request>() {
+) : UpdateForm<DriftScanAppointmentUpdate.Request>() {
     /**
      * Override of the [BaseForm.toRequest] method that
      * adapts the form into a [DriftScanAppointmentUpdate.Request] object
