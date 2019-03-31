@@ -1,26 +1,25 @@
 package com.radiotelescope.contracts.appointment
 
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
-import org.junit.Assert.*
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.domain.PageRequest
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
-internal class BaseAppointmentFactoryTest {
+internal class BaseAppointmentFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 

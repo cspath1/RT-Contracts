@@ -19,7 +19,7 @@ import com.radiotelescope.repository.viewer.IViewerRepository
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
-abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
+internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 

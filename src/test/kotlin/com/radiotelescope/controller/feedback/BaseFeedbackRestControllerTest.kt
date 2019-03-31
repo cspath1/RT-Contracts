@@ -8,7 +8,7 @@ import com.radiotelescope.repository.feedback.IFeedbackRepository
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
-abstract class BaseFeedbackRestControllerTest : BaseRestControllerTest() {
+internal abstract class BaseFeedbackRestControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var feedbackRepo: IFeedbackRepository
 

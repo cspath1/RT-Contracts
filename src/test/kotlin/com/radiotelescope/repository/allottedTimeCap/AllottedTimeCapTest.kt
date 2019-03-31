@@ -1,39 +1,20 @@
 package com.radiotelescope.repository.allottedTimeCap
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.user.User
-import liquibase.integration.spring.SpringLiquibase
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class AllottedTimeCapTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
-    }
-
+internal class AllottedTimeCapTest : AbstractSpringTest() {
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
 
     private lateinit var user: User
 

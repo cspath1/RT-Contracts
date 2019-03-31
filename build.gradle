@@ -112,7 +112,7 @@ jacocoTestCoverageVerification {
 task verify(type: GradleBuild) {
 	group 'Verification'
 	description 'Verify the build by building, testing, and validation coverage ratio (80 or above).'
-	tasks = ['testControllers', 'testRepositories', 'test', 'jacocoTestCoverageVerification']
+	tasks = ['test', 'jacocoTestCoverageVerification']
 }
 
 
@@ -147,14 +147,4 @@ dependencies {
 
 test {
 	maxHeapSize = "2048m"
-	exclude 'com/radiotelescope/controller/**'
-	exclude 'com/radiotelescope/repository/**'
-}
-
-task testControllers(type: Test) {
-	include 'com/radiotelescope/controller/**'
-}
-
-task testRepositories(type: Test) {
-	include 'com/radiotelescope/repository/**'
 }

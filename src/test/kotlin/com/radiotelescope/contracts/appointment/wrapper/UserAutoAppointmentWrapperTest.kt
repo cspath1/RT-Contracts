@@ -1,12 +1,11 @@
-package com.radiotelescope.contracts.appointment
+package com.radiotelescope.contracts.appointment.wrapper
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
-import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -25,9 +24,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
@@ -35,19 +31,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-@ActiveProfiles(value = ["test"])
-internal class UserAutoAppointmentWrapperTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil {
-            return TestUtil()
-        }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 

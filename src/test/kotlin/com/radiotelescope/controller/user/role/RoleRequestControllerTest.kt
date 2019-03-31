@@ -1,43 +1,21 @@
 package com.radiotelescope.controller.user.role
 
-import com.radiotelescope.services.ses.MockAwsSesSendService
-import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
-import liquibase.integration.spring.SpringLiquibase
+import com.radiotelescope.services.ses.MockAwsSesSendService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles("test")
 internal class RoleRequestControllerTest : BaseUserRoleControllerTest() {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-
-        @Bean
-        fun liquibase(): SpringLiquibase {
-            val liquibase = SpringLiquibase()
-            liquibase.setShouldRun(false)
-            return liquibase
-        }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
     private lateinit var userRoleRequestController: RoleRequestController
 
     private lateinit var user: User

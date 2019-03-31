@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.appointment.factory.auto
 
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreate
 import com.radiotelescope.contracts.appointment.request.DriftScanAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.DriftScanAppointmentUpdate
@@ -10,20 +11,18 @@ import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
-import org.junit.Assert.*
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
-internal class DriftScanAppointmentFactoryTest {
+internal class DriftScanAppointmentFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 

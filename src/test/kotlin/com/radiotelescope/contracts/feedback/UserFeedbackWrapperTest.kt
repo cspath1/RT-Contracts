@@ -1,19 +1,19 @@
 package com.radiotelescope.contracts.feedback
 
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.feedback.IFeedbackRepository
-import org.junit.Assert.*
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
-internal class UserFeedbackWrapperTest {
+internal class UserFeedbackWrapperTest : AbstractSpringTest() {
     @Autowired
     private lateinit var feedbackRepo: IFeedbackRepository
 

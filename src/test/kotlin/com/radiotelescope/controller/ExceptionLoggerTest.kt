@@ -1,6 +1,6 @@
 package com.radiotelescope.controller
 
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.controller.admin.user.AdminUserListController
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.error.IErrorRepository
@@ -8,28 +8,26 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.FakeUserContext
 import com.radiotelescope.security.UserContext
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
-import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import java.lang.RuntimeException
 
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @DataJpaTest
-@ActiveProfiles("test")
-internal class ExceptionLoggerTest {
+internal class ExceptionLoggerTest : AbstractSpringTest() {
     private lateinit var mockMvc: MockMvc
 
     @Mock

@@ -1,6 +1,6 @@
 package com.radiotelescope.repository.appointment
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.model.appointment.AppointmentSpecificationBuilder
 import com.radiotelescope.repository.model.appointment.Filter
 import com.radiotelescope.repository.model.appointment.SearchCriteria
@@ -12,28 +12,15 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
-import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
-import org.springframework.test.context.jdbc.Sql
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class AppointmentTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class AppointmentTest : AbstractSpringTest() {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 

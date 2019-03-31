@@ -10,7 +10,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
-abstract class BaseUserRestControllerTest : BaseRestControllerTest() {
+internal abstract class BaseUserRestControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
