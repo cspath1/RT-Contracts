@@ -15,6 +15,7 @@ import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
@@ -46,6 +47,7 @@ class CelestialBodyAppointmentRequestController(
      * command was executed, and the controller will respond based on if the command
      * was a success or not
      */
+    @PostMapping(value = ["/api/appointments/request/celestial-body"])
     fun execute(@RequestBody form: CelestialBodyAppointmentRequestForm): Result {
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
