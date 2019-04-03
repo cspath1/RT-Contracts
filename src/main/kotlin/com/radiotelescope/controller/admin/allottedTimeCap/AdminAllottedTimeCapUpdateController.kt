@@ -30,7 +30,7 @@ class AdminAllottedTimeCapUpdateController(
      * respond based on whether or not the command was a success or not
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PutMapping(value = ["api/users/{userId}/ban"])
+    @PutMapping(value = ["/api/users/{userId}/allotted-time"])
     fun execute(@PathVariable("userId") userId: Long,
                 @RequestParam("allottedTime") allottedTime: Long?
     ): Result {
@@ -46,7 +46,7 @@ class AdminAllottedTimeCapUpdateController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.ALLOTTED_TIME_CAP,
-                                action = "Update Alloted Time Cap",
+                                action = "Update Allotted Time Cap",
                                 affectedRecordId = timeCap.id,
                                 status = HttpStatus.OK.value()
                         )
