@@ -26,4 +26,5 @@
     <include file="classpath:/db/changelog/21-update-radio-telescope-table.sql"/>
     <include file="classpath:/db/changelog/22-update-existing-appointment-types.sql"/>
     <include file="classpath:/db/changelog/23-update-appointment-coordinate-relation.sql"/>
+    <include file="classpath:/db/changelog/24-add-heartbeat-monitor.sql"/>
 </databaseChangeLog>
