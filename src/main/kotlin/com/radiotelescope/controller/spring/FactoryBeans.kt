@@ -2,6 +2,8 @@ package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.accountActivateToken.BaseAccountActivateTokenFactory
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
+import com.radiotelescope.contracts.allottedTimeCap.BaseAllottedTimeCapFactory
+import com.radiotelescope.contracts.allottedTimeCap.UserAllottedTimeCapWrapper
 import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointmentFactory
 import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.appointment.factory.auto.CelestialBodyAppointmentFactory
@@ -307,6 +309,18 @@ class FactoryBeans(
         return UserFeedbackWrapper(
                 factory = BaseFeedbackFactory(
                         feedbackRepo = repositories.feedbackRepo
+                )
+        )
+    }
+
+    @Bean
+    override fun getAllottedTimeCapWrapper(): UserAllottedTimeCapWrapper {
+        return UserAllottedTimeCapWrapper(
+                context = userContext,
+                factory = BaseAllottedTimeCapFactory(
+                        userRepo = repositories.userRepo,
+                        userRoleRepo = repositories.userRoleRepo,
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
                 )
         )
     }

@@ -15,10 +15,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * REST Controller to handle retrieving User information
@@ -49,7 +46,7 @@ class UserInviteController(
      * @param id the User's id
      * @param email the email to send an invite to
      */
-    @GetMapping(value = ["/api/users/{id}/invite"])
+    @PostMapping(value = ["/api/users/{id}/invite"])
     fun execute(@PathVariable("id") id: Long,
                 @RequestParam email: String): Result{
         // If the supplied path variable is not null, call the invite

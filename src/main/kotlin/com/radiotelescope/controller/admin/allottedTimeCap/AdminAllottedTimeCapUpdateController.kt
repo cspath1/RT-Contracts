@@ -9,11 +9,9 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
+@RestController
 class AdminAllottedTimeCapUpdateController(
         private val allottedTimeCapWrapper: UserAllottedTimeCapWrapper,
         logger: Logger

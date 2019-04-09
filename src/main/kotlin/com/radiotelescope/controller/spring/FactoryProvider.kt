@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
+import com.radiotelescope.contracts.allottedTimeCap.UserAllottedTimeCapWrapper
 import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.appointment.wrapper.UserManualAppointmentWrapper
 import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreate
@@ -97,4 +98,9 @@ interface FactoryProvider {
      * Abstract method to return the [UserFeedbackWrapper] class
      */
     fun getFeedbackWrapper(): UserFeedbackWrapper
+
+    /**
+     * Abstract method to return the [UserAllottedTimeCapWrapper] class
+     */
+    fun getAllottedTimeCapWrapper(): UserAllottedTimeCapWrapper
 }

@@ -26,7 +26,6 @@ internal class LogInfoTest {
     fun testPrimaryConstructor() {
         val logInfo = LogInfo(
                 id = 1L,
-                user = theUser,
                 userFirstName = "Cody",
                 userLastName = "Spath",
                 affectedRecordId = 1L,
@@ -38,7 +37,6 @@ internal class LogInfoTest {
         )
 
         assertEquals(1L, logInfo.id)
-        assertEquals(theUser, logInfo.user)
         assertEquals("Cody", logInfo.userFirstName)
         assertEquals("Spath", logInfo.userLastName)
         assertEquals(1L, logInfo.affectedRecordId)
@@ -71,7 +69,6 @@ internal class LogInfoTest {
         assertEquals(log.action, logInfo.action)
         assertEquals(log.timestamp, logInfo.timestamp)
         assertEquals(HttpStatus.OK.value(), logInfo.status)
-        assertNull(logInfo.user)
         assertNull(logInfo.userFirstName)
         assertNull(logInfo.userLastName)
     }
@@ -102,7 +99,6 @@ internal class LogInfoTest {
         val logInfo = LogInfo(log, user)
 
         assertEquals(log.id, logInfo.id)
-        assertEquals(log.user, logInfo.user)
         assertEquals(log.isSuccess, logInfo.isSuccess)
         assertEquals(log.action, logInfo.action)
         assertEquals(log.affectedTable!!.label, logInfo.affectedTable)

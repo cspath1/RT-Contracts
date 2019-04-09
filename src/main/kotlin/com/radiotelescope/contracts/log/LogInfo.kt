@@ -20,7 +20,6 @@ import java.util.*
  */
 data class LogInfo(
         val id: Long,
-        val user: User?,
         val userFirstName: String?,
         val userLastName: String?,
         val affectedRecordId: Long?,
@@ -38,7 +37,6 @@ data class LogInfo(
      */
     constructor(log: Log): this(
             id = log.id,
-            user = null,
             userFirstName = null,
             userLastName = null,
             affectedRecordId = log.affectedRecordId,
@@ -58,7 +56,6 @@ data class LogInfo(
      */
     constructor(log: Log, user: User): this(
             id = log.id,
-            user = user,
             userFirstName = user.firstName,
             userLastName = user.lastName,
             affectedRecordId = log.affectedRecordId,
