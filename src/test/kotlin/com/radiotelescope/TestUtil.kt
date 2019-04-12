@@ -159,7 +159,8 @@ internal class TestUtil {
             status: Appointment.Status,
             startTime: Date,
             endTime: Date,
-            isPublic: Boolean
+            isPublic: Boolean,
+            priority: Appointment.Priority
     ): Appointment {
         val coordinate = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
@@ -179,7 +180,8 @@ internal class TestUtil {
                 startTime = startTime,
                 endTime = endTime,
                 telescopeId = telescopeId,
-                isPublic = isPublic
+                isPublic = isPublic,
+                priority = priority
         )
 
         theAppointment.status = status

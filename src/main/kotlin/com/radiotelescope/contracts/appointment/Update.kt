@@ -151,7 +151,8 @@ class Update(
         val appointmentList = appointmentRepo.findConflict(
                 endTime = request.endTime,
                 startTime = request.startTime,
-                telescopeId = request.telescopeId
+                telescopeId = request.telescopeId,
+                priority = request.priority
         )
 
         if (appointmentList.size > 1)
@@ -176,7 +177,8 @@ class Update(
             val hours: Int,
             val minutes: Int,
             val seconds: Int,
-            val declination: Double
+            val declination: Double,
+            val priority: Appointment.Priority
     ): BaseUpdateRequest<Appointment> {
         /**
          * Override of the [BaseUpdateRequest.updateEntity] method that
@@ -188,6 +190,7 @@ class Update(
             entity.startTime = startTime
             entity.endTime = endTime
             entity.isPublic = isPublic
+            entity.priority = priority
 
             if (entity.coordinate != null) {
                 entity.coordinate!!.hours = hours

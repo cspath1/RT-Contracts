@@ -75,7 +75,8 @@ internal class UpdateTest {
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true,
                 status = Appointment.Status.SCHEDULED,
-                telescopeId = 1L
+                telescopeId = 1L,
+                priority = Appointment.Priority.PRIMARY
         )
         appointmentId = appointment.id
 
@@ -88,7 +89,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
     }
 
@@ -324,7 +326,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -336,7 +339,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -370,7 +374,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -382,7 +387,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -420,7 +426,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -432,7 +439,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -470,7 +478,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -482,7 +491,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -520,7 +530,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -532,7 +543,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -570,7 +582,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -582,7 +595,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -620,7 +634,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -632,7 +647,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -670,7 +686,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -682,7 +699,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -720,7 +738,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -732,7 +751,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -772,7 +792,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -784,7 +805,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -820,7 +842,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.CANCELED
+                status = Appointment.Status.CANCELED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -832,7 +855,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -866,7 +890,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         appointment = testUtil.createAppointment(
@@ -875,7 +900,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -887,7 +913,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -925,7 +952,8 @@ internal class UpdateTest {
                 endTime = Date(endTime + 4444L),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         appointment = testUtil.createAppointment(
@@ -934,7 +962,8 @@ internal class UpdateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Update.Request(
@@ -946,7 +975,8 @@ internal class UpdateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Update(
@@ -1154,5 +1184,53 @@ internal class UpdateTest {
 
         // Make sure it was for the expected reason
         assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
+    }
+
+    @Test
+    fun testValidSC_Different_Priority_StartAtStart_EndBeforeEnd_Success(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        // Make the user an admin
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
+
+        appointment = testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
+        )
+
+        val conflict = Update.Request(
+                id = appointmentId,
+                telescopeId = 1L,
+                startTime = Date(startTime),
+                endTime = Date(startTime + 1000L),
+                isPublic = true,
+                hours = 12,
+                minutes = 12,
+                seconds = 12,
+                declination = 69.0,
+                priority = Appointment.Priority.SECONDARY
+        )
+
+        val (id, errors) = Update(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                telescopeRepo = telescopeRepo,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        // Make sure it was not an error
+        assertNotNull(id)
+        assertNull(errors)
     }
 }

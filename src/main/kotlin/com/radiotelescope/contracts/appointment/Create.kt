@@ -138,7 +138,8 @@ class Create(
         val appointmentList = appointmentRepo.findConflict(
                 endTime = request.endTime,
                 startTime = request.startTime,
-                telescopeId = request.telescopeId
+                telescopeId = request.telescopeId,
+                priority = request.priority
         )
 
         if (!appointmentList.isEmpty()) {
@@ -161,7 +162,8 @@ class Create(
             val hours: Int,
             val minutes: Int,
             val seconds: Int,
-            val declination: Double
+            val declination: Double,
+            val priority: Appointment.Priority
     ) : BaseCreateRequest<Appointment> {
         /**
          * Concrete implementation of the [BaseCreateRequest.toEntity] method that
@@ -172,7 +174,8 @@ class Create(
                     startTime = startTime,
                     endTime = endTime,
                     telescopeId = telescopeId,
-                    isPublic = isPublic
+                    isPublic = isPublic,
+                    priority = priority
             )
         }
 

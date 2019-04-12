@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.Request
 import com.radiotelescope.controller.model.BaseForm
+import com.radiotelescope.repository.appointment.Appointment
 import java.util.*
 
 /**
@@ -26,7 +27,8 @@ data class RequestForm(
         val hours: Int?,
         val minutes: Int?,
         val seconds: Int?,
-        val declination: Double?
+        val declination: Double?,
+        val priority: Appointment.Priority?
 ) : BaseForm<Request.Request> {
     /**
      * Override of the [BaseForm.toRequest] method that
@@ -44,7 +46,8 @@ data class RequestForm(
                 hours = hours!!,
                 minutes = minutes!!,
                 seconds = seconds!!,
-                declination = declination!!
+                declination = declination!!,
+                priority = priority!!
         )
     }
 
@@ -79,6 +82,8 @@ data class RequestForm(
             errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
         if (declination == null)
             errors.put(ErrorTag.DECLINATION, "Required field")
+        if(priority == null)
+            errors.put(ErrorTag.PRIORITY, "Invalid Priority")
 
         return if (errors.isEmpty) null else errors
     }

@@ -101,7 +101,8 @@ class Request(
             val hours: Int,
             val minutes: Int,
             val seconds: Int,
-            val declination: Double
+            val declination: Double,
+            val priority: Appointment.Priority
     ) : BaseCreateRequest<Appointment> {
         /**
          * Concrete implementation of the [BaseCreateRequest.toEntity] method that
@@ -112,7 +113,8 @@ class Request(
                     startTime = startTime,
                     endTime = endTime,
                     telescopeId = telescopeId,
-                    isPublic = isPublic
+                    isPublic = isPublic,
+                    priority = priority
             )
         }
 

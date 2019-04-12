@@ -70,7 +70,8 @@ class ApproveDenyRequest(
         val appointmentList = appointmentRepo.findConflict(
                 endTime = appointment.endTime,
                 startTime = appointment.startTime,
-                telescopeId = appointment.telescopeId
+                telescopeId = appointment.telescopeId,
+                priority = appointment.priority
         )
 
         if (!appointmentList.isEmpty()) {

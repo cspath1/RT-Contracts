@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
@@ -55,7 +56,8 @@ internal class RequestTest {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private lateinit var user: User

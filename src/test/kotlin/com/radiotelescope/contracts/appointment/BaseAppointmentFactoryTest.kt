@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.appointment
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -75,7 +76,8 @@ internal class BaseAppointmentFactoryTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 69.0
+                        declination = 69.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
         )
 
@@ -154,7 +156,8 @@ internal class BaseAppointmentFactoryTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
         )
 
@@ -209,7 +212,8 @@ internal class BaseAppointmentFactoryTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 69.0
+                        declination = 69.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
         )
 

@@ -159,11 +159,12 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "FROM appointment " +
             "WHERE start_time <= ?1 " +
             "AND end_time >= ?2 " +
-            "AND telescope_id =?3 " +
+            "AND telescope_id = ?3 " +
             "AND status <> 'CANCELED' " +
-            "AND status <> 'REQUESTED'",
+            "AND status <> 'REQUESTED' " +
+            "AND priority = ?4",
             nativeQuery = true)
-    fun findConflict(endTime: Date, startTime: Date, telescopeId: Long ):List<Appointment>
+    fun findConflict(endTime: Date, startTime: Date, telescopeId: Long, priority: Appointment.Priority):List<Appointment>
 
     /**
      * Spring Repository method that will return a list of appointments

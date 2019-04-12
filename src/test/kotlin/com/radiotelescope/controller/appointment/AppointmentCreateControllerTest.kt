@@ -2,6 +2,7 @@ package com.radiotelescope.controller.appointment
 
 import com.radiotelescope.TestUtil
 import com.radiotelescope.controller.model.appointment.CreateForm
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
@@ -48,7 +49,8 @@ internal class AppointmentCreateControllerTest : BaseAppointmentRestControllerTe
             hours = 22,
             minutes = 30,
             seconds = 30,
-            declination = 42.0
+            declination = 42.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     @Before

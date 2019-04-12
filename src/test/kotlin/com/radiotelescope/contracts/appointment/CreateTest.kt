@@ -64,7 +64,8 @@ internal class CreateTest {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private lateinit var user: User
@@ -143,7 +144,8 @@ internal class CreateTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = date,
                 endTime = Date(date.time + twoHours),
-                isPublic = true
+                isPublic = true,
+                priority = Appointment.Priority.PRIMARY
         )
 
         // 8 hour appointment
@@ -400,7 +402,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -411,7 +414,8 @@ internal class CreateTest {
                 isPublic = true,hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -456,7 +460,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -468,7 +473,8 @@ internal class CreateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -513,7 +519,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -525,7 +532,8 @@ internal class CreateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -570,7 +578,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -582,7 +591,8 @@ internal class CreateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 11.0
+                declination = 11.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -627,7 +637,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -639,7 +650,8 @@ internal class CreateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 42.0
+                declination = 42.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -684,7 +696,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -696,7 +709,8 @@ internal class CreateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 42.0
+                declination = 42.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -741,7 +755,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -753,7 +768,8 @@ internal class CreateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 21.0
+                declination = 21.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -798,7 +814,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -810,7 +827,8 @@ internal class CreateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 23.0
+                declination = 23.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -855,7 +873,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -867,7 +886,8 @@ internal class CreateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 42.0
+                declination = 42.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -909,7 +929,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -921,7 +942,8 @@ internal class CreateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -959,7 +981,8 @@ internal class CreateTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.CANCELED
+                status = Appointment.Status.CANCELED,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val conflict = Create.Request(
@@ -971,7 +994,8 @@ internal class CreateTest {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 42.0
+                declination = 42.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = Create(
@@ -1333,5 +1357,70 @@ internal class CreateTest {
         // Make sure it failed for the correct reason
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.ALLOTTED_TIME_CAP].isNotEmpty())
+    }
+
+    @Test
+    fun testValidSC_Different_Priority_StartAtStart_EndBeforeEnd_Success(){
+        val startTime = System.currentTimeMillis() + 500000L
+        val endTime = System.currentTimeMillis() +   900000L
+
+        // Give the user unlimited time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
+
+        testUtil.createAppointment(
+                user = user,
+                startTime = Date(startTime),
+                endTime = Date(endTime),
+                isPublic = true,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY
+        )
+
+        val conflict = Create.Request(
+                userId = user.id,
+                telescopeId = 1L,
+                startTime = Date(startTime),
+                endTime = Date(startTime + 1000L),
+                isPublic = true,hours = 12,
+                minutes = 12,
+                seconds = 12,
+                declination = 69.0,
+                priority = Appointment.Priority.SECONDARY
+        )
+
+        val (id, errors) = Create(
+                request = conflict,
+                appointmentRepo = appointmentRepo,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                telescopeRepo = telescopeRepo,
+                coordinateRepo = coordinateRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo
+        ).execute()
+
+        // Make sure the command was a success
+        assertNotNull(id)
+        assertNull(errors)
+
+        // And make sure the appointment was persisted
+        val theAppointment = appointmentRepo.findById(id!!)
+        assertTrue(theAppointment.isPresent)
+
+        // Make sure the correct information was persisted
+        assertEquals(conflict.startTime, theAppointment.get().startTime)
+        assertEquals(conflict.endTime, theAppointment.get().endTime)
+        assertEquals(conflict.telescopeId, theAppointment.get().telescopeId)
+        assertEquals(conflict.userId, theAppointment.get().user.id)
+        assertTrue(theAppointment.get().isPublic)
     }
 }

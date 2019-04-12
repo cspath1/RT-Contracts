@@ -22,5 +22,6 @@ enum class ErrorTag{
     DECLINATION,
     IS_APPROVE,
     SEARCH,
-    ALLOTTED_TIME_CAP
+    ALLOTTED_TIME_CAP,
+    PRIORITY
 }

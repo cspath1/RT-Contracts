@@ -40,7 +40,8 @@ internal class CancelTest {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private var appointmentRequest2 = Create.Request(
@@ -52,7 +53,8 @@ internal class CancelTest {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private var appointmentRequest3 = Create.Request(
@@ -64,7 +66,8 @@ internal class CancelTest {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private var appointmentRequest4 = Create.Request(
@@ -76,7 +79,8 @@ internal class CancelTest {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     var scheduledAppointmentId:Long = 0
@@ -95,7 +99,8 @@ internal class CancelTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = appointmentRequest.startTime,
                 endTime = appointmentRequest.endTime,
-                isPublic = appointmentRequest.isPublic
+                isPublic = appointmentRequest.isPublic,
+                priority = Appointment.Priority.PRIMARY
         )
 
         // In Progress to Canceled
@@ -104,7 +109,8 @@ internal class CancelTest {
                 status = Appointment.Status.IN_PROGRESS,
                 startTime = appointmentRequest2.startTime,
                 endTime = appointmentRequest2.endTime,
-                isPublic = appointmentRequest2.isPublic
+                isPublic = appointmentRequest2.isPublic,
+                priority = Appointment.Priority.PRIMARY
         )
 
         // Should result in error: Canceled to Canceled
@@ -113,7 +119,8 @@ internal class CancelTest {
                 status = Appointment.Status.CANCELED,
                 startTime = appointmentRequest3.startTime,
                 endTime = appointmentRequest3.endTime,
-                isPublic = appointmentRequest3.isPublic
+                isPublic = appointmentRequest3.isPublic,
+                priority = Appointment.Priority.PRIMARY
         )
 
         // Already completed appointments cannot be canceled
@@ -122,7 +129,8 @@ internal class CancelTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = appointmentRequest4.startTime,
                 endTime = appointmentRequest4.endTime,
-                isPublic = appointmentRequest4.isPublic
+                isPublic = appointmentRequest4.isPublic,
+                priority = Appointment.Priority.PRIMARY
         )
 
         scheduledAppointmentId = appointmentOne.id

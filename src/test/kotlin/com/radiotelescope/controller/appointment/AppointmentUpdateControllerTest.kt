@@ -70,7 +70,8 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 50000L),
                 endTime = Date(System.currentTimeMillis() + 100000L),
-                isPublic = true
+                isPublic = true,
+                priority = Appointment.Priority.PRIMARY
         )
 
         updateForm = UpdateForm(
@@ -81,7 +82,8 @@ internal class AppointmentUpdateControllerTest : BaseAppointmentRestControllerTe
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 42.0
+                declination = 42.0,
+                priority = Appointment.Priority.PRIMARY
         )
     }
 

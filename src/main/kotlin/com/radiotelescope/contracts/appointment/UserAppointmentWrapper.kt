@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
@@ -36,16 +37,22 @@ class UserAppointmentWrapper(
      */
     fun create(request: Create.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (context.currentUserId() != null && context.currentUserId() == request.userId) {
-            // If public, they only need to be a base user
-            return if (request.isPublic)
+            // If public and primary, they only need to be a base user
+            return if (request.isPublic && request.priority == Appointment.Priority.PRIMARY)
                 context.require(
                         requiredRoles = listOf(UserRole.Role.USER),
                         successCommand = factory.create(request)
                 ).execute(withAccess)
-            // Otherwise, they need to be a researcher or admin
-            else
+            // If primary, but not public, they need to be a researcher or admin
+            else if(request.priority == Appointment.Priority.PRIMARY)
                 context.requireAny(
                         requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
+                        successCommand = factory.create(request)
+                ).execute(withAccess)
+            // Otherwise, must be an admin
+            else
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.ADMIN),
                         successCommand = factory.create(request)
                 ).execute(withAccess)
         }
@@ -227,18 +234,26 @@ class UserAppointmentWrapper(
 
         if(context.currentUserId() != null) {
             if (context.currentUserId() == theAppointment.user.id) {
-                // If public, they only need to be a base user
-                return if (request.isPublic)
+                // If public and primary, they only need to be a base user
+                return if (request.isPublic && request.priority == Appointment.Priority.PRIMARY)
                     context.require(
                             requiredRoles = listOf(UserRole.Role.USER),
                             successCommand = factory.update(
                                     request = request
                             )
                     ).execute(withAccess)
-                // Otherwise, they need to be a researcher
-                else
+                // If primary, but not public, may be researcher or admin
+                else if(request.priority == Appointment.Priority.PRIMARY)
                     context.requireAny(
                             requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
+                            successCommand = factory.update(
+                                    request = request
+                            )
+                    ).execute(withAccess)
+                // If not primary, must be admin
+                else
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.ADMIN),
                             successCommand = factory.update(
                                     request = request
                             )

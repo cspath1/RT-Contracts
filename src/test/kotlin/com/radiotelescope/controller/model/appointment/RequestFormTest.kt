@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.model.appointment
 
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.repository.appointment.Appointment
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
@@ -15,7 +16,8 @@ internal class RequestFormTest {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     @Test
@@ -33,6 +35,7 @@ internal class RequestFormTest {
         assertEquals(theRequest.minutes, baseForm.minutes!!)
         assertEquals(theRequest.seconds, baseForm.seconds!!)
         assertEquals(theRequest.declination, baseForm.declination!!, 0.00001)
+        assertEquals(theRequest.priority, baseForm.priority!!)
     }
 
     @Test
@@ -267,5 +270,20 @@ internal class RequestFormTest {
         // Make sure the right ascension was the reason for failure
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
+    }
+
+    @Test
+    fun testNullPriority_Failure(){
+        // Create a copy of the form with a null priority
+        val baseFormCopy = baseForm.copy(
+                priority = null
+        )
+
+        // Call the validate request method
+        val errors = baseFormCopy.validateRequest()
+
+        // Make sure the priority was the reason for failure
+        assertNotNull(errors)
+        assertTrue(errors!![ErrorTag.PRIORITY].isNotEmpty())
     }
 }

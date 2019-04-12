@@ -46,7 +46,8 @@ internal class UserFutureListTest {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 311.0
+            declination = 311.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private lateinit var user1: User
@@ -71,11 +72,9 @@ internal class UserFutureListTest {
                 status = Appointment.Status.REQUESTED,
                 startTime = baseCreateRequest.startTime,
                 endTime = baseCreateRequest.endTime,
-                isPublic = baseCreateRequest.isPublic
+                isPublic = baseCreateRequest.isPublic,
+                priority = Appointment.Priority.PRIMARY
         )
-
-
-
     }
 
     @Test

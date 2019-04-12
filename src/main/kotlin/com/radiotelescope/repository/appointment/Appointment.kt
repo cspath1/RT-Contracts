@@ -21,7 +21,10 @@ data class Appointment(
         @Column(name = "telescope_id", nullable = false)
         var telescopeId: Long,
         @Column(name = "public", nullable = false)
-        var isPublic: Boolean
+        var isPublic: Boolean,
+        @Column(name = "priority")
+        @Enumerated(value = EnumType.STRING)
+        var priority: Appointment.Priority
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +49,12 @@ data class Appointment(
         IN_PROGRESS("In Progress"),
         COMPLETED("Completed"),
         CANCELED("Canceled")
+    }
+
+    enum class Priority(val label: String){
+        MANUAL("Manual"),
+        PRIMARY("Primary"),
+        SECONDARY("Secondary")
     }
 
     companion object {

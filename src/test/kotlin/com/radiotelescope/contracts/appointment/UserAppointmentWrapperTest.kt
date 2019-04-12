@@ -74,7 +74,8 @@ internal class UserAppointmentWrapperTest {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private val baseRequestRequest = Request.Request(
@@ -86,7 +87,8 @@ internal class UserAppointmentWrapperTest {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private lateinit var user: User
@@ -134,7 +136,8 @@ internal class UserAppointmentWrapperTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
-                isPublic = true
+                isPublic = true,
+                priority = Appointment.Priority.PRIMARY
         )
 
         appointmentNotPublic = testUtil.createAppointment(
@@ -143,7 +146,8 @@ internal class UserAppointmentWrapperTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 40000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
-                isPublic = false
+                isPublic = false,
+                priority = Appointment.Priority.PRIMARY
         )
 
         appointmentRequested = testUtil.createAppointment(
@@ -152,7 +156,8 @@ internal class UserAppointmentWrapperTest {
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(System.currentTimeMillis() + 60000L),
                 endTime = Date(System.currentTimeMillis() + 70000L),
-                isPublic = false
+                isPublic = false,
+                priority = Appointment.Priority.PRIMARY
         )
 
         factory = BaseAppointmentFactory(
@@ -332,6 +337,132 @@ internal class UserAppointmentWrapperTest {
                 startTime = Date(Date().time + 100000),
                 endTime = Date(Date().time+ 150000),
                 isPublic = false
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testCreateSecondary_NotAdmin_Failure() {
+        // Simulate a login, but do not make them an admin
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+        context.currentRoles.add(UserRole.Role.RESEARCHER)
+
+        // Create a base request copy with a valid id that
+        // is also private
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id,
+                isPublic = false,
+                priority = Appointment.Priority.SECONDARY
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testCreateSecondary_Admin_Success() {
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user an Admin
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
+
+        // Simulate a login and make the user an admin
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        // Create a base request copy with a valid id that
+        // is also private
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id,
+                startTime = Date(Date().time + 100000),
+                endTime = Date(Date().time+ 150000),
+                isPublic = true,
+                priority = Appointment.Priority.SECONDARY
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testCreateManual_NotAdmin_Failure() {
+        // Simulate a login, but do not make them a researcher
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+        context.currentRoles.add(UserRole.Role.RESEARCHER)
+
+        // Create a base request copy with a valid id that
+        // is also private
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id,
+                isPublic = false,
+                priority = Appointment.Priority.MANUAL
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
+    }
+
+    @Test
+    fun testCreateManual_Admin_Success() {
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+        // Make the user an Admin
+        testUtil.createUserRoleForUser(
+                user = user,
+                role = UserRole.Role.ADMIN,
+                isApproved = true
+        )
+
+        // Simulate a login and make the user an admin
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        // Create a base request copy with a valid id that
+        // is also private
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id,
+                startTime = Date(Date().time + 100000),
+                endTime = Date(Date().time+ 150000),
+                isPublic = false,
+                priority = Appointment.Priority.MANUAL
         )
 
         val error = wrapper.create(
@@ -778,7 +909,8 @@ internal class UserAppointmentWrapperTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
 
         ) {
@@ -802,7 +934,8 @@ internal class UserAppointmentWrapperTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
 
         ) {
@@ -829,7 +962,8 @@ internal class UserAppointmentWrapperTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
         ) {
             fail("Should fail on precondition")
@@ -862,7 +996,8 @@ internal class UserAppointmentWrapperTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
         ) {
             fail("Should fail on precondition")
@@ -900,7 +1035,8 @@ internal class UserAppointmentWrapperTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
 
         ) {
@@ -939,7 +1075,8 @@ internal class UserAppointmentWrapperTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
 
         ) {
@@ -978,7 +1115,8 @@ internal class UserAppointmentWrapperTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
 
         ) {
@@ -1017,7 +1155,8 @@ internal class UserAppointmentWrapperTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
 
         ) {
@@ -1044,7 +1183,8 @@ internal class UserAppointmentWrapperTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
 
         ) {
@@ -1072,7 +1212,8 @@ internal class UserAppointmentWrapperTest {
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
-                        declination = 42.0
+                        declination = 42.0,
+                        priority = Appointment.Priority.PRIMARY
                 )
 
         ) {
