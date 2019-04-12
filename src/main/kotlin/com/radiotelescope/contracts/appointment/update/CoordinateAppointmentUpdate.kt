@@ -164,6 +164,7 @@ class CoordinateAppointmentUpdate(
             override val startTime: Date,
             override val endTime: Date,
             override val isPublic: Boolean,
+            override val priority: Appointment.Priority,
             val hours: Int,
             val minutes: Int,
             val seconds: Int,
@@ -179,6 +180,7 @@ class CoordinateAppointmentUpdate(
             entity.startTime = startTime
             entity.endTime = endTime
             entity.isPublic = isPublic
+            entity.priority = priority
 
             entity.coordinateList[0].hours = hours
             entity.coordinateList[0].minutes = minutes
@@ -205,6 +207,7 @@ class CoordinateAppointmentUpdate(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic,
+                    priority = priority,
                     type = Appointment.Type.POINT
             )
         }

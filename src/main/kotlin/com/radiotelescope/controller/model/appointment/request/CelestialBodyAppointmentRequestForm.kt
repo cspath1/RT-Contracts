@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
+import com.radiotelescope.repository.appointment.Appointment
 import java.util.*
 
 /**
@@ -16,6 +17,7 @@ import java.util.*
  * @param endTime the Appointment end time
  * @param telescopeId the Telescope id
  * @param isPublic whether the Appointment is public or not
+ * @param priority the Appointment priority
  * @param celestialBodyId the Celestial Body id
  */
 data class CelestialBodyAppointmentRequestForm(
@@ -24,6 +26,7 @@ data class CelestialBodyAppointmentRequestForm(
         override val endTime: Date?,
         override val telescopeId: Long?,
         override val isPublic: Boolean?,
+        override val priority: Appointment.Priority?,
         val celestialBodyId: Long?
 ) : RequestForm<CelestialBodyAppointmentRequest.Request>() {
     /**
@@ -39,6 +42,7 @@ data class CelestialBodyAppointmentRequestForm(
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
                 isPublic = isPublic!!,
+                priority = priority!!,
                 celestialBodyId = celestialBodyId!!
         )
     }
@@ -63,6 +67,8 @@ data class CelestialBodyAppointmentRequestForm(
             errors.put(ErrorTag.PUBLIC, "Required field")
         if (celestialBodyId == null)
             errors.put(ErrorTag.CELESTIAL_BODY, "Required field")
+        if(priority == null)
+            errors.put(ErrorTag.PRIORITY, "Required field")
 
         return if (errors.isEmpty) null else errors
     }

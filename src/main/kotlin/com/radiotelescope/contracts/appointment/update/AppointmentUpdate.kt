@@ -26,6 +26,7 @@ interface AppointmentUpdate {
      * @property endTime the Appointment's end time
      * @property telescopeId the Telescope id
      * @property isPublic whether the appointment is public or not
+     * @property priority the Appointment's priority
      */
     abstract class Request : BaseUpdateRequest<Appointment> {
         abstract var id: Long
@@ -33,6 +34,7 @@ interface AppointmentUpdate {
         abstract val startTime: Date
         abstract val endTime: Date
         abstract val isPublic: Boolean
+        abstract val priority: Appointment.Priority
     }
 
     /**
@@ -51,7 +53,8 @@ interface AppointmentUpdate {
         val appointmentList = appointmentRepo.findConflict(
                 endTime = request.endTime,
                 startTime = request.startTime,
-                telescopeId = request.telescopeId
+                telescopeId = request.telescopeId,
+                priority = request.priority
         )
 
         if (appointmentList.size > 1)

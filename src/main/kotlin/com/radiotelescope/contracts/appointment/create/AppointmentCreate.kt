@@ -25,6 +25,7 @@ interface AppointmentCreate {
      * @property endTime the Appointment's end time
      * @property telescopeId the Telescope id
      * @property isPublic whether the appointment is public or not
+     * @property priority the Appointment's priority
      */
     abstract class Request : BaseCreateRequest<Appointment> {
         abstract val userId: Long
@@ -32,6 +33,7 @@ interface AppointmentCreate {
         abstract val endTime: Date
         abstract val telescopeId: Long
         abstract val isPublic: Boolean
+        abstract val priority: Appointment.Priority
     }
 
     /**
@@ -50,7 +52,8 @@ interface AppointmentCreate {
         val appointmentList = appointmentRepo.findConflict(
                 endTime = request.endTime,
                 startTime = request.startTime,
-                telescopeId = request.telescopeId
+                telescopeId = request.telescopeId,
+                priority = request.priority
         )
 
         if (!appointmentList.isEmpty()) {

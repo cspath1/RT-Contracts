@@ -108,6 +108,7 @@ class CelestialBodyAppointmentCreate(
             override val endTime: Date,
             override val telescopeId: Long,
             override val isPublic: Boolean,
+            override val priority: Appointment.Priority,
             val celestialBodyId: Long
     ) : AppointmentCreate.Request() {
         /**
@@ -120,6 +121,7 @@ class CelestialBodyAppointmentCreate(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic,
+                    priority = priority,
                     type = Appointment.Type.CELESTIAL_BODY
             )
         }

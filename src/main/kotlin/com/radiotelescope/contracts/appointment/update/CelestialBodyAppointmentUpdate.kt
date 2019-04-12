@@ -147,6 +147,7 @@ class CelestialBodyAppointmentUpdate(
             override val startTime: Date,
             override val endTime: Date,
             override val isPublic: Boolean,
+            override val priority: Appointment.Priority,
             val celestialBodyId: Long
     ): AppointmentUpdate.Request() {
         /**
@@ -162,6 +163,7 @@ class CelestialBodyAppointmentUpdate(
             entity.startTime = startTime
             entity.endTime = endTime
             entity.isPublic = isPublic
+            entity.priority = priority
 
             return entity
         }
@@ -179,6 +181,7 @@ class CelestialBodyAppointmentUpdate(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic,
+                    priority = priority,
                     type = Appointment.Type.CELESTIAL_BODY
             )
         }

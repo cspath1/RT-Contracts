@@ -62,6 +62,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             hours = 12,
             minutes = 12,
             seconds = 12,
@@ -74,6 +75,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             hours = 12,
             minutes = 12,
             seconds = 12,
@@ -126,6 +128,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -136,6 +139,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 40000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -146,6 +150,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 60000L),
                 endTime = Date(System.currentTimeMillis() + 70000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -356,6 +361,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -380,6 +386,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -407,6 +414,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = false,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -440,6 +448,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = false,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -479,6 +488,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -519,6 +529,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -559,6 +570,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -599,6 +611,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 110000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -626,6 +639,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -654,6 +668,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,

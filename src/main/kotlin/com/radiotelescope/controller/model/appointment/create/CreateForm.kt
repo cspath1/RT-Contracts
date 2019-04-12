@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.model.appointment.create
 
 import com.radiotelescope.controller.model.BaseForm
+import com.radiotelescope.repository.appointment.Appointment
 import java.util.*
 
 /**
@@ -11,6 +12,7 @@ import java.util.*
  * @property endTime the Appointment end time
  * @property telescopeId the Telescope id
  * @property isPublic whether the appointment is public or not
+ * @property priority the Appointment priority
  */
 abstract class CreateForm<REQUEST> : BaseForm<REQUEST> {
     abstract val userId: Long?
@@ -18,4 +20,5 @@ abstract class CreateForm<REQUEST> : BaseForm<REQUEST> {
     abstract val endTime: Date?
     abstract val telescopeId: Long?
     abstract val isPublic: Boolean?
+    abstract val priority: Appointment.Priority?
 }
