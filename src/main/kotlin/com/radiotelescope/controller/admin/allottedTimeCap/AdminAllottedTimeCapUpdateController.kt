@@ -9,11 +9,9 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
+@RestController
 class AdminAllottedTimeCapUpdateController(
         private val allottedTimeCapWrapper: UserAllottedTimeCapWrapper,
         logger: Logger
@@ -30,7 +28,7 @@ class AdminAllottedTimeCapUpdateController(
      * respond based on whether or not the command was a success or not
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PutMapping(value = ["api/users/{userId}/ban"])
+    @PutMapping(value = ["/api/users/{userId}/allotted-time"])
     fun execute(@PathVariable("userId") userId: Long,
                 @RequestParam("allottedTime") allottedTime: Long?
     ): Result {
@@ -46,7 +44,7 @@ class AdminAllottedTimeCapUpdateController(
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.ALLOTTED_TIME_CAP,
-                                action = "Update Alloted Time Cap",
+                                action = "Update Allotted Time Cap",
                                 affectedRecordId = timeCap.id,
                                 status = HttpStatus.OK.value()
                         )

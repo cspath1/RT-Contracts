@@ -1,36 +1,25 @@
 package com.radiotelescope.contracts.appointment
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
-import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
-import org.junit.Assert.*
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
-internal class BaseAppointmentFactoryTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
+internal class BaseAppointmentFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
@@ -41,48 +30,21 @@ internal class BaseAppointmentFactoryTest {
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
-
-    @Autowired
-    private lateinit var coordinateRepo: ICoordinateRepository
-
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
-    private lateinit var factory: AppointmentFactory
+    private lateinit var factory: BaseAppointmentFactory
 
     @Before
     fun init() {
         factory = BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
-                telescopeRepo = telescopeRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
-    }
-
-    @Test
-    fun create() {
-        // Call the factory method
-        val cmd = factory.create(
-                request = Create.Request(
-                        userId = 1L,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 30000L),
-                        isPublic = true,
-                        telescopeId = 1L,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 69.0,
-                        priority = Appointment.Priority.PRIMARY
-                )
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is Create)
     }
 
     @Test
@@ -144,28 +106,6 @@ internal class BaseAppointmentFactoryTest {
     }
 
     @Test
-    fun update(){
-        // Call the factory method
-        val cmd = factory.update(
-                request = Update.Request(
-                        id = 123456789,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 40000L),
-                        telescopeId = 123456789,
-                        isPublic = false,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 42.0,
-                        priority = Appointment.Priority.PRIMARY
-                )
-        )
-
-        //Ensure it is the correct command
-        assertTrue(cmd is Update)
-    }
-
-    @Test
     fun listBetweenDates(){
         val cmd = factory.listBetweenDates(
                 request = ListBetweenDates.Request(
@@ -197,28 +137,6 @@ internal class BaseAppointmentFactoryTest {
 
         // Ensure it is the correct command
         assertTrue(cmd is PublicCompletedAppointments)
-    }
-
-    @Test
-    fun request() {
-        // Call the factory method
-        val cmd = factory.request(
-                request = Request.Request(
-                        userId = 1L,
-                        startTime = Date(System.currentTimeMillis() + 10000L),
-                        endTime = Date(System.currentTimeMillis() + 30000L),
-                        isPublic = true,
-                        telescopeId = 1L,
-                        hours = 12,
-                        minutes = 12,
-                        seconds = 12,
-                        declination = 69.0,
-                        priority = Appointment.Priority.PRIMARY
-                )
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is Request)
     }
 
     @Test

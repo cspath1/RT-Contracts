@@ -1,33 +1,22 @@
 package com.radiotelescope.contracts.celestialBody
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.model.celestialBody.Filter
 import com.radiotelescope.repository.model.celestialBody.SearchCriteria
-import org.junit.Assert.*
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
-internal class BaseCelestialBodyFactoryTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
+internal class BaseCelestialBodyFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var celestialBodyRepo: ICelestialBodyRepository
 

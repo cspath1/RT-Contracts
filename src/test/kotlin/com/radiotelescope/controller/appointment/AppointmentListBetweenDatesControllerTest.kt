@@ -1,6 +1,5 @@
 package com.radiotelescope.controller.appointment
 
-import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
@@ -11,28 +10,15 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 internal class AppointmentListBetweenDatesControllerTest : BaseAppointmentRestControllerTest() {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
     @Autowired
     private lateinit var logRepo: ILogRepository
 
@@ -46,7 +32,7 @@ internal class AppointmentListBetweenDatesControllerTest : BaseAppointmentRestCo
         super.init()
 
         appointmentListBetweenDatesController = AppointmentListBetweenDatesController(
-                appointmentWrapper = getWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 
@@ -61,7 +47,8 @@ internal class AppointmentListBetweenDatesControllerTest : BaseAppointmentRestCo
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() - 90000L),
                 endTime = Date(System.currentTimeMillis() - 10000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -70,7 +57,8 @@ internal class AppointmentListBetweenDatesControllerTest : BaseAppointmentRestCo
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 90000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

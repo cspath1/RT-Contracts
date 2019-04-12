@@ -29,7 +29,7 @@ apply plugin: 'org.jetbrains.dokka'
 
 group = 'com.radiotelescope'
 
-version = '2.17.1-dev'
+version = '3.0.2-dev'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -89,16 +89,14 @@ jacocoTestCoverageVerification {
 	violationRules {
 		rule {
 			limit {
-				includes = ['com.radiotelescope.contract.*',
-							'com.radiotelescope.repository.*']
+				includes = ['com.radiotelescope.contract.*']
 
 				minimum = 0.7
 			}
 
 			rule {
 				element = 'PACKAGE'
-				includes = ['com.radiotelescope.contract.*',
-							'com.radiotelescope.repository.*']
+				includes = ['com.radiotelescope.contract.*']
 
 				limit {
 					counter = 'CLASS'
@@ -114,7 +112,7 @@ jacocoTestCoverageVerification {
 task verify(type: GradleBuild) {
 	group 'Verification'
 	description 'Verify the build by building, testing, and validation coverage ratio (80 or above).'
-	tasks = ['testControllers', 'test', 'jacocoTestCoverageVerification']
+	tasks = ['test', 'jacocoTestCoverageVerification']
 }
 
 
@@ -149,9 +147,4 @@ dependencies {
 
 test {
 	maxHeapSize = "2048m"
-	exclude 'com/radiotelescope/controller/**'
-}
-
-task testControllers(type: Test) {
-	include 'com/radiotelescope/controller/**'
 }

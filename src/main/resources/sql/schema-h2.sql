@@ -9,8 +9,10 @@ CREATE TABLE appointment(
               'COMPLETED',
               'CANCELED'),
   telescope_id INT(11) NOT NULL,
-  coordinate_id INT(11) NOT NULL,
-  public TINYINT(1) DEFAULT 1
+  orientation_id INT(11) DEFAULT NULL,
+  celestial_body_id INT(11) DEFAULT NULL,
+  public TINYINT(1) DEFAULT 1,
+  type VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE celestial_body(
@@ -26,7 +28,8 @@ CREATE TABLE coordinate(
   declination DOUBLE NOT NULL,
   hours INT(11) NOT NULL,
   minutes INT(11) NOT NULL,
-  seconds INT(11) NOT NULL
+  seconds INT(11) NOT NULL,
+  appointment_id INT(11) DEFAULT NULL
 );
 
 CREATE TABLE error (
@@ -34,6 +37,13 @@ CREATE TABLE error (
   log_id    INT(11)      NOT NULL,
   key_field VARCHAR(50)  NOT NULL,
   message   VARCHAR(200) NOT NULL
+);
+
+CREATE TABLE feedback (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) DEFAULT NULL,
+  priority INT(11) NOT NULL,
+  comments TEXT NOT NULL
 );
 
 CREATE TABLE log(
@@ -47,6 +57,12 @@ CREATE TABLE log(
   status INT(11) NOT NULL
 );
 
+CREATE TABLE orientation (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  azimuth DOUBLE NOT NULL,
+  elevation DOUBLE NOT NULL
+);
+
 CREATE TABLE rf_data (
   id INT(11) NOT NULL AUTO_INCREMENT,
   appointment_id INT(11) NOT NULL,
@@ -54,9 +70,11 @@ CREATE TABLE rf_data (
   time_captured DATETIME NOT NULL
 );
 
-CREATE TABLE telescope (
+CREATE TABLE radio_telescope (
   id INT(11) NOT NULL AUTO_INCREMENT,
-  online TINYINT(1) DEFAULT '1'
+  online TINYINT(1) DEFAULT '1',
+  current_orientation_id INT(11) NOT NULL,
+  calibration_orientation_id INT(11) NOT NULL
 );
 
 CREATE TABLE user (

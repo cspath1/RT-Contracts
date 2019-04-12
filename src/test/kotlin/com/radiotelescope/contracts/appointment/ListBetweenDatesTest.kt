@@ -1,9 +1,9 @@
 package com.radiotelescope.contracts.appointment
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert
@@ -12,32 +12,19 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-class ListBetweenDatesTest {
-    @TestConfiguration
-    internal class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class ListBetweenDatesTest : AbstractSpringTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
@@ -67,7 +54,8 @@ class ListBetweenDatesTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime + 100L),
                 endTime = Date(startTime + 200L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -76,7 +64,8 @@ class ListBetweenDatesTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(startTime + 300L),
                 endTime = Date(startTime + 400L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 
@@ -90,7 +79,7 @@ class ListBetweenDatesTest {
                     telescopeId = 1L
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
+                radioTelescopeRepo = radioTelescopeRepo
         ).execute()
 
         // Should not have failed
@@ -110,7 +99,7 @@ class ListBetweenDatesTest {
                         telescopeId = 1L
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
+                radioTelescopeRepo = radioTelescopeRepo
         ).execute()
 
         // Should have failed
@@ -130,7 +119,7 @@ class ListBetweenDatesTest {
                         telescopeId = 420L
                 ),
                 appointmentRepo = appointmentRepo,
-                telescopeRepo = telescopeRepo
+                radioTelescopeRepo = radioTelescopeRepo
         ).execute()
 
         // Should have failed

@@ -1,6 +1,5 @@
 package com.radiotelescope.controller.admin.celestialBody
 
-import com.radiotelescope.TestUtil
 import com.radiotelescope.controller.celestialBody.BaseCelestialBodyRestControllerTest
 import com.radiotelescope.controller.model.celestialBody.UpdateForm
 import com.radiotelescope.repository.celestialBody.CelestialBody
@@ -14,25 +13,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
 internal class CelestialBodyUpdateControllerTest : BaseCelestialBodyRestControllerTest() {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
     @Autowired
     private lateinit var logRepo: ILogRepository
 

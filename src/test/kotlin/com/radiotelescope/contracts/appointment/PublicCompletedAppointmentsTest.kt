@@ -1,6 +1,6 @@
 package com.radiotelescope.contracts.appointment
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import org.junit.Assert.*
@@ -9,26 +9,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
-internal class PublicCompletedAppointmentsTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class PublicCompletedAppointmentsTest : AbstractSpringTest() {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
@@ -47,7 +34,8 @@ internal class PublicCompletedAppointmentsTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 50000L),
                 endTime = Date(System.currentTimeMillis() - 40000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -56,7 +44,8 @@ internal class PublicCompletedAppointmentsTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 20000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -65,7 +54,8 @@ internal class PublicCompletedAppointmentsTest {
                 status = Appointment.Status.COMPLETED,
                 startTime = Date(System.currentTimeMillis() - 15000L),
                 endTime = Date(System.currentTimeMillis() - 5000L),
-                isPublic = false
+                isPublic = false,
+                type = Appointment.Type.POINT
         )
     }
 

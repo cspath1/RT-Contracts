@@ -1,6 +1,5 @@
 package com.radiotelescope.controller.appointment
 
-import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
@@ -11,27 +10,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles("test")
 internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTest() {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
     @Autowired
     private lateinit var userRepo: IUserRepository
 
@@ -58,7 +44,8 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() + 200000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         // Simulate a login
@@ -66,7 +53,7 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
         userContext.currentRoles.add(UserRole.Role.USER)
 
         appointmentSearchController = AppointmentSearchController(
-                appointmentWrapper = getWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
     }

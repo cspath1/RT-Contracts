@@ -27,6 +27,7 @@ class UserUpdateEmailTokenWrapper (
      * Security authentication to the [CreateUpdateEmailToken] command object.
      *
      * @param request the [CreateUpdateEmailToken.Request] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun requestUpdateEmail(request: CreateUpdateEmailToken.Request, withAccess: (result: SimpleResult<String, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

@@ -40,7 +40,7 @@ class AdminUserBanController(
      * respond based on whether or not the command was a success or not
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PutMapping(value = ["api/users/{userId}/ban"])
+    @PutMapping(value = ["/api/users/{userId}/ban"])
     fun execute(@PathVariable("userId") userId: Long,
                 @RequestParam(
                         value = "message",

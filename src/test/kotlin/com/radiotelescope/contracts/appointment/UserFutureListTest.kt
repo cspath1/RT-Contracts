@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.appointment
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -11,33 +12,20 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
-internal class UserFutureListTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class UserFutureListTest : AbstractSpringTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private val baseCreateRequest = Create.Request(
+    private val baseCreateRequest = CoordinateAppointmentCreate.Request(
             startTime=Date(12012019120000),
             endTime = Date(12012019130011),
             isPublic = false,
@@ -73,7 +61,8 @@ internal class UserFutureListTest {
                 startTime = baseCreateRequest.startTime,
                 endTime = baseCreateRequest.endTime,
                 isPublic = baseCreateRequest.isPublic,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
     }
 

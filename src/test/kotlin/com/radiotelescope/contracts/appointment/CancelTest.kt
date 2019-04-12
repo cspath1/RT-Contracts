@@ -1,37 +1,25 @@
 package com.radiotelescope.contracts.appointment
 
+import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.contracts.appointment.create.CoordinateAppointmentCreate
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
-import com.radiotelescope.TestUtil
-import com.radiotelescope.repository.appointment.Appointment
-import org.junit.Before
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.test.context.ActiveProfiles
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
-internal class CancelTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class CancelTest : AbstractSpringTest() {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
-    private var appointmentRequest = Create.Request(
+    private var appointmentRequest = CoordinateAppointmentCreate.Request(
             startTime = Date(Date().time + 5000),
             endTime = Date(Date().time + 10000),
             isPublic = true,
@@ -44,7 +32,7 @@ internal class CancelTest {
             priority = Appointment.Priority.PRIMARY
     )
 
-    private var appointmentRequest2 = Create.Request(
+    private var appointmentRequest2 = CoordinateAppointmentCreate.Request(
             startTime = Date(),
             endTime = Date(Date().time + 2500),
             isPublic = true,
@@ -57,7 +45,7 @@ internal class CancelTest {
             priority = Appointment.Priority.PRIMARY
     )
 
-    private var appointmentRequest3 = Create.Request(
+    private var appointmentRequest3 = CoordinateAppointmentCreate.Request(
             startTime = Date(Date().time + 12500) ,
             endTime = Date(Date().time + 15000),
             isPublic = true,
@@ -70,7 +58,7 @@ internal class CancelTest {
             priority = Appointment.Priority.PRIMARY
     )
 
-    private var appointmentRequest4 = Create.Request(
+    private var appointmentRequest4 = CoordinateAppointmentCreate.Request(
             startTime = Date(Date().time + 16000) ,
             endTime = Date(Date().time + 17000),
             isPublic = true,
@@ -100,7 +88,8 @@ internal class CancelTest {
                 startTime = appointmentRequest.startTime,
                 endTime = appointmentRequest.endTime,
                 isPublic = appointmentRequest.isPublic,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // In Progress to Canceled
@@ -110,7 +99,8 @@ internal class CancelTest {
                 startTime = appointmentRequest2.startTime,
                 endTime = appointmentRequest2.endTime,
                 isPublic = appointmentRequest2.isPublic,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Should result in error: Canceled to Canceled
@@ -120,7 +110,8 @@ internal class CancelTest {
                 startTime = appointmentRequest3.startTime,
                 endTime = appointmentRequest3.endTime,
                 isPublic = appointmentRequest3.isPublic,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Already completed appointments cannot be canceled
@@ -130,7 +121,8 @@ internal class CancelTest {
                 startTime = appointmentRequest4.startTime,
                 endTime = appointmentRequest4.endTime,
                 isPublic = appointmentRequest4.isPublic,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         scheduledAppointmentId = appointmentOne.id

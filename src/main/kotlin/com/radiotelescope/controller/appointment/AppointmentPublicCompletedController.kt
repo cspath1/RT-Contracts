@@ -1,13 +1,14 @@
 package com.radiotelescope.controller.appointment
 
 import com.google.common.collect.HashMultimap
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
@@ -18,17 +19,18 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * Rest Controller to handle retrieving a list of public completed appointments
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class AppointmentPublicCompletedController(
-        private val appointmentWrapper: UserAppointmentWrapper,
+        @Qualifier(value = "coordinateAppointmentWrapper")
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
      * Execute method that is in charge of, given the page parameters were passed in
-     * correctly, calling the [UserAppointmentWrapper.publicCompletedAppointments]
+     * correctly, calling the [UserAutoAppointmentWrapper.publicCompletedAppointments]
      * method and responding back to the client based on if the user was authenticated
      * or not.
      */
@@ -52,7 +54,7 @@ class AppointmentPublicCompletedController(
         } else {
             // Sort by most recent
             val sort = Sort(Sort.Direction.DESC, "end_time")
-            appointmentWrapper.publicCompletedAppointments(
+            autoAppointmentWrapper.publicCompletedAppointments(
                     pageable = PageRequest.of(pageNumber, pageSize, sort)
             ) {
                 // If the command was a success

@@ -16,7 +16,8 @@ import org.springframework.data.domain.Pageable
  * @param pageable the [Pageable] request
  * @param celestialBodyRepo the [ICelestialBodyRepository] interface
  */
-class List(
+class
+List(
         private val pageable: Pageable,
         private val celestialBodyRepo: ICelestialBodyRepository
 ) : Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>> {

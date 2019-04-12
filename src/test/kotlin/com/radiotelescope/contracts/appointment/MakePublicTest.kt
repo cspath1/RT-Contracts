@@ -1,9 +1,9 @@
 package com.radiotelescope.contracts.appointment
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert
 import org.junit.Before
@@ -11,32 +11,19 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class MakePublicTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class MakePublicTest : AbstractSpringTest() {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
 
     private lateinit var appointment: Appointment
@@ -49,7 +36,7 @@ internal class MakePublicTest {
     @Before
     fun setUp() {
         // Make sure the sql script was executed
-        Assert.assertEquals(1, telescopeRepo.count())
+        Assert.assertEquals(1, radioTelescopeRepo.count())
 
         // Persist the user
         user = testUtil.createUser(
@@ -63,16 +50,20 @@ internal class MakePublicTest {
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = false,
                 status = Appointment.Status.SCHEDULED,
-                telescopeId = 1L
+                telescopeId = 1L,
+                type = Appointment.Type.POINT
         )
+
         appointmentAlreadyPublic = testUtil.createAppointment(
                 user = user,
                 startTime = Date(System.currentTimeMillis() + 40000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
                 isPublic = true,
                 status = Appointment.Status.SCHEDULED,
-                telescopeId = 1L
+                telescopeId = 1L,
+                type = Appointment.Type.POINT
         )
+
         appointmentId = appointment.id
         appointmentAlreadyPublicId = appointmentAlreadyPublic.id
     }

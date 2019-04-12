@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.appointment
 
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.ListBetweenDatesForm
@@ -8,6 +8,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -15,12 +16,13 @@ import java.util.*
 /**
  * Rest Controller to handle listing appointments between two dates
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class AppointmentListBetweenDatesController (
-        private val appointmentWrapper: UserAppointmentWrapper,
+        @Qualifier(value = "coordinateAppointmentWrapper")
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger){
     /**
@@ -28,7 +30,7 @@ class AppointmentListBetweenDatesController (
      * between the two given time.
      *
      * If the fields in the [ListBetweenDatesForm] are null or invalid,
-     * respond with errors. Otherwise, call the [UserAppointmentWrapper.listBetweenDates]
+     * respond with errors. Otherwise, call the [UserAutoAppointmentWrapper.listBetweenDates]
      * method. If this method returns an [AccessReport], this means that user authentication
      * failed and the method should respond with errors, setting the [Result]'s
      * [HttpStatus] to [HttpStatus.FORBIDDEN].
@@ -65,7 +67,7 @@ class AppointmentListBetweenDatesController (
         else {
             val request = form.toRequest()
             request.telescopeId = telescopeId
-            appointmentWrapper.listBetweenDates(request) {
+            autoAppointmentWrapper.listBetweenDates(request) {
                 //If the command was a success
                 it.success?.let { list ->
                     // Create success logs

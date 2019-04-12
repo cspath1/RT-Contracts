@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.contracts.appointment.info.AppointmentInfo
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.toAppointmentInfoPage

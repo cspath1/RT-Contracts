@@ -5,6 +5,6 @@ package com.radiotelescope.contracts
  * and adapt it into a respective entity object that will be able to be
  * immediately persisted
  */
-internal interface BaseCreateRequest<ENTITY> {
+interface BaseCreateRequest<ENTITY> {
     fun toEntity(): ENTITY
 }

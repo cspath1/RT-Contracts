@@ -1,10 +1,10 @@
 package com.radiotelescope.contracts.rfdata
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.rfdata.IRFDataRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
@@ -13,9 +13,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
@@ -23,17 +20,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedAppointmentData.sql"])
-@ActiveProfiles(value = ["test"])
-internal class RetrieveAppointmentDataTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class RetrieveAppointmentDataTest : AbstractSpringTest() {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
@@ -41,7 +28,7 @@ internal class RetrieveAppointmentDataTest {
     private lateinit var userRepo: IUserRepository
 
     @Autowired
-    private lateinit var telescopeRepo: ITelescopeRepository
+    private lateinit var radioTelescopeRepo: IRadioTelescopeRepository
 
     @Autowired
     private lateinit var rfDataRepo: IRFDataRepository
@@ -52,7 +39,7 @@ internal class RetrieveAppointmentDataTest {
     @Before
     fun setUp() {
         // Ensure the sql script was executed
-        assertEquals(1, telescopeRepo.count())
+        assertEquals(1, radioTelescopeRepo.count())
         assertEquals(1, userRepo.count())
         assertEquals(1, appointmentRepo.count())
         assertEquals(10, rfDataRepo.count())
@@ -67,7 +54,8 @@ internal class RetrieveAppointmentDataTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

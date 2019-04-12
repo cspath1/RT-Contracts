@@ -1,10 +1,11 @@
 package com.radiotelescope.repository.appointment
 
+import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.coordinate.Coordinate
+import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
-
 
 /**
  * Entity Class representing an Appointment for the web-application
@@ -24,7 +25,10 @@ data class Appointment(
         var isPublic: Boolean,
         @Column(name = "priority")
         @Enumerated(value = EnumType.STRING)
-        var priority: Appointment.Priority
+        var priority: Appointment.Priority,
+        @Column(name = "type", nullable = false)
+        @Enumerated(value = EnumType.STRING)
+        var type: Type
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,9 +39,16 @@ data class Appointment(
     @JoinColumn(name = "user_id", nullable = false)
     lateinit var user: User
 
+    @OneToMany(mappedBy = "appointment")
+    var coordinateList: MutableList<Coordinate> = mutableListOf()
+
     @OneToOne
-    @JoinColumn(name = "coordinate_id")
-    var coordinate: Coordinate? = null
+    @JoinColumn(name = "orientation_id")
+    var orientation: Orientation? = null
+
+    @ManyToOne
+    @JoinColumn(name = "celestial_body_id")
+    var celestialBody: CelestialBody? = null
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
@@ -49,6 +60,14 @@ data class Appointment(
         IN_PROGRESS("In Progress"),
         COMPLETED("Completed"),
         CANCELED("Canceled")
+    }
+    
+    enum class Type(val label: String) {
+        POINT("Point"),
+        CELESTIAL_BODY("Celestial Body"),
+        RASTER_SCAN("Raster Scan"),
+        DRIFT_SCAN("Drift Scan"),
+        FREE_CONTROL("Free Control")
     }
 
     enum class Priority(val label: String){

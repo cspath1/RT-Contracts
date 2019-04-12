@@ -1,13 +1,14 @@
 package com.radiotelescope.controller.appointment
 
 import com.google.common.collect.HashMultimap
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
@@ -16,17 +17,21 @@ import org.springframework.web.bind.annotation.*
 /**
  * Rest Controller used to retrieve a list of the users completed appointments
  *
- * @param appointmentWrapper the [UserAppointmentWrapper]
+ * Note that for actions done to the Appointment Table that
+ * are not creates, the specific [UserAutoAppointmentWrapper]
+ * does not matter.
+ * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
  * @param logger the [Logger] service
  */
 @RestController
 class AppointmentCompletedUserListController(
-        private val appointmentWrapper: UserAppointmentWrapper,
+        @Qualifier(value = "coordinateAppointmentWrapper")
+        private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
      * Execute method that is in charge of, given that valid page parameters
-     * were supplied, calling the [UserAppointmentWrapper.userCompleteList]
+     * were supplied, calling the [UserAutoAppointmentWrapper.userCompleteList]
      * method and responding back to the client-side based on if the user
      * was authenticated, the command was executed and was a success, or the
      * command was executed and was a failure
@@ -55,7 +60,7 @@ class AppointmentCompletedUserListController(
         // Otherwise, call the wrapper method
         else {
             val sort = Sort(Sort.Direction.DESC, "end_time")
-            appointmentWrapper.userCompleteList(
+            autoAppointmentWrapper.userCompleteList(
                     userId = userId,
                     pageable = PageRequest.of(pageNumber, pageSize, sort)
             ) {

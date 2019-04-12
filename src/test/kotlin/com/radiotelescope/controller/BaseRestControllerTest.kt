@@ -1,5 +1,6 @@
 package com.radiotelescope.controller
 
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
@@ -7,10 +8,8 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 
-@DataJpaTest
-abstract class BaseRestControllerTest {
+internal abstract class BaseRestControllerTest : AbstractSpringTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
 

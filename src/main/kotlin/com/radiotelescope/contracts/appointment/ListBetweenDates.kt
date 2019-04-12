@@ -4,8 +4,9 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.contracts.appointment.info.AppointmentInfo
 import com.radiotelescope.repository.appointment.IAppointmentRepository
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.toAppointmentInfoList
 import java.util.*
 
@@ -15,12 +16,12 @@ import java.util.*
  *
  * @param request the [Request] object
  * @param appointmentRepo the [IAppointmentRepository] interface
- * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  */
 class ListBetweenDates(
         private val request: ListBetweenDates.Request,
         private val appointmentRepo: IAppointmentRepository,
-        private val telescopeRepo: ITelescopeRepository
+        private val radioTelescopeRepo: IRadioTelescopeRepository
 ) : Command<List<AppointmentInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
@@ -60,7 +61,7 @@ class ListBetweenDates(
             // Check to see if endTime is less than or equal to startTime
             if (endTime <= startTime)
                 errors.put(ErrorTag.END_TIME, "End time cannot be less than or equal to start time")
-            if (!telescopeRepo.existsById(telescopeId))
+            if (!radioTelescopeRepo.existsById(telescopeId))
                 errors.put(ErrorTag.TELESCOPE_ID, "Telescope #$telescopeId could not be found")
         }
         return errors

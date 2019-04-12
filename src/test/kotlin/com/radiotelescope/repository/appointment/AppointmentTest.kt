@@ -1,6 +1,6 @@
 package com.radiotelescope.repository.appointment
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.model.appointment.AppointmentSpecificationBuilder
 import com.radiotelescope.repository.model.appointment.Filter
 import com.radiotelescope.repository.model.appointment.SearchCriteria
@@ -12,28 +12,15 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.PageRequest
-import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
-import org.springframework.test.context.jdbc.Sql
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-internal class AppointmentTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class AppointmentTest : AbstractSpringTest() {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
@@ -62,7 +49,8 @@ internal class AppointmentTest {
                 startTime = Date(currentTime + 100000L),
                 endTime = Date(currentTime + 300000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         pastAppointment = testUtil.createAppointment(
@@ -72,7 +60,8 @@ internal class AppointmentTest {
                 startTime = Date(currentTime - 30000L),
                 endTime = Date(currentTime - 10000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -82,7 +71,8 @@ internal class AppointmentTest {
                 startTime = Date(currentTime + 10000L),
                 endTime = Date(currentTime + 30000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
 
         )
 
@@ -93,8 +83,10 @@ internal class AppointmentTest {
                 startTime = Date(currentTime + 1000000000L),
                 endTime = Date(currentTime +   3000000000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
+
         testUtil.createViewer(
                 user = otherUser,
                 appointment = futureAppointment
@@ -139,7 +131,8 @@ internal class AppointmentTest {
                 startTime = Date(currentTime + 15200000L),
                 endTime = Date(currentTime + 18272500L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         totalTime = appointmentRepo.findTotalScheduledAppointmentTimeForUser(user.id)
@@ -161,7 +154,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime),
                 endTime = Date(startTime + 1000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment between the start and end time
@@ -172,7 +166,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime + 2000L),
                 endTime = Date(startTime + 3000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment end at the endTime and start after the startTime
@@ -183,7 +178,8 @@ internal class AppointmentTest {
                 startTime = Date(endTime - 1000L),
                 endTime = Date(endTime),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start before startTime and end before endTime
@@ -194,7 +190,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime - 2000L),
                 endTime = Date(startTime + 500L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start before endTime and end after endTime
@@ -205,7 +202,8 @@ internal class AppointmentTest {
                 startTime = Date(endTime - 500L),
                 endTime = Date(endTime + 1000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment status is requested
@@ -216,7 +214,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime + 1010L),
                 endTime = Date(startTime + 1020L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment status is canceled
@@ -227,7 +226,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime + 1030L),
                 endTime = Date(startTime + 1040L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
 
@@ -252,7 +252,8 @@ internal class AppointmentTest {
                 startTime = Date(System.currentTimeMillis() - 10000L),
                 endTime = Date(System.currentTimeMillis() - 5000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         testUtil.createAppointment(
@@ -262,7 +263,8 @@ internal class AppointmentTest {
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 15000L),
                 isPublic = false,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         val pageRequest = PageRequest.of(0, 5)
@@ -303,7 +305,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime),
                 endTime = Date(startTime + 1000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment between the start and end time
@@ -314,7 +317,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime + 2000L),
                 endTime = Date(startTime + 3000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment end at the endTime and start after the startTime
@@ -325,7 +329,8 @@ internal class AppointmentTest {
                 startTime = Date(endTime - 1000L),
                 endTime = Date(endTime),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start before startTime and end before endTime
@@ -336,7 +341,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime - 2000L),
                 endTime = Date(startTime + 500L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start before endTime and end after endTime
@@ -347,7 +353,8 @@ internal class AppointmentTest {
                 startTime = Date(endTime - 500L),
                 endTime = Date(endTime + 1000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment end at the start time
@@ -358,7 +365,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime - 1000L),
                 endTime = Date(startTime),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start at the end time
@@ -369,7 +377,8 @@ internal class AppointmentTest {
                 startTime = Date(endTime),
                 endTime = Date(endTime + 2000L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment start before start and end after end
@@ -380,7 +389,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime - 1111L),
                 endTime = Date(endTime + 1111L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment status is REQUESTED
@@ -391,7 +401,8 @@ internal class AppointmentTest {
                 startTime = Date(startTime + 1010L),
                 endTime = Date(startTime + 1020L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
 
         // Appointment status is CANCELED
@@ -402,9 +413,9 @@ internal class AppointmentTest {
                 startTime = Date(startTime + 1030L),
                 endTime = Date(startTime + 1040L),
                 isPublic = true,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
         )
-
 
         val listOfAppointments = appointmentRepo.findConflict(
                 startTime = Date(startTime),
@@ -462,5 +473,14 @@ internal class AppointmentTest {
         assertEquals(1, appointmentPage.content.size)
 
         assertEquals(futureAppointment.id, appointmentPage.content[0].id)
+    }
+
+    @Test
+    fun testFindFirstByStatusAndTelescopeId() {
+        val appointment = appointmentRepo.findFirstByStatusAndTelescopeId(Appointment.Status.COMPLETED, 1L)
+
+        assertNotNull(appointment)
+
+        assertEquals(pastAppointment.id, appointment!!.id)
     }
 }

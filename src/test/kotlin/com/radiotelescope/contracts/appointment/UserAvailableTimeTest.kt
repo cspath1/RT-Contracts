@@ -1,6 +1,6 @@
 package com.radiotelescope.contracts.appointment
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -14,9 +14,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
@@ -24,17 +21,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-@ActiveProfiles(value = ["test"])
-internal class UserAvailableTimeTest {
-    @TestConfiguration
-    internal class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class UserAvailableTimeTest : AbstractSpringTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
@@ -48,6 +35,7 @@ internal class UserAvailableTimeTest {
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
     private lateinit var user: User
+    private val currentTime = System.currentTimeMillis()
     private val oneHour = 60 * 60 * 1000
 
     @Before
@@ -73,9 +61,10 @@ internal class UserAvailableTimeTest {
                 user = user,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
-                startTime = Date(System.currentTimeMillis() + oneHour),
-                endTime = Date(System.currentTimeMillis() + oneHour + Appointment.GUEST_APPOINTMENT_TIME_CAP),
-                isPublic = true
+                startTime = Date(currentTime + oneHour),
+                endTime = Date(currentTime + oneHour + Appointment.GUEST_APPOINTMENT_TIME_CAP),
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         val(time, errors) = UserAvailableTime(
@@ -109,7 +98,8 @@ internal class UserAvailableTimeTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + oneHour),
                 endTime = Date(System.currentTimeMillis() + oneHour + oneHour),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         val(time, errors) = UserAvailableTime(
@@ -138,7 +128,8 @@ internal class UserAvailableTimeTest {
                 status = Appointment.Status.SCHEDULED,
                 startTime = Date(System.currentTimeMillis() + oneHour),
                 endTime = Date(System.currentTimeMillis() + oneHour + oneHour),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         val(time, errors) = UserAvailableTime(

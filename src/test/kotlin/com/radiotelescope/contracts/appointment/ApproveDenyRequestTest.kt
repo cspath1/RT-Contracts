@@ -1,6 +1,6 @@
 package com.radiotelescope.contracts.appointment
 
-import com.radiotelescope.TestUtil
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
@@ -11,9 +11,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
@@ -21,17 +18,7 @@ import java.util.*
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
-@ActiveProfiles(value = ["test"])
-internal class ApproveDenyRequestTest {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
+internal class ApproveDenyRequestTest : AbstractSpringTest() {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
@@ -48,7 +35,8 @@ internal class ApproveDenyRequestTest {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
     }
 
@@ -115,7 +103,8 @@ internal class ApproveDenyRequestTest {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
         // Execute the command
         val(id, errors) = ApproveDenyRequest(
@@ -144,7 +133,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -153,7 +143,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(startTime + 1000L),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
 
@@ -185,7 +176,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -194,7 +186,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime - 1000L),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
         val (id, errors) = ApproveDenyRequest(
@@ -225,7 +218,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -234,7 +228,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
         val (id, errors) = ApproveDenyRequest(
@@ -265,7 +260,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -274,7 +270,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(startTime + 500L),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
 
@@ -306,7 +303,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -315,7 +313,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime + 1000L),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
         val (id, errors) = ApproveDenyRequest(
@@ -347,7 +346,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -356,7 +356,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(startTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
         val (id, errors) = ApproveDenyRequest(
@@ -387,7 +388,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -396,7 +398,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime + 2000L),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
         val (id, errors) = ApproveDenyRequest(
@@ -427,7 +430,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -436,7 +440,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime + 1111L),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
 
@@ -468,7 +473,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -477,7 +483,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
         val (id, errors) = ApproveDenyRequest(
@@ -512,7 +519,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -521,7 +529,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime + 1L),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
 
@@ -553,7 +562,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.CANCELED
+                status = Appointment.Status.CANCELED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -562,7 +572,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime + 1L),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
 
@@ -590,7 +601,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.SCHEDULED
+                status = Appointment.Status.SCHEDULED,
+                type = Appointment.Type.POINT
         )
 
         val conflict = testUtil.createAppointment(
@@ -599,7 +611,8 @@ internal class ApproveDenyRequestTest {
                 endTime = Date(endTime),
                 isPublic = true,
                 telescopeId = 1L,
-                status = Appointment.Status.REQUESTED
+                status = Appointment.Status.REQUESTED,
+                type = Appointment.Type.POINT
         )
 
         val (id, errors) = ApproveDenyRequest(

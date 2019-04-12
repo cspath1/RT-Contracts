@@ -1,7 +1,10 @@
 package com.radiotelescope.controller.spring
 
 import com.radiotelescope.contracts.accountActivateToken.UserAccountActivateTokenWrapper
-import com.radiotelescope.contracts.appointment.UserAppointmentWrapper
+import com.radiotelescope.contracts.allottedTimeCap.UserAllottedTimeCapWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapper
+import com.radiotelescope.contracts.appointment.wrapper.UserManualAppointmentWrapper
+import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreate
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
@@ -27,9 +30,34 @@ interface FactoryProvider {
     fun getUserRoleWrapper(): UserUserRoleWrapper
 
     /**
-     * Abstract method to return the [UserAppointmentWrapper] class
+     * Abstract method to return the [UserAutoAppointmentWrapper] class
+     * for Point appointments
      */
-    fun getAppointmentWrapper(): UserAppointmentWrapper
+    fun getCoordinateAppointmentWrapper(): UserAutoAppointmentWrapper
+
+    /**
+     * Abstract method to return the [UserAutoAppointmentWrapper] class
+     * for Celestial Body appointments
+     */
+    fun getCelestialBodyAppointmentWrapper(): UserAutoAppointmentWrapper
+
+    /**
+     * Abstract method to return the [UserAutoAppointmentWrapper] class
+     * for Raster Scan appointments
+     */
+    fun getRasterScanAppointmentWrapper(): UserAutoAppointmentWrapper
+
+    /**
+     * Abstract method to return the [UserAutoAppointmentWrapper] class
+     * with the [DriftScanAppointmentCreate] method
+     */
+    fun getDriftScanAppointmentWrapper(): UserAutoAppointmentWrapper
+
+    /**
+     * Abstract method to return the [UserManualAppointmentWrapper] class
+     * for Free Control appointments
+     */
+    fun getFreeControlAppointmentWrapper(): UserManualAppointmentWrapper
 
     /**
      * Abstract method to return the [UserRFDataWrapper] class
@@ -70,4 +98,9 @@ interface FactoryProvider {
      * Abstract method to return the [UserFeedbackWrapper] class
      */
     fun getFeedbackWrapper(): UserFeedbackWrapper
+
+    /**
+     * Abstract method to return the [UserAllottedTimeCapWrapper] class
+     */
+    fun getAllottedTimeCapWrapper(): UserAllottedTimeCapWrapper
 }

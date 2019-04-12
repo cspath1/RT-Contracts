@@ -1,6 +1,5 @@
 package com.radiotelescope.controller.admin.appointment
 
-import com.radiotelescope.TestUtil
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
@@ -12,27 +11,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@ActiveProfiles(value = ["test"])
 internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRestControllerTest() {
-    @TestConfiguration
-    class UtilTestContextConfiguration {
-        @Bean
-        fun utilService(): TestUtil { return TestUtil() }
-    }
-
-    @Autowired
-    private lateinit var testUtil: TestUtil
-
     @Autowired
     private lateinit var logRepo: ILogRepository
 
@@ -44,7 +30,7 @@ internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRest
         super.init()
 
         adminAppointmentListRequestController = AdminAppointmentListRequestController(
-                appointmentWrapper = getWrapper(),
+                autoAppointmentWrapper = getCoordinateCreateWrapper(),
                 logger = getLogger()
         )
 
@@ -62,7 +48,8 @@ internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRest
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
 
         val user2 = testUtil.createUser("rpim2@ycp.edu")
@@ -72,7 +59,8 @@ internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRest
                 status = Appointment.Status.REQUESTED,
                 startTime = Date(System.currentTimeMillis() + 80000L),
                 endTime = Date(System.currentTimeMillis() + 90000L),
-                isPublic = true
+                isPublic = true,
+                type = Appointment.Type.POINT
         )
     }
 

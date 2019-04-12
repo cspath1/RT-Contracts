@@ -1,12 +1,13 @@
 package com.radiotelescope.contracts.appointment
 
-import com.radiotelescope.repository.telescope.ITelescopeRepository
+import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.contracts.appointment.info.AppointmentInfo
 import com.radiotelescope.toAppointmentInfoPage
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -18,14 +19,14 @@ import org.springframework.data.domain.Pageable
  * @param appointmentRepo the [IAppointmentRepository] interface
  * @param telescopeId the Telescope id
  * @param pageable the [Pageable] interface
- * @param telescopeRepo the [ITelescopeRepository] interface
+ * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  *
  */
 class RetrieveFutureAppointmentsByTelescopeId(
         private val appointmentRepo: IAppointmentRepository,
         private val telescopeId: Long,
         private val pageable: Pageable,
-        private val telescopeRepo: ITelescopeRepository
+        private val radioTelescopeRepo: IRadioTelescopeRepository
 ): Command<Page<AppointmentInfo>, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. If the telescope exists, it will
@@ -39,7 +40,7 @@ class RetrieveFutureAppointmentsByTelescopeId(
         val appointmentPage: Page<Appointment> = appointmentRepo.retrieveFutureAppointmentsByTelescopeId(telescopeId, pageable)
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        if (!telescopeRepo.existsById(telescopeId)) {
+        if (!radioTelescopeRepo.existsById(telescopeId)) {
             errors.put(ErrorTag.TELESCOPE_ID, "Telescope id $telescopeId not found")
             return SimpleResult(null, errors)
         }

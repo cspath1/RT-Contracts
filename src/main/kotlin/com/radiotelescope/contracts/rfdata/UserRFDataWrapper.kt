@@ -29,6 +29,7 @@ class UserRFDataWrapper(
      * Spring Security authentication to the [RetrieveAppointmentData] command object.
      *
      * @param appointmentId the Appointment id
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun retrieveAppointmentData(appointmentId: Long, withAccess: (result: SimpleResult<List<RFDataInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

@@ -179,4 +179,6 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
                     "WHERE id IN (SELECT appointment_id FROM viewer WHERE user_id=?1)",
             nativeQuery = true)
     fun findSharedAppointmentsByUser(userId: Long, pageable: Pageable): Page<Appointment>
+
+    fun findFirstByStatusAndTelescopeId(status: Appointment.Status, telescopeId: Long): Appointment?
 }

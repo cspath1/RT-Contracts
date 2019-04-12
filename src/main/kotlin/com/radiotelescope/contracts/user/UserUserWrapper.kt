@@ -54,6 +54,7 @@ class UserUserWrapper(
      * authentication to the [Retrieve] command object
      *
      * @param request the User id
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun retrieve(request: Long, withAccess: (result: SimpleResult<UserInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -85,6 +86,7 @@ class UserUserWrapper(
      * authentication to the [List] command object
      *
      * @param request the [Pageable] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun list(request: Pageable, withAccess: (result: SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -103,6 +105,7 @@ class UserUserWrapper(
      * authentication to the [Update] command object
      *
      * @param request the [Update.Request] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -135,6 +138,7 @@ class UserUserWrapper(
      *  Security authentication to the [Delete] command object
      *
      *  @param id the User id
+     *  @param withAccess anonymous function that uses the command's result object
      *  @return An [AccessReport] if authentication fails, null otherwise
      */
     fun delete(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -167,6 +171,7 @@ class UserUserWrapper(
      * Security authentication to the [Ban] command object
      *
      * @param id, a User id
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun ban(id: Long, withAccess: (result: SimpleResult<Long?, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -185,6 +190,7 @@ class UserUserWrapper(
      *  Security authentication to the [Unban] command object
      *
      *  @param id the User id
+     *  @param withAccess anonymous function that uses the command's result object
      *  @return An [AccessReport] if authentication fails, null otherwise
      */
     fun unban(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -205,6 +211,7 @@ class UserUserWrapper(
      *  Security authentication to the [ChangePassword] command object
      *
      *  @param request the [ChangePassword.Request] request
+     *  @param withAccess anonymous function that uses the command's result object
      *  @return An [AccessReport] if authentication fails, null otherwise
      */
     fun changePassword(request: ChangePassword.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
@@ -232,6 +239,7 @@ class UserUserWrapper(
      *
      * @param searchCriteria a [List] of [SearchCriteria]
      * @param pageable the [Pageable] interface
+     * @param withAccess anonymous function that uses the command's result object
      * @return an [AccessReport] if authentications fails, null otherwise
      */
     fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable, withAccess: (result: SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

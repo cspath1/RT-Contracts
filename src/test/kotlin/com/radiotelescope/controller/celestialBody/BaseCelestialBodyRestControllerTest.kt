@@ -8,7 +8,7 @@ import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
-abstract class BaseCelestialBodyRestControllerTest : BaseRestControllerTest() {
+internal abstract class BaseCelestialBodyRestControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var celestialBodyRepo: ICelestialBodyRepository
 
