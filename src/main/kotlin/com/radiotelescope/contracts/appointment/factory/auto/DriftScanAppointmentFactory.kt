@@ -10,6 +10,7 @@ import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.request.DriftScanAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.DriftScanAppointmentUpdate
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -30,7 +31,8 @@ class DriftScanAppointmentFactory(
         private val orientationRepo: IOrientationRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository,
         private val coordinateRepo: ICoordinateRepository,
-        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+        private val profile: Profile
 ) : AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
@@ -55,7 +57,8 @@ class DriftScanAppointmentFactory(
                 userRoleRepo = userRoleRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )
     }
 

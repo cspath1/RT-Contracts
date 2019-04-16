@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -36,7 +37,8 @@ class CelestialBodyAppointmentCreate(
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val celestialBodyRepo: ICelestialBodyRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository,
-        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+        private val profile: Profile
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -79,7 +81,8 @@ class CelestialBodyAppointmentCreate(
                 radioTelescopeRepo = radioTelescopeRepo,
                 appointmentRepo = appointmentRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )?.let { return it }
 
         var errors = HashMultimap.create<ErrorTag, String>()

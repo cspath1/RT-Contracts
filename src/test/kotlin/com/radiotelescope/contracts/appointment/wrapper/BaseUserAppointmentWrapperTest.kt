@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.appointment.ApproveDenyRequest
 import com.radiotelescope.contracts.appointment.ListBetweenDates
 import com.radiotelescope.contracts.appointment.factory.BaseAppointmentFactory
 import com.radiotelescope.contracts.appointment.factory.auto.CoordinateAppointmentFactory
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -139,7 +140,8 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
 
         wrapper = BaseUserAppointmentWrapper(

@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.appointment.create
 
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -75,7 +76,8 @@ internal class CreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 coordinateRepo = coordinateRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
     }
 
@@ -206,7 +208,8 @@ internal class CreateTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
         assertNull(errors)
     }
@@ -234,7 +237,8 @@ internal class CreateTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
@@ -267,8 +271,10 @@ internal class CreateTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
+
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.TELESCOPE_ID].isNotEmpty())
@@ -291,8 +297,10 @@ internal class CreateTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
+
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.ALLOTTED_TIME_CAP].isNotEmpty())
@@ -325,8 +333,10 @@ internal class CreateTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
+
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.END_TIME].isNotEmpty())
@@ -358,8 +368,10 @@ internal class CreateTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
+
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.START_TIME].isNotEmpty())
@@ -399,8 +411,10 @@ internal class CreateTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
+
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())

@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.appointment.create
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.coordinate.CoordinateRequest
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -110,7 +111,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a success
@@ -168,7 +170,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a success
@@ -219,7 +222,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -252,7 +256,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -288,7 +293,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -321,7 +327,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -363,7 +370,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -410,7 +418,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -447,7 +456,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -484,7 +494,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -521,7 +532,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -558,7 +570,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -595,7 +608,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -632,7 +646,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -669,7 +684,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -706,7 +722,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -739,7 +756,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -786,7 +804,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         assertNotNull(errors)

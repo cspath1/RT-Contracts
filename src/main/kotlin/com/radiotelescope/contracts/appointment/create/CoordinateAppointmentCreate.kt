@@ -8,6 +8,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
@@ -36,7 +37,8 @@ class CoordinateAppointmentCreate(
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val coordinateRepo: ICoordinateRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository,
-        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+        private val profile: Profile
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -83,7 +85,8 @@ class CoordinateAppointmentCreate(
                 radioTelescopeRepo = radioTelescopeRepo,
                 appointmentRepo = appointmentRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )?.let { return it }
 
         var errors = HashMultimap.create<ErrorTag, String>()

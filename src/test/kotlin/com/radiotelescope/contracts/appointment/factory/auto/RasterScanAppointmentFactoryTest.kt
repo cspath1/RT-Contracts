@@ -4,6 +4,7 @@ import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.create.RasterScanAppointmentCreate
 import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.RasterScanAppointmentUpdate
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -60,7 +61,8 @@ internal class RasterScanAppointmentFactoryTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 orientationRepo = orientationRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
     }
 

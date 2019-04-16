@@ -10,6 +10,7 @@ import com.radiotelescope.contracts.appointment.request.AppointmentRequest
 import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.AppointmentUpdate
 import com.radiotelescope.contracts.appointment.update.RasterScanAppointmentUpdate
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -30,7 +31,8 @@ class RasterScanAppointmentFactory(
         private val coordinateRepo: ICoordinateRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository,
         private val orientationRepo: IOrientationRepository,
-        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+        private val profile: Profile
 ) : AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
@@ -54,7 +56,8 @@ class RasterScanAppointmentFactory(
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )
     }
 

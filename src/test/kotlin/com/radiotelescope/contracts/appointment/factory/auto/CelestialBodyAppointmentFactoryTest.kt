@@ -4,6 +4,7 @@ import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentCreate
 import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.CelestialBodyAppointmentUpdate
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
@@ -65,7 +66,8 @@ internal class CelestialBodyAppointmentFactoryTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                heartbeatMonitorRepo = heartbeatMonitorRepo
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
     }
 

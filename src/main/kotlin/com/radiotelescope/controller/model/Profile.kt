@@ -6,5 +6,6 @@ package com.radiotelescope.controller.model
 enum class Profile {
     LOCAL,
     DEV,
-    PROD
+    PROD,
+    TEST
 }

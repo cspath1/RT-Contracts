@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
@@ -112,7 +113,8 @@ interface AppointmentCreate {
             radioTelescopeRepo: IRadioTelescopeRepository,
             appointmentRepo: IAppointmentRepository,
             allottedTimeCapRepo: IAllottedTimeCapRepository,
-            heartbeatMonitorRepo: IHeartbeatMonitorRepository
+            heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+            profile: Profile
     ): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
         with(request) {
@@ -134,8 +136,10 @@ interface AppointmentCreate {
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time")
             if (isOverlap(request, appointmentRepo))
                 errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
-            if (!determineInternetConnectivity(telescopeId, heartbeatMonitorRepo))
-                errors.put(ErrorTag.CONNECTION, "No internet connectivity between the remote and the control room has been established")
+            if (profile == Profile.PROD || profile == Profile.TEST) {
+                if (!determineInternetConnectivity(telescopeId, heartbeatMonitorRepo))
+                    errors.put(ErrorTag.CONNECTION, "No internet connectivity between the remote and the control room has been established")
+            }
         }
 
         return if (errors.isEmpty) null else errors

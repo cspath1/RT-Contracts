@@ -29,6 +29,7 @@ import com.radiotelescope.contracts.user.BaseUserFactory
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.viewer.BaseViewerFactory
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.security.UserContextImpl
 import com.radiotelescope.security.service.RetrieveAuthUserService
 import org.springframework.context.annotation.Bean
@@ -44,7 +45,8 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 class FactoryBeans(
-        private var repositories: RepositoryBeans,
+        private val repositories: RepositoryBeans,
+        private val profile: Profile,
         retrieveAuthUserService: RetrieveAuthUserService
 ) : FactoryProvider {
     private val userContext = UserContextImpl(
@@ -104,7 +106,8 @@ class FactoryBeans(
                         coordinateRepo = repositories.coordinateRepo,
                         orientationRepo = repositories.orientationRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
-                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo
+                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo,
+                        profile = profile
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -127,7 +130,8 @@ class FactoryBeans(
                         coordinateRepo = repositories.coordinateRepo,
                         orientationRepo = repositories.orientationRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
-                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo
+                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo,
+                        profile = profile
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -149,7 +153,8 @@ class FactoryBeans(
                         coordinateRepo = repositories.coordinateRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
                         orientationRepo = repositories.orientationRepo,
-                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo
+                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo,
+                        profile = profile
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -168,7 +173,8 @@ class FactoryBeans(
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
                         orientationRepo = repositories.orientationRepo,
                         coordinateRepo = repositories.coordinateRepo,
-                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo
+                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo,
+                        profile = profile
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
