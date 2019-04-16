@@ -7,6 +7,7 @@ import com.radiotelescope.contracts.appointment.update.DriftScanAppointmentUpdat
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -44,6 +45,9 @@ internal class DriftScanAppointmentFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var heartbeatMonitorRepo: IHeartbeatMonitorRepository
+
     private lateinit var factory: DriftScanAppointmentFactory
 
     @Before
@@ -55,7 +59,8 @@ internal class DriftScanAppointmentFactoryTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
     }
 

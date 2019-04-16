@@ -6,6 +6,7 @@ import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -43,6 +44,9 @@ internal class CreateTest : AbstractSpringTest() {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var heartbeatMonitorRepo: IHeartbeatMonitorRepository
+
     private lateinit var user: User
 
     private lateinit var create: CoordinateAppointmentCreate
@@ -70,8 +74,8 @@ internal class CreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                coordinateRepo = coordinateRepo
-
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
     }
 
@@ -201,7 +205,8 @@ internal class CreateTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
         assertNull(errors)
     }
@@ -228,7 +233,8 @@ internal class CreateTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
@@ -260,7 +266,8 @@ internal class CreateTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
@@ -283,7 +290,8 @@ internal class CreateTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
@@ -316,7 +324,8 @@ internal class CreateTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
@@ -348,7 +357,8 @@ internal class CreateTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
         assertNotNull(errors)
         assertEquals(1, errors!!.size())
@@ -388,7 +398,8 @@ internal class CreateTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
         assertNotNull(errors)
         assertEquals(1, errors!!.size())

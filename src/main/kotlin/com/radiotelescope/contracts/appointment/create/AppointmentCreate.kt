@@ -7,6 +7,7 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -110,7 +111,8 @@ interface AppointmentCreate {
             userRepo: IUserRepository,
             radioTelescopeRepo: IRadioTelescopeRepository,
             appointmentRepo: IAppointmentRepository,
-            allottedTimeCapRepo: IAllottedTimeCapRepository
+            allottedTimeCapRepo: IAllottedTimeCapRepository,
+            heartbeatMonitorRepo: IHeartbeatMonitorRepository
     ): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
         with(request) {
@@ -123,7 +125,7 @@ interface AppointmentCreate {
                 return errors
             }
             if(!allottedTimeCapRepo.existsByUserId(userId)) {
-                errors.put(ErrorTag.ALLOTTED_TIME_CAP, "Allotted Time Cap for userId $userId could not be found")
+                errors.put(ErrorTag.ALLOTTED_TIME_CAP, "Allotted Time Cap for user #$userId could not be found")
                 return errors
             }
             if (startTime.after(endTime))
@@ -132,8 +134,30 @@ interface AppointmentCreate {
                 errors.put(ErrorTag.START_TIME, "Start time must be after the current time")
             if (isOverlap(request, appointmentRepo))
                 errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
+            if (!determineInternetConnectivity(telescopeId, heartbeatMonitorRepo))
+                errors.put(ErrorTag.CONNECTION, "No internet connectivity between the remote and the control room has been established")
         }
 
         return if (errors.isEmpty) null else errors
+    }
+
+    /**
+     * Used to determine if the telescope the appointment is being scheduled for
+     * has contacted the remote server within the last 5 minutes
+     *
+     * @param telescopeId the Telescope id
+     * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
+     * @return true if contacted in the last 5 minutes, false otherwise
+     */
+    private fun determineInternetConnectivity(
+            telescopeId: Long,
+            heartbeatMonitorRepo: IHeartbeatMonitorRepository
+    ): Boolean {
+        val monitor = heartbeatMonitorRepo.findByRadioTelescopeId(telescopeId)!!
+
+        val now = Date()
+        val fiveMinutesAgo = Date(now.time - (1000 * 60 * 5))
+
+        return monitor.lastCommunication > fiveMinutesAgo
     }
 }

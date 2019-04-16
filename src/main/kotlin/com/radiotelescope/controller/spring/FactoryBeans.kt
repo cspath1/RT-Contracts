@@ -103,7 +103,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         coordinateRepo = repositories.coordinateRepo,
                         orientationRepo = repositories.orientationRepo,
-                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo,
+                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -125,7 +126,8 @@ class FactoryBeans(
                         celestialBodyRepo = repositories.celestialBodyRepo,
                         coordinateRepo = repositories.coordinateRepo,
                         orientationRepo = repositories.orientationRepo,
-                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo,
+                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -146,7 +148,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         coordinateRepo = repositories.coordinateRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
-                        orientationRepo = repositories.orientationRepo
+                        orientationRepo = repositories.orientationRepo,
+                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -164,7 +167,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
                         orientationRepo = repositories.orientationRepo,
-                        coordinateRepo = repositories.coordinateRepo
+                        coordinateRepo = repositories.coordinateRepo,
+                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo

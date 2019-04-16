@@ -9,6 +9,7 @@ import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.model.appointment.Filter
 import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.orientation.IOrientationRepository
@@ -57,6 +58,9 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
+
+    @Autowired
+    private lateinit var heartbeatMonitorRepo: IHeartbeatMonitorRepository
 
     private lateinit var user: User
     private lateinit var admin: User
@@ -134,7 +138,8 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
 
         wrapper = BaseUserAppointmentWrapper(

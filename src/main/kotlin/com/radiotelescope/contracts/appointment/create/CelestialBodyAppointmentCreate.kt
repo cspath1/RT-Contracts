@@ -10,6 +10,7 @@ import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -25,6 +26,7 @@ import java.util.*
  * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param celestialBodyRepo the [ICelestialBodyRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
+ * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
  */
 class CelestialBodyAppointmentCreate(
         private val request: Request,
@@ -33,7 +35,8 @@ class CelestialBodyAppointmentCreate(
         private val userRoleRepo: IUserRoleRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val celestialBodyRepo: ICelestialBodyRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -75,7 +78,8 @@ class CelestialBodyAppointmentCreate(
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 appointmentRepo = appointmentRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )?.let { return it }
 
         var errors = HashMultimap.create<ErrorTag, String>()

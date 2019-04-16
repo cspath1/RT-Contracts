@@ -9,6 +9,7 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -26,6 +27,7 @@ import java.util.*
  * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param orientationRepo the [IOrientationRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
+ * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
  */
 class DriftScanAppointmentCreate(
         private val request: Request,
@@ -34,7 +36,8 @@ class DriftScanAppointmentCreate(
         private val userRoleRepo: IUserRoleRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val orientationRepo: IOrientationRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -73,7 +76,8 @@ class DriftScanAppointmentCreate(
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 appointmentRepo = appointmentRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )?.let { return it }
 
         var errors = HashMultimap.create<ErrorTag, String>()

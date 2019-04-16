@@ -11,6 +11,7 @@ import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -47,6 +48,9 @@ internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTe
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
 
+    @Autowired
+    private lateinit var heartbeatMonitorRepo: IHeartbeatMonitorRepository
+
     // These will both be needed in all appointment
     // controller tests, so instantiate them here
     private lateinit var factory: AutoAppointmentFactory
@@ -64,7 +68,8 @@ internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTe
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )
     }
 
@@ -91,7 +96,8 @@ internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTe
                         celestialBodyRepo = celestialBodyRepo,
                         coordinateRepo = coordinateRepo,
                         orientationRepo = orientationRepo,
-                        allottedTimeCapRepo = allottedTimeCapRepo
+                        allottedTimeCapRepo = allottedTimeCapRepo,
+                        heartbeatMonitorRepo = heartbeatMonitorRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo
@@ -108,7 +114,8 @@ internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTe
                         radioTelescopeRepo = radioTelescopeRepo,
                         coordinateRepo = coordinateRepo,
                         allottedTimeCapRepo = allottedTimeCapRepo,
-                        orientationRepo = orientationRepo
+                        orientationRepo = orientationRepo,
+                        heartbeatMonitorRepo = heartbeatMonitorRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo
@@ -142,7 +149,8 @@ internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTe
                         radioTelescopeRepo = radioTelescopeRepo,
                         allottedTimeCapRepo = allottedTimeCapRepo,
                         orientationRepo = orientationRepo,
-                        coordinateRepo = coordinateRepo
+                        coordinateRepo = coordinateRepo,
+                        heartbeatMonitorRepo = heartbeatMonitorRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo

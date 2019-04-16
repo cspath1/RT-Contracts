@@ -27,5 +27,6 @@ enum class ErrorTag{
     ALLOTTED_TIME_CAP,
     ELEVATION,
     AZIMUTH,
-    TYPE
+    TYPE,
+    CONNECTION
 }

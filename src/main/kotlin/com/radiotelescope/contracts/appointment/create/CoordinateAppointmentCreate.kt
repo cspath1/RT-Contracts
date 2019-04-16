@@ -11,6 +11,7 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -25,6 +26,7 @@ import java.util.*
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param coordinateRepo the [ICoordinateRepository] interface
+ * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
  */
 class CoordinateAppointmentCreate(
         private val request: Request,
@@ -33,7 +35,8 @@ class CoordinateAppointmentCreate(
         private val userRoleRepo: IUserRoleRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val coordinateRepo: ICoordinateRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -79,7 +82,8 @@ class CoordinateAppointmentCreate(
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 appointmentRepo = appointmentRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo
         )?.let { return it }
 
         var errors = HashMultimap.create<ErrorTag, String>()
