@@ -6,11 +6,13 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.coordinate.CoordinateRequest
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -26,6 +28,8 @@ import java.util.*
  * @param coordinateRepo the [ICoordinateRepository] interface
  * @param orientationRepo the [IOrientationRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
+ * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
+ * @param profile the application's profile
  */
 class RasterScanAppointmentUpdate(
         private val request: Request,
@@ -34,7 +38,9 @@ class RasterScanAppointmentUpdate(
         private val userRoleRepo: IUserRoleRepository,
         private val coordinateRepo: ICoordinateRepository,
         private val orientationRepo: IOrientationRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+        private val profile: Profile
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentUpdate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -71,7 +77,9 @@ class RasterScanAppointmentUpdate(
                 request = request,
                 radioTelescopeRepo = radioTelescopeRepo,
                 appointmentRepo = appointmentRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )?.let { return it }
 
         var errors = HashMultimap.create<ErrorTag, String>()

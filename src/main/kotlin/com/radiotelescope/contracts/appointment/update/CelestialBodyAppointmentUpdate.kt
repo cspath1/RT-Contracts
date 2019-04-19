@@ -5,12 +5,14 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.isNotEmpty
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -27,6 +29,8 @@ import java.util.*
  * @param orientationRepo the [IOrientationRepository] interface
  * @param celestialBodyRepo the [ICelestialBodyRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
+ * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
+ * @param profile the application's profile
  */
 class CelestialBodyAppointmentUpdate(
         private val request: Request,
@@ -36,7 +40,9 @@ class CelestialBodyAppointmentUpdate(
         private val coordinateRepo: ICoordinateRepository,
         private val orientationRepo: IOrientationRepository,
         private val celestialBodyRepo: ICelestialBodyRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+        private val profile: Profile
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentUpdate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -72,7 +78,9 @@ class CelestialBodyAppointmentUpdate(
                 request = request,
                 radioTelescopeRepo = radioTelescopeRepo,
                 appointmentRepo = appointmentRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )?.let { return it }
 
         var errors = HashMultimap.create<ErrorTag, String>()

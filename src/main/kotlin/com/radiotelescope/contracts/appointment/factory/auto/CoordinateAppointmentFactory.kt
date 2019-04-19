@@ -94,7 +94,9 @@ class CoordinateAppointmentFactory(
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )
     }
 }

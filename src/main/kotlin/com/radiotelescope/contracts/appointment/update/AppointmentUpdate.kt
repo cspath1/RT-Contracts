@@ -4,11 +4,13 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.isNotEmpty
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -69,13 +71,16 @@ interface AppointmentUpdate {
      * @param request the [Request]
      * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
      * @param appointmentRepo the [IAppointmentRepository] interface
+     * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
      * @return a [HashMultimap] of errors or null
      */
     fun baseRequestValidation(
             request: Request,
             radioTelescopeRepo: IRadioTelescopeRepository,
             appointmentRepo: IAppointmentRepository,
-            allottedTimeCapRepo: IAllottedTimeCapRepository
+            allottedTimeCapRepo: IAllottedTimeCapRepository,
+            heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+            profile: Profile
     ): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
@@ -104,6 +109,10 @@ interface AppointmentUpdate {
                 errors.put(ErrorTag.END_TIME, "New end time cannot be less than or equal to the new start time")
             if (isOverlap(this, appointmentRepo))
                 errors.put(ErrorTag.OVERLAP, "Appointment time is conflicted with another appointment")
+            if (profile == Profile.PROD || profile == Profile.TEST) {
+                if (!determineInternetConnectivity(telescopeId, heartbeatMonitorRepo))
+                    errors.put(ErrorTag.CONNECTION, "No internet connectivity between the remote and the control room has been established")
+            }
         }
 
         return if (errors.isEmpty) null else errors
@@ -197,5 +206,17 @@ interface AppointmentUpdate {
             totalTime -= (theAppointment.endTime.time - theAppointment.startTime.time)
 
         return totalTime
+    }
+
+    private fun determineInternetConnectivity(
+            telescopeId: Long,
+            heartbeatMonitorRepo: IHeartbeatMonitorRepository
+    ): Boolean {
+        val monitor = heartbeatMonitorRepo.findByRadioTelescopeId(telescopeId)!!
+
+        val now = Date()
+        val fiveMinutesAgo = Date(now.time - (1000 * 60 * 5))
+
+        return monitor.lastCommunication > fiveMinutesAgo
     }
 }

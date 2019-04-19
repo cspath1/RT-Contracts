@@ -29,6 +29,7 @@ import java.util.*
  * @param orientationRepo the [IOrientationRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
+ * @param profile the application's profile
  */
 class DriftScanAppointmentCreate(
         private val request: Request,

@@ -2,10 +2,12 @@ package com.radiotelescope.contracts.appointment.update
 
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
@@ -42,6 +44,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
+
+    @Autowired
+    private lateinit var heartbeatMonitorRepo: IHeartbeatMonitorRepository
 
     private lateinit var appointment: Appointment
     private lateinit var user: User
@@ -110,7 +115,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was not error
@@ -151,7 +158,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was not error
@@ -209,7 +218,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         assertNotNull(id)
@@ -242,7 +253,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -274,7 +287,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -306,7 +321,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -336,7 +353,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -361,7 +380,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -399,7 +420,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -438,7 +461,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -493,7 +518,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a success
@@ -548,7 +575,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -607,7 +636,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -666,7 +697,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -725,7 +758,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -784,7 +819,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -843,7 +880,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 allottedTimeCapRepo = allottedTimeCapRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -902,7 +941,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -961,7 +1002,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -1019,7 +1062,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a success
@@ -1073,7 +1118,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a success
@@ -1138,7 +1185,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -1207,7 +1256,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -1240,7 +1291,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -1272,7 +1325,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -1304,7 +1359,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -1336,7 +1393,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -1368,7 +1427,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -1400,7 +1461,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -1431,7 +1494,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was for the expected reason
@@ -1462,7 +1527,9 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was for the expected reason
@@ -1471,5 +1538,47 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
 
         // Make sure it was for the expected reason
         assertTrue(errors!![ErrorTag.DECLINATION].isNotEmpty())
+    }
+
+    @Test
+    fun testNoCommunicationWithTelescope_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                user = user,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
+        // Set last communication to 30 minutes in the past
+        val monitor = heartbeatMonitorRepo.findByRadioTelescopeId(1L)
+
+        assertNotNull(monitor)
+
+        monitor!!.lastCommunication = Date(System.currentTimeMillis() - (1000 * 60 * 30))
+        heartbeatMonitorRepo.save(monitor)
+
+        val (id, errors) = CoordinateAppointmentUpdate(
+                request = baseRequest,
+                appointmentRepo = appointmentRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
+        ).execute()
+
+        assertNotNull(errors)
+        assertNull(id)
+
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.CONNECTION].isNotEmpty())
     }
 }

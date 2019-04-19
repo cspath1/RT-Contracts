@@ -29,7 +29,9 @@ import java.util.*
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param coordinateRepo the [ICoordinateRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
+ * @param profile the application's profile
  */
 class RasterScanAppointmentCreate(
         private val request: Request,

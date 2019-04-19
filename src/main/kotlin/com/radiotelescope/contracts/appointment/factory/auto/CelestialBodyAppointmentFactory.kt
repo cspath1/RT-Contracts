@@ -79,7 +79,9 @@ class CelestialBodyAppointmentFactory(
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )
     }
 

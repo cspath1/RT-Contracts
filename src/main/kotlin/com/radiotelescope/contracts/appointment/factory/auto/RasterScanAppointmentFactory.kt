@@ -93,7 +93,9 @@ class RasterScanAppointmentFactory(
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )
     }
 }

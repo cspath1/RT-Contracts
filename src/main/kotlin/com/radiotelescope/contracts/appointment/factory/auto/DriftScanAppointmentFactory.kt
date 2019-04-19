@@ -77,7 +77,9 @@ class DriftScanAppointmentFactory(
                 userRoleRepo = userRoleRepo,
                 orientationRepo = orientationRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )
     }
 

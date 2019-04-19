@@ -2,12 +2,14 @@ package com.radiotelescope.contracts.appointment.update
 
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
@@ -47,6 +49,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
+    @Autowired
+    private lateinit var heartbeatMonitorRepo: IHeartbeatMonitorRepository
 
     private lateinit var appointment: Appointment
     private lateinit var user: User
@@ -110,7 +115,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was not an error
@@ -169,7 +176,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         assertNotNull(id)
@@ -210,7 +219,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -241,7 +252,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -273,7 +286,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -306,7 +321,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -337,7 +354,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -370,7 +389,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -402,7 +423,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -447,7 +470,9 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was an error
@@ -456,5 +481,48 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
 
         // Make sure it failed for the expected reason
         assertTrue(errors!![ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testNoCommunicationWithTelescope_Failure() {
+        // Make the user a guest
+        testUtil.createUserRolesForUser(
+                user = user,
+                role = UserRole.Role.GUEST,
+                isApproved = true
+        )
+
+        // Give the user 5 hours time
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = (5 * 60 * 60 * 1000)
+        )
+
+        // Set last communication to 30 minutes in the past
+        val monitor = heartbeatMonitorRepo.findByRadioTelescopeId(1L)
+
+        assertNotNull(monitor)
+
+        monitor!!.lastCommunication = Date(System.currentTimeMillis() - (1000 * 60 * 30))
+        heartbeatMonitorRepo.save(monitor)
+
+        val (id, errors) = CelestialBodyAppointmentUpdate(
+                request = baseRequest,
+                appointmentRepo = appointmentRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
+                userRoleRepo = userRoleRepo,
+                coordinateRepo = coordinateRepo,
+                orientationRepo = orientationRepo,
+                celestialBodyRepo = celestialBodyRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
+        ).execute()
+
+        assertNotNull(errors)
+        assertNull(id)
+
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.CONNECTION].isNotEmpty())
     }
 }

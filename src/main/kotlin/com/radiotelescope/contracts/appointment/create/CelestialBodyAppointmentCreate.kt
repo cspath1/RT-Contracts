@@ -28,6 +28,7 @@ import java.util.*
  * @param celestialBodyRepo the [ICelestialBodyRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
+ * @param profile the application's profile
  */
 class CelestialBodyAppointmentCreate(
         private val request: Request,
