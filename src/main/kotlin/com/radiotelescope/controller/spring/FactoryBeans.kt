@@ -195,7 +195,9 @@ class FactoryBeans(
                         coordinateRepo = repositories.coordinateRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
-                        orientationRepo = repositories.orientationRepo
+                        orientationRepo = repositories.orientationRepo,
+                        heartbeatMonitorRepo = repositories.heartbeatMonitorRepo,
+                        profile = profile
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo

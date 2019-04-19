@@ -8,9 +8,11 @@ import com.radiotelescope.contracts.appointment.manual.AddFreeControlAppointment
 import com.radiotelescope.contracts.appointment.manual.StartFreeControlAppointment
 import com.radiotelescope.contracts.appointment.manual.StopFreeControlAppointment
 import com.radiotelescope.contracts.appointment.manual.CalibrateFreeControlAppointment
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -25,6 +27,8 @@ class FreeControlAppointmentFactory(
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val coordinateRepo: ICoordinateRepository,
         private val orientationRepo: IOrientationRepository,
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+        private val profile: Profile,
         userRoleRepo: IUserRoleRepository,
         allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : ManualAppointmentFactory, BaseAppointmentFactory(
@@ -62,7 +66,9 @@ class FreeControlAppointmentFactory(
         return AddFreeControlAppointmentCommand(
                 request = request,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )
     }
 

@@ -2,9 +2,11 @@ package com.radiotelescope.contracts.appointment.manual
 
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Before
@@ -25,6 +27,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var heartbeatMonitorRepo: IHeartbeatMonitorRepository
 
     private lateinit var baseRequest: AddFreeControlAppointmentCommand.Request
 
@@ -61,7 +66,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a success
@@ -83,7 +90,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -106,7 +115,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -129,7 +140,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -152,7 +165,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -175,7 +190,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -198,7 +215,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -221,7 +240,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -244,7 +265,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -267,7 +290,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -300,7 +325,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = requestCopy,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -322,7 +349,9 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         val (id, errors) = AddFreeControlAppointmentCommand(
                 request = baseRequest,
                 appointmentRepo = appointmentRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -332,5 +361,30 @@ internal class AddFreeControlAppointmentCommandTest : AbstractSpringTest() {
         // Make sure it failed for the correct reason
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.STATUS].isNotEmpty())
+    }
+
+    @Test
+    fun testNoCommunicationWithTelescope_Failure() {
+        // Set last communication to 30 minutes in the past
+        val monitor = heartbeatMonitorRepo.findByRadioTelescopeId(appointment.telescopeId)
+
+        assertNotNull(monitor)
+
+        monitor!!.lastCommunication = Date(System.currentTimeMillis() - (1000 * 60 * 30))
+        heartbeatMonitorRepo.save(monitor)
+
+        val (id, errors) = AddFreeControlAppointmentCommand(
+                request = baseRequest,
+                appointmentRepo = appointmentRepo,
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
+        ).execute()
+
+        assertNotNull(errors)
+        assertNull(id)
+
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.CONNECTION].isNotEmpty())
     }
 }

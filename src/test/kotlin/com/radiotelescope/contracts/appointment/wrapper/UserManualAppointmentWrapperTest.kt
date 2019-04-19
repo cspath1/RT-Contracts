@@ -5,10 +5,12 @@ import com.radiotelescope.contracts.appointment.factory.manual.FreeControlAppoin
 import com.radiotelescope.contracts.appointment.factory.manual.ManualAppointmentFactory
 import com.radiotelescope.contracts.appointment.manual.AddFreeControlAppointmentCommand
 import com.radiotelescope.contracts.appointment.manual.StartFreeControlAppointment
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
@@ -55,6 +57,9 @@ internal class UserManualAppointmentWrapperTest : AbstractSpringTest() {
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
 
+    @Autowired
+    private lateinit var heartbeatMonitorRepo: IHeartbeatMonitorRepository
+
     private lateinit var user: User
     private lateinit var appointment: Appointment
 
@@ -84,7 +89,9 @@ internal class UserManualAppointmentWrapperTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         )
 
         wrapper = UserManualAppointmentWrapper(

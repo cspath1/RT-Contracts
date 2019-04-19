@@ -136,7 +136,9 @@ internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTe
                         coordinateRepo = coordinateRepo,
                         userRoleRepo = userRoleRepo,
                         allottedTimeCapRepo = allottedTimeCapRepo,
-                        orientationRepo = orientationRepo
+                        orientationRepo = orientationRepo,
+                        heartbeatMonitorRepo = heartbeatMonitorRepo,
+                        profile = Profile.TEST
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo
