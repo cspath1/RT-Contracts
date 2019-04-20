@@ -51,7 +51,9 @@ class FreeControlAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )
     }
 

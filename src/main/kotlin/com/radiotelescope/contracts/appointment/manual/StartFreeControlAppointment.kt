@@ -6,11 +6,13 @@ import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.isNotEmpty
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -29,7 +31,9 @@ class StartFreeControlAppointment(
         private val appointmentRepo: IAppointmentRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val userRepo: IUserRepository,
-        private val coordinateRepo: ICoordinateRepository
+        private val coordinateRepo: ICoordinateRepository,
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+        private val profile: Profile
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -112,9 +116,23 @@ class StartFreeControlAppointment(
                 if (inProgressAppointment.type == Appointment.Type.FREE_CONTROL)
                     errors.put(ErrorTag.OVERLAP, "A manual appointment is already in progress")
             }
+
+            if (profile == Profile.PROD || profile == Profile.TEST) {
+                if (!determineInternetConnectivity(telescopeId))
+                    errors.put(ErrorTag.CONNECTION, "No internet connectivity between the remote and the control room has been established")
+            }
         }
 
         return if (errors.isEmpty) null else errors
+    }
+
+    private fun determineInternetConnectivity(telescopeId: Long): Boolean {
+        val monitor = heartbeatMonitorRepo.findByRadioTelescopeId(telescopeId)!!
+
+        val now = Date()
+        val fiveMinutesAgo = Date(now.time - (1000 * 60 * 5))
+
+        return monitor.lastCommunication > fiveMinutesAgo
     }
 
     /**

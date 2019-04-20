@@ -2,9 +2,11 @@ package com.radiotelescope.contracts.appointment.manual
 
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -34,6 +36,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var heartbeatMonitorRepo: IHeartbeatMonitorRepository
+
     private lateinit var baseRequest: StartFreeControlAppointment.Request
 
     private lateinit var user: User
@@ -62,7 +67,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a success
@@ -97,7 +104,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -121,7 +130,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -145,7 +156,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -169,7 +182,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -193,7 +208,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -217,7 +234,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -241,7 +260,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -265,7 +286,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -289,7 +312,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -313,7 +338,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -342,7 +369,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure the command was a failure
@@ -352,5 +381,32 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
         // Make sure it failed for the correct reason
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.OVERLAP].isNotEmpty())
+    }
+
+    @Test
+    fun testNoCommunicationWithTelescope_Failure() {
+        // Set last communication to 30 minutes in the past
+        val monitor = heartbeatMonitorRepo.findByRadioTelescopeId(1L)
+
+        assertNotNull(monitor)
+
+        monitor!!.lastCommunication = Date(System.currentTimeMillis() - (1000 * 60 * 30))
+        heartbeatMonitorRepo.save(monitor)
+
+        val (id, errors) = StartFreeControlAppointment(
+                request = baseRequest,
+                appointmentRepo = appointmentRepo,
+                radioTelescopeRepo = radioTelescopeRepo,
+                userRepo = userRepo,
+                coordinateRepo = coordinateRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
+        ).execute()
+
+        assertNotNull(errors)
+        assertNull(id)
+
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.CONNECTION].isNotEmpty())
     }
 }
