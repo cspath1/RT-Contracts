@@ -3,10 +3,14 @@ package com.radiotelescope.controller.admin.role
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.role.Validate
 import com.radiotelescope.controller.BaseRestController
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.role.ValidateForm
+import com.radiotelescope.controller.model.ses.AppLink
+import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -15,11 +19,14 @@ import org.springframework.web.bind.annotation.*
  * REST controller to handle validate a user's category of service
  *
  * @param roleWrapper the [UserUserRoleWrapper] interface
+ * @param awsSesSendService the [IAwsSesSendService] interface
  * @param logger the [Logger] service
  */
 @RestController
 class AdminUserRoleValidateController(
         private val roleWrapper: UserUserRoleWrapper,
+        private val profile: Profile,
+        private val awsSesSendService: IAwsSesSendService,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -54,18 +61,23 @@ class AdminUserRoleValidateController(
                     request = validateForm.toRequest()
             ) { response ->
                 // If the request was a success
-                response.success?.let { id ->
+                response.success?.let { theResponse ->
                     // Create success log
                     logger.createSuccessLog(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.USER_ROLE,
                                     action = "User Role Validation",
-                                    affectedRecordId = id,
+                                    affectedRecordId = theResponse.id,
                                     status = HttpStatus.OK.value()
                             )
                     )
 
-                    result = Result(data = id)
+                    sendEmail(
+                            email = theResponse.email,
+                            token = theResponse.token
+                    )
+
+                    result = Result(data = theResponse.id)
                 }
                 // Otherwise it was a failure
                 response.error?.let { errors ->
@@ -100,5 +112,19 @@ class AdminUserRoleValidateController(
         }
 
         return result
+    }
+
+    private fun sendEmail(email: String, token: String) {
+        val activateAccountLink = AppLink.generate(profile) + "/activateAccount?token=" + token
+
+        val sendForm = SendForm(
+                toAddresses = listOf(email),
+                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                subject = "Account Approved",
+                htmlBody = "<p>Your account has been approved!</p>" +
+                        "<p>Please click <a href='$activateAccountLink'> here to activate your account</p>"
+        )
+
+        awsSesSendService.execute(sendForm)
     }
 }

@@ -4,11 +4,17 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.generateToken
+import com.radiotelescope.repository.accountActivateToken.AccountActivateToken
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.allottedTimeCap.AllottedTimeCap
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
+import java.util.*
 
 /**
  * Implementation of the [Command] interface used to approve a [UserRole].
@@ -17,24 +23,30 @@ import com.radiotelescope.repository.role.UserRole
  * and with then be set to approved
  *
  * @param request the [Validate.Request] object
+ * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
+ * @param accountActivateTokenRepo the [IAccountActivateTokenRepository] interface
+ * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class Validate(
         private val request: Validate.Request,
+        private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
+        private val accountActivateTokenRepo: IAccountActivateTokenRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository
-) : Command<Long, Multimap<ErrorTag, String>> {
+) : Command<Validate.Response, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method that will validate the [validateRequest]
      * method and if there are no errors, will update the [UserRole] object and persist
      * the changes, setting it to approved. As part of this, it will remove any pre-existing
-     * approved roles, as this role will replace any existing roles. This excludes the base
+     * approved roles, as this role will replace any existing roles. It will create
+     * the [AccountActivateToken] associated with the user. This excludes the base
      * "user" role, as this just indicates that the user is logged in. This will also update
      * the corresponding [AllottedTimeCap] object for the role's default allotted time.
      *
      * If there are errors, it will respond with them
      */
-    override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
+    override fun execute(): SimpleResult<Validate.Response, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val id = updateRole()
 
@@ -45,6 +57,8 @@ class Validate(
                 if (theRole.id != request.id && theRole.role != UserRole.Role.USER)
                     userRoleRepo.delete(theRole)
             }
+
+
 
             // Set user's time cap to role default
             val allottedTimeCap: AllottedTimeCap
@@ -65,7 +79,14 @@ class Validate(
             }
             allottedTimeCapRepo.save(allottedTimeCap)
 
-            return SimpleResult(id, null)
+            val theUser = userRoleRepo.findById(id).get().user
+
+            val theResponse = Response(
+                    id = id,
+                    email = theUser.email,
+                    token = generateActivateAccountToken(theUser)
+            )
+            return SimpleResult(theResponse, null)
         }
     }
 
@@ -81,6 +102,30 @@ class Validate(
         userRoleRepo.save(userRole)
 
         return userRole.id
+    }
+
+
+    /**
+     * Private method to generate a [AccountActivateToken] object associated with the user.
+     * This token will be emailed to the user as part of a link, and clicking the link will
+     * make the proper API call to activate the account.
+     */
+    private fun generateActivateAccountToken(user: User): String {
+        var token = String.generateToken()
+        while (accountActivateTokenRepo.existsByToken(token)) {
+            token = String.generateToken()
+        }
+
+        val theAccountActivateToken = AccountActivateToken(
+                token = token,
+                expirationDate = Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000))   // 1 day
+        )
+
+        theAccountActivateToken.user = user
+
+        accountActivateTokenRepo.save(theAccountActivateToken)
+
+        return theAccountActivateToken.token
     }
 
     /**
@@ -121,5 +166,18 @@ class Validate(
     data class Request(
             val id: Long,
             val role: UserRole.Role
+    )
+
+    /**
+     * Data class containing all fields returned from role approval
+     *
+     * @param id the new [User] id
+     * @param email the new [User] email
+     * @param token the new [AccountActivateToken] token
+     */
+    data class Response(
+            val id: Long,
+            val email: String,
+            val token: String
     )
 }

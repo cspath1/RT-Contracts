@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.role
 
 import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
@@ -26,6 +27,9 @@ internal class BaseUserRoleFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
+    @Autowired
+    private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
+
     private lateinit var factory: UserRoleFactory
 
     @Before
@@ -33,6 +37,7 @@ internal class BaseUserRoleFactoryTest : AbstractSpringTest() {
         factory = BaseUserRoleFactory(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
