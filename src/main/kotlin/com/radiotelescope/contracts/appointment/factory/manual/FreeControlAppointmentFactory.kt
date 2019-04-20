@@ -98,7 +98,9 @@ class FreeControlAppointmentFactory(
                 appointmentId = appointmentId,
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )
     }
 }
