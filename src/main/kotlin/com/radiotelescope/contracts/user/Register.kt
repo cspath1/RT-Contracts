@@ -28,7 +28,6 @@ class Register(
         private val request: Request,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val accountActivateTokenRepo: IAccountActivateTokenRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : Command<Register.Response, Multimap<ErrorTag, String>> {
     /**
@@ -49,9 +48,6 @@ class Register(
             // Create the user and generate their roles
             val newUser = userRepo.save(request.toEntity())
 
-            // Create their account activation token
-            val theToken = generateActivateAccountToken(newUser)
-
             generateUserRoles(newUser)
 
             val timeCap = AllottedTimeCap(
@@ -62,8 +58,7 @@ class Register(
 
             val theResponse = Response(
                     id = newUser.id,
-                    email = newUser.email,
-                    token = theToken
+                    email = newUser.email
             )
 
             return SimpleResult(theResponse, null)
@@ -109,29 +104,6 @@ class Register(
     }
 
     /**
-     * Private method to generate a [AccountActivateToken] object associated with the user.
-     * This token will be emailed to the user as part of a link, and clicking the link will
-     * make the proper API call to activate the account.
-     */
-    private fun generateActivateAccountToken(user: User): String {
-        var token = String.generateToken()
-        while (accountActivateTokenRepo.existsByToken(token)) {
-            token = String.generateToken()
-        }
-
-        val theAccountActivateToken = AccountActivateToken(
-                token = token,
-                expirationDate = Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000))   // 1 day
-        )
-
-        theAccountActivateToken.user = user
-
-        accountActivateTokenRepo.save(theAccountActivateToken)
-
-        return theAccountActivateToken.token
-    }
-
-    /**
      * Private method to generate and save a base [UserRole] of type
      * USER as well as the category of service entered in the [Request]
      * data class
@@ -153,7 +125,7 @@ class Register(
                 user = user
         )
 
-        categoryRole.approved = request.categoryOfService == UserRole.Role.GUEST
+        categoryRole.approved = false
 
         userRoleRepo.save(categoryRole)
     }
@@ -205,11 +177,9 @@ class Register(
      *
      * @param id the new [User] id
      * @param email the new [User] email
-     * @param token the [AccountActivateToken] token
      */
     data class Response(
             val id: Long,
-            val email: String,
-            val token: String
+            val email: String
     )
 }

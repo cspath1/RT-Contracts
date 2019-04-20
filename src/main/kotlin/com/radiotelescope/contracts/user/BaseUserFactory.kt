@@ -35,7 +35,6 @@ class BaseUserFactory(
                 request = request,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
