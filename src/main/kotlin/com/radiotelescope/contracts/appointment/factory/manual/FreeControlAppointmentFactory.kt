@@ -84,7 +84,9 @@ class FreeControlAppointmentFactory(
     override fun stopAppointment(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>> {
         return StopFreeControlAppointment(
                 appointmentId = appointmentId,
-                appointmentRepo = appointmentRepo
+                appointmentRepo = appointmentRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = profile
         )
     }
 

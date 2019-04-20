@@ -2,8 +2,10 @@ package com.radiotelescope.contracts.appointment.manual
 
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Before
@@ -21,6 +23,9 @@ import java.util.*
 internal class StopFreeControlAppointmentTest : AbstractSpringTest() {
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Autowired
+    private lateinit var heartbeatMonitorRepo: IHeartbeatMonitorRepository
 
     private lateinit var user: User
     private lateinit var appointment: Appointment
@@ -47,7 +52,9 @@ internal class StopFreeControlAppointmentTest : AbstractSpringTest() {
         // Execute the command
         val (id, errors) = StopFreeControlAppointment(
                 appointmentId = appointment.id,
-                appointmentRepo = appointmentRepo
+                appointmentRepo = appointmentRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a success
@@ -67,7 +74,9 @@ internal class StopFreeControlAppointmentTest : AbstractSpringTest() {
         // Execute the command
         val (id, errors) = StopFreeControlAppointment(
                 appointmentId = 311L,
-                appointmentRepo = appointmentRepo
+                appointmentRepo = appointmentRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -94,7 +103,9 @@ internal class StopFreeControlAppointmentTest : AbstractSpringTest() {
         // Execute the command w/ the new appointment
         val (id, errors) = StopFreeControlAppointment(
                 appointmentId = theAppointment.id,
-                appointmentRepo = appointmentRepo
+                appointmentRepo = appointmentRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -115,7 +126,9 @@ internal class StopFreeControlAppointmentTest : AbstractSpringTest() {
 
         val (id, errors) = StopFreeControlAppointment(
                 appointmentId = appointment.id,
-                appointmentRepo = appointmentRepo
+                appointmentRepo = appointmentRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
         ).execute()
 
         // Make sure it was a failure
@@ -125,5 +138,29 @@ internal class StopFreeControlAppointmentTest : AbstractSpringTest() {
         // Make sure it failed for the correct reason
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.STATUS].isNotEmpty())
+    }
+
+    @Test
+    fun testNoCommunicationWithTelescope_Failure() {
+        // Set last communication to 30 minutes in the past
+        val monitor = heartbeatMonitorRepo.findByRadioTelescopeId(appointment.telescopeId)
+
+        assertNotNull(monitor)
+
+        monitor!!.lastCommunication = Date(System.currentTimeMillis() - (1000 * 60 * 30))
+        heartbeatMonitorRepo.save(monitor)
+
+        val (id, errors) = StopFreeControlAppointment(
+                appointmentId = appointment.id,
+                appointmentRepo = appointmentRepo,
+                heartbeatMonitorRepo = heartbeatMonitorRepo,
+                profile = Profile.TEST
+        ).execute()
+
+        assertNotNull(errors)
+        assertNull(id)
+
+        assertEquals(1, errors!!.size())
+        assertTrue(errors[ErrorTag.CONNECTION].isNotEmpty())
     }
 }

@@ -25,6 +25,8 @@ import java.util.*
  * @param userRepo the [IUserRepository] interface
  * @param radioTelescopeRepo the [IRadioTelescopeRepository] interface
  * @param coordinateRepo the [ICoordinateRepository] interface
+ * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
+ * @param profile the application's profile
  */
 class StartFreeControlAppointment(
         private val request: Request,

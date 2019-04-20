@@ -5,8 +5,10 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
+import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
 import java.util.*
 
 /**
@@ -15,10 +17,14 @@ import java.util.*
  *
  * @param appointmentId the Appointment id
  * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param heartbeatMonitorRepo the [IHeartbeatMonitorRepository] interface
+ * @param profile the application's profile
  */
 class StopFreeControlAppointment(
         private val appointmentId: Long,
-        private val appointmentRepo: IAppointmentRepository
+        private val appointmentRepo: IAppointmentRepository,
+        private val heartbeatMonitorRepo: IHeartbeatMonitorRepository,
+        private val profile: Profile
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -66,7 +72,21 @@ class StopFreeControlAppointment(
         if (theAppointment.status != Appointment.Status.IN_PROGRESS)
             errors.put(ErrorTag.STATUS, "Appointment #$appointmentId is not In Progress")
 
+        if (profile == Profile.PROD || profile == Profile.TEST) {
+            if (!determineInternetConnectivity(theAppointment.telescopeId))
+                errors.put(ErrorTag.CONNECTION, "No internet connectivity between the remote and the control room has been established")
+        }
+
         return if (errors.isEmpty) null else errors
+    }
+
+    private fun determineInternetConnectivity(telescopeId: Long): Boolean {
+        val monitor = heartbeatMonitorRepo.findByRadioTelescopeId(telescopeId)!!
+
+        val now = Date()
+        val fiveMinutesAgo = Date(now.time - (1000 * 60 * 5))
+
+        return monitor.lastCommunication > fiveMinutesAgo
     }
 }
 
