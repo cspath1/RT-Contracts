@@ -163,13 +163,6 @@ internal class RegisterTest : AbstractSpringTest() {
         // just make sure the user roles are both approved
         val theUser = userRepo.findById(success!!.id).get()
 
-        //val roles = userRoleRepo.findAllByUserId(theUser.id)
-
-        //TODO: Will need to change or remove
-     /*   roles.forEach {
-            assertTrue(it.approved)
-        }*/
-
         // Ensure allotted time cap was set as 0 (default)
         assertEquals(0L, allottedTimeCapRepo.findByUserId(theUser.id).allottedTime)
     }

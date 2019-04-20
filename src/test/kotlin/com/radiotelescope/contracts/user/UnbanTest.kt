@@ -3,8 +3,7 @@ package com.radiotelescope.contracts.user
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,57 +36,57 @@ internal class UnbanTest : AbstractSpringTest() {
     fun inactiveUserTest(){
         val theUser = userRepo.findById(userId)
 
-        assertTrue(theUser.get().status == User.Status.BANNED)
-        assertTrue(!theUser.get().active)
+        assertEquals(User.Status.BANNED, theUser.get().status)
+        assertFalse(theUser.get().active)
     }
 
     @Test
     fun unbanUserTest(){
         val theUser = userRepo.findById(userId)
-        val (id, errors) = Unban(
+        val (theResponse, errors) = Unban(
                 id = userId,
                 userRepo = userRepo
         ).execute()
 
-        assertTrue(errors == null)
-        assertTrue(id == userId)
+        assertNull(errors)
+        assertEquals(userId, theResponse!!.id)
 
-        assertTrue(theUser.get().status == User.Status.ACTIVE)
+        assertEquals(User.Status.ACTIVE, theUser.get().status)
         assertTrue(theUser.get().active)
 
     }
 
     @Test
     fun unbanNonExistingUserTest(){
-        val (id, errors) = Unban(
+        val (theResponse, errors) = Unban(
                 id = 10,
                 userRepo = userRepo
         ).execute()
 
-        assertTrue(id == null)
-        assertFalse(errors == null)
+        assertNull(theResponse)
+        assertNotNull(errors)
     }
 
     @Test
     fun unbanNotBannedUserTest(){
-        val (id, errors) = Unban(
+        val (theResponse, errors) = Unban(
                 id = userId2,
                 userRepo = userRepo
         ).execute()
 
-        assertTrue(errors != null)
-        assertTrue(id == null)
+        assertNotNull(errors)
+        assertNull(theResponse)
     }
 
     @Test
     fun unbanActiveUserTest(){
-        val (id, errors) = Unban(
+        val (theResponse, errors) = Unban(
                 id = userId2,
                 userRepo = userRepo
         ).execute()
 
-        assertTrue(errors != null)
-        assertTrue(id == null)
+        assertNotNull(errors)
+        assertNull(theResponse)
     }
 
 }
