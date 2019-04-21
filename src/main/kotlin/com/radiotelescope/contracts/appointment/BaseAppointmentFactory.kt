@@ -6,6 +6,7 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.subscribedAppointment.ISubscribedAppointmentRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -24,7 +25,8 @@ class BaseAppointmentFactory(
         private val userRepo: IUserRepository,
         private val telescopeRepo: ITelescopeRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val coordinateRepo: ICoordinateRepository
+        private val coordinateRepo: ICoordinateRepository,
+        private val subscribedAppointmentRepo : ISubscribedAppointmentRepository
 ) : AppointmentFactory {
     /**
      * Override of the [AppointmentFactory.retrieve] method that will return a [Retrieve]
@@ -240,6 +242,15 @@ class BaseAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
+        )
+    }
+
+    override fun subscribeAppointment(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return SubscribeAppointment(
+                appointmentRepo = appointmentRepo,
+                subscribedAppointmentRepo = subscribedAppointmentRepo,
+                request = SubscribeAppointment.Request(
+                        appointmentId = appointmentId)
         )
     }
 }

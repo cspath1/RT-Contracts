@@ -123,4 +123,14 @@ interface AppointmentFactory {
      * @return a [Command] object
      */
     fun userAvailableTime(userId: Long): Command<Long, Multimap<ErrorTag, String>>
+
+
+    /**
+     * Abstract command used to subscribe a user to an appointment
+     *
+     * @param AppointmentId the Appointment Id
+     * @return a [Command] object
+     */
+
+    fun subscribeAppointment(appointmentId: Long) : Command<Long, Multimap<ErrorTag, String>>
 }

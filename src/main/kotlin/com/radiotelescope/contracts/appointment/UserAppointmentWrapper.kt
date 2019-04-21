@@ -413,4 +413,17 @@ class UserAppointmentWrapper(
         errors.put(ErrorTag.ID, "Appointment #$id could not be found")
         return errors.toStringMap()
     }
+
+    fun subscribeAppointment(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
+        if(context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.subscribeAppointment(
+                            appointmentId = appointmentId
+                    )
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
+    }
 }
