@@ -133,6 +133,7 @@ dependencies {
 
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-ses'
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-s3'
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-sns'
 
 	compile("com.auth0:java-jwt:3.4.0")
 
