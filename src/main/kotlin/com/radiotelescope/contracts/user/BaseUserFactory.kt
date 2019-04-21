@@ -146,4 +146,13 @@ class BaseUserFactory(
                 userRepo = userRepo
         )
     }
+
+    override fun subscribe(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return Subscribe(
+                id = id,
+                userRepo = userRepo,
+                userNotificationType = userNotificationTypeRepo,
+                userRoleRepo = userRoleRepo
+        )
+    }
 }

@@ -81,4 +81,12 @@ interface UserFactory {
      */
     fun changePassword(request: ChangePassword.Request): Command<Long, Multimap<ErrorTag, String>>
 
+    /**
+     * Abstract command used to subscribe to a user's topic
+     *
+     * @param id the User id
+     * @return a [Command] object
+     */
+    fun subscribe(id: Long): Command<Long, Multimap<ErrorTag, String>>
+
 }
