@@ -48,9 +48,7 @@ class Authenticate(
 
         // Make sure to delete past failed login attempts
         val theLoginAttempts = loginAttemptRepo.findByUserId(theUser!!.id)
-        for(i in theLoginAttempts){
-            loginAttemptRepo.delete(i)
-        }
+        loginAttemptRepo.deleteAll(theLoginAttempts)
 
         val theUserRole = userRoleRepo.findMembershipRoleByUserId(theUser!!.id)
         val theRole = theUserRole?.role
@@ -78,9 +76,9 @@ class Authenticate(
             if (!userRepo.existsByEmail(email)) {
                 errors.put(ErrorTag.EMAIL, "Invalid Email or Password")
             }
-            if(userRepo.existsByEmail(email)){
-                var loginAttempts = loginAttemptRepo.findByUserId(userRepo.findByEmail(email)!!.id)
-                if(!loginAttempts.isEmpty() && loginAttempts.size >= 5)
+            if (userRepo.existsByEmail(email)) {
+                val loginAttempts = loginAttemptRepo.findByUserId(userRepo.findByEmail(email)!!.id)
+                if (!loginAttempts.isEmpty() && loginAttempts.size >= 5)
                     errors.put(ErrorTag.LOGIN_ATTEMPT, "Your Account is Locked")
             }
         }
@@ -102,8 +100,10 @@ class Authenticate(
      */
     private fun trackLoginAttempt() {
         with(request) {
+            // Failed login attempts can only be tracked for email's associated with a user
+            // In other words, invalid email addresses will not be tracked
             if (userRepo.existsByEmail(email)) {
-                var attempt = LoginAttempt(Date(System.currentTimeMillis()))
+                val attempt = LoginAttempt(Date(System.currentTimeMillis()))
                 attempt.user = userRepo.findByEmail(email)!!
 
                 loginAttemptRepo.save(attempt)
