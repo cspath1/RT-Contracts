@@ -2,6 +2,7 @@ package com.radiotelescope.security
 
 import com.radiotelescope.contracts.user.Authenticate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.service.UserDetailsImpl
@@ -29,7 +30,8 @@ class AuthenticationProviderImpl(
         private var userDetailsService: UserDetailsService,
         private var userRepo: IUserRepository,
         private var userRoleRepo: IUserRoleRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val loginAttemptRepo: ILoginAttemptRepository
 ) : AuthenticationProvider {
     /**
      * Performs the user authentication using Spring Security
@@ -86,7 +88,8 @@ class AuthenticationProviderImpl(
                 ),
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         return simpleResult.success != null

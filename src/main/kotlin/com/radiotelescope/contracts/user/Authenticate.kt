@@ -5,9 +5,12 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
+import com.radiotelescope.repository.loginAttempt.LoginAttempt
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import java.util.*
 
 /**
  * Override of the [Command] interface method used for User authentication
@@ -16,12 +19,14 @@ import com.radiotelescope.repository.user.User
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
+ * @param loginAttemptRepo the [ILoginAttemptRepository] interface
  */
 class Authenticate(
         private val request: Request,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val loginAttemptRepo: ILoginAttemptRepository
 ) : Command<UserInfo, Multimap<ErrorTag, String>>{
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -34,10 +39,19 @@ class Authenticate(
     override fun execute(): SimpleResult<UserInfo, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
 
-        if (!errors.isEmpty)
+        if (!errors.isEmpty) {
+            trackLoginAttempt()
             return SimpleResult(null, errors)
+        }
 
         val theUser = userRepo.findByEmail(request.email)
+
+        // Make sure to delete past failed login attempts
+        val theLoginAttempts = loginAttemptRepo.findByUserId(theUser!!.id)
+        for(i in theLoginAttempts){
+            loginAttemptRepo.delete(i)
+        }
+
         val theUserRole = userRoleRepo.findMembershipRoleByUserId(theUser!!.id)
         val theRole = theUserRole?.role
         val allottedTime = allottedTimeCapRepo.findByUserId(theUser.id).allottedTime
@@ -49,7 +63,9 @@ class Authenticate(
      * Method responsible for constraint checking and validations for the user
      * login request. It will ensure the email and password are not blank. After,
      * it will check to see if the email exists in the User Table. Then it will make
-     * sure the password entered matches the password in the database
+     * sure the password entered matches the password in the database.
+     *
+     * It also checks to see if the user exceeded the number of login attempt
      */
     private fun validateRequest(): Multimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
@@ -59,8 +75,14 @@ class Authenticate(
                 errors.put(ErrorTag.EMAIL, "Invalid Email or Password")
             if (password.isBlank())
                 errors.put(ErrorTag.PASSWORD, "Invalid Email or Password")
-            if (!userRepo.existsByEmail(email))
+            if (!userRepo.existsByEmail(email)) {
                 errors.put(ErrorTag.EMAIL, "Invalid Email or Password")
+            }
+            if(userRepo.existsByEmail(email)){
+                var loginAttempts = loginAttemptRepo.findByUserId(userRepo.findByEmail(email)!!.id)
+                if(!loginAttempts.isEmpty() && loginAttempts.size >= 5)
+                    errors.put(ErrorTag.LOGIN_ATTEMPT, "Your Account is Locked")
+            }
         }
 
         if (!errors.isEmpty)
@@ -73,6 +95,20 @@ class Authenticate(
             errors.put(ErrorTag.PASSWORD, "Invalid Email or Password")
 
         return errors
+    }
+
+    /**
+     * Method responsible for keeping track of the number of failed login attempts.
+     */
+    private fun trackLoginAttempt() {
+        with(request) {
+            if (userRepo.existsByEmail(email)) {
+                var attempt = LoginAttempt(Date(System.currentTimeMillis()))
+                attempt.user = userRepo.findByEmail(email)!!
+
+                loginAttemptRepo.save(attempt)
+            }
+        }
     }
 
     /**

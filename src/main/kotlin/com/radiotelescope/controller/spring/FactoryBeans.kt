@@ -65,7 +65,8 @@ class FactoryBeans(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         accountActivateTokenRepo = repositories.accountActivateTokenRepo,
-                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo,
+                        loginAttemptRepo = repositories.loginAttemptRepo
                 ),
                 userRepo = repositories.userRepo
         )

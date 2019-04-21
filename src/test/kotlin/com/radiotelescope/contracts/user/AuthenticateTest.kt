@@ -1,9 +1,13 @@
 package com.radiotelescope.contracts.user
 
+import com.google.common.collect.Multimap
 import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -23,6 +27,9 @@ internal class AuthenticateTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
+    @Autowired
+    private lateinit var loginAttemptRepo: ILoginAttemptRepository
 
     private val baseRequest = Authenticate.Request(
             email = "cspath1@ycp.edu",
@@ -54,7 +61,8 @@ internal class AuthenticateTest : AbstractSpringTest() {
                 request = baseRequest,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         // The info class should not be null
@@ -76,7 +84,8 @@ internal class AuthenticateTest : AbstractSpringTest() {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         // The errors should not be null
@@ -98,7 +107,8 @@ internal class AuthenticateTest : AbstractSpringTest() {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         // The errors should not be null
@@ -120,7 +130,8 @@ internal class AuthenticateTest : AbstractSpringTest() {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         // The errors should not be null
@@ -142,7 +153,8 @@ internal class AuthenticateTest : AbstractSpringTest() {
                 request = requestCopy,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         // The errors should not be null
@@ -150,5 +162,102 @@ internal class AuthenticateTest : AbstractSpringTest() {
 
         // The data class should be
         assertNull(info)
+    }
+
+    @Test
+    fun testFailedToLoginTwice_Failure() {
+        // Create a copy of the request with a bad password
+        val requestCopy = baseRequest.copy(
+                password = "Passwrod"
+        )
+
+        // Execute the command
+        Authenticate(
+                request = requestCopy,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
+        ).execute()
+
+        // Execute the command for a second time
+        val (info, errors) = Authenticate(
+                request = requestCopy,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
+        ).execute()
+
+        // The errors should not be null
+        assertNull(info)
+        assertNotNull(errors)
+
+        // Make sure there are 2 failed login attempts
+        val theUserId = userRepo.findByEmail(requestCopy.email)!!.id
+        assertEquals(2, loginAttemptRepo.findByUserId(theUserId).size)
+    }
+
+    @Test
+    fun testFailedFirst_SucceededSecond_Success() {
+        // Create a copy of the request with a bad password
+        val requestCopy = baseRequest.copy(
+                password = "Passwrod"
+        )
+
+        // Execute the command (fail)
+        Authenticate(
+                request = requestCopy,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
+        ).execute()
+
+        // Execute the command for a second time (succeed)
+        val (info, errors) = Authenticate(
+                request = baseRequest,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
+        ).execute()
+
+        // The errors should be null
+        assertNotNull(info)
+        assertNull(errors)
+
+        // Make sure there are 2 failed login attempts
+        val theUserId = userRepo.findByEmail(requestCopy.email)!!.id
+        assertEquals(0, loginAttemptRepo.findByUserId(theUserId).size)
+    }
+
+    @Test
+    fun testAccountLocked_Failure() {
+        // Create a copy of the request with a bad password
+        val requestCopy = baseRequest.copy(
+                password = "Passwrod"
+        )
+
+        lateinit var result:  SimpleResult<UserInfo, Multimap<ErrorTag, String>>
+        for(i in 0 until 6) {
+            // Execute the command for 6 times
+            result = Authenticate(
+                    request = requestCopy,
+                    userRepo = userRepo,
+                    userRoleRepo = userRoleRepo,
+                    allottedTimeCapRepo = allottedTimeCapRepo,
+                    loginAttemptRepo = loginAttemptRepo
+            ).execute()
+        }
+
+        // The errors should be null
+        assertNotNull(result.error)
+        assertNull(result.success)
+
+        // Make sure there are 6 failed login attempts
+        val theUserId = userRepo.findByEmail(requestCopy.email)!!.id
+        assertEquals(6, loginAttemptRepo.findByUserId(theUserId).size)
+        assertTrue(result.error!![ErrorTag.LOGIN_ATTEMPT].isNotEmpty())
     }
 }
