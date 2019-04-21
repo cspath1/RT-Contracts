@@ -101,7 +101,7 @@ class AdminUserUnbanController(
                 toAddresses = listOf(email),
                 fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
                 subject = "Unbanned By Admin",
-                htmlBody = "<p>You have been unbanned.</p>"
+                htmlBody = "<p>Your account, which had been previously banned due to application misuse, has been unbanned.</p>"
         )
         awsSesSendService.execute(sendForm)
     }

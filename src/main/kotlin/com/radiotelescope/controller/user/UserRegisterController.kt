@@ -118,8 +118,8 @@ class UserRegisterController(
                 subject = "Account Created",
                 htmlBody = "<p>Thank you for creating an account for the York County Astronomical Society's " +
                         "Radio Telescope web application! " +
-                        "Once your account is approved, an activation token will be send to you through this email " +
-                        "for  you to activate your account.</p>"
+                        "Once your account is approved, an activation token will be sent to you through this email " +
+                        "for you to activate your account.</p>"
         )
 
         awsSesSendService.execute(sendForm)

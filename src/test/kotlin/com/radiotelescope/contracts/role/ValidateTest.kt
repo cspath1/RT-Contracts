@@ -63,6 +63,7 @@ internal class ValidateTest : AbstractSpringTest() {
                 role = UserRole.Role.GUEST,
                 id = unapprovedId
         )
+
         val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
@@ -83,6 +84,7 @@ internal class ValidateTest : AbstractSpringTest() {
                 role = UserRole.Role.STUDENT,
                 id = unapprovedId
         )
+
         val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
@@ -102,6 +104,7 @@ internal class ValidateTest : AbstractSpringTest() {
         val requestCopy = baseValidateRequest.copy(
                 id = unapprovedId
         )
+
         val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
@@ -122,6 +125,7 @@ internal class ValidateTest : AbstractSpringTest() {
                 role = UserRole.Role.RESEARCHER,
                 id = unapprovedId
         )
+
         val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,

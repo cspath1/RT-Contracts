@@ -22,14 +22,14 @@ import java.util.*
  * the associated [UserRole] object will be updated to have this role
  * and with then be set to approved
  *
- * @param request the [Validate.Request] object
+ * @param request the [Request] object
  * @param userRepo the [IUserRepository] interface
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param accountActivateTokenRepo the [IAccountActivateTokenRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
  */
 class Validate(
-        private val request: Validate.Request,
+        private val request: Request,
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val accountActivateTokenRepo: IAccountActivateTokenRepository,
@@ -51,14 +51,12 @@ class Validate(
             val id = updateRole()
 
             // Delete any old roles or any other requested roles
-            val user = userRoleRepo.findById(request.id).get().user
-            val roleList = userRoleRepo.findAllByUserId(user.id)
+            val theUser = userRoleRepo.findById(request.id).get().user
+            val roleList = userRoleRepo.findAllByUserId(theUser.id)
             roleList.forEach { theRole ->
                 if (theRole.id != request.id && theRole.role != UserRole.Role.USER)
                     userRoleRepo.delete(theRole)
             }
-
-
 
             // Set user's time cap to role default
             val allottedTimeCap: AllottedTimeCap
@@ -68,18 +66,19 @@ class Validate(
                 UserRole.Role.MEMBER -> Appointment.MEMBER_APPOINTMENT_TIME_CAP
                 else -> null
             }
-            if (allottedTimeCapRepo.existsByUserId(user.id)){
-                allottedTimeCap = allottedTimeCapRepo.findByUserId(user.id)
+
+            // If a record already exists, update that record.
+            // Otherwise, create a new record
+            if (allottedTimeCapRepo.existsByUserId(theUser.id)) {
+                allottedTimeCap = allottedTimeCapRepo.findByUserId(theUser.id)
                 allottedTimeCap.allottedTime = allottedTime
-            }else{
+            } else {
                 allottedTimeCap = AllottedTimeCap(
-                        user = user,
+                        user = theUser,
                         allottedTime = allottedTime
                 )
             }
             allottedTimeCapRepo.save(allottedTimeCap)
-
-            val theUser = userRoleRepo.findById(id).get().user
 
             val theResponse = Response(
                     id = id,
@@ -93,6 +92,8 @@ class Validate(
     /**
      * Private method to update the [UserRole] based on the
      * [Validate.Request] object
+     *
+     * @return the [UserRole] id
      */
     private fun updateRole(): Long {
         val userRole = userRoleRepo.findById(request.id).get()
