@@ -67,7 +67,8 @@ class FactoryBeans(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         accountActivateTokenRepo = repositories.accountActivateTokenRepo,
-                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo,
+                        loginAttemptRepo = repositories.loginAttemptRepo
                 ),
                 userRepo = repositories.userRepo
         )
@@ -84,6 +85,7 @@ class FactoryBeans(
                 factory = BaseUserRoleFactory(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo,
+                        accountActivateTokenRepo = repositories.accountActivateTokenRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo
                 ),
                 userRepo = repositories.userRepo,
@@ -245,7 +247,8 @@ class FactoryBeans(
         return UserResetPasswordTokenWrapper(
                 resetPasswordTokenFactory = BaseResetPasswordTokenFactory(
                         resetPasswordTokenRepo = repositories.resetPasswordTokenRepo,
-                        userRepo = repositories.userRepo
+                        userRepo = repositories.userRepo,
+                        loginAttemptRepo = repositories.loginAttemptRepo
                 )
         )
     }

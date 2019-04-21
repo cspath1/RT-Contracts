@@ -1,10 +1,12 @@
 package com.radiotelescope.controller.admin.role
 
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.role.ValidateForm
 import com.radiotelescope.controller.user.role.BaseUserRoleControllerTest
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.services.ses.MockAwsSesSendService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -30,6 +32,8 @@ internal class AdminUserRoleValidateControllerTest : BaseUserRoleControllerTest(
 
         adminUserRoleValidateController = AdminUserRoleValidateController(
                 roleWrapper = getWrapper(),
+                profile = Profile.LOCAL,
+                awsSesSendService = MockAwsSesSendService(true),
                 logger = getLogger()
         )
 

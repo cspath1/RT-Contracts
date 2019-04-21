@@ -129,3 +129,9 @@ CREATE TABLE viewer (
   appointment_id INT(11) NOT NULL,
   user_id INT(11) NOT NULL
 );
+
+CREATE TABLE login_attempt (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  login_time DATETIME NOT NULL
+);

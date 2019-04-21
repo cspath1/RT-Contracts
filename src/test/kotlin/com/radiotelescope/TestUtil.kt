@@ -14,6 +14,8 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
+import com.radiotelescope.repository.loginAttempt.LoginAttempt
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.orientation.Orientation
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
@@ -75,6 +77,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
+
+    @Autowired
+    private lateinit var loginAttemptRepo: ILoginAttemptRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -546,5 +551,14 @@ internal class TestUtil {
         viewer.appointment = appointment
 
         return viewerRepo.save(viewer)
+    }
+
+    fun createLoginAttempt(
+            user: User
+    ): LoginAttempt {
+        val loginAttempt = LoginAttempt(Date(System.currentTimeMillis()))
+        loginAttempt.user = user
+
+        return loginAttemptRepo.save(loginAttempt)
     }
 }

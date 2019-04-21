@@ -70,10 +70,10 @@ interface UserFactory {
     /**
      * Abstract command used to unban a user's account
      *
-     * @param id the User id
+     * @param [Unban.Response] object
      * @return a [Command] object
      */
-    fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>>
+    fun unban(id: Long): Command<Unban.Response, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to change a user's password

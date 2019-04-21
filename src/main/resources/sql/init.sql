@@ -163,3 +163,14 @@ CREATE TABLE viewer (
   KEY appointment_id_idx (appointment_id),
   KEY user_id_idx (user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS login_attempt;
+CREATE TABLE login_attempt (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  login_time DATETIME NOT NULL,
+
+  PRIMARY KEY (id),
+  KEY user_id_idx (user_id),
+  KEY login_time_idx (login_time)
+) ENGINE = InnoDB DEFAULT  CHARSET=utf8;

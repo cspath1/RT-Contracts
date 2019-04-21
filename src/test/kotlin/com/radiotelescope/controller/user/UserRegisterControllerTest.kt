@@ -5,6 +5,7 @@ import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.user.RegisterForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.services.ses.MockAwsSesSendService
 import org.junit.Assert.*
 import org.junit.Before
@@ -22,6 +23,9 @@ internal class UserRegisterControllerTest : BaseUserRestControllerTest() {
     private lateinit var logRepo: ILogRepository
 
     private lateinit var userRegisterController: UserRegisterController
+
+    @Autowired
+    private lateinit var userRepo: IUserRepository
 
     private val baseForm = RegisterForm(
             firstName = "Cody",
@@ -41,10 +45,12 @@ internal class UserRegisterControllerTest : BaseUserRestControllerTest() {
 
         userRegisterController = UserRegisterController(
                 userWrapper = getWrapper(),
-                profile = Profile.LOCAL,
                 awsSesSendService = MockAwsSesSendService(true),
+                userRepo = userRepo,
                 logger = getLogger()
         )
+
+
     }
 
     @Test

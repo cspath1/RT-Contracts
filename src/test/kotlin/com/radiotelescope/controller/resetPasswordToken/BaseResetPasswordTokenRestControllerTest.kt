@@ -3,6 +3,7 @@ package com.radiotelescope.controller.resetPasswordToken
 import com.radiotelescope.contracts.resetPasswordToken.BaseResetPasswordTokenFactory
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Before
@@ -15,6 +16,9 @@ internal abstract class BaseResetPasswordTokenRestControllerTest : BaseRestContr
     @Autowired
     private lateinit var userRepo: IUserRepository
 
+    @Autowired
+    private lateinit var loginAttemptRepo: ILoginAttemptRepository
+
     // These will both be needed in all reset password token controller
     // tests, so instantiate them here
     private lateinit var wrapper: UserResetPasswordTokenWrapper
@@ -26,7 +30,8 @@ internal abstract class BaseResetPasswordTokenRestControllerTest : BaseRestContr
 
         factory = BaseResetPasswordTokenFactory(
                 resetPasswordTokenRepo = resetPasswordTokenRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                loginAttemptRepo = loginAttemptRepo
         )
 
         wrapper = UserResetPasswordTokenWrapper(

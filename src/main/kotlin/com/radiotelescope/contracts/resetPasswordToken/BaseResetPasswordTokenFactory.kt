@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.resetPasswordToken
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -12,10 +13,12 @@ import com.radiotelescope.repository.user.User
  *
  * @param resetPasswordTokenRepo the [IResetPasswordTokenRepository] interface
  * @param userRepo the [IUserRepository] interface
+ * @param loginAttemptRepo the [ILoginAttemptRepository] interface
  */
 class BaseResetPasswordTokenFactory (
         private val resetPasswordTokenRepo: IResetPasswordTokenRepository,
-        private val userRepo: IUserRepository
+        private val userRepo: IUserRepository,
+        private val loginAttemptRepo: ILoginAttemptRepository
 ) : ResetPasswordTokenFactory {
 
     /**
@@ -46,7 +49,8 @@ class BaseResetPasswordTokenFactory (
                 request = request,
                 token = token,
                 resetPasswordTokenRepo = resetPasswordTokenRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                loginAttemptRepo = loginAttemptRepo
         )
     }
 }

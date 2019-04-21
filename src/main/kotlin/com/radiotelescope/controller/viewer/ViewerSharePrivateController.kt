@@ -103,7 +103,7 @@ class ViewerSharePrivateController(
     private fun sendEmail(email: String, appointmentId: Long) {
         val sendForm = SendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Share Private Appointment",
                 htmlBody = "<p>Appointment #$appointmentId has been shared with you."
         )

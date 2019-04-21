@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Before
@@ -23,6 +24,9 @@ internal abstract class BaseUserRestControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
+    @Autowired
+    private lateinit var loginAttemptRepo: ILoginAttemptRepository
+
     // These will both be needed in all user rest controller
     // tests, so instantiate them here
     private lateinit var wrapper: UserUserWrapper
@@ -36,7 +40,8 @@ internal abstract class BaseUserRestControllerTest : BaseRestControllerTest() {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 accountActivateTokenRepo = accountActivateTokenRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
         )
 
         wrapper = UserUserWrapper(
