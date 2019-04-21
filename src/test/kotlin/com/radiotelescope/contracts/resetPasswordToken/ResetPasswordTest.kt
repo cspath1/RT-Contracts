@@ -1,6 +1,8 @@
 package com.radiotelescope.contracts.resetPasswordToken
 
 import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
+import com.radiotelescope.repository.loginAttempt.LoginAttempt
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.user.IUserRepository
@@ -23,6 +25,9 @@ internal class ResetPasswordTest : AbstractSpringTest() {
     @Autowired
     private lateinit var resetPasswordTokenRepo: IResetPasswordTokenRepository
 
+    @Autowired
+    private lateinit var loginAttemptRepo: ILoginAttemptRepository
+
     private lateinit var token: ResetPasswordToken
     private lateinit var user: User
 
@@ -35,6 +40,15 @@ internal class ResetPasswordTest : AbstractSpringTest() {
 
     @Test
     fun testValid_CorrectConstraints_Success(){
+        // Create 5 failed login attempts
+        for (i in 0..4) {
+            val loginAttempt = LoginAttempt(loginTime = Date())
+            loginAttempt.user = user
+            loginAttemptRepo.save(loginAttempt)
+        }
+
+        assertEquals(5, loginAttemptRepo.count())
+
         val (id, error) = ResetPassword(
                 request = ResetPassword.Request(
                         password = "ValidPassword1",
@@ -42,7 +56,8 @@ internal class ResetPasswordTest : AbstractSpringTest() {
                 ),
                 token = token.token,
                 resetPasswordTokenRepo = resetPasswordTokenRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         //Should have passed
@@ -51,6 +66,9 @@ internal class ResetPasswordTest : AbstractSpringTest() {
 
         // Ensure the token record was deleted
         assertEquals(0, resetPasswordTokenRepo.count())
+
+        // All failed login attempts should also have been deleted
+        assertEquals(0, loginAttemptRepo.count())
     }
 
     @Test
@@ -62,7 +80,8 @@ internal class ResetPasswordTest : AbstractSpringTest() {
                 ),
                 token = token.token,
                 resetPasswordTokenRepo = resetPasswordTokenRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         // Should have failed
@@ -82,7 +101,8 @@ internal class ResetPasswordTest : AbstractSpringTest() {
                 ),
                 token = token.token,
                 resetPasswordTokenRepo = resetPasswordTokenRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         // Should have failed
@@ -102,7 +122,8 @@ internal class ResetPasswordTest : AbstractSpringTest() {
                 ),
                 token = token.token,
                 resetPasswordTokenRepo = resetPasswordTokenRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         // Should have failed
@@ -122,7 +143,8 @@ internal class ResetPasswordTest : AbstractSpringTest() {
                 ),
                 token = "fake token",
                 resetPasswordTokenRepo = resetPasswordTokenRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         // Should have failed
@@ -146,7 +168,8 @@ internal class ResetPasswordTest : AbstractSpringTest() {
                 ),
                 token = "fake token",
                 resetPasswordTokenRepo = resetPasswordTokenRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                loginAttemptRepo = loginAttemptRepo
         ).execute()
 
         // Should have failed

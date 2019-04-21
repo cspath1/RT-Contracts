@@ -17,9 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescope.sql"])
 internal class LoginAttemptTest : AbstractSpringTest() {
     @Autowired
-    private lateinit var userRepo: IUserRepository
-
-    @Autowired
     private lateinit var loginAttemptRepo: ILoginAttemptRepository
 
     private lateinit var user: User
@@ -42,5 +39,21 @@ internal class LoginAttemptTest : AbstractSpringTest() {
         assertEquals(2, listOfLoginAttempt.size)
         assertEquals(loginAttempt1Id, listOfLoginAttempt[0].id)
         assertEquals(loginAttempt2Id, listOfLoginAttempt[1].id)
+    }
+
+    @Test
+    fun testFindByEmail() {
+        val theLoginAttemptList = loginAttemptRepo.findByUser_Email(user.email)
+
+        assertEquals(2, theLoginAttemptList.size)
+        assertEquals(loginAttempt1Id, theLoginAttemptList[0].id)
+        assertEquals(loginAttempt2Id, theLoginAttemptList[1].id)
+    }
+
+    @Test
+    fun testFindByEmail_NonExistentEmail() {
+        val theLoginAttemptList = loginAttemptRepo.findByUser_Email("codyspath@gmail.com")
+
+        assertEquals(0, theLoginAttemptList.size)
     }
 }

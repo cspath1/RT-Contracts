@@ -1,12 +1,14 @@
 package com.radiotelescope.security
 
 import com.radiotelescope.contracts.user.Authenticate
+import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.service.UserDetailsImpl
 import com.radiotelescope.security.service.UserDetailsServiceImpl
+import com.radiotelescope.service.ses.IAwsSesSendService
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.AuthenticationProvider
@@ -31,7 +33,8 @@ class AuthenticationProviderImpl(
         private var userRepo: IUserRepository,
         private var userRoleRepo: IUserRoleRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository,
-        private val loginAttemptRepo: ILoginAttemptRepository
+        private val loginAttemptRepo: ILoginAttemptRepository,
+        private val awsSesSendService: IAwsSesSendService
 ) : AuthenticationProvider {
     /**
      * Performs the user authentication using Spring Security
@@ -92,6 +95,31 @@ class AuthenticationProviderImpl(
                 loginAttemptRepo = loginAttemptRepo
         ).execute()
 
+        // If the Authenticate command failed, and it was the fifth failed login
+        // attempt, send an email to the user
+        if (simpleResult.error != null) {
+            val failedLoginAttemptList = loginAttemptRepo.findByUser_Email(email)
+
+            // NOTE: This will return an empty list if the email entered
+            // is not associated with a user. Also, we only want to send out
+            // one email when the account reaches the threshold of being "locked"
+            if (failedLoginAttemptList.size == 5) {
+                sendEmail(email)
+            }
+        }
+
         return simpleResult.success != null
+    }
+
+    private fun sendEmail(email: String) {
+        val sendForm = SendForm(
+                toAddresses = listOf(email),
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                subject = "Account Locked",
+                htmlBody = "<p>Due to consecutive failed login attempts, your account has been locked</p>" +
+                        "<p>Please reset your password in order to unlock it.</p>"
+        )
+
+        awsSesSendService.execute(sendForm)
     }
 }

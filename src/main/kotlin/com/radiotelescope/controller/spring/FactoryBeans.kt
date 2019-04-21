@@ -235,7 +235,8 @@ class FactoryBeans(
         return UserResetPasswordTokenWrapper(
                 resetPasswordTokenFactory = BaseResetPasswordTokenFactory(
                         resetPasswordTokenRepo = repositories.resetPasswordTokenRepo,
-                        userRepo = repositories.userRepo
+                        userRepo = repositories.userRepo,
+                        loginAttemptRepo = repositories.loginAttemptRepo
                 )
         )
     }

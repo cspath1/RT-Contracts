@@ -5,6 +5,7 @@ import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
+import com.radiotelescope.repository.loginAttempt.LoginAttempt
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -15,6 +16,7 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -36,10 +38,12 @@ internal class AuthenticateTest : AbstractSpringTest() {
             password = "Password"
     )
 
+    private lateinit var user: User
+
     @Before
     fun setUp() {
         // Persist the User with the hashed password
-        val user = testUtil.createUserWithEncodedPassword(
+        user = testUtil.createUserWithEncodedPassword(
                 email = "cspath1@ycp.edu",
                 password = "Password"
         )
@@ -56,6 +60,11 @@ internal class AuthenticateTest : AbstractSpringTest() {
 
     @Test
     fun testValidConstraints_Success() {
+        // Create a failed login attempt
+        val loginAttempt = LoginAttempt(loginTime = Date())
+        loginAttempt.user = user
+        loginAttemptRepo.save(loginAttempt)
+
         // Execute the command
         val (info, errors) = Authenticate(
                 request = baseRequest,
@@ -68,8 +77,12 @@ internal class AuthenticateTest : AbstractSpringTest() {
         // The info class should not be null
         assertNotNull(info)
 
-        // The errors should be
+        // The errors should be null
         assertNull(errors)
+
+        // The failed login attempt should be deleted
+        assertEquals(0, loginAttemptRepo.count())
+        assertEquals(1, userRepo.count())
     }
 
     @Test

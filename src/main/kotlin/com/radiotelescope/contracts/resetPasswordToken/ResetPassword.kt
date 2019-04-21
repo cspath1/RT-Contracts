@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -17,12 +18,14 @@ import java.util.*
  * @param token the reset password token
  * @param resetPasswordTokenRepo the [IResetPasswordTokenRepository]
  * @param userRepo the [IUserRepository]
+ * @param loginAttemptRepo the [ILoginAttemptRepository]
  */
 class ResetPassword (
         private val request: ResetPassword.Request,
         private val token: String,
         private val resetPasswordTokenRepo: IResetPasswordTokenRepository,
-        private val userRepo: IUserRepository
+        private val userRepo: IUserRepository,
+        private val loginAttemptRepo: ILoginAttemptRepository
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command] execute method. Calls the [validateRequest] method
@@ -45,6 +48,12 @@ class ResetPassword (
         val user = theToken.user
         val updatedUser = userRepo.save(request.updateEntity(user))
         resetPasswordTokenRepo.delete(theToken)
+
+        // Delete any failed login attempts, since user's will need to
+        // reset their password if their account gets locked due to failed
+        // login attempts
+        val theLoginAttempts = loginAttemptRepo.findByUserId(user.id)
+        loginAttemptRepo.deleteAll(theLoginAttempts)
 
         return SimpleResult(updatedUser.id, null)
     }

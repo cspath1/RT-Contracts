@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.resetPasswordToken
 
 import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.assertTrue
@@ -20,13 +21,17 @@ internal class BaseResetPasswordTokenFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var resetPasswordTokenRepo: IResetPasswordTokenRepository
 
+    @Autowired
+    private lateinit var loginAttemptRepo: ILoginAttemptRepository
+
     private lateinit var factory: ResetPasswordTokenFactory
 
     @Before
     fun init() {
         factory = BaseResetPasswordTokenFactory(
                 userRepo = userRepo,
-                resetPasswordTokenRepo = resetPasswordTokenRepo
+                resetPasswordTokenRepo = resetPasswordTokenRepo,
+                loginAttemptRepo = loginAttemptRepo
         )
     }
 

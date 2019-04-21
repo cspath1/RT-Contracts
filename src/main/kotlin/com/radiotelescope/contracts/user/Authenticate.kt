@@ -50,7 +50,7 @@ class Authenticate(
         val theLoginAttempts = loginAttemptRepo.findByUserId(theUser!!.id)
         loginAttemptRepo.deleteAll(theLoginAttempts)
 
-        val theUserRole = userRoleRepo.findMembershipRoleByUserId(theUser!!.id)
+        val theUserRole = userRoleRepo.findMembershipRoleByUserId(theUser.id)
         val theRole = theUserRole?.role
         val allottedTime = allottedTimeCapRepo.findByUserId(theUser.id).allottedTime
 

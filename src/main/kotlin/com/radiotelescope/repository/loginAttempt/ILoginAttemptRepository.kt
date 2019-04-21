@@ -23,4 +23,5 @@ interface ILoginAttemptRepository : CrudRepository<LoginAttempt, Long> {
             nativeQuery = true)
     fun findByUserId(userId: Long): List<LoginAttempt>
 
+    fun findByUser_Email(email: String): List<LoginAttempt>
 }
