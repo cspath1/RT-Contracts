@@ -99,7 +99,7 @@ class AdminUserUnbanController(
     private fun sendEmail(email: String) {
         val sendForm = SendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Unbanned By Admin",
                 htmlBody = "<p>Your account, which had been previously banned due to application misuse, has been unbanned.</p>"
         )

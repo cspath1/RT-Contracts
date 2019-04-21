@@ -114,7 +114,7 @@ class UserRegisterController(
     private fun sendEmailToOwner(email: String) {
         val sendForm = SendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Account Created",
                 htmlBody = "<p>Thank you for creating an account for the York County Astronomical Society's " +
                         "Radio Telescope web application! " +
@@ -128,7 +128,7 @@ class UserRegisterController(
     private fun sendEmailToAdmins(emails: List<String>) {
         val sendForm = SendForm(
                 toAddresses = emails,
-                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Account and Role Approval",
                 htmlBody = "<p>A new account has been created that requires an Admin approval/validation.</p>"
         )

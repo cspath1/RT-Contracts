@@ -119,7 +119,7 @@ class AdminUserRoleValidateController(
 
         val sendForm = SendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Account Approved",
                 htmlBody = "<p>Your account has been approved!</p>" +
                         "<p>Please <a href='$activateAccountLink'>click here </a> to activate your account so you can start " +
