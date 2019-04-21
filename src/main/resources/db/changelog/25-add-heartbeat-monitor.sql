@@ -4,7 +4,7 @@
 CREATE TABLE heartbeat_monitor (
     id INT(11) NOT NULL AUTO_INCREMENT,
     last_communication DATETIME NOT NULL,
-    telescope_id INT(11) NOT NULL
+    telescope_id INT(11) NOT NULL,
 
     PRIMARY KEY(id)
 );
