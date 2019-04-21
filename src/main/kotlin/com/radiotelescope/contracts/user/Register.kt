@@ -1,5 +1,8 @@
 package com.radiotelescope.contracts.user
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.services.sns.AmazonSNSClientBuilder
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseCreateRequest
@@ -58,6 +61,12 @@ class Register(
                     email = newUser.email,
                     token = theToken
             )
+
+            val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
+            //create topic for the user
+            builder.createTopic("UserTopic" + newUser.id)
+            //close topic builder to prevent potential memory leak
+            builder.shutdown()
 
             return SimpleResult(theResponse, null)
         }

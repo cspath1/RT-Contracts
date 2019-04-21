@@ -1,5 +1,9 @@
 package com.radiotelescope.contracts.user
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.auth.EnvironmentVariableCredentialsProvider
+import com.amazonaws.services.sns.AmazonSNSClientBuilder
 import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -465,5 +469,33 @@ internal class RegisterTest {
 
         assertEquals(1, userNotificationTypeRepo.count())
         
+    }
+
+    @Test
+    fun testUserTopicIsCreated(){
+        val (token, error) = Register(
+                request = baseRequest,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
+        ).execute()
+
+
+        val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
+
+        //this will stop working when number of topics exceeds 100 (TODO: refactor this test to work for > 100)
+        //checks if the current number of topics is equal to the number of topics if a topic (which should already exist) for the user is created
+        //creating a topic that already exists will just return the topic ARN rather than create a new topic
+        val startSize = builder.listTopics().topics.size
+        builder.createTopic("UserTopic" + userRepo.findByEmail(baseRequest.email)?.id)
+        val endSize = builder.listTopics().topics.size
+        assertEquals(startSize, endSize)
+
+        builder.shutdown()
+
+        assertNotNull(token)
+        assertNull(error)
+
     }
 }
