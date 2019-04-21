@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.role
 
 import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -28,6 +29,9 @@ internal class UserUserRoleWrapperTest : AbstractSpringTest() {
     private lateinit var userRoleRepo: IUserRoleRepository
 
     @Autowired
+    private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
+
+    @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
     val context = FakeUserContext()
@@ -50,6 +54,7 @@ internal class UserUserRoleWrapperTest : AbstractSpringTest() {
         factory = BaseUserRoleFactory(
                 userRoleRepo = userRoleRepo,
                 userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
 

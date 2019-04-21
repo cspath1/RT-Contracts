@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.role
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable
 class BaseUserRoleFactory(
         private val userRoleRepo: IUserRoleRepository,
         private val userRepo: IUserRepository,
+        private val accountActivateTokenRepo: IAccountActivateTokenRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : UserRoleFactory {
     /**
@@ -43,10 +45,12 @@ class BaseUserRoleFactory(
      * @param request the [Validate.Request] object
      * @return a [Validate] command object
      */
-    override fun validate(request: Validate.Request): Command<Long, Multimap<ErrorTag, String>> {
+    override fun validate(request: Validate.Request): Command<Validate.Response, Multimap<ErrorTag, String>> {
         return Validate(
                 request = request,
+                userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
     }

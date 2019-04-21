@@ -4,6 +4,7 @@ import com.radiotelescope.controller.user.BaseUserRestControllerTest
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.services.ses.MockAwsSesSendService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -29,6 +30,7 @@ internal class AdminUserUnbanControllerTest : BaseUserRestControllerTest() {
 
         adminUserUnbanController = AdminUserUnbanController(
                 userWrapper = getWrapper(),
+                awsSesSendService = MockAwsSesSendService(true),
                 logger = getLogger()
         )
 

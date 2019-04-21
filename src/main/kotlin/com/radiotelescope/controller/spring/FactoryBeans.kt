@@ -83,6 +83,7 @@ class FactoryBeans(
                 factory = BaseUserRoleFactory(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo,
+                        accountActivateTokenRepo = repositories.accountActivateTokenRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo
                 ),
                 userRepo = repositories.userRepo,

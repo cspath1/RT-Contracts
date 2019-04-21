@@ -16,17 +16,22 @@ import com.radiotelescope.repository.user.User
 class Unban(
         private val id: Long,
         private val userRepo: IUserRepository
-) : Command<Long, Multimap<ErrorTag, String>> {
+) : Command<Unban.Response, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method that, given the request passes
      * validation, will set a User's status to ACTIVE and mark the active flag
      * back to true
      */
-    override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
+    override fun execute(): SimpleResult<Unban.Response, Multimap<ErrorTag, String>> {
         validateRequest()?.let { return SimpleResult(null, it) } ?: let {
             val theUser = userRepo.findById(id).get()
             unbanUser(theUser)
-            return SimpleResult(theUser.id, null)
+
+            val theResponse = Response(
+                    id = id,
+                    email = theUser.email
+            )
+            return SimpleResult(theResponse, null)
         }
     }
 
@@ -62,4 +67,15 @@ class Unban(
         }
         return if (errors.isEmpty) null else errors
     }
+
+    /**
+     * Data class containing all fields returned from unban
+     *
+     * @param id the [User] id
+     * @param email the [User] email
+     */
+    data class Response(
+            val id: Long,
+            val email: String
+    )
 }

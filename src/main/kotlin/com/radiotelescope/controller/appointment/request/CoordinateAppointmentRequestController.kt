@@ -124,7 +124,7 @@ class CoordinateAppointmentRequestController(
     private fun sendEmail(emails: List<String>) {
         val sendForm = SendForm(
                 toAddresses = emails,
-                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Appointment Request",
                 htmlBody = "<p>A new observation has been requested by a user at their " +
                         "allotted quota and requires your approval.</p>"

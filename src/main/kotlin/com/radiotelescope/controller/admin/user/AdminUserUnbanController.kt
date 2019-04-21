@@ -4,9 +4,11 @@ import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.user.Unban
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
+import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
+import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -18,11 +20,13 @@ import org.springframework.web.bind.annotation.RestController
  * REST Controller to handle "unbanning" a User
  *
  * @param userWrapper the [UserUserWrapper]
+ * @param awsSesSendService the [IAwsSesSendService] interface
  * @param logger the [Logger] service
  */
 @RestController
 class AdminUserUnbanController(
         private val userWrapper: UserUserWrapper,
+        private val awsSesSendService: IAwsSesSendService,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -43,16 +47,18 @@ class AdminUserUnbanController(
         userWrapper.unban(id) {
             // If the command called after successful validation
             // is a success
-            it.success?.let { id ->
+            it.success?.let { theResponse ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.USER,
                                 action = "User Unban",
-                                affectedRecordId = id,
+                                affectedRecordId = theResponse.id,
                                 status = HttpStatus.OK.value()
                         )
                 )
+
+                sendEmail(theResponse.email)
 
                 result = Result(data = id)
             }
@@ -88,5 +94,15 @@ class AdminUserUnbanController(
         }
 
         return result
+    }
+
+    private fun sendEmail(email: String) {
+        val sendForm = SendForm(
+                toAddresses = listOf(email),
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                subject = "Unbanned By Admin",
+                htmlBody = "<p>Your account, which had been previously banned due to application misuse, has been unbanned.</p>"
+        )
+        awsSesSendService.execute(sendForm)
     }
 }
