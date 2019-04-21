@@ -2,7 +2,7 @@ package com.radiotelescope.controller.resetPasswordToken
 
 import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.log.ILogRepository
-import com.radiotelescope.services.ses.MockAwsSesSendService
+import com.radiotelescope.service.ses.MockAwsSesSendService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

@@ -6,7 +6,7 @@ import com.radiotelescope.controller.user.role.BaseUserRoleControllerTest
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
-import com.radiotelescope.services.ses.MockAwsSesSendService
+import com.radiotelescope.service.ses.MockAwsSesSendService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

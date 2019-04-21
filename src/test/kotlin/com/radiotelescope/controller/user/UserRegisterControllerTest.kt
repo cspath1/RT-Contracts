@@ -1,12 +1,11 @@
 package com.radiotelescope.controller.user
 
 import com.radiotelescope.contracts.user.Register
-import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.user.RegisterForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.services.ses.MockAwsSesSendService
+import com.radiotelescope.service.ses.MockAwsSesSendService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
