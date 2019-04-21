@@ -122,8 +122,8 @@ class AdminUserRoleValidateController(
                 fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Account Approved",
                 htmlBody = "<p>Your account has been approved!</p>" +
-                        "<p>Please <a href='$activateAccountLink'>click here </a> to activate your account so you can start " +
-                        "using the application to conduct observations!</p>"
+                        "<p>Please <a href='$activateAccountLink'>click here </a> to activate your account so you can start</p> " +
+                        "<p>using the application to conduct observations! Please note that this link will expire in 2 days</p>"
         )
 
         awsSesSendService.execute(sendForm)

@@ -119,7 +119,7 @@ class Validate(
 
         val theAccountActivateToken = AccountActivateToken(
                 token = token,
-                expirationDate = Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000))   // 1 day
+                expirationDate = Date(System.currentTimeMillis() + (48 * 60 * 60 * 1000))   // 2 days
         )
 
         theAccountActivateToken.user = user
