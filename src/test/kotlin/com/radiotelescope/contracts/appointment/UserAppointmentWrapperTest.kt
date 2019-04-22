@@ -6,6 +6,8 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.subscribedAppointment.ISubscribedAppointmentRepository
+import com.radiotelescope.repository.subscribedAppointment.subscribedAppointment
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -64,6 +66,9 @@ internal class UserAppointmentWrapperTest {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var subscribedAppointmentRepo: ISubscribedAppointmentRepository
 
     private val baseCreateRequest = Create.Request(
             userId = -1L,
@@ -156,7 +161,8 @@ internal class UserAppointmentWrapperTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                subscribedAppointmentRepo = subscribedAppointmentRepo
         )
 
         wrapper = UserAppointmentWrapper(

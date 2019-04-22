@@ -43,11 +43,13 @@ class SubscribeAppointment (
     }
 
     data class Request(
-            val appointmentId: Long
+            val appointmentId: Long,
+            val userId: Long
     ) : BaseCreateRequest<subscribedAppointment>{
         override fun toEntity(): subscribedAppointment {
             return subscribedAppointment(
-                    appointmentId = appointmentId
+                    appointmentId = appointmentId,
+                    userId = userId
             )
         }
     }

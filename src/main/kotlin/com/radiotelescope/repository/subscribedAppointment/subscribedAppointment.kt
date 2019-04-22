@@ -7,17 +7,15 @@ import javax.persistence.*
 @Table(name = "subscribedAppointment")
 data class subscribedAppointment (
         @Column(name = "appointment_id", nullable = false)
-        var appointmentId: Long
+        var appointmentId: Long,
+        @Column(name = "user_id", nullable = false)
+        var userId: Long
 ) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="id", unique = true, nullable = false)
     var id: Long = 0
-
-    @OneToMany
-    @JoinColumn(name = "user_id", nullable = false)
-    var user: User? = null
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)

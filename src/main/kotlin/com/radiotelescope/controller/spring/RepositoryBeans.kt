@@ -8,6 +8,7 @@ import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.rfdata.IRFDataRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.subscribedAppointment.ISubscribedAppointmentRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -43,5 +44,6 @@ class RepositoryBeans(
         val accountActivateTokenRepo: IAccountActivateTokenRepository,
         val updateEmailTokenRepo: IUpdateEmailTokenRepository,
         val coordinateRepo: ICoordinateRepository,
-        val userNotificationRepo: IUserNotificationTypeRepository
+        val userNotificationRepo: IUserNotificationTypeRepository,
+        val subscribedAppointmentRepo: ISubscribedAppointmentRepository
 )

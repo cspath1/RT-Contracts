@@ -132,5 +132,5 @@ interface AppointmentFactory {
      * @return a [Command] object
      */
 
-    fun subscribeAppointment(appointmentId: Long) : Command<Long, Multimap<ErrorTag, String>>
+    fun subscribeAppointment(request: SubscribeAppointment.Request) : Command<Long, Multimap<ErrorTag, String>>
 }

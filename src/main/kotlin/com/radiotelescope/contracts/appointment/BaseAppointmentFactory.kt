@@ -245,13 +245,11 @@ class BaseAppointmentFactory(
         )
     }
 
-    override fun subscribeAppointment(appointmentId: Long): Command<Long, Multimap<ErrorTag, String>> {
+    override fun subscribeAppointment(request: SubscribeAppointment.Request): Command<Long, Multimap<ErrorTag, String>> {
         return SubscribeAppointment(
                 appointmentRepo = appointmentRepo,
                 subscribedAppointmentRepo = subscribedAppointmentRepo,
-                request = SubscribeAppointment.Request(
-                        appointmentId = appointmentId)
-        )
+                request = request)
     }
 }
 

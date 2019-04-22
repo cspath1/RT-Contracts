@@ -414,12 +414,12 @@ class UserAppointmentWrapper(
         return errors.toStringMap()
     }
 
-    fun subscribeAppointment(appointmentId: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
+    fun subscribeAppointment(request: SubscribeAppointment.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
         if(context.currentUserId() != null) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
                     successCommand = factory.subscribeAppointment(
-                            appointmentId = appointmentId
+                            request = request
                     )
             ).execute(withAccess)
         }

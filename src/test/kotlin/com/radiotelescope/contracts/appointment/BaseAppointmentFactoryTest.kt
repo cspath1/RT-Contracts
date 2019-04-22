@@ -4,6 +4,7 @@ import com.radiotelescope.TestUtil
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.subscribedAppointment.ISubscribedAppointmentRepository
 import com.radiotelescope.repository.telescope.ITelescopeRepository
 
 import com.radiotelescope.repository.user.IUserRepository
@@ -53,6 +54,9 @@ internal class BaseAppointmentFactoryTest {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var subscribedAppointmentRepo: ISubscribedAppointmentRepository
+
     private lateinit var factory: AppointmentFactory
 
     @Before
@@ -62,7 +66,8 @@ internal class BaseAppointmentFactoryTest {
                 userRepo = userRepo,
                 telescopeRepo = telescopeRepo,
                 userRoleRepo = userRoleRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                subscribedAppointmentRepo = subscribedAppointmentRepo
         )
     }
 
