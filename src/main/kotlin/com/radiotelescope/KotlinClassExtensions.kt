@@ -33,8 +33,8 @@ fun Page<Appointment>.toAppointmentInfoPage(): Page<AppointmentInfo> {
             Appointment.Type.POINT -> infoList.add(PointAppointmentInfo(it))
             Appointment.Type.DRIFT_SCAN -> infoList.add(DriftScanAppointmentInfo(it))
             Appointment.Type.CELESTIAL_BODY -> infoList.add(CelestialBodyAppointmentInfo(it))
-            Appointment.Type.RASTER_SCAN -> MultiPointAppointmentInfo(it)
-            Appointment.Type.FREE_CONTROL -> MultiPointAppointmentInfo(it)
+            Appointment.Type.RASTER_SCAN -> infoList.add(MultiPointAppointmentInfo(it))
+            Appointment.Type.FREE_CONTROL -> infoList.add(MultiPointAppointmentInfo(it))
         }
     }
 
@@ -57,8 +57,8 @@ fun List<Appointment>.toAppointmentInfoList(): List<AppointmentInfo> {
             Appointment.Type.POINT -> infoList.add(PointAppointmentInfo(it))
             Appointment.Type.DRIFT_SCAN -> infoList.add(DriftScanAppointmentInfo(it))
             Appointment.Type.CELESTIAL_BODY -> infoList.add(CelestialBodyAppointmentInfo(it))
-            Appointment.Type.RASTER_SCAN -> MultiPointAppointmentInfo(it)
-            Appointment.Type.FREE_CONTROL -> MultiPointAppointmentInfo(it)
+            Appointment.Type.RASTER_SCAN -> infoList.add(MultiPointAppointmentInfo(it))
+            Appointment.Type.FREE_CONTROL -> infoList.add(MultiPointAppointmentInfo(it))
         }
     }
 
