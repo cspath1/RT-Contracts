@@ -112,7 +112,9 @@ class CelestialBodyAppointmentUpdate(
     ): Appointment {
         // If the type is the same, the entity can be updated
         if (appointment.type == Appointment.Type.CELESTIAL_BODY) {
-            return appointmentRepo.save(request.updateEntity(appointment))
+            val updatedAppointment = request.updateEntity(appointment)
+            updatedAppointment.celestialBody = celestialBodyRepo.findById(request.celestialBodyId).get()
+            return appointmentRepo.save(updatedAppointment)
         } else {
             // The type is being changed, and we must delete the old
             // record and persist a new one
