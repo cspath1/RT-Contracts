@@ -4,6 +4,7 @@ import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.model.user.Filter
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -38,6 +39,9 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
+    @Autowired
+    private lateinit var loginAttemptRepo: ILoginAttemptRepository
 
     private val baseCreateRequest = Register.Request(
             firstName = "Cody",
@@ -77,7 +81,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
                 accountActivateTokenRepo = accountActivateTokenRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
         )
 
         wrapper = UserUserWrapper(

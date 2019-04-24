@@ -20,5 +20,6 @@ enum class ErrorTag {
     ROLES,
     TIME,
     CURRENT_PASSWORD,
-    SEARCH
+    SEARCH,
+    LOGIN_ATTEMPT
 }

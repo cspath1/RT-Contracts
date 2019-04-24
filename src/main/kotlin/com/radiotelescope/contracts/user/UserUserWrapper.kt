@@ -189,11 +189,11 @@ class UserUserWrapper(
      *  Wrapper method for the [UserFactory.unban] method that adds Spring
      *  Security authentication to the [Unban] command object
      *
-     *  @param id the User id
+     *  @param [Unban.Response] object
      *  @param withAccess anonymous function that uses the command's result object
      *  @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun unban(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun unban(id: Long, withAccess: (result: SimpleResult<Unban.Response, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
         if (context.currentUserId() != null) {
             return context.require(

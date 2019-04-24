@@ -102,7 +102,7 @@ class AdminUserBanController(
         if(!message.isNullOrBlank()) {
             sendForm = SendForm(
                     toAddresses = listOf(email),
-                    fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                    fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                     subject = "Banned By Admin",
                     htmlBody = "<p>You have been banned. The reason for your ban is as follows: " +
                             "$message</p>"
@@ -111,7 +111,7 @@ class AdminUserBanController(
         else {
             sendForm = SendForm(
                     toAddresses = listOf(email),
-                    fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                    fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                     subject = "Banned By Admin",
                     htmlBody = "<p>You have been banned.</p>"
             )

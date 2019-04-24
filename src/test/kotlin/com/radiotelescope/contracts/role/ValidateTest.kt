@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.role
 
 import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -22,6 +23,9 @@ internal class ValidateTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
+
+    @Autowired
+    private lateinit var accountActivateTokenRepo: IAccountActivateTokenRepository
 
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
@@ -59,13 +63,16 @@ internal class ValidateTest : AbstractSpringTest() {
                 role = UserRole.Role.GUEST,
                 id = unapprovedId
         )
-        val (id, errors) = Validate(
+
+        val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
-        assertNotNull(id)
+        assertNotNull(theResponse)
         assertNull(errors)
 
         assertEquals(Appointment.GUEST_APPOINTMENT_TIME_CAP, allottedTimeCapRepo.findByUserId(userId).allottedTime)
@@ -77,13 +84,16 @@ internal class ValidateTest : AbstractSpringTest() {
                 role = UserRole.Role.STUDENT,
                 id = unapprovedId
         )
-        val (id, errors) = Validate(
+
+        val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
-        assertNotNull(id)
+        assertNotNull(theResponse)
         assertNull(errors)
 
         assertEquals(Appointment.STUDENT_APPOINTMENT_TIME_CAP, allottedTimeCapRepo.findByUserId(userId).allottedTime)
@@ -94,13 +104,16 @@ internal class ValidateTest : AbstractSpringTest() {
         val requestCopy = baseValidateRequest.copy(
                 id = unapprovedId
         )
-        val (id, errors) = Validate(
+
+        val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
-        assertNotNull(id)
+        assertNotNull(theResponse)
         assertNull(errors)
 
         assertEquals(Appointment.MEMBER_APPOINTMENT_TIME_CAP, allottedTimeCapRepo.findByUserId(userId).allottedTime)
@@ -112,13 +125,16 @@ internal class ValidateTest : AbstractSpringTest() {
                 role = UserRole.Role.RESEARCHER,
                 id = unapprovedId
         )
-        val (id, errors) = Validate(
+
+        val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
-        assertNotNull(id)
+        assertNotNull(theResponse)
         assertNull(errors)
 
         assertNull(allottedTimeCapRepo.findByUserId(userId).allottedTime)
@@ -131,17 +147,19 @@ internal class ValidateTest : AbstractSpringTest() {
                 id = unapprovedId
         )
 
-        val (id, errors) = Validate(
+        val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
-        assertNotNull(id)
+        assertNotNull(theResponse)
         assertNull(errors)
-        assertEquals(unapprovedId, id)
+        assertEquals(unapprovedId, theResponse!!.id)
 
-        val theRole = userRoleRepo.findById(id!!).get()
+        val theRole = userRoleRepo.findById(theResponse.id).get()
         assertEquals(requestCopy.role, theRole.role)
 
         val allottedTimeCap = allottedTimeCapRepo.findByUserId(userId)
@@ -157,17 +175,19 @@ internal class ValidateTest : AbstractSpringTest() {
                 role = UserRole.Role.GUEST
         )
 
-        val (id, errors) = Validate(
+        val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
-        assertNotNull(id)
+        assertNotNull(theResponse)
         assertNull(errors)
-        assertEquals(unapprovedId, id)
+        assertEquals(unapprovedId, theResponse!!.id)
 
-        val theRole = userRoleRepo.findById(id!!).get()
+        val theRole = userRoleRepo.findById(theResponse.id).get()
         assertEquals(requestCopy.role, theRole.role)
         assertNotEquals(baseValidateRequest.role, theRole.role)
 
@@ -182,13 +202,15 @@ internal class ValidateTest : AbstractSpringTest() {
                 id = 311L
         )
 
-        val (id, errors) = Validate(
+        val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
-        assertNull(id)
+        assertNull(theResponse)
         assertNotNull(errors)
 
         assertTrue(errors!![ErrorTag.ID].isNotEmpty())
@@ -204,13 +226,15 @@ internal class ValidateTest : AbstractSpringTest() {
                 id = unapprovedId
         )
 
-        val (id, errors) = Validate(
+        val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
-        assertNull(id)
+        assertNull(theResponse)
         assertNotNull(errors)
 
         assertTrue(errors!![ErrorTag.APPROVED].isNotEmpty())
@@ -223,13 +247,15 @@ internal class ValidateTest : AbstractSpringTest() {
                 role = UserRole.Role.ADMIN
         )
 
-        val (id, errors) = Validate(
+        val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
-        assertNull(id)
+        assertNull(theResponse)
         assertNotNull(errors)
 
         assertTrue(errors!![ErrorTag.ROLE].isNotEmpty())
@@ -252,14 +278,16 @@ internal class ValidateTest : AbstractSpringTest() {
                 id = unapprovedId,
                 role = UserRole.Role.MEMBER
         )
-        val (id, errors) = Validate(
+        val (theResponse, errors) = Validate(
                 request = requestCopy,
                 userRoleRepo = userRoleRepo,
+                userRepo = userRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         ).execute()
 
         // Make sure the command was a success
-        assertNotNull(id)
+        assertNotNull(theResponse)
         assertNull(errors)
 
         val theRoles = userRoleRepo.findAllByUserId(userId)
@@ -269,7 +297,7 @@ internal class ValidateTest : AbstractSpringTest() {
 
         // Make sure the roles are as expected
         theRoles.forEach {
-            if (it.id == id) {
+            if (it.id == theResponse!!.id) {
                 assertEquals(UserRole.Role.MEMBER, it.role)
             } else {
                 assertEquals(UserRole.Role.USER, it.role)

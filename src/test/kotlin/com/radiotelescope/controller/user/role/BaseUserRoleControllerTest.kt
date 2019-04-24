@@ -3,6 +3,7 @@ package com.radiotelescope.controller.user.role
 import com.radiotelescope.contracts.role.BaseUserRoleFactory
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
+import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -15,6 +16,9 @@ internal abstract class BaseUserRoleControllerTest : BaseRestControllerTest() {
 
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
+
+    @Autowired
+    private lateinit var accountActivationTokenRepo: IAccountActivateTokenRepository
 
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
@@ -31,6 +35,7 @@ internal abstract class BaseUserRoleControllerTest : BaseRestControllerTest() {
         factory = BaseUserRoleFactory(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivationTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
 

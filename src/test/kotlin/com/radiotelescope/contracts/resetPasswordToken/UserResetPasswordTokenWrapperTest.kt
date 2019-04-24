@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.resetPasswordToken
 
 import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.user.IUserRepository
@@ -23,6 +24,9 @@ internal class UserResetPasswordTokenWrapperTest : AbstractSpringTest() {
     @Autowired
     private lateinit var resetPasswordTokeRepo: IResetPasswordTokenRepository
 
+    @Autowired
+    private lateinit var loginAttemptRepo: ILoginAttemptRepository
+
     private lateinit var wrapper: UserResetPasswordTokenWrapper
     private lateinit var factory: ResetPasswordTokenFactory
     private lateinit var user: User
@@ -33,7 +37,8 @@ internal class UserResetPasswordTokenWrapperTest : AbstractSpringTest() {
         // Initialize the factory and wrapper
         factory = BaseResetPasswordTokenFactory(
                 resetPasswordTokenRepo = resetPasswordTokeRepo,
-                userRepo = userRepo
+                userRepo = userRepo,
+                loginAttemptRepo = loginAttemptRepo
         )
         wrapper = UserResetPasswordTokenWrapper(factory)
 

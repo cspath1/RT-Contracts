@@ -123,7 +123,7 @@ class RoleRequestController (
     private fun sendEmail(emails: List<String>) {
         val sendForm = SendForm(
                 toAddresses = emails,
-                fromAddress = "YCP Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "User Role Request",
                 htmlBody = "<p>A new user role has been requested by a user and requires your approval.</p>"
         )

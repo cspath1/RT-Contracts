@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -17,12 +18,14 @@ import org.springframework.data.domain.Pageable
  * @param userRoleRepo the [IUserRoleRepository] interface
  * @param accountActivateTokenRepo the [IAccountActivateTokenRepository] interface
  * @param allottedTimeCapRepo the [IAllottedTimeCapRepository] interface
+ * @param loginAttemptRepo the [ILoginAttemptRepository] interface
  */
 class BaseUserFactory(
         private val userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository,
         private val accountActivateTokenRepo: IAccountActivateTokenRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val loginAttemptRepo: ILoginAttemptRepository
 ) : UserFactory {
     /**
      * Override of the [UserFactory.register] method that will return a [Register] command object
@@ -35,7 +38,6 @@ class BaseUserFactory(
                 request = request,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo
         )
     }
@@ -51,7 +53,8 @@ class BaseUserFactory(
                 request = request,
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                loginAttemptRepo = loginAttemptRepo
         )
     }
 
@@ -128,10 +131,10 @@ class BaseUserFactory(
     /**
      * Override of the [UserFactory.unban] method that will return a [Unban] command object
      *
-     * @param id the User id
+     * @param [Unban.Response] object
      * @return an [Unban] command object
      */
-    override fun unban(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+    override fun unban(id: Long): Command<Unban.Response, Multimap<ErrorTag, String>> {
         return Unban(
                 id = id,
                 userRepo = userRepo

@@ -53,7 +53,7 @@ class UserUserRoleWrapper(
      * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun validate(request: Validate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun validate(request: Validate.Request, withAccess: (result: SimpleResult<Validate.Response, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         context.currentUserId()?.let {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
