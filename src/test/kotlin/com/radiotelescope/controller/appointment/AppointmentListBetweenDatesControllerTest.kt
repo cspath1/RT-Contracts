@@ -48,6 +48,7 @@ internal class AppointmentListBetweenDatesControllerTest : BaseAppointmentRestCo
                 startTime = Date(System.currentTimeMillis() - 90000L),
                 endTime = Date(System.currentTimeMillis() - 10000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -58,6 +59,7 @@ internal class AppointmentListBetweenDatesControllerTest : BaseAppointmentRestCo
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 90000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
     }

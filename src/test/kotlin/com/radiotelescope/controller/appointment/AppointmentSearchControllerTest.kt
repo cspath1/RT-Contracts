@@ -45,6 +45,7 @@ internal class AppointmentSearchControllerTest : BaseAppointmentRestControllerTe
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() + 200000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 

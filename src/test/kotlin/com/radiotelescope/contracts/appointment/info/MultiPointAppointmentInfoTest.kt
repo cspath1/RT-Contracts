@@ -58,6 +58,7 @@ internal class MultiPointAppointmentInfoTest {
                 endTime = endTime,
                 telescopeId = 1L,
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.RASTER_SCAN
         )
 

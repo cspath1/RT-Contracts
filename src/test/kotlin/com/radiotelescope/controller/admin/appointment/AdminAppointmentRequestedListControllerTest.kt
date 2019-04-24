@@ -49,6 +49,7 @@ internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRest
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -60,6 +61,7 @@ internal class AdminAppointmentRequestedListControllerTest : BaseAppointmentRest
                 startTime = Date(System.currentTimeMillis() + 80000L),
                 endTime = Date(System.currentTimeMillis() + 90000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
     }

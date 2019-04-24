@@ -50,6 +50,7 @@ internal class MakePublicTest : AbstractSpringTest() {
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = false,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 type = Appointment.Type.POINT
         )
@@ -60,6 +61,7 @@ internal class MakePublicTest : AbstractSpringTest() {
                 endTime = Date(System.currentTimeMillis() + 50000L),
                 isPublic = true,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 type = Appointment.Type.POINT
         )

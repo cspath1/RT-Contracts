@@ -46,6 +46,7 @@ internal class AppointmentMakePublicControllerTest : BaseAppointmentRestControll
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 90000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
     }

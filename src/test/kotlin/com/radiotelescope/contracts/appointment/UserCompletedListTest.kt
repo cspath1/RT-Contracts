@@ -37,6 +37,7 @@ internal class UserCompletedListTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 10000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
         firstUserId = user.id

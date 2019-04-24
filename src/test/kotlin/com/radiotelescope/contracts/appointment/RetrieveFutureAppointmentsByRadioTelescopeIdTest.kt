@@ -44,6 +44,7 @@ internal class RetrieveFutureAppointmentsByRadioTelescopeIdTest : AbstractSpring
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(Date().time + 200000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -54,6 +55,7 @@ internal class RetrieveFutureAppointmentsByRadioTelescopeIdTest : AbstractSpring
                 startTime = Date(System.currentTimeMillis() + 300000L),
                 endTime = Date(System.currentTimeMillis() + 400000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
     }

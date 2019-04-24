@@ -54,7 +54,7 @@ interface AppointmentUpdate {
                 endTime = request.endTime,
                 startTime = request.startTime,
                 telescopeId = request.telescopeId,
-                priority = request.priority
+                priority = request.priority.toString()
         )
 
         if (appointmentList.size > 1)

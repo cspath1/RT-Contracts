@@ -60,6 +60,7 @@ internal class DriftScanAppointmentUpdateControllerTest : BaseAppointmentRestCon
                 startTime = Date(System.currentTimeMillis() + 50000L),
                 endTime = Date(System.currentTimeMillis() + 100000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.DRIFT_SCAN
         )
 
@@ -68,6 +69,7 @@ internal class DriftScanAppointmentUpdateControllerTest : BaseAppointmentRestCon
                 endTime = appointment.endTime,
                 telescopeId = appointment.telescopeId,
                 isPublic = appointment.isPublic,
+                priority = appointment.priority,
                 elevation = 90.0,
                 azimuth =  180.0
         )

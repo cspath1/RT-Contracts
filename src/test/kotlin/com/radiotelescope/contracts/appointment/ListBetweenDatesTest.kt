@@ -55,6 +55,7 @@ internal class ListBetweenDatesTest : AbstractSpringTest() {
                 startTime = Date(startTime + 100L),
                 endTime = Date(startTime + 200L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -65,6 +66,7 @@ internal class ListBetweenDatesTest : AbstractSpringTest() {
                 startTime = Date(startTime + 300L),
                 endTime = Date(startTime + 400L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
     }

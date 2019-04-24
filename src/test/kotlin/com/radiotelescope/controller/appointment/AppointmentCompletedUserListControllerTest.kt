@@ -43,6 +43,7 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
                 startTime = Date(System.currentTimeMillis() - 10000L),
                 endTime = Date(System.currentTimeMillis() - 5000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -53,6 +54,7 @@ internal class AppointmentCompletedUserListControllerTest : BaseAppointmentRestC
                 startTime = Date(System.currentTimeMillis() - 20000L),
                 endTime = Date(System.currentTimeMillis() - 15000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
     }

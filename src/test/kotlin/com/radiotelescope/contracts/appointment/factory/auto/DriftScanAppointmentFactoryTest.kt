@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreat
 import com.radiotelescope.contracts.appointment.request.DriftScanAppointmentRequest
 import com.radiotelescope.contracts.appointment.update.DriftScanAppointmentUpdate
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
@@ -68,6 +69,7 @@ internal class DriftScanAppointmentFactoryTest : AbstractSpringTest() {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
+                        priority = Appointment.Priority.PRIMARY,
                         telescopeId = 1L,
                         elevation = 90.0,
                         azimuth = 180.0
@@ -87,6 +89,7 @@ internal class DriftScanAppointmentFactoryTest : AbstractSpringTest() {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
+                        priority = Appointment.Priority.PRIMARY,
                         telescopeId = 1L,
                         elevation = 90.0,
                         azimuth = 180.0
@@ -106,6 +109,7 @@ internal class DriftScanAppointmentFactoryTest : AbstractSpringTest() {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
+                        priority = Appointment.Priority.PRIMARY,
                         telescopeId = 1L,
                         elevation = 90.0,
                         azimuth = 180.0

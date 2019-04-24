@@ -71,7 +71,7 @@ class ApproveDenyRequest(
                 endTime = appointment.endTime,
                 startTime = appointment.startTime,
                 telescopeId = appointment.telescopeId,
-                priority = appointment.priority
+                priority = appointment.priority.toString()
         )
 
         if (!appointmentList.isEmpty()) {

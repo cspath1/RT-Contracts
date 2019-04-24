@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.model.appointment.update
 
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.repository.appointment.Appointment
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
@@ -11,6 +12,7 @@ internal class DriftScanAppointmentUpdateFormTest {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = false,
+            priority = Appointment.Priority.PRIMARY,
             elevation = 90.0,
             azimuth = 180.0
     )

@@ -66,6 +66,7 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
             startTime = Date(System.currentTimeMillis() + 100000L),
             endTime = Date(System.currentTimeMillis() + 300000L),
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             coordinates = coordinateRequests
     )
 
@@ -382,6 +383,7 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 

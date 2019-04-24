@@ -23,7 +23,7 @@ data class Appointment(
         var telescopeId: Long,
         @Column(name = "public", nullable = false)
         var isPublic: Boolean,
-        @Column(name = "priority")
+        @Column(name = "priority", nullable = false)
         @Enumerated(value = EnumType.STRING)
         var priority: Appointment.Priority,
         @Column(name = "type", nullable = false)

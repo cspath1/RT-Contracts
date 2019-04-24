@@ -79,6 +79,7 @@ internal class CelestialBodyAppointmentInfoTest {
                 endTime = endTime,
                 telescopeId = 1L,
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.CELESTIAL_BODY
         )
 

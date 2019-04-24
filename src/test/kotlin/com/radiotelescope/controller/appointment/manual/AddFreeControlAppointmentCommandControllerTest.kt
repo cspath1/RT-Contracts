@@ -53,6 +53,7 @@ internal class AddFreeControlAppointmentCommandControllerTest : BaseAppointmentR
                 startTime = Date(System.currentTimeMillis() - 150000L),
                 endTime = Date(System.currentTimeMillis() + 150000L),
                 isPublic = true,
+                priority = Appointment.Priority.MANUAL,
                 type = Appointment.Type.FREE_CONTROL
         )
 

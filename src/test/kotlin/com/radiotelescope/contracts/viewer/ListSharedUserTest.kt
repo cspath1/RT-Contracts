@@ -41,6 +41,7 @@ internal class ListSharedUserTest : AbstractSpringTest() {
                 endTime = Date(System.currentTimeMillis() + 200000L),
                 status = Appointment.Status.SCHEDULED,
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 

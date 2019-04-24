@@ -2,6 +2,7 @@ package com.radiotelescope.controller.appointment.create
 
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
 import com.radiotelescope.controller.model.appointment.create.DriftScanAppointmentCreateForm
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
@@ -32,6 +33,7 @@ internal class DriftScanAppointmentCreateControllerTest  : BaseAppointmentRestCo
             endTime = Date(System.currentTimeMillis() + 100000L),
             telescopeId = 1L,
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             elevation = 90.0,
             azimuth = 180.0
     )

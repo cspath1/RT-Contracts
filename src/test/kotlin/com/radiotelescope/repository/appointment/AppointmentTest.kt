@@ -421,7 +421,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 telescopeId = 1L,
-                priority = Appointment.Priority.PRIMARY
+                priority = Appointment.Priority.PRIMARY.toString()
         )
 
         assertEquals(8, listOfAppointments.size)

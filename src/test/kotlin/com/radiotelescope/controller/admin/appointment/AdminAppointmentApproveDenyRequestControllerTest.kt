@@ -62,6 +62,7 @@ internal class AdminAppointmentApproveDenyRequestControllerTest : BaseAppointmen
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
     }

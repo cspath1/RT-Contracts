@@ -164,7 +164,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "AND status <> 'REQUESTED' " +
             "AND priority = ?4",
             nativeQuery = true)
-    fun findConflict(endTime: Date, startTime: Date, telescopeId: Long, priority: Appointment.Priority):List<Appointment>
+    fun findConflict(endTime: Date, startTime: Date, telescopeId: Long, priority: String):List<Appointment>
 
     /**
      * Spring Repository method that will return a list of appointments

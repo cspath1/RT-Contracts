@@ -12,7 +12,8 @@ CREATE TABLE appointment(
   orientation_id INT(11) DEFAULT NULL,
   celestial_body_id INT(11) DEFAULT NULL,
   public TINYINT(1) DEFAULT 1,
-  type VARCHAR(100) NOT NULL
+  type VARCHAR(100) NOT NULL,
+  priority ENUM('MANUAL', 'IMMEDIATE', 'SECONDARY') NOT NULL
 );
 
 CREATE TABLE celestial_body(

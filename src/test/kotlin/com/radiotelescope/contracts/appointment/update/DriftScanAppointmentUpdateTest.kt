@@ -70,6 +70,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 status = Appointment.Status.SCHEDULED,
                 telescopeId = 1L,
                 type = Appointment.Type.DRIFT_SCAN
@@ -83,6 +84,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 endTime = Date(appointment.endTime.time + (twoHours * 2)),
                 telescopeId = 1L,
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -199,6 +201,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() +  50000L),
                 endTime = Date(System.currentTimeMillis() + 100000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.CELESTIAL_BODY
         )
 
@@ -476,6 +479,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -487,6 +491,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime + 1L),
                 endTime = Date(endTime + 1L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -529,6 +534,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -540,6 +546,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(startTime + 1000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -586,6 +593,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -597,6 +605,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime + 1000L),
                 endTime = Date(endTime - 1000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -643,6 +652,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -654,6 +664,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(endTime - 1000L),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -700,6 +711,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -711,6 +723,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime - 2000L),
                 endTime = Date(startTime + 500L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -757,6 +770,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -768,6 +782,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(endTime - 500L),
                 endTime = Date(endTime + 1000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -814,6 +829,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -825,6 +841,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime - 1000L),
                 endTime = Date(startTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -871,6 +888,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -882,6 +900,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(endTime),
                 endTime = Date(endTime + 2000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -928,6 +947,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -939,6 +959,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -984,6 +1005,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.REQUESTED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -995,6 +1017,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime + 1L),
                 endTime = Date(endTime + 1L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -1036,6 +1059,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.CANCELED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -1047,6 +1071,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime + 1L),
                 endTime = Date(endTime + 1L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -1089,6 +1114,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -1099,6 +1125,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -1110,6 +1137,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )
@@ -1156,6 +1184,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(endTime + 2222L),
                 endTime = Date(endTime + 4444L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -1166,6 +1195,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.DRIFT_SCAN
@@ -1177,6 +1207,7 @@ internal class DriftScanAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 elevation = 90.0,
                 azimuth = 180.0
         )

@@ -44,6 +44,7 @@ internal class ViewerListSharedAppointmentControllerTest : BaseViewerRestControl
                 endTime = Date(System.currentTimeMillis()  +  200000L),
                 status = Appointment.Status.SCHEDULED,
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 type = Appointment.Type.POINT
         )

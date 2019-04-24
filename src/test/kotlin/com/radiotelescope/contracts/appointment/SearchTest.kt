@@ -68,6 +68,7 @@ internal class SearchTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() + 200000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -78,6 +79,7 @@ internal class SearchTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() - 200000L),
                 endTime = Date(System.currentTimeMillis() - 100000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -88,6 +90,7 @@ internal class SearchTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 300000L),
                 endTime = Date(System.currentTimeMillis() + 400000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -98,6 +101,7 @@ internal class SearchTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() - 400000L),
                 endTime = Date(System.currentTimeMillis() - 300000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 

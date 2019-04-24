@@ -64,6 +64,7 @@ internal class UserAvailableTimeTest : AbstractSpringTest() {
                 startTime = Date(currentTime + oneHour),
                 endTime = Date(currentTime + oneHour + Appointment.GUEST_APPOINTMENT_TIME_CAP),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -99,6 +100,7 @@ internal class UserAvailableTimeTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + oneHour),
                 endTime = Date(System.currentTimeMillis() + oneHour + oneHour),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -129,6 +131,7 @@ internal class UserAvailableTimeTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + oneHour),
                 endTime = Date(System.currentTimeMillis() + oneHour + oneHour),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
