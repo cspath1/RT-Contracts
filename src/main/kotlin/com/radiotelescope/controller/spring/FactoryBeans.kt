@@ -20,6 +20,7 @@ import com.radiotelescope.security.UserContextImpl
 import com.radiotelescope.security.service.RetrieveAuthUserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import com.amazonaws.services.sns.*
 
 /**
  * Concrete implementation of the [FactoryProvider] interface. It is in charge

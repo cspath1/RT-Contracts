@@ -1,7 +1,5 @@
 package com.radiotelescope.contracts.user
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider
-import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.services.sns.AmazonSNSClientBuilder
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap

@@ -24,13 +24,14 @@ class Subscribe (
 
         //TODO: check if userNotificationType is email or phone and subscribe/unsubscribe correctly
         //user is not currently subscribed to the topic
-        if (builder.listSubscriptions(builder.listSubscriptionsByTopic(topicARN).nextToken).subscriptions.size > 0)
+        //if (builder.listSubscriptions(builder.listSubscriptionsByTopic(topicARN).nextToken).subscriptions.size < 2)
             builder.subscribe(topicARN,"email", userRepo.findById(id).get().email)
         //temporary implementation for unsubscribing a user from a topic by deleting and recreating topic
-        else{
-            builder.deleteTopic(topicARN)
-            builder.createTopic("UserTopic" + id)
-        }
+        //else{
+            //builder.unsubscribe(builder.listSubscriptionsByTopic(topicARN).subscriptions[0].subscriptionArn)
+//            builder.deleteTopic(topicARN)
+//            builder.createTopic("UserTopic" + id)
+//        }
 
             //builder.unsubscribe(builder.listSubscriptionsByTopic(topicARN).subscriptions[0].subscriptionArn)
        // builder.unsubscribe("arn:aws:sns:us-east-2:317377631261:UserTopic1:4f69a002-95f8-4d31-87b3-9c815fd66d99")

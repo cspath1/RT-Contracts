@@ -8,6 +8,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.userNotificationType.IUserNotificationTypeRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import com.amazonaws.services.sns.*
 
 /**
  * Base concrete implementation of the [UserFactory] interface

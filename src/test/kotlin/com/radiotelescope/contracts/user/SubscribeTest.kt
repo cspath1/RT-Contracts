@@ -72,8 +72,6 @@ internal class SubscribeTest {
 
         assertNull(registerError)
 
-
-
         val (token, error) = Subscribe(
                 userRepo = userRepo,
                 id = registerToken!!.id,
