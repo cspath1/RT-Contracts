@@ -1,6 +1,7 @@
 package com.radiotelescope.contracts.user
 
 import com.amazonaws.services.sns.AmazonSNSClientBuilder
+import com.amazonaws.services.sns.model.UnsubscribeRequest
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
@@ -18,15 +19,22 @@ class Subscribe (
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
         val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
-        val topicARN = builder.createTopic("userTopic" + id).topicArn
+        val topicARN = builder.createTopic("UserTopic" + id).topicArn
 
 
         //TODO: check if userNotificationType is email or phone and subscribe/unsubscribe correctly
         //user is not currently subscribed to the topic
-        if (builder.listSubscriptions(topicARN).subscriptions.size == 0)
+        if (builder.listSubscriptions(builder.listSubscriptionsByTopic(topicARN).nextToken).subscriptions.size > 0)
             builder.subscribe(topicARN,"email", userRepo.findById(id).get().email)
-        else
-            builder.unsubscribe(builder.subscribe(topicARN,"email",userRepo.findById(id).get().email).subscriptionArn)
+        //temporary implementation for unsubscribing a user from a topic by deleting and recreating topic
+        else{
+            builder.deleteTopic(topicARN)
+            builder.createTopic("UserTopic" + id)
+        }
+
+            //builder.unsubscribe(builder.listSubscriptionsByTopic(topicARN).subscriptions[0].subscriptionArn)
+       // builder.unsubscribe("arn:aws:sns:us-east-2:317377631261:UserTopic1:4f69a002-95f8-4d31-87b3-9c815fd66d99")
+
 
         return SimpleResult(id, null)
     }
