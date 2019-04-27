@@ -77,7 +77,7 @@ class UserAutoAppointmentWrapper(
      * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun update(request: AppointmentUpdate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
+    fun update(request: AppointmentUpdate.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if (!appointmentRepo.existsById(request.id)) {
             return AccessReport(missingRoles = null, invalidResourceId = invalidAppointmentIdErrors(request.id))
         }
@@ -95,7 +95,7 @@ class UserAutoAppointmentWrapper(
                             )
                     ).execute(withAccess)
                 // If it's primary, but not public, they need to be a researcher
-                else if(request.priority == Appointment.Priority.PRIMARY)
+                else if (request.priority == Appointment.Priority.PRIMARY)
                     context.requireAny(
                             requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.RESEARCHER),
                             successCommand = factory.update(
