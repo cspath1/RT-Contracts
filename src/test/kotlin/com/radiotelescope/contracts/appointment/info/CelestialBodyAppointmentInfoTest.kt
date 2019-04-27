@@ -26,6 +26,7 @@ internal class CelestialBodyAppointmentInfoTest {
                 userEmail = "cspath1@ycp.edu",
                 status = Appointment.Status.SCHEDULED.label,
                 type = Appointment.Type.CELESTIAL_BODY.label,
+                priority = Appointment.Priority.PRIMARY.label,
                 celestialBodyName = "Alpha Centauri",
                 hours = 12,
                 minutes = 12,
@@ -49,6 +50,7 @@ internal class CelestialBodyAppointmentInfoTest {
         assertEquals("Spath", info.userLastName)
         assertEquals(Appointment.Status.SCHEDULED.label, info.status)
         assertEquals(Appointment.Type.CELESTIAL_BODY.label, info.type)
+        assertEquals(Appointment.Priority.PRIMARY.label, info.priority)
 
         val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
                 hours = 12,
@@ -114,6 +116,7 @@ internal class CelestialBodyAppointmentInfoTest {
         assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
         assertEquals(Appointment.Type.CELESTIAL_BODY.label, appointmentInfo.type)
+        assertEquals(Appointment.Priority.PRIMARY.label, appointmentInfo.priority)
         assertEquals(appointment.celestialBody!!.coordinate!!.rightAscension, appointmentInfo.rightAscension)
         assertEquals(appointment.celestialBody!!.coordinate!!.declination, appointmentInfo.declination)
         assertEquals(appointment.celestialBody!!.coordinate!!.hours, appointmentInfo.hours)
