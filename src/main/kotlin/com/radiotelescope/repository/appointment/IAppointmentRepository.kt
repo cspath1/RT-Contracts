@@ -16,7 +16,8 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
     /**
      * Spring Repository method that will return the number of milliseconds of
      * scheduled appointment time that a user has currently in the [Appointment]
-     * table
+     * table. Note that this method will NOT include any secondary appointments
+     * that have been scheduled by admins.
      *
      * @param userId the User id
      * @return the appointment time in milliseconds
@@ -30,7 +31,8 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "FROM appointment " +
             "WHERE user_id=?1 " +
             "AND end_time > CURRENT_TIMESTAMP " +
-            "AND status = 'SCHEDULED') AS schedule_appointments",
+            "AND status = 'SCHEDULED' " +
+            "AND priority = 'PRIMARY') AS schedule_appointments",
             nativeQuery = true)
     fun findTotalScheduledAppointmentTimeForUser(userId: Long): Long?
 
