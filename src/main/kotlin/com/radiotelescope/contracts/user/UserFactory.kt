@@ -89,4 +89,12 @@ interface UserFactory {
      */
     fun subscribe(id: Long): Command<Long, Multimap<ErrorTag, String>>
 
+    /**
+     * Abstract command used to unsubscribe from a user's topic
+     *
+     * @param id the User id
+     * @return a [Command] object
+     */
+    fun unsubscribe(id: Long): Command<Long, Multimap<ErrorTag, String>>
+
 }

@@ -241,6 +241,25 @@ class UserUserWrapper(
 
         }
 
+    fun unsubscribe(id: Long, withAccess: (result: SimpleResult<Long?, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        if (context.currentUserId() != null){
+            if (!userRepo.existsById(id))
+                return AccessReport(missingRoles = null, invalidResourceId = invalidUserIdErrors(id))
+
+            val theUser = userRepo.findById(id).get()
+
+            return if (context.currentUserId() == theUser.id) {
+                context.require(
+                        requiredRoles = listOf(UserRole.Role.USER),
+                        successCommand = factory.unsubscribe(id)
+                ).execute(withAccess)
+            } else {
+                return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+            }
+        }
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
     private fun invalidUserIdErrors(id: Long): Map<String, Collection<String>> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.ID, "User #$id could not be found")

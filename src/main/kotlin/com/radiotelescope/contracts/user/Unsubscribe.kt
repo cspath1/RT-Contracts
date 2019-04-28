@@ -7,24 +7,23 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.userNotificationType.IUserNotificationTypeRepository
 
-class Subscribe (
+class Unsubscribe(
         private var id: Long,
         private var userRepo: IUserRepository,
         private val userNotificationType: IUserNotificationTypeRepository
-): Command<Long, Multimap<ErrorTag, String>> {
+
+) : Command<Long, Multimap<ErrorTag, String>> {
 
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
         val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
         val topicARN = builder.createTopic("UserTopic" + id).topicArn
 
+        //Todo: check userNotificationType and set protocol to email/sms correctly
+        val subARN = builder.subscribe(topicARN,"email", userRepo.findById(id).get().email).subscriptionArn
 
-        //TODO: check if userNotificationType is email or phone and subscribe/unsubscribe correctly
-        //user is not currently subscribed to the topic
-        //if (builder.listSubscriptions(builder.listSubscriptionsByTopic(topicARN).nextToken).subscriptions.size < 2)
-            builder.subscribe(topicARN,"email", userRepo.findById(id).get().email)
+        builder.unsubscribe(subARN)
 
         return SimpleResult(id, null)
     }
-
 }

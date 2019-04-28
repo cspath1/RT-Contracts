@@ -148,12 +148,30 @@ class BaseUserFactory(
         )
     }
 
+    /**
+     * Override of the [UserFactory.subscribe] method that will return a [Subscribe] command object
+     *
+     * @param id the User id
+     * @return a [Subscribe] command object
+     */
     override fun subscribe(id: Long): Command<Long, Multimap<ErrorTag, String>> {
         return Subscribe(
                 id = id,
                 userRepo = userRepo,
-                userNotificationType = userNotificationTypeRepo,
-                userRoleRepo = userRoleRepo
+                userNotificationType = userNotificationTypeRepo
+        )
+    }
+    /**
+     * Override of the [UserFactory.unsubscribe] method that will return a [Unsubscribe] command object
+     *
+     * @param id the User id
+     * @return a [Unsubscribe] command object
+     */
+    override fun unsubscribe(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return Unsubscribe(
+                id = id,
+                userRepo = userRepo,
+                userNotificationType = userNotificationTypeRepo
         )
     }
 }
