@@ -116,6 +116,7 @@ class DriftScanAppointmentCreate(
             override val endTime: Date,
             override val telescopeId: Long,
             override val isPublic: Boolean,
+            override val priority: Appointment.Priority,
             val azimuth: Double,
             val elevation: Double
     ) : AppointmentCreate.Request() {
@@ -129,6 +130,7 @@ class DriftScanAppointmentCreate(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic,
+                    priority = priority,
                     type = Appointment.Type.DRIFT_SCAN
             )
         }

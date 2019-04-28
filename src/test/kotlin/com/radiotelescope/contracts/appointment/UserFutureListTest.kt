@@ -34,7 +34,8 @@ internal class UserFutureListTest : AbstractSpringTest() {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 311.0
+            declination = 311.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private lateinit var user1: User
@@ -60,11 +61,9 @@ internal class UserFutureListTest : AbstractSpringTest() {
                 startTime = baseCreateRequest.startTime,
                 endTime = baseCreateRequest.endTime,
                 isPublic = baseCreateRequest.isPublic,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
-
-
-
     }
 
     @Test

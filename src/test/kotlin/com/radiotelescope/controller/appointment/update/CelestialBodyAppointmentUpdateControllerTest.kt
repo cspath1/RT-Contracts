@@ -61,6 +61,7 @@ internal class CelestialBodyAppointmentUpdateControllerTest : BaseAppointmentRes
                 startTime = Date(System.currentTimeMillis() + 50000L),
                 endTime = Date(System.currentTimeMillis() + 100000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.CELESTIAL_BODY
         )
         assertNotNull(appointment.celestialBody)
@@ -71,6 +72,7 @@ internal class CelestialBodyAppointmentUpdateControllerTest : BaseAppointmentRes
                 endTime = appointment.endTime,
                 telescopeId = 1L,
                 isPublic = true,
+                priority = appointment.priority,
                 celestialBodyId = celestialBody.id
         )
     }

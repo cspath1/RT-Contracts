@@ -22,6 +22,7 @@ interface AppointmentRequest {
      * @property endTime the Appointment's end time
      * @property telescopeId the Telescope id
      * @property isPublic whether the appointment is public or not
+     * @property priority the Appointment's priority
      */
     abstract class Request : BaseCreateRequest<Appointment> {
         abstract val userId: Long
@@ -29,6 +30,7 @@ interface AppointmentRequest {
         abstract val endTime: Date
         abstract val telescopeId: Long
         abstract val isPublic: Boolean
+        abstract val priority: Appointment.Priority
     }
 
     /**

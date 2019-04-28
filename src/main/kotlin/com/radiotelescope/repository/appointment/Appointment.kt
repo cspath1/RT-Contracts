@@ -23,6 +23,9 @@ data class Appointment(
         var telescopeId: Long,
         @Column(name = "public", nullable = false)
         var isPublic: Boolean,
+        @Column(name = "priority", nullable = false)
+        @Enumerated(value = EnumType.STRING)
+        var priority: Appointment.Priority,
         @Column(name = "type", nullable = false)
         @Enumerated(value = EnumType.STRING)
         var type: Type
@@ -65,6 +68,12 @@ data class Appointment(
         RASTER_SCAN("Raster Scan"),
         DRIFT_SCAN("Drift Scan"),
         FREE_CONTROL("Free Control")
+    }
+
+    enum class Priority(val label: String){
+        MANUAL("Manual"),
+        PRIMARY("Primary"),
+        SECONDARY("Secondary")
     }
 
     companion object {

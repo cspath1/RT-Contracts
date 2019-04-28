@@ -27,5 +27,6 @@
     <include file="classpath:/db/changelog/22-update-existing-appointment-types.sql"/>
     <include file="classpath:/db/changelog/23-update-appointment-coordinate-relation.sql"/>
     <include file="classpath:/db/changelog/24-create-login-attempt-table.sql"/>
-    <include file="classpath:/db/changelog/25-add-heartbeat-monitor.sql"/>
+    <include file="classpath:/db/changelog/25-add-appointment-priority.sql"/>
+    <include file="classpath:/db/changelog/26-add-heartbeat-monitor.sql"/>
 </databaseChangeLog>

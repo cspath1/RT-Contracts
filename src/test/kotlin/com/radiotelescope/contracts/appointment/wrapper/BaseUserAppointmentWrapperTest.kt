@@ -109,6 +109,7 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -119,6 +120,7 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 40000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -129,6 +131,7 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 60000L),
                 endTime = Date(System.currentTimeMillis() + 70000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 

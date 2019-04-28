@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.appointment.request.CelestialBodyAppointment
 import com.radiotelescope.contracts.appointment.update.CelestialBodyAppointmentUpdate
 import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -79,6 +80,7 @@ internal class CelestialBodyAppointmentFactoryTest : AbstractSpringTest() {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
+                        priority = Appointment.Priority.PRIMARY,
                         telescopeId = 1L,
                         celestialBodyId = 1L
                 )
@@ -97,6 +99,7 @@ internal class CelestialBodyAppointmentFactoryTest : AbstractSpringTest() {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 20000L),
                         isPublic = true,
+                        priority = Appointment.Priority.PRIMARY,
                         celestialBodyId = 1L
                 )
         )
@@ -113,6 +116,7 @@ internal class CelestialBodyAppointmentFactoryTest : AbstractSpringTest() {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
+                        priority = Appointment.Priority.PRIMARY,
                         telescopeId = 1L,
                         celestialBodyId = 1L
                 )

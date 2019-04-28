@@ -35,6 +35,7 @@ internal class PublicCompletedAppointmentsTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() - 50000L),
                 endTime = Date(System.currentTimeMillis() - 40000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -45,6 +46,7 @@ internal class PublicCompletedAppointmentsTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 20000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -55,6 +57,7 @@ internal class PublicCompletedAppointmentsTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() - 15000L),
                 endTime = Date(System.currentTimeMillis() - 5000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
     }

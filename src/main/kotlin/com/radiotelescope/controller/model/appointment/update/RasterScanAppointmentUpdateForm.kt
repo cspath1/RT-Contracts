@@ -8,6 +8,7 @@ import com.radiotelescope.contracts.coordinate.CoordinateRequest
 import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.controller.model.coordinate.CoordinateForm
 import com.radiotelescope.isNotEmpty
+import com.radiotelescope.repository.appointment.Appointment
 import java.util.*
 
 /**
@@ -19,6 +20,7 @@ import java.util.*
  * @param endTime the Appointment's new end time
  * @param telescopeId the Appointment's new telescope id
  * @param isPublic whether the Appointment is to be public or not
+ * @param priority the Appointment's new priority
  * @param coordinates the List of [CoordinateForm] objects
  */
 data class RasterScanAppointmentUpdateForm(
@@ -26,6 +28,7 @@ data class RasterScanAppointmentUpdateForm(
         override val endTime: Date?,
         override val telescopeId: Long?,
         override val isPublic: Boolean?,
+        override val priority: Appointment.Priority?,
         val coordinates: List<CoordinateForm>?
 ) : UpdateForm<RasterScanAppointmentUpdate.Request>() {
     /**
@@ -44,6 +47,7 @@ data class RasterScanAppointmentUpdateForm(
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
                 isPublic = isPublic!!,
+                priority = priority!!,
                 coordinates = coordinateRequests
         )
     }
@@ -64,6 +68,8 @@ data class RasterScanAppointmentUpdateForm(
             errors.put(ErrorTag.TELESCOPE_ID, "Required field")
         if (isPublic == null)
             errors.put(ErrorTag.PUBLIC, "Required field")
+        if (priority == null)
+            errors.put(ErrorTag.PRIORITY, "Required field")
         if (coordinates == null) {
             errors.put(ErrorTag.COORDINATES, "Two Coordinates are required")
         } else if (coordinates.size != 2)

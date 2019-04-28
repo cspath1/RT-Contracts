@@ -31,5 +31,6 @@ abstract class AppointmentInfo(
         open val userLastName: String,
         open val userEmail: String,
         open val status: String,
-        open val type: String
+        open val type: String,
+        open val priority: String
 )

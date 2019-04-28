@@ -198,6 +198,7 @@ class RasterScanAppointmentUpdate(
             override val endTime: Date,
             override val telescopeId: Long,
             override val isPublic: Boolean,
+            override val priority: Appointment.Priority,
             val coordinates: List<CoordinateRequest>
     ) : AppointmentUpdate.Request() {
         /**
@@ -209,6 +210,7 @@ class RasterScanAppointmentUpdate(
             entity.startTime = startTime
             entity.endTime = endTime
             entity.isPublic = isPublic
+            entity.priority = priority
 
             return entity
         }
@@ -226,6 +228,7 @@ class RasterScanAppointmentUpdate(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic,
+                    priority = priority,
                     type = Appointment.Type.RASTER_SCAN
             )
         }

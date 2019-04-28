@@ -67,6 +67,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             hours = 12,
             minutes = 12,
             seconds = 12,
@@ -79,6 +80,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             hours = 12,
             minutes = 12,
             seconds = 12,
@@ -131,6 +133,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -141,6 +144,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 40000L),
                 endTime = Date(System.currentTimeMillis() + 50000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -151,6 +155,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 60000L),
                 endTime = Date(System.currentTimeMillis() + 70000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -349,7 +354,55 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
         assertNull(error)
     }
 
+    @Test
+    fun testCreateSecondary_Admin_Success() {
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
 
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        // Create a base request copy with a priority of SECONDARY
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id,
+                priority = Appointment.Priority.SECONDARY
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testCreateSecondary_NotAdmin_Failure() {
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        // Create a base request copy with a priority of SECONDARY
+        val requestCopy = baseCreateRequest.copy(
+                userId = user.id,
+                priority = Appointment.Priority.SECONDARY
+        )
+
+        val error = wrapper.create(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
 
     @Test
     fun testInvalidUpdate_NoUserRole_Failure(){
@@ -363,6 +416,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -387,6 +441,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -414,6 +469,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = false,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -447,6 +503,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = false,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -458,6 +515,80 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
 
         assertNotNull(error)
         assertTrue(error!!.invalidResourceId!!.isNotEmpty())
+    }
+
+    @Test
+    fun testInvalidUpdate_SecondaryAppointment_NotAdmin_Failure() {
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        // Simulate a log in to a researcher account
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.RESEARCHER))
+
+        // Make the appointment secondary
+        appointment.priority = Appointment.Priority.SECONDARY
+        appointmentRepo.save(appointment)
+
+        val error = wrapper.update(
+                request = CoordinateAppointmentUpdate.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId,
+                        isPublic = appointment.isPublic,
+                        priority = appointment.priority,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
+                        declination = 42.0
+                )
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testValidUpdate_SecondaryAppointment_Admin_Success() {
+        // Give the user an unlimited time cap
+        testUtil.createAllottedTimeCapForUser(
+                user = user,
+                allottedTime = null
+        )
+
+        // Simulate a log in to a admin account
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        // Make the appointment secondary
+        appointment.priority = Appointment.Priority.SECONDARY
+        appointmentRepo.save(appointment)
+
+        val error = wrapper.update(
+                request = CoordinateAppointmentUpdate.Request(
+                        id = appointment.id,
+                        startTime = Date(System.currentTimeMillis() + 20000L),
+                        endTime = Date(System.currentTimeMillis() + 50000L),
+                        telescopeId = appointment.telescopeId,
+                        isPublic = appointment.isPublic,
+                        priority = appointment.priority,
+                        hours = 12,
+                        minutes = 12,
+                        seconds = 12,
+                        declination = 42.0
+                )
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
     }
 
     @Test
@@ -486,6 +617,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -526,6 +658,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -566,6 +699,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(appointment.endTime.time -10L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -606,6 +740,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 110000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -633,6 +768,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -661,6 +797,7 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 50000L),
                         telescopeId = appointment.telescopeId,
                         isPublic = appointment.isPublic,
+                        priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -760,6 +897,48 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.RESEARCHER))
+    }
+
+    @Test
+    fun testRequestSecondary_NotAdmin_Failure() {
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.USER)
+
+        val requestCopy = baseRequestRequest.copy(
+                userId = user.id,
+                priority = Appointment.Priority.SECONDARY
+        )
+
+        val error = wrapper.request(
+                request = requestCopy
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testRequestSecondary_Admin_Success() {
+        // Simulate a login
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        val requestCopy = baseRequestRequest.copy(
+                userId = user.id,
+                priority = Appointment.Priority.SECONDARY
+        )
+
+        val error = wrapper.request(
+                request = requestCopy
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
     }
 
     @Test

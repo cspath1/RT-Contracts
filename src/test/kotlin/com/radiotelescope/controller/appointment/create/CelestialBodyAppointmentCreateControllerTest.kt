@@ -2,6 +2,7 @@ package com.radiotelescope.controller.appointment.create
 
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
 import com.radiotelescope.controller.model.appointment.create.CelestialBodyAppointmentCreateForm
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
@@ -39,6 +40,7 @@ internal class CelestialBodyAppointmentCreateControllerTest : BaseAppointmentRes
             endTime = Date(System.currentTimeMillis() + 100000L),
             telescopeId = 1L,
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             celestialBodyId = -1L
     )
 

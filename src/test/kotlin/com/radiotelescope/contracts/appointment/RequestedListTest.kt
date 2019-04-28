@@ -37,6 +37,7 @@ internal class RequestedListTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 1000L),
                 endTime = Date(System.currentTimeMillis() + 4000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
     }

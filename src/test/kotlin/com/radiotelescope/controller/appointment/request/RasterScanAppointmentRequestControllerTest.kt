@@ -3,6 +3,7 @@ package com.radiotelescope.controller.appointment.request
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
 import com.radiotelescope.controller.model.appointment.request.RasterScanAppointmentRequestForm
 import com.radiotelescope.controller.model.coordinate.CoordinateForm
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
@@ -47,6 +48,7 @@ internal class RasterScanAppointmentRequestControllerTest : BaseAppointmentRestC
             startTime = Date(System.currentTimeMillis() + 100000L),
             endTime = Date(System.currentTimeMillis() + 300000L),
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             coordinates = mutableListOf(coordinateFormOne, coordinateFormTwo)
     )
 

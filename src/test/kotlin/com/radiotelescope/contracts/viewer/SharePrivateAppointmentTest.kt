@@ -44,6 +44,7 @@ internal class SharePrivateAppointmentTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() + 300000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
     }
@@ -136,6 +137,7 @@ internal class SharePrivateAppointmentTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 400000L),
                 endTime = Date(System.currentTimeMillis() + 500000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 

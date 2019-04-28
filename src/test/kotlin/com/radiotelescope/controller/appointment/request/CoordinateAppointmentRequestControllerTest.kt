@@ -1,5 +1,6 @@
 package com.radiotelescope.controller.appointment.request
 
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTest
 import com.radiotelescope.controller.model.appointment.request.CoordinateAppointmentRequestForm
 import com.radiotelescope.repository.log.ILogRepository
@@ -40,7 +41,8 @@ internal class CoordinateAppointmentRequestControllerTest : BaseAppointmentRestC
             hours = 22,
             minutes = 30,
             seconds = 30,
-            declination = 42.0
+            declination = 42.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     @Before

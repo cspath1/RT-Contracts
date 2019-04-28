@@ -120,7 +120,9 @@ class CelestialBodyAppointmentUpdate(
     ): Appointment {
         // If the type is the same, the entity can be updated
         if (appointment.type == Appointment.Type.CELESTIAL_BODY) {
-            return appointmentRepo.save(request.updateEntity(appointment))
+            val updatedAppointment = request.updateEntity(appointment)
+            updatedAppointment.celestialBody = celestialBodyRepo.findById(request.celestialBodyId).get()
+            return appointmentRepo.save(updatedAppointment)
         } else {
             // The type is being changed, and we must delete the old
             // record and persist a new one
@@ -155,6 +157,7 @@ class CelestialBodyAppointmentUpdate(
             override val startTime: Date,
             override val endTime: Date,
             override val isPublic: Boolean,
+            override val priority: Appointment.Priority,
             val celestialBodyId: Long
     ): AppointmentUpdate.Request() {
         /**
@@ -170,6 +173,7 @@ class CelestialBodyAppointmentUpdate(
             entity.startTime = startTime
             entity.endTime = endTime
             entity.isPublic = isPublic
+            entity.priority = priority
 
             return entity
         }
@@ -187,6 +191,7 @@ class CelestialBodyAppointmentUpdate(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic,
+                    priority = priority,
                     type = Appointment.Type.CELESTIAL_BODY
             )
         }

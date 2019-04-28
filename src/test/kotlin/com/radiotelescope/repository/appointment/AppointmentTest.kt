@@ -49,6 +49,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(currentTime + 100000L),
                 endTime = Date(currentTime + 300000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -59,6 +60,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(currentTime - 30000L),
                 endTime = Date(currentTime - 10000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -69,6 +71,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(currentTime + 10000L),
                 endTime = Date(currentTime + 30000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
 
         )
@@ -80,6 +83,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(currentTime + 1000000000L),
                 endTime = Date(currentTime +   3000000000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -127,6 +131,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(currentTime + 15200000L),
                 endTime = Date(currentTime + 18272500L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -149,6 +154,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(startTime + 1000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -160,6 +166,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime + 2000L),
                 endTime = Date(startTime + 3000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -171,6 +178,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(endTime - 1000L),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -182,6 +190,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime - 2000L),
                 endTime = Date(startTime + 500L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -193,6 +202,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(endTime - 500L),
                 endTime = Date(endTime + 1000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -204,6 +214,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime + 1010L),
                 endTime = Date(startTime + 1020L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -215,6 +226,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime + 1030L),
                 endTime = Date(startTime + 1040L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -240,6 +252,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() - 10000L),
                 endTime = Date(System.currentTimeMillis() - 5000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -250,6 +263,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() - 30000L),
                 endTime = Date(System.currentTimeMillis() - 15000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -291,6 +305,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(startTime + 1000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -302,6 +317,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime + 2000L),
                 endTime = Date(startTime + 3000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -313,6 +329,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(endTime - 1000L),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -324,6 +341,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime - 2000L),
                 endTime = Date(startTime + 500L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -335,6 +353,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(endTime - 500L),
                 endTime = Date(endTime + 1000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -346,6 +365,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime - 1000L),
                 endTime = Date(startTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -357,6 +377,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(endTime),
                 endTime = Date(endTime + 2000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -368,6 +389,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime - 1111L),
                 endTime = Date(endTime + 1111L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -379,6 +401,7 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime + 1010L),
                 endTime = Date(startTime + 1020L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -390,15 +413,15 @@ internal class AppointmentTest : AbstractSpringTest() {
                 startTime = Date(startTime + 1030L),
                 endTime = Date(startTime + 1040L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
-
         )
-
 
         val listOfAppointments = appointmentRepo.findConflict(
                 startTime = Date(startTime),
                 endTime = Date(endTime),
-                telescopeId = 1L
+                telescopeId = 1L,
+                priority = Appointment.Priority.PRIMARY.toString()
         )
 
         assertEquals(8, listOfAppointments.size)

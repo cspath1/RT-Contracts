@@ -74,6 +74,7 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 10000L),
                 endTime = Date(System.currentTimeMillis() + 30000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 status = Appointment.Status.SCHEDULED,
                 telescopeId = 1L,
                 type = Appointment.Type.CELESTIAL_BODY
@@ -88,6 +89,7 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 endTime = Date(appointment.endTime.time + (twoHours * 2)),
                 telescopeId = 1L,
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 celestialBodyId = celestialBody.id
         )
     }
@@ -161,6 +163,7 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 50000L),
                 endTime = Date(System.currentTimeMillis() + 100000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -452,6 +455,7 @@ internal class CelestialBodyAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(startTime),
                 endTime = Date(endTime),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.POINT

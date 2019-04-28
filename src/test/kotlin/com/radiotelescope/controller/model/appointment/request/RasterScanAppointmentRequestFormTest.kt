@@ -2,6 +2,7 @@ package com.radiotelescope.controller.model.appointment.request
 
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.controller.model.coordinate.CoordinateForm
+import com.radiotelescope.repository.appointment.Appointment
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
@@ -27,6 +28,7 @@ internal class RasterScanAppointmentRequestFormTest {
             startTime = Date(System.currentTimeMillis() + 100000L),
             endTime = Date(System.currentTimeMillis() + 300000L),
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             coordinates = mutableListOf(coordinateFormOne, coordinateFormTwo)
     )
 

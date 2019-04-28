@@ -57,6 +57,7 @@ internal class RasterScanAppointmentRequestTest : AbstractSpringTest() {
             startTime = Date(System.currentTimeMillis() + 100000L),
             endTime = Date(System.currentTimeMillis() + 300000L),
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             coordinates = coordinateRequests
     )
 

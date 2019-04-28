@@ -161,6 +161,7 @@ class DriftScanAppointmentUpdate(
             override val startTime: Date,
             override val endTime: Date,
             override val isPublic: Boolean,
+            override val priority: Appointment.Priority,
             val elevation: Double,
             val azimuth: Double
     ): AppointmentUpdate.Request() {
@@ -174,6 +175,7 @@ class DriftScanAppointmentUpdate(
             entity.startTime = startTime
             entity.endTime = endTime
             entity.isPublic = isPublic
+            entity.priority = priority
             entity.orientation!!.elevation = elevation
             entity.orientation!!.azimuth = azimuth
 
@@ -192,6 +194,7 @@ class DriftScanAppointmentUpdate(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic,
+                    priority = priority,
                     type = Appointment.Type.DRIFT_SCAN
             )
         }

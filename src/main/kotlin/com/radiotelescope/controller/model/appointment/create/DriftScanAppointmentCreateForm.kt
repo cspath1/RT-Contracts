@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreate
+import com.radiotelescope.repository.appointment.Appointment
 import java.util.*
 
 /**
@@ -16,6 +17,7 @@ import java.util.*
  * @param endTime the Appointment end time
  * @param telescopeId the Appointment's telescope
  * @param isPublic whether the Appointment is public or not
+ * @param priority the Appointment priority
  * @param elevation the Elevation
  * @param azimuth the Azimuth
 
@@ -26,6 +28,7 @@ data class DriftScanAppointmentCreateForm(
         override val endTime: Date?,
         override val telescopeId: Long?,
         override val isPublic: Boolean?,
+        override val priority: Appointment.Priority?,
         val elevation: Double?,
         val azimuth: Double?
 ): CreateForm<DriftScanAppointmentCreate.Request>() {
@@ -42,6 +45,7 @@ data class DriftScanAppointmentCreateForm(
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
                 isPublic = isPublic!!,
+                priority = priority!!,
                 elevation = elevation!!,
                 azimuth = azimuth!!
         )
@@ -64,6 +68,8 @@ data class DriftScanAppointmentCreateForm(
             errors.put(ErrorTag.TELESCOPE_ID, "Required field")
         if (isPublic == null)
             errors.put(ErrorTag.PUBLIC, "Required field")
+        if(priority == null)
+            errors.put(ErrorTag.PRIORITY, "Required field")
         if (elevation == null)
             errors.put(ErrorTag.ELEVATION, "Required field")
         else if (elevation > 90 || elevation < 0)

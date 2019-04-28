@@ -103,6 +103,7 @@ class CoordinateAppointmentRequest(
             override val endTime: Date,
             override val telescopeId: Long,
             override val isPublic: Boolean,
+            override val priority: Appointment.Priority,
             val hours: Int,
             val minutes: Int,
             val seconds: Int,
@@ -118,6 +119,7 @@ class CoordinateAppointmentRequest(
                     endTime = endTime,
                     telescopeId = telescopeId,
                     isPublic = isPublic,
+                    priority = priority,
                     type = Appointment.Type.POINT
             )
         }

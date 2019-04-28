@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentReq
 import com.radiotelescope.contracts.appointment.update.RasterScanAppointmentUpdate
 import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
@@ -74,6 +75,7 @@ internal class RasterScanAppointmentFactoryTest : AbstractSpringTest() {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
+                        priority = Appointment.Priority.PRIMARY,
                         telescopeId = 1L,
                         coordinates = listOf()
                 )
@@ -92,6 +94,7 @@ internal class RasterScanAppointmentFactoryTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 200000L),
                         telescopeId = 1L,
                         isPublic = true,
+                        priority = Appointment.Priority.PRIMARY,
                         coordinates = mutableListOf()
                 )
         )
@@ -108,6 +111,7 @@ internal class RasterScanAppointmentFactoryTest : AbstractSpringTest() {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
+                        priority = Appointment.Priority.PRIMARY,
                         telescopeId = 1L,
                         coordinates = mutableListOf()
                 )

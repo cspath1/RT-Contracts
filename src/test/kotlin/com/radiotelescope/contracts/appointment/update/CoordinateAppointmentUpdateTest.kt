@@ -77,6 +77,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 status = Appointment.Status.SCHEDULED,
                 telescopeId = 1L,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
         appointmentId = appointment.id
@@ -90,7 +91,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
     }
 
@@ -203,6 +205,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() +  50000L),
                 endTime = Date(System.currentTimeMillis() + 100000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.CELESTIAL_BODY
         )
 
@@ -496,6 +499,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -508,7 +512,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -553,6 +558,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -565,7 +571,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -614,6 +621,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -626,7 +634,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -675,6 +684,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -687,7 +697,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -736,6 +747,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -748,7 +760,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -797,6 +810,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -809,7 +823,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -858,6 +873,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -870,7 +886,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -919,6 +936,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -931,7 +949,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -980,6 +999,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -992,7 +1012,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -1040,6 +1061,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.REQUESTED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -1052,7 +1074,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -1096,6 +1119,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.CANCELED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -1108,7 +1132,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -1153,6 +1178,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -1163,6 +1189,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -1175,7 +1202,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(
@@ -1224,6 +1252,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -1234,6 +1263,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -1246,7 +1276,8 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentUpdate(

@@ -57,7 +57,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private lateinit var user: User
@@ -140,6 +141,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 startTime = date,
                 endTime = Date(date.time + twoHours),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -426,6 +428,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -437,7 +440,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -485,6 +489,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -497,7 +502,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -545,6 +551,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -557,7 +564,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -605,6 +613,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -617,7 +626,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 11.0
+                declination = 11.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -665,6 +675,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -677,7 +688,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 42.0
+                declination = 42.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -725,6 +737,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -737,7 +750,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 42.0
+                declination = 42.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -785,6 +799,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -797,7 +812,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 21.0
+                declination = 21.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -845,6 +861,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -857,7 +874,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 23.0
+                declination = 23.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -905,6 +923,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -917,7 +936,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 42.0
+                declination = 42.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -963,6 +983,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.REQUESTED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -975,7 +996,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 69.0
+                declination = 69.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -1017,6 +1039,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.CANCELED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -1029,7 +1052,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 42.0
+                declination = 42.0,
+                priority = Appointment.Priority.PRIMARY
         )
 
         val (id, errors) = CoordinateAppointmentCreate(

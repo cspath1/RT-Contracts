@@ -59,6 +59,7 @@ internal class CoordinateAppointmentUpdateControllerTest : BaseAppointmentRestCo
                 startTime = Date(System.currentTimeMillis() + 50000L),
                 endTime = Date(System.currentTimeMillis() + 100000L),
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -70,7 +71,8 @@ internal class CoordinateAppointmentUpdateControllerTest : BaseAppointmentRestCo
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
-                declination = 42.0
+                declination = 42.0,
+                priority = Appointment.Priority.PRIMARY
         )
     }
 

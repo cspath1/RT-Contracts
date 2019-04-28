@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.model.appointment.create
 
 import com.radiotelescope.contracts.appointment.ErrorTag
+import com.radiotelescope.repository.appointment.Appointment
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
@@ -12,6 +13,7 @@ internal class CelestialBodyAppointmentCreateFormTest {
             endTime = Date(System.currentTimeMillis() + 30000L),
             telescopeId = 1L,
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             celestialBodyId = 1L
     )
 

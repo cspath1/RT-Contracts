@@ -24,6 +24,7 @@ data class PointAppointmentInfo(
         override val userEmail: String,
         override val status: String,
         override val type: String,
+        override val priority: String,
         val hours: Int,
         val minutes: Int,
         val seconds: Int,
@@ -40,7 +41,8 @@ data class PointAppointmentInfo(
         userLastName = userLastName,
         userEmail = userEmail,
         status = status,
-        type = type
+        type = type,
+        priority = priority
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -60,6 +62,7 @@ data class PointAppointmentInfo(
             userEmail = appointment.user.email,
             status = appointment.status.label,
             type = appointment.type.label,
+            priority = appointment.priority.label,
             hours = appointment.coordinateList[0].hours,
             minutes = appointment.coordinateList[0].minutes,
             seconds = appointment.coordinateList[0].seconds,

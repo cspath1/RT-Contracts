@@ -24,6 +24,7 @@ data class MultiPointAppointmentInfo(
         override val userEmail: String,
         override val status: String,
         override val type: String,
+        override val priority: String,
         val coordinates: ArrayList<CoordinateInfo> = arrayListOf()
 ) : AppointmentInfo(
         id = id,
@@ -36,7 +37,8 @@ data class MultiPointAppointmentInfo(
         userLastName = userLastName,
         userEmail = userEmail,
         status = status,
-        type = type
+        type = type,
+        priority = priority
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -55,7 +57,8 @@ data class MultiPointAppointmentInfo(
             userLastName = appointment.user.lastName,
             userEmail = appointment.user.email,
             status = appointment.status.label,
-            type = appointment.type.label
+            type = appointment.type.label,
+            priority = appointment.priority.label
     ) {
         appointment.coordinateList.forEach {
             coordinates.add(CoordinateInfo(it))

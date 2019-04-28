@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.update.DriftScanAppointmentUpdate
 import com.radiotelescope.controller.model.BaseForm
+import com.radiotelescope.repository.appointment.Appointment
 import java.util.*
 
 /**
@@ -16,6 +17,7 @@ import java.util.*
  * @param endTime the Appointment's new end time
  * @param telescopeId the Appointment's new telescope id
  * @param isPublic whether the Appointment is to be public or not
+ * @param priority the Appointment's new priority
  * @param elevation the Elevation
  * @param azimuth the Azimuth
  */
@@ -24,6 +26,7 @@ data class DriftScanAppointmentUpdateForm(
         override val endTime: Date?,
         override val telescopeId: Long?,
         override val isPublic: Boolean?,
+        override val priority: Appointment.Priority?,
         val elevation: Double?,
         val azimuth: Double?
 ) : UpdateForm<DriftScanAppointmentUpdate.Request>() {
@@ -38,6 +41,7 @@ data class DriftScanAppointmentUpdateForm(
                 endTime = endTime!!,
                 telescopeId = telescopeId!!,
                 isPublic = isPublic!!,
+                priority = priority!!,
                 elevation = elevation!!,
                 azimuth = azimuth!!
         )
@@ -60,6 +64,8 @@ data class DriftScanAppointmentUpdateForm(
             errors.put(ErrorTag.TELESCOPE_ID, "Required field")
         if (isPublic == null)
             errors.put(ErrorTag.PUBLIC, "Required field")
+        if (priority == null)
+            errors.put(ErrorTag.PRIORITY, "Required field")
         if (elevation == null)
             errors.put(ErrorTag.ELEVATION, "Required field")
         else if (elevation > 90 || elevation < 0)

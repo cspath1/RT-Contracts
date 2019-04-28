@@ -161,6 +161,7 @@ class StartFreeControlAppointment(
                     endTime = Date(),
                     telescopeId = telescopeId,
                     isPublic = isPublic,
+                    priority = Appointment.Priority.MANUAL,
                     type = Appointment.Type.FREE_CONTROL
             )
         }

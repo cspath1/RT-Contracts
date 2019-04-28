@@ -25,6 +25,7 @@ internal class MultiPointAppointmentInfoTest {
                 userEmail = "cspath1@ycp.edu",
                 status = Appointment.Status.SCHEDULED.label,
                 type = Appointment.Type.RASTER_SCAN.label,
+                priority = Appointment.Priority.PRIMARY.label,
                 coordinates = arrayListOf()
         )
 
@@ -39,6 +40,7 @@ internal class MultiPointAppointmentInfoTest {
         assertEquals("cspath1@ycp.edu", info.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, info.status)
         assertEquals(Appointment.Type.RASTER_SCAN.label, info.type)
+        assertEquals(Appointment.Priority.PRIMARY.label, info.priority)
         assertEquals(0, info.coordinates.size)
     }
 
@@ -58,6 +60,7 @@ internal class MultiPointAppointmentInfoTest {
                 endTime = endTime,
                 telescopeId = 1L,
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.RASTER_SCAN
         )
 
@@ -109,6 +112,7 @@ internal class MultiPointAppointmentInfoTest {
         assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
         assertEquals(Appointment.Type.RASTER_SCAN.label, appointmentInfo.type)
+        assertEquals(Appointment.Priority.PRIMARY.label, appointmentInfo.priority)
         assertEquals(2, appointmentInfo.coordinates.size)
     }
 }

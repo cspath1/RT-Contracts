@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.controller.model.BaseForm
+import com.radiotelescope.repository.appointment.Appointment
 import java.util.*
 
 /**
@@ -16,6 +17,7 @@ import java.util.*
  * @param endTime the Appointment's new end time
  * @param telescopeId the Appointment's new telescope id
  * @param isPublic whether the Appointment is to be public or not
+ * @param priority the Appointment's new priority
  * @param hours the right ascension hours
  * @param minutes the right ascension minutes
  * @param seconds the right ascension seconds
@@ -26,6 +28,7 @@ data class CoordinateAppointmentUpdateForm (
         override val endTime: Date?,
         override val telescopeId: Long?,
         override val isPublic: Boolean?,
+        override val priority: Appointment.Priority?,
         val hours: Int?,
         val minutes: Int?,
         val seconds: Int?,
@@ -45,7 +48,8 @@ data class CoordinateAppointmentUpdateForm (
                 hours = hours!!,
                 minutes = minutes!!,
                 seconds = seconds!!,
-                declination = declination!!
+                declination = declination!!,
+                priority = priority!!
         )
     }
 
@@ -79,6 +83,8 @@ data class CoordinateAppointmentUpdateForm (
             errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
         if (declination == null)
             errors.put(ErrorTag.DECLINATION, "Required field")
+        if(priority == null)
+            errors.put(ErrorTag.PRIORITY, "Invalid priority")
 
         return if (errors.isEmpty) null else errors
     }

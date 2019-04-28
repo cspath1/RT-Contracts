@@ -55,6 +55,7 @@ internal class UserViewerWrapperTest : AbstractSpringTest() {
                 startTime = Date(System.currentTimeMillis() + 100000L),
                 endTime = Date(System.currentTimeMillis() +   200000L),
                 isPublic = false,
+                priority = Appointment.Priority.PRIMARY,
                 status = Appointment.Status.SCHEDULED,
                 type = Appointment.Type.POINT
         )

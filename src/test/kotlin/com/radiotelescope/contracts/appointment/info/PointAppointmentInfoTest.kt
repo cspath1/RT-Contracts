@@ -25,6 +25,7 @@ internal class PointAppointmentInfoTest {
                 userEmail = "cspath1@ycp.edu",
                 status = Appointment.Status.SCHEDULED.label,
                 type = Appointment.Type.POINT.label,
+                priority = Appointment.Priority.PRIMARY.label,
                 hours = 12,
                 minutes = 12,
                 seconds = 12,
@@ -47,6 +48,7 @@ internal class PointAppointmentInfoTest {
         assertEquals("cspath1@ycp.edu", info.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, info.status)
         assertEquals(Appointment.Type.POINT.label, info.type)
+        assertEquals(Appointment.Priority.PRIMARY.label, info.priority)
 
         val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
                 hours = 12,
@@ -77,6 +79,7 @@ internal class PointAppointmentInfoTest {
                 endTime = endTime,
                 telescopeId = 1L,
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
@@ -111,6 +114,7 @@ internal class PointAppointmentInfoTest {
         assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
         assertEquals(Appointment.Type.POINT.label, appointmentInfo.type)
+        assertEquals(Appointment.Priority.PRIMARY.label, appointmentInfo.priority)
         assertEquals(appointment.coordinateList[0].rightAscension, appointmentInfo.rightAscension, 0.00001)
         assertEquals(appointment.coordinateList[0].declination, appointmentInfo.declination, 0.00001)
         assertEquals(appointment.coordinateList[0].hours, appointmentInfo.hours)

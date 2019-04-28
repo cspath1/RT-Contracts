@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.appointment.request
 
+import com.radiotelescope.TestUtil
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
@@ -43,7 +44,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
             hours = 12,
             minutes = 12,
             seconds = 12,
-            declination = 69.0
+            declination = 69.0,
+            priority = Appointment.Priority.PRIMARY
     )
 
     private lateinit var user: User

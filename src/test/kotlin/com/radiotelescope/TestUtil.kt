@@ -169,6 +169,7 @@ internal class TestUtil {
             startTime: Date,
             endTime: Date,
             isPublic: Boolean,
+            priority: Appointment.Priority,
             type: Appointment.Type
     ): Appointment {
         when (type) {
@@ -178,7 +179,8 @@ internal class TestUtil {
                     status = status,
                     startTime = startTime,
                     endTime = endTime,
-                    isPublic = isPublic
+                    isPublic = isPublic,
+                    priority = priority
             )
             Appointment.Type.CELESTIAL_BODY -> return createCelestialBodyAppointment(
                     user = user,
@@ -186,7 +188,8 @@ internal class TestUtil {
                     status = status,
                     startTime = startTime,
                     endTime = endTime,
-                    isPublic = isPublic
+                    isPublic = isPublic,
+                    priority = priority
             )
             Appointment.Type.RASTER_SCAN -> return createRasterScanAppointment(
                     user = user,
@@ -194,7 +197,8 @@ internal class TestUtil {
                     status = status,
                     startTime = startTime,
                     endTime = endTime,
-                    isPublic = isPublic
+                    isPublic = isPublic,
+                    priority = priority
             )
             Appointment.Type.DRIFT_SCAN -> return createDriftScanAppointment(
                     user = user,
@@ -202,7 +206,8 @@ internal class TestUtil {
                     status = status,
                     startTime = startTime,
                     endTime = endTime,
-                    isPublic = isPublic
+                    isPublic = isPublic,
+                    priority = priority
             )
             Appointment.Type.FREE_CONTROL -> return createFreeControlAppointment(
                     user = user,
@@ -210,7 +215,8 @@ internal class TestUtil {
                     status = status,
                     startTime = startTime,
                     endTime = endTime,
-                    isPublic = isPublic
+                    isPublic = isPublic,
+                    priority = priority
             )
         }
     }
@@ -221,13 +227,15 @@ internal class TestUtil {
             status: Appointment.Status,
             startTime: Date,
             endTime: Date,
-            isPublic: Boolean
+            isPublic: Boolean,
+            priority: Appointment.Priority
     ): Appointment {
         val theAppointment = Appointment(
                 startTime = startTime,
                 endTime = endTime,
                 telescopeId = telescopeId,
                 isPublic = isPublic,
+                priority = priority,
                 type = Appointment.Type.FREE_CONTROL
         )
 
@@ -262,7 +270,8 @@ internal class TestUtil {
             status: Appointment.Status,
             startTime: Date,
             endTime: Date,
-            isPublic: Boolean
+            isPublic: Boolean,
+            priority: Appointment.Priority
     ): Appointment {
         val orientation = Orientation(
                 azimuth = 66.6,
@@ -276,6 +285,7 @@ internal class TestUtil {
                 endTime = endTime,
                 telescopeId = telescopeId,
                 isPublic = isPublic,
+                priority = priority,
                 type = Appointment.Type.DRIFT_SCAN
         )
 
@@ -292,7 +302,8 @@ internal class TestUtil {
             status: Appointment.Status,
             startTime: Date,
             endTime: Date,
-            isPublic: Boolean
+            isPublic: Boolean,
+            priority: Appointment.Priority
     ): Appointment {
         val coordinateOne = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
@@ -327,6 +338,7 @@ internal class TestUtil {
                 endTime = endTime,
                 telescopeId = telescopeId,
                 isPublic = isPublic,
+                priority = priority,
                 type = Appointment.Type.RASTER_SCAN
         )
 
@@ -349,7 +361,8 @@ internal class TestUtil {
             status: Appointment.Status,
             startTime: Date,
             endTime: Date,
-            isPublic: Boolean
+            isPublic: Boolean,
+            priority: Appointment.Priority
     ): Appointment {
         val coordinate = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
@@ -375,6 +388,7 @@ internal class TestUtil {
                 endTime = endTime,
                 telescopeId = telescopeId,
                 isPublic = isPublic,
+                priority = priority,
                 type = Appointment.Type.CELESTIAL_BODY
         )
 
@@ -391,7 +405,8 @@ internal class TestUtil {
             status: Appointment.Status,
             startTime: Date,
             endTime: Date,
-            isPublic: Boolean
+            isPublic: Boolean,
+            priority: Appointment.Priority
     ): Appointment {
         val coordinate = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
@@ -412,6 +427,7 @@ internal class TestUtil {
                 endTime = endTime,
                 telescopeId = telescopeId,
                 isPublic = isPublic,
+                priority = priority,
                 type = Appointment.Type.POINT
         )
 

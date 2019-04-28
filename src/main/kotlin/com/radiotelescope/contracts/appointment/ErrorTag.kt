@@ -25,6 +25,7 @@ enum class ErrorTag{
     CELESTIAL_BODY,
     COORDINATES,
     ALLOTTED_TIME_CAP,
+    PRIORITY,
     ELEVATION,
     AZIMUTH,
     TYPE,

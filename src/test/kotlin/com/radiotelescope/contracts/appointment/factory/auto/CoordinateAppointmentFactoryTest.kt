@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.appointment.request.CoordinateAppointmentReq
 import com.radiotelescope.contracts.appointment.update.CoordinateAppointmentUpdate
 import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.heartbeatMonitor.IHeartbeatMonitorRepository
@@ -75,6 +76,7 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
                         startTime = Date(System.currentTimeMillis() + 10000L),
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
+                        priority = Appointment.Priority.PRIMARY,
                         telescopeId = 1L,
                         hours = 12,
                         minutes = 12,
@@ -97,6 +99,7 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 40000L),
                         telescopeId = 123456789,
                         isPublic = false,
+                        priority = Appointment.Priority.PRIMARY,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,
@@ -118,6 +121,7 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
                         endTime = Date(System.currentTimeMillis() + 30000L),
                         isPublic = true,
                         telescopeId = 1L,
+                        priority = Appointment.Priority.PRIMARY,
                         hours = 12,
                         minutes = 12,
                         seconds = 12,

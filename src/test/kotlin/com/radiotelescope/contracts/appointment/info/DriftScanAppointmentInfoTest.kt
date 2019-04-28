@@ -25,6 +25,7 @@ internal class DriftScanAppointmentInfoTest {
                 userEmail = "cspath1@ycp.edu",
                 status = Appointment.Status.SCHEDULED.label,
                 type = Appointment.Type.DRIFT_SCAN.label,
+                priority = Appointment.Priority.PRIMARY.label,
                 azimuth = 311.0,
                 elevation = 45.0
         )
@@ -40,6 +41,7 @@ internal class DriftScanAppointmentInfoTest {
         assertEquals("cspath1@ycp.edu", info.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, info.status)
         assertEquals(Appointment.Type.DRIFT_SCAN.label, info.type)
+        assertEquals(Appointment.Priority.PRIMARY.label, info.priority)
         assertEquals(info.azimuth, 311.0, 0.0001)
         assertEquals(info.elevation, 45.0, 0.0001)
     }
@@ -60,6 +62,7 @@ internal class DriftScanAppointmentInfoTest {
                 endTime = endTime,
                 telescopeId = 1L,
                 isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.DRIFT_SCAN
         )
 
@@ -86,6 +89,7 @@ internal class DriftScanAppointmentInfoTest {
         assertEquals("cspath1@ycp.edu", appointmentInfo.userEmail)
         assertEquals(Appointment.Status.SCHEDULED.label, appointmentInfo.status)
         assertEquals(Appointment.Type.DRIFT_SCAN.label, appointmentInfo.type)
+        assertEquals(Appointment.Priority.PRIMARY.label, appointmentInfo.priority)
         assertEquals(appointment.orientation!!.azimuth, appointmentInfo.azimuth, 0.00001)
         assertEquals(appointment.orientation!!.elevation, appointmentInfo.elevation, 0.00001)
     }

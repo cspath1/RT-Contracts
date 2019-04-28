@@ -21,6 +21,7 @@ data class DriftScanAppointmentInfo(
         override val userEmail: String,
         override val status: String,
         override val type: String,
+        override val priority: String,
         val azimuth: Double,
         val elevation: Double
 ) : AppointmentInfo(
@@ -34,7 +35,8 @@ data class DriftScanAppointmentInfo(
         userLastName = userLastName,
         userEmail = userEmail,
         status = status,
-        type = type
+        type = type,
+        priority = priority
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -54,6 +56,7 @@ data class DriftScanAppointmentInfo(
             userEmail = appointment.user.email,
             status = appointment.status.label,
             type = appointment.type.label,
+            priority = appointment.priority.label,
             azimuth = appointment.orientation!!.azimuth,
             elevation = appointment.orientation!!.elevation
     )

@@ -60,6 +60,7 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
             endTime = Date(System.currentTimeMillis() + 300000L),
             telescopeId = 1L,
             isPublic = true,
+            priority = Appointment.Priority.PRIMARY,
             celestialBodyId = -1L
     )
 
@@ -385,6 +386,7 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 telescopeId = 1L,
                 status = Appointment.Status.SCHEDULED,
+                priority = Appointment.Priority.PRIMARY,
                 type = Appointment.Type.POINT
         )
 
