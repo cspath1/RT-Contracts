@@ -426,4 +426,17 @@ class UserAppointmentWrapper(
 
         return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
     }
+
+    fun unsubscribeAppointment(id: Long, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport?{
+        if(context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.unsubscribeAppointment(
+                            id = id
+                    )
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
+    }
 }

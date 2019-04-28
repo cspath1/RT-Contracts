@@ -22,6 +22,7 @@ class SubscribeAppointment (
 
             subscribedAppointmentRepo.save(subscribedAppointment)
 
+
             return SimpleResult(subscribedAppointment.id, null)
         }
     }

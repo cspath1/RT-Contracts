@@ -251,5 +251,12 @@ class BaseAppointmentFactory(
                 subscribedAppointmentRepo = subscribedAppointmentRepo,
                 request = request)
     }
+
+    override fun unsubscribeAppointment(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return UnsubscribeAppointment(
+                appointmentId = id,
+                subscribedAppointmentRepo = subscribedAppointmentRepo
+        )
+    }
 }
 

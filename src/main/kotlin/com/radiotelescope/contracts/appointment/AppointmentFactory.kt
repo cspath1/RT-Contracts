@@ -128,9 +128,17 @@ interface AppointmentFactory {
     /**
      * Abstract command used to subscribe a user to an appointment
      *
-     * @param AppointmentId the Appointment Id
+     * @param request the [SubscribeAppointment.Request] object
      * @return a [Command] object
      */
 
     fun subscribeAppointment(request: SubscribeAppointment.Request) : Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to unsubscribe a user from an appointment
+     *
+     * @param id the Appointment Id
+     * @return a [Command] object
+     */
+    fun unsubscribeAppointment(id: Long) :Command<Long, Multimap<ErrorTag, String>>
 }
