@@ -468,6 +468,7 @@ internal class RegisterTest {
         assertNull(error)
 
         assertEquals(1, userNotificationTypeRepo.count())
+        assertEquals(userNotificationTypeRepo.findById(userRepo.findByEmail(baseRequest.email)!!.id).get().type, UserNotificationType.NotificationType.EMAIL)
         
     }
 

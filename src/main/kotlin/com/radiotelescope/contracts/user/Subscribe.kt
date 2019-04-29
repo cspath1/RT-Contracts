@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.userNotificationType.IUserNotificationTypeRepository
+import com.radiotelescope.repository.userNotificationType.UserNotificationType
 
 class Subscribe (
         private var id: Long,
@@ -15,15 +16,20 @@ class Subscribe (
 
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
-        val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
+        val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-1").build()
         val topicARN = builder.createTopic("UserTopic" + id).topicArn
 
 
-        //TODO: check if userNotificationType is email or phone and subscribe/unsubscribe correctly
-        //user is not currently subscribed to the topic
-        //if (builder.listSubscriptions(builder.listSubscriptionsByTopic(topicARN).nextToken).subscriptions.size < 2)
+        //user is to be notified by email
+        if (userNotificationType.findById(id).get().type == UserNotificationType.NotificationType.EMAIL){
             builder.subscribe(topicARN,"email", userRepo.findById(id).get().email)
+        }
+        //user is to be notified by sms
+        else if(userNotificationType.findById(id).get().type == UserNotificationType.NotificationType.PHONE){
+            builder.subscribe(topicARN, "sms", userRepo.findById(id).get().phoneNumber)
+        }
 
+        builder.shutdown()
         return SimpleResult(id, null)
     }
 

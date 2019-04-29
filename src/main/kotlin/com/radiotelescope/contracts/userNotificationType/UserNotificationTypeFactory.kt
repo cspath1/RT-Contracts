@@ -12,5 +12,7 @@ interface UserNotificationTypeFactory {
      */
     fun setEmail(request: SetEmail.Request): Command<Long, Multimap<ErrorTag, String>>
 
+    fun setPhone(id: Long): Command<Long, Multimap<ErrorTag, String>>
+
 
 }

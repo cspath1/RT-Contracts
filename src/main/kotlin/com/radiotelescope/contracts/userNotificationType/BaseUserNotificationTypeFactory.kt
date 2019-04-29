@@ -17,4 +17,13 @@ class BaseUserNotificationTypeFactory
                 request = request
         )
     }
+
+    override fun setPhone(id: Long): Command<Long, Multimap<ErrorTag, String>> {
+        return SetPhone(
+                id = id,
+                userNotificationTypeRepo = userNotificationTypeRepo
+        )
+    }
+
+
 }

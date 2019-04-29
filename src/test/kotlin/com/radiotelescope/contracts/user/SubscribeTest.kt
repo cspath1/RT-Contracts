@@ -2,6 +2,8 @@ package com.radiotelescope.contracts.user
 
 import com.amazonaws.services.sns.AmazonSNSClientBuilder
 import com.radiotelescope.TestUtil
+import com.radiotelescope.contracts.userNotificationType.SetEmail
+import com.radiotelescope.contracts.userNotificationType.SetPhone
 import com.radiotelescope.repository.accountActivateToken.IAccountActivateTokenRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
@@ -53,12 +55,50 @@ internal class SubscribeTest {
             lastName = "Doe",
             email = "YCPtestemail@gmail.com",
             emailConfirm = "YCPtestemail@gmail.com",
+            phoneNumber = "907-867-5390",
+            password = "ValidPassword1",
+            passwordConfirm = "ValidPassword1",
+            company = "York College of Pennsylvania",
+            categoryOfService = UserRole.Role.STUDENT
+    )
+
+    private val basePhoneRequest = Register.Request(
+            firstName = "John",
+            lastName = "Doe",
+            email = "YCPtestemail@gmail.com",
+            emailConfirm = "YCPtestemail@gmail.com",
             phoneNumber = "717-867-5309",
             password = "ValidPassword1",
             passwordConfirm = "ValidPassword1",
             company = "York College of Pennsylvania",
             categoryOfService = UserRole.Role.STUDENT
     )
+
+    @Test
+    fun subscribePhoneTest(){
+        val (registerToken, registerError) = Register(
+                request = baseRequest,
+                userRepo = userRepo,
+                userRoleRepo = userRoleRepo,
+                accountActivateTokenRepo = accountActivateTokenRepo,
+                userNotificationTypeRepo = userNotificationTypeRepo
+        ).execute()
+        assertNull(registerError)
+
+        val (setEmailToken, setEmailError) = SetPhone(
+                id = userRepo.findByEmail(baseRequest.email)!!.id,
+                userNotificationTypeRepo = userNotificationTypeRepo
+        ).execute()
+        assertNull(setEmailError)
+
+        val (token, error) = Subscribe(
+                userRepo = userRepo,
+                id = registerToken!!.id,
+                userNotificationType = userNotificationTypeRepo
+        ).execute()
+
+        assertNull(error)
+    }
 
     @Test
     fun subscribeTest(){
@@ -69,27 +109,14 @@ internal class SubscribeTest {
                 accountActivateTokenRepo = accountActivateTokenRepo,
                 userNotificationTypeRepo = userNotificationTypeRepo
         ).execute()
-
         assertNull(registerError)
 
         val (token, error) = Subscribe(
                 userRepo = userRepo,
                 id = registerToken!!.id,
-                userRoleRepo = userRoleRepo,
                 userNotificationType = userNotificationTypeRepo
         ).execute()
 
         assertNull(error)
-
-        val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
-
-        builder.listSubscriptionsByTopic(builder.createTopic("UserTopic" + registerToken.id).topicArn)
-
-        var topicARN = builder.createTopic("UserTopic" + registerToken.id).topicArn
-        System.out.println("\n\n\n")
-        System.out.println(builder.listSubscriptions(builder.listSubscriptionsByTopic(topicARN).nextToken).subscriptions.size)
-//        System.out.println(builder.listSubscriptionsByTopic(topicARN).subscriptions.get(0).subscriptionArn)
-        System.out.println("\n\n\n")
-
     }
 }
