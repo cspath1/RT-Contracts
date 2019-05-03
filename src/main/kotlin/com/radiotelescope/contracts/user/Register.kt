@@ -60,7 +60,7 @@ class Register(
                     token = theToken
             )
 
-            val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
+            val builder = AmazonSNSClientBuilder.standard().build()
             //create topic for the user
             builder.createTopic("UserTopic" + newUser.id)
             //close topic builder to prevent potential memory leak

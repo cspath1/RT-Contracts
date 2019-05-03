@@ -483,7 +483,7 @@ internal class RegisterTest {
         ).execute()
 
 
-        val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
+        val builder = AmazonSNSClientBuilder.standard().build()
 
         //this will stop working when number of topics exceeds 100 (TODO: refactor this test to work for > 100)
         //checks if the current number of topics is equal to the number of topics if a topic (which should already exist) for the user is created

@@ -16,7 +16,7 @@ class Subscribe (
 
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
-        val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-1").build()
+        val builder = AmazonSNSClientBuilder.standard().build()
         val topicARN = builder.createTopic("UserTopic" + id).topicArn
 
 

@@ -16,7 +16,7 @@ class Unsubscribe(
 
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
 
-        val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
+        val builder = AmazonSNSClientBuilder.standard().build()
         val topicARN = builder.createTopic("UserTopic" + id).topicArn
 
         //Todo: check userNotificationType and set protocol to email/sms correctly

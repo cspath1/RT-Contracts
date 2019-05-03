@@ -20,7 +20,7 @@ class PublishNotification(
     fun execute(){
         subscribedAppointmentRepo.findAll().forEach{
             if (appointmentRepo.findById(it.appointmentId).get().startTime.before(Date()) && it.status == subscribedAppointment.Status.SCHEDULED){
-                val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
+                val builder = AmazonSNSClientBuilder.standard().build()
                 val topicARN = builder.createTopic("UserTopic" + it.userId).topicArn
 
                 builder.publish(topicARN, "Your appointment " + it.appointmentId + "is about to begin.")
@@ -30,7 +30,7 @@ class PublishNotification(
                 createLogs(it)
             }
             else if(appointmentRepo.findById(it.appointmentId).get().endTime.before(Date()) && it.status == subscribedAppointment.Status.STARTED){
-                val builder = AmazonSNSClientBuilder.standard().withRegion("us-east-2").build()
+                val builder = AmazonSNSClientBuilder.standard().build()
                 val topicARN = builder.createTopic("UserTopic" + it.userId).topicArn
 
                 builder.publish(topicARN, "Your appointment " + it.appointmentId + "has finished.")
