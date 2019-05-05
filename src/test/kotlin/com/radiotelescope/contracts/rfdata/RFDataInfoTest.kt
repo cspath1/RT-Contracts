@@ -55,9 +55,9 @@ internal class RFDataInfoTest {
                 rfData = rfData.get()
         )
 
-        assertEquals(rfDataInfo.id, rfData.get().getId())
-        assertEquals(rfDataInfo.appointmentId, rfData.get().getAppointment()!!.id)
-        assertEquals(rfDataInfo.intensity, rfData.get().getIntensity()!!)
-        assertEquals(rfDataInfo.timeCaptured, rfData.get().getTimeCaptured())
+        assertEquals(rfDataInfo.id, rfData.get().id)
+        assertEquals(rfDataInfo.appointmentId, rfData.get().appointment.id)
+        assertEquals(rfDataInfo.intensity, rfData.get().intensity!!)
+        assertEquals(rfDataInfo.timeCaptured, rfData.get().timeCaptured)
     }
 }
