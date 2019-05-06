@@ -29,11 +29,11 @@ class FilterTest {
     }
 
     @Test
-    fun testFromErrorField() {
-        val filter = Filter.fromField("errors")
+    fun testFromStatusField() {
+        val filter = Filter.fromField("status")
 
         assertNotNull(filter)
-        assertEquals(Filter.ERRORS, filter)
+        assertEquals(Filter.STATUS, filter)
     }
 
     @Test

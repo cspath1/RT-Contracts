@@ -13,7 +13,7 @@ enum class Filter(val field: String, val label: String) {
     ACTION("action", "Action"),
     AFFECTED_TABLE("affectedTable", "Affected Table"),
     IS_SUCCESS("isSuccess", "Is Success"),
-    ERRORS("errors", "Errors");
+    STATUS("status", "Status");
 
     companion object {
         /**
@@ -29,7 +29,7 @@ enum class Filter(val field: String, val label: String) {
                 "action" -> ACTION
                 "affectedTable" -> AFFECTED_TABLE
                 "isSuccess" -> IS_SUCCESS
-                "errors" -> ERRORS
+                "status" -> STATUS
                 else -> {
                     // Handle the case where an invalid parameter
                     // is supplied
