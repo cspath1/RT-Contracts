@@ -65,6 +65,7 @@ com.radiotelescope.repository.coordinate
 com.radiotelescope.repository.error
 com.radiotelescope.repository.feedback
 com.radiotelescope.repository.log
+com.radiotelescope.repository.loginAttempt
 com.radiotelescope.repository.model.appointment
 com.radiotelescope.repository.model.celestialBody
 com.radiotelescope.repository.model.user
