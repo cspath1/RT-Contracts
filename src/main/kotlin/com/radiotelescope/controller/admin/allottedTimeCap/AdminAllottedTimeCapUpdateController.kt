@@ -11,12 +11,17 @@ import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Rest Controller used to update a user's allotted appointment time cap
+ *
+ * @param allottedTimeCapWrapper the [UserAllottedTimeCapWrapper]
+ * @param logger the [Logger] service
+ */
 @RestController
 class AdminAllottedTimeCapUpdateController(
         private val allottedTimeCapWrapper: UserAllottedTimeCapWrapper,
         logger: Logger
 ): BaseRestController(logger){
-
     /**
      * Execute method that is in charge of calling the [UserAllottedTimeCapWrapper.update]
      * method five then [userId] [PathVariable].

@@ -111,6 +111,11 @@ class UserRegisterController(
         return result
     }
 
+    /**
+     * Sends an email to the address of the newly created user.
+     *
+     * @param email the email address of the new user
+     */
     private fun sendEmailToOwner(email: String) {
         val sendForm = SendForm(
                 toAddresses = listOf(email),
@@ -125,6 +130,10 @@ class UserRegisterController(
         awsSesSendService.execute(sendForm)
     }
 
+    /**
+     * Sends an email to all admins, letting them know a new user has
+     * registered that requires their attention
+     */
     private fun sendEmailToAdmins(emails: List<String>) {
         val sendForm = SendForm(
                 toAddresses = emails,

@@ -17,6 +17,7 @@ import com.radiotelescope.toStringMap
  * @property context the [UserContext] interface
  * @property factory the [RFDataFactory] factory interface
  * @property appointmentRepo the [IAppointmentRepository] interface
+ * @property viewerRepo the [IViewerRepository] interface
  */
 class UserRFDataWrapper(
         private val context: UserContext,

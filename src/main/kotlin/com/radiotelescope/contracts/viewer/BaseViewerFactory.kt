@@ -73,7 +73,7 @@ class BaseViewerFactory (
     }
 
     /**
-     * Overrid of the [ViewerFactory.unsharePrivateAppointment] method that will
+     * Override of the [ViewerFactory.unsharePrivateAppointment] method that will
      * return a [UnsharePrivateAppointment] command object
      *
      * @param request the [UnsharePrivateAppointment.Request] object

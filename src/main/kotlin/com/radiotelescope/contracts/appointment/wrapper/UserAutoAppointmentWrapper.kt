@@ -18,11 +18,11 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 
 /**
- * Wrapper that takes an [AppointmentFactory] and is responsible for all
+ * Wrapper that takes an [AutoAppointmentFactory] and is responsible for all
  * user role validations for endpoints for the Appointment Entity
  *
  * @property context the [UserContext] interface
- * @property factory the [AppointmentFactory] factory interface
+ * @property factory the [AutoAppointmentFactory] factory interface
  * @property appointmentRepo the [IAppointmentRepository] interface
  */
 class UserAutoAppointmentWrapper(

@@ -22,7 +22,6 @@ class ChangePassword(
      * Override of the [Command.execute] method that, given the request passes
      * validation, will change a user's password
      */
-
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
         if(!errors.isEmpty)
@@ -33,7 +32,6 @@ class ChangePassword(
 
         return SimpleResult(updatedUser.id, null)
     }
-
 
     /**
      * Method responsible for constraint checking/validation. It ensures

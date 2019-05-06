@@ -17,7 +17,6 @@ data class UserRoleInfo(
         val role: UserRole.Role,
         val userInfo: UserInfo
 ) {
-
     /**
      * Secondary constructor that takes a [UserRole] object and
      * [UserInfo] object to set all fields

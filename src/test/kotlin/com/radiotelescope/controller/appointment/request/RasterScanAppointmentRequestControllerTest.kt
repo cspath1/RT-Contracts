@@ -6,7 +6,9 @@ import com.radiotelescope.controller.model.coordinate.CoordinateForm
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.services.ses.MockAwsSesSendService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -24,6 +26,9 @@ import java.util.*
 internal class RasterScanAppointmentRequestControllerTest : BaseAppointmentRestControllerTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
+
+    @Autowired
+    private lateinit var userRepo: IUserRepository
 
     private lateinit var rasterScanAppointmentRequestController: RasterScanAppointmentRequestController
     private lateinit var user: User
@@ -58,6 +63,8 @@ internal class RasterScanAppointmentRequestControllerTest : BaseAppointmentRestC
 
         rasterScanAppointmentRequestController = RasterScanAppointmentRequestController(
                 autoAppointmentWrapper = getRasterScanCreateWrapper(),
+                awsSesSendService = MockAwsSesSendService(true),
+                userRepo = userRepo,
                 logger = getLogger()
         )
 

@@ -5,9 +5,12 @@ import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentReq
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.request.RasterScanAppointmentRequestForm
+import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.AccessReport
+import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -19,12 +22,16 @@ import org.springframework.web.bind.annotation.RestController
  * REST Controller to handle Raster Scan Appointment requests
  *
  * @param autoAppointmentWrapper the [UserAutoAppointmentWrapper]
+ * @param awsSesSendService the [IAwsSesSendService]
+ * @param userRepo the [IUserRepository]
  * @param logger the [Logger] service
  */
 @RestController
 class RasterScanAppointmentRequestController(
         @Qualifier(value = "rasterScanAppointmentWrapper")
         private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
+        private val awsSesSendService: IAwsSesSendService,
+        private val userRepo: IUserRepository,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -73,6 +80,8 @@ class RasterScanAppointmentRequestController(
                             )
                     )
 
+                    sendEmail(userRepo.findAllAdminEmail())
+
                     result = Result(data = data)
                 }
                 // Otherwise, it was an error
@@ -108,5 +117,23 @@ class RasterScanAppointmentRequestController(
         }
 
         return result
+    }
+
+    /**
+     * Sends an email out to admins letting them know there is a new requested appointment
+     * that requires their attention.
+     *
+     * @param emails a list of admin email addresses
+     */
+    private fun sendEmail(emails: List<String>) {
+        val sendForm = SendForm(
+                toAddresses = emails,
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                subject = "Appointment Request",
+                htmlBody = "<p>A new observation has been requested by a user at their " +
+                        "allotted quota and requires your approval.</p>"
+        )
+
+        awsSesSendService.execute(sendForm)
     }
 }
