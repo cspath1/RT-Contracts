@@ -19,9 +19,6 @@ class CelestialBodySpecification(
      * Uses the [SearchCriteria] to build a user-defined search parameter in the form of a [Predicate].
      */
     override fun toPredicate(root: Root<CelestialBody>, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder): Predicate? {
-        return criteriaBuilder.and(
-                criteriaBuilder.like(criteriaBuilder.lower(root.get(searchCriteria.filter.field)), "%" + searchCriteria.value.toString().toLowerCase() + "%"),
-                criteriaBuilder.notEqual(root.get<String>("status"), CelestialBody.Status.HIDDEN)
-        )
+        return criteriaBuilder.like(criteriaBuilder.lower(root.get(searchCriteria.filter.field)), "%" + searchCriteria.value.toString().toLowerCase() + "%")
     }
 }
