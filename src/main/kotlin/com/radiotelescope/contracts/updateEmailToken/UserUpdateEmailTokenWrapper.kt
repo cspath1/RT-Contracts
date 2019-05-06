@@ -20,8 +20,8 @@ import com.radiotelescope.security.UserContext
 class UserUpdateEmailTokenWrapper (
         private val context: UserContext,
         private val factory: UpdateEmailTokenFactory,
-        private val userRepo: IUserRepository){
-
+        private val userRepo: IUserRepository
+) {
     /**
      * Wrapper method for the [UpdateEmailTokenFactory.requestUpdateEmail] method that adds Spring
      * Security authentication to the [CreateUpdateEmailToken] command object.

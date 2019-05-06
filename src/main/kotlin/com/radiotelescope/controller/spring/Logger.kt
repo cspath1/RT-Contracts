@@ -16,6 +16,7 @@ import java.util.*
  *
  * @param logRepo the [ILogRepository] interface
  * @param errorRepo the [IErrorRepository] interface
+ * @param userRepo the [IUserRepository] interface
  * @param userContext the [UserContext] interface
  */
 @Service
@@ -119,6 +120,14 @@ class Logger(
     }
 
     companion object {
+        /**
+         * Companion object method that returns a [Info] object
+         *
+         * @param affectedTable the [Log.AffectedTable]
+         * @param action the action executed
+         * @param affectedRecordId the record affected by the action
+         * @param status the int value of the Http Status
+         */
         fun createInfo(
                 affectedTable: Log.AffectedTable,
                 action: String,

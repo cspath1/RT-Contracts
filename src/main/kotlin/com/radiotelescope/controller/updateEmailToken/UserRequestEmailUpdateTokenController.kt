@@ -27,7 +27,6 @@ class UserRequestEmailUpdateTokenController (
         private val awsSesSendService: IAwsSesSendService,
         logger: Logger
 ): BaseRestController(logger){
-
     /**
      * Execute method that is in charge of taking the incoming
      * email and pass it to the command to create reset password token
@@ -118,6 +117,14 @@ class UserRequestEmailUpdateTokenController (
         return result
     }
 
+    /**
+     * Sends an email to the address the user wishes to be associated with their account,
+     * allowing them to click a generated link which will associate the new email address
+     * with their account.
+     *
+     * @param email the new email address
+     * @param token the generated token
+     */
     private fun sendEmail(email: String, token: String) {
         val resetPasswordLink = AppLink.generate(profile) + "/updateEmail?token=" + token
 

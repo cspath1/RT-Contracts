@@ -328,6 +328,10 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserAllottedTimeCapWrapper] object, allowing it to be autowired
+     * in controllers
+     */
     @Bean
     override fun getAllottedTimeCapWrapper(): UserAllottedTimeCapWrapper {
         return UserAllottedTimeCapWrapper(

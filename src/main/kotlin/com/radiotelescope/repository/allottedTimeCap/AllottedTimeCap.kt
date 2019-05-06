@@ -3,6 +3,11 @@ package com.radiotelescope.repository.allottedTimeCap
 import com.radiotelescope.repository.user.User
 import javax.persistence.*
 
+/**
+ * Entity Class representing a User's Allotted Appointment Time Cap.
+ *
+ * This Entity correlates to the Allotted Time Cap SQL Table
+ */
 @Entity
 @Table(name = "allotted_time_cap")
 data class AllottedTimeCap(

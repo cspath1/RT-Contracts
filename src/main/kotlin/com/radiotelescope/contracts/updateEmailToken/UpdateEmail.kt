@@ -65,7 +65,6 @@ class UpdateEmail (
                 errors.put(ErrorTag.TOKEN, "Token is expired")
         }
 
-
         return errors
     }
 }

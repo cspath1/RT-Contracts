@@ -121,6 +121,12 @@ class CoordinateAppointmentRequestController(
         return result
     }
 
+    /**
+     * Sends an email out to admins letting them know there is a new requested appointment
+     * that requires their attention.
+     *
+     * @param emails a list of admin email addresses
+     */
     private fun sendEmail(emails: List<String>) {
         val sendForm = SendForm(
                 toAddresses = emails,

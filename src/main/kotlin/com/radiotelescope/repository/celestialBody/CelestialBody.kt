@@ -22,13 +22,4 @@ data class CelestialBody(
     @OneToOne
     @JoinColumn(name = "coordinate_id")
     var coordinate: Coordinate? = null
-
-    @Column(name = "status")
-    @Enumerated(value = EnumType.STRING)
-    var status: CelestialBody.Status = Status.VISIBLE
-
-    enum class Status(val label: String) {
-        HIDDEN("Hidden"),
-        VISIBLE("Visible")
-    }
 }

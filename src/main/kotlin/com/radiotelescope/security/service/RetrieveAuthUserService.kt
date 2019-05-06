@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service
  * Service used to retrieve user authentication information
  *
  * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
  */
 @Service
 class RetrieveAuthUserService(
@@ -78,6 +79,12 @@ class RetrieveAuthUserService(
         return errors
     }
 
+    /**
+     * Retrieves a user's roles and adapts them into [SimpleGrantedAuthority] objects
+     *
+     * @param userId the User id
+     * @return a list of [SimpleGrantedAuthority] objects
+     */
     private fun getAuthorities(userId: Long): List<SimpleGrantedAuthority> {
         val roles = userRoleRepo.findAllByUserId(userId)
         val authorities = arrayListOf<SimpleGrantedAuthority>()

@@ -182,5 +182,35 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             nativeQuery = true)
     fun findSharedAppointmentsByUser(userId: Long, pageable: Pageable): Page<Appointment>
 
+    /**
+     * Currently used to find the first in progress appointment for a specific telescope
+     * to determine if it is a free control appointment (meaning it cannot be overriden)
+     *
+     * @param status the [Appointment.Status]
+     * @param telescopeId the Radio Telescope id
+     * @return an Appointment or null
+     */
     fun findFirstByStatusAndTelescopeId(status: Appointment.Status, telescopeId: Long): Appointment?
+
+    /**
+     * Finds all scheduled appointments. Currently used so the control room simulator
+     * can simulate conducting an appointment.
+     *
+     * @return a [List] of [Appointment] objects
+     */
+    @Query(value = "SELECT * FROM appointment " +
+            "WHERE status = 'SCHEDULED'",
+            nativeQuery = true)
+    fun findAllScheduledAppointments(): List<Appointment>
+
+    /**
+     * Finds all in progress appointments. Currently used so the control room simulator
+     * can simulate conducting an appointment
+     *
+     * @return a [List] of [Appointment] objects
+     */
+    @Query(value = "SELECT * FROM appointment " +
+            "WHERE status = 'IN_PROGRESS'",
+            nativeQuery = true)
+    fun findAllInProgressAppointments(): List<Appointment>
 }

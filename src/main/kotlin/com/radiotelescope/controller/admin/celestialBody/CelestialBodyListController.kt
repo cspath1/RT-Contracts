@@ -7,6 +7,7 @@ import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
@@ -14,11 +15,27 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Rest Controller used to retrieve a list of Celestial Bodies
+ *
+ * @param celestialBodyWrapper the [UserCelestialBodyWrapper]
+ * @param logger the [Logger] service
+ */
 @RestController
 class CelestialBodyListController(
         private val celestialBodyWrapper: UserCelestialBodyWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+    /**
+     * Execute method that is in charge of returning a list of celestial bodies.
+     *
+     * If the [pageNumber] or [pageSize] request parameters are invalid, it will respond with
+     * errors. Otherwise, it will call the [UserCelestialBodyWrapper.list] method. If this method
+     * returns an [AccessReport], this means the user authentication failed, and it will respond with
+     * errors.
+     *
+     * Otherwise, the command was executed, and it will return a list of celestial body objects.
+     */
     @GetMapping(value = ["/api/celestial-bodies"])
     fun execute(@RequestParam("page") pageNumber: Int,
                 @RequestParam("size") pageSize: Int): Result {

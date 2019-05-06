@@ -119,7 +119,6 @@ class RasterScanAppointmentCreate(
             if (!errors.isEmpty)
                 return errors
 
-
             errors = validateAvailableAllottedTime(
                     request = request,
                     appointmentRepo = appointmentRepo,

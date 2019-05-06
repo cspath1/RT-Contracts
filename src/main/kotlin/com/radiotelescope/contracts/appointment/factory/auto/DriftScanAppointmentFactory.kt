@@ -40,7 +40,6 @@ class DriftScanAppointmentFactory(
         userRoleRepo = userRoleRepo,
         allottedTimeCapRepo = allottedTimeCapRepo
 ) {
-
     /**
      * Override of the [AutoAppointmentFactory.create] method that will return a [DriftScanAppointmentCreate]
      * command object

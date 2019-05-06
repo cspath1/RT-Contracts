@@ -62,7 +62,7 @@ interface IUserRepository : PagingAndSortingRepository<User, Long>, JpaSpecifica
 
     /**
      * Spring Repository method that will return a list of users
-     * that the appointment was ahared with
+     * that the appointment was shared with
      *
      * @param appointmentId the Appointment's Id
      * @return a [Page] of [User] records

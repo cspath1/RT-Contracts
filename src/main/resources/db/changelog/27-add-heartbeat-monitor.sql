@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset cspath1:33
+-- changeset cspath1:34
 CREATE TABLE heartbeat_monitor (
     id INT(11) NOT NULL AUTO_INCREMENT,
     last_communication DATETIME NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE heartbeat_monitor (
 );
 -- rollback drop table heartbeat_monitor
 
--- changeset cspath1:34
+-- changeset cspath1:35
 INSERT INTO heartbeat_monitor(last_communication, telescope_id)
 SELECT CURRENT_TIMESTAMP(), id FROM radio_telescope;
 -- rollback delete from heartbeat_monitor where 1=1

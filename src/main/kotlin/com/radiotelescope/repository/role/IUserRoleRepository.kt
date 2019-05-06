@@ -36,6 +36,13 @@ interface IUserRoleRepository : PagingAndSortingRepository<UserRole, Long> {
             nativeQuery = true)
     fun findNeedsApprovedUserRoles(pageable: Pageable): Page<UserRole>
 
+    /**
+     * Spring Repository method that will retrieve the membership role
+     * (i.e. not USER) for a specific user.
+     *
+     * @param userId the User id
+     * @return a [UserRole] or null, if the user has no membership role
+     */
     @Query(value = "SELECT * " +
             "FROM user_role " +
             "WHERE approved = '1' AND role NOT IN ('USER') " +
@@ -44,6 +51,13 @@ interface IUserRoleRepository : PagingAndSortingRepository<UserRole, Long> {
             nativeQuery = true)
     fun findMembershipRoleByUserId(userId: Long): UserRole?
 
+    /**
+     * Spring Repository method that will retrieve all approved roles
+     * for a specific user
+     *
+     * @param userId the User id
+     * @return a list of [UserRole] object
+     */
     @Query(value = "SELECT * " +
             "FROM user_role " +
             "WHERE approved = '1' " +

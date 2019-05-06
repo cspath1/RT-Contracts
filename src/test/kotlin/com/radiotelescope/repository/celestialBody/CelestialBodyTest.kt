@@ -70,20 +70,4 @@ internal class CelestialBodyTest : AbstractSpringTest() {
         assertEquals(1, celestialBodyList.content.size)
         assertEquals("Crab Nebula".toLowerCase(), celestialBodyList.content[0].name.toLowerCase())
     }
-
-    @Test
-    fun testSearch_Hidden() {
-        // Make the celestial body hidden
-        celestialBody.status = CelestialBody.Status.HIDDEN
-        celestialBodyRepo.save(celestialBody)
-
-        val searchCriteria = SearchCriteria(Filter.NAME, "Crab Nebula")
-
-        val specification = CelestialBodySpecificationBuilder().with(searchCriteria).build()
-
-        val celestialBodyList = celestialBodyRepo.findAll(specification, PageRequest.of(0, 10))
-
-        assertNotNull(celestialBodyList)
-        assertEquals(0, celestialBodyList.content.size)
-    }
 }

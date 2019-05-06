@@ -16,6 +16,15 @@ import com.radiotelescope.toStringMap
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
+/**
+ * Base Wrapper that takes an [AppointmentFactory] and is responsible for all
+ * user role validation for type-agnostic endpoints for the Appointment Entity
+ *
+ * @param context the [UserContext] interface
+ * @param factory the [AppointmentFactory] factory interface
+ * @param appointmentRepo the [IAppointmentRepository] interface
+ * @param viewerRepo the [IViewerRepository] interface
+ */
 open class BaseUserAppointmentWrapper(
         private val context: UserContext,
         private val factory: AppointmentFactory,

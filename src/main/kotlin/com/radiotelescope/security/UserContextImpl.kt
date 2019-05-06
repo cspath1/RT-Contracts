@@ -56,7 +56,7 @@ class UserContextImpl(
             // Otherwise, we can check if the proper roles
             else {
                 // Grab all of the roles and check them against the required list
-                val userRoles = userRoleRepo.findAllByUserId(session.userId)
+                val userRoles = userRoleRepo.findAllApprovedRolesByUserId(session.userId)
                 if (!requiredRoles.isEmpty()) {
                     requiredRoles.forEach { role: UserRole.Role ->
                         val hasThisRole = userRoles.any {
@@ -110,7 +110,7 @@ class UserContextImpl(
 
             // If the user id exists and refers to an existing user, we can grab their roles
             if (userRepo.existsById(session.userId)) {
-                val roles = userRoleRepo.findAllByUserId(session.userId)
+                val roles = userRoleRepo.findAllApprovedRolesByUserId(session.userId)
 
                 // If anything in the roles list matches anything in the require roles
                 // list, set the variable to true. If the required role list is empty,

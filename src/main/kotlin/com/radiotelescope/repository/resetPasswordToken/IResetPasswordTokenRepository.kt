@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface IResetPasswordTokenRepository : CrudRepository<ResetPasswordToken, Long> {
-
     /**
      * Spring Repository method that will see if any [ResetPasswordToken] records exist
      * with the given token parameter
@@ -18,7 +17,6 @@ interface IResetPasswordTokenRepository : CrudRepository<ResetPasswordToken, Lon
      * @return true or false
      */
     fun existsByToken(token: String): Boolean
-
 
     /**
      * Spring Repository method that will grab a [ResetPasswordToken] by the token field
