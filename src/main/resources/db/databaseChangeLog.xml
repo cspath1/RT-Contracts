@@ -28,4 +28,5 @@
     <include file="classpath:/db/changelog/23-update-appointment-coordinate-relation.sql"/>
     <include file="classpath:/db/changelog/24-create-login-attempt-table.sql"/>
     <include file="classpath:/db/changelog/25-add-appointment-priority.sql"/>
+    <include file="classpath:/db/changelog/26-drop-celestial-body-status.sql"/>
 </databaseChangeLog>
