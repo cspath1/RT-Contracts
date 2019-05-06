@@ -74,28 +74,6 @@ internal class BaseCelestialBodyFactoryTest : AbstractSpringTest() {
     }
 
     @Test
-    fun markHidden() {
-        // Call the factory method
-        val cmd = factory.markHidden(
-                id = 311L
-        )
-
-        // Ensure it is the correct commmand
-        assertTrue(cmd is MarkHidden)
-    }
-
-    @Test
-    fun markVisible() {
-        // Call the factory method
-        val cmd = factory.markVisible(
-                id = 311L
-        )
-
-        // Ensure it is the correct command
-        assertTrue(cmd is MarkVisible)
-    }
-
-    @Test
     fun search() {
         // Call the factory method
         val cmd = factory.search(

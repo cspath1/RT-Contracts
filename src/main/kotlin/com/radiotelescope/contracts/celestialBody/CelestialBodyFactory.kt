@@ -37,22 +37,6 @@ interface CelestialBodyFactory {
     fun list(pageable: Pageable): Command<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>
 
     /**
-     * Abstract command used to mark a [CelestialBody] as hidden
-     *
-     * @param id the [CelestialBody] id
-     * @return a [Command] object
-     */
-    fun markHidden(id: Long): Command<Long, Multimap<ErrorTag, String>>
-
-    /**
-     * Abstract command used to mark a [CelestialBody] as visible
-     *
-     * @param id the [CelestialBody] id
-     * @return a [Command] object
-     */
-    fun markVisible(id: Long): Command<Long, Multimap<ErrorTag, String>>
-
-    /**
      * Abstract command used to search for [CelestialBody] objects
      *
      * @param searchCriteria the [SearchCriteria] object

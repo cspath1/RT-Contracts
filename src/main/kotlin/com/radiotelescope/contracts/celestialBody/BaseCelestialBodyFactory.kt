@@ -59,32 +59,6 @@ class BaseCelestialBodyFactory(
     }
 
     /**
-     * Override of the [CelestialBodyFactory.markHidden] method that will return a [MarkHidden] command
-     *
-     * @param id the Celestial Body id
-     * @return a [MarkHidden] command object
-     */
-    override fun markHidden(id: Long): Command<Long, Multimap<ErrorTag, String>> {
-        return MarkHidden(
-                id = id,
-                celestialBodyRepo = celestialBodyRepo
-        )
-    }
-
-    /**
-     * Override of the [CelestialBodyFactory.markVisible] method that will return a [MarkVisible] command
-     *
-     * @param id the Celestial Body id
-     * @return a [MarkVisible] command object
-     */
-    override fun markVisible(id: Long): Command<Long, Multimap<ErrorTag, String>> {
-        return MarkVisible(
-                id = id,
-                celestialBodyRepo = celestialBodyRepo
-        )
-    }
-
-    /**
      * Override of the [CelestialBodyFactory.search] method that will return a [Search] command
      *
      * @param searchCriteria the [SearchCriteria]
