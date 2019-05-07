@@ -4,10 +4,12 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.appointment.info.*
 import com.radiotelescope.contracts.celestialBody.CelestialBodyInfo
 import com.radiotelescope.contracts.rfdata.RFDataInfo
+import com.radiotelescope.contracts.telescopeLog.TelescopeLogInfo
 import com.radiotelescope.contracts.user.UserInfo
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.rfdata.RFData
+import com.radiotelescope.repository.telescopeLog.TelescopeLog
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
 import org.springframework.data.domain.Page
@@ -113,17 +115,42 @@ fun <K, V> Multimap<K, V>.isNotEmpty(): Boolean {
  */
 fun Page<User>.toUserInfoPage(): Page<UserInfo> {
     val infoList = arrayListOf<UserInfo>()
+
     content.forEach {
         infoList.add(UserInfo(it, null, 0L))
     }
     return PageImpl(infoList, pageable, totalElements)
 }
 
+/**
+ * Adapts a Page of [CelestialBody] objects into a page of [CelestialBodyInfo]
+ * objects
+ *
+ * @return a Page of [CelestialBodyInfo] objects
+ */
 fun Page<CelestialBody>.toInfoPage(): Page<CelestialBodyInfo> {
     val infoList = arrayListOf<CelestialBodyInfo>()
+
     forEach {
         infoList.add(CelestialBodyInfo(it))
     }
 
     return PageImpl(infoList, pageable, totalElements)
 }
+
+/**
+ * Adapts a Page of [TelescopeLog] objects into a page of [TelescopeLogInfo]
+ * objects
+ *
+ * @return a Page of [TelescopeLogInfo] objects
+ */
+fun Page<TelescopeLog>.toTelescopeInfoPage(): Page<TelescopeLogInfo> {
+    val infoList = arrayListOf<TelescopeLogInfo>()
+
+    forEach {
+        infoList.add(TelescopeLogInfo(it))
+    }
+
+    return PageImpl(infoList, pageable, totalElements)
+}
+
