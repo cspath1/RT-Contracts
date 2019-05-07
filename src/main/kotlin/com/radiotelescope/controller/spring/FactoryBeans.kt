@@ -23,6 +23,8 @@ import com.radiotelescope.contracts.rfdata.BaseRFDataFactory
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.BaseUserRoleFactory
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.telescopeLog.AdminTelescopeLogWrapper
+import com.radiotelescope.contracts.telescopeLog.BaseTelescopeLogFactory
 import com.radiotelescope.contracts.updateEmailToken.BaseUpdateEmailTokenFactory
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
@@ -328,6 +330,20 @@ class FactoryBeans(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [AdminTelescopeLogWrapper] object, allowing it to be autowired
+     * in controllers
+     */
+    @Bean
+    override fun getTelescopeLogWrapper(): AdminTelescopeLogWrapper {
+        return AdminTelescopeLogWrapper(
+                context = userContext,
+                factory = BaseTelescopeLogFactory(
+                        telescopeLogRepo = repositories.telescopeLogRepo
                 )
         )
     }
