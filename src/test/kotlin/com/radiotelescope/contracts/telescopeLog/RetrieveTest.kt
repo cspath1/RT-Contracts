@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD ,scripts = ["classpath:sql/seedTelescopeLog.sql"])
+@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedTelescopeLog.sql"])
 internal class RetrieveTest : AbstractSpringTest() {
     @Autowired
     private lateinit var telescopeLogRepo: ITelescopeLogRepository
