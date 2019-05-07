@@ -75,6 +75,13 @@ class UserResetPasswordRequestController (
         return result
     }
 
+    /**
+     * Send an email to the user that requested to reset their password, allowing them to
+     * click a generated link and access the form that allows them to do this.
+     *
+     * @param email the email address entered by the user
+     * @param token the generated token
+     */
     private fun sendEmail(email: String, token: String) {
         val resetPasswordLink = AppLink.generate(profile) + "/resetPassword?token=" + token
 

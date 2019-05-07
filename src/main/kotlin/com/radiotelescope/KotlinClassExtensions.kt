@@ -14,16 +14,31 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import java.util.*
 
+/**
+ * Adapts a [Multimap] into a Map of string keys, with collections of strings as key values
+ *
+ * @return a Map of strings with a collections of strings as the values
+ */
 fun <T: Enum<T>> Multimap<T, String>.toStringMap(): Map<String, Collection<String>> {
     return this.asMap().mapKeys { it.key.name }
 }
 
+/**
+ * Adapts an [AccessReport] into a Map of string keys, with collections of strings as key values
+ *
+ * @return a Map of strings with a collection of string as the values
+ */
 fun AccessReport.toStringMap(): Map<String, Collection<String>> {
     val map = kotlin.collections.mutableMapOf<String, Collection<String>>()
     map["MISSING_ROLES"] = this.missingRoles!!.map { it.name }
     return map
 }
 
+/**
+ * Adapts a Page of [Appointment] objects into a page of [AppointmentInfo] objects
+ *
+ * @return a Page of [AppointmentInfo] objects
+ */
 fun Page<Appointment>.toAppointmentInfoPage(): Page<AppointmentInfo> {
     val infoList = arrayListOf<AppointmentInfo>()
 
@@ -41,6 +56,11 @@ fun Page<Appointment>.toAppointmentInfoPage(): Page<AppointmentInfo> {
     return PageImpl(infoList, pageable, totalElements)
 }
 
+/**
+ * Adapts a List of [RFData] objects into a List of [RFDataInfo] objects
+ *
+ * @return a List of [RFDataInfo] objects
+ */
 fun List<RFData>.toInfoList(): List<RFDataInfo> {
     val infoList = arrayListOf<RFDataInfo>()
     forEach { infoList.add(RFDataInfo(it)) }
@@ -48,6 +68,11 @@ fun List<RFData>.toInfoList(): List<RFDataInfo> {
     return infoList
 }
 
+/**
+ * Adapts a List of [Appointment] objects into a List of [AppointmentInfo] objects
+ *
+ * @return a List of [AppointmentInfo] objects
+ */
 fun List<Appointment>.toAppointmentInfoList(): List<AppointmentInfo> {
     val infoList = arrayListOf<AppointmentInfo>()
 
@@ -65,14 +90,27 @@ fun List<Appointment>.toAppointmentInfoList(): List<AppointmentInfo> {
     return infoList
 }
 
+/**
+ * Generates a token using UUIDs
+ */
 fun String.Companion.generateToken(): String {
     return UUID.randomUUID().toString().replace("-", "", false)
 }
 
+/**
+ * Determines if a Multimap is not empty
+ *
+ * @return true if a Multimap is not empty, false if it is
+ */
 fun <K, V> Multimap<K, V>.isNotEmpty(): Boolean {
     return !isEmpty
 }
 
+/**
+ * Adapts a Page of [User] objects into a Page of [UserInfo] objects
+ *
+ * @return a Page of [UserInfo] objects
+ */
 fun Page<User>.toUserInfoPage(): Page<UserInfo> {
     val infoList = arrayListOf<UserInfo>()
     content.forEach {

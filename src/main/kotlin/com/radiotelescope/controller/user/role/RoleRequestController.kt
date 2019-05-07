@@ -120,6 +120,12 @@ class RoleRequestController (
         return result
     }
 
+    /**
+     * Sends an email to all admins, letting them know that a user has requested a new
+     * category of service that requires their attention.
+     *
+     * @param emails the list of admin emails
+     */
     private fun sendEmail(emails: List<String>) {
         val sendForm = SendForm(
                 toAddresses = emails,

@@ -9,18 +9,18 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 
-
 /**
  * Override of the [Command] interface for an admin to ban a User
  *
  * @param id the [User] id
  * @param userRepo the [IUserRepository] interface
+ * @param userRoleRepo the [IUserRoleRepository] interface
  */
 class Ban(
         private var id: Long,
         private var userRepo: IUserRepository,
         private val userRoleRepo: IUserRoleRepository
-): Command<Long, Multimap<ErrorTag, String>> {
+) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method that, given the request passes
      * validation, will set a User's status to banned and set their account to inactive

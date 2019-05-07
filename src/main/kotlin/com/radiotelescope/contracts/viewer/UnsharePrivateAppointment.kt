@@ -10,7 +10,6 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.repository.viewer.Viewer
 
-
 /**
  * Override of the [Command] interface method used for unsharing private appointment
  *
@@ -60,7 +59,6 @@ class UnsharePrivateAppointment(
         }
         return if(errors.isEmpty) null else errors
     }
-
 
     /**
      * Data class containing all the fields necessary for viewer deletion. Implement

@@ -97,6 +97,7 @@ class AdminAppointmentListRequestController(
 
         return result
     }
+
     /**
      * Private method to return a [HashMultimap] of errors in the event
      * that the page size and page number are invalid

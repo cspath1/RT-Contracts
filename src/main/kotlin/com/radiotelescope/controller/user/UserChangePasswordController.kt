@@ -12,6 +12,12 @@ import org.springframework.http.HttpStatus
 import com.radiotelescope.controller.model.user.ChangePasswordForm
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Rest Controller used to change a password for the currently logged in user
+ *
+ * @param userWrapper the [UserUserWrapper]
+ * @param logger the [Logger] service
+ */
 @RestController
 class UserChangePasswordController(
         private val userWrapper: UserUserWrapper,
@@ -29,7 +35,6 @@ class UserChangePasswordController(
      *
      * @param form the [ChangePasswordForm]
      */
-
     @PutMapping(value = ["/api/users/{userId}/changePassword"])
     @CrossOrigin(value = ["http://localhost:8081"])
     fun execute(@RequestBody form: ChangePasswordForm): Result {

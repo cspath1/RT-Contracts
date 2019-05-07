@@ -8,6 +8,9 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @EnableScheduling
 class RadioTelescopeApplication
 
+/**
+ * Main method in charge of booting up the Spring Application
+ */
 fun main(args: Array<String>) {
     runApplication<RadioTelescopeApplication>(*args)
 }

@@ -121,6 +121,14 @@ class AdminAppointmentApproveDenyRequestController (
         return result
     }
 
+    /**
+     * Method used to send out an email to the appointment owner, letting them know
+     * whether their requested appointment was approved or denied.
+     *
+     * @param email the user's email
+     * @param id the Appointment id
+     * @param isApprove whether the request was approved or not
+     */
     private fun sendEmail(email: String, id: Long, isApprove: Boolean) {
         val sendForm: SendForm
         if(isApprove) {

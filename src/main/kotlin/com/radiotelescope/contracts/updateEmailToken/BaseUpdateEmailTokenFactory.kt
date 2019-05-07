@@ -15,7 +15,6 @@ class BaseUpdateEmailTokenFactory (
         private val updateEmailTokenRepo: IUpdateEmailTokenRepository,
         private val userRepo: IUserRepository
 ) : UpdateEmailTokenFactory {
-
     /**
      * Override of the [UpdateEmailTokenFactory.requestUpdateEmail] method that will return a
      * [CreateUpdateEmailToken] command object

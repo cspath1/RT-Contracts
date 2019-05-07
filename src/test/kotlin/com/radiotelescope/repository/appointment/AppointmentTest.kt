@@ -483,4 +483,39 @@ internal class AppointmentTest : AbstractSpringTest() {
 
         assertEquals(pastAppointment.id, appointment!!.id)
     }
+
+    @Test
+    fun testFindAllScheduledAppointments() {
+        val theAppointments = appointmentRepo.findAllScheduledAppointments()
+
+        assertNotNull(theAppointments)
+        assertEquals(1, theAppointments.size)
+
+        theAppointments.forEach {
+            assertEquals(it.status, Appointment.Status.SCHEDULED)
+        }
+    }
+
+    @Test
+    fun testFindAllInProgressAppointments() {
+        testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.IN_PROGRESS,
+                startTime = Date(System.currentTimeMillis() - 100000L),
+                endTime = Date(System.currentTimeMillis() + 100000L),
+                isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.POINT
+        )
+
+        val theAppointments = appointmentRepo.findAllInProgressAppointments()
+
+        assertNotNull(theAppointments)
+        assertEquals(1, theAppointments.size)
+
+        theAppointments.forEach {
+            assertEquals(Appointment.Status.IN_PROGRESS, it.status)
+        }
+    }
 }

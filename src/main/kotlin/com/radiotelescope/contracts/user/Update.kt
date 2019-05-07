@@ -38,6 +38,7 @@ class Update(
 
         val user = userRepo.findById(request.id).get()
         val updatedUser = userRepo.save(request.updateEntity(user))
+
         return SimpleResult(updatedUser.id, null)
     }
 
@@ -69,7 +70,6 @@ class Update(
 
         return errors
     }
-
 
     /**
      * Data class containing all fields necessary for user update. Implements the

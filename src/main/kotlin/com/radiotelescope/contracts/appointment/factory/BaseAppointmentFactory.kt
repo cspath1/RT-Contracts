@@ -53,7 +53,6 @@ open class BaseAppointmentFactory(
      * @param pageable the [Pageable] interface
      * @return a [UserCompletedList] command object
      */
-
     final override fun userCompletedList(userId: Long, pageable: Pageable): Command<Page<AppointmentInfo>,Multimap<ErrorTag, String>> {
         return UserCompletedList(
                 appointmentRepo = appointmentRepo,
