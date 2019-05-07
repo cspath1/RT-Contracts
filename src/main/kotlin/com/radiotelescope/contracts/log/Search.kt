@@ -37,12 +37,12 @@ class Search(
      * If validation fails, it will return a [SimpleResult] with the errors.
      */
     override fun execute(): SimpleResult<Page<LogInfo>, Multimap<ErrorTag, String>> {
-        validateSearch(searchCriteria)?.let { return SimpleResult(null, it)} ?: let {
+        validateSearch(searchCriteria)?.let { return SimpleResult(null, it) } ?: let {
             // Instantiate the specification builder
             val specificationBuilder = LogSpecificationBuilder()
 
             // Add each criteria to the builder
-            searchCriteria.forEach{criteria ->
+            searchCriteria.forEach{ criteria ->
                 specificationBuilder.with(criteria)
             }
 
@@ -82,23 +82,23 @@ class Search(
                     errors.put(ErrorTag.SEARCH, "The specified action value is invalid")
                 }
 
-
                 if (theSearchCriteria.filter == Filter.AFFECTED_TABLE &&
                         !Log.AffectedTable.values().contains(theSearchCriteria.value)) {
-                    errors.put(ErrorTag.SEARCH, "The specified affected_table value does not exist")
+                    errors.put(ErrorTag.SEARCH, "The specified table does not exist")
                 }
 
                 if (theSearchCriteria.filter == Filter.IS_SUCCESS &&
                         theSearchCriteria.value !is Boolean) {
-                    errors.put(ErrorTag.SEARCH, "The specified is_success value is invalid")
+                    errors.put(ErrorTag.SEARCH, "The specified value must be a boolean")
                 }
 
                 if (theSearchCriteria.filter == Filter.STATUS &&
                         theSearchCriteria.value !is Int) {
-                    errors.put(ErrorTag.SEARCH, "The specified status value is invalid ")
+                    errors.put(ErrorTag.SEARCH, "The specified status must be an integer")
                 }
             }
         }
+
         return if (errors.isEmpty) null else errors
     }
 }

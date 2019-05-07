@@ -18,12 +18,10 @@ class LogSpecification(
      * [SearchCriteria.value].
      */
     override fun toPredicate(root: Root<Log>, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder): Predicate? {
-        if(searchCriteria.filter.label === Filter.ACTION.label) {
-            return criteriaBuilder.like(criteriaBuilder.lower(root.get(searchCriteria.filter.field)), "%" + searchCriteria.value.toString().toLowerCase() + "%")
-        } else if(searchCriteria.filter.label != Filter.ACTION.label){
-            return criteriaBuilder.isTrue(root.get<String>(searchCriteria.filter.field).`in`(searchCriteria.value))
-        }else {
-            return null
+        return when {
+            searchCriteria.filter.label === Filter.ACTION.label -> criteriaBuilder.like(criteriaBuilder.lower(root.get(searchCriteria.filter.field)), "%" + searchCriteria.value.toString().toLowerCase() + "%")
+            searchCriteria.filter.label != Filter.ACTION.label -> criteriaBuilder.isTrue(root.get<String>(searchCriteria.filter.field).`in`(searchCriteria.value))
+            else -> null
         }
     }
 }
