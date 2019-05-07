@@ -23,7 +23,6 @@ data class Log(
         @Column(name = "status")
         var status: Int
 ) {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
