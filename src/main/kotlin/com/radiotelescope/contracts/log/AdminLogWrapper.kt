@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.log
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.model.log.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
@@ -51,6 +52,24 @@ class AdminLogWrapper(
                 requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN),
                 successCommand = factory.retrieveErrors(
                         logId = logId
+                )
+        ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for the [LogFactory.search] method that adds Spring Security
+     * authentication to the [Search] command object
+     *
+     * @param searchCriteria the [List] of [SearchCriteria]
+     * @param pageable the [Pageable] interface
+     * @return An [AccessReport] if authentication fails or null
+     */
+    fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable, withAccess: (result: SimpleResult<Page<LogInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN),
+                successCommand = factory.search(
+                        searchCriteria = searchCriteria,
+                        pageable = pageable
                 )
         ).execute(withAccess)
     }

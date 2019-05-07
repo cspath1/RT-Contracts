@@ -3,9 +3,11 @@ package com.radiotelescope.contracts.log
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.log.ILogRepository
+import com.radiotelescope.repository.model.log.SearchCriteria
 import com.radiotelescope.repository.user.IUserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import kotlin.collections.List
 
 /**
  * Base concrete implementation of the [LogFactory] interface
@@ -39,9 +41,25 @@ class BaseLogFactory(
      * @param logId the Log id
      * @return a [RetrieveErrors]
      */
-    override fun retrieveErrors(logId: Long): Command<kotlin.collections.List<ErrorInfo>, Multimap<ErrorTag, String>> {
+    override fun retrieveErrors(logId: Long): Command<List<ErrorInfo>, Multimap<ErrorTag, String>> {
         return RetrieveErrors(
                 logId = logId,
+                logRepo = logRepo
+        )
+    }
+
+    /**
+     * Ovveride of the [LogFactory.search] method that will return a [Search]
+     * command object
+     *
+     * @param searchCriteria the [List] of [SearchCriteria]
+     * @param pageable the [Pageable] interface
+     * @return a [Command] object
+     */
+    override fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable): Command<Page<LogInfo>, Multimap<ErrorTag, String>> {
+        return Search(
+                searchCriteria = searchCriteria,
+                pageable = pageable,
                 logRepo = logRepo
         )
     }

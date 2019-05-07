@@ -2,6 +2,8 @@ package com.radiotelescope.contracts.log
 
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.log.ILogRepository
+import com.radiotelescope.repository.model.log.Filter
+import com.radiotelescope.repository.model.log.SearchCriteria
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -51,5 +53,17 @@ internal class BaseLogFactoryTest : AbstractSpringTest() {
 
         // Ensure it is the correct command
         assertTrue(cmd is RetrieveErrors)
+    }
+
+    @Test
+    fun search() {
+        // Call the factory method
+        val cmd = factory.search(
+                searchCriteria = listOf(SearchCriteria(Filter.ACTION, "Test")),
+                pageable = PageRequest.of(0, 5)
+        )
+
+        // Ensure it is the correct command
+        assertTrue(cmd is Search)
     }
 }

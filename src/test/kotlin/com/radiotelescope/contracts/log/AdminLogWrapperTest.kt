@@ -5,6 +5,8 @@ import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.contracts.user.ErrorTag
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.model.log.Filter
+import com.radiotelescope.repository.model.log.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -170,5 +172,54 @@ internal class AdminLogWrapperTest : AbstractSpringTest() {
 
         assertNotNull(error)
         assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testSearch_NotLoggedIn_Failure() {
+        // Do not log the user in
+
+        val error = wrapper.search(
+                searchCriteria = listOf(SearchCriteria(Filter.ACTION, "Test")),
+                pageable = PageRequest.of(0, 25)
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testSearch_NotAdmin_Failure() {
+        // Log the user in as something other than an admin
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.STUDENT))
+
+        val error = wrapper.search(
+                searchCriteria = listOf(SearchCriteria(Filter.ACTION, "Test")),
+                pageable = PageRequest.of(0, 25)
+        ) {
+            fail("Should fail on precondition")
+        }
+
+        assertNotNull(error)
+        assertTrue(error!!.missingRoles!!.contains(UserRole.Role.ADMIN))
+    }
+
+    @Test
+    fun testSearch_Admin_Success() {
+        // Simulate a login as an admin
+        context.login(user.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        val error = wrapper.search(
+                searchCriteria = listOf(SearchCriteria(Filter.ACTION, "Test")),
+                pageable = PageRequest.of(0, 25)
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
     }
 }
