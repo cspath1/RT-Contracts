@@ -48,7 +48,7 @@ data class LogInfo(
     )
 
     /**
-     * Secondary constructor user when there was a logged
+     * Secondary constructor used when there was a logged
      * in user making the action
      *
      * @param log the [Log]
