@@ -59,7 +59,7 @@ internal class BaseLogFactoryTest : AbstractSpringTest() {
     fun search() {
         // Call the factory method
         val cmd = factory.search(
-                searchCriteria = listOf(SearchCriteria(Filter.ACTION, "Test")),
+                searchCriteria = SearchCriteria(Filter.ACTION, "Test"),
                 pageable = PageRequest.of(0, 5)
         )
 

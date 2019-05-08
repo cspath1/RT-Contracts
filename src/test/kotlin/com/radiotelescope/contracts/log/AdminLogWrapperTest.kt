@@ -179,7 +179,7 @@ internal class AdminLogWrapperTest : AbstractSpringTest() {
         // Do not log the user in
 
         val error = wrapper.search(
-                searchCriteria = listOf(SearchCriteria(Filter.ACTION, "Test")),
+                searchCriteria = SearchCriteria(Filter.ACTION, "Test"),
                 pageable = PageRequest.of(0, 25)
         ) {
             fail("Should fail on precondition")
@@ -196,7 +196,7 @@ internal class AdminLogWrapperTest : AbstractSpringTest() {
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.STUDENT))
 
         val error = wrapper.search(
-                searchCriteria = listOf(SearchCriteria(Filter.ACTION, "Test")),
+                searchCriteria = SearchCriteria(Filter.ACTION, "Test"),
                 pageable = PageRequest.of(0, 25)
         ) {
             fail("Should fail on precondition")
@@ -213,7 +213,7 @@ internal class AdminLogWrapperTest : AbstractSpringTest() {
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
 
         val error = wrapper.search(
-                searchCriteria = listOf(SearchCriteria(Filter.ACTION, "Test")),
+                searchCriteria = SearchCriteria(Filter.ACTION, "Test"),
                 pageable = PageRequest.of(0, 25)
         ) {
             assertNotNull(it.success)

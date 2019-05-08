@@ -32,9 +32,9 @@ interface LogFactory {
     /**
      * Abstract command used to search for logs
      *
-     * @param searchCriteria the [List] of [SearchCriteria]
+     * @param searchCriteria the [SearchCriteria]
      * @param pageable the [Pageable] interface
      * @return a [Command] object
      */
-    fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable): Command<Page<LogInfo>, Multimap<ErrorTag, String>>
+    fun search(searchCriteria: SearchCriteria, pageable: Pageable): Command<Page<LogInfo>, Multimap<ErrorTag, String>>
 }

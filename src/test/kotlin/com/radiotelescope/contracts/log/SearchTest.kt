@@ -69,11 +69,8 @@ internal class SearchTest : AbstractSpringTest() {
 
     @Test
     fun testValidConstraints_AffectedTable_Success(){
-        val searchCriteria = arrayListOf<SearchCriteria>()
-        searchCriteria.add(SearchCriteria(Filter.AFFECTED_TABLE, Log.AffectedTable.USER))
-
         val (page, errors) = Search(
-                searchCriteria = searchCriteria,
+                searchCriteria = SearchCriteria(Filter.AFFECTED_TABLE, Log.AffectedTable.USER),
                 pageable = pageable,
                 logRepo = logRepo
         ).execute()
@@ -90,11 +87,8 @@ internal class SearchTest : AbstractSpringTest() {
 
     @Test
     fun testValidConstraints_IsSuccess_Success(){
-        val searchCriteria = arrayListOf<SearchCriteria>()
-        searchCriteria.add(SearchCriteria(Filter.IS_SUCCESS, true))
-
         val (page, errors) = Search(
-                searchCriteria = searchCriteria,
+                searchCriteria = SearchCriteria(Filter.IS_SUCCESS, true),
                 pageable = pageable,
                 logRepo = logRepo
         ).execute()
@@ -111,11 +105,8 @@ internal class SearchTest : AbstractSpringTest() {
 
     @Test
     fun testValidConstraints_Status_Success(){
-        val searchCriteria = arrayListOf<SearchCriteria>()
-        searchCriteria.add(SearchCriteria(Filter.STATUS, HttpStatus.OK.value()))
-
         val (page, errors) = Search(
-                searchCriteria = searchCriteria,
+                searchCriteria = SearchCriteria(Filter.STATUS, HttpStatus.OK.value()),
                 pageable = pageable,
                 logRepo = logRepo
         ).execute()
@@ -132,11 +123,8 @@ internal class SearchTest : AbstractSpringTest() {
 
     @Test
     fun testValidConstraints_Action_Success(){
-        val searchCriteria = arrayListOf<SearchCriteria>()
-        searchCriteria.add(SearchCriteria(Filter.ACTION, "test"))
-
         val (page, errors) = Search(
-                searchCriteria = searchCriteria,
+                searchCriteria = SearchCriteria(Filter.ACTION, "test"),
                 pageable = pageable,
                 logRepo = logRepo
         ).execute()
@@ -152,45 +140,9 @@ internal class SearchTest : AbstractSpringTest() {
     }
 
     @Test
-    fun testValidConstraints_MultipleFilters_Success(){
-
-        val log3 = testUtil.createLog(
-                user = user,
-                affectedRecordId = 1L,
-                affectedTable = Log.AffectedTable.USER,
-                action = "Testing",
-                isSuccess = false,
-                timestamp = Date(System.currentTimeMillis())
-        )
-
-        val searchCriteria = arrayListOf<SearchCriteria>()
-        searchCriteria.add(SearchCriteria(Filter.AFFECTED_TABLE, Log.AffectedTable.USER))
-        searchCriteria.add(SearchCriteria(Filter.IS_SUCCESS, true))
-
-        val (page, errors) = Search(
-                searchCriteria = searchCriteria,
-                pageable = pageable,
-                logRepo = logRepo
-        ).execute()
-
-        // Should not have failed
-        assertNull(errors)
-        assertNotNull(page)
-
-        // Should have one LogInfo object
-        assertEquals(2, page!!.content.size)
-
-        assertEquals(log1.id, page.content[0].id)
-        assertEquals(log3.id, page.content[1].id)
-    }
-
-    @Test
     fun testInvalidValue_AffectedTable_Failure(){
-        val searchCriteria = arrayListOf<SearchCriteria>()
-        searchCriteria.add(SearchCriteria(Filter.AFFECTED_TABLE, 1))
-
         val (page, errors) = Search(
-                searchCriteria = searchCriteria,
+                searchCriteria = SearchCriteria(Filter.AFFECTED_TABLE, 1),
                 pageable = pageable,
                 logRepo = logRepo
         ).execute()
@@ -206,11 +158,8 @@ internal class SearchTest : AbstractSpringTest() {
 
     @Test
     fun testInvalidValue_IsSuccess_Failure(){
-        val searchCriteria = arrayListOf<SearchCriteria>()
-        searchCriteria.add(SearchCriteria(Filter.IS_SUCCESS, "something"))
-
         val (page, errors) = Search(
-                searchCriteria = searchCriteria,
+                searchCriteria = SearchCriteria(Filter.IS_SUCCESS, "something"),
                 pageable = pageable,
                 logRepo = logRepo
         ).execute()
@@ -226,11 +175,8 @@ internal class SearchTest : AbstractSpringTest() {
 
     @Test
     fun testInvalidValue_Status_Failure(){
-        val searchCriteria = arrayListOf<SearchCriteria>()
-        searchCriteria.add(SearchCriteria(Filter.STATUS, "something"))
-
         val (page, errors) = Search(
-                searchCriteria = searchCriteria,
+                searchCriteria = SearchCriteria(Filter.STATUS, "something"),
                 pageable = pageable,
                 logRepo = logRepo
         ).execute()
@@ -246,30 +192,8 @@ internal class SearchTest : AbstractSpringTest() {
 
     @Test
     fun testInvalidValue_Action_Failure(){
-        val searchCriteria = arrayListOf<SearchCriteria>()
-        searchCriteria.add(SearchCriteria(Filter.ACTION, 1))
-
         val (page, errors) = Search(
-                searchCriteria = searchCriteria,
-                pageable = pageable,
-                logRepo = logRepo
-        ).execute()
-
-        // Should have failed
-        assertNotNull(errors)
-        assertNull(page)
-
-        // Ensure it failed for the expected reason
-        assertEquals(1, errors!!.size())
-        assertTrue(errors[ErrorTag.SEARCH].isNotEmpty())
-    }
-
-    @Test
-    fun testNoSearchParams_Failure(){
-        val searchCriteria = arrayListOf<SearchCriteria>()
-
-        val (page, errors) = Search(
-                searchCriteria = searchCriteria,
+                searchCriteria = SearchCriteria(Filter.ACTION, 1),
                 pageable = pageable,
                 logRepo = logRepo
         ).execute()

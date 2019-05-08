@@ -17,12 +17,12 @@ import kotlin.collections.List
 /**
  * Override of the [Command] interface method used for Log searching
  *
- * @param searchCriteria a [List] of [SearchCriteria]
+ * @param searchCriteria the [SearchCriteria]
  * @param pageable the [Pageable] interface
  * @param logRepo the [ILogRepository] interface
  */
 class Search(
-        private val searchCriteria: List<SearchCriteria>,
+        private val searchCriteria: SearchCriteria,
         private val pageable: Pageable,
         private val logRepo: ILogRepository
 ) : Command<Page<LogInfo>, Multimap<ErrorTag, String>> {
@@ -41,10 +41,8 @@ class Search(
             // Instantiate the specification builder
             val specificationBuilder = LogSpecificationBuilder()
 
-            // Add each criteria to the builder
-            searchCriteria.forEach{ criteria ->
-                specificationBuilder.with(criteria)
-            }
+            // Add the search criteria to the builder
+            specificationBuilder.with(searchCriteria)
 
             // Create the specification using the builder
             val specification = specificationBuilder.build()
@@ -65,38 +63,27 @@ class Search(
     }
 
     /**
-     * Method responsible for constraint checking and validations for the [List] of [SearchCriteria].
+     * Method responsible for constraint checking and validations for the [SearchCriteria].
      * Currently, it checks to ensure the list is not empty and each filter has the correct type of value
      *
-     * @param searchCriteria the [List] of [SearchCriteria]
+     * @param searchCriteria the [SearchCriteria]
      * @return a [Multimap] of errors or null
      */
-    private fun validateSearch(searchCriteria: List<SearchCriteria>): Multimap<ErrorTag, String>? {
+    private fun validateSearch(searchCriteria: SearchCriteria): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
-        if (searchCriteria.isEmpty())
-            errors.put(ErrorTag.SEARCH, "No search parameters specified")
-        else if (searchCriteria.isNotEmpty()) {
-            searchCriteria.forEach { theSearchCriteria ->
-                if (theSearchCriteria.filter == Filter.ACTION &&
-                        theSearchCriteria.value !is String) {
-                    errors.put(ErrorTag.SEARCH, "The specified action value is invalid")
-                }
 
-                if (theSearchCriteria.filter == Filter.AFFECTED_TABLE &&
-                        !Log.AffectedTable.values().contains(theSearchCriteria.value)) {
-                    errors.put(ErrorTag.SEARCH, "The specified table does not exist")
-                }
-
-                if (theSearchCriteria.filter == Filter.IS_SUCCESS &&
-                        theSearchCriteria.value !is Boolean) {
-                    errors.put(ErrorTag.SEARCH, "The specified value must be a boolean")
-                }
-
-                if (theSearchCriteria.filter == Filter.STATUS &&
-                        theSearchCriteria.value !is Int) {
-                    errors.put(ErrorTag.SEARCH, "The specified status must be an integer")
-                }
-            }
+        if (searchCriteria.filter == Filter.ACTION &&
+                searchCriteria.value !is String) {
+            errors.put(ErrorTag.SEARCH, "The specified action value is invalid")
+        } else if (searchCriteria.filter == Filter.AFFECTED_TABLE &&
+                !Log.AffectedTable.values().contains(searchCriteria.value)) {
+            errors.put(ErrorTag.SEARCH, "The specified table does not exist")
+        } else if (searchCriteria.filter == Filter.IS_SUCCESS &&
+                searchCriteria.value !is Boolean) {
+            errors.put(ErrorTag.SEARCH, "The specified value must be a boolean")
+        } else if (searchCriteria.filter == Filter.STATUS &&
+                searchCriteria.value !is Int) {
+            errors.put(ErrorTag.SEARCH, "The specified status must be an integer")
         }
 
         return if (errors.isEmpty) null else errors

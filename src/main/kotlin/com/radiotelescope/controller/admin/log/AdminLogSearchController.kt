@@ -47,6 +47,7 @@ class AdminLogSearchController(
                 @RequestParam(value = "size") pageSize: Int,
                 @RequestParam(value = "value") value: Any,
                 @RequestParam(value = "search") search: String): Result {
+        val filter = Filter.fromField(search)
         if (pageNumber < 0 || pageSize <= 0) {
             val errors = pageErrors()
             // Create error logs
@@ -62,9 +63,25 @@ class AdminLogSearchController(
 
             result = Result(errors = errors.toStringMap())
         }
+        // Check if the filter is valid or not
+        else if (filter == null){
+            val errors = filterErrors()
+            // Create error logs
+            logger.createErrorLogs(
+                    info = Logger.createInfo(
+                            affectedTable = Log.AffectedTable.LOG,
+                            action = "Log Search",
+                            affectedRecordId = null,
+                            status = HttpStatus.BAD_REQUEST.value()
+                    ),
+                    errors = errors.toStringMap()
+            )
+
+            result = Result(errors = errors.toStringMap())
+        }
         // Otherwise call the wrapper method
         else {
-            val searchCriteria = getSearchCriteriaFromParams(value, search)
+            val searchCriteria = SearchCriteria(filter, value)
             val pageable = PageRequest.of(pageNumber, pageSize)
 
             logWrapper.search(
@@ -124,35 +141,6 @@ class AdminLogSearchController(
         return result
     }
 
-
-    /**
-     * Private method that will take the search string and value from the request
-     * and adapt them into a [List] of [SearchCriteria]
-     *
-     * @param value the search value
-     * @param search the search criteria string
-     * @return a [List] of [SearchCriteria]
-     */
-    private fun getSearchCriteriaFromParams(value: Any, search: String): List<SearchCriteria> {
-        val tokenizer = StringTokenizer(search, "+")
-        val filters = arrayListOf<Filter>()
-
-        while (tokenizer.hasMoreTokens()) {
-            val filter = Filter.fromField(tokenizer.nextToken())
-
-            if (filter != null)
-                filters.add(filter)
-        }
-
-        val searchCriteria = arrayListOf<SearchCriteria>()
-
-        filters.forEach {
-            searchCriteria.add(SearchCriteria(it, value))
-        }
-
-        return searchCriteria
-    }
-
     /**
      * Private method to return a [HashMultimap] of errors in the event
      * that the page size and page number are invalid
@@ -160,6 +148,16 @@ class AdminLogSearchController(
     private fun pageErrors(): HashMultimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
         errors.put(ErrorTag.PAGE_PARAMS, "Invalid page parameters")
+        return errors
+    }
+
+    /**
+     * Private method to return a [HashMultimap] of errors in the event
+     * that the search/filter is invalid
+     */
+    private fun filterErrors(): HashMultimap<ErrorTag, String> {
+        val errors = HashMultimap.create<ErrorTag, String>()
+        errors.put(ErrorTag.SEARCH, "Invalid search filter")
         return errors
     }
 

@@ -49,14 +49,14 @@ class BaseLogFactory(
     }
 
     /**
-     * Ovveride of the [LogFactory.search] method that will return a [Search]
+     * Override of the [LogFactory.search] method that will return a [Search]
      * command object
      *
-     * @param searchCriteria the [List] of [SearchCriteria]
+     * @param searchCriteria the [SearchCriteria]
      * @param pageable the [Pageable] interface
      * @return a [Command] object
      */
-    override fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable): Command<Page<LogInfo>, Multimap<ErrorTag, String>> {
+    override fun search(searchCriteria: SearchCriteria, pageable: Pageable): Command<Page<LogInfo>, Multimap<ErrorTag, String>> {
         return Search(
                 searchCriteria = searchCriteria,
                 pageable = pageable,

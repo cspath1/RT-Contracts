@@ -60,11 +60,11 @@ class AdminLogWrapper(
      * Wrapper method for the [LogFactory.search] method that adds Spring Security
      * authentication to the [Search] command object
      *
-     * @param searchCriteria the [List] of [SearchCriteria]
+     * @param searchCriteria the [SearchCriteria]
      * @param pageable the [Pageable] interface
      * @return An [AccessReport] if authentication fails or null
      */
-    fun search(searchCriteria: List<SearchCriteria>, pageable: Pageable, withAccess: (result: SimpleResult<Page<LogInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun search(searchCriteria: SearchCriteria, pageable: Pageable, withAccess: (result: SimpleResult<Page<LogInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN),
                 successCommand = factory.search(
