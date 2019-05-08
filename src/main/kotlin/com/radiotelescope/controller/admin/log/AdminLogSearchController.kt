@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 /**
@@ -23,6 +24,7 @@ import java.util.*
  * @param logWrapper the [AdminLogWrapper]
  * @param logger the [Logger] service
  */
+@RestController
 class AdminLogSearchController(
         private val logWrapper: AdminLogWrapper,
         logger: Logger
