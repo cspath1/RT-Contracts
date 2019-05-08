@@ -23,7 +23,6 @@ data class Log(
         @Column(name = "status")
         var status: Int
 ) {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -57,6 +56,7 @@ data class Log(
         ALLOTTED_TIME_CAP("Allotted Time Cap"),
         CELESTIAL_BODY("Celestial Body"),
         VIEWER("Viewer"),
-        FEEDBACK("Feedback")
+        FEEDBACK("Feedback"),
+        TELESCOPE_LOG("Telescope Log")
     }
 }

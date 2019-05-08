@@ -15,7 +15,7 @@ internal abstract class BaseLogRestControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    // These will both be needed in all user rest controller
+    // These will both be needed in all log rest controller
     // tests, so instantiate them here
     private lateinit var wrapper: AdminLogWrapper
     private lateinit var factory: BaseLogFactory

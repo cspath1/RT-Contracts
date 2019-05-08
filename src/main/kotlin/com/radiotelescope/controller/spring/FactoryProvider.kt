@@ -11,6 +11,7 @@ import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.telescopeLog.AdminTelescopeLogWrapper
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
@@ -103,4 +104,9 @@ interface FactoryProvider {
      * Abstract method to return the [UserAllottedTimeCapWrapper] class
      */
     fun getAllottedTimeCapWrapper(): UserAllottedTimeCapWrapper
+
+    /**
+     * Abstract method to return the [AdminTelescopeLogWrapper] class
+     */
+    fun getTelescopeLogWrapper(): AdminTelescopeLogWrapper
 }

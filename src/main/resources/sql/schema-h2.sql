@@ -77,6 +77,15 @@ CREATE TABLE radio_telescope (
   calibration_orientation_id INT(11) NOT NULL
 );
 
+CREATE TABLE telescope_log (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    log_date DATETIME NOT NULL,
+    log_level VARCHAR(100),
+    thread VARCHAR(100),
+    logger VARCHAR(100),
+    message VARCHAR(255)
+);
+
 CREATE TABLE user (
   id INT(11) NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(100) NOT NULL,

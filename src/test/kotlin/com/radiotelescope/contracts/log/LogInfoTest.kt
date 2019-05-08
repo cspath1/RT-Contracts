@@ -13,7 +13,7 @@ internal class LogInfoTest {
     private var date = Date()
 
     @Before
-    fun setUp(){
+    fun setUp() {
         theUser = User(
                 firstName = "Cody",
                 lastName = "Spath",
