@@ -109,15 +109,22 @@ IntelliJ has a built-in database tab that allows you to manage the contents of y
 In order to add your localhost database to IntelliJ, do the following:
 
 1. Open Database Tab in IntelliJ
-2. Add New MySQL Datasource & Test Connection (using credentials used for MySQL installation)
-Note: specify the database url as the one found in the local application properties file
-3. If the connection works, you're good to go!
+2. Add ```radio_telescope``` schema to MySQL using ```create database radio_telescope```
+3. Edit the line in build.gradle
+```def profile = (project.hasProperty('profile') ? project.profile : 'prod').toLowerCase()```
+to
+```def profile = (project.hasProperty('profile') ? project.profile : 'local').toLowerCase()```
+to setup the database on your local machine.
+4. Add New MySQL Datasource & Test Connection (using credentials used for MySQL installation)
+Note: specify the database url as the one found in the local application properties file 
+5. If the connection works, you're good to go!
 
 ### Install Gradle Wrapper
 
 In order to install the gradle wrapper (needed to boot up the application locally), issue the following
 command in the terminal inside of IntelliJ:
 ```gradle wrapper```
+Then, boot the application with ```gradlew bootRun``` (```./gradlew bootRun``` on Linux). This will populate the local database.
 
 ### Properties Files
 
