@@ -8,7 +8,7 @@ CREATE TABLE update_email_token (
   user_id INT(11) NOT NULL,
   token VARCHAR(100) NOT NULL,
   expiration_date DATETIME NOT NULL,
-  email_address VARCHAR(100) NOT NULL
+  email_address VARCHAR(100) NOT NULL,
 
   PRIMARY KEY (id),
   UNIQUE KEY (user_id),
@@ -175,3 +175,20 @@ CREATE TABLE login_attempt (
   KEY user_id_idx (user_id),
   KEY login_time_idx (login_time)
 ) ENGINE = InnoDB DEFAULT  CHARSET=utf8;
+
+DROP TABLE IF EXISTS video_file;
+CREATE TABLE video_file (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    thumbnail_path VARCHAR(100) NOT NULL,
+    video_path VARCHAR(100) NOT NULL,
+    video_length TIME(0) NOT NULL,
+    record_created_timestamp DATETIME NOT NULL,
+    record_updated_timestamp DATETIME NOT NULL,
+
+    PRIMARY KEY(id),
+    KEY thumbnail_path_idx (thumbnail_path),
+    KEY video_path_idx (video_path),
+    KEY video_length_idx (video_length),
+    KEY record_created_timestamp_idx (record_created_timestamp),
+    KEY record_updated_timestamp_idx (record_updated_timestamp)
+) ENGINE = InnoDB DEFAULT  CHARSET=utf8;;
