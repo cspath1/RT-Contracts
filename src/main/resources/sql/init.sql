@@ -1,7 +1,8 @@
 CREATE DATABASE IF NOT EXISTS radio_telescope;
 USE radio_telescope;
 
-DROP TABLE IF EXISTS update_email_token;
+DROP TABLE IF EXISTS update_em
+eail_token;
 CREATE TABLE update_email_token (
   id INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11) NOT NULL,
