@@ -137,4 +137,8 @@ CREATE TABLE video_file (
     video_length TIME(0) NOT NULL,
     record_created_timestamp DATETIME NOT NULL,
     record_updated_timestamp DATETIME NOT NULL
+<<<<<<< HEAD
 );
+=======
+);
+>>>>>>> f48a270d10bab014473cad9f048bd7a2192eef77
