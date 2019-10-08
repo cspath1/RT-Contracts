@@ -54,7 +54,7 @@ dependencyManagement {
 }
 
 processResources {
-	def profile = (project.hasProperty('profile') ? project.profile : 'local').toLowerCase()
+	def profile = (project.hasProperty('profile') ? project.profile : 'prod').toLowerCase()
 
 	copy {
 		from "src/main/resources/properties/application_${profile}.properties"
@@ -72,7 +72,7 @@ processResources {
 		into 'build/resources'
 	}
 
-	exclude("**/propertes")
+	exclude("**/properties")
 }
 
 repositories {
