@@ -14,14 +14,12 @@ import com.radiotelescope.controller.model.BaseForm
  * @param name the Celestial Body's name
  * @param hours the Celestial Body's right ascension hours
  * @param minutes the Celestial Body's right ascension minutes
- * @param seconds the Celestial Body's right ascension seconds
  * @param declination the Celestial Body's declination
  */
 data class CreateForm(
         val name: String?,
         val hours: Int?,
         val minutes: Int?,
-        val seconds: Int?,
         val declination: Double?
 ) : BaseForm<Create.Request> {
     /**
@@ -35,7 +33,6 @@ data class CreateForm(
                 name = name!!,
                 hours = hours,
                 minutes = minutes,
-                seconds = seconds,
                 declination = declination
         )
     }

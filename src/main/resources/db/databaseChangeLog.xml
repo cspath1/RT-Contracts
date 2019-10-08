@@ -30,4 +30,5 @@
     <include file="classpath:/db/changelog/25-add-appointment-priority.sql"/>
     <include file="classpath:/db/changelog/26-drop-celestial-body-status.sql"/>
     <include file="classpath:/db/changelog/27-create-video-file-table.sql"/>
+    <include file="classpath:/db/changelog/28-drop-coordinate-seconds.sql"/>
 </databaseChangeLog>

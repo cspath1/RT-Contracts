@@ -9,7 +9,6 @@ import java.util.*
  * @param celestialBodyName the Celestial Body name
  * @param hours the Celestial Body right ascension hours
  * @param minutes the Celestial Body right ascension minutes
- * @param seconds the Celestial Body right ascension seconds
  * @param rightAscension the Celestial Body right ascension in degrees
  * @param declination the Celestial Body declination
  */
@@ -29,7 +28,6 @@ data class CelestialBodyAppointmentInfo(
         val celestialBodyName: String,
         val hours: Int?,
         val minutes: Int?,
-        val seconds: Int?,
         val rightAscension: Double?,
         val declination: Double?
 ) : AppointmentInfo(
@@ -68,7 +66,6 @@ data class CelestialBodyAppointmentInfo(
             celestialBodyName = appointment.celestialBody!!.name,
             hours = appointment.celestialBody!!.coordinate?.hours,
             minutes = appointment.celestialBody!!.coordinate?.minutes,
-            seconds = appointment.celestialBody!!.coordinate?.seconds,
             rightAscension = appointment.celestialBody!!.coordinate?.rightAscension,
             declination = appointment.celestialBody!!.coordinate?.declination
     )
