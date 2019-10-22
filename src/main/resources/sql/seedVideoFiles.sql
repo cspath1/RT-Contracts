@@ -1,0 +1,2 @@
+INSERT INTO video_file(thumbnail_path, video_path, video_length, record_created_timestamp, record_updated_timestamp)
+VALUES('\Videos\2.png', '\Videos\2.mp4', '01:00:00', '2019-11-01 00:00:00', '2019-10-19 22:49:40');

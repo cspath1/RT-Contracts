@@ -28,6 +28,8 @@ class VideoFileRetrieveController(
         }
         */
 
+        print(all.iterator().next())
+
         return all
     }
 }
