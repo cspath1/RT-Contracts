@@ -98,11 +98,6 @@ class Create(
                 } else if (minutes < 0 || minutes >= 60) {
                     errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 59")
                 }
-                if (seconds == null) {
-                    errors.put(ErrorTag.SECONDS, "Required field for Celestial Bodies outside of our solar system")
-                } else if (seconds < 0 || seconds >= 60) {
-                    errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 59")
-                }
                 if (declination == null) {
                     errors.put(ErrorTag.DECLINATION, "Required field for Celestial Bodies outside of our solar system")
                 } else if (declination < -90 || declination > 90) {
@@ -122,7 +117,6 @@ class Create(
             val name: String,
             val hours: Int?,
             val minutes: Int?,
-            val seconds: Int?,
             val declination: Double?
     ) : BaseCreateRequest<CelestialBody> {
         /**
@@ -145,11 +139,9 @@ class Create(
             return Coordinate(
                     hours = hours!!,
                     minutes = minutes!!,
-                    seconds = seconds!!,
                     rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                             hours = hours,
-                            minutes = minutes,
-                            seconds = seconds
+                            minutes = minutes
                     ),
                     declination = declination!!
             )

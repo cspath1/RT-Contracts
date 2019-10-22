@@ -20,7 +20,6 @@ import java.util.*
  * @param priority the Appointment's new priority
  * @param hours the right ascension hours
  * @param minutes the right ascension minutes
- * @param seconds the right ascension seconds
  * @param declination the declination
  */
 data class CoordinateAppointmentUpdateForm (
@@ -31,7 +30,6 @@ data class CoordinateAppointmentUpdateForm (
         override val priority: Appointment.Priority?,
         val hours: Int?,
         val minutes: Int?,
-        val seconds: Int?,
         val declination: Double?
 ) : UpdateForm<CoordinateAppointmentUpdate.Request>() {
     /**
@@ -47,7 +45,6 @@ data class CoordinateAppointmentUpdateForm (
                 isPublic = isPublic!!,
                 hours = hours!!,
                 minutes = minutes!!,
-                seconds = seconds!!,
                 declination = declination!!,
                 priority = priority!!
         )
@@ -77,10 +74,6 @@ data class CoordinateAppointmentUpdateForm (
             errors.put(ErrorTag.MINUTES, "Required field")
         else if (minutes >= 60 || minutes < 0)
             errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
-        if (seconds == null)
-            errors.put(ErrorTag.SECONDS, "Required field")
-        else if (seconds >= 60 || seconds < 0)
-            errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
         if (declination == null)
             errors.put(ErrorTag.DECLINATION, "Required field")
         if(priority == null)

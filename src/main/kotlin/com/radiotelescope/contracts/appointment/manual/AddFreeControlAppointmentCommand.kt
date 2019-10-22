@@ -68,8 +68,6 @@ class AddFreeControlAppointmentCommand(
                 errors!!.put(ErrorTag.HOURS, "Hours must be between 0 and 23")
             if (minutes < 0 || minutes >= 60)
                 errors!!.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
-            if (seconds < 0 || seconds >= 60)
-                errors!!.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
             if (declination > 90 || declination < -90)
                 errors!!.put(ErrorTag.DECLINATION, "Declination must be between -90 and 90")
 
@@ -96,7 +94,6 @@ class AddFreeControlAppointmentCommand(
             var appointmentId: Long,
             val hours: Int,
             val minutes: Int,
-            val seconds: Int,
             val declination: Double
     ) : BaseCreateRequest<Coordinate> {
         /**
@@ -107,11 +104,9 @@ class AddFreeControlAppointmentCommand(
             return Coordinate(
                     hours = hours,
                     minutes = minutes,
-                    seconds = seconds,
                     rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                             hours = hours,
-                            minutes = minutes,
-                            seconds = seconds
+                            minutes = minutes
                     ),
                     declination = declination
             )

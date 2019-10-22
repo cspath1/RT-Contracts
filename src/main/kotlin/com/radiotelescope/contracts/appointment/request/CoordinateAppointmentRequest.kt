@@ -79,8 +79,6 @@ class CoordinateAppointmentRequest(
                 errors.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
             if (minutes < 0 || minutes >= 60)
                 errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
-            if (seconds < 0 || seconds >= 60)
-                errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
             if (declination > 90 || declination < -90)
                 errors.put(ErrorTag.DECLINATION, "Declination must be between -90 - 90")
         }
@@ -106,7 +104,6 @@ class CoordinateAppointmentRequest(
             override val priority: Appointment.Priority,
             val hours: Int,
             val minutes: Int,
-            val seconds: Int,
             val declination: Double
     ) : AppointmentRequest.Request() {
         /**
@@ -131,11 +128,9 @@ class CoordinateAppointmentRequest(
             return Coordinate(
                     hours = hours,
                     minutes = minutes,
-                    seconds = seconds,
                     rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                             hours = hours,
-                            minutes = minutes,
-                            seconds = seconds
+                            minutes = minutes
                     ),
                     declination = declination
             )

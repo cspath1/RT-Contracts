@@ -10,7 +10,6 @@ import com.radiotelescope.repository.celestialBody.CelestialBody
  * @param name the Celestial Body's name
  * @param hours the Celestial Body's Coordinate hours value
  * @param minutes the Celestial Body's Coordinate minutes value
- * @param seconds the Celestial Body's Coordinate seconds value
  * @param declination the Celestial Body's Coordinate declination value
  */
 class CelestialBodyInfo(
@@ -18,7 +17,6 @@ class CelestialBodyInfo(
         val name: String,
         val hours: Int?,
         val minutes: Int?,
-        val seconds: Int?,
         val declination: Double?
 ) {
     /**
@@ -32,7 +30,6 @@ class CelestialBodyInfo(
             name = celestialBody.name,
             hours = celestialBody.coordinate?.hours,
             minutes = celestialBody.coordinate?.minutes,
-            seconds = celestialBody.coordinate?.seconds,
             declination = celestialBody.coordinate?.declination
     )
 }

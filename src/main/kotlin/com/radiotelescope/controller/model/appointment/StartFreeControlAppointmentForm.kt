@@ -16,7 +16,6 @@ import com.radiotelescope.controller.model.BaseForm
  * @param duration the appointment duration in minutes
  * @param hours the Right Ascension hours
  * @param minutes the Right Ascension minutes
- * @param seconds the Right Ascension seconds
  * @param declination the Declination
  * @param isPublic whether the appointment is public or not
  */
@@ -26,7 +25,6 @@ data class StartFreeControlAppointmentForm(
         val duration: Long?,
         val hours: Int?,
         val minutes: Int?,
-        val seconds: Int?,
         val declination: Double?,
         val isPublic: Boolean?
 ) : BaseForm<StartFreeControlAppointment.Request> {
@@ -43,7 +41,6 @@ data class StartFreeControlAppointmentForm(
                 duration = duration!!,
                 hours = hours!!,
                 minutes = minutes!!,
-                seconds = seconds!!,
                 declination = declination!!,
                 isPublic =  isPublic!!
         )
@@ -67,8 +64,6 @@ data class StartFreeControlAppointmentForm(
             errors.put(ErrorTag.HOURS, "Required field")
         if (minutes == null)
             errors.put(ErrorTag.MINUTES, "Required field")
-        if (seconds == null)
-            errors.put(ErrorTag.SECONDS, "Required field")
         if (declination == null)
             errors.put(ErrorTag.DECLINATION, "Required field")
         if (isPublic == null)

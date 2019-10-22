@@ -8,14 +8,12 @@ import com.radiotelescope.repository.coordinate.Coordinate
  *
  * @param hours the right ascension hours
  * @param minutes the right ascension minutes
- * @param seconds the right ascension seconds
  * @param rightAscension the right ascension in degrees
  * @param declination the declination
  */
 data class CoordinateInfo(
         val hours: Int,
         val minutes: Int,
-        val seconds: Int,
         val rightAscension: Double,
         val declination: Double
 ) {
@@ -28,7 +26,6 @@ data class CoordinateInfo(
     constructor(coordinate: Coordinate) : this(
             hours = coordinate.hours,
             minutes = coordinate.minutes,
-            seconds = coordinate.seconds,
             rightAscension = coordinate.rightAscension,
             declination = coordinate.declination
     )

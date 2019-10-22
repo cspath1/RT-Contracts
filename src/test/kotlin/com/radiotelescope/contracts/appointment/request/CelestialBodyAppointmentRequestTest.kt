@@ -63,8 +63,7 @@ internal class CelestialBodyAppointmentRequestTest : AbstractSpringTest() {
                 seconds = 32,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 5,
-                        minutes = 34,
-                        seconds = 32
+                        minutes = 34
                 ),
                 declination = 22.0
         )

@@ -13,16 +13,14 @@ internal class CoordinateInfoTest {
                 seconds = 12,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0
         )
 
         val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         assertEquals(hoursMinutesSecondsInDegrees, info.rightAscension, 0.00001)
@@ -37,8 +35,7 @@ internal class CoordinateInfoTest {
         val coordinate = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,

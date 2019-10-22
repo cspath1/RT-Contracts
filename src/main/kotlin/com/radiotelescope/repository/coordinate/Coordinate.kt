@@ -15,8 +15,6 @@ data class Coordinate(
         var hours: Int,
         @Column(name = "minutes")
         var minutes: Int,
-        @Column(name = "seconds")
-        var seconds: Int,
         @Column(name = "right_ascension")
         var rightAscension: Double,
         @Column(name = "declination")
@@ -32,8 +30,8 @@ data class Coordinate(
     var appointment: Appointment? = null
 
     companion object {
-        fun hoursMinutesSecondsToDegrees(hours: Int, minutes: Int, seconds: Int): Double {
-            return (hours.toDouble() * 15) + (minutes.toDouble() / 4) + (seconds.toDouble() / 240)
+        fun hoursMinutesSecondsToDegrees(hours: Int, minutes: Int): Double {
+            return (hours.toDouble() * 15) + (minutes.toDouble() / 4)
         }
     }
 }

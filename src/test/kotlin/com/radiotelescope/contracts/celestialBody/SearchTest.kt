@@ -38,8 +38,7 @@ internal class SearchTest : AbstractSpringTest() {
                 seconds = 32,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 5,
-                        minutes = 34,
-                        seconds = 32
+                        minutes = 34
                 ),
                 declination = 22.0
         )
@@ -56,8 +55,7 @@ internal class SearchTest : AbstractSpringTest() {
                 seconds = 37,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 14,
-                        minutes = 39,
-                        seconds = 37
+                        minutes = 39
                 ),
                 declination = -60.5
         )

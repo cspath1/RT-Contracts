@@ -90,8 +90,7 @@ internal class UserCelestialBodyWrapperTest : AbstractSpringTest() {
                 seconds = 37,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 14,
-                        minutes = 39,
-                        seconds = 37
+                        minutes = 39
                 ),
                 declination = -60.5
         )
