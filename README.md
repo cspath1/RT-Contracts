@@ -5,21 +5,21 @@
 ### GitHub Repository
 Website URL: https://github.com/cspath1/RT-Contracts
 
-Clone command (https): ```git clone https://github.com/cspath1/RT-Contracts```
+Clone command (https): ```git clone https://github.com/YCPRadioTelescope/RT-Contracts```
 
-Clone command (git): ```git@github.com:cspath1/RT-Contracts```
+Clone command (git): ```git@github.com:YCPRadioTelescope/RT-Contracts```
 
 ### Repository Owner
-Name: Cody Spath
+Name: YCPRadioTelescope
 
-GitHub Account: cspath1
+GitHub Account: https://github.com/YCPRadioTelescope
 
-Email Address: cspath1@ycp.edu
+Email Address: jhorne@ycp.edu
 
 ### Amazon Web Services Account Owner
-Name: Cody Spath
+Name: Joel Horne
 
-Email Address: cspath1@ycp.edu
+Email Address: jhorne@ycp.edu
 
 ### Installation
 

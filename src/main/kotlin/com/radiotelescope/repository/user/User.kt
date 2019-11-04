@@ -1,6 +1,6 @@
 package com.radiotelescope.repository.user
 
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.util.regex.Pattern
 import javax.persistence.*
 /**
@@ -65,10 +65,7 @@ data class User(
         const val passwordErrorMessage = "Passwords must be at least 8 characters long and have 3 or 4 of the following: " +
                 "Upper Case, Lower Case, Special Character, Digit"
 
-        val rtPasswordEncoder = Pbkdf2PasswordEncoder(
-                "YCAS2018",
-                50,
-                256
-        )
+        // BCrypt: used to salt and hash passwords
+        val rtPasswordEncoder: BCryptPasswordEncoder = BCryptPasswordEncoder(13)
     }
 }
