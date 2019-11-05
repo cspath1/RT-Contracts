@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset jhorne:34
+-- changeset jhorne:35
 CREATE TABLE video_file (
     id INT(11) NOT NULL AUTO_INCREMENT,
     thumbnail_path VARCHAR(100) NOT NULL,

@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset jlandau2:36
+-- changeset jlandau2:37
 CREATE TABLE weather_data (
   id INT(11) NOT NULL AUTO_INCREMENT,
   wind_speed FLOAT(7,4) NOT NULL,
