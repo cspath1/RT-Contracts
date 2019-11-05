@@ -184,7 +184,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
 
     /**
      * Currently used to find the first in progress appointment for a specific telescope
-     * to determine if it is a free control appointment (meaning it cannot be overriden)
+     * to determine if it is a free control appointment (meaning it cannot be overridden)
      *
      * @param status the [Appointment.Status]
      * @param telescopeId the Radio Telescope id

@@ -242,8 +242,7 @@ internal class TestUtil {
         val startingCoordinate = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
@@ -308,8 +307,7 @@ internal class TestUtil {
         val coordinateOne = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
@@ -322,8 +320,7 @@ internal class TestUtil {
         val coordinateTwo = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
@@ -367,8 +364,7 @@ internal class TestUtil {
         val coordinate = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
@@ -411,8 +407,7 @@ internal class TestUtil {
         val coordinate = Coordinate(
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,

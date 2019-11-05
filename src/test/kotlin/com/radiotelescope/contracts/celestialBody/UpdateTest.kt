@@ -42,8 +42,7 @@ internal class UpdateTest : AbstractSpringTest() {
                 seconds = 32,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 5,
-                        minutes = 34,
-                        seconds = 32
+                        minutes = 34
                 ),
                 declination = 22.1
         )
@@ -110,8 +109,7 @@ internal class UpdateTest : AbstractSpringTest() {
         assertEquals(requestCopy.declination, theCelestialBody.coordinate!!.declination)
         val rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                 hours = requestCopy.hours!!,
-                minutes = requestCopy.minutes!!,
-                seconds = requestCopy.seconds!!
+                minutes = requestCopy.minutes!!
         )
         assertEquals(rightAscension, theCelestialBody.coordinate!!.rightAscension, 0.00001)
     }

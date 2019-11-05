@@ -33,8 +33,7 @@ internal class CelestialBodyAppointmentInfoTest {
                 seconds = 12,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0
         )
@@ -54,8 +53,7 @@ internal class CelestialBodyAppointmentInfoTest {
 
         val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         assertEquals(hoursMinutesSecondsInDegrees, info.rightAscension)
@@ -92,8 +90,7 @@ internal class CelestialBodyAppointmentInfoTest {
                 seconds = 32,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 5,
-                        minutes = 34,
-                        seconds = 32
+                        minutes = 34
                 ),
                 declination = 22.0
         )

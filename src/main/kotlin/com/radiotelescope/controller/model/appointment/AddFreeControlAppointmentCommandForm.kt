@@ -9,7 +9,6 @@ import com.radiotelescope.controller.model.BaseForm
 data class AddFreeControlAppointmentCommandForm(
         val hours: Int?,
         val minutes: Int?,
-        val seconds: Int?,
         val declination: Double?
 ) : BaseForm<AddFreeControlAppointmentCommand.Request> {
     override fun toRequest(): AddFreeControlAppointmentCommand.Request {
@@ -17,7 +16,6 @@ data class AddFreeControlAppointmentCommandForm(
                 appointmentId = -1L,
                 hours = hours!!,
                 minutes = minutes!!,
-                seconds = seconds!!,
                 declination = declination!!
         )
     }
@@ -29,8 +27,6 @@ data class AddFreeControlAppointmentCommandForm(
             errors.put(ErrorTag.HOURS, "Required field")
         if (minutes == null)
             errors.put(ErrorTag.MINUTES, "Required field")
-        if (seconds == null)
-            errors.put(ErrorTag.SECONDS, "Required field")
         if (declination == null)
             errors.put(ErrorTag.DECLINATION, "Required field")
 

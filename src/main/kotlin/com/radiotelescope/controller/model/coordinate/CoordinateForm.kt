@@ -11,13 +11,11 @@ import com.radiotelescope.controller.model.BaseForm
  *
  * @param hours the Right Ascension hours
  * @param minutes the Right Ascension minutes
- * @param seconds the Right Ascension seconds
  * @param declination the declination
  */
 data class CoordinateForm(
         val hours: Int?,
         val minutes: Int?,
-        val seconds: Int?,
         val declination: Double?
 ) : BaseForm<CoordinateRequest> {
     /**
@@ -30,7 +28,6 @@ data class CoordinateForm(
         return CoordinateRequest(
                 hours = hours!!,
                 minutes = minutes!!,
-                seconds = seconds!!,
                 declination = declination!!
         )
     }
@@ -47,8 +44,6 @@ data class CoordinateForm(
             errors.put(ErrorTag.HOURS, "Required field")
         if (minutes == null)
             errors.put(ErrorTag.MINUTES, "Required field")
-        if (seconds == null)
-            errors.put(ErrorTag.SECONDS, "Required field")
         if (declination == null)
             errors.put(ErrorTag.DECLINATION, "Required field")
 

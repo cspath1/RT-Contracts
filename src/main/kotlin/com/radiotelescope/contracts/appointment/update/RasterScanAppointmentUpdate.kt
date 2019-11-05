@@ -87,8 +87,6 @@ class RasterScanAppointmentUpdate(
                     errors.put(com.radiotelescope.contracts.appointment.ErrorTag.HOURS, "Hours must be between 0 and 24")
                 if (it.minutes < 0 || it.minutes >= 60)
                     errors.put(com.radiotelescope.contracts.appointment.ErrorTag.MINUTES, "Minutes must be between 0 and 60")
-                if (it.seconds < 0 || it.seconds >= 60)
-                    errors.put(com.radiotelescope.contracts.appointment.ErrorTag.SECONDS, "Seconds must be between 0 and 60")
                 if (it.declination > 90 || it.declination < -90)
                     errors.put(com.radiotelescope.contracts.appointment.ErrorTag.DECLINATION, "Declination must be between -90 and 90")
             }

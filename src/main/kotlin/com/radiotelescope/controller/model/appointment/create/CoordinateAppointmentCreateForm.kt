@@ -21,7 +21,6 @@ import java.util.*
  * @param priority the Appointment priority
  * @param hours the Right Ascension hours
  * @param minutes the Right Ascension minutes
- * @param seconds the Right Ascension seconds
  * @param declination the Declination
  */
 data class CoordinateAppointmentCreateForm(
@@ -33,7 +32,6 @@ data class CoordinateAppointmentCreateForm(
         override val priority: Appointment.Priority?,
         val hours: Int?,
         val minutes: Int?,
-        val seconds: Int?,
         val declination: Double?
 ) : CreateForm<CoordinateAppointmentCreate.Request>() {
     /**
@@ -51,7 +49,6 @@ data class CoordinateAppointmentCreateForm(
                 isPublic = isPublic!!,
                 hours = hours!!,
                 minutes = minutes!!,
-                seconds = seconds!!,
                 declination = declination!!,
                 priority = priority!!
         )
@@ -82,10 +79,6 @@ data class CoordinateAppointmentCreateForm(
             errors.put(ErrorTag.MINUTES, "Required field")
         else if (minutes >= 60 || minutes < 0)
             errors.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
-        if (seconds == null)
-            errors.put(ErrorTag.SECONDS, "Required field")
-        else if (seconds >= 60 || seconds < 0)
-            errors.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
         if (declination == null)
             errors.put(ErrorTag.DECLINATION, "Required field")
         if(priority == null)

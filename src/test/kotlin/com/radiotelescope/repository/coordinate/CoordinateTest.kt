@@ -8,8 +8,7 @@ internal class CoordinateTest {
     fun testHoursMinutesSecondsToDegrees() {
         val rightAscensionDegrees = Coordinate.hoursMinutesSecondsToDegrees(
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         assertEquals(183.0500, rightAscensionDegrees, 0.0001)
