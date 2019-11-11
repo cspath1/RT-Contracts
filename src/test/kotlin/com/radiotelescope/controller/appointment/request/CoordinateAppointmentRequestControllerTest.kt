@@ -40,7 +40,6 @@ internal class CoordinateAppointmentRequestControllerTest : BaseAppointmentRestC
             isPublic = true,
             hours = 22,
             minutes = 30,
-            seconds = 30,
             declination = 42.0,
             priority = Appointment.Priority.PRIMARY
     )

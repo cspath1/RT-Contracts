@@ -65,7 +65,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
             priority = Appointment.Priority.PRIMARY,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0
     )
 
@@ -78,7 +77,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
             priority = Appointment.Priority.PRIMARY,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0
     )
 
@@ -412,7 +410,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -437,7 +434,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -465,7 +461,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
         ) {
@@ -499,7 +494,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
         ) {
@@ -536,7 +530,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
         ) {
@@ -573,7 +566,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
         ) {
@@ -613,7 +605,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -654,7 +645,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -695,7 +685,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -736,7 +725,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -764,7 +752,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
 
@@ -793,7 +780,6 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                         priority = appointment.priority,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
 

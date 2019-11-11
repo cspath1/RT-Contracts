@@ -28,7 +28,6 @@ CREATE TABLE coordinate(
   declination DOUBLE NOT NULL,
   hours INT(11) NOT NULL,
   minutes INT(11) NOT NULL,
-  seconds INT(11) NOT NULL,
   appointment_id INT(11) DEFAULT NULL
 );
 

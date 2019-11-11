@@ -27,7 +27,6 @@ internal class UpdateTest : AbstractSpringTest() {
             name = "Crab Nebula",
             hours = 5,
             minutes = 34,
-            seconds = 32,
             declination = 22.0
     )
 
@@ -39,7 +38,6 @@ internal class UpdateTest : AbstractSpringTest() {
         val coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 5,
                         minutes = 34
@@ -105,7 +103,6 @@ internal class UpdateTest : AbstractSpringTest() {
         // Make sure all of the coordinate information is correct
         assertEquals(requestCopy.hours, theCelestialBody.coordinate!!.hours)
         assertEquals(requestCopy.minutes, theCelestialBody.coordinate!!.minutes)
-        assertEquals(requestCopy.seconds, theCelestialBody.coordinate!!.seconds)
         assertEquals(requestCopy.declination, theCelestialBody.coordinate!!.declination)
         val rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                 hours = requestCopy.hours!!,
@@ -123,7 +120,6 @@ internal class UpdateTest : AbstractSpringTest() {
                 name = "Mars",
                 hours = null,
                 minutes = null,
-                seconds = null,
                 declination = null
         )
 
@@ -152,7 +148,6 @@ internal class UpdateTest : AbstractSpringTest() {
                 name = "Sun",
                 hours = null,
                 minutes = null,
-                seconds = null,
                 declination = null
         )
 
@@ -363,7 +358,7 @@ internal class UpdateTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.MINUTES].isNotEmpty())
     }
-
+/*
     @Test
     fun testInvalidConstraints_NullSeconds_Failure() {
         val requestCopy = baseRequest.copy(
@@ -429,7 +424,7 @@ internal class UpdateTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.SECONDS].isNotEmpty())
     }
-
+*/
     @Test
     fun testInvalidConstraints_NullDeclination_Failure() {
         val requestCopy = baseRequest.copy(

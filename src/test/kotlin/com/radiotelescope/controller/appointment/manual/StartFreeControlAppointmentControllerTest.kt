@@ -49,7 +49,6 @@ internal class StartFreeControlAppointmentControllerTest : BaseAppointmentRestCo
                 duration = 30,
                 hours = 1,
                 minutes = 2,
-                seconds = 3,
                 declination = 4.20,
                 isPublic = true
         )

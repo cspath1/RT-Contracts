@@ -72,8 +72,7 @@ internal class MultiPointAppointmentInfoTest {
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateOne.appointment = appointment
@@ -86,8 +85,7 @@ internal class MultiPointAppointmentInfoTest {
                 ),
                 declination = 70.0,
                 hours = 13,
-                minutes = 13,
-                seconds = 13
+                minutes = 13
         )
 
         coordinateTwo.appointment = appointment

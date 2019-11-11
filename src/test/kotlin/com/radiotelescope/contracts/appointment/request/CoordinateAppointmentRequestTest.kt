@@ -43,7 +43,6 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
             isPublic = true,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0,
             priority = Appointment.Priority.PRIMARY
     )
@@ -287,7 +286,7 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
         // Make sure it failed for the correct reason
         assertTrue(errors!![ErrorTag.HOURS].isNotEmpty())
     }
-
+    /*
     @Test
     fun testSecondsTooLow_Failure() {
         // Create a copy of the request with seconds below 0
@@ -337,7 +336,7 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
         // Make sure it failed for the correct reason
         assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testDeclinationTooLow_Failure() {
         // Create a copy of the request with a declination below 0

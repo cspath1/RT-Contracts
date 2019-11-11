@@ -42,7 +42,6 @@ internal class BaseCelestialBodyFactoryTest : AbstractSpringTest() {
                         name = "Crab Nebula",
                         hours = 5,
                         minutes = 34,
-                        seconds = 32,
                         declination = 22.0
                 )
         )
@@ -93,7 +92,6 @@ internal class BaseCelestialBodyFactoryTest : AbstractSpringTest() {
                         name = "Investigate 311",
                         hours = 3,
                         minutes = 11,
-                        seconds = 311,
                         declination = 311.0
                 )
         )

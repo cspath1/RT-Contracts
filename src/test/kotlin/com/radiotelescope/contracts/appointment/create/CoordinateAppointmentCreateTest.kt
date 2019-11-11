@@ -51,7 +51,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
             isPublic = true,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0,
             priority = Appointment.Priority.PRIMARY
     )
@@ -418,7 +417,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 endTime = Date(startTime + 1000L),
                 isPublic = true,hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -478,7 +476,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -538,7 +535,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -598,7 +594,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 11.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -658,7 +653,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 42.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -718,7 +712,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 42.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -778,7 +771,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 21.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -838,7 +830,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 23.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -898,7 +889,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 42.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -956,7 +946,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -1010,7 +999,6 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 42.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -1186,7 +1174,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.MINUTES].isNotEmpty())
     }
-
+    /*
     @Test
     fun testSecondsTooLow_Failure() {
         // Give the user a guest time cap
@@ -1203,8 +1191,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
 
         // Create a copy of the request with an invalid hours
         val requestCopy = baseRequest.copy(
-                userId = user.id,
-                seconds = -311
+                userId = user.id
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -1225,8 +1212,8 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.SECONDS].isNotEmpty())
     }
-
-    @Test
+    */
+    /*@Test
     fun testSecondsTooHigh_Failure() {
         // Give the user a guest time cap
         testUtil.createAllottedTimeCapForUser(
@@ -1242,8 +1229,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
 
         // Create a copy of the request with an invalid hours
         val requestCopy = baseRequest.copy(
-                userId = user.id,
-                seconds = 311
+                userId = user.id
         )
 
         val (id, errors) = CoordinateAppointmentCreate(
@@ -1264,7 +1250,7 @@ internal class CoordinateAppointmentCreateTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testDeclinationTooLow_Failure() {
         // Give the user a guest time cap

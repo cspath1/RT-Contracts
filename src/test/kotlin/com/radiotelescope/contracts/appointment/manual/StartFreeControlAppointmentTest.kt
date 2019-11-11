@@ -48,7 +48,6 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 duration = 30,
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
                 declination = 22.0,
                 isPublic = true
         )
@@ -228,7 +227,7 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.MINUTES].isNotEmpty())
     }
-
+    /*
     @Test
     fun testSecondsTooLow_Failure() {
         // Create a copy of the request with invalid seconds
@@ -276,7 +275,7 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testDeclinationTooLow_Failure() {
         // Create a copy of the request with an invalid declination

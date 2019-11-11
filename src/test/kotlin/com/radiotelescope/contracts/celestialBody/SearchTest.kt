@@ -35,7 +35,6 @@ internal class SearchTest : AbstractSpringTest() {
         val coordinateOne = Coordinate(
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 5,
                         minutes = 34
@@ -52,7 +51,6 @@ internal class SearchTest : AbstractSpringTest() {
         val coordinateTwo = Coordinate(
                 hours = 14,
                 minutes = 39,
-                seconds = 37,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 14,
                         minutes = 39

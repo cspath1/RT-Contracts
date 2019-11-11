@@ -11,6 +11,6 @@ internal class CoordinateTest {
                 minutes = 12
         )
 
-        assertEquals(183.0500, rightAscensionDegrees, 0.0001)
+        assertEquals(183.0, rightAscensionDegrees, 0.0001)
     }
 }

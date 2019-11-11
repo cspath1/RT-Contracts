@@ -24,7 +24,6 @@ internal class CoordinateCreateTest : AbstractSpringTest() {
             name = "Crab Nebula",
             hours = 5,
             minutes = 34,
-            seconds = 32,
             declination = 22.0
     )
 
@@ -54,7 +53,6 @@ internal class CoordinateCreateTest : AbstractSpringTest() {
                 name = "Sun",
                 hours = null,
                 minutes = null,
-                seconds = null,
                 declination = null
         )
 
@@ -213,7 +211,7 @@ internal class CoordinateCreateTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.MINUTES].isNotEmpty())
     }
-
+    /*
     @Test
     fun testInvalidConstraints_NullSeconds_Failure() {
         val requestCopy = baseRequest.copy(seconds = null)
@@ -270,7 +268,7 @@ internal class CoordinateCreateTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testInvalidConstraints_NullDeclination_Failure() {
         val requestCopy = baseRequest.copy(declination = null)

@@ -9,7 +9,6 @@ internal class CreateFormTest {
             name = "Crab Nebula",
             hours = 5,
             minutes = 34,
-            seconds = 32,
             declination = 22.0
     )
 
@@ -23,7 +22,6 @@ internal class CreateFormTest {
         assertEquals(baseForm.name, theRequest.name)
         assertEquals(baseForm.hours, theRequest.hours)
         assertEquals(baseForm.minutes, theRequest.minutes)
-        assertEquals(baseForm.seconds, theRequest.seconds)
         assertEquals(baseForm.declination, theRequest.declination)
     }
 

@@ -28,7 +28,6 @@ internal class PointAppointmentInfoTest {
                 priority = Appointment.Priority.PRIMARY.label,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
                         minutes = 12
@@ -57,7 +56,6 @@ internal class PointAppointmentInfoTest {
         assertEquals(hoursMinutesSecondsInDegrees, info.rightAscension, 0.00001)
         assertEquals(12, info.hours)
         assertEquals(12, info.minutes)
-        assertEquals(12, info.seconds)
         assertEquals(69.0, info.declination, 0.00001)
     }
 
@@ -88,8 +86,7 @@ internal class PointAppointmentInfoTest {
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         appointment.user = user
@@ -116,6 +113,5 @@ internal class PointAppointmentInfoTest {
         assertEquals(appointment.coordinateList[0].declination, appointmentInfo.declination, 0.00001)
         assertEquals(appointment.coordinateList[0].hours, appointmentInfo.hours)
         assertEquals(appointment.coordinateList[0].minutes, appointmentInfo.minutes)
-        assertEquals(appointment.coordinateList[0].seconds, appointmentInfo.seconds)
     }
 }

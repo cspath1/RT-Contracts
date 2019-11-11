@@ -10,7 +10,6 @@ internal class CoordinateInfoTest {
         val info = CoordinateInfo(
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 12,
                         minutes = 12
@@ -26,7 +25,6 @@ internal class CoordinateInfoTest {
         assertEquals(hoursMinutesSecondsInDegrees, info.rightAscension, 0.00001)
         assertEquals(12, info.hours)
         assertEquals(12, info.minutes)
-        assertEquals(12, info.seconds)
         assertEquals(69.0, info.declination, 0.00001)
     }
 
@@ -39,8 +37,7 @@ internal class CoordinateInfoTest {
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         val info = CoordinateInfo(coordinate)
@@ -49,6 +46,5 @@ internal class CoordinateInfoTest {
         assertEquals(info.declination, coordinate.declination, 0.00001)
         assertEquals(info.hours, coordinate.hours)
         assertEquals(info.minutes, coordinate.minutes)
-        assertEquals(info.seconds, coordinate.seconds)
     }
 }

@@ -31,7 +31,6 @@ internal class UserCelestialBodyWrapperTest : AbstractSpringTest() {
             name = "Crab Nebula",
             hours = 5,
             minutes = 34,
-            seconds = 32,
             declination = 22.0
     )
 
@@ -40,7 +39,6 @@ internal class UserCelestialBodyWrapperTest : AbstractSpringTest() {
             name = "Crab Nebula",
             hours = 5,
             minutes = 34,
-            seconds = 32,
             declination = 22.0
     )
 
@@ -87,7 +85,6 @@ internal class UserCelestialBodyWrapperTest : AbstractSpringTest() {
         val coordinate = Coordinate(
                 hours = 14,
                 minutes = 39,
-                seconds = 37,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 14,
                         minutes = 39

@@ -246,8 +246,7 @@ internal class TestUtil {
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateRepo.save(startingCoordinate)
@@ -311,8 +310,7 @@ internal class TestUtil {
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateRepo.save(coordinateOne)
@@ -324,8 +322,7 @@ internal class TestUtil {
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateRepo.save(coordinateTwo)
@@ -368,8 +365,7 @@ internal class TestUtil {
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateRepo.save(coordinate)
@@ -411,8 +407,7 @@ internal class TestUtil {
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateRepo.save(coordinate)

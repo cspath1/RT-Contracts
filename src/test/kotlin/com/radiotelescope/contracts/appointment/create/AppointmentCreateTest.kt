@@ -56,7 +56,6 @@ internal class CreateTest : AbstractSpringTest() {
             priority = Appointment.Priority.PRIMARY,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0
     )
 

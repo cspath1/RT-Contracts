@@ -11,14 +11,12 @@ internal class RasterScanAppointmentCreateFormTest {
     private var coordinateFormOne = CoordinateForm(
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 45.0
     )
 
     private var coordinateFormTwo = CoordinateForm(
             hours = 13,
             minutes = 13,
-            seconds = 13,
             declination = 50.0
     )
 

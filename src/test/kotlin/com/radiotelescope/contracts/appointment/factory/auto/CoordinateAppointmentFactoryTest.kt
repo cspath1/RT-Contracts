@@ -73,7 +73,6 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
                         telescopeId = 1L,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 69.0
                 )
         )
@@ -95,7 +94,6 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
                         priority = Appointment.Priority.PRIMARY,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
         )
@@ -117,7 +115,6 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
                         priority = Appointment.Priority.PRIMARY,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 69.0
                 )
         )

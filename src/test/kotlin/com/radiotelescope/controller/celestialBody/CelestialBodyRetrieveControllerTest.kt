@@ -49,7 +49,6 @@ internal class CelestialBodyRetrieveControllerTest : BaseCelestialBodyRestContro
         val coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 5,
                         minutes = 34

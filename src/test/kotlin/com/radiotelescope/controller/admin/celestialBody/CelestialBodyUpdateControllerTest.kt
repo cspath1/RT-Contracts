@@ -32,7 +32,6 @@ internal class CelestialBodyUpdateControllerTest : BaseCelestialBodyRestControll
             name = "The Crab Nebula",
             hours = 5,
             minutes = 34,
-            seconds = 32,
             declination = 22.0
     )
 
@@ -55,7 +54,6 @@ internal class CelestialBodyUpdateControllerTest : BaseCelestialBodyRestControll
         val coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
                 rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
                         hours = 5,
                         minutes = 34
