@@ -16,6 +16,7 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.videoFile.IVideoFileRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Component
@@ -59,5 +60,6 @@ class RepositoryBeans(
         val celestialBodyRepo: ICelestialBodyRepository,
         val feedbackRepo: IFeedbackRepository,
         val orientationRepo: IOrientationRepository,
-        val loginAttemptRepo: ILoginAttemptRepository
+        val loginAttemptRepo: ILoginAttemptRepository,
+        val videoFileRepo: IVideoFileRepository
 )

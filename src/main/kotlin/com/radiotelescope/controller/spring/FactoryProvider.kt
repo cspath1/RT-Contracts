@@ -13,6 +13,7 @@ import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
 
 /**
@@ -98,6 +99,11 @@ interface FactoryProvider {
      * Abstract method to return the [UserFeedbackWrapper] class
      */
     fun getFeedbackWrapper(): UserFeedbackWrapper
+
+    /**
+     * Abstract method to return the [UserFeedbackWrapper] class
+     */
+    fun getVideoFileWrapper(): UserVideoFileWrapper
 
     /**
      * Abstract method to return the [UserAllottedTimeCapWrapper] class

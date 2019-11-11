@@ -27,6 +27,8 @@ import com.radiotelescope.contracts.updateEmailToken.BaseUpdateEmailTokenFactory
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
 import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.videoFile.BaseVideoFileFactory
+import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
 import com.radiotelescope.contracts.viewer.BaseViewerFactory
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
 import com.radiotelescope.security.UserContextImpl
@@ -312,6 +314,19 @@ class FactoryBeans(
         return UserFeedbackWrapper(
                 factory = BaseFeedbackFactory(
                         feedbackRepo = repositories.feedbackRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [UserVideoFileWrapper] object, allowing it to be autowired
+     * in controllers
+     */
+    @Bean
+    override fun getVideoFileWrapper(): UserVideoFileWrapper {
+        return UserVideoFileWrapper(
+                factory = BaseVideoFileFactory(
+                        videoFileRepo = repositories.videoFileRepo
                 )
         )
     }

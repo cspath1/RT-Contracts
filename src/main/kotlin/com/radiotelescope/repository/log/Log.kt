@@ -49,6 +49,7 @@ data class Log(
         USER_ROLE("User Role"),
         APPOINTMENT("Appointment"),
         RF_DATA("RF Data"),
+        VIDEO_FILE("Video File"),
         LOG("Log"),
         ERROR("Error"),
         RESET_PASSWORD_TOKEN("Reset Password Token"),
