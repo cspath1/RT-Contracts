@@ -32,5 +32,5 @@
     <include file="classpath:/db/changelog/27-create-video-file-table.sql"/>
     <include file="classpath:/db/changelog/28-drop-coordinate-seconds.sql"/>
     <include file="classpath:/db/changelog/29-create-weather-data-table.sql"/>
-
+    <include file="classpath:/db/changelog/30-add-timestamp-all.sql"/>
 </databaseChangeLog>
