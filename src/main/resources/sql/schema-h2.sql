@@ -134,8 +134,8 @@ CREATE TABLE video_file (
     thumbnail_path VARCHAR(100) NOT NULL,
     video_path VARCHAR(100) NOT NULL,
     video_length VARCHAR(10) NOT NULL,
-    record_created_timestamp DATETIME NOT NULL,
-    record_updated_timestamp DATETIME NOT NULL
+    record_created_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
+    record_updated_timestamp TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 );
 
 CREATE TABLE weather_data (

@@ -66,17 +66,17 @@ class Create(
     data class Request (
             val thumbnailPath: String,
             val videoPath: String,
-            val videoLength: String,
-            val recordCreatedTimestamp: Date?,
-            val recordUpdatedTimestamp: Date?
+            val videoLength: String
+            //val recordCreatedTimestamp: Date?,
+            //val recordUpdatedTimestamp: Date?
     ) : BaseCreateRequest<VideoFile> {
         override fun toEntity(): VideoFile {
             return VideoFile(
                     thumbnailPath = thumbnailPath,
                     videoPath = videoPath,
-                    videoLength = videoLength,
-                    recordCreatedTimestamp = recordCreatedTimestamp,
-                    recordUpdatedTimestamp = recordUpdatedTimestamp
+                    videoLength = videoLength
+                    //recordCreatedTimestamp = recordCreatedTimestamp,
+                    //recordUpdatedTimestamp = recordUpdatedTimestamp
             )
         }
     }

@@ -36,15 +36,15 @@ data class CreateForm (
         print(videoLengthDuration.toString() + "\n")
         */
 
-        val currentTime = Date()
+        //val currentTime = Date()
 
         return Create.Request(
                 thumbnailPath = thumbnailPath!!,
                 videoPath = videoPath!!,
-                videoLength = videoLength!!,
+                videoLength = videoLength!!
                 // upon creation timestamps receive current system time
-                recordCreatedTimestamp = currentTime,
-                recordUpdatedTimestamp = currentTime
+                //recordCreatedTimestamp = currentTime,
+                //recordUpdatedTimestamp = currentTime
         )
     }
 
