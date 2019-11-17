@@ -1,5 +1,6 @@
 package com.radiotelescope.repository.videoFile
 
+import java.util.*
 import javax.persistence.*
 
 /**
@@ -16,13 +17,15 @@ data class VideoFile (
         var videoPath: String?,
         @Column(name = "video_length", nullable = false)
         var videoLength: String?
-        //@Column(name = "record_created_timestamp", nullable = false)
-        //var recordCreatedTimestamp: Date?,
-        //@Column(name = "record_updated_timestamp", nullable = false)
-        //var recordUpdatedTimestamp: Date?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
+
+    @Column(name = "record_created_timestamp", nullable = false)
+    var recordCreatedTimestamp: Date = Date()
+
+    @Column(name = "record_updated_timestamp", nullable = true)
+    var recordUpdatedTimestamp: Date = Date()
 }

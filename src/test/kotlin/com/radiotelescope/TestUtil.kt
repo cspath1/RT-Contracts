@@ -27,6 +27,8 @@ import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepositor
 import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.videoFile.IVideoFileRepository
+import com.radiotelescope.repository.videoFile.VideoFile
 import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.repository.viewer.Viewer
 import org.springframework.beans.factory.annotation.Autowired
@@ -80,6 +82,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var loginAttemptRepo: ILoginAttemptRepository
+
+    @Autowired
+    private lateinit var videoFileRepo: IVideoFileRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -566,5 +571,13 @@ internal class TestUtil {
         loginAttempt.user = user
 
         return loginAttemptRepo.save(loginAttempt)
+    }
+
+    fun createVideoFileRecord(
+            thumbnailPath: String,
+            videoPath: String,
+            videoLength: String
+    ): VideoFile {
+        return videoFileRepo.save(VideoFile(thumbnailPath, videoPath, videoLength))
     }
 }

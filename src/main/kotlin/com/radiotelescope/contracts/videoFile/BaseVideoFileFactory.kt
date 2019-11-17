@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.videoFile
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.videoFile.IVideoFileRepository
+import com.radiotelescope.repository.videoFile.VideoFile
 
 /**
  * Base concrete implementation of the [VideoFileFactory] interface
@@ -23,6 +24,19 @@ class BaseVideoFileFactory(
         return Create(
                 request = request,
                 videoFileRepo = videoFileRepo
+        )
+    }
+
+    /**
+     * Override of the [VideoFileFactory.listBetweenCreationDates] method that will return a [ListBetweenCreationDates] command
+     *
+     * @param request the [ListBetweenCreationDates.Request] object
+     * @return a [ListBetweenCreationDates] command object
+     */
+    override fun listBetweenCreationDates(request: ListBetweenCreationDates.Request): Command<List<VideoFile>, Multimap<ErrorTag, String>> {
+        return ListBetweenCreationDates(
+                request = request,
+                videoRepo = videoFileRepo
         )
     }
 }
