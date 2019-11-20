@@ -19,7 +19,8 @@ import java.util.*
 data class CreateForm (
     val thumbnailPath: String?,
     val videoPath: String?,
-    val videoLength: String?
+    val videoLength: String?,
+    val token: String?
 ) : BaseForm<Create.Request> {
     /**
      * Override of the [BaseForm.toRequest] method that
@@ -41,10 +42,8 @@ data class CreateForm (
         return Create.Request(
                 thumbnailPath = thumbnailPath!!,
                 videoPath = videoPath!!,
-                videoLength = videoLength!!
-                // upon creation timestamps receive current system time
-                //recordCreatedTimestamp = currentTime,
-                //recordUpdatedTimestamp = currentTime
+                videoLength = videoLength!!,
+                token = token!!
         )
     }
 
@@ -62,6 +61,8 @@ data class CreateForm (
             errors.put(ErrorTag.VIDEO_PATH, "Required Field")
         if (videoLength == null)
             errors.put(ErrorTag.VIDEO_LENGTH, "Required Field")
+        if (token == null)
+            errors.put(ErrorTag.TOKEN, "Required Field")
 
         return if (errors.isEmpty) null else errors
     }

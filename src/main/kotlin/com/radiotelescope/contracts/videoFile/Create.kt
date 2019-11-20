@@ -50,10 +50,21 @@ class Create(
                 errors.put(ErrorTag.VIDEO_PATH, "Required Field")
             if(thumbnailPath.isBlank())
                 errors.put(ErrorTag.THUMBNAIL_PATH, "Required Field")
+
+            if(videoLength.isBlank())
+                errors.put(ErrorTag.VIDEO_LENGTH, "Required Field")
             if(videoLength == "00:00:00")
                 errors.put(ErrorTag.VIDEO_LENGTH, "Video Length Must Be Greater than 0 Seconds")
             if(videoLength.length != 8)
                 errors.put(ErrorTag.VIDEO_LENGTH, "Incorrectly Formatted Video Length")
+
+            if(token.isBlank())
+                errors.put(ErrorTag.TOKEN, "Required Field")
+            // TODO: token verification
+            if(token != "")
+                errors.put(ErrorTag.VIDEO_LENGTH, "Bad Authorization")
+
+
         }
 
         return if (errors.isEmpty) null else errors
@@ -66,7 +77,8 @@ class Create(
     data class Request (
             val thumbnailPath: String,
             val videoPath: String,
-            val videoLength: String
+            val videoLength: String,
+            val token: String
             //val recordCreatedTimestamp: Date?,
             //val recordUpdatedTimestamp: Date?
     ) : BaseCreateRequest<VideoFile> {
