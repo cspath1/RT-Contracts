@@ -9,6 +9,8 @@ CREATE TABLE sensor_status(
     azimuth_motor tinyint NOT NULL,
     elevation_motor tinyint NOT NULL,
     weather_station tinyint NOT NULL,
+    insert_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
+    update_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
 
     PRIMARY KEY(id)
 );
@@ -24,6 +26,8 @@ CREATE TABLE vibration(
     frequency_step_per_division FLOAT(7,3),
     number_points INT(16),
     location INT(16),
+    insert_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
+    update_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
 
     PRIMARY KEY(id)
 );
@@ -38,6 +42,8 @@ CREATE TABLE acceleration(
     acceleration_z FLOAT(4,3),
     location INT(16),
     time LONG,
+    insert_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
+    update_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
 
     PRIMARY KEY(id)
 );
@@ -49,6 +55,8 @@ CREATE TABLE temperature(
     temperature FLOAT(4,3),
     location INT(16),
     time LONG,
+    insert_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
+    update_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
 
     PRIMARY KEY(id)
 );

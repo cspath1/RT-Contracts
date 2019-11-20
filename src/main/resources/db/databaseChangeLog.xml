@@ -35,4 +35,5 @@
     <include file="classpath:/db/changelog/30-add-timestamp-all.sql"/>
     <include file="classpath:/db/changelog/31-create-weather-threshold-sensor-status-table.sql"/>
     <include file="classpath:/db/changelog/32-create-sensor-data-tables.sql"/>
+    <include file="classpath:/db/changelog/33-add-update-timestamp-all.sql"/>
 </databaseChangeLog>
