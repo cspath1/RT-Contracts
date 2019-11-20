@@ -13,6 +13,6 @@ CREATE TABLE video_file (
 );
 -- rollback drop table video-file
 
--- changeset jhorne:36
+-- changeset jhorne:36:
 ALTER TABLE video_file MODIFY video_length VARCHAR(10) NOT NULL;
 -- rollback alter table video_file modify video_length TIME(0) not null
