@@ -23,7 +23,8 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
     private val baseForm = CreateForm(
             thumbnailPath = "security_footage.png",
             videoPath = "security_footage.mp4",
-            videoLength = "01:00:00"
+            videoLength = "01:00:00",
+            token = "testid"
     )
 
     @Before
@@ -34,6 +35,8 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
                 videoFileWrapper = getWrapper(),
                 logger = getLogger()
         )
+
+        videoFileCreateController.id = "testid"
     }
 
     @Test
@@ -100,7 +103,29 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
     }
 
     @Test
-    fun testValidForm_FailedValidationResponse() {
+    fun testValidForm_FailedValidationResponse_BadId() {
+        val formCopy = baseForm.copy(
+                token = "nottestid"
+        )
+
+        val result = videoFileCreateController.execute(formCopy)
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertEquals(1, result.errors!!.size)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
+    }
+
+    @Test
+    fun testValidForm_FailedValidationResponse_ZeroLength() {
         // Copy of the form with a time of 00:00:00
         val formCopy = baseForm.copy(
                 videoLength = "00:00:00"

@@ -7,7 +7,6 @@ import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.videoFile.VideoFile
 import com.radiotelescope.repository.videoFile.IVideoFileRepository
-import java.util.*
 
 /**
  * Override of the [Command] interface used for VideoFile creation
@@ -17,7 +16,8 @@ import java.util.*
  */
 class Create(
     private val request: Request,
-    private val videoFileRepo: IVideoFileRepository
+    private val videoFileRepo: IVideoFileRepository,
+    private val id: String
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -45,6 +45,13 @@ class Create(
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
+        //val uuid: UUIDConfiguration = UUIDConfiguration()
+
+        //if(profile != Profile.LOCAL)
+        //    return null
+
+        print(id)
+
         with(request) {
             if(videoPath.isBlank())
                 errors.put(ErrorTag.VIDEO_PATH, "Required Field")
@@ -60,9 +67,8 @@ class Create(
 
             if(token.isBlank())
                 errors.put(ErrorTag.TOKEN, "Required Field")
-            // TODO: token verification
-            if(token != "")
-                errors.put(ErrorTag.VIDEO_LENGTH, "Bad Authorization")
+            if(token != id)
+                errors.put(ErrorTag.TOKEN, "Bad Authorization")
 
 
         }

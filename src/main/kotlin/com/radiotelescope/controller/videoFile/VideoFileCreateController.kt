@@ -8,6 +8,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.controller.model.videoFile.CreateForm
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
@@ -24,6 +25,12 @@ class VideoFileCreateController(
         private val videoFileWrapper: UserVideoFileWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
+
+    // Get the secret used by the video service
+    // Probably not the best way to do this
+    @Value("\${video.video-uuid-secret}")
+    lateinit var id: String
+
     /**
      * Execute method that is in charge of adapting the [CreateForm]
      * into a [Create.Request] after ensuring no fields are null. If
@@ -52,8 +59,10 @@ class VideoFileCreateController(
         }?:
         // Otherwise, execute the wrapper command
         let {
+            print(id)
             val response = videoFileWrapper.create(
-                    request = form.toRequest()
+                    request = form.toRequest(),
+                    id = id
             ).execute()
             // If the command was a success
             response.success?.let { data ->

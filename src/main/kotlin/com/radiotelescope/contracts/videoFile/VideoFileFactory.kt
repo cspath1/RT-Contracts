@@ -14,7 +14,7 @@ interface VideoFileFactory {
      * @param request the [Create.Request] request
      * @return a [Command] object
      */
-    fun create(request: Create.Request): Command<Long, Multimap<ErrorTag, String>>
+    fun create(request: Create.Request, id: String): Command<Long, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to list [VideoFile] objects between two creations dates
