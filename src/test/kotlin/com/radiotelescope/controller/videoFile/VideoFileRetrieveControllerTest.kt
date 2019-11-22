@@ -3,6 +3,8 @@ package com.radiotelescope.controller.videoFile
 
 import com.radiotelescope.controller.model.videoFile.ListBetweenCreationDatesForm
 import com.radiotelescope.repository.log.ILogRepository
+import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.User
 import org.springframework.http.HttpStatus
 import org.junit.Assert.*
 import org.junit.Before
@@ -21,6 +23,8 @@ internal class VideoFileRetrieveControllerTest : BaseVideoFileRestControllerTest
     private lateinit var logRepo: ILogRepository
 
     private lateinit var videoFileRetrieveController: VideoFileListBetweenCreationDatesController
+
+    private lateinit var user: User
 
     private val baseForm = ListBetweenCreationDatesForm(
             lowerDate = Date(System.currentTimeMillis() - 100000L),
@@ -41,12 +45,18 @@ internal class VideoFileRetrieveControllerTest : BaseVideoFileRestControllerTest
                 logger = getLogger()
         )
 
+        user = testUtil.createUser("samplestudent@ycp.edu")
+
         testUtil.createVideoFileRecord("vid1.png", "vid1.mp4", "01:00:00")
         testUtil.createVideoFileRecord("vid2.png", "vid2.mp4", "01:01:00")
     }
 
     @Test
     fun testSuccessResponse() {
+        // Simulate a login
+        getContext().login(user.id)
+        getContext().currentRoles.add(UserRole.Role.ADMIN)
+
         val result = videoFileRetrieveController.execute(baseForm)
 
         assertNotNull(result)
@@ -63,6 +73,10 @@ internal class VideoFileRetrieveControllerTest : BaseVideoFileRestControllerTest
 
     @Test
     fun testInvalidFormResponse() {
+        // Simulate a login
+        getContext().login(user.id)
+        getContext().currentRoles.add(UserRole.Role.ADMIN)
+
         val result = videoFileRetrieveController.execute(invalidForm)
 
         assertNotNull(result)
@@ -75,6 +89,24 @@ internal class VideoFileRetrieveControllerTest : BaseVideoFileRestControllerTest
 
         logRepo.findAll().forEach {
             assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
+    }
+
+    @Test
+    fun testFailedAuthenticationResponse() {
+        // Do not log the user in
+        val result = videoFileRetrieveController.execute(baseForm)
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertEquals(HttpStatus.FORBIDDEN, result.status)
+        assertNotNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
         }
     }
 }

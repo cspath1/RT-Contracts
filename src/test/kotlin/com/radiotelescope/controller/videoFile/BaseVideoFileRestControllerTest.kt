@@ -24,6 +24,7 @@ internal abstract class BaseVideoFileRestControllerTest: BaseRestControllerTest(
         )
 
         wrapper = UserVideoFileWrapper(
+                context = getContext(),
                 factory = factory
         )
     }

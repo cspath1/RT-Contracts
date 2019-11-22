@@ -325,6 +325,7 @@ class FactoryBeans(
     @Bean
     override fun getVideoFileWrapper(): UserVideoFileWrapper {
         return UserVideoFileWrapper(
+                context = userContext,
                 factory = BaseVideoFileFactory(
                         videoFileRepo = repositories.videoFileRepo
                 )

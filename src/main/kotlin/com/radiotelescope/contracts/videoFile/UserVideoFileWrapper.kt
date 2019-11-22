@@ -2,7 +2,11 @@ package com.radiotelescope.contracts.videoFile
 
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
+import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.videoFile.VideoFile
+import com.radiotelescope.security.AccessReport
+import com.radiotelescope.security.UserContext
 
 /**
  * Wrapper that takes a [VideoFileFactory] and is responsible for all
@@ -11,6 +15,7 @@ import com.radiotelescope.repository.videoFile.VideoFile
  * @param factory the [VideoFileFactory] interface
  */
 class UserVideoFileWrapper(
+        private val context: UserContext,
         private val factory: VideoFileFactory
 ) {
     /**
@@ -27,7 +32,10 @@ class UserVideoFileWrapper(
      *
      * @param request the [ListBetweenCreationDates.Request] object
      */
-    fun listBetweenCreationDates(request: ListBetweenCreationDates.Request): Command<List<VideoFile>, Multimap<ErrorTag, String>> {
-        return factory.listBetweenCreationDates(request)
+    fun listBetweenCreationDates(request: ListBetweenCreationDates.Request, withAccess: (result: SimpleResult<List<VideoFile>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.ADMIN),
+                successCommand = factory.listBetweenCreationDates(request)
+        ).execute(withAccess)
     }
 }

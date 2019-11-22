@@ -44,37 +44,54 @@ class VideoFileListBetweenCreationDatesController(
         // Otherwise, call the wrapper method
         else {
             val request = form.toRequest()
-            val response = videoFileWrapper.listBetweenCreationDates(request).execute()
+            videoFileWrapper.listBetweenCreationDates(
+                    request
+            ) { response ->
 
-            // If the command was a success
-            response.success?.let { list ->
-                // Create success logs for each retrieval
-                list.forEach { info ->
-                    logger.createSuccessLog(
-                            info = Logger.createInfo(
-                                    Log.AffectedTable.VIDEO_FILE,
-                                    action = "Video File List Between Times",
-                                    affectedRecordId = info.id,
-                                    status = HttpStatus.OK.value()
-                            )
-                    )
+                // If the command was a success
+                response.success?.let { list ->
+                    // Create success logs for each retrieval
+                    list.forEach { info ->
+                        logger.createSuccessLog(
+                                info = Logger.createInfo(
+                                        Log.AffectedTable.VIDEO_FILE,
+                                        action = "Video File List Between Times",
+                                        affectedRecordId = info.id,
+                                        status = HttpStatus.OK.value()
+                                )
+                        )
+                    }
+
+                    result = Result(data = list)
                 }
+                // If the command was a failure
+                response.error?.let { errors ->
+                    logger.createErrorLogs(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.VIDEO_FILE,
+                                    action = "Video File List Between Times",
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
+                            ),
+                            errors = errors.toStringMap()
+                    )
 
-                result = Result(data = list)
-            }
-            // If the command was a failure
-            response.error?.let { errors ->
+                    result = Result(errors = errors.toStringMap())
+                }
+            }?.let {
+                // If we get here, this means the User did not pass validation
+                // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.VIDEO_FILE,
                                 action = "Video File List Between Times",
                                 affectedRecordId = null,
-                                status = HttpStatus.BAD_REQUEST.value()
+                                status = HttpStatus.FORBIDDEN.value()
                         ),
-                        errors = errors.toStringMap()
+                        errors = it.toStringMap()
                 )
 
-                result = Result(errors = errors.toStringMap())
+                result = Result(errors = it.toStringMap(), status = HttpStatus.FORBIDDEN)
             }
         }
 
