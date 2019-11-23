@@ -28,7 +28,7 @@ class VideoFileCreateController(
 
     // Get the secret used by the video service
     // Probably not the best way to do this
-    @Value("\${video.video-uuid-secret}")
+    @Value("\${radio-telescope.video-uuid-secret}")
     lateinit var id: String
 
     /**
