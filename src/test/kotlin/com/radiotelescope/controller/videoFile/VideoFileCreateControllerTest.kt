@@ -37,6 +37,7 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
         )
 
         videoFileCreateController.id = "testid"
+        videoFileCreateController.profile = "LOCAL"
     }
 
     @Test
@@ -109,6 +110,26 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
         )
 
         val result = videoFileCreateController.execute(formCopy)
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.BAD_REQUEST, result.status)
+        assertEquals(1, result.errors!!.size)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.BAD_REQUEST.value(), it.status)
+        }
+    }
+
+    @Test
+    fun testValidForm_FailedValidationResponse_BadProfile() {
+        videoFileCreateController.profile = "PROD"
+
+        val result = videoFileCreateController.execute(baseForm)
 
         assertNotNull(result)
         assertNull(result.data)

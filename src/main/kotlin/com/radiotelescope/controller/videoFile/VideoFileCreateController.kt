@@ -1,7 +1,9 @@
 package com.radiotelescope.controller.videoFile
 
+import com.google.common.collect.HashMultimap
 import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
 import com.radiotelescope.contracts.videoFile.Create
+import com.radiotelescope.contracts.videoFile.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
@@ -31,6 +33,9 @@ class VideoFileCreateController(
     @Value("\${radio-telescope.video-uuid-secret}")
     lateinit var id: String
 
+    @Value("\${radio-telescope.profile}")
+    lateinit var profile: String
+
     /**
      * Execute method that is in charge of adapting the [CreateForm]
      * into a [Create.Request] after ensuring no fields are null. If
@@ -59,10 +64,10 @@ class VideoFileCreateController(
         }?:
         // Otherwise, execute the wrapper command
         let {
-            print(id)
             val response = videoFileWrapper.create(
                     request = form.toRequest(),
-                    id = id
+                    id = id,
+                    profile = profile
             ).execute()
             // If the command was a success
             response.success?.let { data ->

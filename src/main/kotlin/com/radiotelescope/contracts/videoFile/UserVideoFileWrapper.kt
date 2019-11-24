@@ -23,8 +23,8 @@ class UserVideoFileWrapper(
      *
      * @param request the [Create.Request] object
      */
-    fun create(request: Create.Request, id: String): Command<Long, Multimap<ErrorTag, String>> {
-        return factory.create(request, id)
+    fun create(request: Create.Request, id: String, profile: String): Command<Long, Multimap<ErrorTag, String>> {
+        return factory.create(request, id, profile)
     }
 
     /**

@@ -17,7 +17,8 @@ import com.radiotelescope.repository.videoFile.IVideoFileRepository
 class Create(
     private val request: Request,
     private val videoFileRepo: IVideoFileRepository,
-    private val id: String
+    private val id: String,
+    private val profile: String
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -45,14 +46,10 @@ class Create(
     private fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        //val uuid: UUIDConfiguration = UUIDConfiguration()
-
-        //if(profile != Profile.LOCAL)
-        //    return null
-
-        print(id)
-
         with(request) {
+            if (profile != "LOCAL")
+                errors.put(ErrorTag.TOKEN, "Bad Authorization: Profile must be LOCAL")
+
             if(videoPath.isBlank())
                 errors.put(ErrorTag.VIDEO_PATH, "Required Field")
             if(thumbnailPath.isBlank())
@@ -68,8 +65,7 @@ class Create(
             if(token.isBlank())
                 errors.put(ErrorTag.TOKEN, "Required Field")
             if(token != id)
-                errors.put(ErrorTag.TOKEN, "Bad Authorization")
-
+                errors.put(ErrorTag.TOKEN, "Bad Authorization: Incorrect ID")
 
         }
 
@@ -85,16 +81,12 @@ class Create(
             val videoPath: String,
             val videoLength: String,
             val token: String
-            //val recordCreatedTimestamp: Date?,
-            //val recordUpdatedTimestamp: Date?
     ) : BaseCreateRequest<VideoFile> {
         override fun toEntity(): VideoFile {
             return VideoFile(
                     thumbnailPath = thumbnailPath,
                     videoPath = videoPath,
                     videoLength = videoLength
-                    //recordCreatedTimestamp = recordCreatedTimestamp,
-                    //recordUpdatedTimestamp = recordUpdatedTimestamp
             )
         }
     }
