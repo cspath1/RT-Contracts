@@ -101,7 +101,7 @@ interface FactoryProvider {
     fun getFeedbackWrapper(): UserFeedbackWrapper
 
     /**
-     * Abstract method to return the [UserFeedbackWrapper] class
+     * Abstract method to return the [UserVideoFileWrapper] class
      */
     fun getVideoFileWrapper(): UserVideoFileWrapper
 
