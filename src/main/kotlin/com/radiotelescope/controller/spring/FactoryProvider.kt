@@ -15,6 +15,7 @@ import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
+import com.radiotelescope.contracts.weatherData.UserWeatherDataWrapper
 
 /**
  * Interface to get instantiations of all User Wrappers
@@ -109,4 +110,9 @@ interface FactoryProvider {
      * Abstract method to return the [UserAllottedTimeCapWrapper] class
      */
     fun getAllottedTimeCapWrapper(): UserAllottedTimeCapWrapper
+
+    /**
+     * Abstract method to return the [UserWeatherDataWrapper]  class
+     */
+    fun getWeatherDataWrapper(): UserWeatherDataWrapper
 }

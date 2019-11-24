@@ -58,6 +58,7 @@ data class Log(
         ALLOTTED_TIME_CAP("Allotted Time Cap"),
         CELESTIAL_BODY("Celestial Body"),
         VIEWER("Viewer"),
-        FEEDBACK("Feedback")
+        FEEDBACK("Feedback"),
+        WEATHER_DATA("Weather Data")
     }
 }

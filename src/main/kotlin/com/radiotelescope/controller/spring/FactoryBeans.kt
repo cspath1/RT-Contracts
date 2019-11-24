@@ -31,6 +31,8 @@ import com.radiotelescope.contracts.videoFile.BaseVideoFileFactory
 import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
 import com.radiotelescope.contracts.viewer.BaseViewerFactory
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
+import com.radiotelescope.contracts.weatherData.BaseWeatherDataFactory
+import com.radiotelescope.contracts.weatherData.UserWeatherDataWrapper
 import com.radiotelescope.security.UserContextImpl
 import com.radiotelescope.security.service.RetrieveAuthUserService
 import org.springframework.context.annotation.Bean
@@ -343,6 +345,19 @@ class FactoryBeans(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [UserWeatherDataWrapper] object, allowing it to be autowired
+     * in  controllers
+     */
+    @Bean
+    override fun getWeatherDataWrapper(): UserWeatherDataWrapper{
+        return UserWeatherDataWrapper(
+                factory = BaseWeatherDataFactory(
+                        weatherDataRepo = repositories.weatherDataRepo
                 )
         )
     }
