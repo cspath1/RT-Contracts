@@ -333,6 +333,10 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserSensorStatusWrapper] object, allowing it to be autowired
+     * in controllers
+     */
     @Bean
     override fun getSensorStatusWrapper(): UserSensorStatusWrapper {
         return UserSensorStatusWrapper(

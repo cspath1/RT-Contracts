@@ -1,5 +1,7 @@
 package com.radiotelescope.contracts.sensorStatus
 
+import com.radiotelescope.repository.sensorStatus.SensorStatus
+
 /**
  * Enum representing field validation failures for the [SensorStatus] Entity
  */

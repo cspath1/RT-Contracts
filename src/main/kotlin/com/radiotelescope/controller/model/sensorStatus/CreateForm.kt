@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.sensorStatus.Create
 import com.radiotelescope.contracts.sensorStatus.ErrorTag
 import com.radiotelescope.controller.model.BaseForm
-import java.util.*
 
 /**
  * Create form that takes nullable versions of the [Create.Request] object.
