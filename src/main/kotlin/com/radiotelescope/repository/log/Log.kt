@@ -50,6 +50,7 @@ data class Log(
         APPOINTMENT("Appointment"),
         RF_DATA("RF Data"),
         VIDEO_FILE("Video File"),
+        SENSOR_STATUS("Sensor Status"),
         LOG("Log"),
         ERROR("Error"),
         RESET_PASSWORD_TOKEN("Reset Password Token"),

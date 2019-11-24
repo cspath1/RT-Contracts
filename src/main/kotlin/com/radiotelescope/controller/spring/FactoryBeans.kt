@@ -23,6 +23,8 @@ import com.radiotelescope.contracts.rfdata.BaseRFDataFactory
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.BaseUserRoleFactory
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.sensorStatus.BaseSensorStatusFactory
+import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
 import com.radiotelescope.contracts.updateEmailToken.BaseUpdateEmailTokenFactory
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
@@ -327,6 +329,15 @@ class FactoryBeans(
         return UserVideoFileWrapper(
                 factory = BaseVideoFileFactory(
                         videoFileRepo = repositories.videoFileRepo
+                )
+        )
+    }
+
+    @Bean
+    override fun getSensorStatusWrapper(): UserSensorStatusWrapper {
+        return UserSensorStatusWrapper(
+                factory = BaseSensorStatusFactory(
+                        sensorStatusRepo = repositories.sensorStatusRepo
                 )
         )
     }

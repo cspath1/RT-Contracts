@@ -13,6 +13,7 @@ import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.rfdata.IRFDataRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.sensorStatus.ISensorStatusRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -61,5 +62,6 @@ class RepositoryBeans(
         val feedbackRepo: IFeedbackRepository,
         val orientationRepo: IOrientationRepository,
         val loginAttemptRepo: ILoginAttemptRepository,
-        val videoFileRepo: IVideoFileRepository
+        val videoFileRepo: IVideoFileRepository,
+        val sensorStatusRepo: ISensorStatusRepository
 )

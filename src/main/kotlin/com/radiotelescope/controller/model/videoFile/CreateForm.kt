@@ -29,16 +29,6 @@ data class CreateForm (
      * @return the [Create.Request] object
      */
     override fun toRequest(): Create.Request {
-        /*
-        val times = videoLength!!.split(":")
-        print(times.toString() + "\n")
-
-        val videoLengthDuration = Time(times[0].toInt(), times[1].toInt(), times[2].toInt())
-        print(videoLengthDuration.toString() + "\n")
-        */
-
-        //val currentTime = Date()
-
         return Create.Request(
                 thumbnailPath = thumbnailPath!!,
                 videoPath = videoPath!!,

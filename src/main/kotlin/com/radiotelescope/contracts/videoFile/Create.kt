@@ -7,7 +7,6 @@ import com.radiotelescope.contracts.BaseCreateRequest
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.videoFile.VideoFile
 import com.radiotelescope.repository.videoFile.IVideoFileRepository
-import java.util.*
 
 /**
  * Override of the [Command] interface used for VideoFile creation
@@ -60,11 +59,8 @@ class Create(
 
             if(token.isBlank())
                 errors.put(ErrorTag.TOKEN, "Required Field")
-            // TODO: token verification
             if(token != "")
                 errors.put(ErrorTag.VIDEO_LENGTH, "Bad Authorization")
-
-
         }
 
         return if (errors.isEmpty) null else errors
@@ -79,16 +75,12 @@ class Create(
             val videoPath: String,
             val videoLength: String,
             val token: String
-            //val recordCreatedTimestamp: Date?,
-            //val recordUpdatedTimestamp: Date?
     ) : BaseCreateRequest<VideoFile> {
         override fun toEntity(): VideoFile {
             return VideoFile(
                     thumbnailPath = thumbnailPath,
                     videoPath = videoPath,
                     videoLength = videoLength
-                    //recordCreatedTimestamp = recordCreatedTimestamp,
-                    //recordUpdatedTimestamp = recordUpdatedTimestamp
             )
         }
     }
