@@ -47,15 +47,15 @@ class Create(
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
-            if (gate != 0 || gate != 1 || gate != 2)
+            if (gate != 0 && gate != 1 && gate != 2)
                 errors.put(ErrorTag.GATE, "Status must be 0, 1, or 2")
-            if (proximity != 0 || proximity != 1 || proximity != 2)
+            if (proximity != 0 && proximity != 1 && proximity != 2)
                 errors.put(ErrorTag.PROXIMITY, "Status must be 0, 1, or 2")
-            if (azimuthMotor != 0 || azimuthMotor != 1 || azimuthMotor != 2)
+            if (azimuthMotor != 0 && azimuthMotor != 1 && azimuthMotor != 2)
                 errors.put(ErrorTag.AZIMUTH_MOTOR, "Status must be 0, 1, or 2")
-            if (elevationMotor != 0 || elevationMotor != 1 || elevationMotor != 2)
+            if (elevationMotor != 0 && elevationMotor != 1 && elevationMotor != 2)
                 errors.put(ErrorTag.ELEVATION_MOTOR, "Status must be 0, 1, or 2")
-            if (weatherStation != 0 || weatherStation != 1 || weatherStation != 2)
+            if (weatherStation != 0 && weatherStation != 1 && weatherStation != 2)
                 errors.put(ErrorTag.WEATHER_STATION, "Status must be 0, 1, or 2")
 
             if(token.isBlank())
@@ -63,6 +63,8 @@ class Create(
             if(token != id)
                 errors.put(ErrorTag.TOKEN, "Bad Authorization")
         }
+
+        print(errors)
 
         return if (errors.isEmpty) null else errors
     }

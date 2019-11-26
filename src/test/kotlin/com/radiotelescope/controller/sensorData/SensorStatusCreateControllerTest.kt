@@ -1,6 +1,7 @@
-package com.radiotelescope.controller.videoFile
+package com.radiotelescope.controller.sensorData
 
-import com.radiotelescope.controller.model.videoFile.CreateForm
+import com.radiotelescope.controller.model.sensorStatus.CreateForm
+import com.radiotelescope.controller.sensorStatus.SensorStatusCreateController
 import com.radiotelescope.repository.log.ILogRepository
 import org.junit.Assert.*
 import org.junit.Before
@@ -14,16 +15,18 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest() {
+internal class SensorStatusCreateControllerTest: BaseSensorStatusRestControllerTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private lateinit var videoFileCreateController: VideoFileCreateController
+    private lateinit var sensorStatusCreateController: SensorStatusCreateController
 
     private val baseForm = CreateForm(
-            thumbnailPath = "security_footage.png",
-            videoPath = "security_footage.mp4",
-            videoLength = "01:00:00",
+            gate = 0,
+            proximity = 0,
+            azimuthMotor = 0,
+            elevationMotor = 0,
+            weatherStation = 0,
             token = "testid"
     )
 
@@ -31,38 +34,17 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
     override fun init() {
         super.init()
 
-        videoFileCreateController = VideoFileCreateController(
-                videoFileWrapper = getWrapper(),
+        sensorStatusCreateController = SensorStatusCreateController(
+                sensorStatusWrapper = getWrapper(),
                 logger = getLogger()
         )
+
+        sensorStatusCreateController.id = "testid"
     }
 
     @Test
     fun testSuccessResponse() {
-        val result = videoFileCreateController.execute(baseForm)
-
-        assertNotNull(result)
-        assertTrue(result.data is Long)
-        assertEquals(HttpStatus.OK, result.status)
-        assertNull(result.errors)
-
-        // Ensure a log record has been created
-        assertEquals(1, logRepo.count())
-
-        logRepo.findAll().forEach {
-            assertEquals(HttpStatus.OK.value(), it.status)
-        }
-    }
-
-    @Test
-    fun testSuccessResponse_OverlongLength() {
-        // Copy of the form with 60 hours as length
-        val formCopy = baseForm.copy(
-                videoLength = "60:00:00"
-        )
-
-        // Specifically tests Java Duration in relation to MySQL TIME
-        val result = videoFileCreateController.execute(formCopy)
+        val result = sensorStatusCreateController.execute(baseForm)
 
         assertNotNull(result)
         assertTrue(result.data is Long)
@@ -79,12 +61,12 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
 
     @Test
     fun testInvalidFormResponse() {
-        // Copy of the form with a null video length
+        // Copy of the form with a null gate value
         val formCopy = baseForm.copy(
-                videoLength = null
+                gate = null
         )
 
-        val result = videoFileCreateController.execute(formCopy)
+        val result = sensorStatusCreateController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)
@@ -102,12 +84,12 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
 
     @Test
     fun testValidForm_FailedValidationResponse() {
-        // Copy of the form with a time of 00:00:00
+        // Copy of the form with a null gate value
         val formCopy = baseForm.copy(
-                videoLength = "00:00:00"
+                gate = 3
         )
 
-        val result = videoFileCreateController.execute(formCopy)
+        val result = sensorStatusCreateController.execute(formCopy)
 
         assertNotNull(result)
         assertNull(result.data)

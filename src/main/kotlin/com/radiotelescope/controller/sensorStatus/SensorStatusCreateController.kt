@@ -1,5 +1,6 @@
 package com.radiotelescope.controller.sensorStatus
 
+import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.sensorStatus.CreateForm
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class SensorStatusCreateController(
-    logger: Logger
+        private val sensorStatusWrapper: UserSensorStatusWrapper,
+        logger: Logger
 ) : BaseRestController(logger) {
 
     @Value(value = "\${radio-telescope.control-room-uuid-secret}")
@@ -36,7 +38,35 @@ class SensorStatusCreateController(
             result = Result(errors = it.toStringMap())
         }?:
         let {
+            val response = sensorStatusWrapper.create(
+                    request = form.toRequest(),
+                    id = id
+            ).execute()
 
+            response.success?.let { data ->
+                logger.createSuccessLog(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.SENSOR_STATUS,
+                                action = "Sensor Status Creation",
+                                affectedRecordId = data,
+                                status = HttpStatus.OK.value()
+                        )
+                )
+                result = Result(data = data)
+            }
+
+            response.error?.let { errors ->
+                logger.createErrorLogs(
+                        info = Logger.createInfo(
+                                affectedTable = Log.AffectedTable.SENSOR_STATUS,
+                                action = "Sensor Status Creation",
+                                affectedRecordId = null,
+                                status = HttpStatus.BAD_REQUEST.value()
+                        ),
+                        errors = errors.toStringMap()
+                )
+                result = Result(errors = errors.toStringMap())
+            }
         }
 
         return result
