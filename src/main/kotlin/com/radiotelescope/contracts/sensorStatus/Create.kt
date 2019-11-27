@@ -13,12 +13,12 @@ import com.radiotelescope.repository.sensorStatus.SensorStatus
  *
  * @param request the [Request] object
  * @param sensorStatusRepo the [ISensorStatusRepository] interface
- * @param id the uuid used to verify control room access
+ * @param uuid the uuid used to verify control room access
  */
 class Create(
         private val request: Request,
         private val sensorStatusRepo: ISensorStatusRepository,
-        private val id: String
+        private val uuid: String
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -60,7 +60,7 @@ class Create(
 
             if(token.isBlank())
                 errors.put(ErrorTag.TOKEN, "Required Field")
-            if(token != id)
+            if(token != uuid)
                 errors.put(ErrorTag.TOKEN, "Bad Authorization")
         }
 

@@ -340,6 +340,7 @@ class FactoryBeans(
     @Bean
     override fun getSensorStatusWrapper(): UserSensorStatusWrapper {
         return UserSensorStatusWrapper(
+                context = userContext,
                 factory = BaseSensorStatusFactory(
                         sensorStatusRepo = repositories.sensorStatusRepo
                 )

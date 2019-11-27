@@ -20,7 +20,7 @@ class SensorStatusCreateController(
 ) : BaseRestController(logger) {
 
     @Value(value = "\${radio-telescope.control-room-uuid-secret}")
-    lateinit var id: String
+    lateinit var uuid: String
 
     @PostMapping(value = ["/api/sensor-data"])
     fun execute(@RequestBody form: CreateForm): Result {
@@ -40,7 +40,7 @@ class SensorStatusCreateController(
         let {
             val response = sensorStatusWrapper.create(
                     request = form.toRequest(),
-                    id = id
+                    uuid = uuid
             ).execute()
 
             response.success?.let { data ->

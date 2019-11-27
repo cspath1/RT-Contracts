@@ -6,6 +6,7 @@ import com.radiotelescope.repository.sensorStatus.SensorStatus
  * Enum representing field validation failures for the [SensorStatus] Entity
  */
 enum class ErrorTag {
+    ID,
     GATE,
     PROXIMITY,
     AZIMUTH_MOTOR,
