@@ -38,18 +38,18 @@ class SensorStatusRetrieveController(
     fun execute(@PathVariable("sensorStatusId") id: Long): Result {
         sensorStatusWrapper.retrieve(id) {
             // If the command was a success
-            it.success?.let { info ->
+            it.success?.let { data ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.SENSOR_STATUS,
                                 action = "Sensor Status Retrieval",
-                                affectedRecordId = info.id,
+                                affectedRecordId = data.id,
                                 status = HttpStatus.OK.value()
                         )
                 )
 
-                result = Result(data = info)
+                result = Result(data = data)
             }
 
             // Otherwise, it was an error

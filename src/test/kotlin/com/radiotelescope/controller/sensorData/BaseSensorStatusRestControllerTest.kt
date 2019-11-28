@@ -24,6 +24,7 @@ internal abstract class BaseSensorStatusRestControllerTest: BaseRestControllerTe
         )
 
         wrapper = UserSensorStatusWrapper(
+                context = getContext(),
                 factory = factory
         )
     }

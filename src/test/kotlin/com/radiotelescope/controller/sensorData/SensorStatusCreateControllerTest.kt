@@ -39,7 +39,7 @@ internal class SensorStatusCreateControllerTest: BaseSensorStatusRestControllerT
                 logger = getLogger()
         )
 
-        sensorStatusCreateController.id = "testid"
+        sensorStatusCreateController.uuid = "testid"
     }
 
     @Test

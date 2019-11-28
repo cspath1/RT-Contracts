@@ -29,6 +29,13 @@ class BaseSensorStatusFactory(
         )
     }
 
+    /**
+     * Override of the [SensorStatusFactory.retrieve] method that will return a [Retrieve]
+     * command object
+     *
+     * @param id the [SensorStatus] id
+     * @return a [Retrieve] command object
+     */
     override fun retrieve(id: Long): Command<SensorStatus, Multimap<ErrorTag, String>> {
         return Retrieve(
                 sensorStatusId = id,
