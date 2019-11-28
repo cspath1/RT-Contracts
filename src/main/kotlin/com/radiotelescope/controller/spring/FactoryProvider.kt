@@ -11,6 +11,7 @@ import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
@@ -104,6 +105,11 @@ interface FactoryProvider {
      * Abstract method to return the [UserVideoFileWrapper] class
      */
     fun getVideoFileWrapper(): UserVideoFileWrapper
+
+    /**
+     * Abstract method to return the [UserSensorStatusWrapper] class
+     */
+    fun getSensorStatusWrapper(): UserSensorStatusWrapper
 
     /**
      * Abstract method to return the [UserAllottedTimeCapWrapper] class

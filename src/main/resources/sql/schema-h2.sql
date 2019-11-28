@@ -151,8 +151,16 @@ CREATE TABLE weather_data (
   dew_point FLOAT(7,4) NOT NULL,
   wind_chill FLOAT(7,4) NOT NULL,
   humidity INT(11) NOT NULL,
-  heat_index INT(11) NOT NULL,
-
-  PRIMARY KEY(id)
+  heat_index INT(11) NOT NULL
 );
 
+CREATE TABLE sensor_status (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  gate TINYINT(4) NOT NULL,
+  proximity TINYINT(4) NOT NULL,
+  azimuth_motor TINYINT(4) NOT NULL,
+  elevation_motor TINYINT(4) NOT NULL,
+  weather_station TINYINT(4) NOT NULL,
+  record_created_timestamp DATETIME NOT NULL,
+  record_updated_timestamp DATETIME NOT NULL
+);

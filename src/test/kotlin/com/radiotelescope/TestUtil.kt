@@ -22,6 +22,8 @@ import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepos
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.sensorStatus.ISensorStatusRepository
+import com.radiotelescope.repository.sensorStatus.SensorStatus
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
@@ -85,6 +87,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var videoFileRepo: IVideoFileRepository
+
+    @Autowired
+    private lateinit var sensorStatusRepo: ISensorStatusRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -579,5 +584,15 @@ internal class TestUtil {
             videoLength: String
     ): VideoFile {
         return videoFileRepo.save(VideoFile(thumbnailPath, videoPath, videoLength))
+    }
+
+    fun createSensorStatus(
+            gate: Int,
+            proximity: Int,
+            azimuthMotor: Int,
+            elevationMotor: Int,
+            weatherStation: Int
+    ): SensorStatus {
+        return sensorStatusRepo.save(SensorStatus(gate, proximity, azimuthMotor, elevationMotor, weatherStation))
     }
 }
