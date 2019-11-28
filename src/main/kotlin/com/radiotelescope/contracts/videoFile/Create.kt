@@ -13,11 +13,13 @@ import com.radiotelescope.repository.videoFile.IVideoFileRepository
  *
  * @param request the [Request] object
  * @param videoFileRepo the [IVideoFileRepository] interface
+ * @param uuid the token used by the video file record service
+ * @param profile the current application profile
  */
 class Create(
     private val request: Request,
     private val videoFileRepo: IVideoFileRepository,
-    private val id: String,
+    private val uuid: String,
     private val profile: String
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
@@ -64,7 +66,7 @@ class Create(
 
             if(token.isBlank())
                 errors.put(ErrorTag.TOKEN, "Required Field")
-            if(token != id)
+            if(token != uuid)
                 errors.put(ErrorTag.TOKEN, "Bad Authorization: Incorrect ID")
 
         }

@@ -1,9 +1,7 @@
 package com.radiotelescope.controller.videoFile
 
-import com.google.common.collect.HashMultimap
 import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
 import com.radiotelescope.contracts.videoFile.Create
-import com.radiotelescope.contracts.videoFile.ErrorTag
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
@@ -31,7 +29,7 @@ class VideoFileCreateController(
     // Get the secret used by the video service
     // Probably not the best way to do this
     @Value("\${radio-telescope.video-uuid-secret}")
-    lateinit var id: String
+    lateinit var uuid: String
 
     @Value("\${radio-telescope.profile}")
     lateinit var profile: String
@@ -66,7 +64,7 @@ class VideoFileCreateController(
         let {
             val response = videoFileWrapper.create(
                     request = form.toRequest(),
-                    id = id,
+                    uuid = uuid,
                     profile = profile
             ).execute()
             // If the command was a success

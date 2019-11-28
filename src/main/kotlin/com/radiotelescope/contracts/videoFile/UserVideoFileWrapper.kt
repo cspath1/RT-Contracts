@@ -12,7 +12,8 @@ import com.radiotelescope.security.UserContext
  * Wrapper that takes a [VideoFileFactory] and is responsible for all
  * user role validations for the Feedback Entity
  *
- * @param factory the [VideoFileFactory] interface
+ * @property context the [UserContext] interface
+ * @property factory the [VideoFileFactory] interface
  */
 class UserVideoFileWrapper(
         private val context: UserContext,
@@ -23,8 +24,8 @@ class UserVideoFileWrapper(
      *
      * @param request the [Create.Request] object
      */
-    fun create(request: Create.Request, id: String, profile: String): Command<Long, Multimap<ErrorTag, String>> {
-        return factory.create(request, id, profile)
+    fun create(request: Create.Request, uuid: String, profile: String): Command<Long, Multimap<ErrorTag, String>> {
+        return factory.create(request, uuid, profile)
     }
 
     /**

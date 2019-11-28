@@ -20,11 +20,11 @@ class BaseVideoFileFactory(
      * @param request the [Create.Request] object
      * @return a [Create] command object
      */
-    override fun create(request: Create.Request, id: String, profile: String): Command<Long, Multimap<ErrorTag, String>> {
+    override fun create(request: Create.Request, uuid: String, profile: String): Command<Long, Multimap<ErrorTag, String>> {
         return Create(
                 request = request,
                 videoFileRepo = videoFileRepo,
-                id = id,
+                uuid = uuid,
                 profile = profile
         )
     }
