@@ -61,7 +61,7 @@ class Create(
             if(token.isBlank())
                 errors.put(ErrorTag.TOKEN, "Required Field")
             if(token != uuid)
-                errors.put(ErrorTag.TOKEN, "Bad Authorization")
+                errors.put(ErrorTag.TOKEN, "Bad Authorization: Incorrect ID")
         }
 
         print(errors)

@@ -36,7 +36,7 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
                 logger = getLogger()
         )
 
-        videoFileCreateController.id = "testid"
+        videoFileCreateController.uuid = "testid"
         videoFileCreateController.profile = "LOCAL"
     }
 
