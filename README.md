@@ -131,6 +131,11 @@ Then, boot the application with ```gradlew bootRun``` (```./gradlew bootRun``` o
 The application depends on certain application properties files that unfortunately cannot be added to GitHub.
 These files must be obtained from the repository owner.
 
+### API Endpoints Documentation
+
+The API endpoints and their respective form templates are hosted on SwaggerHub [here](https://app.swaggerhub.com/apis-docs/jhorne98/radio-telescope_back_end_api/3.5.0#/).
+They will be updated as new endpoints are added.
+
 ### Javadocs
 
 The Radio Telescope Contracts/Back-End application uses javadocs to publish documentation. This process can be
