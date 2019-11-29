@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody
  *
  * @param videoFileWrapper the [UserVideoFileWrapper]
  * @param logger the [Logger] service
-*/
+ */
 @RestController
 class VideoFileCreateController(
         private val videoFileWrapper: UserVideoFileWrapper,
@@ -31,6 +31,7 @@ class VideoFileCreateController(
     @Value("\${radio-telescope.video-uuid-secret}")
     lateinit var uuid: String
 
+    // Get the profile in use
     @Value("\${radio-telescope.profile}")
     lateinit var profile: String
 

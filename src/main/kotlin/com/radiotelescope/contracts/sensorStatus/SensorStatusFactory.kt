@@ -16,7 +16,7 @@ interface SensorStatusFactory {
      * @param uuid the uuid used to verify control room access
      * @return a [Command] object
      */
-    fun create(request: Create.Request, uuid: String): Command<Long, Multimap<ErrorTag, String>>
+    fun create(request: Create.Request, uuid: String, profile: String): Command<Long, Multimap<ErrorTag, String>>
 
     /**
      * Abstract command used to retrieve a [SensorStatus] object by id

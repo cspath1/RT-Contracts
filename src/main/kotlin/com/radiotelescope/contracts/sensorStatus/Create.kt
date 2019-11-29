@@ -14,11 +14,13 @@ import com.radiotelescope.repository.sensorStatus.SensorStatus
  * @param request the [Request] object
  * @param sensorStatusRepo the [ISensorStatusRepository] interface
  * @param uuid the uuid used to verify control room access
+ * @param profile the user profile
  */
 class Create(
         private val request: Request,
         private val sensorStatusRepo: ISensorStatusRepository,
-        private val uuid: String
+        private val uuid: String,
+        private val profile: String
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -47,6 +49,9 @@ class Create(
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
+            if (profile != "LOCAL")
+                errors.put(ErrorTag.TOKEN, "Bad Authorization: Profile must be LOCAL")
+
             if (gate != 0 && gate != 1 && gate != 2)
                 errors.put(ErrorTag.GATE, "Status must be 0, 1, or 2")
             if (proximity != 0 && proximity != 1 && proximity != 2)

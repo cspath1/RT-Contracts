@@ -19,13 +19,15 @@ class BaseSensorStatusFactory(
      *
      * @param request the [Create.Request] object
      * @param uuid the uuid used to verify control room access
+     * @param profile the user profile
      * @return a [Create] command object
      */
-    override fun create(request: Create.Request, uuid: String): Command<Long, Multimap<ErrorTag, String>> {
+    override fun create(request: Create.Request, uuid: String, profile: String): Command<Long, Multimap<ErrorTag, String>> {
         return Create(
                 request = request,
                 sensorStatusRepo = sensorStatusRepo,
-                uuid = uuid
+                uuid = uuid,
+                profile = profile
         )
     }
 

@@ -26,8 +26,8 @@ class UserSensorStatusWrapper(
      * @param uuid the uuid used by the control room app
      * @return A [Command] object
      */
-    fun create(request: Create.Request, uuid: String): Command<Long, Multimap<ErrorTag, String>> {
-        return factory.create(request, uuid)
+    fun create(request: Create.Request, uuid: String, profile: String): Command<Long, Multimap<ErrorTag, String>> {
+        return factory.create(request, uuid, profile)
     }
 
     /**
