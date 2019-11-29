@@ -3,7 +3,7 @@
 ## Web-Application Back-End Server for YCAS Radio Telescope
 
 ### GitHub Repository
-Website URL: https://github.com/cspath1/RT-Contracts
+Website URL: https://github.com/YCPRadioTelescope/RT-Contracts
 
 Clone command (https): ```git clone https://github.com/YCPRadioTelescope/RT-Contracts```
 
