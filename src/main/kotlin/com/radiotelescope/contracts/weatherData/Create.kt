@@ -46,6 +46,45 @@ class Create (
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
+            if(windSpeed == null){
+                errors.put(ErrorTag.WIND_SPEED, "Required Field")
+            }
+            if(windDirectionDeg == null){
+                errors.put(ErrorTag.WIND_DIRECTION_DEG, "Required Field")
+            }
+            if(windChill== null){
+                errors.put(ErrorTag.WIND_CHILL, "Required Field")
+            }
+            if(insideTemperatureDegF == null){
+                errors.put(ErrorTag.INSIDE_TEMPERATURE_DEG_F, "Required Field")
+            }
+            if(outsideTemperatureDegF == null){
+                errors.put(ErrorTag.OUTSIDE_TEMPERATURE_DEG_F, "Required Field")
+            }
+            if(rainRate == null){
+                errors.put(ErrorTag.RAIN_RATE, "Required Field")
+            }
+            if(rainDay == null){
+                errors.put(ErrorTag.RAIN_DAY, "Required Field")
+            }
+            if(rainMonth == null){
+                errors.put(ErrorTag.RAIN_MONTH, "Required Field")
+            }
+            if(rainTotal == null){
+                errors.put(ErrorTag.RAIN_TOTAL, "Required Field")
+            }
+            if(barometricPressure == null){
+                errors.put(ErrorTag.BAROMETRIC_PRESSURE, "Required Field")
+            }
+            if(dewPoint == null){
+                errors.put(ErrorTag.DEW_POINT, "Required Field")
+            }
+            if(humidity == null){
+                errors.put(ErrorTag.HUMIDITY, "Required Field")
+            }
+            if(heatIndex == null){
+                errors.put(ErrorTag.HEAT_INDEX, "Required Field")
+            }
             if (windDirectionStr?.isBlank()!!){
                 errors.put(ErrorTag.WIND_DIRECTION_STR, "Required Field")
             }
