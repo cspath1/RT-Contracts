@@ -64,6 +64,6 @@ class RepositoryBeans(
         val orientationRepo: IOrientationRepository,
         val loginAttemptRepo: ILoginAttemptRepository,
         val videoFileRepo: IVideoFileRepository,
-        val weatherDataRepo: IWeatherDataRepository
+        val weatherDataRepo: IWeatherDataRepository,
         val sensorStatusRepo: ISensorStatusRepository
 )
