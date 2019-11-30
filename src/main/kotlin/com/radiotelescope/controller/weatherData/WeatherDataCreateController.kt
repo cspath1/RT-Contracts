@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody
  * @param logger the [Logger] service
  */
 @RestController
-class VideoFileCreateController(
+class WeatherDataCreateController(
         private val weatherDataWrapper: UserWeatherDataWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
