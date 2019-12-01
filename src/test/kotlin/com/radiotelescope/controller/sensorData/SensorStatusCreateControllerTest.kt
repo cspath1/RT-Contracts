@@ -1,5 +1,6 @@
 package com.radiotelescope.controller.sensorData
 
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.sensorStatus.CreateForm
 import com.radiotelescope.controller.sensorStatus.SensorStatusCreateController
 import com.radiotelescope.repository.log.ILogRepository
@@ -36,11 +37,12 @@ internal class SensorStatusCreateControllerTest: BaseSensorStatusRestControllerT
 
         sensorStatusCreateController = SensorStatusCreateController(
                 sensorStatusWrapper = getWrapper(),
-                logger = getLogger()
+                logger = getLogger(),
+                profile = Profile.LOCAL
         )
 
         sensorStatusCreateController.uuid = "testid"
-        sensorStatusCreateController.profile = "LOCAL"
+        //sensorStatusCreateController.profile = "LOCAL"
     }
 
     @Test
