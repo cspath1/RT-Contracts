@@ -40,6 +40,7 @@ internal class SensorStatusCreateControllerTest: BaseSensorStatusRestControllerT
         )
 
         sensorStatusCreateController.uuid = "testid"
+        sensorStatusCreateController.profile = "LOCAL"
     }
 
     @Test
