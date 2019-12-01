@@ -23,9 +23,9 @@ data class VideoFile (
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
 
-    @Column(name = "record_created_timestamp", nullable = false)
+    @Column(name = "insert_timestamp", nullable = false)
     var recordCreatedTimestamp: Date = Date()
 
-    @Column(name = "record_updated_timestamp", nullable = true)
+    @Column(name = "update_timestamp", nullable = true)
     var recordUpdatedTimestamp: Date = Date()
 }
