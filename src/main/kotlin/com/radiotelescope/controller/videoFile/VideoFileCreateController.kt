@@ -3,6 +3,7 @@ package com.radiotelescope.controller.videoFile
 import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
 import com.radiotelescope.contracts.videoFile.Create
 import com.radiotelescope.controller.BaseRestController
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.controller.model.videoFile.CreateForm
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody
 @RestController
 class VideoFileCreateController(
         private val videoFileWrapper: UserVideoFileWrapper,
+        private val profile: Profile,
         logger: Logger
 ) : BaseRestController(logger) {
 
@@ -30,10 +32,6 @@ class VideoFileCreateController(
     // Probably not the best way to do this
     @Value("\${radio-telescope.video-uuid-secret}")
     lateinit var uuid: String
-
-    // Get the profile in use
-    @Value("\${radio-telescope.profile}")
-    lateinit var profile: String
 
     /**
      * Execute method that is in charge of adapting the [CreateForm]
@@ -66,7 +64,7 @@ class VideoFileCreateController(
             val response = videoFileWrapper.create(
                     request = form.toRequest(),
                     uuid = uuid,
-                    profile = profile
+                    profile = profile.toString()
             ).execute()
             // If the command was a success
             response.success?.let { data ->

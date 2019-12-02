@@ -22,7 +22,7 @@ interface IVideoFileRepository: PagingAndSortingRepository<VideoFile, Long> {
      */
     @Query(value = "SELECT * " +
             "FROM video_file " +
-            "WHERE record_created_timestamp BETWEEN ?1 AND ?2",
+            "WHERE insert_timestamp BETWEEN ?1 AND ?2",
             nativeQuery = true
     )
     fun findVideosCreatedBetweenDates(lowerDate: Date, upperDate: Date): List<VideoFile>

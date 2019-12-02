@@ -1,5 +1,6 @@
 package com.radiotelescope.controller.videoFile
 
+import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.videoFile.CreateForm
 import com.radiotelescope.repository.log.ILogRepository
 import org.junit.Assert.*
@@ -19,6 +20,7 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
     private lateinit var logRepo: ILogRepository
 
     private lateinit var videoFileCreateController: VideoFileCreateController
+    private lateinit var prodVideoFileCreateController: VideoFileCreateController
 
     private val baseForm = CreateForm(
             thumbnailPath = "security_footage.png",
@@ -33,11 +35,18 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
 
         videoFileCreateController = VideoFileCreateController(
                 videoFileWrapper = getWrapper(),
-                logger = getLogger()
+                logger = getLogger(),
+                profile = Profile.LOCAL
+        )
+
+        prodVideoFileCreateController = VideoFileCreateController(
+                videoFileWrapper = getWrapper(),
+                logger = getLogger(),
+                profile = Profile.PROD
         )
 
         videoFileCreateController.uuid = "testid"
-        videoFileCreateController.profile = "LOCAL"
+        prodVideoFileCreateController.uuid = "testid"
     }
 
     @Test
@@ -127,9 +136,7 @@ internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest()
 
     @Test
     fun testValidForm_FailedValidationResponse_BadProfile() {
-        videoFileCreateController.profile = "PROD"
-
-        val result = videoFileCreateController.execute(baseForm)
+        val result = prodVideoFileCreateController.execute(baseForm)
 
         assertNotNull(result)
         assertNull(result.data)
