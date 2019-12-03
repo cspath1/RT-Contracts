@@ -17,6 +17,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 
+
+/**
+ * Rest Controller to handle listing video file records
+ *
+ * @param videoFileWrapper the [UserVideoFileWrapper]
+ * @param logger the [Logger] service
+ */
 @Controller
 class AdminVideoFileListController(
         private val videoFileWrapper: UserVideoFileWrapper,
