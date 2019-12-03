@@ -1,7 +1,5 @@
 package com.radiotelescope.controller.videoFile
 
-
-import com.radiotelescope.controller.model.videoFile.ListBetweenCreationDatesForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
@@ -26,16 +24,6 @@ internal class VideoFileRetrieveControllerTest : BaseVideoFileRestControllerTest
 
     private lateinit var user: User
 
-    private val baseForm = ListBetweenCreationDatesForm(
-            lowerDate = Date(System.currentTimeMillis() - 100000L),
-            upperDate = Date(System.currentTimeMillis() + 100000L)
-    )
-
-    private val invalidForm = ListBetweenCreationDatesForm(
-            lowerDate = Date(System.currentTimeMillis() + 100000L),
-            upperDate = Date(System.currentTimeMillis() - 100000L)
-    )
-
     @Before
     override fun init() {
         super.init()
@@ -57,7 +45,7 @@ internal class VideoFileRetrieveControllerTest : BaseVideoFileRestControllerTest
         getContext().login(user.id)
         getContext().currentRoles.add(UserRole.Role.ADMIN)
 
-        val result = videoFileRetrieveController.execute(baseForm)
+        val result = videoFileRetrieveController.execute(Date(System.currentTimeMillis() - 100000L), Date(System.currentTimeMillis() + 100000L))
 
         assertNotNull(result)
         assertTrue(result.data is List<*>)
@@ -77,7 +65,7 @@ internal class VideoFileRetrieveControllerTest : BaseVideoFileRestControllerTest
         getContext().login(user.id)
         getContext().currentRoles.add(UserRole.Role.ADMIN)
 
-        val result = videoFileRetrieveController.execute(invalidForm)
+        val result = videoFileRetrieveController.execute(Date(System.currentTimeMillis() + 100000L), Date(System.currentTimeMillis() - 100000L))
 
         assertNotNull(result)
         assertNull(result.data)
@@ -95,7 +83,7 @@ internal class VideoFileRetrieveControllerTest : BaseVideoFileRestControllerTest
     @Test
     fun testFailedAuthenticationResponse() {
         // Do not log the user in
-        val result = videoFileRetrieveController.execute(baseForm)
+        val result = videoFileRetrieveController.execute(Date(System.currentTimeMillis() - 100000L), Date(System.currentTimeMillis() + 100000L))
 
         assertNotNull(result)
         assertNull(result.data)
