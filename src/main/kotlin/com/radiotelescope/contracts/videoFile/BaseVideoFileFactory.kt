@@ -4,6 +4,8 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.repository.videoFile.IVideoFileRepository
 import com.radiotelescope.repository.videoFile.VideoFile
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 /**
  * Base concrete implementation of the [VideoFileFactory] interface
@@ -26,6 +28,19 @@ class BaseVideoFileFactory(
                 videoFileRepo = videoFileRepo,
                 uuid = uuid,
                 profile = profile
+        )
+    }
+
+    /**
+     * Override of the [VideoFileFactory.retrieveList] method that will return a [RetrieveList] command
+     *
+     * @param pageable the [Pageable] object that has the page number and page size
+     * @return a [RetrieveList] command object
+     */
+    override fun retrieveList(pageable: Pageable): Command<Page<VideoFile>, Multimap<ErrorTag, String>> {
+        return RetrieveList(
+                pageable = pageable,
+                videoFileRepo = videoFileRepo
         )
     }
 
