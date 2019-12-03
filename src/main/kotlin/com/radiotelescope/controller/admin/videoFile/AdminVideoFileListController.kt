@@ -3,6 +3,7 @@ package com.radiotelescope.controller.admin.videoFile
 import com.google.common.collect.HashMultimap
 import com.radiotelescope.contracts.videoFile.ErrorTag
 import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
+import com.radiotelescope.repository.videoFile.VideoFile
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.BaseRestController
 import org.springframework.stereotype.Controller
@@ -22,7 +23,8 @@ class AdminVideoFileListController(
         logger: Logger
 ) : BaseRestController(logger){
     /**
-     * Execute method that is in charge of returning a list of video files for admins.
+     * Execute method that is in charge of returning a list of [VideoFile] objects for admins.
+     * [VideoFile] objects are ordered most recent first.
      *
      * If the [pageNumber] or [pageSize] request parameters are null or invalid,
      * respond with errors. Otherwise, call the [UserVideoFileWrapper.retrieveList]
@@ -51,7 +53,7 @@ class AdminVideoFileListController(
             result = Result(errors = errors.toStringMap())
         }
         else {
-            val sort = Sort(Sort.Direction.ASC, "insert_timestamp")
+            val sort = Sort(Sort.Direction.DESC, "recordCreatedTimestamp")
             videoFileWrapper.retrieveList(PageRequest.of(pageNumber, pageSize, sort)) {
                 // If the command was a success
                 it.success?.let{ page ->
