@@ -37,14 +37,16 @@ data class WeatherData (
         @Column(name = "humidity", nullable = false)
         var humidity: Float?,
         @Column(name = "heat_index", nullable = false)
-        var heatIndex: Float?,
-        @Column(name = "insert_timestamp", nullable = false)
-        var insertTimestamp: Date?,
-        @Column(name = "update_timestamp", nullable = false)
-        var updateTimestamp: Date?
+        var heatIndex: Float?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
+
+    @Column(name = "insert_timestamp", nullable = true)
+    var insertTimestamp: Date = Date()
+
+    @Column(name = "update_timestamp", nullable = true)
+    var updateTimestamp: Date = Date()
 }

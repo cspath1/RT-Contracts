@@ -84,7 +84,6 @@ class WeatherDataCreateController(
                 result = Result(errors = errors.toStringMap())
             }
         }
-
         return result
     }
 }

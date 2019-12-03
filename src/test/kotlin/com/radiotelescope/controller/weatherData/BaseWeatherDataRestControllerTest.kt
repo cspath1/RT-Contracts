@@ -1,35 +1,34 @@
-package com.radiotelescope.controller.videoFile
+package com.radiotelescope.controller.weatherData
 
-import com.radiotelescope.contracts.videoFile.BaseVideoFileFactory
-import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
-import com.radiotelescope.contracts.videoFile.VideoFileFactory
+import com.radiotelescope.contracts.weatherData.BaseWeatherDataFactory
+import com.radiotelescope.contracts.weatherData.UserWeatherDataWrapper
+import com.radiotelescope.contracts.weatherData.WeatherDataFactory
 import com.radiotelescope.controller.BaseRestControllerTest
-import com.radiotelescope.repository.videoFile.IVideoFileRepository
+import com.radiotelescope.repository.weatherData.IWeatherDataRepository
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
-internal abstract class BaseVideoFileRestControllerTest: BaseRestControllerTest() {
+internal abstract class BaseWeatherDataRestControllerTest: BaseRestControllerTest() {
     @Autowired
-    private lateinit var videoFileRepo: IVideoFileRepository
+    private lateinit var weatherDataRepo: IWeatherDataRepository
 
-    private lateinit var wrapper: UserVideoFileWrapper
-    private lateinit var factory: VideoFileFactory
+    private lateinit var wrapper: UserWeatherDataWrapper
+    private lateinit var factory: WeatherDataFactory
 
     @Before
     override fun init() {
         super.init()
 
-        factory = BaseVideoFileFactory(
-                videoFileRepo = videoFileRepo
+        factory = BaseWeatherDataFactory(
+                weatherDataRepo = weatherDataRepo
         )
 
-        wrapper = UserVideoFileWrapper(
-                context = getContext(),
+        wrapper = UserWeatherDataWrapper(
                 factory = factory
         )
     }
 
-    fun getWrapper(): UserVideoFileWrapper {
+    fun getWrapper(): UserWeatherDataWrapper {
         return wrapper
     }
 }
