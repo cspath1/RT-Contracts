@@ -1,8 +1,8 @@
 package com.radiotelescope.repository.weatherData
 
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface IWeatherDataRepository: CrudRepository<WeatherData, Long> {
+interface IWeatherDataRepository: PagingAndSortingRepository<WeatherData, Long> {
 }

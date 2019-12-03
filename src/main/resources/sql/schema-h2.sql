@@ -149,9 +149,11 @@ CREATE TABLE weather_data (
   rain_month FLOAT(7,4) NOT NULL,
   barometric_pressure FLOAT(7,4) NOT NULL,
   dew_point FLOAT(7,4) NOT NULL,
-  wind_chill FLOAT(7,4) NOT NULL,
+  wind_chill FLOAT(7,4) NOT NULL,ff
   humidity INT(11) NOT NULL,
-  heat_index INT(11) NOT NULL
+  heat_index INT(11) NOT NULL,
+  insert_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP(6),
+  update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP(6) on UPDATE CURRENT_TIMESTAMP(6)
 );
 
 CREATE TABLE sensor_status (

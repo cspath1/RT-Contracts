@@ -25,8 +25,6 @@ import java.util.*
  * @param windChill wind chill float
  * @param humidity humidity level float
  * @param heatIndex heat index float
- * @param insertTimeStamp when row was added
- * @param updateTimeStamp when row was updated
  */
 data class CreateForm(
         val windSpeed: Float?,
@@ -42,9 +40,7 @@ data class CreateForm(
         val dewPoint: Float?,
         val windChill: Float?,
         val humidity: Float?,
-        val heatIndex: Float?,
-        val insertTimeStamp: Date?,
-        val updateTimeStamp: Date?
+        val heatIndex: Float?
 ) : BaseForm<Create.Request> {
     /**
      * Override of the [BaseForm.toRequest] method that
@@ -67,9 +63,7 @@ data class CreateForm(
                 dewPoint = dewPoint!!,
                 windChill = windChill!!,
                 humidity = humidity!!,
-                heatIndex = heatIndex!!,
-                insertTimeStamp = insertTimeStamp!!,
-                updateTimeStamp = updateTimeStamp!!
+                heatIndex = heatIndex!!
         )
     }
     /**
@@ -108,10 +102,6 @@ data class CreateForm(
             errors.put(ErrorTag.HUMIDITY, "Required Field")
         if(heatIndex == null)
             errors.put(ErrorTag.HEAT_INDEX, "Required Field")
-        if(insertTimeStamp == null)
-            errors.put(ErrorTag.INSERT_TIMESTAMP, "Required Field")
-        if(updateTimeStamp == null)
-            errors.put(ErrorTag.UPDATE_TIMESTAMP, "Required Field")
         return if (errors.isEmpty) null else errors
     }
 }
