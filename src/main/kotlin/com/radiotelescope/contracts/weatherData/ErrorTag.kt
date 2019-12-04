@@ -16,5 +16,6 @@ enum class ErrorTag {
     HUMIDITY,
     HEAT_INDEX,
     INSERT_TIMESTAMP,
-    UPDATE_TIMESTAMP
+    UPDATE_TIMESTAMP,
+    PAGE_PARAMS
 }

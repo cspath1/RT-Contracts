@@ -24,6 +24,7 @@ internal abstract class BaseWeatherDataRestControllerTest: BaseRestControllerTes
         )
 
         wrapper = UserWeatherDataWrapper(
+                context = getContext(),
                 factory = factory
         )
     }
