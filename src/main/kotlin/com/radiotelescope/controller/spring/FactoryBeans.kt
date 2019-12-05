@@ -373,6 +373,7 @@ class FactoryBeans(
     @Bean
     override fun getWeatherDataWrapper(): UserWeatherDataWrapper{
         return UserWeatherDataWrapper(
+                context = userContext,
                 factory = BaseWeatherDataFactory(
                         weatherDataRepo = repositories.weatherDataRepo
                 )

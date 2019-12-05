@@ -31,6 +31,8 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.repository.videoFile.IVideoFileRepository
 import com.radiotelescope.repository.videoFile.VideoFile
+import com.radiotelescope.repository.weatherData.IWeatherDataRepository
+import com.radiotelescope.repository.weatherData.WeatherData
 import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.repository.viewer.Viewer
 import org.springframework.beans.factory.annotation.Autowired
@@ -90,6 +92,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var sensorStatusRepo: ISensorStatusRepository
+
+    @Autowired
+    private lateinit var weatherDataRepo: IWeatherDataRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -584,6 +589,42 @@ internal class TestUtil {
             videoLength: String
     ): VideoFile {
         return videoFileRepo.save(VideoFile(thumbnailPath, videoPath, videoLength))
+    }
+
+    fun createWeatherDataRecord(
+        windSpeed: Float,
+        windDirectionDeg: Float,
+        windDirectionStr: String,
+        outsideTemperatureDegF: Float,
+        insideTemperatureDegF: Float,
+        rainRate: Float,
+        rainTotal: Float,
+        rainDay: Float,
+        rainMonth: Float,
+        barometricPressure: Float,
+        dewPoint: Float,
+        windChill: Float,
+        humidity: Float,
+        heatIndex: Float
+    ): WeatherData {
+        val weatherData = WeatherData(
+                windSpeed = windSpeed,
+                windDirectionDeg = windDirectionDeg,
+                windDirectionStr = windDirectionStr,
+                outsideTemperatureDegF = outsideTemperatureDegF,
+                insideTemperatureDegF = insideTemperatureDegF,
+                rainRate = rainRate,
+                rainTotal = rainTotal,
+                rainDay = rainDay,
+                rainMonth = rainMonth,
+                barometricPressure = barometricPressure,
+                dewPoint = dewPoint,
+                windChill = windChill,
+                humidity = humidity,
+                heatIndex = heatIndex
+
+        )
+        return weatherDataRepo.save(weatherData)
     }
 
     fun createSensorStatus(
