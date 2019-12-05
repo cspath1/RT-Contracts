@@ -1,6 +1,5 @@
-package com.radiotelescope.controller.sensorData
+package com.radiotelescope.controller.sensorStatus
 
-import com.radiotelescope.controller.sensorStatus.SensorStatusRetrieveController
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.sensorStatus.SensorStatus
@@ -16,32 +15,27 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class SensorStatusRetrieveControllerTest: BaseSensorStatusRestControllerTest() {
+internal class SensorStatusGetMostRecentControllerTest: BaseSensorStatusRestControllerTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
 
-    private lateinit var sensorStatusRetrieveController: SensorStatusRetrieveController
+    private lateinit var sensorStatusGetMostRecentController: SensorStatusGetMostRecentController
     private lateinit var user: User
-    private lateinit var sensorStatus: SensorStatus
 
     @Before
     override fun init() {
         super.init()
 
-        sensorStatusRetrieveController = SensorStatusRetrieveController(
+        sensorStatusGetMostRecentController = SensorStatusGetMostRecentController(
                 sensorStatusWrapper = getWrapper(),
                 logger = getLogger()
         )
 
         user = testUtil.createUser("sampleuser@ycp.edu")
 
-        sensorStatus = testUtil.createSensorStatus(
-                gate = 0,
-                proximity = 0,
-                azimuthMotor = 0,
-                elevationMotor = 0,
-                weatherStation = 0
-        )
+        testUtil.createSensorStatus(0, 0, 0, 0, 0)
+        testUtil.createSensorStatus(0, 1, 1, 0, 0)
+        testUtil.createSensorStatus(0, 1, 2, 1, 1)
     }
 
     @Test
@@ -50,7 +44,7 @@ internal class SensorStatusRetrieveControllerTest: BaseSensorStatusRestControlle
         getContext().login(user.id)
         getContext().currentRoles.add(UserRole.Role.ADMIN)
 
-        val result = sensorStatusRetrieveController.execute(sensorStatus.id)
+        val result = sensorStatusGetMostRecentController.execute()
 
         Assert.assertNotNull(result)
         Assert.assertTrue(result.data is SensorStatus)
@@ -62,6 +56,24 @@ internal class SensorStatusRetrieveControllerTest: BaseSensorStatusRestControlle
 
         logRepo.findAll().forEach {
             Assert.assertEquals(HttpStatus.OK.value(), it.status)
+        }
+    }
+
+    @Test
+    fun testFailedAuthenticationResponse() {
+        // Do not log the user in
+        val result = sensorStatusGetMostRecentController.execute()
+
+        Assert.assertNotNull(result)
+        Assert.assertNull(result.data)
+        Assert.assertEquals(HttpStatus.FORBIDDEN, result.status)
+        Assert.assertNotNull(result.errors)
+
+        // Ensure a log record was created
+        Assert.assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            Assert.assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
         }
     }
 }

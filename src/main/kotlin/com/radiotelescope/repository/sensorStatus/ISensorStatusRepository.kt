@@ -16,9 +16,7 @@ interface ISensorStatusRepository: PagingAndSortingRepository<SensorStatus, Long
      *
      * @return a [SensorStatus] object
      */
-    @Query(value = "SELECT * " +
-            "FROM sensor_status " +
-            "WHERE id = MAX(id)",
+    @Query(value = "SELECT * FROM sensor_status ORDER BY id DESC LIMIT 1",
             nativeQuery = true
     )
     fun getMostRecentSensorStatus(): SensorStatus

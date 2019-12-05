@@ -1,8 +1,7 @@
-package com.radiotelescope.controller.sensorData
+package com.radiotelescope.controller.sensorStatus
 
 import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.sensorStatus.CreateForm
-import com.radiotelescope.controller.sensorStatus.SensorStatusCreateController
 import com.radiotelescope.repository.log.ILogRepository
 import org.junit.Assert.*
 import org.junit.Before

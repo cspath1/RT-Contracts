@@ -1,4 +1,4 @@
-package com.radiotelescope.controller.sensorData
+package com.radiotelescope.controller.sensorStatus
 
 import com.radiotelescope.contracts.sensorStatus.BaseSensorStatusFactory
 import com.radiotelescope.contracts.sensorStatus.SensorStatusFactory
