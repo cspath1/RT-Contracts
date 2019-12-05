@@ -24,7 +24,7 @@ class WeatherDataListBetweenCreationDatesController(
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute method in charge of listing the video files created between the
+     * Execute method in charge of listing the weather data records created between the
      * lower and upper dates.
      *
      * If the fields in the [ListBetweenCreationDatesForm] are null or invalid,
