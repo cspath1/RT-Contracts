@@ -23,7 +23,7 @@ class Retrieve (
      * matches with any id in the database through the [ISensorStatusRepository.findById]
      * method.
      *
-     * If the appointment does not exist, it will return an error in the
+     * If the sensor status does not exist, it will return an error in the
      * [SimpleResult].
      */
     override fun execute(): SimpleResult<SensorStatus, Multimap<ErrorTag, String>> {

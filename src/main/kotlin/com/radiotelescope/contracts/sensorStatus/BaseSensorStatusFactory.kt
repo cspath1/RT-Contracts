@@ -44,4 +44,16 @@ class BaseSensorStatusFactory(
                 sensorStatusRepo = sensorStatusRepo
         )
     }
+
+    /**
+     * Override of the [SensorStatusFactory.getMostRecent] method that will
+     * return a [GetMostRecent] command object
+     *
+     * @return a [GetMostRecent] command object
+     */
+    override fun getMostRecent(): Command<SensorStatus, Multimap<ErrorTag, String>> {
+        return GetMostRecent(
+                sensorStatusRepo = sensorStatusRepo
+        )
+    }
 }

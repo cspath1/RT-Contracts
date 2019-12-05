@@ -26,4 +26,12 @@ interface SensorStatusFactory {
      */
     fun retrieve(id: Long): Command<SensorStatus, Multimap<ErrorTag,String>>
 
+    /**
+     * Abstract command used to retrieve a [SensorStatus] object by
+     * most recently added
+     *
+     * @return a [Command] object
+     */
+    fun getMostRecent(): Command<SensorStatus, Multimap<ErrorTag,String>>
+
 }

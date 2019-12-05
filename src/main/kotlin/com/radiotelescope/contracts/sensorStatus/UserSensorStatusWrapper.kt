@@ -43,4 +43,17 @@ class UserSensorStatusWrapper(
                 successCommand = factory.retrieve(id)
         ).execute(withAccess)
     }
+
+    /**
+     * Wrapper method for the [SensorStatusFactory.getMostRecent] method.
+     *
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun getMostRecent(withAccess: (result: SimpleResult<SensorStatus, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.ADMIN),
+                successCommand = factory.getMostRecent()
+        ).execute(withAccess)
+    }
 }
