@@ -37,4 +37,5 @@
     <include file="classpath:/db/changelog/32-create-sensor-data-tables.sql"/>
     <include file="classpath:/db/changelog/33-add-update-timestamp-all.sql"/>
     <include file="classpath:/db/changelog/34-update-video-file-table.sql"/>
+    <include file="classpath:/db/changelog/35-create-spectracyber-config-table.sql"/>
 </databaseChangeLog>
