@@ -119,17 +119,17 @@ to setup the database on your local machine.
 Note: specify the database url as the one found in the local application properties file 
 5. If the connection works, you're good to go!
 
+### Properties Files
+
+The application depends on certain application properties files that unfortunately cannot be added to GitHub.
+These files must be obtained from the repository owner.
+
 ### Install Gradle Wrapper
 
 In order to install the gradle wrapper (needed to boot up the application locally), issue the following
 command in the terminal inside of IntelliJ:
 ```gradle wrapper```
 Then, boot the application with ```gradlew bootRun``` (```./gradlew bootRun``` on Linux). This will populate the local database.
-
-### Properties Files
-
-The application depends on certain application properties files that unfortunately cannot be added to GitHub.
-These files must be obtained from the repository owner.
 
 ### API Endpoints Documentation
 
