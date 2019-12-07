@@ -122,7 +122,7 @@ Note: specify the database url as the one found in the local application propert
 ### Properties Files
 
 The application depends on certain application properties files that unfortunately cannot be added to GitHub.
-These files must be obtained from the repository owner.
+These files must be obtained from the repository owner. The properties files must be placed in /RT-Contracts/src/main/resources/properties.
 
 ### Install Gradle Wrapper
 
