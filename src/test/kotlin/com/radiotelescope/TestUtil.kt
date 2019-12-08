@@ -605,7 +605,8 @@ internal class TestUtil {
         dewPoint: Float,
         windChill: Float,
         humidity: Float,
-        heatIndex: Float
+        heatIndex: Float,
+        timeCaptured: Int
     ): WeatherData {
         val weatherData = WeatherData(
                 windSpeed = windSpeed,
@@ -621,8 +622,8 @@ internal class TestUtil {
                 dewPoint = dewPoint,
                 windChill = windChill,
                 humidity = humidity,
-                heatIndex = heatIndex
-
+                heatIndex = heatIndex,
+                timeCaptured = timeCaptured
         )
         return weatherDataRepo.save(weatherData)
     }

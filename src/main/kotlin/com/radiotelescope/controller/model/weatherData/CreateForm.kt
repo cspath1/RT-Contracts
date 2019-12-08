@@ -40,7 +40,8 @@ data class CreateForm(
         val dewPoint: Float?,
         val windChill: Float?,
         val humidity: Float?,
-        val heatIndex: Float?
+        val heatIndex: Float?,
+        val timeCaptured: Int?
 ) : BaseForm<Create.Request> {
     /**
      * Override of the [BaseForm.toRequest] method that
@@ -63,8 +64,8 @@ data class CreateForm(
                 dewPoint = dewPoint!!,
                 windChill = windChill!!,
                 humidity = humidity!!,
-                heatIndex = heatIndex!!
-        )
+                heatIndex = heatIndex!!,
+                timeCaptured = timeCaptured!!)
     }
     /**
      * Makes sure the required fields are not null

@@ -37,7 +37,9 @@ data class WeatherData (
         @Column(name = "humidity", nullable = false)
         var humidity: Float?,
         @Column(name = "heat_index", nullable = false)
-        var heatIndex: Float?
+        var heatIndex: Float?,
+        @Column(name = "time_captured", nullable = false)
+        var timeCaptured: Int?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

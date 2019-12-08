@@ -35,8 +35,8 @@ internal class WeatherDataRetrieveControllerTest : BaseWeatherDataRestController
 
         user = testUtil.createUser("samplestudent@ycp.edu")
 
-        testUtil.createWeatherDataRecord(100.0000f, 100.0000f, "N", 100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f)
-        testUtil.createWeatherDataRecord(100.0000f, 100.0000f, "N", 100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f)
+        testUtil.createWeatherDataRecord(100.0000f, 100.0000f, "N", 100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f, 1)
+        testUtil.createWeatherDataRecord(100.0000f, 100.0000f, "N", 100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f,100.0000f, 1)
     }
 
     @Test

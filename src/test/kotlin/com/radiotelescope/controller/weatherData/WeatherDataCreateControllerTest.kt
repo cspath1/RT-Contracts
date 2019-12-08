@@ -34,7 +34,8 @@ internal class WeatherDataCreateControllerTest : BaseWeatherDataRestControllerTe
             dewPoint = 100.0000f,
             windChill = 100.0000f,
             humidity = 100.0000f,
-            heatIndex = 100.0000f
+            heatIndex = 100.0000f,
+            timeCaptured = 1
     )
 
     @Before

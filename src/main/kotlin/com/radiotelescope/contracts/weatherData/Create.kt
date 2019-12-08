@@ -111,7 +111,8 @@ class Create (
             val dewPoint: Float?,
             val windChill: Float?,
             val humidity: Float?,
-            val heatIndex: Float?
+            val heatIndex: Float?,
+            val timeCaptured: Int?
     ) : BaseCreateRequest<WeatherData>{
         override fun toEntity(): WeatherData{
             return WeatherData(
@@ -128,7 +129,8 @@ class Create (
                     dewPoint = dewPoint,
                     windChill = windChill,
                     humidity = humidity,
-                    heatIndex = heatIndex
+                    heatIndex = heatIndex,
+                    timeCaptured = timeCaptured
             )
         }
     }
