@@ -38,4 +38,5 @@
     <include file="classpath:/db/changelog/33-add-update-timestamp-all.sql"/>
     <include file="classpath:/db/changelog/34-update-video-file-table.sql"/>
     <include file="classpath:/db/changelog/35-create-spectracyber-config-table.sql"/>
+    <include file="classpath:/db/changelog/36-update-user-roles.sql"/>
 </databaseChangeLog>
