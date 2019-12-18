@@ -7,7 +7,7 @@ mkdir api-docs
 cd api-docs
 
 # Clone the project in the temp folder
-git clone git@github.com:cspath1/RT-Contracts.git
+git clone git@github.com:YCPRadioTelescope/RT-Contracts.git
 cd RT-Contracts
 
 # Go to the GitHub pages branch
