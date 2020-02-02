@@ -306,7 +306,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         firstName = "Rathana",
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
-                        company = "York College of Pennsylvania"
+                        company = "York College of Pennsylvania",
+                        profilePicture = "rathanapic.jpg"
                 )
         ){
             id = it.success!!
@@ -330,7 +331,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         firstName = "Rathana",
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
-                        company = "York College of Pennsylvania"
+                        company = "York College of Pennsylvania",
+                        profilePicture = "rathanapic.jpg"
                 )
         ){
             id = it.success!!
@@ -353,7 +355,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         firstName = "Rathana",
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
-                        company = "York College of Pennsylvania"
+                        company = "York College of Pennsylvania",
+                        profilePicture = "rathanapic.jpg"
                 )
         ) {
             fail("Should fail on precondition")
@@ -375,7 +378,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         firstName = "Rathana",
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
-                        company = "York College of Pennsylvania"
+                        company = "York College of Pennsylvania",
+                        profilePicture = "rathanapic.jpg"
                 )
         ){
             fail("Should fail on precondition")
@@ -395,7 +399,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         firstName = "Codiferous",
                         lastName = "Spath",
                         phoneNumber = "717-823-2216",
-                        company = "Business, None of Your, Inc."
+                        company = "Business, None of Your, Inc.",
+                        profilePicture = "codypic.jpg"
                 )
         ) {
             fail("Should fail on precondition")
