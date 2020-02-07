@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset jhorne:87
+-- changeset jhorne:88
 ALTER TABLE appointment
 ADD spectracyber_config_id INT(11) NOT NULL AFTER orientation_id;
 
