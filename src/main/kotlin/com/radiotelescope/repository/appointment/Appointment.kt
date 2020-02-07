@@ -3,6 +3,7 @@ package com.radiotelescope.repository.appointment
 import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.orientation.Orientation
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
@@ -49,6 +50,10 @@ data class Appointment(
     @ManyToOne
     @JoinColumn(name = "celestial_body_id")
     var celestialBody: CelestialBody? = null
+
+    @OneToOne
+    @JoinColumn(name = "spectracyber_config_id")
+    var spectracyberConfig: SpectracyberConfig? = null
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
