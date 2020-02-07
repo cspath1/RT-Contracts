@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset jhorne:88
+-- changeset jhorne:89
 CREATE TABLE thresholds (
     id INT(11) NOT NULL AUTO_INCREMENT,
     wind INT(11) NOT NULL,
