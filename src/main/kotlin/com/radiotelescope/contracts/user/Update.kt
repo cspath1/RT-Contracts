@@ -81,7 +81,8 @@ class Update(
             val firstName: String,
             val lastName: String,
             val phoneNumber: String?,
-            val company: String?
+            val company: String?,
+            val profilePicture: String?
     ) : BaseUpdateRequest<User> {
         /**
          * Override of the [BaseUpdateRequest.updateEntity] method that will take
@@ -93,6 +94,7 @@ class Update(
             entity.lastName = lastName
             entity.phoneNumber = phoneNumber
             entity.company = company
+            entity.profilePicture = profilePicture
 
             return entity
         }

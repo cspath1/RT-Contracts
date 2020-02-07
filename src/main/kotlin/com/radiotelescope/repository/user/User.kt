@@ -31,6 +31,9 @@ data class User(
     @Column(name = "phone_number")
     var phoneNumber: String? = null
 
+    @Column(name = "profile_picture")
+    var profilePicture: String? = null
+
     @Column(name = "active")
     var active: Boolean = false
 

@@ -40,4 +40,7 @@
     <include file="classpath:/db/changelog/35-create-spectracyber-config-table.sql"/>
     <include file="classpath:/db/changelog/36-create-telescope-log-table.sql"/>
     <include file="classpath:/db/changelog/37-add-time-captured-appointment-temp.sql"/>
+    <include file="classpath:/db/changelog/38-update-user-profile-picture.sql"/>
+    <include file="classpath:/db/changelog/39-spectracyber-relation-appointment.sql"/>
+    <include file="classpath:/db/changelog/40-create-sensor-thresholds.sql"/>
 </databaseChangeLog>

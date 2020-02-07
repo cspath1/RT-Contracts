@@ -12,7 +12,8 @@ class UpdateFormTest {
             firstName = "Rathana",
             lastName = "Pim",
             phoneNumber = "717-555-1111",
-            company = "York College of PA"
+            company = "York College of PA",
+            profilePicture = "rathanapic.jpg"
     )
 
     @Test

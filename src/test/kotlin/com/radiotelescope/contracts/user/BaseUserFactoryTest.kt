@@ -114,7 +114,8 @@ internal class BaseUserFactoryTest : AbstractSpringTest() {
                         firstName = "Cody",
                         lastName = "Spath",
                         phoneNumber = "717-823-2216",
-                        company = "York College of Pennsylvania"
+                        company = "York College of Pennsylvania",
+                        profilePicture = "codypic.jpg"
                 )
         )
 
