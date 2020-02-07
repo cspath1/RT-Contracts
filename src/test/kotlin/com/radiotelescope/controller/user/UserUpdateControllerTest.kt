@@ -46,7 +46,8 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 firstName = "firstname",
                 lastName = "lastname",
                 company = "company",
-                phoneNumber = "0001112222"
+                phoneNumber = "0001112222",
+                profilePicture = "firstnamepic.jpg"
         )
     }
 

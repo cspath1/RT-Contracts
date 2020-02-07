@@ -45,7 +45,8 @@ internal class UpdateTest : AbstractSpringTest() {
                     firstName = "Evil",
                     lastName = "Twin",
                     phoneNumber = "717-000-0000",
-                    company = "Evil Twin Company"
+                    company = "Evil Twin Company",
+                    profilePicture = "eviltwinpic.jpg"
             ),
             userRepo = userRepo
         ).execute()
@@ -66,7 +67,8 @@ internal class UpdateTest : AbstractSpringTest() {
                         firstName = "",
                         lastName = "Twin",
                         phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
+                        company = "Evil Twin Company",
+                        profilePicture = "eviltwinpic.jpg"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -86,7 +88,8 @@ internal class UpdateTest : AbstractSpringTest() {
                         firstName = "Evil".repeat(50),
                         lastName = "Twin",
                         phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
+                        company = "Evil Twin Company",
+                        profilePicture = "eviltwinpic.jpg"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -106,7 +109,8 @@ internal class UpdateTest : AbstractSpringTest() {
                         firstName = "Evil",
                         lastName = "",
                         phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
+                        company = "Evil Twin Company",
+                        profilePicture = "eviltwinpic.jpg"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -126,7 +130,8 @@ internal class UpdateTest : AbstractSpringTest() {
                         firstName = "Evil",
                         lastName = "Twin".repeat(50),
                         phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
+                        company = "Evil Twin Company",
+                        profilePicture = "eviltwinpic.jpg"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -146,7 +151,8 @@ internal class UpdateTest : AbstractSpringTest() {
                         firstName = "Evil",
                         lastName = "Twin",
                         phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
+                        company = "Evil Twin Company",
+                        profilePicture = "eviltwinpic.jpg"
                 ),
                 userRepo = userRepo
         ).execute()

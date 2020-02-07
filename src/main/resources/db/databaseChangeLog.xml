@@ -39,5 +39,6 @@
     <include file="classpath:/db/changelog/34-update-video-file-table.sql"/>
     <include file="classpath:/db/changelog/35-create-spectracyber-config-table.sql"/>
     <include file="classpath:/db/changelog/36-update-user-roles.sql"/>
+    <include file="classpath:/db/changelog/38-update-user-profile-picture.sql"/>
     <include file="classpath:/db/changelog/40-create-sensor-thresholds.sql"/>
 </databaseChangeLog>
