@@ -11,6 +11,8 @@ CREATE TABLE thresholds (
     az_motor_current INT(11) NOT NULL,
     elev_motor_current INT(11) NOT NULL,
     counter_balance_vibration FLOAT(7, 4) NOT NULL,
+    insert_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
+    update_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
 
     PRIMARY KEY (id)
 );
