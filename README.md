@@ -64,16 +64,17 @@ The steps needed to install via Linux are as follows:
 8. After choosing your preferences, verify your installation using your JetBrains account 
 
 #### Mac Setup
-**CURRENTLY UNKNOWN**
+1.  Download the disk image (DMG)
+2.  Mount the disk image and follow the installation instructions
 
 ### Gradle Setup
 
 #### Windows Setup
 For Windows users, you should be able to follow the steps [here](https://gradle.org/install) to install Gradle.
 
-#### Linux Setup
-If you are using Linux, it is highly recommended to [install SDKMAN](https://sdkman.io/), which allows you
-to then easily install Gradle using SDKMAN. The list of steps to install Gradle on linux are:
+#### Mac and Linux Setup
+If you are using Mac or Linux, it is highly recommended to [install SDKMAN](https://sdkman.io/), which allows you
+to then easily install Gradle using SDKMAN. The list of steps to install Gradle on Mac and Linux are:
 
 1. Install SDKMAN (curl -s “https://get.sdkman.io” | bash)
 2. Initialize SDKMAN (source "$HOME/.sdkman/bin/sdkman-init.sh")
@@ -82,9 +83,6 @@ to then easily install Gradle using SDKMAN. The list of steps to install Gradle 
     1. Note: This will install the most recent version
     2. To install a specific version, supply the version (sdk install gradle 4.7)
 5. Verify the installation was a success (gradle -v)
-
-#### Mac Setup
-**CURRENTLY UNKNOWN**
 
 ### Install MySQL
 
@@ -101,7 +99,11 @@ If you are using linux, do the following:
 Verify your credentials (mysql -u root -p). This will prompt you to enter the password you entered in step 4.
 
 #### Mac Setup
-**CURRENTLY UNKNOWN**
+1.  Download disk image (DMG) from dev.mysql.com/downloads/mysql/
+2.  Mount the disk image and follow the installer instructions
+3.  In the terminal, change the directory to the MySQL folder (cd /usr/local/mysql)
+4.  Run the secure installation (sudo bin/mysql_secure_installation) and follow the setup
+5.  To start running MySQL, open your Mac's System Preferences and open the application near the bottom of the window.  There will be a button to start the server.
 
 ### Initialize Database in IntelliJ
 
