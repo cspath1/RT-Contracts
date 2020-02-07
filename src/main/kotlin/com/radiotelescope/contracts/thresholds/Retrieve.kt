@@ -26,7 +26,8 @@ class Retrieve (
      * it will return an error in the [SimpleResult].
      */
     override fun execute(): SimpleResult<Thresholds, Multimap<ErrorTag, String>> {
-        if (thresholdsRepo.findAll().first() == null) {
+        // should never happen
+        if (thresholdsRepo.findAll().count() == 0) {
             val errors = HashMultimap.create<ErrorTag, String>()
             errors.put(ErrorTag.ID, "Sensor thresholds not found")
             return SimpleResult(null, errors)

@@ -25,7 +25,7 @@ data class Thresholds (
         @Column(name = "elev_motor_current", nullable = false)
         var elevMotorCurrent: Int?,
         @Column(name = "counter_balance_vibration", nullable = false)
-        var counterBalanceVibration: Int?
+        var counterBalanceVibration: Double?
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

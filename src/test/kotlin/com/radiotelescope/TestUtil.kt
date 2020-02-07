@@ -25,6 +25,7 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.sensorStatus.ISensorStatusRepository
 import com.radiotelescope.repository.sensorStatus.SensorStatus
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
+import com.radiotelescope.repository.thresholds.IThresholdsRepository
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
@@ -95,6 +96,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var weatherDataRepo: IWeatherDataRepository
+
+    @Autowired
+    private lateinit var thresholdsRepo: IThresholdsRepository
 
     fun createUser(email: String): User {
         val user = User(
