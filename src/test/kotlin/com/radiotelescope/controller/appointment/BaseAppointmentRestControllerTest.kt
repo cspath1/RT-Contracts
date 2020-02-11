@@ -13,6 +13,7 @@ import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
@@ -46,6 +47,9 @@ internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTe
 
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
+
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
     // These will both be needed in all appointment
     // controller tests, so instantiate them here
@@ -91,7 +95,8 @@ internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTe
                         celestialBodyRepo = celestialBodyRepo,
                         coordinateRepo = coordinateRepo,
                         orientationRepo = orientationRepo,
-                        allottedTimeCapRepo = allottedTimeCapRepo
+                        allottedTimeCapRepo = allottedTimeCapRepo,
+                        spectracyberConfigRepo = spectracyberConfigRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo

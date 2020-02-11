@@ -14,6 +14,8 @@ import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepos
 import com.radiotelescope.repository.rfdata.IRFDataRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.sensorStatus.ISensorStatusRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
@@ -65,5 +67,6 @@ class RepositoryBeans(
         val loginAttemptRepo: ILoginAttemptRepository,
         val videoFileRepo: IVideoFileRepository,
         val weatherDataRepo: IWeatherDataRepository,
-        val sensorStatusRepo: ISensorStatusRepository
+        val sensorStatusRepo: ISensorStatusRepository,
+        val spectracyberConfigRepo: ISpectracyberConfigRepository
 )

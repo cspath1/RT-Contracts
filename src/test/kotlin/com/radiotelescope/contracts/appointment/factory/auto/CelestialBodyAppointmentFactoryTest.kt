@@ -11,6 +11,7 @@ import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.assertTrue
@@ -49,6 +50,9 @@ internal class CelestialBodyAppointmentFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
+
     private lateinit var factory: CelestialBodyAppointmentFactory
 
     @Before
@@ -61,7 +65,8 @@ internal class CelestialBodyAppointmentFactoryTest : AbstractSpringTest() {
                 celestialBodyRepo = celestialBodyRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
     }
 

@@ -11,6 +11,7 @@ import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -48,6 +49,9 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
     private val baseRequest = CelestialBodyAppointmentCreate.Request(
             userId = -1L,
@@ -114,7 +118,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -156,7 +161,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -188,7 +194,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -221,7 +228,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -257,7 +265,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -293,7 +302,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -335,7 +345,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -383,7 +394,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
