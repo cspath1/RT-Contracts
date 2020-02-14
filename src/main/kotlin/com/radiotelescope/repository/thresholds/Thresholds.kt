@@ -10,25 +10,25 @@ import javax.persistence.*
 @Entity
 @Table(name = "thresholds")
 data class Thresholds (
-        @Column(name = "wind", nullable = false)
-        var wind: Int?,
-        @Column(name = "az_motor_temp", nullable = false)
-        var azMotorTemp: Int?,
-        @Column(name = "elev_motor_temp", nullable = false)
-        var elevMotorTemp: Int?,
-        @Column(name = "az_motor_vibration", nullable = false)
-        var azMotorVibration: Int?,
-        @Column(name = "elev_motor_vibration", nullable = false)
-        var elevMotorVibration: Int?,
-        @Column(name = "az_motor_current", nullable = false)
-        var azMotorCurrent: Int?,
-        @Column(name = "elev_motor_current", nullable = false)
-        var elevMotorCurrent: Int?,
-        @Column(name = "counter_balance_vibration", nullable = false)
-        var counterBalanceVibration: Double?
+        @Column(name = "sensor_name", nullable = false)
+        @Enumerated(value = EnumType.STRING)
+        var sensorName: Name,
+        @Column(name = "maximum", nullable = false)
+        var maximum: Double
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
+
+    enum class Name(val label: String) {
+        WIND("Wind"),
+        AZ_MOTOR_TEMP("Azimuth Motor Temperature"),
+        ELEV_MOTOR_TEMP("Elevation Motor Temperature"),
+        AZ_MOTOR_VIBRATION("Azimuth Motor Vibration"),
+        ELEV_MOTOR_VIBRATION("Elevation Motor Vibration"),
+        AZ_MOTOR_CURRENT("Azimuth Motor Current"),
+        ELEV_MOTOR_CURRENT("Elevation Motor Current"),
+        COUNTER_BALANCE_VIBRATION("Counter Balance Vibration")
+    }
 }
