@@ -17,7 +17,6 @@ import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
-import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 

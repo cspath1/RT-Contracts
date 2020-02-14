@@ -12,6 +12,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -54,7 +55,10 @@ class CelestialBodyAppointmentCreate(
             val theCelestialBody = celestialBodyRepo.findById(request.celestialBodyId).get()
             theAppointment.celestialBody = theCelestialBody
 
-
+            // Insert a new SpectracyberConfig record into the database related to the appointment
+            val theSpectracyberConfig = SpectracyberConfig(1, 1, 1.0, 1.0, 1, 1)
+            spectracyberConfigRepo.save(theSpectracyberConfig)
+            theAppointment.spectracyberConfig = theSpectracyberConfig
 
             theAppointment.user = userRepo.findById(request.userId).get()
 
