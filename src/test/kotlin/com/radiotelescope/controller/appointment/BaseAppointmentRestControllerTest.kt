@@ -148,7 +148,8 @@ internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTe
                         radioTelescopeRepo = radioTelescopeRepo,
                         allottedTimeCapRepo = allottedTimeCapRepo,
                         orientationRepo = orientationRepo,
-                        coordinateRepo = coordinateRepo
+                        coordinateRepo = coordinateRepo,
+                        spectracyberConfigRepo = spectracyberConfigRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo

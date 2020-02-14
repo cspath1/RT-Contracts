@@ -174,7 +174,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
                         orientationRepo = repositories.orientationRepo,
-                        coordinateRepo = repositories.coordinateRepo
+                        coordinateRepo = repositories.coordinateRepo,
+                        spectracyberConfigRepo = repositories.spectracyberConfigRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
