@@ -13,6 +13,8 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -35,7 +37,8 @@ class RasterScanAppointmentCreate(
         private val userRoleRepo: IUserRoleRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val coordinateRepo: ICoordinateRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val spectracyberConfigRepo: ISpectracyberConfigRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -56,6 +59,11 @@ class RasterScanAppointmentCreate(
             }
 
             theAppointment.user = userRepo.findById(request.userId).get()
+
+            // Insert a new SpectracyberConfig record into the database related to the appointment
+            val theSpectracyberConfig = SpectracyberConfig(1, 1, 1.0, 1.0, 1, 1)
+            spectracyberConfigRepo.save(theSpectracyberConfig)
+            theAppointment.spectracyberConfig = theSpectracyberConfig
 
             // "Raster Scan" appointments will have (for now) two Coordinates
             theAppointment.coordinateList = theCoordinates

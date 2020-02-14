@@ -9,6 +9,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -43,6 +44,9 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
+
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
     private var coordinateRequestOne = CoordinateRequest(
             hours = 12,
@@ -104,7 +108,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -130,6 +135,10 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
             assertNotNull(it.appointment)
             assertEquals(theAppointment.get().id, it.appointment!!.id)
         }
+
+        // Make sure the spectracyber configuration record was persisted
+        val theSpectracyberConfig = spectracyberConfigRepo.findById(theAppointment.get().spectracyberConfig!!.id)
+        assertNotNull(theSpectracyberConfig)
     }
 
     @Test
@@ -161,7 +170,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -211,7 +221,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -243,7 +254,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -278,7 +290,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -310,7 +323,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -351,7 +365,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -398,7 +413,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -434,7 +450,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -470,7 +487,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -506,7 +524,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -542,7 +561,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -578,7 +598,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -614,7 +635,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -651,7 +673,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -687,7 +710,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -719,7 +743,8 @@ internal class RasterScanAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
