@@ -14,6 +14,7 @@ import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -57,6 +58,9 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
+
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
     private lateinit var user: User
     private lateinit var admin: User
@@ -137,7 +141,8 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
 
         wrapper = BaseUserAppointmentWrapper(

@@ -13,6 +13,7 @@ import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -55,6 +56,9 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
+
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
     private val baseCreateRequest = CoordinateAppointmentCreate.Request(
             userId = -1L,
@@ -159,7 +163,8 @@ internal class UserAutoAppointmentWrapperTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
 
         wrapper = UserAutoAppointmentWrapper(

@@ -12,6 +12,7 @@ import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -84,6 +85,15 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
         )
         coordinateRepo.save(coordinate)
 
+        val spectracyberConfig = SpectracyberConfig(
+                mode = 1,
+                integrationTime = 1,
+                offsetVoltage = 1.0,
+                IFGain = 1.0,
+                DCGain = 1,
+                bandwidth = 1
+        )
+
         celestialBody = testUtil.createCelestialBody(
                 name = "Crab Nebula",
                 coordinate = coordinate
@@ -136,6 +146,10 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
         assertEquals(requestCopy.userId, theAppointment.user.id)
         assertTrue(theAppointment.isPublic)
         assertEquals(Appointment.Type.CELESTIAL_BODY, theAppointment.type)
+
+        // Make sure the spectracyber configuration record was persisted
+        val theSpectracyberConfig = spectracyberConfigRepo.findById(theAppointment.spectracyberConfig!!.id)
+        assertNotNull(theSpectracyberConfig)
     }
 
     @Test
