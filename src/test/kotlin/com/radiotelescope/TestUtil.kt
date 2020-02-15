@@ -24,6 +24,8 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.sensorStatus.ISensorStatusRepository
 import com.radiotelescope.repository.sensorStatus.SensorStatus
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.thresholds.IThresholdsRepository
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
@@ -99,6 +101,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var thresholdsRepo: IThresholdsRepository
+
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -640,5 +645,9 @@ internal class TestUtil {
             weatherStation: Int
     ): SensorStatus {
         return sensorStatusRepo.save(SensorStatus(gate, proximity, azimuthMotor, elevationMotor, weatherStation))
+    }
+
+    fun createDefaultSpectracyberConfig() : SpectracyberConfig {
+        return spectracyberConfigRepo.save(SpectracyberConfig(SpectracyberConfig.Mode.SPECTRAL, 0.3, 0.0, 10.0, 1, 1200))
     }
 }

@@ -25,7 +25,7 @@ internal class UpdateTest : AbstractSpringTest() {
     private var otherUserId = -1L
 
     @Before
-    fun init(){
+    fun init() {
         // Persist the users
         user = testUtil.createUser("rpim@ycp.edu")
         otherUser = testUtil.createUser("rpim1@ycp.edu")

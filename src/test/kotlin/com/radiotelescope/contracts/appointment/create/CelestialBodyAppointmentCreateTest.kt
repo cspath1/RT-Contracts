@@ -85,15 +85,6 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
         )
         coordinateRepo.save(coordinate)
 
-        val spectracyberConfig = SpectracyberConfig(
-                mode = 1,
-                integrationTime = 1,
-                offsetVoltage = 1.0,
-                IFGain = 1.0,
-                DCGain = 1,
-                bandwidth = 1
-        )
-
         celestialBody = testUtil.createCelestialBody(
                 name = "Crab Nebula",
                 coordinate = coordinate

@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable
 
 /**
  * Wrapper that takes a [VideoFileFactory] and is responsible for all
- * user role validations for the Feedback Entity
+ * user role validations for the VideoFile Entity
  *
  * @property context the [UserContext] interface
  * @property factory the [VideoFileFactory] interface
