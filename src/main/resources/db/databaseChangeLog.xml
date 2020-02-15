@@ -43,4 +43,5 @@
     <include file="classpath:/db/changelog/38-update-user-profile-picture.sql"/>
     <include file="classpath:/db/changelog/39-spectracyber-relation-appointment.sql"/>
     <include file="classpath:/db/changelog/40-create-sensor-thresholds.sql"/>
+    <include file="classpath:/db/changelog/41-update-spectracyber-config-mode.sql"/>
 </databaseChangeLog>

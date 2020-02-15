@@ -57,7 +57,7 @@ class CoordinateAppointmentCreate(
             theAppointment.user = userRepo.findById(request.userId).get()
 
             // Insert a new SpectracyberConfig record into the database related to the appointment
-            val theSpectracyberConfig = SpectracyberConfig(1, 1, 1.0, 1.0, 1, 1)
+            val theSpectracyberConfig = SpectracyberConfig(SpectracyberConfig.Mode.SPECTRAL, 0.3, 0.0, 10.0, 1, 1200)
             spectracyberConfigRepo.save(theSpectracyberConfig)
             theAppointment.spectracyberConfig = theSpectracyberConfig
 

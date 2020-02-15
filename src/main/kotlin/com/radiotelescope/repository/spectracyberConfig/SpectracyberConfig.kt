@@ -12,9 +12,10 @@ import javax.persistence.*
 @Table(name = "spectracyber_config")
 data class SpectracyberConfig(
         @Column(name = "mode", nullable = false)
-        var mode: Int,
+        @Enumerated(value = EnumType.STRING)
+        var mode: Mode,
         @Column(name = "integration_time", nullable = false)
-        var integrationTime: Int,
+        var integrationTime: Double,
         @Column(name = "offset_voltage", nullable = false)
         var offsetVoltage: Double,
         @Column(name = "IF_GAIN", nullable = false)
@@ -29,7 +30,14 @@ data class SpectracyberConfig(
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
 
-    @Column(name = "insert_timestamp", nullable = false)
+    enum class Mode(val label: String) {
+        UNKNOWN("Unknown"),
+        CONTINUUM("Continuum"),
+        SPECTRAL("Spectral")
+    }
+
+
+        @Column(name = "insert_timestamp", nullable = false)
     var recordCreatedTimestamp: Date = Date()
 
     @Column(name = "update_timestamp", nullable = true)
