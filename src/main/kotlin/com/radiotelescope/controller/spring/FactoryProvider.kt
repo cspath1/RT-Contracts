@@ -12,6 +12,7 @@ import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWra
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
+import com.radiotelescope.contracts.spectracyberConfig.UserSpectracyberConfigWrapper
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
@@ -118,7 +119,12 @@ interface FactoryProvider {
     fun getAllottedTimeCapWrapper(): UserAllottedTimeCapWrapper
 
     /**
-     * Abstract method to return the [UserWeatherDataWrapper]  class
+     * Abstract method to return the [UserWeatherDataWrapper] class
      */
     fun getWeatherDataWrapper(): UserWeatherDataWrapper
+
+    /**
+     * Abstract method to return the [UserSpectracyberConfigWrapper] class
+     */
+    fun getSpectracyberConfigWrapper(): UserSpectracyberConfigWrapper
 }
