@@ -15,4 +15,12 @@ interface SpectracyberConfigFactory {
      * @return a [Command] object
      */
     fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve a [SpectracyberConfig] object
+     *
+     * @param spectracyberConfigId the id of the [SpectracyberConfig] to retrieve
+     * @return a [Command] object
+     */
+    fun retrieve(spectracyberConfigId: Long): Command<SpectracyberConfig, Multimap<ErrorTag, String>>
 }

@@ -23,7 +23,7 @@ class SpectracyberConfigUpdateController(
 ) : BaseRestController(logger) {
 
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PutMapping(value = ["/api/spectracyberConfig/{userId}"])
+    @PutMapping(value = ["/api/appointments/{userId}/spectracyberConfig"])
     fun execute(@PathVariable("userId") userId: Long,
                 @RequestBody form: UpdateForm): Result {
         form.validateRequest()?.let {

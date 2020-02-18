@@ -3,7 +3,6 @@ package com.radiotelescope.controller.spectracyberConfig
 import com.radiotelescope.contracts.spectracyberConfig.BaseSpectracyberConfigFactory
 import com.radiotelescope.contracts.spectracyberConfig.UserSpectracyberConfigWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
-import com.radiotelescope.controller.model.spectracyberConfig.UpdateForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
@@ -20,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest() {
+internal class SpectracyberConfigRetrieveControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
 
@@ -30,10 +29,8 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
     @Autowired
     private lateinit var userRepo: IUserRepository
 
-    private lateinit var spectracyberConfigUpdateController: SpectracyberConfigUpdateController
+    private lateinit var spectracyberConfigRetrieveController: SpectracyberConfigRetrieveController
 
-    private lateinit var baseForm: UpdateForm
-    private lateinit var updateForm: UpdateForm
     private lateinit var user: User
 
     private var userContext = getContext()
@@ -42,7 +39,7 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
     override fun init() {
         super.init()
 
-        spectracyberConfigUpdateController = SpectracyberConfigUpdateController(
+        spectracyberConfigRetrieveController = SpectracyberConfigRetrieveController(
                 spectracyberConfigWrapper = UserSpectracyberConfigWrapper(
                         context = userContext,
                         factory = BaseSpectracyberConfigFactory(
@@ -57,30 +54,16 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
         // simulate a login
         userContext.login(user.id)
         userContext.currentRoles.add(UserRole.Role.USER)
-
-        baseForm = UpdateForm(
-                id = 1,
-                mode = "CONTINUUM",
-                integrationTime = 0.4,
-                offsetVoltage = 0.1,
-                IFGain = 11.0,
-                DCGain = 2,
-                bandwidth = 1300
-        )
     }
 
     @Test
     fun testUserResponseOwnRecord_Success() {
         testUtil.createDefaultSpectracyberConfig()
 
-        // set the update form to the newest entry in the repo
-        // ensures grabbing correct record id
-        updateForm = baseForm.copy(id = spectracyberConfigRepo.findAll().first().id)
-
-        // update the spectracyber config record
-        val result = spectracyberConfigUpdateController.execute(
+        // retrieve the spectracyber config record
+        val result = spectracyberConfigRetrieveController.execute(
                 userId = user.id,
-                form = updateForm
+                spectracyberConfigId = spectracyberConfigRepo.findAll().first().id
         )
 
         assertNotNull(result)
@@ -100,12 +83,10 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
         testUtil.createDefaultSpectracyberConfig()
         testUtil.createDefaultSpectracyberConfig()
 
-        updateForm = baseForm.copy(id = spectracyberConfigRepo.findAll().first().id)
-
-        // attempt to update the spectracyber config record
-        val result = spectracyberConfigUpdateController.execute(
+        // attempt to retrieve the spectracyber config record
+        val result = spectracyberConfigRetrieveController.execute(
                 userId = user.id + 1,
-                form = updateForm
+                spectracyberConfigId = spectracyberConfigRepo.findAll().first().id
         )
 
         assertNotNull(result)
@@ -129,12 +110,10 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
         testUtil.createDefaultSpectracyberConfig()
         testUtil.createDefaultSpectracyberConfig()
 
-        updateForm = baseForm.copy(id = spectracyberConfigRepo.findAll().first().id)
-
-        // attempt to update the spectracyber config record
-        val result = spectracyberConfigUpdateController.execute(
+        // retrieve the spectracyber config record
+        val result = spectracyberConfigRetrieveController.execute(
                 userId = user.id + 1,
-                form = updateForm
+                spectracyberConfigId = spectracyberConfigRepo.findAll().first().id
         )
 
         assertNotNull(result)
@@ -151,13 +130,15 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
 
     @Test
     fun testValidForm_FailedAuthenticationResponse() {
+        testUtil.createDefaultSpectracyberConfig()
+
         // log the user out
         userContext.logout()
 
-        // update the spectracyber config record
-        val result = spectracyberConfigUpdateController.execute(
+        // attempt to retrieve the spectracyber config record
+        val result = spectracyberConfigRetrieveController.execute(
                 userId = user.id,
-                form = baseForm
+                spectracyberConfigId = spectracyberConfigRepo.findAll().first().id
         )
 
         assertNotNull(result)
