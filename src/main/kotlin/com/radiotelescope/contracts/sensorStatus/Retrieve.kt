@@ -29,7 +29,7 @@ class Retrieve (
     override fun execute(): SimpleResult<SensorStatus, Multimap<ErrorTag, String>> {
         if(!sensorStatusRepo.existsById(sensorStatusId)) {
             val errors = HashMultimap.create<ErrorTag, String>()
-            errors.put(ErrorTag.ID, "Appointment Id #$sensorStatusId not found")
+            errors.put(ErrorTag.ID, "Sensor Status Id #$sensorStatusId not found")
             return SimpleResult(null, errors)
         }
 

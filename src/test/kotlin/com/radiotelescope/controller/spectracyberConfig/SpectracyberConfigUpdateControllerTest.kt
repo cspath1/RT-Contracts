@@ -151,4 +151,29 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
             assertEquals(HttpStatus.OK.value(), it.status)
         }
     }
+
+    @Test
+    fun testValidForm_FailedAuthenticationResponse() {
+        // log the user out
+        userContext.logout()
+
+        // update the spectracyber config record
+        val result = spectracyberConfigUpdateController.execute(
+                userId = user.id,
+                form = baseForm
+        )
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertNotNull(result.errors)
+        assertEquals(HttpStatus.FORBIDDEN, result.status)
+        assertEquals(1, result.errors!!.size)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
+        }
+    }
 }
