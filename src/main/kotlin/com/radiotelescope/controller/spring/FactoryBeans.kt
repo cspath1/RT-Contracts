@@ -392,7 +392,8 @@ class FactoryBeans(
                 context = userContext,
                 factory = BaseSpectracyberConfigFactory(
                         spectracyberConfigRepo = repositories.spectracyberConfigRepo
-                )
+                ),
+                userRepo = repositories.userRepo
         )
     }
 }

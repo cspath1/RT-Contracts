@@ -31,7 +31,7 @@ class UserSpectracyberConfigWrapper (
         if (context.currentUserId() != null) {
             val theUser = userRepo.findById(context.currentUserId()!!)
 
-            // If the user exists, they must have the same id as the to-be-deleted record
+            // If the user exists, they must have the same id as the to-be-updated record
             // or they must be an admin
             if (theUser.isPresent) {
                 return if (theUser.get().id == userId) {

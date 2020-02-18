@@ -53,7 +53,7 @@ class SpectracyberConfigUpdateController(
 
                     logger.createSuccessLog(
                             info = Logger.createInfo(
-                                    affectedTable = Log.AffectedTable.USER,
+                                    affectedTable = Log.AffectedTable.SPECTRACYBER_CONFIG,
                                     action = "Spectracyber Config Update",
                                     affectedRecordId = data,
                                     status = HttpStatus.OK.value()
@@ -65,7 +65,7 @@ class SpectracyberConfigUpdateController(
                     // Create error logs
                     logger.createErrorLogs(
                             info = Logger.createInfo(
-                                    affectedTable = Log.AffectedTable.USER,
+                                    affectedTable = Log.AffectedTable.SPECTRACYBER_CONFIG,
                                     action = "Spectracyber Config Update",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
@@ -82,7 +82,7 @@ class SpectracyberConfigUpdateController(
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.USER,
+                            affectedTable = Log.AffectedTable.SPECTRACYBER_CONFIG,
                             action = "Spectracyber Config Update",
                             affectedRecordId = null,
                             status = if (report.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
