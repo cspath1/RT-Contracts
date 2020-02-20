@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.junit4.SpringRunner
 
-
 @DataJpaTest
 @RunWith(SpringRunner::class)
 internal class VideoFileCreateControllerTest : BaseVideoFileRestControllerTest() {
