@@ -13,12 +13,12 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class RetrieveTest : AbstractSpringTest() {
+internal class UpdateTest : AbstractSpringTest() {
     @Autowired
     private lateinit var thresholdsRepo: IThresholdsRepository
 
     @Before
-    fun setUp() {
+    fun init() {
         // Persist the thresholds
         val sensorThreshold = Thresholds(
                 sensorName = Thresholds.Name.WIND,
@@ -29,11 +29,17 @@ internal class RetrieveTest : AbstractSpringTest() {
 
     @Test
     fun test_Success() {
-        // Execute the command
-        val (info, errors) = Retrieve(
-                thresholdsRepo = thresholdsRepo,
-                sensorName = Thresholds.Name.WIND.toString()
+        val (info, errors) = Update(
+                request = Update.Request(
+                        sensorName = Thresholds.Name.WIND.toString(),
+                        maximum = 40.0
+                ),
+                thresholdsRepo = thresholdsRepo
         ).execute()
+
+        print("\nInfo: " + thresholdsRepo.findAll() + "\n")
+
+        Assert.assertEquals(2, thresholdsRepo.findAll().count())
 
         // Make sure it was a success
         Assert.assertNull(errors)
