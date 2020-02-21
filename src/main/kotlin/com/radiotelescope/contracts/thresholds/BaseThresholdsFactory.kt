@@ -12,7 +12,7 @@ import com.radiotelescope.repository.thresholds.Thresholds
  */
 class BaseThresholdsFactory(
         private val thresholdsRepo: IThresholdsRepository,
-        private val sensorName: Thresholds.Name
+        private val sensorName: String
 ) : ThresholdsFactory {
 
     /**

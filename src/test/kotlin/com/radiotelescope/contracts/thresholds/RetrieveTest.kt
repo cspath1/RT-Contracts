@@ -32,8 +32,10 @@ internal class RetrieveTest : AbstractSpringTest() {
         // Execute the command
         val (info, errors) = Retrieve(
                 thresholdsRepo = thresholdsRepo,
-                sensorName = Thresholds.Name.WIND
+                sensorName = Thresholds.Name.WIND.toString()
         ).execute()
+
+        print("\nInfo: " + info + "\n")
 
         // Make sure it was a success
         Assert.assertNull(errors)

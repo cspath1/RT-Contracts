@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository
 @Repository
 interface IThresholdsRepository: PagingAndSortingRepository<Thresholds, Long> {
 
-    @Query(value = "SELECT * FROM thresholds where sensor_name = ?1 ORDER BY id DESC LIMIT 1",
+    @Query(value = "SELECT * " +
+            "FROM thresholds " +
+            "where sensor_name = ?1 ORDER BY id DESC LIMIT 1",
             nativeQuery = true
     )
     fun getMostRecentThresholdByName(sensorName: String): Thresholds
