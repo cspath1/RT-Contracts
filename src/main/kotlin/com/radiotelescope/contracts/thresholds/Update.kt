@@ -55,9 +55,6 @@ class Update (
         return errors
     }
 
-    /**
-     * @param SensorName the name of the sensor in the thresholds table
-     */
     data class Request(
             val sensorName: String,
             val maximum: Double

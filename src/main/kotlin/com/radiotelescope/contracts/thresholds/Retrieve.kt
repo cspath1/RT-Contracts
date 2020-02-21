@@ -9,9 +9,10 @@ import com.radiotelescope.repository.thresholds.Thresholds
 
 /**
  * Override of the [Command] interface method used to retrieve [Thresholds]
- * information
+ * information for one threshold
  *
  * @param thresholdsRepo the [IThresholdsRepository] interface
+ * @param sensorName the name of the sensor threshold to retrieve
  */
 class Retrieve (
         private val thresholdsRepo: IThresholdsRepository,
@@ -34,8 +35,14 @@ class Retrieve (
             return SimpleResult(null, errors)
         }
 
-        val theThresholds = thresholdsRepo.getMostRecentThresholdByName(sensorName)
+        // https://stackoverflow.com/questions/41844080/kotlin-how-to-check-if-enum-contains-a-given-string-without-messing-with-except
+        if (!Thresholds.Name.values().map { it.name }.contains(sensorName)) {
+            val errors = HashMultimap.create<ErrorTag, String>()
+            errors.put(ErrorTag.NAME, "Incorrect sensor name")
+            return SimpleResult(null, errors)
+        }
 
+        val theThresholds = thresholdsRepo.getMostRecentThresholdByName(sensorName)
         return SimpleResult(theThresholds, null)
     }
 }

@@ -7,10 +7,25 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.thresholds.IThresholdsRepository
 import com.radiotelescope.repository.thresholds.Thresholds
 
+/**
+ * Override of the [Command] interface method used to retrieve all
+ * [Thresholds] information
+ *
+ * @param thresholdsRepo the [IThresholdsRepository] interface
+ */
 class RetrieveList (
         private val thresholdsRepo: IThresholdsRepository
 ) : Command<List<Thresholds>, Multimap<ErrorTag, String>> {
 
+    /**
+     * Override of the [Command] execute method. It checks the database for
+     * each sensor by by executing the
+     * [IThresholdsRepository.getMostRecentThresholdByName] method on each
+     * sensor name.
+     *
+     * If the thresholds entries do not exist (should never happen),
+     * it will return an error in the [SimpleResult].
+     */
     override fun execute(): SimpleResult<List<Thresholds>, Multimap<ErrorTag, String>> {
         // should never happen
         if (thresholdsRepo.findAll().count() == 0) {

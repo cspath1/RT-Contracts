@@ -3,7 +3,7 @@ package com.radiotelescope.contracts.thresholds
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.thresholds.IThresholdsRepository
 import com.radiotelescope.repository.thresholds.Thresholds
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,7 +36,19 @@ internal class RetrieveTest : AbstractSpringTest() {
         ).execute()
 
         // Make sure it was a success
-        Assert.assertNull(errors)
-        Assert.assertNotNull(info)
+        assertNull(errors)
+        assertNotNull(info)
+    }
+
+    @Test
+    fun testIncorrectName_Failure() {
+        // Execute the command
+        val (info, errors) = Retrieve(
+                thresholdsRepo = thresholdsRepo,
+                sensorName = "The Firepod Pizza Oven"
+        ).execute()
+
+        assertNull(info)
+        assertNotNull(errors)
     }
 }
