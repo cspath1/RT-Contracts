@@ -15,6 +15,7 @@ import com.radiotelescope.repository.rfdata.IRFDataRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.sensorStatus.ISensorStatusRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
+import com.radiotelescope.repository.thresholds.IThresholdsRepository
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.videoFile.IVideoFileRepository
@@ -65,5 +66,6 @@ class RepositoryBeans(
         val loginAttemptRepo: ILoginAttemptRepository,
         val videoFileRepo: IVideoFileRepository,
         val weatherDataRepo: IWeatherDataRepository,
-        val sensorStatusRepo: ISensorStatusRepository
+        val sensorStatusRepo: ISensorStatusRepository,
+        val thresholdsRepo: IThresholdsRepository
 )

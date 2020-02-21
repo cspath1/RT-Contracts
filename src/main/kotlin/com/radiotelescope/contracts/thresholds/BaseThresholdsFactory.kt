@@ -11,8 +11,7 @@ import com.radiotelescope.repository.thresholds.Thresholds
  * @param thresholdsRepo the [IThresholdsRepository] interface
  */
 class BaseThresholdsFactory(
-        private val thresholdsRepo: IThresholdsRepository,
-        private val sensorName: String
+        private val thresholdsRepo: IThresholdsRepository
 ) : ThresholdsFactory {
 
     /**
@@ -21,7 +20,7 @@ class BaseThresholdsFactory(
      *
      * @return a [Retrieve] command object
      */
-    override fun retrieve(): Command<Thresholds, Multimap<ErrorTag, String>> {
+    override fun retrieve(sensorName: String): Command<Thresholds, Multimap<ErrorTag, String>> {
         return Retrieve (
                 thresholdsRepo = thresholdsRepo,
                 sensorName = sensorName

@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 class ThresholdsRetrieveController(
-        @Qualifier(value = "thresholdsWrapper")
         private val thresholdsWrapper: UserThresholdsWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
@@ -37,9 +36,9 @@ class ThresholdsRetrieveController(
      * will check whether or not this command was a success or not, responding
      * appropriately.
      */
-    @GetMapping(value = ["/api/thresholds/retrieve"])
-    fun execute(): Result {
-        thresholdsWrapper.retrieve() {
+    @GetMapping(value = ["/api/thresholds/{sensorName}/retrieve"])
+    fun execute(@PathVariable("sensorName") sensorName: String): Result {
+        thresholdsWrapper.retrieve(sensorName) {
             // If the command was a success
             it.success?.let { info ->
                 // Create success logs

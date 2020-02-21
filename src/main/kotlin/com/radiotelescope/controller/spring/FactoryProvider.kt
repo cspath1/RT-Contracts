@@ -12,6 +12,7 @@ import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWra
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
+import com.radiotelescope.contracts.thresholds.UserThresholdsWrapper
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
@@ -121,4 +122,9 @@ interface FactoryProvider {
      * Abstract method to return the [UserWeatherDataWrapper]  class
      */
     fun getWeatherDataWrapper(): UserWeatherDataWrapper
+
+    /**
+     * Abstract method to return the [UserThresholdsWrapper]  class
+     */
+    fun getThresholdsWrapper(): UserThresholdsWrapper
 }

@@ -19,5 +19,4 @@ interface IThresholdsRepository: CrudRepository<Thresholds, Long> {
             nativeQuery = true
     )
     fun getMostRecentThresholdByName(sensorName: String): Thresholds
-
 }

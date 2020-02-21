@@ -25,10 +25,10 @@ class UserThresholdsWrapper (
      * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
-    fun retrieve(withAccess: (result: SimpleResult<Thresholds, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+    fun retrieve(sensorName: String, withAccess: (result: SimpleResult<Thresholds, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.ADMIN),
-                successCommand = factory.retrieve()
+                successCommand = factory.retrieve(sensorName)
         ).execute(withAccess)
     }
 }

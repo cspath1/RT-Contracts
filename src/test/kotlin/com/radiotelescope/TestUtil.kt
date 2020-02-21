@@ -26,6 +26,7 @@ import com.radiotelescope.repository.sensorStatus.ISensorStatusRepository
 import com.radiotelescope.repository.sensorStatus.SensorStatus
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.thresholds.IThresholdsRepository
+import com.radiotelescope.repository.thresholds.Thresholds
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
@@ -640,5 +641,16 @@ internal class TestUtil {
             weatherStation: Int
     ): SensorStatus {
         return sensorStatusRepo.save(SensorStatus(gate, proximity, azimuthMotor, elevationMotor, weatherStation))
+    }
+
+    fun populateDefaultThresholds() {
+        thresholdsRepo.save(Thresholds(Thresholds.Name.WIND, 30.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.AZ_MOTOR_TEMP, 80.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.ELEV_MOTOR_TEMP, 80.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.AZ_MOTOR_VIBRATION, 1.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.ELEV_MOTOR_VIBRATION, 1.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.AZ_MOTOR_CURRENT, 6.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.ELEV_MOTOR_CURRENT, 6.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.COUNTER_BALANCE_VIBRATION, 0.42))
     }
 }

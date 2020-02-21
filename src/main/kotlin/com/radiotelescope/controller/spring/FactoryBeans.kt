@@ -25,6 +25,8 @@ import com.radiotelescope.contracts.role.BaseUserRoleFactory
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.contracts.sensorStatus.BaseSensorStatusFactory
 import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
+import com.radiotelescope.contracts.thresholds.BaseThresholdsFactory
+import com.radiotelescope.contracts.thresholds.UserThresholdsWrapper
 import com.radiotelescope.contracts.updateEmailToken.BaseUpdateEmailTokenFactory
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
@@ -376,6 +378,16 @@ class FactoryBeans(
                 context = userContext,
                 factory = BaseWeatherDataFactory(
                         weatherDataRepo = repositories.weatherDataRepo
+                )
+        )
+    }
+
+    @Bean
+    override fun getThresholdsWrapper(): UserThresholdsWrapper {
+        return UserThresholdsWrapper(
+                context = userContext,
+                factory = BaseThresholdsFactory(
+                        thresholdsRepo = repositories.thresholdsRepo
                 )
         )
     }
