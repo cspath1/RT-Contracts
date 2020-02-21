@@ -62,9 +62,9 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
                 id = 1,
                 mode = "CONTINUUM",
                 integrationTime = 0.4,
-                offsetVoltage = 0.1,
+                offsetVoltage = 0.4095,
                 IFGain = 11.0,
-                DCGain = 2,
+                DCGain = 5,
                 bandwidth = 1300
         )
     }
