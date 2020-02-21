@@ -20,24 +20,19 @@ internal class RetrieveTest : AbstractSpringTest() {
     @Before
     fun setUp() {
         // Persist the thresholds
-        val thresholds = Thresholds(
-                wind = 30,
-                azMotorTemp = 80,
-                elevMotorTemp = 80,
-                azMotorVibration = 1,
-                elevMotorVibration = 1,
-                azMotorCurrent = 6,
-                elevMotorCurrent = 6,
-                counterBalanceVibration = 0.42
+        val sensorThreshold = Thresholds(
+                sensorName = Thresholds.Name.WIND,
+                maximum = 30.0
         )
-        thresholdsRepo.save(thresholds)
+        thresholdsRepo.save(sensorThreshold)
     }
 
     @Test
     fun test_Success() {
         // Execute the command
         val (info, errors) = Retrieve(
-                thresholdsRepo = thresholdsRepo
+                thresholdsRepo = thresholdsRepo,
+                sensorName = Thresholds.Name.WIND
         ).execute()
 
         // Make sure it was a success

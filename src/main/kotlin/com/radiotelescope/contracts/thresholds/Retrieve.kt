@@ -14,13 +14,14 @@ import com.radiotelescope.repository.thresholds.Thresholds
  * @param thresholdsRepo the [IThresholdsRepository] interface
  */
 class Retrieve (
-        private val thresholdsRepo: IThresholdsRepository
+        private val thresholdsRepo: IThresholdsRepository,
+        private val sensorName: String
 ) : Command<Thresholds, Multimap<ErrorTag, String>> {
 
     /**
      * Override of the [Command] execute method. It checks the database for
-     * the single entry in the thresholds table using the [IThresholdsRepository.findAll]
-     * method.
+     * the last entry for a given sensor name by executing the
+     * [IThresholdsRepository.getMostRecentThresholdByName] method.
      *
      * If the thresholds entry does not exist (should never happen),
      * it will return an error in the [SimpleResult].
@@ -33,7 +34,7 @@ class Retrieve (
             return SimpleResult(null, errors)
         }
 
-        val theThresholds = thresholdsRepo.findAll().first()
+        val theThresholds = thresholdsRepo.getMostRecentThresholdByName(sensorName)
 
         return SimpleResult(theThresholds, null)
     }

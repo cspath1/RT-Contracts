@@ -60,6 +60,7 @@ data class Log(
         CELESTIAL_BODY("Celestial Body"),
         VIEWER("Viewer"),
         FEEDBACK("Feedback"),
-        WEATHER_DATA("Weather Data")
+        WEATHER_DATA("Weather Data"),
+        THRESHOLDS("Thresholds")
     }
 }
