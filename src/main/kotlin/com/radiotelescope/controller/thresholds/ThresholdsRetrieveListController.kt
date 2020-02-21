@@ -20,7 +20,7 @@ class ThresholdsRetrieveListController (
      * Based on the result of this call, the method will either respond with
      * the data or the errors from the method call.
      */
-    @GetMapping(value = ["/api/thresholds"])
+    @GetMapping(value = ["/api/thresholds/retrieve"])
     fun execute(): Result {
         thresholdsWrapper.retrieveList() {
             // If the command was a success
