@@ -19,6 +19,7 @@ docs/
 .settings
 .springBeans
 .sts4-cache
+.bash_profile.swp
 
 ### IntelliJ IDEA ###
 .idea

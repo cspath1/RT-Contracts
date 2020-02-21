@@ -15,5 +15,19 @@ interface ThresholdsFactory {
      *
      * @return a [Command] object
      */
-    fun retrieve(): Command<Thresholds, Multimap<ErrorTag, String>>
+    fun retrieve(sensorName: String): Command<Thresholds, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve newest the [Thresholds] objects by name
+     *
+     * @return a [Command] object
+     */
+    fun retrieveList(): Command<List<Thresholds>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to update the [Thresholds] object
+     *
+     * @return a [Command] object
+     */
+    fun update(sensorName: String, maximum: Double): Command<Thresholds, Multimap<ErrorTag, String>>
 }

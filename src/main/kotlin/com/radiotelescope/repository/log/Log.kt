@@ -62,5 +62,7 @@ data class Log(
         FEEDBACK("Feedback"),
         WEATHER_DATA("Weather Data"),
         SPECTRACYBER_CONFIG("Spectracyber Config")
+        WEATHER_DATA("Weather Data"),
+        THRESHOLDS("Thresholds")
     }
 }

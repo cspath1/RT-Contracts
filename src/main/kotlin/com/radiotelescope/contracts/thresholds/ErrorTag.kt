@@ -2,6 +2,8 @@ package com.radiotelescope.contracts.thresholds
 
 enum class ErrorTag {
     ID,
+    NAME,
+    MAXIMUM,
     WIND,
     AZ_MOTOR_TEMP,
     ELEV_MOTOR_TEMP,

@@ -27,6 +27,8 @@ import com.radiotelescope.contracts.sensorStatus.BaseSensorStatusFactory
 import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
 import com.radiotelescope.contracts.spectracyberConfig.BaseSpectracyberConfigFactory
 import com.radiotelescope.contracts.spectracyberConfig.UserSpectracyberConfigWrapper
+import com.radiotelescope.contracts.thresholds.BaseThresholdsFactory
+import com.radiotelescope.contracts.thresholds.UserThresholdsWrapper
 import com.radiotelescope.contracts.updateEmailToken.BaseUpdateEmailTokenFactory
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
@@ -394,6 +396,16 @@ class FactoryBeans(
                         spectracyberConfigRepo = repositories.spectracyberConfigRepo
                 ),
                 userRepo = repositories.userRepo
+        )
+    }
+
+    @Bean
+    override fun getThresholdsWrapper(): UserThresholdsWrapper {
+        return UserThresholdsWrapper(
+                context = userContext,
+                factory = BaseThresholdsFactory(
+                        thresholdsRepo = repositories.thresholdsRepo
+                )
         )
     }
 }
