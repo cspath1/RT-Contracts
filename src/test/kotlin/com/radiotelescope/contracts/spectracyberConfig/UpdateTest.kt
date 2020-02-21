@@ -37,9 +37,9 @@ internal class UpdateTest : AbstractSpringTest() {
                         id = spectracyberConfigId,
                         mode = "CONTINUUM",
                         integrationTime = 0.4,
-                        offsetVoltage = 0.1,
+                        offsetVoltage = 0.4095,
                         IFGain = 11.0,
-                        DCGain = 2,
+                        DCGain = 5,
                         bandwidth = 1300
                 ),
                 spectracyberConfigRepo = spectracyberConfigRepo
@@ -58,9 +58,9 @@ internal class UpdateTest : AbstractSpringTest() {
                         id = spectracyberConfigId,
                         mode = "CONTINUUM",
                         integrationTime = -0.1,
-                        offsetVoltage = 0.1,
+                        offsetVoltage = 0.4095,
                         IFGain = 11.0,
-                        DCGain = 2,
+                        DCGain = 5,
                         bandwidth = 1300
                 ),
                 spectracyberConfigRepo = spectracyberConfigRepo
@@ -78,10 +78,31 @@ internal class UpdateTest : AbstractSpringTest() {
                 request = Update.Request(
                         id = spectracyberConfigId,
                         mode = "INCORRECT_MODE",
-                        integrationTime = 0.1,
-                        offsetVoltage = 0.1,
+                        integrationTime = 0.4,
+                        offsetVoltage = 0.4095,
                         IFGain = 11.0,
-                        DCGain = 2,
+                        DCGain = 5,
+                        bandwidth = 1300
+                ),
+                spectracyberConfigRepo = spectracyberConfigRepo
+        ).execute()
+
+        // Should have failed
+        assertNotNull(error)
+        assertNull(id)
+    }
+
+    @Test
+    fun testInvalidConstraintsIncorrectGain_Failure() {
+        // Update spectracyber config with incorrect mode
+        val (id, error) = Update(
+                request = Update.Request(
+                        id = spectracyberConfigId,
+                        mode = "CONTINUUM",
+                        integrationTime = 0.1,
+                        offsetVoltage = 0.4095,
+                        IFGain = 11.0,
+                        DCGain = 4,
                         bandwidth = 1300
                 ),
                 spectracyberConfigRepo = spectracyberConfigRepo
