@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Rest Controller to handle Appointment retrieval
+ * Rest Controller to handle individual Threshold retrieval
  *
  * @param thresholdsWrapper the [UserThresholdsWrapper]
  * @param logger the [Logger] service

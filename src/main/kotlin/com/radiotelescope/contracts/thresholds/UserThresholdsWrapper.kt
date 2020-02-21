@@ -22,6 +22,7 @@ class UserThresholdsWrapper (
     /**
      * Wrapper method for the [ThresholdsFactory.retrieve] method.
      *
+     * @param sensorName the name fo the sensor to retrieve
      * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
@@ -29,6 +30,34 @@ class UserThresholdsWrapper (
         return context.require(
                 requiredRoles = listOf(UserRole.Role.ADMIN),
                 successCommand = factory.retrieve(sensorName)
+        ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for the [ThresholdsFactory.retrieveList] method.
+     *
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun retrieveList(withAccess: (result: SimpleResult<List<Thresholds>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.ADMIN),
+                successCommand = factory.retrieveList()
+        ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for the [ThresholdsFactory.retrieve] method.
+     *
+     * @param sensorName the name of the sensor to update
+     * @param maximum the maximum sensor value to update
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun update(sensorName: String, maximum: Double, withAccess: (result: SimpleResult<Thresholds, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.ADMIN),
+                successCommand = factory.update(sensorName, maximum)
         ).execute(withAccess)
     }
 }

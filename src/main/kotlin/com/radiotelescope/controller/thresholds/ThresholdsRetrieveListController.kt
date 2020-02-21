@@ -7,16 +7,11 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 
-/**
- * Rest Controller to handle updating Threshold
- *
- * @param thresholdsWrapper the [UserThresholdsWrapper]
- * @param logger the [Logger] service
- */
 @RestController
-class ThresholdsUpdateController(
+class ThresholdsRetrieveListController (
         private val thresholdsWrapper: UserThresholdsWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
@@ -25,18 +20,17 @@ class ThresholdsUpdateController(
      * Based on the result of this call, the method will either respond with
      * the data or the errors from the method call.
      */
-    @PostMapping(value = ["/api/thresholds/{sensorName}/{maximum}"])
-    fun execute(@PathVariable("sensorName") sensorName: String,
-                @PathVariable("maximum") maximum: Double): Result {
-        thresholdsWrapper.update(sensorName, maximum) {
+    @GetMapping(value = ["/api/thresholds"])
+    fun execute(): Result {
+        thresholdsWrapper.retrieveList() {
             // If the command was a success
             it.success?.let { info ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.THRESHOLDS,
-                                action = "Thresholds Update",
-                                affectedRecordId = info.id,
+                                action = "Thresholds Retrieval List",
+                                affectedRecordId = null,
                                 status = HttpStatus.OK.value()
                         )
                 )
@@ -49,7 +43,7 @@ class ThresholdsUpdateController(
                 logger.createErrorLogs(
                         info = Logger.createInfo(
                                 affectedTable = Log.AffectedTable.THRESHOLDS,
-                                action = "Thresholds Update",
+                                action = "Thresholds Retrieval List",
                                 affectedRecordId = null,
                                 status = HttpStatus.BAD_REQUEST.value()
                         ),
@@ -66,7 +60,7 @@ class ThresholdsUpdateController(
             logger.createErrorLogs(
                     info = Logger.createInfo(
                             affectedTable = Log.AffectedTable.THRESHOLDS,
-                            action = "Thresholds Update",
+                            action = "Thresholds Retrieval List",
                             affectedRecordId = null,
                             status = if (it.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                     ),

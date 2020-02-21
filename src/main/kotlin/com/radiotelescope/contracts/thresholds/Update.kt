@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.thresholds
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
+import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.thresholds.IThresholdsRepository
@@ -39,6 +40,12 @@ class Update (
         return SimpleResult(thresholdsRepo.save(newSensorThreshold), null)
     }
 
+    /**
+     * Method responsible for constraint checking and validations for the
+     * [Request] object.
+     *
+     * @return a [HashMultimap] of errors or null
+     */
     private fun validateRequest(): Multimap<ErrorTag, String>{
         val errors = HashMultimap.create<ErrorTag, String>()
 
@@ -55,6 +62,12 @@ class Update (
         return errors
     }
 
+    /**
+     * Data class containing the fields necessary to update a threshold
+     *
+     * @param sensorName the name of the sensor
+     * @param maximum the sensor maximum
+     */
     data class Request(
             val sensorName: String,
             val maximum: Double
