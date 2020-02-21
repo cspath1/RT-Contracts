@@ -31,7 +31,7 @@ internal class RetrieveListTest : AbstractSpringTest() {
 
         assertNotNull(info)
         assertNull(errors)
-        assertEquals(8, info!!.size)
+        assertEquals(Thresholds.Name.values().size, info!!.size)
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class RetrieveListTest : AbstractSpringTest() {
 
         assertNotNull(info)
         assertNull(errors)
-        assertEquals(8, info!!.size)
+        assertEquals(Thresholds.Name.values().size, info!!.size)
         assertEquals(40.0, info.first().maximum, 0.01)
     }
 }

@@ -56,7 +56,11 @@ class Update (
 
             // check if each threshold below zero
             if (maximum < 0)
-                errors.put(ErrorTag.NAME, "Threshold must be higher than 0")
+                errors.put(ErrorTag.MAXIMUM, "Threshold must be higher than 0")
+
+            // check if sensor name is a valid name in the enum
+            if (!Thresholds.Name.values().map { it.name }.contains(sensorName))
+                errors.put(ErrorTag.NAME, "Sensor Name must be a valid sensor")
         }
 
         return errors

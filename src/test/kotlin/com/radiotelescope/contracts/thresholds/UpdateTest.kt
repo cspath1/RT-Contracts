@@ -3,7 +3,7 @@ package com.radiotelescope.contracts.thresholds
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.thresholds.IThresholdsRepository
 import com.radiotelescope.repository.thresholds.Thresholds
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,10 +39,10 @@ internal class UpdateTest : AbstractSpringTest() {
 
         print("\nInfo: " + thresholdsRepo.findAll() + "\n")
 
-        Assert.assertEquals(2, thresholdsRepo.findAll().count())
+        assertEquals(2, thresholdsRepo.findAll().count())
 
         // Make sure it was a success
-        Assert.assertNull(errors)
-        Assert.assertNotNull(info)
+        assertNull(errors)
+        assertNotNull(info)
     }
 }
