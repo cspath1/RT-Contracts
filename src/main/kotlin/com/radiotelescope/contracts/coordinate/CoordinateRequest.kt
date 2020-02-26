@@ -20,7 +20,7 @@ data class CoordinateRequest(
         return Coordinate(
                 hours = hours,
                 minutes = minutes,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = hours,
                         minutes = minutes
                 ),

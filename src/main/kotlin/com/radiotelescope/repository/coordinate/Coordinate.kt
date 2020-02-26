@@ -30,7 +30,7 @@ data class Coordinate(
     var appointment: Appointment? = null
 
     companion object {
-        fun hoursMinutesSecondsToDegrees(hours: Int, minutes: Int): Double {
+        fun hoursMinutesToDegrees(hours: Int, minutes: Int): Double {
             return (hours.toDouble() * 15) + (minutes.toDouble() / 4)
         }
     }

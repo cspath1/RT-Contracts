@@ -181,7 +181,7 @@ class CoordinateAppointmentUpdate(
             entity.coordinateList[0].hours = hours
             entity.coordinateList[0].minutes = minutes
             entity.coordinateList[0].declination = declination
-            entity.coordinateList[0].rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+            entity.coordinateList[0].rightAscension = Coordinate.hoursMinutesToDegrees(
                     hours = hours,
                     minutes = minutes
             )
@@ -217,7 +217,7 @@ class CoordinateAppointmentUpdate(
             return Coordinate(
                     hours = hours,
                     minutes = minutes,
-                    rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                    rightAscension = Coordinate.hoursMinutesToDegrees(
                             hours = hours,
                             minutes = minutes
                     ),

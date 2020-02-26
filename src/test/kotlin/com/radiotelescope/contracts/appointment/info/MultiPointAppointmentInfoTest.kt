@@ -66,7 +66,7 @@ internal class MultiPointAppointmentInfoTest {
 
         // Two coordinates
         val coordinateOne = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),
@@ -79,7 +79,7 @@ internal class MultiPointAppointmentInfoTest {
         appointment.coordinateList.add(coordinateOne)
 
         val coordinateTwo = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 13,
                         minutes = 13
                 ),

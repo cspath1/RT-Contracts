@@ -28,7 +28,7 @@ internal class PointAppointmentInfoTest {
                 priority = Appointment.Priority.PRIMARY.label,
                 hours = 12,
                 minutes = 12,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),
@@ -48,7 +48,7 @@ internal class PointAppointmentInfoTest {
         assertEquals(Appointment.Type.POINT.label, info.type)
         assertEquals(Appointment.Priority.PRIMARY.label, info.priority)
 
-        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
+        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesToDegrees(
                 hours = 12,
                 minutes = 12
         )
@@ -80,7 +80,7 @@ internal class PointAppointmentInfoTest {
         )
 
         val coordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),

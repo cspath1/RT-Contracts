@@ -85,7 +85,7 @@ internal class UserCelestialBodyWrapperTest : AbstractSpringTest() {
         val coordinate = Coordinate(
                 hours = 14,
                 minutes = 39,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 14,
                         minutes = 39
                 ),

@@ -265,7 +265,7 @@ internal class TestUtil {
         )
 
         val startingCoordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),
@@ -329,7 +329,7 @@ internal class TestUtil {
             priority: Appointment.Priority
     ): Appointment {
         val coordinateOne = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),
@@ -341,7 +341,7 @@ internal class TestUtil {
         coordinateRepo.save(coordinateOne)
 
         val coordinateTwo = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),
@@ -384,7 +384,7 @@ internal class TestUtil {
             priority: Appointment.Priority
     ): Appointment {
         val coordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),
@@ -426,7 +426,7 @@ internal class TestUtil {
             priority: Appointment.Priority
     ): Appointment {
         val coordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),

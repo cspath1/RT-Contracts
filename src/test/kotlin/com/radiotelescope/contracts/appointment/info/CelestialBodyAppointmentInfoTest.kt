@@ -30,7 +30,7 @@ internal class CelestialBodyAppointmentInfoTest {
                 celestialBodyName = "Alpha Centauri",
                 hours = 12,
                 minutes = 12,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),
@@ -50,7 +50,7 @@ internal class CelestialBodyAppointmentInfoTest {
         assertEquals(Appointment.Type.CELESTIAL_BODY.label, info.type)
         assertEquals(Appointment.Priority.PRIMARY.label, info.priority)
 
-        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
+        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesToDegrees(
                 hours = 12,
                 minutes = 12
         )
@@ -85,7 +85,7 @@ internal class CelestialBodyAppointmentInfoTest {
         celestialBody.coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 5,
                         minutes = 34
                 ),
