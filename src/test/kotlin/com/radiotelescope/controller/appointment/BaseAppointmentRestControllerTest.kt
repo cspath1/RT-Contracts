@@ -132,7 +132,8 @@ internal abstract class BaseAppointmentRestControllerTest : BaseRestControllerTe
                         coordinateRepo = coordinateRepo,
                         userRoleRepo = userRoleRepo,
                         allottedTimeCapRepo = allottedTimeCapRepo,
-                        orientationRepo = orientationRepo
+                        orientationRepo = orientationRepo,
+                        spectracyberConfigRepo = spectracyberConfigRepo
                 ),
                 appointmentRepo = appointmentRepo,
                 viewerRepo = viewerRepo
