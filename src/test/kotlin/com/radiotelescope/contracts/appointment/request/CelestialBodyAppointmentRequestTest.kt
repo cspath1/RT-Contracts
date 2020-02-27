@@ -8,6 +8,7 @@ import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -39,6 +40,9 @@ internal class CelestialBodyAppointmentRequestTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
+
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
     private val baseRequest = CelestialBodyAppointmentRequest.Request(
             userId = -1L,
@@ -88,7 +92,8 @@ internal class CelestialBodyAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -123,7 +128,8 @@ internal class CelestialBodyAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -148,7 +154,8 @@ internal class CelestialBodyAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -174,7 +181,8 @@ internal class CelestialBodyAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -201,7 +209,8 @@ internal class CelestialBodyAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -226,7 +235,8 @@ internal class CelestialBodyAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
