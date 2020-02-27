@@ -91,6 +91,10 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
         assertNotNull(theAppointment.orientation)
         assertEquals(requestCopy.azimuth, theAppointment.orientation!!.azimuth, 0.0001)
         assertEquals(requestCopy.elevation, theAppointment.orientation!!.elevation, 0.0001)
+
+        // Make sure the spectracyber configuration record was persisted
+        val theSpectracyberConfig = spectracyberConfigRepo.findById(theAppointment.spectracyberConfig!!.id)
+        assertNotNull(theSpectracyberConfig)
     }
 
     @Test

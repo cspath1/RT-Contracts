@@ -112,6 +112,10 @@ internal class CelestialBodyAppointmentRequestTest : AbstractSpringTest() {
         assertEquals(requestCopy.userId, theAppointment.user.id)
         assertEquals(Appointment.Type.CELESTIAL_BODY, theAppointment.type)
         assertEquals(Appointment.Status.REQUESTED, theAppointment.status)
+
+        // Make sure the spectracyber configuration record was persisted
+        val theSpectracyberConfig = spectracyberConfigRepo.findById(theAppointment.spectracyberConfig!!.id)
+        assertNotNull(theSpectracyberConfig)
     }
 
     @Test
