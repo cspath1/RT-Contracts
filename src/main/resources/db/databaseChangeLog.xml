@@ -45,4 +45,5 @@
     <include file="classpath:/db/changelog/40-create-sensor-thresholds.sql"/>
     <include file="classpath:/db/changelog/41-update-spectracyber-config-mode.sql"/>
     <include file="classpath:/db/changelog/42-add-foreign-keys-appointment.sql"/>
+    <include file="classpath:/db/changelog/43-create-sensor-overrides.sql"/>
 </databaseChangeLog>
