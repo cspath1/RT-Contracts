@@ -22,6 +22,8 @@ import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepos
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.sensorOverrides.ISensorOverridesRepository
+import com.radiotelescope.repository.sensorOverrides.SensorOverrides
 import com.radiotelescope.repository.sensorStatus.ISensorStatusRepository
 import com.radiotelescope.repository.sensorStatus.SensorStatus
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
@@ -105,6 +107,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
+
+    @Autowired
+    private lateinit var sensorOverridesRepo: ISensorOverridesRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -662,4 +667,13 @@ internal class TestUtil {
         thresholdsRepo.save(Thresholds(Thresholds.Name.ELEV_MOTOR_CURRENT, 6.0))
         thresholdsRepo.save(Thresholds(Thresholds.Name.COUNTER_BALANCE_VIBRATION, 0.42))
     }
+
+    fun populateDefaultSensorOverrides() {
+        sensorOverridesRepo.save(SensorOverrides(SensorOverrides.Name.GATE, false))
+        sensorOverridesRepo.save(SensorOverrides(SensorOverrides.Name.PROXIMITY, false))
+        sensorOverridesRepo.save(SensorOverrides(SensorOverrides.Name.AZIMUTH_MOTOR, false))
+        sensorOverridesRepo.save(SensorOverrides(SensorOverrides.Name.ELEVATION_MOTOR, false))
+        sensorOverridesRepo.save(SensorOverrides(SensorOverrides.Name.WEATHER_STATION, false))
+    }
+
 }
