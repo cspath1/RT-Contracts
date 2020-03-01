@@ -1,13 +1,19 @@
 package com.radiotelescope.contracts.appointment.info
 
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
-internal class PointAppointmentInfoTest {
+@DataJpaTest
+@RunWith(SpringRunner::class)
+internal class PointAppointmentInfoTest : AbstractSpringTest() {
     private var startTime = Date(System.currentTimeMillis() + 10000L)
     private var endTime = Date(System.currentTimeMillis() + 30000L)
 
@@ -32,7 +38,8 @@ internal class PointAppointmentInfoTest {
                         hours = 12,
                         minutes = 12
                 ),
-                declination = 69.0
+                declination = 69.0,
+                spectracyberConfigId = 1L
         )
 
         assertEquals(1L, info.id)
@@ -94,6 +101,7 @@ internal class PointAppointmentInfoTest {
         appointment.status = Appointment.Status.SCHEDULED
         appointment.coordinateList = mutableListOf()
         appointment.coordinateList.add(coordinate)
+        appointment.spectracyberConfig = testUtil.createDefaultSpectracyberConfig()
 
         val appointmentInfo = PointAppointmentInfo(appointment)
 

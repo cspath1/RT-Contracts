@@ -279,6 +279,7 @@ internal class TestUtil {
         theAppointment.status = status
         theAppointment.user = user
         theAppointment.coordinateList = mutableListOf(startingCoordinate)
+        theAppointment.spectracyberConfig = createDefaultSpectracyberConfig()
         appointmentRepo.save(theAppointment)
 
         startingCoordinate.appointment = theAppointment
@@ -315,6 +316,7 @@ internal class TestUtil {
         theAppointment.status = status
         theAppointment.user = user
         theAppointment.orientation = orientation
+        theAppointment.spectracyberConfig = createDefaultSpectracyberConfig()
 
         return appointmentRepo.save(theAppointment)
     }
@@ -364,6 +366,7 @@ internal class TestUtil {
         theAppointment.status = status
         theAppointment.user = user
         theAppointment.coordinateList = arrayListOf(coordinateOne, coordinateTwo)
+        theAppointment.spectracyberConfig = createDefaultSpectracyberConfig()
         appointmentRepo.save(theAppointment)
 
         coordinateOne.appointment = theAppointment
@@ -412,6 +415,7 @@ internal class TestUtil {
         theAppointment.status = status
         theAppointment.user = user
         theAppointment.celestialBody = celestialBody
+        theAppointment.spectracyberConfig = createDefaultSpectracyberConfig()
 
         return appointmentRepo.save(theAppointment)
     }
@@ -449,6 +453,7 @@ internal class TestUtil {
         theAppointment.status = status
         theAppointment.user = user
         theAppointment.coordinateList = arrayListOf(coordinate)
+        theAppointment.spectracyberConfig = createDefaultSpectracyberConfig()
         appointmentRepo.save(theAppointment)
 
         coordinate.appointment = theAppointment
