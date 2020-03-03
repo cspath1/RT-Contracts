@@ -39,6 +39,8 @@ internal class UpdateTest : AbstractSpringTest() {
 
         assertEquals(2, thresholdsRepo.findAll().count())
 
+        print("\n" + thresholdsRepo.findAll() + "\n")
+
         // Make sure it was a success
         assertNull(errors)
         assertNotNull(info)

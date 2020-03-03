@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.sensorOverrides
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.sensorOverrides.ISensorOverridesRepository
 import com.radiotelescope.repository.sensorOverrides.SensorOverrides
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,6 +30,18 @@ internal class UpdateTest : AbstractSpringTest() {
 
     @Test
     fun test_Success() {
+        val (info, errors) = Update(
+                request = Update.Request(
+                        sensorName = SensorOverrides.Name.GATE.toString(),
+                        overridden = true
+                ),
+                sensorOverridesRepo = sensorOverridesRepo
+        ).execute()
 
+        assertEquals(2, sensorOverridesRepo.findAll().count())
+
+        // Make sure it was a success
+        assertNull(errors)
+        assertNotNull(info)
     }
 }
