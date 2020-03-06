@@ -17,7 +17,7 @@ interface ThresholdsFactory {
     fun retrieve(sensorName: String): Command<Thresholds, Multimap<ErrorTag, String>>
 
     /**
-     * Abstract command used to retrieve newest the [Thresholds] objects by name
+     * Abstract command used to retrieve newest [Thresholds] objects by name
      *
      * @return a [Command] object
      */

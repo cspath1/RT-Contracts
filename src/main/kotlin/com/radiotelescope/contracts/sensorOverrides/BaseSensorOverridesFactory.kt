@@ -31,4 +31,10 @@ class BaseSensorOverridesFactory (
                 sensorOverridesRepo = sensorOverridesRepo
         )
     }
+
+    override fun retrieveList(): Command<List<SensorOverrides>, Multimap<ErrorTag, String>> {
+        return RetrieveList(
+                sensorOverridesRepo = sensorOverridesRepo
+        )
+    }
 }

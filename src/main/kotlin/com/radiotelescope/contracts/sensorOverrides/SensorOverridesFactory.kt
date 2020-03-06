@@ -15,4 +15,11 @@ interface SensorOverridesFactory {
      * @return a [Command] object
      */
     fun update(sensorName: String, overridden: Boolean): Command<SensorOverrides, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve newest [SensorOverrides] objects by name
+     *
+     * @return a [Command] object
+     */
+    fun retrieveList(): Command<List<SensorOverrides>, Multimap<ErrorTag, String>>
 }
