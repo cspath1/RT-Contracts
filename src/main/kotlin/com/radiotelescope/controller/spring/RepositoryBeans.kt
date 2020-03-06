@@ -13,6 +13,7 @@ import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
 import com.radiotelescope.repository.rfdata.IRFDataRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.sensorOverrides.ISensorOverridesRepository
 import com.radiotelescope.repository.sensorStatus.ISensorStatusRepository
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
@@ -43,6 +44,14 @@ import org.springframework.stereotype.Component
  * @param celestialBodyRepo the [ICelestialBodyRepository] interface
  * @param viewerRepo the [IViewerRepository] interface
  * @param feedbackRepo the [IFeedbackRepository] interface
+ * @param orientationRepo the [IOrientationRepository] interface
+ * @param loginAttemptRepo the [ILoginAttemptRepository] interface
+ * @param videoFileRepo the [IVideoFileRepository] interface
+ * @param weatherDataRepo the [IWeatherDataRepository] interface
+ * @param spectracyberConfigRepo the [ISpectracyberConfigRepository] interface
+ * @param sensorStatusRepo the [ISensorStatusRepository] interface
+ * @param thresholdsRepo the [IThresholdsRepository] interface
+ * @param sensorOverridesRepo the [ISensorOverridesRepository] interface
  *
  */
 @Component
@@ -69,5 +78,6 @@ class RepositoryBeans(
         val weatherDataRepo: IWeatherDataRepository,
         val spectracyberConfigRepo: ISpectracyberConfigRepository,
         val sensorStatusRepo: ISensorStatusRepository,
-        val thresholdsRepo: IThresholdsRepository
+        val thresholdsRepo: IThresholdsRepository,
+        val sensorOverridesRepo: ISensorOverridesRepository
 )

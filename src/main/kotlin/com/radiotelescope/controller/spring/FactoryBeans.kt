@@ -23,6 +23,8 @@ import com.radiotelescope.contracts.rfdata.BaseRFDataFactory
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.BaseUserRoleFactory
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.sensorOverrides.BaseSensorOverridesFactory
+import com.radiotelescope.contracts.sensorOverrides.UserSensorOverridesWrapper
 import com.radiotelescope.contracts.sensorStatus.BaseSensorStatusFactory
 import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
 import com.radiotelescope.contracts.spectracyberConfig.BaseSpectracyberConfigFactory
@@ -405,6 +407,16 @@ class FactoryBeans(
                 context = userContext,
                 factory = BaseThresholdsFactory(
                         thresholdsRepo = repositories.thresholdsRepo
+                )
+        )
+    }
+
+    @Bean
+    override fun getSensorOverridesWrapper(): UserSensorOverridesWrapper {
+        return UserSensorOverridesWrapper(
+                context = userContext,
+                factory = BaseSensorOverridesFactory (
+                        sensorOverridesRepo = repositories.sensorOverridesRepo
                 )
         )
     }

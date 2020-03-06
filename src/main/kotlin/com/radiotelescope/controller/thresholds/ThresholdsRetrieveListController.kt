@@ -10,6 +10,12 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Rest Controller to handle retrieving a list of the current Sensor Overrides status
+ *
+ * @param thresholdsWrapper the [UserThresholdsWrapper]
+ * @param logger the [Logger] service
+ */
 @RestController
 class ThresholdsRetrieveListController (
         private val thresholdsWrapper: UserThresholdsWrapper,

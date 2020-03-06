@@ -1,42 +1,42 @@
-package com.radiotelescope.controller.thresholds
+package com.radiotelescope.controller.sensorOverrides
 
-import com.radiotelescope.contracts.thresholds.UserThresholdsWrapper
+import com.radiotelescope.contracts.sensorOverrides.UserSensorOverridesWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 
 /**
- * Rest Controller to handle updating a Threshold
+ * Rest Controller to handle retrieving a list of the current Sensor Overrides status
  *
- * @param thresholdsWrapper the [UserThresholdsWrapper]
+ * @param sensorOverridesWrapper the [UserSensorOverridesWrapper]
  * @param logger the [Logger] service
  */
 @RestController
-class ThresholdsUpdateController(
-        private val thresholdsWrapper: UserThresholdsWrapper,
+class SensorOverridesRetrieveListController (
+        private val sensorOverridesWrapper: UserSensorOverridesWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
-     * Execute the [UserThresholdsWrapper.update] method.
+     * Execute the [UserSensorOverridesWrapper.update] method.
      * Based on the result of this call, the method will either respond with
      * the data or the errors from the method call.
      */
-    @PostMapping(value = ["/api/thresholds/{sensorName}/{maximum}"])
-    fun execute(@PathVariable("sensorName") sensorName: String,
-                @PathVariable("maximum") maximum: Double): Result {
-        thresholdsWrapper.update(sensorName, maximum) {
+    @GetMapping(value = ["/api/sensor-overrides/retrieve"])
+    fun execute(): Result {
+        sensorOverridesWrapper.retrieveList() {
             // If the command was a success
             it.success?.let { info ->
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.THRESHOLDS,
-                                action = "Thresholds Update",
-                                affectedRecordId = info.id,
+                                affectedTable = Log.AffectedTable.SENSOR_OVERRIDES,
+                                action = "Sensor Overrides Retrieve List",
+                                affectedRecordId = null,
                                 status = HttpStatus.OK.value()
                         )
                 )
@@ -48,8 +48,8 @@ class ThresholdsUpdateController(
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.THRESHOLDS,
-                                action = "Thresholds Update",
+                                affectedTable = Log.AffectedTable.SENSOR_OVERRIDES,
+                                action = "Sensor Overrides Retrieve List",
                                 affectedRecordId = null,
                                 status = HttpStatus.BAD_REQUEST.value()
                         ),
@@ -65,8 +65,8 @@ class ThresholdsUpdateController(
             // record did not exists
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.THRESHOLDS,
-                            action = "Thresholds Update",
+                            affectedTable = Log.AffectedTable.SENSOR_OVERRIDES,
+                            action = "Sensor Overrides Retrieve List",
                             affectedRecordId = null,
                             status = if (it.missingRoles != null) HttpStatus.FORBIDDEN.value() else HttpStatus.NOT_FOUND.value()
                     ),

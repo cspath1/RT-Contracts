@@ -11,6 +11,7 @@ import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.sensorOverrides.UserSensorOverridesWrapper
 import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
 import com.radiotelescope.contracts.spectracyberConfig.UserSpectracyberConfigWrapper
 import com.radiotelescope.contracts.thresholds.UserThresholdsWrapper
@@ -133,4 +134,9 @@ interface FactoryProvider {
      * Abstract method to return the [UserThresholdsWrapper]  class
      */
     fun getThresholdsWrapper(): UserThresholdsWrapper
+
+    /**
+     * Abstract method to return the [UserSensorOverridesWrapper]  class
+     */
+    fun getSensorOverridesWrapper(): UserSensorOverridesWrapper
 }
