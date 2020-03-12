@@ -4,10 +4,12 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.controller.model.ses.SendForm
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.service.ses.IAwsSesSendService
 
 /**
  * Override of the [Command] interface for an admin to ban a User
@@ -19,7 +21,8 @@ import com.radiotelescope.repository.user.User
 class Ban(
         private var id: Long,
         private var userRepo: IUserRepository,
-        private val userRoleRepo: IUserRoleRepository
+        private val userRoleRepo: IUserRoleRepository,
+        private val awsSesSendService: IAwsSesSendService
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method that, given the request passes
@@ -32,6 +35,20 @@ class Ban(
             theUser.status = User.Status.BANNED
             theUser.active = false
             userRepo.save(theUser)
+
+            if (theUser.notificationType == User.NotificationType.EMAIL) {
+                awsSesSendService.execute(
+                        SendForm(
+                                toAddresses = listOf(theUser.email),
+                                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                                subject = "Account Banned",
+                                htmlBody = "<p>You have been banned from the York County Astronomical Society's" +
+                                        "Radio Telescope web application. To appeal your ban please contact"
+                        )
+                )
+            } else if (theUser.notificationType == User.NotificationType.EMAIL) {
+
+            }
 
             return SimpleResult(id, null)
         }
