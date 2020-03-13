@@ -4,7 +4,7 @@ import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.user.Unban
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
@@ -97,7 +97,7 @@ class AdminUserUnbanController(
     }
 
     private fun sendEmail(email: String) {
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = listOf(email),
                 fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Unbanned By Admin",

@@ -5,7 +5,7 @@ import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapp
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.ApproveDenyForm
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.Log
@@ -130,9 +130,9 @@ class AdminAppointmentApproveDenyRequestController (
      * @param isApprove whether the request was approved or not
      */
     private fun sendEmail(email: String, id: Long, isApprove: Boolean) {
-        val sendForm: SendForm
+        val sendForm: SesSendForm
         if(isApprove) {
-            sendForm = SendForm(
+            sendForm = SesSendForm(
                     toAddresses = listOf(email),
                     fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                     subject = "Requested Observation Approved",
@@ -140,7 +140,7 @@ class AdminAppointmentApproveDenyRequestController (
                             "and has now been scheduled for the allotted time slot.</p>"
             )
         } else {
-            sendForm = SendForm(
+            sendForm = SesSendForm(
                     toAddresses = listOf(email),
                     fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                     subject = "Requested Observation Denied",

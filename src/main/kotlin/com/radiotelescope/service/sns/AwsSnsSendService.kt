@@ -1,7 +1,7 @@
 package com.radiotelescope.service.sns
 
 import com.google.common.collect.HashMultimap
-import com.radiotelescope.controller.model.sns.SendForm
+import com.radiotelescope.controller.model.sns.SnsSendForm
 import com.amazonaws.services.sns.AmazonSNS
 import com.amazonaws.services.sns.model.MessageAttributeValue
 import com.amazonaws.services.sns.model.PublishRequest
@@ -18,10 +18,10 @@ class AwsSnsSendService (
     private val notificationService: AmazonSNS
 ) : IAwsSnsSendService {
     /**
-     * Execute method that takes a [SendForm] and, given there are no errors with the request,
+     * Execute method that takes a [SnsSendForm] and, given there are no errors with the request,
      * will send a notification using the AWS Simple Notification Service
      */
-    override fun execute(sendForm: SendForm): HashMultimap<ErrorTag, String>? {
+    override fun execute(sendForm: SnsSendForm): HashMultimap<ErrorTag, String>? {
         validateRequest(sendForm)?.let { return it } ?: let {
             val smsAttributes = HashMap<String, MessageAttributeValue>()
 
@@ -47,10 +47,10 @@ class AwsSnsSendService (
     /**
      * Private method used to validate the request to send the notification
      *
-     * @param sendForm the [SendForm]
+     * @param sendForm the [SnsSendForm]
      * @return a [HashMultimap] if there are errors null otherwise
      */
-    private fun validateRequest(sendForm: SendForm): HashMultimap<ErrorTag, String>? {
+    private fun validateRequest(sendForm: SnsSendForm): HashMultimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(sendForm) {
