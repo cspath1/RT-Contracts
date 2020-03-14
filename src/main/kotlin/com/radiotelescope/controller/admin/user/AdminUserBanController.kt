@@ -135,8 +135,8 @@ class AdminUserBanController(
         val sendForm: SnsSendForm
         if(!message.isNullOrBlank()) {
             sendForm = SnsSendForm(
-                    toNumber = "+1$phoneNumber",
-                    topic = "test",
+                    toNumber = phoneNumber,
+                    topic = null,
                     message = "You have been banned from the York County Astronomical Society's " +
                             "Radio Telescope web application due to reason $message." +
                             " To appeal your ban please contact Todd Ullery (ullery1@gmail.com)."
@@ -144,8 +144,8 @@ class AdminUserBanController(
         }
         else {
             sendForm = SnsSendForm(
-                    toNumber = "+1$phoneNumber",
-                    topic = "test",
+                    toNumber = phoneNumber,
+                    topic = null,
                     message = "You have been banned from the York County Astronomical Society's " +
                             "Radio Telescope web application." +
                             " To appeal your ban please contact Todd Ullery (ullery1@gmail.com)."

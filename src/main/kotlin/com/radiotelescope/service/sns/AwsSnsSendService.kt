@@ -25,10 +25,23 @@ class AwsSnsSendService (
         validateRequest(sendForm)?.let { return it } ?: let {
             val smsAttributes = HashMap<String, MessageAttributeValue>()
 
-            val request: PublishRequest = PublishRequest()
-                    .withMessage(sendForm.message)
-                    .withPhoneNumber("+1" + sendForm.toNumber)
-                    .withMessageAttributes(smsAttributes)
+            // if topic is blank, send an SMS
+            // if phone number is plank, post to topic
+            var request: PublishRequest = PublishRequest()
+
+            if (sendForm.topic.isNullOrBlank()) {
+                request = PublishRequest()
+                        .withMessage(sendForm.message)
+                        .withPhoneNumber("+1" + sendForm.toNumber)
+                        .withMessageAttributes(smsAttributes)
+            }
+
+            if (sendForm.toNumber.isNullOrBlank()) {
+                request = PublishRequest()
+                        .withTopicArn(sendForm.topic)
+                        .withMessage(sendForm.message)
+                        .withMessageAttributes(smsAttributes)
+            }
 
             try {
                 notificationService.publish(request)
@@ -54,10 +67,8 @@ class AwsSnsSendService (
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(sendForm) {
-            if (toNumber.isEmpty())
-                errors.put(ErrorTag.TO_NUMBER, "Required Field")
-            if (topic.isEmpty())
-                errors.put(ErrorTag.TOPIC, "Required Field")
+            if (toNumber.isNullOrBlank() && topic.isNullOrBlank())
+                errors.put(ErrorTag.TYPE, "Send Type must be either to Phone Number or to Topic")
             if (message.isEmpty())
                 errors.put(ErrorTag.MESSAGE, "Required Field")
         }
