@@ -4,9 +4,15 @@ import com.radiotelescope.contracts.allottedTimeCap.Update
 import com.radiotelescope.contracts.allottedTimeCap.UserAllottedTimeCapWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
+import com.radiotelescope.controller.model.ses.SesSendForm
+import com.radiotelescope.controller.model.sns.SnsSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
+import com.radiotelescope.service.ses.IAwsSesSendService
+import com.radiotelescope.service.sns.IAwsSnsSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -20,6 +26,9 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class AdminAllottedTimeCapUpdateController(
         private val allottedTimeCapWrapper: UserAllottedTimeCapWrapper,
+        private val userRepo: IUserRepository,
+        private val awsSesSendService: IAwsSesSendService,
+        private val awsSnsSendService: IAwsSnsSendService,
         logger: Logger
 ): BaseRestController(logger){
     /**
@@ -55,6 +64,14 @@ class AdminAllottedTimeCapUpdateController(
                         )
                 )
 
+                val theUser = userRepo.findById(userId).get()
+
+                if (theUser.notificationType == User.NotificationType.EMAIL) {
+                    sendEmail(theUser.email, allottedTime!!)
+                } else if (theUser.notificationType == User.NotificationType.SMS) {
+                    sendSms(theUser.phoneNumber!!, allottedTime!!)
+                }
+
                 result = Result(data = timeCap.id)
             }
             // Otherwise it was a failure
@@ -89,5 +106,24 @@ class AdminAllottedTimeCapUpdateController(
         }
 
         return result
+    }
+
+    private fun sendEmail(email: String, allottedTime: Long) {
+        val sendForm = SesSendForm(
+                toAddresses = listOf(email),
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                subject = "Allotted Time Cap Updated",
+                htmlBody = "<p>Your allotted time cap has been updated to $allottedTime</p>"
+        )
+        awsSesSendService.execute(sendForm)
+    }
+
+    private fun sendSms(phoneNumber: String, allottedTime: Long) {
+        val sendForm = SnsSendForm(
+                toNumber = phoneNumber,
+                topic = null,
+                message = "Your allotted time cap has been updated to $allottedTime"
+        )
+        awsSnsSendService.execute(sendForm)
     }
 }
