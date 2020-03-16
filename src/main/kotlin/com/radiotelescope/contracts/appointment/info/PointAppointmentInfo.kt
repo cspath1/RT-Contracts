@@ -24,6 +24,7 @@ data class PointAppointmentInfo(
         override val status: String,
         override val type: String,
         override val priority: String,
+        override val spectracyberConfigId: Long,
         val hours: Int,
         val minutes: Int,
         val rightAscension: Double,
@@ -40,7 +41,8 @@ data class PointAppointmentInfo(
         userEmail = userEmail,
         status = status,
         type = type,
-        priority = priority
+        priority = priority,
+        spectracyberConfigId = spectracyberConfigId
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -64,6 +66,7 @@ data class PointAppointmentInfo(
             hours = appointment.coordinateList[0].hours,
             minutes = appointment.coordinateList[0].minutes,
             rightAscension = appointment.coordinateList[0].rightAscension,
-            declination = appointment.coordinateList[0].declination
+            declination = appointment.coordinateList[0].declination,
+            spectracyberConfigId = appointment.spectracyberConfig!!.id
     )
 }

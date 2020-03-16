@@ -192,7 +192,7 @@ class Update(
         fun updateCoordinate(coordinate: Coordinate): Coordinate {
             coordinate.hours = hours!!
             coordinate.minutes = minutes!!
-            coordinate.rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+            coordinate.rightAscension = Coordinate.hoursMinutesToDegrees(
                     hours = hours,
                     minutes = minutes
             )
@@ -216,7 +216,7 @@ class Update(
             return Coordinate(
                     hours = hours!!,
                     minutes = minutes!!,
-                    rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                    rightAscension = Coordinate.hoursMinutesToDegrees(
                             hours = hours,
                             minutes = minutes
                     ),

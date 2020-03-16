@@ -22,6 +22,7 @@ data class DriftScanAppointmentInfo(
         override val status: String,
         override val type: String,
         override val priority: String,
+        override val spectracyberConfigId: Long,
         val azimuth: Double,
         val elevation: Double
 ) : AppointmentInfo(
@@ -36,7 +37,8 @@ data class DriftScanAppointmentInfo(
         userEmail = userEmail,
         status = status,
         type = type,
-        priority = priority
+        priority = priority,
+        spectracyberConfigId = spectracyberConfigId
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -58,6 +60,7 @@ data class DriftScanAppointmentInfo(
             type = appointment.type.label,
             priority = appointment.priority.label,
             azimuth = appointment.orientation!!.azimuth,
-            elevation = appointment.orientation!!.elevation
+            elevation = appointment.orientation!!.elevation,
+            spectracyberConfigId = appointment.spectracyberConfig!!.id
     )
 }

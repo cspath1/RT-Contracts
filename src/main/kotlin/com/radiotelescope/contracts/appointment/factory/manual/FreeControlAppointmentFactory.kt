@@ -13,6 +13,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
@@ -25,6 +26,7 @@ class FreeControlAppointmentFactory(
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val coordinateRepo: ICoordinateRepository,
         private val orientationRepo: IOrientationRepository,
+        private val spectracyberConfigRepo: ISpectracyberConfigRepository,
         userRoleRepo: IUserRoleRepository,
         allottedTimeCapRepo: IAllottedTimeCapRepository
 ) : ManualAppointmentFactory, BaseAppointmentFactory(
@@ -47,7 +49,8 @@ class FreeControlAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
     }
 

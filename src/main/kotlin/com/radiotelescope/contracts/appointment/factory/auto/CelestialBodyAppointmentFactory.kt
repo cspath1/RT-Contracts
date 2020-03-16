@@ -93,7 +93,8 @@ class CelestialBodyAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                celestialBodyRepo = celestialBodyRepo
+                celestialBodyRepo = celestialBodyRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
     }
 }

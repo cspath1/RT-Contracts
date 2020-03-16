@@ -10,14 +10,14 @@ internal class CoordinateInfoTest {
         val info = CoordinateInfo(
                 hours = 12,
                 minutes = 12,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),
                 declination = 69.0
         )
 
-        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
+        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesToDegrees(
                 hours = 12,
                 minutes = 12
         )
@@ -31,7 +31,7 @@ internal class CoordinateInfoTest {
     @Test
     fun testSecondaryConstructor() {
         val coordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),

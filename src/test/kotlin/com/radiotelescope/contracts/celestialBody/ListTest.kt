@@ -30,7 +30,7 @@ internal class ListTest : AbstractSpringTest() {
         val coordinateOne = Coordinate(
                 hours = 5,
                 minutes = 34,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 5,
                         minutes = 34
                 ),
@@ -46,7 +46,7 @@ internal class ListTest : AbstractSpringTest() {
         val coordinateTwo = Coordinate(
                 hours = 14,
                 minutes = 39,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 14,
                         minutes = 39
                 ),

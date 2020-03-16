@@ -1,13 +1,19 @@
 package com.radiotelescope.contracts.appointment.info
 
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
-internal class PointAppointmentInfoTest {
+@DataJpaTest
+@RunWith(SpringRunner::class)
+internal class PointAppointmentInfoTest : AbstractSpringTest() {
     private var startTime = Date(System.currentTimeMillis() + 10000L)
     private var endTime = Date(System.currentTimeMillis() + 30000L)
 
@@ -28,11 +34,12 @@ internal class PointAppointmentInfoTest {
                 priority = Appointment.Priority.PRIMARY.label,
                 hours = 12,
                 minutes = 12,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),
-                declination = 69.0
+                declination = 69.0,
+                spectracyberConfigId = 1L
         )
 
         assertEquals(1L, info.id)
@@ -48,7 +55,7 @@ internal class PointAppointmentInfoTest {
         assertEquals(Appointment.Type.POINT.label, info.type)
         assertEquals(Appointment.Priority.PRIMARY.label, info.priority)
 
-        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
+        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesToDegrees(
                 hours = 12,
                 minutes = 12
         )
@@ -80,7 +87,7 @@ internal class PointAppointmentInfoTest {
         )
 
         val coordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
                         minutes = 12
                 ),
@@ -94,6 +101,7 @@ internal class PointAppointmentInfoTest {
         appointment.status = Appointment.Status.SCHEDULED
         appointment.coordinateList = mutableListOf()
         appointment.coordinateList.add(coordinate)
+        appointment.spectracyberConfig = testUtil.createDefaultSpectracyberConfig()
 
         val appointmentInfo = PointAppointmentInfo(appointment)
 

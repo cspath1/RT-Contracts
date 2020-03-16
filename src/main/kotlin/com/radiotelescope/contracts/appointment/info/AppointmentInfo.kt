@@ -32,5 +32,6 @@ abstract class AppointmentInfo(
         open val userEmail: String,
         open val status: String,
         open val type: String,
-        open val priority: String
+        open val priority: String,
+        open val spectracyberConfigId: Long
 )

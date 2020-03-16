@@ -203,7 +203,8 @@ class FactoryBeans(
                         coordinateRepo = repositories.coordinateRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
-                        orientationRepo = repositories.orientationRepo
+                        orientationRepo = repositories.orientationRepo,
+                        spectracyberConfigRepo = repositories.spectracyberConfigRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo

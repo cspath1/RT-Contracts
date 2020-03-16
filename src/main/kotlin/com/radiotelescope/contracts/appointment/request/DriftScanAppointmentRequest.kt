@@ -10,6 +10,8 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.orientation.Orientation
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -28,7 +30,8 @@ class DriftScanAppointmentRequest(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
-        private val orientationRepo: IOrientationRepository
+        private val orientationRepo: IOrientationRepository,
+        private val spectracyberConfigRepo: ISpectracyberConfigRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentRequest {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -49,6 +52,7 @@ class DriftScanAppointmentRequest(
             theAppointment.user = userRepo.findById(request.userId).get()
             theAppointment.status = Appointment.Status.REQUESTED
             theAppointment.orientation = theOrientation
+            theAppointment.spectracyberConfig = spectracyberConfigRepo.save(SpectracyberConfig(SpectracyberConfig.Mode.SPECTRAL, 0.3, 0.0, 10.0, 1, 1200))
 
             appointmentRepo.save(theAppointment)
 

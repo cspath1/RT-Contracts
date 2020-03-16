@@ -25,6 +25,7 @@ data class CelestialBodyAppointmentInfo(
         override val status: String,
         override val type: String,
         override val priority: String,
+        override val spectracyberConfigId: Long,
         val celestialBodyName: String,
         val hours: Int?,
         val minutes: Int?,
@@ -42,7 +43,8 @@ data class CelestialBodyAppointmentInfo(
         userEmail = userEmail,
         status = status,
         type = type,
-        priority = priority
+        priority = priority,
+        spectracyberConfigId = spectracyberConfigId
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -67,6 +69,7 @@ data class CelestialBodyAppointmentInfo(
             hours = appointment.celestialBody!!.coordinate?.hours,
             minutes = appointment.celestialBody!!.coordinate?.minutes,
             rightAscension = appointment.celestialBody!!.coordinate?.rightAscension,
-            declination = appointment.celestialBody!!.coordinate?.declination
+            declination = appointment.celestialBody!!.coordinate?.declination,
+            spectracyberConfigId = appointment.spectracyberConfig!!.id
     )
 }
