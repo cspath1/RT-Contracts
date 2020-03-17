@@ -5,7 +5,10 @@ import com.radiotelescope.controller.appointment.BaseAppointmentRestControllerTe
 import com.radiotelescope.controller.model.appointment.create.CoordinateAppointmentCreateForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.services.ses.MockAwsSesSendService
+import com.radiotelescope.services.sns.MockAwsSnsSendService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -23,6 +26,9 @@ import java.util.*
 internal class CoordinateAppointmentCreateControllerTest : BaseAppointmentRestControllerTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
+
+    @Autowired
+    private lateinit var userRepo: IUserRepository
 
     private lateinit var coordinateAppointmentCreateController: CoordinateAppointmentCreateController
     private lateinit var user: User
@@ -45,7 +51,10 @@ internal class CoordinateAppointmentCreateControllerTest : BaseAppointmentRestCo
 
         coordinateAppointmentCreateController = CoordinateAppointmentCreateController(
                 autoAppointmentWrapper = getCoordinateCreateWrapper(),
-                logger = getLogger()
+                logger = getLogger(),
+                userRepo = userRepo,
+                awsSesSendService = MockAwsSesSendService(true),
+                awsSnsSendService = MockAwsSnsSendService(true)
         )
 
         user = testUtil.createUser("cspath1@ycp.edu")

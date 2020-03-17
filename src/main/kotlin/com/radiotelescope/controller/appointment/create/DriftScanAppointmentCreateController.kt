@@ -5,9 +5,15 @@ import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreat
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.create.DriftScanAppointmentCreateForm
+import com.radiotelescope.controller.model.ses.SesSendForm
+import com.radiotelescope.controller.model.sns.SnsSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
+import com.radiotelescope.service.ses.IAwsSesSendService
+import com.radiotelescope.service.sns.IAwsSnsSendService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -26,6 +32,9 @@ import org.springframework.web.bind.annotation.RestController
 class DriftScanAppointmentCreateController(
         @Qualifier(value = "driftScanAppointmentWrapper")
         private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
+        private val userRepo: IUserRepository,
+        private val awsSesSendService: IAwsSesSendService,
+        private val awsSnsSendService: IAwsSnsSendService,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -55,6 +64,14 @@ class DriftScanAppointmentCreateController(
                     ),
                     errors = it.toStringMap()
             )
+
+            val theUser = userRepo.findById(form.userId!!).get()
+
+            if (theUser.notificationType == User.NotificationType.EMAIL) {
+                sendEmail(theUser.email, form)
+            } else if (theUser.notificationType == User.NotificationType.SMS) {
+                sendSms(theUser.phoneNumber!!, form)
+            }
 
             result = Result(errors = it.toStringMap())
         } ?:
@@ -110,5 +127,26 @@ class DriftScanAppointmentCreateController(
         }
 
         return result
+    }
+
+    private fun sendEmail(email: String, form: DriftScanAppointmentCreateForm) {
+        val sendForm = SesSendForm(
+                toAddresses = listOf(email),
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                subject = "Celestial Body Appointment Created",
+                htmlBody = "<p>Your drift scan appointment has been scheduled to start at ${form.startTime} " +
+                        "and end at ${form.endTime}.</p>"
+        )
+        awsSesSendService.execute(sendForm)
+    }
+
+    private fun sendSms(phoneNumber: String, form: DriftScanAppointmentCreateForm) {
+        val sendForm = SnsSendForm(
+                toNumber = phoneNumber,
+                topic = null,
+                message = "Your drift scan appointment has been scheduled to start at ${form.startTime} " +
+                        "and end at ${form.endTime}."
+        )
+        awsSnsSendService.execute(sendForm)
     }
 }
