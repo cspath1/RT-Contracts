@@ -6,11 +6,14 @@ import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.ApproveDenyForm
 import com.radiotelescope.controller.model.ses.SesSendForm
+import com.radiotelescope.controller.model.sns.SnsSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.service.ses.IAwsSesSendService
+import com.radiotelescope.service.sns.IAwsSnsSendService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -30,6 +33,7 @@ class AdminAppointmentApproveDenyRequestController (
         private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         private val appointmentRepo: IAppointmentRepository,
         private val awsSesSendService: IAwsSesSendService,
+        private val awsSnsSendService: IAwsSnsSendService,
         logger: Logger
 ) : BaseRestController(logger){
     /**
@@ -81,11 +85,20 @@ class AdminAppointmentApproveDenyRequestController (
 
                     result = Result(data = id)
 
-                    sendEmail(
-                            email = appointmentRepo.findById(id).get().user.email,
-                            id = id,
-                            isApprove = isApprove
-                    )
+                    if (appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.EMAIL) {
+                        sendEmail(
+                                email = appointmentRepo.findById(id).get().user.email,
+                                id = id,
+                                isApprove = isApprove
+                        )
+                    } else if (appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.SMS) {
+                        sendSms(
+                                phoneNumber = appointmentRepo.findById(id).get().user.phoneNumber!!,
+                                id = id,
+                                isApprove = isApprove
+                        )
+                    }
+
                 }
                 // Otherwise it was a failure
                 response.error?.let { errors ->
@@ -149,6 +162,25 @@ class AdminAppointmentApproveDenyRequestController (
         }
 
         awsSesSendService.execute(sendForm)
+    }
+
+    private fun sendSms(phoneNumber: String, id: Long, isApprove: Boolean) {
+        val sendForm = if(isApprove) {
+            SnsSendForm(
+                    toNumber = phoneNumber,
+                    topic = null,
+                    message = "Your appointment with the id = $id has been approved " +
+                            "and has now been scheduled for the allotted time slot."
+            )
+        } else {
+            SnsSendForm(
+                    toNumber = phoneNumber,
+                    topic = null,
+                    message = "Your appointment with the id = $id has been denied."
+            )
+        }
+
+        awsSnsSendService.execute(sendForm)
     }
 
 }
