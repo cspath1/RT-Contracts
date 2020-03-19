@@ -21,5 +21,6 @@ enum class ErrorTag {
     TIME,
     CURRENT_PASSWORD,
     SEARCH,
-    LOGIN_ATTEMPT
+    LOGIN_ATTEMPT,
+    NOTIFICATION_TYPE
 }
