@@ -66,9 +66,14 @@ class AdminUserUnbanController(
 
                 val theUser = userRepo.findById(id).get()
 
-                if (theUser.notificationType == User.NotificationType.EMAIL) {
+                // Send an email or an SMS depending on the user's notification type
+                if (theUser.notificationType == User.NotificationType.EMAIL ||
+                        theUser.notificationType == User.NotificationType.ALL) {
                     sendEmail(theUser.email)
-                } else if (theUser.notificationType == User.NotificationType.SMS) {
+                }
+
+                if (theUser.notificationType == User.NotificationType.SMS ||
+                        theUser.notificationType == User.NotificationType.ALL) {
                     sendSms(theUser.phoneNumber!!)
                 }
 

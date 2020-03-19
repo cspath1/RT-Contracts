@@ -54,7 +54,8 @@ data class User(
 
     enum class NotificationType(val label:String) {
         EMAIL("Email"),
-        SMS("SMS")
+        SMS("SMS"),
+        ALL("All")
     }
 
     companion object {

@@ -85,13 +85,18 @@ class AdminAppointmentApproveDenyRequestController (
 
                     result = Result(data = id)
 
-                    if (appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.EMAIL) {
+                    // Send an email or an SMS depending on the user's notification type
+                    if (appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.EMAIL ||
+                            appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.ALL) {
                         sendEmail(
                                 email = appointmentRepo.findById(id).get().user.email,
                                 id = id,
                                 isApprove = isApprove
                         )
-                    } else if (appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.SMS) {
+                    }
+
+                    if (appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.SMS ||
+                            appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.ALL) {
                         sendSms(
                                 phoneNumber = appointmentRepo.findById(id).get().user.phoneNumber!!,
                                 id = id,
