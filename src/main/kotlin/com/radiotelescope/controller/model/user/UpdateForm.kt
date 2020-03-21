@@ -23,7 +23,8 @@ data class UpdateForm(
         val lastName: String?,
         val phoneNumber: String?,
         val company: String?,
-        val profilePicture: String?
+        val profilePicture: String?,
+        val notificationType: String?
 ) : BaseForm<Update.Request> {
     /**
      * Override of the [BaseForm.toRequest] method that adapts
@@ -36,7 +37,8 @@ data class UpdateForm(
                 lastName = lastName!!,
                 phoneNumber = phoneNumber,
                 company = company,
-                profilePicture = profilePicture
+                profilePicture = profilePicture,
+                notificationType = notificationType!!
         )
     }
 

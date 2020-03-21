@@ -47,7 +47,8 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 lastName = "lastname",
                 company = "company",
                 phoneNumber = "0001112222",
-                profilePicture = "firstnamepic.jpg"
+                profilePicture = "firstnamepic.jpg",
+                notificationType = "SMS"
         )
     }
 
