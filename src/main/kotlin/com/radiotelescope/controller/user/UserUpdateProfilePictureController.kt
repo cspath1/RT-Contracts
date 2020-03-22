@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
  * @param logger the [Logger] service
  */
 @RestController
-class UserUpdateController(
+class UserUpdateProfilePictureController(
         private val userWrapper: UserUserWrapper,
         logger: Logger
 ) : BaseRestController(logger){
