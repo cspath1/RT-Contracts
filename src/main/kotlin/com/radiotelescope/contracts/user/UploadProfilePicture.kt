@@ -8,7 +8,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
-import com.springframework.web.multipart.MultipartFile
+import org.springframework.web.multipart.MultipartFile
 import com.radiotelescope.service.s3.S3UploadService
 import com.radiotelescope.service.s3.Util
 
@@ -26,19 +26,17 @@ class UploadProfilePicture(
         val theUser = userRepo.findById(request.id).get()
         val fileName = Util.generateUniqueFilename(request.profilePictureFile.originalFilename!!)
         val uploadPath = Util.generateProfilePictureUploadPath(theUser)
-        val uploadFileLocation = uploadPath + fileName
-        val uploadResult = s3UploadService.execute(request.profilePictureFile, uploadFileLocation)
+        request.profilePictureUrl = uploadPath + fileName
+        val uploadResult = s3UploadService.execute(request.profilePictureFile, request.profilePictureUrl)
 
         uploadResult.success?.let { success ->
-            val updatedUser = userRepo.save(request.updateEntity(user))
+            val updatedUser = userRepo.save(request.updateEntity(theUser))
             return SimpleResult(updatedUser.id, null)
         }
 
-        uploadResult.error?.let {
-            val errors = HashMultimap.create<ErrorTag, String>()
-            errors.put(ErrorTag.UPLOAD, "File upload failed")
-            return SimpleResult(null, errors)
-        }
+        val uploadErrors = HashMultimap.create<ErrorTag, String>()
+        uploadErrors.put(ErrorTag.UPLOAD, "File upload failed")
+        return SimpleResult(null, uploadErrors)
     }
 
     private fun validateRequest(): Multimap<ErrorTag, String> {
@@ -59,13 +57,14 @@ class UploadProfilePicture(
 
     data class Request(
             val id: Long,
-            val profilePictureFile: MultiPartFile
+            val profilePictureFile: MultipartFile,
+            var profilePictureUrl: String
     ) : BaseUpdateRequest<User> {
         /**
          * Override of the [BaseUpdateRequest.updateEntity] method that will take
          * a user entity and update its values to the values in the request
          */
-        override fun updateEntity(entity: User, profilePictureUrl: String): User {
+        override fun updateEntity(entity: User): User {
             // Find the existing user from the repository and update it's information
             entity.profilePicture = profilePictureUrl
 

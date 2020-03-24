@@ -8,7 +8,6 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
-import com.springframework.web.multipart.MultipartFile
 
 /**
  * Override of the [Command] interface method used for User registration

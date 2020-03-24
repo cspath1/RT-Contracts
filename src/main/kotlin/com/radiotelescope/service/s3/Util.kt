@@ -2,7 +2,8 @@ package com.radiotelescope.service.s3
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
-import com.radiotelescope.controller.model.Profile
+import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
 object Util {

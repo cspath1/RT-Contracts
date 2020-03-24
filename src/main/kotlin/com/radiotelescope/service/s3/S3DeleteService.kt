@@ -23,8 +23,7 @@ class S3DeleteService(
             s3Client.deleteObject(deleteObjectRequest)
 
             return SimpleResult(true, null)
-        } ?: let {
-            return SimpleResult(false, result.error)
         }
+        return SimpleResult(false, result.error)
     }
 }
