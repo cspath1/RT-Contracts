@@ -62,8 +62,8 @@ class Update(
                     errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
                 if (lastName.length > 100)
                     errors.put(ErrorTag.LAST_NAME, "Last Name must be under 100 characters")
-                if (notificationType != "EMAIL" && notificationType != "SMS")
-                    errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification type must be EMAIL or SMS")
+                if (notificationType != "EMAIL" && notificationType != "SMS" && notificationType != "ALL")
+                    errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification type must be EMAIL, SMS, or ALL")
             } else {
                 errors.put(ErrorTag.ID, "No User was found with specified Id")
                 return errors
