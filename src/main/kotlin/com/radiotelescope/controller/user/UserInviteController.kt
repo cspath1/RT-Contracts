@@ -6,7 +6,7 @@ import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.ses.AppLink
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.IUserRepository
@@ -104,7 +104,7 @@ class UserInviteController(
         val registerLink = AppLink.generate(profile) + "/users/register"
         val name = user.firstName + " " + user.lastName
 
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = listOf(email),
                 fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Invitation to Join the Radio Telescope",

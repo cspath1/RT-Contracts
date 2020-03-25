@@ -1,7 +1,7 @@
 package com.radiotelescope.security
 
 import com.radiotelescope.contracts.user.Authenticate
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
@@ -112,7 +112,7 @@ class AuthenticationProviderImpl(
     }
 
     private fun sendEmail(email: String) {
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = listOf(email),
                 fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Account Locked",

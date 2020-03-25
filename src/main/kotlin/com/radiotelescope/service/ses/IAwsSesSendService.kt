@@ -1,7 +1,7 @@
 package com.radiotelescope.service.ses
 
 import com.google.common.collect.HashMultimap
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 
 /**
  * Interface used for sending emails via Amazon Web Services Simple Email Service.
@@ -10,10 +10,10 @@ import com.radiotelescope.controller.model.ses.SendForm
  */
 interface IAwsSesSendService {
     /**
-     * Send an email with the contents specified in the [SendForm]
+     * Send an email with the contents specified in the [SesSendForm]
      *
-     * @param sendForm the [SendForm]
+     * @param sendForm the [SesSendForm]
      * @return a [HashMultimap] of errors or null
      */
-    fun execute(sendForm: SendForm): HashMultimap<ErrorTag, String>?
+    fun execute(sendForm: SesSendForm): HashMultimap<ErrorTag, String>?
 }

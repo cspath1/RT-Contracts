@@ -62,6 +62,8 @@ class Update(
                     errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
                 if (lastName.length > 100)
                     errors.put(ErrorTag.LAST_NAME, "Last Name must be under 100 characters")
+                if (notificationType != "EMAIL" && notificationType != "SMS")
+                    errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification type must be EMAIL or SMS")
             } else {
                 errors.put(ErrorTag.ID, "No User was found with specified Id")
                 return errors
@@ -82,7 +84,8 @@ class Update(
             val lastName: String,
             val phoneNumber: String?,
             val company: String?,
-            val profilePicture: String?
+            val profilePicture: String?,
+            val notificationType: String
     ) : BaseUpdateRequest<User> {
         /**
          * Override of the [BaseUpdateRequest.updateEntity] method that will take
@@ -95,6 +98,7 @@ class Update(
             entity.phoneNumber = phoneNumber
             entity.company = company
             entity.profilePicture = profilePicture
+            entity.notificationType = User.NotificationType.valueOf(notificationType)
 
             return entity
         }

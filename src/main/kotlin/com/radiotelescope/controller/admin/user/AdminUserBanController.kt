@@ -4,12 +4,15 @@ import com.radiotelescope.contracts.user.Ban
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
+import com.radiotelescope.controller.model.sns.SnsSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.service.ses.IAwsSesSendService
+import com.radiotelescope.service.sns.IAwsSnsSendService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -27,6 +30,7 @@ class AdminUserBanController(
         private val userWrapper: UserUserWrapper,
         private val userRepo: IUserRepository,
         private val awsSesSendService: IAwsSesSendService,
+        private val awsSnsSendService: IAwsSnsSendService,
         logger: Logger
 ): BaseRestController(logger) {
     /**
@@ -59,7 +63,19 @@ class AdminUserBanController(
                                 status = HttpStatus.OK.value()
                         )
                 )
-                sendEmail(userRepo.findById(id).get().email, message)
+
+                val theUser = userRepo.findById(id).get()
+
+                // Send an email or an SMS depending on the user's notification type
+                if (theUser.notificationType == User.NotificationType.EMAIL ||
+                        theUser.notificationType == User.NotificationType.ALL) {
+                    sendEmail(theUser.email, message)
+                }
+
+                if (theUser.notificationType == User.NotificationType.SMS ||
+                        theUser.notificationType == User.NotificationType.ALL) {
+                    sendSms(theUser.phoneNumber!!, message)
+                }
 
                 result = Result(data = id)
             }
@@ -98,9 +114,9 @@ class AdminUserBanController(
     }
 
     private fun sendEmail(email: String, message: String?) {
-        val sendForm: SendForm
+        val sendForm: SesSendForm
         if(!message.isNullOrBlank()) {
-            sendForm = SendForm(
+            sendForm = SesSendForm(
                     toAddresses = listOf(email),
                     fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                     subject = "Banned By Admin",
@@ -109,7 +125,7 @@ class AdminUserBanController(
             )
         }
         else {
-            sendForm = SendForm(
+            sendForm = SesSendForm(
                     toAddresses = listOf(email),
                     fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                     subject = "Banned By Admin",
@@ -118,5 +134,29 @@ class AdminUserBanController(
         }
 
         awsSesSendService.execute(sendForm)
+    }
+
+    private fun sendSms(phoneNumber: String, message: String?) {
+        val sendForm: SnsSendForm
+        if(!message.isNullOrBlank()) {
+            sendForm = SnsSendForm(
+                    toNumber = phoneNumber,
+                    topic = null,
+                    message = "You have been banned from the York County Astronomical Society's " +
+                            "Radio Telescope web application due to reason $message." +
+                            " To appeal your ban please contact Todd Ullery (ullery1@gmail.com)."
+            )
+        }
+        else {
+            sendForm = SnsSendForm(
+                    toNumber = phoneNumber,
+                    topic = null,
+                    message = "You have been banned from the York County Astronomical Society's " +
+                            "Radio Telescope web application." +
+                            " To appeal your ban please contact Todd Ullery (ullery1@gmail.com)."
+            )
+        }
+
+        awsSnsSendService.execute(sendForm)
     }
 }

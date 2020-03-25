@@ -48,6 +48,16 @@ data class User(
         DELETED("Deleted")
     }
 
+    @Column(name = "notification_type")
+    @Enumerated(value = EnumType.STRING)
+    var notificationType: User.NotificationType = NotificationType.EMAIL
+
+    enum class NotificationType(val label:String) {
+        EMAIL("Email"),
+        SMS("SMS"),
+        ALL("All")
+    }
+
     companion object {
         fun isEmailValid(email: String): Boolean {
             return Pattern.compile(
