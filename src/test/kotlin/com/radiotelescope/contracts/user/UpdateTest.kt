@@ -126,6 +126,28 @@ internal class UpdateTest : AbstractSpringTest() {
     }
 
     @Test
+    fun testBlankNotificationType_Failure() {
+        // Execute the command
+        val (id, error) = Update(
+                request = Update.Request(
+                        id = userId,
+                        firstName = "Evil",
+                        lastName = "Twin",
+                        phoneNumber = "717-000-0000",
+                        company = "Evil Twin Company",
+                        profilePicture = "eviltwinpic.jpg",
+                        notificationType = ""
+                ),
+                userRepo = userRepo
+        ).execute()
+
+        // Should have failed
+        assertNotNull(error)
+        assertNull(id)
+        assertTrue(error!![ErrorTag.NOTIFICATION_TYPE].isNotEmpty())
+    }
+
+    @Test
     fun testLastNameLong_Failure() {
         // Execute the command
         val (id, error) = Update(

@@ -55,6 +55,8 @@ data class UpdateForm(
             errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
         if (lastName.isNullOrBlank())
             errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
+        if (notificationType.isNullOrBlank())
+            errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification Type may not be blank")
         return if (errors.isEmpty) null else errors
     }
 }
