@@ -47,5 +47,5 @@
     <include file="classpath:/db/changelog/42-add-foreign-keys-appointment.sql"/>
     <include file="classpath:/db/changelog/43-create-sensor-overrides.sql"/>
     <include file="classpath:/db/changelog/44-add-foreign-key-celestial-body.sql"/>
-    <include file="classpath:/db/changelog/45-create-frontpage-picture.sql"/>
+    <include file="classpath:/db/changelog/46-create-frontpage-picture.sql"/>
 </databaseChangeLog>
