@@ -19,11 +19,11 @@ class Update (
 ) : Command<SensorOverrides, Multimap<ErrorTag, String>> {
 
     /**
-     * Override of the [Command] execute method. It checks the database for
-     * the single entry in the thresholds table using the [ISensorOverridesRepository.findAll]
-     * method and updates it.
+     * Override of the [Command] execute method. The method inserts a new
+     * record into the sensor_overrides table using [sensorOverridesRepo.save],
+     * overwriting the old override status
      *
-     * If the thresholds entry does not exist (should never happen),
+     * If there are no sensor_overrides (which should never happen),
      * it will return an error in the [SimpleResult].
      */
     override fun execute(): SimpleResult<SensorOverrides, Multimap<ErrorTag, String>> {

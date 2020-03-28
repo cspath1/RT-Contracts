@@ -13,13 +13,12 @@ class FrontpagePicture(
         @Column(name = "picture", nullable = false)
         var picture: String,
         @Column(name = "description", nullable = false)
-        var description: String
+        var description: String,
+        @Column(name = "approved")
+        var approved: Boolean = false
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     var id: Long = 0
-
-    @Column(name = "approved")
-    var approved: Boolean = false
 }
