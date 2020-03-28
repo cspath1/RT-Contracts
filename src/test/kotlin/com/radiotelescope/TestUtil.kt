@@ -14,6 +14,7 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
+import com.radiotelescope.repository.frontpagePicture.IFrontpagePictureRepository
 import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.loginAttempt.LoginAttempt
 import com.radiotelescope.repository.orientation.IOrientationRepository
@@ -110,6 +111,9 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var sensorOverridesRepo: ISensorOverridesRepository
+
+    @Autowired
+    private lateinit var frontpagePictureRepo: IFrontpagePictureRepository
 
     fun createUser(email: String): User {
         val user = User(
