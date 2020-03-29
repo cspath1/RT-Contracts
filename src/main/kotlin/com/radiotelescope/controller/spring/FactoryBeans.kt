@@ -15,6 +15,9 @@ import com.radiotelescope.contracts.celestialBody.BaseCelestialBodyFactory
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.BaseFeedbackFactory
 import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
+import com.radiotelescope.contracts.frontpagePicture.BaseFrontpagePictureFactory
+import com.radiotelescope.contracts.frontpagePicture.FrontpagePictureFactory
+import com.radiotelescope.contracts.frontpagePicture.UserFrontpagePictureWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.log.BaseLogFactory
 import com.radiotelescope.contracts.resetPasswordToken.BaseResetPasswordTokenFactory
@@ -391,6 +394,10 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserSpectracyberConfigWrapper] object, allowing it to be autowired
+     * in  controllers
+     */
     @Bean
     override fun getSpectracyberConfigWrapper(): UserSpectracyberConfigWrapper {
         return UserSpectracyberConfigWrapper(
@@ -402,6 +409,10 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserThresholdsWrapper] object, allowing it to be autowired
+     * in  controllers
+     */
     @Bean
     override fun getThresholdsWrapper(): UserThresholdsWrapper {
         return UserThresholdsWrapper(
@@ -412,12 +423,30 @@ class FactoryBeans(
         )
     }
 
+    /**
+     * Returns a [UserSensorOverridesWrapper] object, allowing it to be autowired
+     * in  controllers
+     */
     @Bean
     override fun getSensorOverridesWrapper(): UserSensorOverridesWrapper {
         return UserSensorOverridesWrapper(
                 context = userContext,
                 factory = BaseSensorOverridesFactory (
                         sensorOverridesRepo = repositories.sensorOverridesRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [UserFrontpagePictureWrapper] object, allowing it to be autowired
+     * in  controllers
+     */
+    @Bean
+    override fun getFrontpagePictureWrapper(): UserFrontpagePictureWrapper {
+        return UserFrontpagePictureWrapper(
+                context = userContext,
+                factory = BaseFrontpagePictureFactory (
+                        frontpagePictureRepo = repositories.frontpagePictureRepo
                 )
         )
     }

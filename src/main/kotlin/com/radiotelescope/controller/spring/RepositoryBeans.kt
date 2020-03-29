@@ -8,6 +8,7 @@ import com.radiotelescope.repository.error.IErrorRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.feedback.IFeedbackRepository
+import com.radiotelescope.repository.frontpagePicture.IFrontpagePictureRepository
 import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepository
@@ -79,5 +80,6 @@ class RepositoryBeans(
         val spectracyberConfigRepo: ISpectracyberConfigRepository,
         val sensorStatusRepo: ISensorStatusRepository,
         val thresholdsRepo: IThresholdsRepository,
-        val sensorOverridesRepo: ISensorOverridesRepository
+        val sensorOverridesRepo: ISensorOverridesRepository,
+        val frontpagePictureRepo: IFrontpagePictureRepository
 )

@@ -7,6 +7,7 @@ import com.radiotelescope.contracts.appointment.wrapper.UserManualAppointmentWra
 import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreate
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
+import com.radiotelescope.contracts.frontpagePicture.UserFrontpagePictureWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
@@ -139,4 +140,9 @@ interface FactoryProvider {
      * Abstract method to return the [UserSensorOverridesWrapper]  class
      */
     fun getSensorOverridesWrapper(): UserSensorOverridesWrapper
+
+    /**
+     * Abstract method to return the [UserFrontpagePictureWrapper] class
+     */
+    fun getFrontpagePictureWrapper(): UserFrontpagePictureWrapper
 }
