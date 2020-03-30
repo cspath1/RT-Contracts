@@ -6,11 +6,12 @@ import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.frontpagePicture.SubmitForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.security.UserContext
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * REST Controller to handle Feedback submission
@@ -21,11 +22,25 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class FrontpagePictureSubmitController(
         private val frontpagePictureWrapper: UserFrontpagePictureWrapper,
+        private val context: UserContext,
+        private val roleRepo: IUserRoleRepository,
         logger: Logger
 ) : BaseRestController(logger) {
 
-    @PostMapping(value = ["/api/frontpage-picture/submit"])
-    fun execute(@RequestBody form: SubmitForm): Result {
+    @PostMapping(value = ["/api/frontpage-picture/"])
+    fun execute(@RequestParam("picture") picture: String,
+                @RequestParam("description") description: String): Result {
+        // If the user is an Admin, picture is automatically approved
+        val isAdmin = (roleRepo.findAllApprovedRolesByUserId(context.currentUserId()!!).find { role -> UserRole.Role.ADMIN == role.role } != null)
+        print("roles: " + roleRepo.findAllApprovedRolesByUserId(context.currentUserId()!!) + "\n")
+        print("admin: $isAdmin\n")
+
+        val form = SubmitForm(
+                picture = picture,
+                description = description,
+                approved = isAdmin
+        )
+
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
             // Create error logs
