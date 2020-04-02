@@ -64,6 +64,8 @@ class Validate(
                 UserRole.Role.GUEST -> Appointment.GUEST_APPOINTMENT_TIME_CAP
                 UserRole.Role.STUDENT -> Appointment.STUDENT_APPOINTMENT_TIME_CAP
                 UserRole.Role.MEMBER -> Appointment.MEMBER_APPOINTMENT_TIME_CAP
+                UserRole.Role.RESEARCHER -> Appointment.RESEARCHER_APPOINTMENT_TIME_CAP
+                UserRole.Role.ALUMNUS -> Appointment.ALUMNUS_APPOINTMENT_TIME_CAP
                 else -> null
             }
 

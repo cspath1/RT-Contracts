@@ -137,7 +137,7 @@ internal class ValidateTest : AbstractSpringTest() {
         assertNotNull(theResponse)
         assertNull(errors)
 
-        assertNull(allottedTimeCapRepo.findByUserId(userId).allottedTime)
+        assertEquals(Appointment.RESEARCHER_APPOINTMENT_TIME_CAP, allottedTimeCapRepo.findByUserId(userId).allottedTime)
     }
 
     @Test
