@@ -24,4 +24,15 @@ class BaseFrontpagePictureFactory (
                 frontpagePictureRepo = frontpagePictureRepo
         )
     }
+
+    /**
+     * Override of the [FrontpagePictureFactory] method that will
+     * return an [ApproveDeny] command object
+     */
+    override fun approveDeny(request: ApproveDeny.Request): Command<FrontpagePicture, Multimap<ErrorTag, String>> {
+        return ApproveDeny(
+                request = request,
+                frontpagePictureRepo = frontpagePictureRepo
+        )
+    }
 }

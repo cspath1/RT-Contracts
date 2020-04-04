@@ -31,4 +31,18 @@ class UserFrontpagePictureWrapper (
                 successCommand = factory.submit(request)
         ).execute(withAccess)
     }
+
+    /**
+     * Wrapper method for the [FrontpagePictureFactory.approveDeny] method.
+     *
+     * @param request the [ApproveDeny.Request] form
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun approveDeny(request: ApproveDeny.Request, withAccess: (result: SimpleResult<FrontpagePicture, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.ADMIN),
+                successCommand = factory.approveDeny(request)
+        ).execute(withAccess)
+    }
 }

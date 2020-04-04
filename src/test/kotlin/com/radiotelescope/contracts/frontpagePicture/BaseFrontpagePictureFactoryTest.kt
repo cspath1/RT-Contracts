@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class BaseFrontpagePictureTest : AbstractSpringTest() {
+internal class BaseFrontpagePictureFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var frontpagePictureRepo: IFrontpagePictureRepository
 

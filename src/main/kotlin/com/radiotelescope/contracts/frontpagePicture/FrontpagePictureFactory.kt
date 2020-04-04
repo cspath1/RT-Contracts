@@ -15,4 +15,11 @@ interface FrontpagePictureFactory {
      * @return a [Command] object
      */
     fun submit(request: Submit.Request): Command<FrontpagePicture, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to approve or deny (delete) a [FrontpagePicture] object
+     *
+     * @return a [Command] object
+     */
+    fun approveDeny(request: ApproveDeny.Request): Command<FrontpagePicture, Multimap<ErrorTag, String>>
 }
