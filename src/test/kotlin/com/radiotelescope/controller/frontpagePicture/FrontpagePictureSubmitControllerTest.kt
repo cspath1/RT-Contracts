@@ -49,7 +49,11 @@ internal class FrontpagePictureSubmitControllerTest : BaseFrontpagePictureRestCo
     fun testSuccessResponseAdmin() {
         // Simulate a login
         getContext().login(user.id)
+        getContext().currentRoles.add(UserRole.Role.USER)
+        testUtil.createUserRoleForUser(user, UserRole.Role.USER, true)
+        // Make the user an admin
         getContext().currentRoles.add(UserRole.Role.ADMIN)
+        testUtil.createUserRoleForUser(user, UserRole.Role.ADMIN, true)
 
         val result = frontpagePictureSubmitController.execute(
                 picture = picture,
@@ -57,7 +61,6 @@ internal class FrontpagePictureSubmitControllerTest : BaseFrontpagePictureRestCo
         )
 
         assertNotNull(result)
-        print(result.data)
         assertTrue(result.data is FrontpagePicture)
         assertTrue((result.data as FrontpagePicture).approved)
         assertEquals(HttpStatus.OK, result.status)
@@ -67,6 +70,52 @@ internal class FrontpagePictureSubmitControllerTest : BaseFrontpagePictureRestCo
 
         logRepo.findAll().forEach {
             assertEquals(HttpStatus.OK.value(), it.status)
+        }
+    }
+
+    @Test
+    fun testSuccessResponseUser() {
+        // Simulate a login
+        getContext().login(user.id)
+        getContext().currentRoles.add(UserRole.Role.USER)
+        testUtil.createUserRoleForUser(user, UserRole.Role.USER, true)
+
+        val result = frontpagePictureSubmitController.execute(
+                picture = picture,
+                description = description
+        )
+
+        assertNotNull(result)
+        assertTrue(result.data is FrontpagePicture)
+        assertFalse((result.data as FrontpagePicture).approved)
+        assertEquals(HttpStatus.OK, result.status)
+        assertNull(result.errors)
+
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
+    }
+
+    @Test
+    fun testFailedAuthenticationResponse() {
+        // Do not log the user in
+        val result = frontpagePictureSubmitController.execute(
+                picture = picture,
+                description = description
+        )
+
+        assertNotNull(result)
+        assertNull(result.data)
+        assertEquals(HttpStatus.FORBIDDEN, result.status)
+        assertNotNull(result.errors)
+
+        // Ensure a log record was created
+        assertEquals(1, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.FORBIDDEN.value(), it.status)
         }
     }
 }

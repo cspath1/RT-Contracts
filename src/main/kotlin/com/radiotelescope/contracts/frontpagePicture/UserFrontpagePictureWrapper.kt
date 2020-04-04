@@ -26,7 +26,6 @@ class UserFrontpagePictureWrapper (
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun submit(request: Submit.Request, withAccess: (result: SimpleResult<FrontpagePicture, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        print("wrapper roles: " + context.currentUserId() + "\n")
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),
                 successCommand = factory.submit(request)

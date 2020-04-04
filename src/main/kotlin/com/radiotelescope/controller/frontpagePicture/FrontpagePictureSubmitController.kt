@@ -31,9 +31,8 @@ class FrontpagePictureSubmitController(
     fun execute(@RequestParam("picture") picture: String,
                 @RequestParam("description") description: String): Result {
         // If the user is an Admin, picture is automatically approved
-        val isAdmin = (roleRepo.findAllApprovedRolesByUserId(context.currentUserId()!!).find { role -> UserRole.Role.ADMIN == role.role } != null)
-        print("roles: " + roleRepo.findAllApprovedRolesByUserId(context.currentUserId()!!) + "\n")
-        print("admin: $isAdmin\n")
+        val isAdmin = context.currentUserId() != null &&
+                roleRepo.findAllApprovedRolesByUserId(context.currentUserId()!!).find { role -> UserRole.Role.ADMIN == role.role } != null
 
         val form = SubmitForm(
                 picture = picture,
