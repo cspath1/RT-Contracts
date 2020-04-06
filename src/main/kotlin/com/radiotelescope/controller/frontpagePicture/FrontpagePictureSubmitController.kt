@@ -1,5 +1,6 @@
 package com.radiotelescope.controller.frontpagePicture
 
+import com.radiotelescope.contracts.celestialBody.Retrieve
 import com.radiotelescope.contracts.frontpagePicture.UserFrontpagePictureWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -8,15 +9,19 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.frontpagePicture.FrontpagePicture
+import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 /**
- * REST Controller to handle Feedback submission
+ * REST Controller to handle Frontpage Picture submission
  *
  * @param frontpagePictureWrapper the [UserFrontpagePictureWrapper]
+ * @param context the [UserContext]
+ * @param roleRepo the [IUserRoleRepository]
  * @param logger the [Logger] service
  */
 @RestController
@@ -26,7 +31,16 @@ class FrontpagePictureSubmitController(
         private val roleRepo: IUserRoleRepository,
         logger: Logger
 ) : BaseRestController(logger) {
-
+    /**
+     * Take in the picture and description of the new [FrontpagePicture]
+     * and executing the [UserFrontpagePictureWrapper.submit] method.
+     * If this method returns an [AccessReport], this means they did not pass
+     * authentication and the method will respond with errors.
+     *
+     * Otherwise, this means the [Retrieve] command was executed, and the controller
+     * will check whether or not this command was a success or not, responding
+     * appropriately.
+     */
     @PostMapping(value = ["/api/frontpage-picture/"])
     fun execute(@RequestParam("picture") picture: String,
                 @RequestParam("description") description: String): Result {
