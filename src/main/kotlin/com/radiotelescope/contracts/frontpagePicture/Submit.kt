@@ -12,6 +12,7 @@ import com.radiotelescope.repository.frontpagePicture.IFrontpagePictureRepositor
  * Override of the [Command] interface method used to retrieve [FrontpagePicture]
  * information
  *
+ * @param request the [Submit.Request]
  * @param frontpagePictureRepo the [IFrontpagePictureRepository] interface
  */
 class Submit (

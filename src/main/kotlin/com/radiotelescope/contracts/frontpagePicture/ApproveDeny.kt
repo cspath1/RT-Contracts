@@ -7,11 +7,25 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.frontpagePicture.FrontpagePicture
 import com.radiotelescope.repository.frontpagePicture.IFrontpagePictureRepository
 
+/**
+ * Override of the [Command] interface method used to approve or deny
+ * a [FrontpagePicture] record
+ *
+ * @param request the [ApproveDeny.Request]
+ * @param frontpagePictureRepo the [IFrontpagePictureRepository] interface
+ */
 class ApproveDeny (
         private val request: Request,
         private val frontpagePictureRepo: IFrontpagePictureRepository
 ) : Command<FrontpagePicture, Multimap<ErrorTag, String>> {
 
+    /**
+     * Override of the [Command] execute method. The method allows admins to approve
+     * or deny user-submitted [FrontpagePicture] records. If approved, the [FrontpagePicture.approved]
+     * is updated to true. If denied, record is deleted.
+     *
+     * Any error will result in the method returning an error in the [SimpleResult].
+     */
     override fun execute(): SimpleResult<FrontpagePicture, Multimap<ErrorTag, String>> {
         val errors = validateRequest()
 
@@ -32,6 +46,12 @@ class ApproveDeny (
         return SimpleResult(theFrontpagePicture, null)
     }
 
+    /**
+     * Method responsible for constraint checking and validations for the
+     * [Request] object.
+     *
+     * @return a [HashMultimap] of errors or null
+     */
     private fun validateRequest(): Multimap<ErrorTag, String>{
         val errors = HashMultimap.create<ErrorTag, String>()
 
@@ -43,6 +63,12 @@ class ApproveDeny (
         return errors
     }
 
+    /**
+     * Data class containing the fields necessary to submit a frontpage picture
+     *
+     * @param frontpagePictureId the id of the relevant [FrontpagePicture]
+     * @param isApprove admin approval or denial
+     */
     data class Request (
             val frontpagePictureId: Long,
             val isApprove: Boolean
