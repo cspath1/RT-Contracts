@@ -7,6 +7,9 @@ import com.radiotelescope.controller.model.appointment.create.CelestialBodyAppoi
 import com.radiotelescope.controller.model.ses.SesSendForm
 import com.radiotelescope.controller.model.sns.SnsSendForm
 import com.radiotelescope.controller.spring.Logger
+import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.security.UserContext
 import com.radiotelescope.service.sns.ErrorTag
 import com.radiotelescope.service.ses.IAwsSesSendService
 import com.radiotelescope.service.sns.IAwsSnsSendService
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class AdminTopicNotificationController (
+        private val context: UserContext,
+        private val roleRepo: IUserRoleRepository,
         private val awsSesSendService: IAwsSesSendService,
         private val awsSnsSendService: IAwsSnsSendService,
         logger: Logger
@@ -26,15 +31,17 @@ class AdminTopicNotificationController (
     fun execute(@RequestParam(value = "topic", required = false, defaultValue = "") topic: String,
                 @RequestParam(value = "message", required = true) message: String
     ) : Result {
-        sendSms(
-                topic = topic,
-                message = message
-        )?.let { errors ->
-            if(errors.isEmpty) {
-                result = Result()
-            } else {
-                result = Result(errors = errors.toStringMap(), status = HttpStatus.FORBIDDEN)
+        // Test if the user is an admin
+        val isAdmin = (roleRepo.findAllApprovedRolesByUserId(context.currentUserId()!!).find { role -> UserRole.Role.ADMIN == role.role } != null)
+        if (isAdmin) {
+            sendSms(
+                    topic = topic,
+                    message = message
+            )?.let { errors ->
+                result =  if (errors.isEmpty) Result() else Result(errors = errors.toStringMap(), status = HttpStatus.BAD_REQUEST)
             }
+        } else {
+            result = Result(status = HttpStatus.FORBIDDEN)
         }
 
         return result
