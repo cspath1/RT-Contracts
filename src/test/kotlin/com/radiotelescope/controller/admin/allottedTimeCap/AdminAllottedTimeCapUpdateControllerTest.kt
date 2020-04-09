@@ -6,7 +6,7 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.services.ses.MockAwsSesSendService
-import com.radiotelescope.services.sns.MockAwsSnsSendService
+import com.radiotelescope.services.sns.MockAwsSnsService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -41,7 +41,7 @@ internal class AdminAllottedTimeCapUpdateControllerTest : BaseAllottedTimeCapRes
                 logger = getLogger(),
                 userRepo = userRepo,
                 awsSesSendService = MockAwsSesSendService(true),
-                awsSnsSendService = MockAwsSnsSendService(true)
+                awsSnsService = MockAwsSnsService(true)
         )
 
     }

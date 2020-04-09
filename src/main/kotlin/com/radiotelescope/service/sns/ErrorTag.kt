@@ -8,5 +8,6 @@ enum class ErrorTag {
     TOPIC,
     MESSAGE,
     SEND_MESSAGE,
-    TYPE
+    TYPE,
+    PROTOCOL
 }

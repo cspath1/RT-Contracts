@@ -8,10 +8,13 @@ import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.role.ValidateForm
 import com.radiotelescope.controller.model.ses.AppLink
 import com.radiotelescope.controller.model.ses.SesSendForm
+import com.radiotelescope.controller.model.sns.SnsSubscribeForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.service.ses.IAwsSesSendService
+import com.radiotelescope.service.sns.IAwsSnsService
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -27,8 +30,12 @@ class AdminUserRoleValidateController(
         private val roleWrapper: UserUserRoleWrapper,
         private val profile: Profile,
         private val awsSesSendService: IAwsSesSendService,
+        private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger) {
+    @Value("\${amazon.aws.sns.default-topic}")
+    lateinit var defaultSendTopic: String
+
     /**
      * Execute method that is in charge of adapting a [ValidateForm]
      * to a [Validate.Request] command (if possible). Otherwise, it
@@ -72,6 +79,10 @@ class AdminUserRoleValidateController(
                             )
                     )
 
+                    subscribeEmail(
+                            email = theResponse.email
+                    )
+
                     sendEmail(
                             email = theResponse.email,
                             token = theResponse.token
@@ -112,6 +123,16 @@ class AdminUserRoleValidateController(
         }
 
         return result
+    }
+
+    private fun subscribeEmail(email: String) {
+        val subscribeForm = SnsSubscribeForm(
+                topic = defaultSendTopic,
+                protocol = "email",
+                endpoint = email
+        )
+
+        awsSnsService.subscribe(subscribeForm)
     }
 
     private fun sendEmail(email: String, token: String) {

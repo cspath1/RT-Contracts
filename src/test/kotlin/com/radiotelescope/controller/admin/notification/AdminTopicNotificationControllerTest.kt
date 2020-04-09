@@ -5,7 +5,7 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
-import com.radiotelescope.services.sns.MockAwsSnsSendService
+import com.radiotelescope.services.sns.MockAwsSnsService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -35,7 +35,7 @@ internal class AdminTopicNotificationControllerTest : BaseRestControllerTest() {
         adminTopicNotificationController = AdminTopicNotificationController(
                 context = getContext(),
                 roleRepo = roleRepo,
-                awsSnsSendService = MockAwsSnsSendService(true),
+                awsSnsService = MockAwsSnsService(true),
                 logger = getLogger()
         )
 

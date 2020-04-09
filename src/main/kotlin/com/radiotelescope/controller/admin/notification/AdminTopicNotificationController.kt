@@ -9,7 +9,7 @@ import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.UserContext
 import com.radiotelescope.service.sns.ErrorTag
-import com.radiotelescope.service.sns.IAwsSnsSendService
+import com.radiotelescope.service.sns.IAwsSnsService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController
 class AdminTopicNotificationController (
         private val context: UserContext,
         private val roleRepo: IUserRoleRepository,
-        private val awsSnsSendService: IAwsSnsSendService,
+        private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger) {
     @Value("\${amazon.aws.sns.default-topic}")
@@ -67,6 +67,6 @@ class AdminTopicNotificationController (
                 topic = topic,
                 message = message
         )
-        return awsSnsSendService.execute(sendForm)
+        return awsSnsService.send(sendForm)
     }
 }

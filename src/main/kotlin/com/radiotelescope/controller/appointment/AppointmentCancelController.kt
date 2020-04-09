@@ -13,7 +13,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.service.ses.IAwsSesSendService
-import com.radiotelescope.service.sns.IAwsSnsSendService
+import com.radiotelescope.service.sns.IAwsSnsService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -38,7 +38,7 @@ class AppointmentCancelController(
         private val userRepo: IUserRepository,
         private val appointmentRepo: IAppointmentRepository,
         private val awsSesSendService: IAwsSesSendService,
-        private val awsSnsSendService: IAwsSnsSendService,
+        private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -138,6 +138,6 @@ class AppointmentCancelController(
                 topic = null,
                 message = "Your appointment with the YCAS Radio Telescope has been cancelled."
         )
-        awsSnsSendService.execute(sendForm)
+        awsSnsService.send(sendForm)
     }
 }

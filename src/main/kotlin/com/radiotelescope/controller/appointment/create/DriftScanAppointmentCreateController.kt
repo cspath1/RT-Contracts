@@ -13,7 +13,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.service.ses.IAwsSesSendService
-import com.radiotelescope.service.sns.IAwsSnsSendService
+import com.radiotelescope.service.sns.IAwsSnsService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -34,7 +34,7 @@ class DriftScanAppointmentCreateController(
         private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         private val userRepo: IUserRepository,
         private val awsSesSendService: IAwsSesSendService,
-        private val awsSnsSendService: IAwsSnsSendService,
+        private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -152,6 +152,6 @@ class DriftScanAppointmentCreateController(
                 message = "Your drift scan appointment has been scheduled to start at ${form.startTime} " +
                         "and end at ${form.endTime}."
         )
-        awsSnsSendService.execute(sendForm)
+        awsSnsService.send(sendForm)
     }
 }

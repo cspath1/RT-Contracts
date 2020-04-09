@@ -13,7 +13,7 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.service.ses.IAwsSesSendService
-import com.radiotelescope.service.sns.IAwsSnsSendService
+import com.radiotelescope.service.sns.IAwsSnsService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -33,7 +33,7 @@ class AdminAppointmentApproveDenyRequestController (
         private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         private val appointmentRepo: IAppointmentRepository,
         private val awsSesSendService: IAwsSesSendService,
-        private val awsSnsSendService: IAwsSnsSendService,
+        private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger){
     /**
@@ -185,7 +185,7 @@ class AdminAppointmentApproveDenyRequestController (
             )
         }
 
-        awsSnsSendService.execute(sendForm)
+        awsSnsService.send(sendForm)
     }
 
 }
