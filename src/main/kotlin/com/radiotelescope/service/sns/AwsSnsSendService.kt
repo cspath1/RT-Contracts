@@ -37,9 +37,7 @@ class AwsSnsSendService (
             }
 
             if (sendForm.toNumber.isNullOrBlank()) {
-                request = PublishRequest()
-                        .withTopicArn(sendForm.topic)
-                        .withMessage(sendForm.message)
+                request = PublishRequest(sendForm.topic, sendForm.message)
                         .withMessageAttributes(smsAttributes)
             }
 

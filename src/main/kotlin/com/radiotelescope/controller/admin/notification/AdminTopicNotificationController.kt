@@ -11,6 +11,7 @@ import com.radiotelescope.security.UserContext
 import com.radiotelescope.service.sns.ErrorTag
 import com.radiotelescope.service.sns.IAwsSnsSendService
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -30,13 +31,17 @@ class AdminTopicNotificationController (
         private val awsSnsSendService: IAwsSnsSendService,
         logger: Logger
 ) : BaseRestController(logger) {
+    @Value("\${amazon.aws.sns.default-topic}")
+    lateinit var defaultSendTopic: String
+
     @PostMapping(value = ["/api/notification/topic"])
     fun execute(@RequestParam(value = "topic", required = false) topic: String?,
                 @RequestParam(value = "message", required = true) message: String
     ) : Result {
+        // If the topic is left blank, use the default topic
         var sendTopic = topic
         if(topic.isNullOrBlank()) {
-            sendTopic = ""
+            sendTopic = defaultSendTopic
         }
 
         // Test if the user is an admin
