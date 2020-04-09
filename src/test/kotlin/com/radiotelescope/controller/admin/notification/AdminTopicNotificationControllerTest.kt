@@ -39,6 +39,8 @@ internal class AdminTopicNotificationControllerTest : BaseRestControllerTest() {
                 logger = getLogger()
         )
 
+        adminTopicNotificationController.defaultSendTopic = "testARN"
+
         user = testUtil.createUser("jhorne@ycp.edu")
     }
 
