@@ -7,12 +7,12 @@ import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
 
 object Util {
-    fun retrieveUrl(key: String, s3client: AmazonS3, s3Bucket: S3Bucket): String {
+    fun retrieveUrl(key: String, s3client: AmazonS3, s3Bucket: String): String {
         val isFile = !key.endsWith("/")
 
         if (isFile) {
             val urlRequest = GeneratePresignedUrlRequest(
-                    s3Bucket.name,
+                    s3Bucket,
                     key
             )
 

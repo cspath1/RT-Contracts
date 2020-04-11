@@ -16,7 +16,8 @@ internal class SubmitTest : AbstractSpringTest() {
     private lateinit var frontpagePictureRepo: IFrontpagePictureRepository
 
     private val baseRequest = Submit.Request(
-            picture = "test.jpg",
+            pictureTitle = "Test Picture",
+            pictureUrl = "test.jpg",
             description = "Test Description",
             approved = false
     )
@@ -33,15 +34,16 @@ internal class SubmitTest : AbstractSpringTest() {
 
         val theFrontpagePicture = frontpagePictureRepo.findById(result!!.id).get()
         assertNotNull(theFrontpagePicture)
-        assertEquals(baseRequest.picture, result.picture)
+        assertEquals(baseRequest.pictureTitle, result.pictureTitle)
+        assertEquals(baseRequest.pictureUrl, result.pictureUrl)
         assertEquals(baseRequest.description, result.description)
         assertEquals(baseRequest.approved, result.approved)
     }
 
     @Test
-    fun testInvalidConstraints_PictureTooLong() {
+    fun testInvalidConstraints_PictureURLTooLong() {
         val requestCopy = baseRequest.copy(
-                picture = "test.jpg".repeat(40)
+                pictureUrl = "test.jpg".repeat(40)
         )
 
         val (result, errors) = Submit(
@@ -53,7 +55,7 @@ internal class SubmitTest : AbstractSpringTest() {
         assertNull(result)
 
         assertEquals(1, errors!!.size())
-        assertTrue(errors[ErrorTag.PICTURE].isNotEmpty())
+        assertTrue(errors[ErrorTag.PICTURE_URL].isNotEmpty())
     }
 
     @Test

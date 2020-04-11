@@ -19,7 +19,6 @@ import java.io.InputStream
 
 @Service
 class S3UploadService(
-        private val amazonS3Bucket: S3Bucket,
         private val s3Configuration: S3Configuration
 ) {
     fun execute(multipartFile: MultipartFile, uploadPath: String): SimpleResult<UploadResult, Multimap<ErrorTag, String>> {
@@ -43,7 +42,7 @@ class S3UploadService(
             val byteArray = IOUtils.toByteArray(inputStream)
             metadata.contentLength = byteArray.size.toLong()
             byteArrayInputStream = ByteArrayInputStream(byteArray)
-            val putObjectRequest = PutObjectRequest(amazonS3Bucket.name, uploadPath, byteArrayInputStream, metadata)
+            val putObjectRequest = PutObjectRequest(s3Configuration.getS3Bucket(), uploadPath, byteArrayInputStream, metadata)
             putObjectRequest.cannedAcl = CannedAccessControlList.PublicRead
 
             val upload = transferManager.upload(putObjectRequest)

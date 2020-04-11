@@ -6,16 +6,17 @@ import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.S3Object
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
+import com.radiotelescope.config.S3Configuration
 import com.radiotelescope.contracts.SimpleResult
 import org.springframework.stereotype.Service
 
 @Service
 class S3RetrieveService(
         private val amazonS3Client: AmazonS3,
-        private val s3Bucket: S3Bucket
+        private val s3Configuration: S3Configuration
 ) {
     fun execute(key: String): SimpleResult<PhotoInfo, Multimap<ErrorTag, String>> {
-        val getObjectRequest = GetObjectRequest(s3Bucket.name, key)
+        val getObjectRequest = GetObjectRequest(s3Configuration.getS3Bucket(), key)
 
         lateinit var s3Object: S3Object
 
@@ -26,7 +27,7 @@ class S3RetrieveService(
                 val url = Util.retrieveUrl(
                         key = s3Object.key,
                         s3client = amazonS3Client,
-                        s3Bucket = s3Bucket
+                        s3Bucket = s3Configuration.getS3Bucket()
                 )
 
                 return SimpleResult(

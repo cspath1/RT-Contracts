@@ -28,7 +28,8 @@ internal class FrontpagePictureSubmitControllerTest : BaseFrontpagePictureRestCo
 
     private lateinit var user: User
 
-    private val picture = "test.jpg"
+    private val pictureTitle = "Test Picture"
+    private val pictureUrl = "test.jpg"
     private val description = "Test Description"
 
     @Before
@@ -56,7 +57,8 @@ internal class FrontpagePictureSubmitControllerTest : BaseFrontpagePictureRestCo
         testUtil.createUserRoleForUser(user, UserRole.Role.ADMIN, true)
 
         val result = frontpagePictureSubmitController.execute(
-                picture = picture,
+                pictureTitle = pictureTitle,
+                pictureUrl = pictureUrl,
                 description = description
         )
 
@@ -81,7 +83,8 @@ internal class FrontpagePictureSubmitControllerTest : BaseFrontpagePictureRestCo
         testUtil.createUserRoleForUser(user, UserRole.Role.USER, true)
 
         val result = frontpagePictureSubmitController.execute(
-                picture = picture,
+                pictureTitle = pictureTitle,
+                pictureUrl = pictureUrl,
                 description = description
         )
 
@@ -102,7 +105,8 @@ internal class FrontpagePictureSubmitControllerTest : BaseFrontpagePictureRestCo
     fun testFailedAuthenticationResponse() {
         // Do not log the user in
         val result = frontpagePictureSubmitController.execute(
-                picture = picture,
+                pictureTitle = pictureTitle,
+                pictureUrl = pictureUrl,
                 description = description
         )
 

@@ -33,7 +33,12 @@ class Submit (
         if (!errors.isEmpty)
             return SimpleResult(null, errors)
 
-        val newFrontpagePicture = FrontpagePicture(request.picture, request.description, request.approved)
+        val newFrontpagePicture = FrontpagePicture(
+                pictureTitle = request.pictureTitle,
+                pictureUrl = request.pictureUrl,
+                description = request.description,
+                approved = request.approved
+        )
 
         return SimpleResult(frontpagePictureRepo.save(newFrontpagePicture), null)
     }
@@ -48,8 +53,10 @@ class Submit (
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
-            if (this.picture.length > 256)
-                errors.put(ErrorTag.PICTURE, "Picture URL is too long")
+            if (this.pictureUrl.length > 256)
+                errors.put(ErrorTag.PICTURE_URL, "Picture URL is too long")
+            if (this.pictureTitle.length > 100)
+                errors.put(ErrorTag.PICTURE_TITLE, "Picture Title is too long")
             if (this.description.length > 256)
                 errors.put(ErrorTag.DESCRIPTION, "Description is too long")
         }
@@ -65,7 +72,8 @@ class Submit (
      * @param approved the approval status of the picture
      */
     data class Request (
-            val picture: String,
+            val pictureTitle: String,
+            val pictureUrl: String,
             val description: String,
             val approved: Boolean
     )

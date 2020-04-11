@@ -42,14 +42,16 @@ class FrontpagePictureSubmitController(
      * appropriately.
      */
     @PostMapping(value = ["/api/frontpage-picture/"])
-    fun execute(@RequestParam("picture") picture: String,
+    fun execute(@RequestParam("picture-title") pictureTitle: String,
+                @RequestParam("picture-url") pictureUrl: String,
                 @RequestParam("description") description: String): Result {
         // If the user is an Admin, picture is automatically approved
         val isAdmin = context.currentUserId() != null &&
                 roleRepo.findAllApprovedRolesByUserId(context.currentUserId()!!).find { role -> UserRole.Role.ADMIN == role.role } != null
 
         val form = SubmitForm(
-                picture = picture,
+                pictureTitle = pictureTitle,
+                pictureUrl = pictureUrl,
                 description = description,
                 approved = isAdmin
         )

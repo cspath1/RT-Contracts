@@ -3,7 +3,8 @@
 -- changeset jhorne:100
 CREATE TABLE frontpage_picture(
     id INT(11) NOT NULL AUTO_INCREMENT,
-    picture VARCHAR(100) NOT NULL,
+    picture_title VARCHAR(100) NOT NULL,
+    picture_url VARCHAR(256) NOT NULL,
     description VARCHAR(256) NOT NULL,
     approved tinyint(11),
     insert_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),

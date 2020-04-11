@@ -687,10 +687,11 @@ internal class TestUtil {
     }
 
     fun createFrontpagePicture(
-            picture: String,
+            pictureTitle: String,
+            pictureUrl: String,
             description: String,
             approved: Boolean
     ) : FrontpagePicture {
-        return frontpagePictureRepo.save(FrontpagePicture(picture, description, approved))
+        return frontpagePictureRepo.save(FrontpagePicture(pictureTitle, pictureUrl, description, approved))
     }
 }

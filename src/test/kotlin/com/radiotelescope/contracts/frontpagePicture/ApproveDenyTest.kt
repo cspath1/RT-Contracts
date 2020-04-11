@@ -24,7 +24,7 @@ internal class ApproveDenyTest : AbstractSpringTest() {
 
     @Before
     fun init() {
-        val theFrontpagePicture = testUtil.createFrontpagePicture("test.png", "Test Description", false)
+        val theFrontpagePicture = testUtil.createFrontpagePicture("Test Picture", "test.png", "Test Description", false)
 
         baseRequest = ApproveDeny.Request(
                 frontpagePictureId = theFrontpagePicture.id,

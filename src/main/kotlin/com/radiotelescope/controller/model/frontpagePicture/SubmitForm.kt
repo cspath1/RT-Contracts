@@ -11,12 +11,14 @@ import com.radiotelescope.controller.model.BaseForm
  * It is in charge of making sure these values are not null before adapting it
  * into a [Submit.Request] object.
  *
- * @param picture the picture URL
+ * @param pictureTitle the picture title
+ * @param pictureUrl the picture URL
  * @param description the picture's description
  * @param approved the picture's approval status
  */
 class SubmitForm(
-        val picture: String?,
+        val pictureTitle: String?,
+        val pictureUrl: String?,
         val description: String?,
         val approved: Boolean?
 ) : BaseForm<Submit.Request> {
@@ -28,7 +30,8 @@ class SubmitForm(
      */
     override fun toRequest(): Submit.Request {
         return Submit.Request(
-                picture = picture!!,
+                pictureTitle = pictureTitle!!,
+                pictureUrl = pictureUrl!!,
                 description = description!!,
                 approved = approved!!
         )
@@ -41,8 +44,10 @@ class SubmitForm(
      */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
-        if (picture == null)
-            errors.put(ErrorTag.PICTURE, "Required field")
+        if (pictureTitle == null)
+            errors.put(ErrorTag.PICTURE_TITLE, "Required field")
+        if (pictureUrl == null)
+            errors.put(ErrorTag.PICTURE_URL, "Required field")
         if (description == null)
             errors.put(ErrorTag.DESCRIPTION, "Required field")
         if (approved == null)

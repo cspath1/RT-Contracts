@@ -30,7 +30,8 @@ internal class BaseFrontpagePictureFactoryTest : AbstractSpringTest() {
         // Call the factory method
         val cmd = factory.submit(
                 request = Submit.Request(
-                        picture = "testpic.jpg",
+                        pictureTitle = "Test Picture",
+                        pictureUrl = "testpic.jpg",
                         description = "Test Description",
                         approved = true
                 )

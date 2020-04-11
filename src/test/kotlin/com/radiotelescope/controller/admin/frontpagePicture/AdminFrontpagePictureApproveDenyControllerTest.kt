@@ -40,7 +40,8 @@ internal class AdminFrontpagePictureApproveDenyControllerTest : BaseFrontpagePic
         user = testUtil.createUser("jhorne@ycp.edu")
 
         theFrontpagePicture = testUtil.createFrontpagePicture(
-                picture = "testpic.jpg",
+                pictureTitle = "Test Picture",
+                pictureUrl = "testpic.jpg",
                 description = "Test Description",
                 approved = false
         )
