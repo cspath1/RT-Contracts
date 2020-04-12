@@ -12,8 +12,8 @@ class S3DeleteService(
         private val s3Client: AmazonS3,
         private val s3Configuration: S3Configuration,
         private val s3RetrieveService: S3RetrieveService
-) {
-    fun execute(key: String): SimpleResult<Boolean, Multimap<ErrorTag, String>> {
+) : IAwsS3DeleteService {
+    override fun execute(key: String): SimpleResult<Boolean, Multimap<ErrorTag, String>> {
         val result = s3RetrieveService.execute(key)
         result.success?.let {
             val deleteObjectRequest = DeleteObjectRequest(

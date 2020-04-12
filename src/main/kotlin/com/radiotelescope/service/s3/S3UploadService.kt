@@ -20,8 +20,8 @@ import java.io.InputStream
 @Service
 class S3UploadService(
         private val s3Configuration: S3Configuration
-) {
-    fun execute(multipartFile: MultipartFile, uploadPath: String): SimpleResult<UploadResult, Multimap<ErrorTag, String>> {
+) : IAwsS3UploadService {
+    override fun execute(multipartFile: MultipartFile, uploadPath: String): SimpleResult<UploadResult, Multimap<ErrorTag, String>> {
         return try {
             val uploadResult = upload(multipartFile.inputStream, uploadPath)
             SimpleResult(uploadResult, null)

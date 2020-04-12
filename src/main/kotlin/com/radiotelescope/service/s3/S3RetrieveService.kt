@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service
 class S3RetrieveService(
         private val amazonS3Client: AmazonS3,
         private val s3Configuration: S3Configuration
-) {
-    fun execute(key: String): SimpleResult<PhotoInfo, Multimap<ErrorTag, String>> {
+) : IAwsS3RetrieveService {
+    override fun execute(key: String): SimpleResult<PhotoInfo, Multimap<ErrorTag, String>> {
         val getObjectRequest = GetObjectRequest(s3Configuration.getS3Bucket(), key)
 
         lateinit var s3Object: S3Object
