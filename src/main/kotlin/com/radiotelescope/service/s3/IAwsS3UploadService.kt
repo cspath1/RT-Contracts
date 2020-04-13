@@ -18,5 +18,5 @@ interface IAwsS3UploadService {
      * @param uploadPath the path to place the file into
      * @return a [SimpleResult] containing a result from the transaction
      */
-    fun execute(multipartFile: MultipartFile, uploadPath: String): SimpleResult<UploadResult, Multimap<ErrorTag, String>>?
+    fun execute(multipartFile: MultipartFile, uploadPath: String): SimpleResult<UploadResult, Multimap<ErrorTag, String>>
 }

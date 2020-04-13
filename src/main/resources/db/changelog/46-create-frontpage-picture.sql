@@ -10,6 +10,8 @@ CREATE TABLE frontpage_picture(
     insert_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
     update_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
 
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    UNIQUE KEY(picture_title),
+    UNIQUE KEY(picture_url)
 );
 -- rollback drop table frontpage_picture

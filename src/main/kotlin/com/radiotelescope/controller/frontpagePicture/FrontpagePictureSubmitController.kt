@@ -48,15 +48,13 @@ class FrontpagePictureSubmitController(
      * appropriately.
      */
     @PostMapping(value = ["/api/frontpage-picture/"], consumes = ["multipart/form-data"])
-    fun execute(@RequestPart("file") @Valid file: MultipartFile,
+    fun execute(@RequestParam("file") @Valid file: MultipartFile,
                 @RequestParam("picture-title") pictureTitle: String,
                 @RequestParam("picture-url") pictureUrl: String,
                 @RequestParam("description") description: String): Result {
         // If the user is an Admin, picture is automatically approved
         val isAdmin = context.currentUserId() != null &&
                 roleRepo.findAllApprovedRolesByUserId(context.currentUserId()!!).find { role -> UserRole.Role.ADMIN == role.role } != null
-
-        uploadService.execute(file, "test.png")
 
         val form = SubmitForm(
                 pictureTitle = pictureTitle,
@@ -80,8 +78,28 @@ class FrontpagePictureSubmitController(
 
             result = Result(errors = it.toStringMap())
         } ?:
-        // Otherwise, execute the wrapper command
+        // Otherwise, upload and execute the wrapper command
         let {
+            // Attempt to upload the file to s3 first
+            uploadService.execute(file, pictureUrl).let { response ->
+                response.error?.let { errors ->
+                    // Create error logs
+                    logger.createErrorLogs(
+                            info = Logger.createInfo(
+                                    affectedTable = Log.AffectedTable.FRONTPAGE_PICTURE,
+                                    action = "Frontpage Picture Submission",
+                                    affectedRecordId = null,
+                                    status = HttpStatus.BAD_REQUEST.value()
+                            ),
+                            errors = errors.toStringMap()
+                    )
+
+                    return Result(
+                            errors = errors.toStringMap()
+                    )
+                }
+            }
+
             frontpagePictureWrapper.submit(
                     request = form.toRequest()
             ) { response ->
