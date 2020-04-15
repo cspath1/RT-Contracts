@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.admin.frontpagePicture
 
-import com.radiotelescope.controller.admin.AdminFrontpagePictureApproveDenyController
+import com.radiotelescope.controller.admin.frontpagePictures.AdminFrontpagePictureApproveDenyController
 import com.radiotelescope.controller.frontpagePicture.BaseFrontpagePictureRestControllerTest
 import com.radiotelescope.repository.frontpagePicture.FrontpagePicture
 import com.radiotelescope.repository.log.ILogRepository

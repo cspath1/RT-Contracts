@@ -1,4 +1,4 @@
-package com.radiotelescope.controller.admin
+package com.radiotelescope.controller.admin.frontpagePictures
 
 import com.radiotelescope.contracts.celestialBody.Retrieve
 import com.radiotelescope.contracts.frontpagePicture.ApproveDeny

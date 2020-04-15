@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.frontpagePicture.FrontpagePictureFactory
 import com.radiotelescope.contracts.frontpagePicture.UserFrontpagePictureWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.frontpagePicture.IFrontpagePictureRepository
+import com.radiotelescope.services.s3.MockAwsS3DeleteService
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -20,7 +21,8 @@ internal abstract class BaseFrontpagePictureRestControllerTest : BaseRestControl
         super.init()
 
         factory = BaseFrontpagePictureFactory(
-                frontpagePictureRepo = frontpagePictureRepo
+                frontpagePictureRepo = frontpagePictureRepo,
+                s3DeleteService = MockAwsS3DeleteService(true)
         )
 
         wrapper = UserFrontpagePictureWrapper(

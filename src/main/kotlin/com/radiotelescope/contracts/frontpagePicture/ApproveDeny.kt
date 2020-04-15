@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.frontpagePicture.FrontpagePicture
 import com.radiotelescope.repository.frontpagePicture.IFrontpagePictureRepository
+import com.radiotelescope.service.s3.IAwsS3DeleteService
 
 /**
  * Override of the [Command] interface method used to approve or deny
@@ -16,7 +17,8 @@ import com.radiotelescope.repository.frontpagePicture.IFrontpagePictureRepositor
  */
 class ApproveDeny (
         private val request: Request,
-        private val frontpagePictureRepo: IFrontpagePictureRepository
+        private val frontpagePictureRepo: IFrontpagePictureRepository,
+        private val s3DeleteService: IAwsS3DeleteService
 ) : Command<FrontpagePicture, Multimap<ErrorTag, String>> {
 
     /**
@@ -39,6 +41,8 @@ class ApproveDeny (
             theFrontpagePicture.approved = true
             frontpagePictureRepo.save(theFrontpagePicture)
         } else {
+            // Delete the picture from S3
+            s3DeleteService.execute(theFrontpagePicture.pictureUrl)
             // Remove from database
             frontpagePictureRepo.delete(theFrontpagePicture)
         }

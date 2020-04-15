@@ -6,5 +6,6 @@ package com.radiotelescope.service.s3
 enum class ErrorTag {
     UPLOAD,
     NO_SUCH_KEY,
-    RETRIEVE
+    RETRIEVE,
+    DELETE
 }

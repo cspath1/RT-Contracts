@@ -24,6 +24,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.videoFile.IVideoFileRepository
 import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.repository.weatherData.IWeatherDataRepository
+import com.radiotelescope.service.s3.IAwsS3DeleteService
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Component
 

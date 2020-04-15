@@ -46,6 +46,8 @@ import com.radiotelescope.contracts.weatherData.BaseWeatherDataFactory
 import com.radiotelescope.contracts.weatherData.UserWeatherDataWrapper
 import com.radiotelescope.security.UserContextImpl
 import com.radiotelescope.security.service.RetrieveAuthUserService
+import com.radiotelescope.service.s3.IAwsS3DeleteService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -60,6 +62,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class FactoryBeans(
         private var repositories: RepositoryBeans,
+        private var services: ServiceBeans,
         retrieveAuthUserService: RetrieveAuthUserService
 ) : FactoryProvider {
     private val userContext = UserContextImpl(
@@ -446,7 +449,8 @@ class FactoryBeans(
         return UserFrontpagePictureWrapper(
                 context = userContext,
                 factory = BaseFrontpagePictureFactory (
-                        frontpagePictureRepo = repositories.frontpagePictureRepo
+                        frontpagePictureRepo = repositories.frontpagePictureRepo,
+                        s3DeleteService = services.s3DeleteService
                 )
         )
     }

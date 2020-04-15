@@ -2,6 +2,7 @@ package com.radiotelescope.contracts.frontpagePicture
 
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.frontpagePicture.IFrontpagePictureRepository
+import com.radiotelescope.services.s3.MockAwsS3DeleteService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -21,7 +22,8 @@ internal class BaseFrontpagePictureFactoryTest : AbstractSpringTest() {
     @Before
     fun init() {
         factory = BaseFrontpagePictureFactory(
-                frontpagePictureRepo = frontpagePictureRepo
+                frontpagePictureRepo = frontpagePictureRepo,
+                s3DeleteService = MockAwsS3DeleteService(true)
         )
     }
 

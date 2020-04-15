@@ -3,6 +3,7 @@ package com.radiotelescope.contracts.frontpagePicture
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.frontpagePicture.FrontpagePicture
 import com.radiotelescope.repository.frontpagePicture.IFrontpagePictureRepository
+import com.radiotelescope.services.s3.MockAwsS3DeleteService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -20,8 +21,6 @@ internal class ApproveDenyTest : AbstractSpringTest() {
 
     private lateinit var baseRequest: ApproveDeny.Request
 
-    //private lateinit var theFrontpagePicture: FrontpagePicture
-
     @Before
     fun init() {
         val theFrontpagePicture = testUtil.createFrontpagePicture("Test Picture", "test.png", "Test Description", false)
@@ -36,7 +35,8 @@ internal class ApproveDenyTest : AbstractSpringTest() {
     fun testValidConstraintsApprove() {
         val (result, errors) = ApproveDeny(
                 request = baseRequest,
-                frontpagePictureRepo = frontpagePictureRepo
+                frontpagePictureRepo = frontpagePictureRepo,
+                s3DeleteService = MockAwsS3DeleteService(true)
         ).execute()
 
         assertNotNull(result)
@@ -55,7 +55,8 @@ internal class ApproveDenyTest : AbstractSpringTest() {
 
         val (result, errors) = ApproveDeny(
                 request = requestCopy,
-                frontpagePictureRepo = frontpagePictureRepo
+                frontpagePictureRepo = frontpagePictureRepo,
+                s3DeleteService = MockAwsS3DeleteService(true)
         ).execute()
 
         assertNotNull(result)
