@@ -45,7 +45,7 @@ internal class AdminFrontpagePictureRetrieveListControllerTest : BaseFrontpagePi
     }
 
     @Test
-    fun testSuccessResponse() {
+    fun testSuccessResponseAdmin() {
         getContext().login(user.id)
         // Make user an admin
         getContext().currentRoles.add(UserRole.Role.ADMIN)
@@ -66,8 +66,30 @@ internal class AdminFrontpagePictureRetrieveListControllerTest : BaseFrontpagePi
         }
     }
 
+    fun testSuccessResponseAlumnus() {
+        getContext().login(user.id)
+        // Make user an admin
+        getContext().currentRoles.add(UserRole.Role.ALUMNUS)
+        testUtil.createUserRoleForUser(user, UserRole.Role.ALUMNUS, true)
+
+        val result = frontpagePictureRetrieveListController.execute()
+
+        assertNotNull(result)
+        assertTrue(result.data is List<*>)
+        assertEquals(2, (result.data as List<*>).count())
+        assertEquals(HttpStatus.OK, result.status)
+        assertNull(result.errors)
+
+        assertEquals(2, logRepo.count())
+
+        logRepo.findAll().forEach {
+            assertEquals(HttpStatus.OK.value(), it.status)
+        }
+    }
+
     @Test
     fun testFailedAuthenticationResponse() {
+        // Do not log the user in
         val result = frontpagePictureRetrieveListController.execute()
 
         assertNotNull(result)
