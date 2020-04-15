@@ -38,4 +38,24 @@ class BaseFrontpagePictureFactory (
                 s3DeleteService = s3DeleteService
         )
     }
+
+    /**
+     * Override of the [FrontpagePictureFactory] method that will
+     * return a [RetrieveList] command object
+     */
+    override fun retrieveList(): Command<List<FrontpagePicture>, Multimap<ErrorTag, String>> {
+        return RetrieveList(
+                frontpagePictureRepo = frontpagePictureRepo
+        )
+    }
+
+    /**
+     * Override of the [FrontpagePictureFactory] method that will
+     * return a [RetrieveApproved] command object
+     */
+    override fun retrieveApproved(): Command<List<FrontpagePicture>, Multimap<ErrorTag, String>> {
+        return RetrieveApproved(
+                frontpagePictureRepo
+        )
+    }
 }

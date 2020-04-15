@@ -101,6 +101,7 @@ internal class AdminFrontpagePictureApproveDenyControllerTest : BaseFrontpagePic
 
     @Test
     fun testFailedAuthenticationResponse() {
+        // Do not log the user in
         val result = frontpagePictureApproveDenyController.execute(
                 frontpagePictureId = theFrontpagePicture.id,
                 isApprove = true

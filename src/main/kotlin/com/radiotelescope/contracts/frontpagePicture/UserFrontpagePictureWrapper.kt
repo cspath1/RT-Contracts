@@ -1,11 +1,13 @@
 package com.radiotelescope.contracts.frontpagePicture
 
 import com.google.common.collect.Multimap
+import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.security.UserContext
 import com.radiotelescope.repository.frontpagePicture.FrontpagePicture
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
+import org.apache.catalina.User
 
 /**
  * Wrapper that takes a [FrontpagePictureFactory] and is responsible for all
@@ -44,5 +46,27 @@ class UserFrontpagePictureWrapper (
                 requiredRoles = listOf(UserRole.Role.ADMIN),
                 successCommand = factory.approveDeny(request)
         ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for the [FrontpagePictureFactory.retrieveList] method.
+     *
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun retrieveList(withAccess: (result: SimpleResult<List<FrontpagePicture>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+                requiredRoles = listOf(UserRole.Role.ADMIN),
+                successCommand = factory.retrieveList()
+        ).execute(withAccess)
+    }
+
+    /**
+     * Wrapper method for the [FrontpagePictureFactory.retrieveApproved] method.
+     *
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun retrieveApproved() : Command<List<FrontpagePicture>, Multimap<ErrorTag, String>> {
+        return factory.retrieveApproved()
     }
 }

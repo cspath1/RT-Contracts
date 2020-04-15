@@ -22,4 +22,18 @@ interface FrontpagePictureFactory {
      * @return a [Command] object
      */
     fun approveDeny(request: ApproveDeny.Request): Command<FrontpagePicture, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve a complete list of the [FrontpagePicture] objects in the database
+     *
+     * @return a [Command] object
+     */
+    fun retrieveList() : Command<List<FrontpagePicture>, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to retrieve a complete list of approved [FrontpagePicture] objects in the database
+     *
+     * @return a [Command] object
+     */
+    fun retrieveApproved() : Command<List<FrontpagePicture>, Multimap<ErrorTag, String>>
 }

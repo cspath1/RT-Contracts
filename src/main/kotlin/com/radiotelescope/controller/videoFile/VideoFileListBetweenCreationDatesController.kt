@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 /**
- * Rest Controller to handle retrieving a video file path
+ * Rest Controller to handle listing all Video File records between creation dates
  *
+ * @param videoFileWrapper the [UserVideoFileWrapper]
  * @param logger the [Logger] service
  */
 @RestController
