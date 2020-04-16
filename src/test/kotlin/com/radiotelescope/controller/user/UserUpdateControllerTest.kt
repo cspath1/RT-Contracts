@@ -4,6 +4,7 @@ import com.radiotelescope.controller.model.user.UpdateForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.services.sns.MockAwsSnsService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -38,8 +39,11 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         userUpdateController = UserUpdateController(
                 userWrapper = getWrapper(),
+                awsSnsService = MockAwsSnsService(true),
                 logger = getLogger()
         )
+
+        userUpdateController.defaultSendTopic = "testARN"
 
         baseForm = UpdateForm(
                 id = user.id,
