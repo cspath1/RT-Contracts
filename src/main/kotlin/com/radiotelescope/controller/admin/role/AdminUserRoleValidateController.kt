@@ -79,9 +79,18 @@ class AdminUserRoleValidateController(
                             )
                     )
 
-                    subscribeEmail(
-                            email = theResponse.email
+                    subscribeEndpoint(
+                            endpoint = theResponse.email,
+                            type = "email"
                     )
+
+                    // If the user has input a phone number, subscribe it to the default topic
+                    if (theResponse.phoneNumber != null) {
+                        subscribeEndpoint(
+                                endpoint = theResponse.phoneNumber,
+                                type = "sms"
+                        )
+                    }
 
                     sendEmail(
                             email = theResponse.email,
@@ -125,11 +134,17 @@ class AdminUserRoleValidateController(
         return result
     }
 
-    private fun subscribeEmail(email: String) {
+    /**
+     * Subscribe a user to the default announcement topic.
+     *
+     * @param endpoint the endpoint to subscribe
+     * @param type the type of the endpoint: must be "sms" or "email"
+     */
+    private fun subscribeEndpoint(endpoint: String, type: String) {
         val subscribeForm = SnsSubscribeForm(
                 topic = defaultSendTopic,
-                protocol = "email",
-                endpoint = email
+                protocol = type,
+                endpoint = endpoint
         )
 
         awsSnsService.subscribe(subscribeForm)
