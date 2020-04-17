@@ -55,8 +55,9 @@ class UserUpdateController(
         if (!file.isEmpty) {
             // if a profile picture exists from the user, delete it
             val theUser = userRepo.findById(userId).get()
-            if (theUser.profilePicture != null) {
-                deleteService(theUser.profilePicture)
+            val thePicture = theUser.profilePicture
+            if (thePicture != null) {
+                deleteService.execute(thePicture)
             }
 
             // generate a file path to replace the old one
