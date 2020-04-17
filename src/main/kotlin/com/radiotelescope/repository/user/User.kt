@@ -34,6 +34,9 @@ data class User(
     @Column(name = "profile_picture")
     var profilePicture: String? = null
 
+    @Column(name = "profile_picture_approved")
+    var profilePictureApproved: Boolean? = null
+
     @Column(name = "active")
     var active: Boolean = false
 
