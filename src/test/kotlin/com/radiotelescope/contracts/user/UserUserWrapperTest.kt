@@ -308,7 +308,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania",
                         profilePicture = "rathanapic.jpg",
-                        profilePictureApproved = false
+                        profilePictureApproved = false,
+                        notificationType = "SMS"
                 )
         ){
             id = it.success!!
@@ -334,7 +335,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania",
                         profilePicture = "rathanapic.jpg",
-                        profilePictureApproved = false
+                        profilePictureApproved = false,
+                        notificationType = "SMS"
                 )
         ){
             id = it.success!!
@@ -359,7 +361,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania",
                         profilePicture = "rathanapic.jpg",
-                        profilePictureApproved = false
+                        profilePictureApproved = false,
+                        notificationType = "SMS"
                 )
         ) {
             fail("Should fail on precondition")
@@ -383,7 +386,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania",
                         profilePicture = "rathanapic.jpg",
-                        profilePictureApproved = false
+                        profilePictureApproved = false,
+                        notificationType = "SMS"
                 )
         ){
             fail("Should fail on precondition")
@@ -405,7 +409,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         phoneNumber = "717-823-2216",
                         company = "Business, None of Your, Inc.",
                         profilePicture = "codypic.jpg",
-                        profilePictureApproved = false
+                        profilePictureApproved = false,
+                        notificationType = "SMS"
                 )
         ) {
             fail("Should fail on precondition")

@@ -83,6 +83,7 @@ class Validate(
             val theResponse = Response(
                     id = id,
                     email = theUser.email,
+                    phoneNumber = theUser.phoneNumber,
                     token = generateActivateAccountToken(theUser)
             )
             return SimpleResult(theResponse, null)
@@ -179,6 +180,7 @@ class Validate(
     data class Response(
             val id: Long,
             val email: String,
+            val phoneNumber: String?,
             val token: String
     )
 }

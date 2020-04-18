@@ -24,7 +24,8 @@ data class UpdateForm(
         val phoneNumber: String?,
         val company: String?,
         val profilePicture: String?,
-        val profilePictureApproved: Boolean
+        val profilePictureApproved: Boolean,
+        val notificationType: String?
 ) : BaseForm<Update.Request> {
     /**
      * Override of the [BaseForm.toRequest] method that adapts
@@ -38,7 +39,8 @@ data class UpdateForm(
                 phoneNumber = phoneNumber,
                 company = company,
                 profilePicture = profilePicture,
-                profilePictureApproved = profilePictureApproved
+                profilePictureApproved = profilePictureApproved,
+                notificationType = notificationType!!
         )
     }
 
@@ -55,6 +57,8 @@ data class UpdateForm(
             errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
         if (lastName.isNullOrBlank())
             errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
+        if (notificationType.isNullOrBlank())
+            errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification Type may not be blank")
         return if (errors.isEmpty) null else errors
     }
 }

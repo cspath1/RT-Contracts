@@ -8,6 +8,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.services.s3.MockAwsS3DeleteService
 import com.radiotelescope.services.s3.MockAwsS3UploadService
+import com.radiotelescope.services.sns.MockAwsSnsService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -53,8 +54,11 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 uploadService = MockAwsS3UploadService(true),
                 deleteService = MockAwsS3DeleteService(true),
                 userRepo = userRepo,
+                awsSnsService = MockAwsSnsService(true),
                 logger = getLogger()
         )
+
+        userUpdateController.defaultSendTopic = "testARN"
 
         baseForm = UpdateForm(
                 id = user.id,
@@ -63,7 +67,8 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 company = "company",
                 phoneNumber = "0001112222",
                 profilePicture = "firstnamepic.jpg",
-                profilePictureApproved = false
+                profilePictureApproved = false,
+                notificationType = "SMS"
         )
 
         mockMultipartFile = MockMultipartFile("user-file", "firstnamepic.jpg", "text/plain", "test data".toByteArray())

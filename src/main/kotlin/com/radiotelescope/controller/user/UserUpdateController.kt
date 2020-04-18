@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.user.Update
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.user.UpdateForm
 import com.radiotelescope.controller.model.Result
+import com.radiotelescope.controller.model.sns.SnsSubscribeForm
 import com.radiotelescope.toStringMap
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
@@ -13,6 +14,8 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.service.s3.IAwsS3DeleteService
 import com.radiotelescope.service.s3.IAwsS3UploadService
 import liquibase.util.file.FilenameUtils
+import com.radiotelescope.service.sns.IAwsSnsService
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -30,8 +33,12 @@ class UserUpdateController(
         private val uploadService: IAwsS3UploadService,
         private val deleteService: IAwsS3DeleteService,
         private val userRepo: IUserRepository,
+        private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger){
+    @Value("\${amazon.aws.sns.default-topic}")
+    lateinit var defaultSendTopic: String
+
     /**
      * Execute method that is in charge of taking the [UpdateForm]
      * and adapting it to the a [Update.Request] if possible.

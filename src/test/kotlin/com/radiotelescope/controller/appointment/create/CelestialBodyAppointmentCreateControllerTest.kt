@@ -8,7 +8,10 @@ import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.services.ses.MockAwsSesSendService
+import com.radiotelescope.services.sns.MockAwsSnsService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -30,6 +33,9 @@ internal class CelestialBodyAppointmentCreateControllerTest : BaseAppointmentRes
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
     private lateinit var celestialBodyAppointmentCreateController: CelestialBodyAppointmentCreateController
     private lateinit var user: User
     private lateinit var celestialBody: CelestialBody
@@ -50,7 +56,10 @@ internal class CelestialBodyAppointmentCreateControllerTest : BaseAppointmentRes
 
         celestialBodyAppointmentCreateController = CelestialBodyAppointmentCreateController(
                 autoAppointmentWrapper = getCelestialBodyCreateWrapper(),
-                logger = getLogger()
+                logger = getLogger(),
+                userRepo = userRepo,
+                awsSesSendService = MockAwsSesSendService(true),
+                awsSnsService = MockAwsSnsService(true)
         )
 
         user = testUtil.createUser("cspath1@ycp.edu")

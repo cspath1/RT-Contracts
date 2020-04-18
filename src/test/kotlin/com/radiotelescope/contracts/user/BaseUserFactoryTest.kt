@@ -116,7 +116,8 @@ internal class BaseUserFactoryTest : AbstractSpringTest() {
                         phoneNumber = "717-823-2216",
                         company = "York College of Pennsylvania",
                         profilePicture = "codypic.jpg",
-                        profilePictureApproved = false
+                        profilePictureApproved = false,
+                        notificationType = "SMS"
                 )
         )
 

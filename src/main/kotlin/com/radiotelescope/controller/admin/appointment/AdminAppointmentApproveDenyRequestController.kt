@@ -5,12 +5,15 @@ import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapp
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.ApproveDenyForm
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
+import com.radiotelescope.controller.model.sns.SnsSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.service.ses.AwsSesSendService
 import com.radiotelescope.service.ses.IAwsSesSendService
+import com.radiotelescope.service.sns.IAwsSnsService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -30,6 +33,7 @@ class AdminAppointmentApproveDenyRequestController (
         private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
         private val appointmentRepo: IAppointmentRepository,
         private val awsSesSendService: IAwsSesSendService,
+        private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger){
     /**
@@ -81,11 +85,25 @@ class AdminAppointmentApproveDenyRequestController (
 
                     result = Result(data = id)
 
-                    sendEmail(
-                            email = appointmentRepo.findById(id).get().user.email,
-                            id = id,
-                            isApprove = isApprove
-                    )
+                    // Send an email or an SMS depending on the user's notification type
+                    if (appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.EMAIL ||
+                            appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.ALL) {
+                        sendEmail(
+                                email = appointmentRepo.findById(id).get().user.email,
+                                id = id,
+                                isApprove = isApprove
+                        )
+                    }
+
+                    if (appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.SMS ||
+                            appointmentRepo.findById(id).get().user.notificationType == User.NotificationType.ALL) {
+                        sendSms(
+                                phoneNumber = appointmentRepo.findById(id).get().user.phoneNumber!!,
+                                id = id,
+                                isApprove = isApprove
+                        )
+                    }
+
                 }
                 // Otherwise it was a failure
                 response.error?.let { errors ->
@@ -130,9 +148,9 @@ class AdminAppointmentApproveDenyRequestController (
      * @param isApprove whether the request was approved or not
      */
     private fun sendEmail(email: String, id: Long, isApprove: Boolean) {
-        val sendForm: SendForm
+        val sendForm: SesSendForm
         if(isApprove) {
-            sendForm = SendForm(
+            sendForm = SesSendForm(
                     toAddresses = listOf(email),
                     fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                     subject = "Requested Observation Approved",
@@ -140,7 +158,7 @@ class AdminAppointmentApproveDenyRequestController (
                             "and has now been scheduled for the allotted time slot.</p>"
             )
         } else {
-            sendForm = SendForm(
+            sendForm = SesSendForm(
                     toAddresses = listOf(email),
                     fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                     subject = "Requested Observation Denied",
@@ -149,6 +167,25 @@ class AdminAppointmentApproveDenyRequestController (
         }
 
         awsSesSendService.execute(sendForm)
+    }
+
+    private fun sendSms(phoneNumber: String, id: Long, isApprove: Boolean) {
+        val sendForm = if(isApprove) {
+            SnsSendForm(
+                    toNumber = phoneNumber,
+                    topic = null,
+                    message = "Your appointment with the id = $id has been approved " +
+                            "and has now been scheduled for the allotted time slot."
+            )
+        } else {
+            SnsSendForm(
+                    toNumber = phoneNumber,
+                    topic = null,
+                    message = "Your appointment with the id = $id has been denied."
+            )
+        }
+
+        awsSnsService.send(sendForm)
     }
 
 }

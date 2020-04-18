@@ -83,7 +83,8 @@ class Update(
             val phoneNumber: String?,
             val company: String?,
             val profilePicture: String?,
-            val profilePictureApproved: Boolean?
+            val profilePictureApproved: Boolean?,
+            val notificationType: String
     ) : BaseUpdateRequest<User> {
         /**
          * Override of the [BaseUpdateRequest.updateEntity] method that will take
@@ -97,6 +98,7 @@ class Update(
             entity.company = company
             entity.profilePicture = profilePicture
             entity.profilePictureApproved = profilePictureApproved
+            entity.notificationType = User.NotificationType.valueOf(notificationType)
 
             return entity
         }

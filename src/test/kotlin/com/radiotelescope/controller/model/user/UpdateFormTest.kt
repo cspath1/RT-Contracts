@@ -14,7 +14,8 @@ class UpdateFormTest {
             phoneNumber = "717-555-1111",
             company = "York College of PA",
             profilePicture = "rathanapic.jpg",
-            profilePictureApproved = false
+            profilePictureApproved = false,
+            notificationType = "SMS"
     )
 
     @Test

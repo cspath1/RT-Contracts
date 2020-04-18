@@ -4,11 +4,15 @@ import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.user.Unban
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
+import com.radiotelescope.controller.model.sns.SnsSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.service.ses.IAwsSesSendService
+import com.radiotelescope.service.sns.IAwsSnsService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -26,7 +30,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class AdminUserUnbanController(
         private val userWrapper: UserUserWrapper,
+        private val userRepo: IUserRepository,
         private val awsSesSendService: IAwsSesSendService,
+        private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -58,7 +64,18 @@ class AdminUserUnbanController(
                         )
                 )
 
-                sendEmail(theResponse.email)
+                val theUser = userRepo.findById(id).get()
+
+                // Send an email or an SMS depending on the user's notification type
+                if (theUser.notificationType == User.NotificationType.EMAIL ||
+                        theUser.notificationType == User.NotificationType.ALL) {
+                    sendEmail(theUser.email)
+                }
+
+                if (theUser.notificationType == User.NotificationType.SMS ||
+                        theUser.notificationType == User.NotificationType.ALL) {
+                    sendSms(theUser.phoneNumber!!)
+                }
 
                 result = Result(data = id)
             }
@@ -97,12 +114,21 @@ class AdminUserUnbanController(
     }
 
     private fun sendEmail(email: String) {
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = listOf(email),
                 fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Unbanned By Admin",
                 htmlBody = "<p>Your account, which had been previously banned due to application misuse, has been unbanned.</p>"
         )
         awsSesSendService.execute(sendForm)
+    }
+
+    private fun sendSms(phoneNumber: String) {
+        val sendForm = SnsSendForm(
+                toNumber = phoneNumber,
+                topic = null,
+                message = "Your account, which had been previously banned due to application misuse, has been unbanned."
+        )
+        awsSnsService.send(sendForm)
     }
 }
