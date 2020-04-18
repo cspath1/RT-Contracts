@@ -48,11 +48,11 @@ class UserUpdateController(
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["/api/users/{userId}"], consumes = ["multipart/form-data"])
     fun execute(@PathVariable("userId") userId: Long,
-                @RequestPart("file") @Valid file: MultipartFile,
+                @RequestPart(value = "file", required = false) @Valid file: MultipartFile?,
                 @RequestBody form: UpdateForm): Result {
 
         // check if a file is being uploaded
-        if (!file.isEmpty) {
+        if (file != null) {
             // if a profile picture exists from the user, delete it
             val theUser = userRepo.findById(userId).get()
             val thePicture = theUser.profilePicture
