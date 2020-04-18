@@ -307,7 +307,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania",
-                        profilePicture = "rathanapic.jpg"
+                        profilePicture = "rathanapic.jpg",
+                        profilePictureApproved = false
                 )
         ){
             id = it.success!!
@@ -332,7 +333,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania",
-                        profilePicture = "rathanapic.jpg"
+                        profilePicture = "rathanapic.jpg",
+                        profilePictureApproved = false
                 )
         ){
             id = it.success!!
@@ -356,7 +358,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania",
-                        profilePicture = "rathanapic.jpg"
+                        profilePicture = "rathanapic.jpg",
+                        profilePictureApproved = false
                 )
         ) {
             fail("Should fail on precondition")
@@ -379,7 +382,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
                         company = "York College of Pennsylvania",
-                        profilePicture = "rathanapic.jpg"
+                        profilePicture = "rathanapic.jpg",
+                        profilePictureApproved = false
                 )
         ){
             fail("Should fail on precondition")
@@ -400,7 +404,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         lastName = "Spath",
                         phoneNumber = "717-823-2216",
                         company = "Business, None of Your, Inc.",
-                        profilePicture = "codypic.jpg"
+                        profilePicture = "codypic.jpg",
+                        profilePictureApproved = false
                 )
         ) {
             fail("Should fail on precondition")

@@ -22,5 +22,5 @@ enum class ErrorTag {
     CURRENT_PASSWORD,
     SEARCH,
     LOGIN_ATTEMPT,
-    UPLOAD
+    UPLOAD_PROFILE_PICTURE
 }
