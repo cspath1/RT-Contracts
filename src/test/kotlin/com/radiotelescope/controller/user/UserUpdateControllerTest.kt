@@ -65,6 +65,8 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 profilePicture = "firstnamepic.jpg",
                 profilePictureApproved = false
         )
+
+        mockMultipartFile = MockMultipartFile("user-file", pictureUrl, "text/plain", "test data".toByteArray())
     }
 
     @Test
