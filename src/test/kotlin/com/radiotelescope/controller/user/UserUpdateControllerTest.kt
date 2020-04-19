@@ -35,9 +35,6 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
     private lateinit var user: User
 
-    private lateinit var mockMultipartFile: MockMultipartFile
-    private lateinit var file: File
-
     private var userContext = getContext()
 
     @Before
@@ -70,8 +67,6 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 profilePictureApproved = false,
                 notificationType = "SMS"
         )
-
-        mockMultipartFile = MockMultipartFile("user-file", "firstnamepic.jpg", "text/plain", "test data".toByteArray())
     }
 
     @Test
@@ -80,30 +75,6 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
         // is correct
         val result = userUpdateController.execute(
                 userId = user.id,
-                file = null,
-                form = baseForm
-        )
-
-        assertNotNull(result)
-        assertEquals(user.id, result.data)
-        assertEquals(HttpStatus.OK, result.status)
-        assertNull(result.errors)
-
-        // Ensure a log record was created
-        assertEquals(1, logRepo.count())
-
-        logRepo.findAll().forEach {
-            assertEquals(HttpStatus.OK.value(), it.status)
-        }
-    }
-
-    @Test
-    fun testSuccessResponseWithFile() {
-        // Test the success scenario to ensure the result
-        // is correct
-        val result = userUpdateController.execute(
-                userId = user.id,
-                file = mockMultipartFile,
                 form = baseForm
         )
 
@@ -129,7 +100,6 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         val result = userUpdateController.execute(
                 userId = user.id,
-                file = null,
                 form = formCopy
         )
         assertNotNull(result)
@@ -149,7 +119,6 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         val result = userUpdateController.execute(
                 userId = user.id,
-                file = null,
                 form = formCopy
         )
         assertNotNull(result)
@@ -176,7 +145,6 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         val result = userUpdateController.execute(
                 userId = user.id,
-                file = null,
                 form = baseForm
         )
 
@@ -204,7 +172,6 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         val result = userUpdateController.execute(
                 userId = 420L,
-                file = null,
                 form = formCopy
         )
 

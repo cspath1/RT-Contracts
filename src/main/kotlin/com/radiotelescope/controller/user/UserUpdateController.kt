@@ -13,13 +13,10 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.service.s3.IAwsS3DeleteService
 import com.radiotelescope.service.s3.IAwsS3UploadService
-import liquibase.util.file.FilenameUtils
 import com.radiotelescope.service.sns.IAwsSnsService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
-import javax.validation.Valid
 
 /**
  * REST Controller to handle update User information
@@ -55,23 +52,7 @@ class UserUpdateController(
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["/api/users/{userId}"], consumes = ["multipart/form-data"])
     fun execute(@PathVariable("userId") userId: Long,
-                @RequestPart(value = "file", required = false) @Valid file: MultipartFile?,
                 @RequestBody form: UpdateForm): Result {
-
-        // check if a file is being uploaded
-        if (file != null) {
-            // if a profile picture exists from the user, delete it
-            val theUser = userRepo.findById(userId).get()
-            val thePicture = theUser.profilePicture
-            if (thePicture != null) {
-                deleteService.execute(thePicture)
-            }
-
-            // generate a file path to replace the old one
-            val generatedPath = theUser.firstName + theUser.lastName + System.currentTimeMillis() + FilenameUtils.getExtension(file.originalFilename)
-            uploadService.execute(file, generatedPath)
-        }
-
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
             // Create error logs
@@ -105,6 +86,13 @@ class UserUpdateController(
                                     status = HttpStatus.OK.value()
                             )
                     )
+
+                    if (form.phoneNumber != null) {
+                        subscribeEndpoint(
+                                endpoint = form.phoneNumber,
+                                type = "sms"
+                        )
+                    }
                 }
                 // Otherwise, it was a failure
                 response.error?.let { error ->
@@ -148,5 +136,21 @@ class UserUpdateController(
         }
 
         return result
+    }
+
+    /**
+     * Subscribe a user to the default announcement topic.
+     *
+     * @param endpoint the endpoint to subscribe
+     * @param type the type of the endpoint: must be "sms" or "email"
+     */
+    private fun subscribeEndpoint(endpoint: String, type: String) {
+        val subscribeForm = SnsSubscribeForm(
+                topic = defaultSendTopic,
+                protocol = type,
+                endpoint = endpoint
+        )
+
+        awsSnsService.subscribe(subscribeForm)
     }
 }

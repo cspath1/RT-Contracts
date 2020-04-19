@@ -20,7 +20,7 @@ class MockAwsS3UploadService(
         return if (shouldSucceed) {
             SimpleResult<UploadResult, Multimap<ErrorTag, String>>(uploadResult, null)
         } else {
-            SimpleResult<UploadResult, Multimap<ErrorTag, String>>(uploadResult, errors)
+            SimpleResult<UploadResult, Multimap<ErrorTag, String>>(null, errors)
         }
     }
 }

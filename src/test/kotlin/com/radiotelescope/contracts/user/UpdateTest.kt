@@ -46,8 +46,6 @@ internal class UpdateTest : AbstractSpringTest() {
                     lastName = "Twin",
                     phoneNumber = "717-000-0000",
                     company = "Evil Twin Company",
-                    profilePicture = "eviltwinpic.jpg",
-                    profilePictureApproved = false,
                     notificationType = "SMS"
             ),
             userRepo = userRepo
@@ -70,8 +68,6 @@ internal class UpdateTest : AbstractSpringTest() {
                         lastName = "Twin",
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company",
-                        profilePicture = "eviltwinpic.jpg",
-                        profilePictureApproved = false,
                         notificationType = "SMS"
                 ),
                 userRepo = userRepo
@@ -93,8 +89,6 @@ internal class UpdateTest : AbstractSpringTest() {
                         lastName = "Twin",
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company",
-                        profilePicture = "eviltwinpic.jpg",
-                        profilePictureApproved = false,
                         notificationType = "SMS"
                 ),
                 userRepo = userRepo
@@ -116,8 +110,6 @@ internal class UpdateTest : AbstractSpringTest() {
                         lastName = "",
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company",
-                        profilePicture = "eviltwinpic.jpg",
-                        profilePictureApproved = false,
                         notificationType = "SMS"
                 ),
                 userRepo = userRepo
@@ -139,8 +131,6 @@ internal class UpdateTest : AbstractSpringTest() {
                         lastName = "Twin".repeat(50),
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company",
-                        profilePicture = "eviltwinpic.jpg",
-                        profilePictureApproved = false,
                         notificationType = "SMS"
                 ),
                 userRepo = userRepo
@@ -162,8 +152,6 @@ internal class UpdateTest : AbstractSpringTest() {
                         lastName = "Twin",
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company",
-                        profilePicture = "eviltwinpic.jpg",
-                        profilePictureApproved = false,
                         notificationType = "SMS"
                 ),
                 userRepo = userRepo

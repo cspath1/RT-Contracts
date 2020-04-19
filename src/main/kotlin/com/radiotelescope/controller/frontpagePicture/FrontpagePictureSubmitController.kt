@@ -1,6 +1,6 @@
 package com.radiotelescope.controller.frontpagePicture
 
-import com.radiotelescope.contracts.celestialBody.Retrieve
+import com.radiotelescope.contracts.frontpagePicture.Submit
 import com.radiotelescope.contracts.frontpagePicture.UserFrontpagePictureWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
@@ -13,10 +13,8 @@ import com.radiotelescope.repository.frontpagePicture.FrontpagePicture
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import com.radiotelescope.service.s3.IAwsS3UploadService
-import com.radiotelescope.service.s3.S3UploadService
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
-import org.springframework.jdbc.datasource.embedded.ConnectionProperties
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import javax.validation.Valid
@@ -43,11 +41,11 @@ class FrontpagePictureSubmitController(
      * If this method returns an [AccessReport], this means they did not pass
      * authentication and the method will respond with errors.
      *
-     * Otherwise, this means the [Retrieve] command was executed, and the controller
+     * Otherwise, this means the [Submit] command was executed, and the controller
      * will check whether or not this command was a success or not, responding
      * appropriately.
      */
-    @PostMapping(value = ["/api/frontpage-picture/"], consumes = ["multipart/form-data"])
+    @PostMapping(value = ["/api/frontpage-picture"], consumes = ["multipart/form-data"])
     fun execute(@RequestParam("file") @Valid file: MultipartFile,
                 @RequestParam("picture-title") pictureTitle: String,
                 @RequestParam("picture-url") pictureUrl: String,

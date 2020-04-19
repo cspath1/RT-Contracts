@@ -38,8 +38,6 @@ data class UpdateForm(
                 lastName = lastName!!,
                 phoneNumber = phoneNumber,
                 company = company,
-                profilePicture = profilePicture,
-                profilePictureApproved = profilePictureApproved,
                 notificationType = notificationType!!
         )
     }

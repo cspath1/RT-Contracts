@@ -17,7 +17,7 @@ class MockAwsS3DeleteService(
         return if (shouldSucceed) {
             SimpleResult<Boolean, Multimap<ErrorTag, String>>(shouldSucceed, null)
         } else {
-            SimpleResult<Boolean, Multimap<ErrorTag, String>>(shouldSucceed, errors)
+            SimpleResult<Boolean, Multimap<ErrorTag, String>>(null, errors)
         }
     }
 }

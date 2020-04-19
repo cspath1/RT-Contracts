@@ -134,6 +134,39 @@ class UserUserWrapper(
     }
 
     /**
+     * Wrapper method for the [UserFactory.updateProfilePicture] method used to add
+     * Spring Security authentication to the [UpdateProfilePicture] command object
+     *
+     * @param request the [UpdateProfilePicture.Request] object
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun updateProfilePicture(request: UpdateProfilePicture.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        // If the user is logged in
+        if (context.currentUserId() != null) {
+            if (!userRepo.existsById(request.id)) {
+                return AccessReport(missingRoles = null, invalidResourceId = invalidUserIdErrors(request.id))
+            } else {
+                // If the user exists, they must either be the owner or an admin
+                val theUser = userRepo.findById(request.id).get()
+                return if (theUser.id == context.currentUserId()) {
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.USER),
+                            successCommand = factory.updateProfilePicture(request)
+                    ).execute(withAccess)
+                } else {
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.ADMIN),
+                            successCommand = factory.updateProfilePicture(request)
+                    ).execute(withAccess)
+                }
+            }
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
      *  Wrapper method for the [UserFactory.delete] method that adds Spring
      *  Security authentication to the [Delete] command object
      *

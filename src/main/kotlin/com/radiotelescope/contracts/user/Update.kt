@@ -10,7 +10,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 
 /**
- * Override of the [Command] interface method used for User registration
+ * Override of the [Command] interface method used for updating a User
  *
  * @param request the [Request] object
  * @param userRepo the [IUserRepository]
@@ -82,8 +82,6 @@ class Update(
             val lastName: String,
             val phoneNumber: String?,
             val company: String?,
-            val profilePicture: String?,
-            val profilePictureApproved: Boolean?,
             val notificationType: String
     ) : BaseUpdateRequest<User> {
         /**
@@ -96,8 +94,6 @@ class Update(
             entity.lastName = lastName
             entity.phoneNumber = phoneNumber
             entity.company = company
-            entity.profilePicture = profilePicture
-            entity.profilePictureApproved = profilePictureApproved
             entity.notificationType = User.NotificationType.valueOf(notificationType)
 
             return entity

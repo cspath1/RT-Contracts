@@ -102,6 +102,20 @@ class BaseUserFactory(
     }
 
     /**
+     * Override of the [UserFactory.updateProfilePicture] method that will return a
+     * [UpdateProfilePicture] command object
+     *
+     * @param request the [UpdateProfilePicture.Request] object
+     * @return a [Update] command object
+     */
+    override fun updateProfilePicture(request: UpdateProfilePicture.Request): Command<Long, Multimap<ErrorTag, String>> {
+        return UpdateProfilePicture(
+                request = request,
+                userRepo = userRepo
+        )
+    }
+
+    /**
      * Override of the [UserFactory.delete] method that will return a [Delete] command object
      *
      * @param id the User id
