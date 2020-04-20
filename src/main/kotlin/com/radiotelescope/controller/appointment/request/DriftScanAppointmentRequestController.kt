@@ -130,7 +130,7 @@ class DriftScanAppointmentRequestController(
     private fun sendEmail(emails: List<String>) {
         val sendForm = SesSendForm(
                 toAddresses = emails,
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Appointment Request",
                 htmlBody = "<p>A new observation has been requested by a user at their " +
                         "allotted quota and requires your approval.</p>"

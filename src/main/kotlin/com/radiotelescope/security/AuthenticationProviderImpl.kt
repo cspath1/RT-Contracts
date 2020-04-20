@@ -114,7 +114,7 @@ class AuthenticationProviderImpl(
     private fun sendEmail(email: String) {
         val sendForm = SesSendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Account Locked",
                 htmlBody = "<p>Due to consecutive failed login attempts, your account has been locked</p>" +
                         "<p>Please reset your password in order to unlock it.</p>"

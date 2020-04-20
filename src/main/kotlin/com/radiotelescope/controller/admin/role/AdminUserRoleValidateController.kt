@@ -155,7 +155,7 @@ class AdminUserRoleValidateController(
 
         val sendForm = SesSendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Account Approved",
                 htmlBody = "<p>Your account has been approved!</p>" +
                         "<p>Please <a href='$activateAccountLink'>click here </a> to activate your account so you can start</p> " +

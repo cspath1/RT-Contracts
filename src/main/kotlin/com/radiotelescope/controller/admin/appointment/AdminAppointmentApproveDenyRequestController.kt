@@ -152,7 +152,7 @@ class AdminAppointmentApproveDenyRequestController (
         if(isApprove) {
             sendForm = SesSendForm(
                     toAddresses = listOf(email),
-                    fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                    fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                     subject = "Requested Observation Approved",
                     htmlBody = "<p>Your appointment with the id = $id has been approved " +
                             "and has now been scheduled for the allotted time slot.</p>"
@@ -160,7 +160,7 @@ class AdminAppointmentApproveDenyRequestController (
         } else {
             sendForm = SesSendForm(
                     toAddresses = listOf(email),
-                    fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                    fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                     subject = "Requested Observation Denied",
                     htmlBody = "<p>Your appointment with the id = $id has been denied.</p>"
             )

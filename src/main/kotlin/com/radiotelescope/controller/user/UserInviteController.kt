@@ -106,7 +106,7 @@ class UserInviteController(
 
         val sendForm = SesSendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Invitation to Join the Radio Telescope",
                 htmlBody = "<p>$name has invited you to join the York County Astronomical Society's " +
                         "Radio Telescope web application!</p>" +

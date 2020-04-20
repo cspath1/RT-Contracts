@@ -137,7 +137,7 @@ class CoordinateAppointmentCreateController(
     private fun sendEmail(email: String, form: CoordinateAppointmentCreateForm) {
         val sendForm = SesSendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Celestial Body Appointment Created",
                 htmlBody = "<p>Your coordinate appointment has been scheduled to start at ${form.startTime} " +
                         "and end at ${form.endTime}.</p>"

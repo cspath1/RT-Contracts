@@ -125,7 +125,7 @@ class AppointmentCancelController(
     private fun sendEmail(email: String) {
         val sendForm = SesSendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Appointment Cancelled",
                 htmlBody = "<p>Your appointment with the YCAS Radio Telescope has been cancelled.</p>"
         )

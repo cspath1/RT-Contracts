@@ -137,7 +137,7 @@ class DriftScanAppointmentCreateController(
     private fun sendEmail(email: String, form: DriftScanAppointmentCreateForm) {
         val sendForm = SesSendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Celestial Body Appointment Created",
                 htmlBody = "<p>Your drift scan appointment has been scheduled to start at ${form.startTime} " +
                         "and end at ${form.endTime}.</p>"

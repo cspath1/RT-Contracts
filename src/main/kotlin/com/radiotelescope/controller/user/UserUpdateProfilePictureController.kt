@@ -88,7 +88,7 @@ class UserUpdateProfilePictureController(
         }
 
         // Generate a file path to replace the old one
-        val generatedPath = theUser.firstName + theUser.lastName + System.currentTimeMillis() + FilenameUtils.getExtension(file.originalFilename)
+        val generatedPath = theUser.firstName + theUser.lastName + System.currentTimeMillis() + "." + FilenameUtils.getExtension(file.originalFilename)
         val uploadResult = uploadService.execute(file, generatedPath)
         if (uploadResult.error != null) {
             // Create error logs

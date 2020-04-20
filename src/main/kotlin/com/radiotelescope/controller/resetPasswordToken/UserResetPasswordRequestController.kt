@@ -87,7 +87,7 @@ class UserResetPasswordRequestController (
 
         val sendForm = SesSendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Password Reset Requested",
                 htmlBody = "<p>You have requested to reset you password</p>" +
                         "<p>This link will expire in one day. If it does, you must request another.</p>" +

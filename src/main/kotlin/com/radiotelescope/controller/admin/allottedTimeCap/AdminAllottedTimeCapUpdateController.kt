@@ -116,7 +116,7 @@ class AdminAllottedTimeCapUpdateController(
     private fun sendEmail(email: String, allottedTime: Long) {
         val sendForm = SesSendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Allotted Time Cap Updated",
                 htmlBody = "<p>Your allotted time cap has been updated to $allottedTime</p>"
         )

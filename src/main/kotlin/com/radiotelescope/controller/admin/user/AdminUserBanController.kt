@@ -118,7 +118,7 @@ class AdminUserBanController(
         if(!message.isNullOrBlank()) {
             sendForm = SesSendForm(
                     toAddresses = listOf(email),
-                    fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                    fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                     subject = "Banned By Admin",
                     htmlBody = "<p>You have been banned. The reason for your ban is as follows: " +
                             "$message</p>"
@@ -127,7 +127,7 @@ class AdminUserBanController(
         else {
             sendForm = SesSendForm(
                     toAddresses = listOf(email),
-                    fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                    fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                     subject = "Banned By Admin",
                     htmlBody = "<p>You have been banned.</p>"
             )
