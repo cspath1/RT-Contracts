@@ -8,6 +8,8 @@ import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
+import com.radiotelescope.service.s3.IAwsS3DeleteService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -25,7 +27,8 @@ class BaseUserFactory(
         private val userRoleRepo: IUserRoleRepository,
         private val accountActivateTokenRepo: IAccountActivateTokenRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository,
-        private val loginAttemptRepo: ILoginAttemptRepository
+        private val loginAttemptRepo: ILoginAttemptRepository,
+        private val deleteService: IAwsS3DeleteService
 ) : UserFactory {
     /**
      * Override of the [UserFactory.register] method that will return a [Register] command object
@@ -106,12 +109,27 @@ class BaseUserFactory(
      * [UpdateProfilePicture] command object
      *
      * @param request the [UpdateProfilePicture.Request] object
-     * @return a [Update] command object
+     * @return a [UpdateProfilePicture] command object
      */
     override fun updateProfilePicture(request: UpdateProfilePicture.Request): Command<Long, Multimap<ErrorTag, String>> {
         return UpdateProfilePicture(
                 request = request,
                 userRepo = userRepo
+        )
+    }
+
+    /**
+     * Override of the [UserFactory.approveDenyProfilePicture] method that will
+     * return an [ApproveDeny] command object
+     *
+     * @param request the [ApproveDeny.Request] object
+     * @return an [ApproveDeny] command object
+     */
+    override fun approveDenyProfilePicture(request: ApproveDeny.Request): Command<User, Multimap<ErrorTag, String>> {
+        return ApproveDeny(
+                request = request,
+                userRepo = userRepo,
+                deleteService = deleteService
         )
     }
 

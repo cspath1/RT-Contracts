@@ -7,6 +7,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import com.radiotelescope.toStringMap
@@ -161,6 +162,26 @@ class UserUserWrapper(
                     ).execute(withAccess)
                 }
             }
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
+     * Wrapper method for the [UserFactory.approveDenyProfilePicture] method used to add
+     * Spring Security authentication to the [ApproveDeny] command object
+     *
+     * @param request the [ApproveDeny.Request] object
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun approveDenyProfilePicture(request: ApproveDeny.Request, withAccess: (result: SimpleResult<User, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        // If the user is logged in
+        if (context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.approveDenyProfilePicture(request)
+            ).execute(withAccess)
         }
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
