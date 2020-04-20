@@ -7,6 +7,7 @@ import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.services.s3.MockAwsS3DeleteService
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -44,7 +45,8 @@ internal class BaseUserFactoryTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                loginAttemptRepo = loginAttemptRepo
+                loginAttemptRepo = loginAttemptRepo,
+                deleteService = MockAwsS3DeleteService(true)
         )
     }
 

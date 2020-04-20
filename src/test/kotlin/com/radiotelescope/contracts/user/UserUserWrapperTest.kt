@@ -12,6 +12,7 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
+import com.radiotelescope.services.s3.MockAwsS3DeleteService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -82,7 +83,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                loginAttemptRepo = loginAttemptRepo
+                loginAttemptRepo = loginAttemptRepo,
+                deleteService = MockAwsS3DeleteService(true)
         )
 
         wrapper = UserUserWrapper(

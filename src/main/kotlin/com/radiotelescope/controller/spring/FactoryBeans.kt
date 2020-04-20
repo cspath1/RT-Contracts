@@ -84,7 +84,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         accountActivateTokenRepo = repositories.accountActivateTokenRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
-                        loginAttemptRepo = repositories.loginAttemptRepo
+                        loginAttemptRepo = repositories.loginAttemptRepo,
+                        deleteService = services.s3DeleteService
                 ),
                 userRepo = repositories.userRepo
         )

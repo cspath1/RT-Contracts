@@ -8,6 +8,7 @@ import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.services.s3.MockAwsS3DeleteService
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -41,7 +42,8 @@ internal abstract class BaseUserRestControllerTest : BaseRestControllerTest() {
                 userRoleRepo = userRoleRepo,
                 accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                loginAttemptRepo = loginAttemptRepo
+                loginAttemptRepo = loginAttemptRepo,
+                deleteService = MockAwsS3DeleteService(true)
         )
 
         wrapper = UserUserWrapper(
