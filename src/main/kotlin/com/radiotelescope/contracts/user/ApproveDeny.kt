@@ -13,7 +13,7 @@ import com.radiotelescope.service.s3.IAwsS3DeleteService
  * a [User.profilePicture] record
  *
  * @param request the [ApproveDeny.Request]
- * @param iserRepo the [IUserRepository] interface
+ * @param userRepo the [IUserRepository] interface
  */
 class ApproveDeny (
         private val request: Request,
