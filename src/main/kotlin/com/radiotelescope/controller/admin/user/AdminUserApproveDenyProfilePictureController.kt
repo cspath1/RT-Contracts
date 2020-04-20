@@ -1,13 +1,12 @@
-package com.radiotelescope.controller.admin.frontpagePictures
+package com.radiotelescope.controller.admin.user
 
-import com.radiotelescope.contracts.frontpagePicture.ApproveDeny
-import com.radiotelescope.contracts.frontpagePicture.UserFrontpagePictureWrapper
+import com.radiotelescope.contracts.user.ApproveDeny
+import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
-import com.radiotelescope.security.UserContext
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -15,19 +14,17 @@ import org.springframework.web.bind.annotation.*
 /**
  * REST Controller to handle admin Frontpage Picture approval and denial
  *
- * @param frontpagePictureWrapper the [UserFrontpagePictureWrapper]
- * @param context the [UserContext]
+ * @param userWrapper the [UserUserWrapper]
  * @param logger the [Logger] service
  */
 @RestController
-class AdminFrontpagePictureApproveDenyController(
-        private val frontpagePictureWrapper: UserFrontpagePictureWrapper,
-        private val context: UserContext,
+class AdminUserApproveDenyProfilePictureController(
+        private val userWrapper: UserUserWrapper,
         logger: Logger
-) : BaseRestController(logger) {
+): BaseRestController(logger) {
     /**
-     * Execute method in charge of taking the frontpagePictureId [PathVariable]
-     * and executing the [UserFrontpagePictureWrapper.approveDeny] method.
+     * Execute method in charge of taking the userId [PathVariable]
+     * and executing the [UserUserWrapper.approveDenyProfilePicture] method.
      * If this method returns an [AccessReport], this means they did not pass
      * authentication and the method will respond with errors.
      *
@@ -35,13 +32,13 @@ class AdminFrontpagePictureApproveDenyController(
      * will check whether or not this command was a success or not, responding
      * appropriately.
      */
-    @PutMapping(value = ["/api/frontpage-picture/{frontpagePictureId}"])
-    fun execute(@PathVariable("frontpagePictureId") frontpagePictureId: Long,
+    @PostMapping(value = ["/api/users/{userId}/profile-picture"])
+    fun execute(@PathVariable("userId") userId: Long,
                 @RequestParam("isApprove") isApprove: Boolean) : Result {
-        frontpagePictureWrapper.approveDeny(
+        userWrapper.approveDenyProfilePicture(
                 ApproveDeny.Request(
-                        frontpagePictureId = frontpagePictureId,
-                        isApprove = isApprove
+                        userId = userId,
+                        approved = isApprove
                 )
         ) {
             // If the command was a success
@@ -49,8 +46,8 @@ class AdminFrontpagePictureApproveDenyController(
                 // Create success logs
                 logger.createSuccessLog(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.FRONTPAGE_PICTURE,
-                                action = "Frontpage Picture Approval/Denial",
+                                affectedTable = Log.AffectedTable.USER,
+                                action = "Profile Picture Approval/Denial",
                                 affectedRecordId = info.id,
                                 status = HttpStatus.OK.value()
                         )
@@ -63,8 +60,8 @@ class AdminFrontpagePictureApproveDenyController(
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.FRONTPAGE_PICTURE,
-                                action = "Frontpage Picture Approval/Denial",
+                                affectedTable = Log.AffectedTable.USER,
+                                action = "Profile Picture Approval/Denial",
                                 affectedRecordId = null,
                                 status = HttpStatus.BAD_REQUEST.value()
                         ),
@@ -78,8 +75,8 @@ class AdminFrontpagePictureApproveDenyController(
             // Create error logs
             logger.createErrorLogs(
                     info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.FRONTPAGE_PICTURE,
-                            action = "Frontpage Picture Approval/Denial",
+                            affectedTable = Log.AffectedTable.USER,
+                            action = "Profile Picture Approval/Denial",
                             affectedRecordId = null,
                             status = HttpStatus.FORBIDDEN.value()
                     ),
