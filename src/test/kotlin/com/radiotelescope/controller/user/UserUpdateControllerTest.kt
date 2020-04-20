@@ -3,7 +3,10 @@ package com.radiotelescope.controller.user
 import com.radiotelescope.controller.model.user.UpdateForm
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.services.s3.MockAwsS3DeleteService
+import com.radiotelescope.services.s3.MockAwsS3UploadService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -11,7 +14,10 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.http.HttpStatus
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.io.File
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -20,6 +26,15 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
     private lateinit var logRepo: ILogRepository
 
     private lateinit var userUpdateController: UserUpdateController
+
+    private lateinit var userRepo: IUserRepository
+
+    private lateinit var uploadService: MockAwsS3UploadService
+
+    private lateinit var deleteService: MockAwsS3DeleteService
+
+    private lateinit var mockMultipartFile: MockMultipartFile
+    private lateinit var file: File
 
     private lateinit var baseForm: UpdateForm
 
@@ -36,8 +51,17 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
         userContext.login(user.id)
         userContext.currentRoles.add(UserRole.Role.USER)
 
+        val matcher = MockMvcResultMatchers.status().isOk
+        file = File("test.jpg")
+        file.delete()
+
+        mockMultipartFile = MockMultipartFile("user-file", "test.jpg", "text/plain", "test data".toByteArray())
+
         userUpdateController = UserUpdateController(
                 userWrapper = getWrapper(),
+                userRepo = userRepo,
+                uploadService = uploadService,
+                deleteService = deleteService,
                 logger = getLogger()
         )
 
@@ -58,6 +82,7 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
         // is correct
         val result = userUpdateController.execute(
                 userId = user.id,
+                file = mockMultipartFile,
                 form = baseForm
         )
 
@@ -83,6 +108,7 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         val result = userUpdateController.execute(
                 userId = user.id,
+                file = mockMultipartFile,
                 form = formCopy
         )
         assertNotNull(result)
@@ -102,6 +128,7 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         val result = userUpdateController.execute(
                 userId = user.id,
+                file = mockMultipartFile,
                 form = formCopy
         )
         assertNotNull(result)
@@ -128,6 +155,7 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         val result = userUpdateController.execute(
                 userId = user.id,
+                file = mockMultipartFile,
                 form = baseForm
         )
 
@@ -155,6 +183,7 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         val result = userUpdateController.execute(
                 userId = 420L,
+                file = mockMultipartFile,
                 form = formCopy
         )
 

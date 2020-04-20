@@ -43,6 +43,9 @@ class ApproveDeny (
         } else {
             // Remove from database
             theUser.profilePicture?.let { deleteService.execute(it) }
+            theUser.profilePictureApproved = null
+            theUser.profilePicture = null
+            userRepo.save(theUser)
         }
 
         return SimpleResult(theUser, null)
