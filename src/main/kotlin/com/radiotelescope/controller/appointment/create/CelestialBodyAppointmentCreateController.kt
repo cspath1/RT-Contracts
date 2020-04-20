@@ -5,9 +5,15 @@ import com.radiotelescope.contracts.appointment.create.CelestialBodyAppointmentC
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.create.CelestialBodyAppointmentCreateForm
+import com.radiotelescope.controller.model.ses.SesSendForm
+import com.radiotelescope.controller.model.sns.SnsSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
+import com.radiotelescope.service.ses.IAwsSesSendService
+import com.radiotelescope.service.sns.IAwsSnsSendService
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -25,6 +31,9 @@ import org.springframework.web.bind.annotation.RestController
 class CelestialBodyAppointmentCreateController(
         @Qualifier(value = "celestialBodyAppointmentWrapper")
         private val autoAppointmentWrapper: UserAutoAppointmentWrapper,
+        private val userRepo: IUserRepository,
+        private val awsSesSendService: IAwsSesSendService,
+        private val awsSnsSendService: IAwsSnsSendService,
         logger: Logger
 ) : BaseRestController(logger) {
     /**
@@ -53,6 +62,19 @@ class CelestialBodyAppointmentCreateController(
                     ),
                     errors = it.toStringMap()
             )
+
+            val theUser = userRepo.findById(form.userId!!).get()
+
+            // Send an email or an SMS depending on the user's notification type
+            if (theUser.notificationType == User.NotificationType.EMAIL ||
+                    theUser.notificationType == User.NotificationType.ALL) {
+                sendEmail(theUser.email, form)
+            }
+
+            if (theUser.notificationType == User.NotificationType.SMS ||
+                    theUser.notificationType == User.NotificationType.ALL) {
+                sendSms(theUser.phoneNumber!!, form)
+            }
 
             result = Result(errors = it.toStringMap())
         } ?:
@@ -108,5 +130,26 @@ class CelestialBodyAppointmentCreateController(
         }
 
         return result
+    }
+
+    private fun sendEmail(email: String, form: CelestialBodyAppointmentCreateForm) {
+        val sendForm = SesSendForm(
+                toAddresses = listOf(email),
+                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                subject = "Celestial Body Appointment Created",
+                htmlBody = "<p>Your celestial body appointment has been scheduled to start at ${form.startTime} " +
+                        "and end at ${form.endTime}.</p>"
+        )
+        awsSesSendService.execute(sendForm)
+    }
+
+    private fun sendSms(phoneNumber: String, form: CelestialBodyAppointmentCreateForm) {
+        val sendForm = SnsSendForm(
+                toNumber = phoneNumber,
+                topic = null,
+                message = "Your celestial body appointment has been scheduled to start at ${form.startTime} " +
+                        "and end at ${form.endTime}."
+        )
+        awsSnsSendService.execute(sendForm)
     }
 }

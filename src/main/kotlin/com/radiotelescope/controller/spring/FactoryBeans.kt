@@ -46,6 +46,8 @@ import com.radiotelescope.contracts.weatherData.BaseWeatherDataFactory
 import com.radiotelescope.contracts.weatherData.UserWeatherDataWrapper
 import com.radiotelescope.security.UserContextImpl
 import com.radiotelescope.security.service.RetrieveAuthUserService
+import com.radiotelescope.service.ses.IAwsSesSendService
+import com.radiotelescope.service.sns.IAwsSnsSendService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -60,6 +62,8 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class FactoryBeans(
         private var repositories: RepositoryBeans,
+        private val awsSesSendService: IAwsSesSendService,
+        private val awsSnsSendService: IAwsSnsSendService,
         retrieveAuthUserService: RetrieveAuthUserService
 ) : FactoryProvider {
     private val userContext = UserContextImpl(

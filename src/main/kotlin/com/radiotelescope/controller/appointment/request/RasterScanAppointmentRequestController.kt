@@ -5,7 +5,7 @@ import com.radiotelescope.contracts.appointment.request.RasterScanAppointmentReq
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.request.RasterScanAppointmentRequestForm
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.IUserRepository
@@ -126,7 +126,7 @@ class RasterScanAppointmentRequestController(
      * @param emails a list of admin email addresses
      */
     private fun sendEmail(emails: List<String>) {
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = emails,
                 fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Appointment Request",

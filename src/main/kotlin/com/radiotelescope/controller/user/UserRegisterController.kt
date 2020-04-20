@@ -3,11 +3,9 @@ package com.radiotelescope.controller.user
 import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.user.Register
 import com.radiotelescope.controller.BaseRestController
-import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.user.RegisterForm
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.ses.AppLink
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.user.IUserRepository
@@ -117,7 +115,7 @@ class UserRegisterController(
      * @param email the email address of the new user
      */
     private fun sendEmailToOwner(email: String) {
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = listOf(email),
                 fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Account Created",
@@ -135,7 +133,7 @@ class UserRegisterController(
      * registered that requires their attention
      */
     private fun sendEmailToAdmins(emails: List<String>) {
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = emails,
                 fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
                 subject = "Account and Role Approval",

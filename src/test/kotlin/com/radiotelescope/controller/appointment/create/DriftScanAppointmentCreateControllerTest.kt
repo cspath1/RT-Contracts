@@ -5,7 +5,10 @@ import com.radiotelescope.controller.model.appointment.create.DriftScanAppointme
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.services.ses.MockAwsSesSendService
+import com.radiotelescope.services.sns.MockAwsSnsSendService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -23,6 +26,9 @@ import java.util.*
 internal class DriftScanAppointmentCreateControllerTest  : BaseAppointmentRestControllerTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
+
+    @Autowired
+    private lateinit var userRepo: IUserRepository
 
     private lateinit var driftScanAppointmentCreateController: DriftScanAppointmentCreateController
     private lateinit var user: User
@@ -44,7 +50,10 @@ internal class DriftScanAppointmentCreateControllerTest  : BaseAppointmentRestCo
 
         driftScanAppointmentCreateController = DriftScanAppointmentCreateController(
                 autoAppointmentWrapper = getDriftScanCreateWrapper(),
-                logger = getLogger()
+                logger = getLogger(),
+                userRepo = userRepo,
+                awsSesSendService = MockAwsSesSendService(true),
+                awsSnsSendService = MockAwsSnsSendService(true)
         )
 
         user = testUtil.createUser("rpim@ycp.edu")

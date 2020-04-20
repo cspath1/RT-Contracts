@@ -47,7 +47,7 @@ internal class UpdateTest : AbstractSpringTest() {
                     phoneNumber = "717-000-0000",
                     company = "Evil Twin Company",
                     profilePicture = "eviltwinpic.jpg",
-                    profilePictureApproved = false
+                    notificationType = "SMS"
             ),
             userRepo = userRepo
         ).execute()
@@ -70,7 +70,7 @@ internal class UpdateTest : AbstractSpringTest() {
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company",
                         profilePicture = "eviltwinpic.jpg",
-                        profilePictureApproved = false
+                        notificationType = "SMS"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -92,7 +92,7 @@ internal class UpdateTest : AbstractSpringTest() {
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company",
                         profilePicture = "eviltwinpic.jpg",
-                        profilePictureApproved = false
+                        notificationType = "SMS"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -114,7 +114,7 @@ internal class UpdateTest : AbstractSpringTest() {
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company",
                         profilePicture = "eviltwinpic.jpg",
-                        profilePictureApproved = false
+                        notificationType = "SMS"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -123,6 +123,28 @@ internal class UpdateTest : AbstractSpringTest() {
         assertNotNull(error)
         assertNull(id)
         assertTrue(error!![ErrorTag.LAST_NAME].isNotEmpty())
+    }
+
+    @Test
+    fun testBlankNotificationType_Failure() {
+        // Execute the command
+        val (id, error) = Update(
+                request = Update.Request(
+                        id = userId,
+                        firstName = "Evil",
+                        lastName = "Twin",
+                        phoneNumber = "717-000-0000",
+                        company = "Evil Twin Company",
+                        profilePicture = "eviltwinpic.jpg",
+                        notificationType = ""
+                ),
+                userRepo = userRepo
+        ).execute()
+
+        // Should have failed
+        assertNotNull(error)
+        assertNull(id)
+        assertTrue(error!![ErrorTag.NOTIFICATION_TYPE].isNotEmpty())
     }
 
     @Test
@@ -136,7 +158,7 @@ internal class UpdateTest : AbstractSpringTest() {
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company",
                         profilePicture = "eviltwinpic.jpg",
-                        profilePictureApproved = false
+                        notificationType = "SMS"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -158,7 +180,7 @@ internal class UpdateTest : AbstractSpringTest() {
                         phoneNumber = "717-000-0000",
                         company = "Evil Twin Company",
                         profilePicture = "eviltwinpic.jpg",
-                        profilePictureApproved = false
+                        notificationType = "SMS"
                 ),
                 userRepo = userRepo
         ).execute()
