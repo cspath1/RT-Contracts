@@ -1,5 +1,6 @@
 package com.radiotelescope.contracts.user
 
+import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.contracts.BaseUpdateRequest
 import com.radiotelescope.contracts.Command
@@ -22,6 +23,13 @@ class UpdateProfilePicture(
      * It will then return a [SimpleResult] object with the [User] id and a null errors field.
      */
     override fun execute(): SimpleResult<Long, Multimap<ErrorTag, String>> {
+        val errors = HashMultimap.create<ErrorTag, String>()
+
+        if (!userRepo.existsById(request.id)) {
+            errors.put(ErrorTag.ID, "No User was found with specified Id")
+            return SimpleResult(null, errors)
+        }
+
         val user = userRepo.findById(request.id).get()
         val updatedUser = userRepo.save(request.updateEntity(user))
 

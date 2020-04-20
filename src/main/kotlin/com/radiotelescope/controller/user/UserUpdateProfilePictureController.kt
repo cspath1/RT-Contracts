@@ -81,7 +81,6 @@ class UserUpdateProfilePictureController(
                         errors = deleteResult.error.toStringMap()
                 )
 
-                print("reach\n")
                 return Result(
                         errors = deleteResult.error.toStringMap()
                 )
