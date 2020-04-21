@@ -47,8 +47,8 @@ class FrontpagePictureSubmitController(
      */
     @PostMapping(value = ["/api/frontpage-picture"], consumes = ["multipart/form-data"])
     fun execute(@RequestParam("file") @Valid file: MultipartFile,
-                @RequestParam("picture-title") pictureTitle: String,
-                @RequestParam("picture-url") pictureUrl: String,
+                @RequestParam("pictureTitle") pictureTitle: String,
+                @RequestParam("pictureUrl") pictureUrl: String,
                 @RequestParam("description") description: String): Result {
         // If the user is an Admin, picture is automatically approved
         val isAdmin = context.currentUserId() != null &&
