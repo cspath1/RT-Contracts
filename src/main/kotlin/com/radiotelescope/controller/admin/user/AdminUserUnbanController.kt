@@ -113,6 +113,11 @@ class AdminUserUnbanController(
         return result
     }
 
+    /**
+     * Sends a text message to the selected email address.
+     *
+     * @param email the email to send to
+     */
     private fun sendEmail(email: String) {
         val sendForm = SesSendForm(
                 toAddresses = listOf(email),
@@ -123,6 +128,11 @@ class AdminUserUnbanController(
         awsSesSendService.execute(sendForm)
     }
 
+    /**
+     * Sends a text message to the selected phone number.
+     *
+     * @param phoneNumber the number to send to
+     */
     private fun sendSms(phoneNumber: String) {
         val sendForm = SnsSendForm(
                 toNumber = phoneNumber,

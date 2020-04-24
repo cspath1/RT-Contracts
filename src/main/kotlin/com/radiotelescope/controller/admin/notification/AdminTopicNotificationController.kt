@@ -34,6 +34,11 @@ class AdminTopicNotificationController (
     @Value("\${amazon.aws.sns.default-topic}")
     lateinit var defaultSendTopic: String
 
+    /**
+     * Broadcast a custom notification from admins to a
+     * specified AWS Simple Notification Service topic ARN
+     * using the [IAwsSnsService].
+     */
     @PostMapping(value = ["/api/notification/topic"])
     fun execute(@RequestParam(value = "topic", required = false) topic: String?,
                 @RequestParam(value = "message", required = true) message: String
@@ -61,6 +66,12 @@ class AdminTopicNotificationController (
         return result
     }
 
+    /**
+     * Sends a text message to the selected topic.
+     *
+     * @param topic the topic ARN to send to
+     * @param message the message to send
+     */
     private fun sendSms(topic: String, message: String) :  HashMultimap<ErrorTag, String>?{
         val sendForm = SnsSendForm(
                 toNumber = null,

@@ -189,6 +189,25 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
     }
 
     @Test
+    fun testValidRetrieve_Alumnus_Success() {
+        // Simulate login as admin
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.ALUMNUS)
+
+        var userInfo: UserInfo? = null
+
+        val error = wrapper.retrieve(
+                request = userId
+        ) {
+            userInfo = it.success
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+        assertNotNull(userInfo)
+    }
+
+    @Test
     fun testValidRetrieve_Admin_InvalidId_Failure() {
         // Simulate login as an admin
         context.login(otherUserId)
@@ -253,6 +272,25 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
         // Log the user in and make them an admin
         context.login(otherUserId)
         context.currentRoles.addAll(listOf(UserRole.Role.ADMIN, UserRole.Role.USER))
+
+        var info: Page<UserInfo> = PageImpl<UserInfo>(arrayListOf())
+
+        val error = wrapper.list(
+                request = PageRequest.of(0, 5)
+        ) {
+            info = it.success!!
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+        assertEquals(2, info.content.size)
+    }
+
+    @Test
+    fun testValidList_Alumnus_Success() {
+        // Log the user in and make them an admin
+        context.login(otherUserId)
+        context.currentRoles.addAll(listOf(UserRole.Role.ALUMNUS, UserRole.Role.USER))
 
         var info: Page<UserInfo> = PageImpl<UserInfo>(arrayListOf())
 
