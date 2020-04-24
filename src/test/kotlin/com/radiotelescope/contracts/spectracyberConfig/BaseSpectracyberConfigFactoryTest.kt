@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 internal class BaseSpectracyberConfigFactoryTest : AbstractSpringTest() {
-
     @Autowired
     private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 

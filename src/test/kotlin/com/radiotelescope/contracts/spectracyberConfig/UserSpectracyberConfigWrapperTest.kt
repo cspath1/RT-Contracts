@@ -1,7 +1,6 @@
 package com.radiotelescope.contracts.spectracyberConfig
 
 import com.radiotelescope.AbstractSpringTest
-import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
@@ -107,7 +106,7 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
     }
 
     @Test
-    fun testRetrieve_NotLoggedIn_Failure() {
+    fun retrieve_NotLoggedIn_Failure() {
         // Do not log the user in
         val error = wrapper.retrieve(
                 userId = user.id,
@@ -193,7 +192,7 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
     }
 
     @Test
-    fun testUpdate_NotLoggedIn_Failure() {
+    fun update_NotLoggedIn_Failure() {
         // Do not log the user in
         val error = wrapper.update(
                 userId = user.id,
