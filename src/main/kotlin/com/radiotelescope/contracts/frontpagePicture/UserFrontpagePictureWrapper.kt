@@ -7,7 +7,6 @@ import com.radiotelescope.security.UserContext
 import com.radiotelescope.repository.frontpagePicture.FrontpagePicture
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
-import org.apache.catalina.User
 
 /**
  * Wrapper that takes a [FrontpagePictureFactory] and is responsible for all
@@ -64,7 +63,7 @@ class UserFrontpagePictureWrapper (
     /**
      * Wrapper method for the [FrontpagePictureFactory.retrieveApproved] method.
      *
-     * @return An [AccessReport] if authentication fails, null otherwise
+     * @return a [Command] object
      */
     fun retrieveApproved() : Command<List<FrontpagePicture>, Multimap<ErrorTag, String>> {
         return factory.retrieveApproved()

@@ -75,6 +75,14 @@ class Update(
      * Data class containing all fields necessary for user update. Implements the
      * [BaseUpdateRequest] interface and overrides the [BaseUpdateRequest.updateEntity]
      * method
+     *
+     * @param id the id of the [SpectracyberConfig] record
+     * @param mode the Spectracyber mode
+     * @param integrationTime the integration time
+     * @param offsetVoltage the offset voltage
+     * @param IFGain the infrared gain
+     * @param DCGain the direct current gain
+     * @param bandwidth the bandwidth
      */
     data class Request(
             val id: Long,

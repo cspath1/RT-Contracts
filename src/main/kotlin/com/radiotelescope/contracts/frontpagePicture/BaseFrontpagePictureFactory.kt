@@ -19,6 +19,9 @@ class BaseFrontpagePictureFactory (
     /**
      * Override of the [FrontpagePictureFactory] method that will
      * return a [Submit] command object
+     *
+     * @param request the [Submit.Request] object
+     * @return a [Command] object
      */
     override fun submit(request: Submit.Request): Command<FrontpagePicture, Multimap<ErrorTag, String>> {
         return Submit(
@@ -30,6 +33,9 @@ class BaseFrontpagePictureFactory (
     /**
      * Override of the [FrontpagePictureFactory] method that will
      * return an [ApproveDeny] command object
+     *
+     * @param request the [ApproveDeny.Request] object
+     * @return a [Command] object
      */
     override fun approveDeny(request: ApproveDeny.Request): Command<FrontpagePicture, Multimap<ErrorTag, String>> {
         return ApproveDeny(
@@ -42,6 +48,8 @@ class BaseFrontpagePictureFactory (
     /**
      * Override of the [FrontpagePictureFactory] method that will
      * return a [RetrieveList] command object
+     *
+     * @return a [Command] object
      */
     override fun retrieveList(): Command<List<FrontpagePicture>, Multimap<ErrorTag, String>> {
         return RetrieveList(
@@ -52,6 +60,8 @@ class BaseFrontpagePictureFactory (
     /**
      * Override of the [FrontpagePictureFactory] method that will
      * return a [RetrieveApproved] command object
+     *
+     * @return a [Command] object
      */
     override fun retrieveApproved(): Command<List<FrontpagePicture>, Multimap<ErrorTag, String>> {
         return RetrieveApproved(

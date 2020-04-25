@@ -67,7 +67,8 @@ class Submit (
     /**
      * Data class containing the fields necessary to submit a frontpage picture
      *
-     * @param picture the S3 URL of the picture
+     * @param pictureTitle the viewed title of the picture
+     * @param pictureUrl the S3 URL of the picture
      * @param description the description of the picture
      * @param approved the approval status of the picture
      */

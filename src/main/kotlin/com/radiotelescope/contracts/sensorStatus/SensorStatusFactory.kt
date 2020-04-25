@@ -14,6 +14,7 @@ interface SensorStatusFactory {
      *
      * @param request the [Create.Request] request
      * @param uuid the uuid used to verify control room access
+     * @param profile the user profile
      * @return a [Command] object
      */
     fun create(request: Create.Request, uuid: String, profile: String): Command<Long, Multimap<ErrorTag, String>>

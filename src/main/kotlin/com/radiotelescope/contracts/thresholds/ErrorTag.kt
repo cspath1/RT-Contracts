@@ -1,5 +1,8 @@
 package com.radiotelescope.contracts.thresholds
 
+/**
+ * Enum representing field validation failures for the Thresholds Entity
+ */
 enum class ErrorTag {
     ID,
     NAME,

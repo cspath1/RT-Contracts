@@ -11,6 +11,7 @@ import com.radiotelescope.repository.sensorOverrides.SensorOverrides
  * Override of the [Command] interface method used to retrieve [SensorOverrides]
  * information
  *
+ * @param request the [Request] object
  * @param sensorOverridesRepo the [ISensorOverridesRepository] interface
  */
 class Update (

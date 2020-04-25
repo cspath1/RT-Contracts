@@ -12,6 +12,8 @@ interface SensorOverridesFactory {
     /**
      * Abstract command used to update the [SensorOverrides] object
      *
+     * @param sensorName the name of the sensor to update
+     * @param overridden the overridden status value to update
      * @return a [Command] object
      */
     fun update(sensorName: String, overridden: Boolean): Command<SensorOverrides, Multimap<ErrorTag, String>>

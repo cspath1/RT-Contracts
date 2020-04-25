@@ -25,6 +25,8 @@ class UserVideoFileWrapper(
      * Wrapper method for the [VideoFileFactory.create] method.
      *
      * @param request the [Create.Request] object
+     * @param uuid the private uuid for submitting videos locally
+     * @param profile the current user profile
      * @return a [Command] object
      */
     fun create(request: Create.Request, uuid: String, profile: String): Command<Long, Multimap<ErrorTag, String>> {
@@ -56,6 +58,7 @@ class UserVideoFileWrapper(
      * Wrapper method for the [VideoFileFactory.listBetweenCreationDates] method.
      *
      * @param request the [ListBetweenCreationDates.Request] object
+     * @param withAccess anonymous function that uses the command's result object
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun listBetweenCreationDates(request: ListBetweenCreationDates.Request, withAccess: (result: SimpleResult<List<VideoFile>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {

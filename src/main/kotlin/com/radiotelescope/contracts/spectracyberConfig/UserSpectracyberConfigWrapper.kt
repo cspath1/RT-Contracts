@@ -5,7 +5,6 @@ import com.radiotelescope.security.UserContext
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.security.AccessReport
@@ -27,7 +26,8 @@ class UserSpectracyberConfigWrapper (
      *
      * @param userId the user id associated with the appointment that is the parent of the record
      * @param request the [Update.Request] object
-     * @return a [Command] object
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun update(userId: Long, request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
@@ -59,7 +59,8 @@ class UserSpectracyberConfigWrapper (
      *
      * @param userId the user id associated with the appointment that is the parent of the record
      * @param spectracyberConfigId the spectracyber config id to retrieve
-     * @return a [Command] object
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun retrieve(userId: Long, spectracyberConfigId: Long, withAccess: (result: SimpleResult<SpectracyberConfig, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in

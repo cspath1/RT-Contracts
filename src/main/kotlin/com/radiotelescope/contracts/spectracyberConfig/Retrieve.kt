@@ -18,6 +18,7 @@ class Retrieve (
         private val spectracyberConfigId: Long,
         private val spectracyberConfigRepo: ISpectracyberConfigRepository
 ) : Command<SpectracyberConfig, Multimap<ErrorTag, String>> {
+
     /**
      * Override of the [Command] execute method. It checks if the supplied id
      * matches with any id in the database through the [ISpectracyberConfigRepository.findById]
