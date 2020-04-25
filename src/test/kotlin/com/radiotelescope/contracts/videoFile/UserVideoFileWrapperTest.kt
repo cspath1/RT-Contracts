@@ -1,9 +1,9 @@
-package com.radiotelescope.contracts.thresholds
+package com.radiotelescope.contracts.videoFile
 
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.role.UserRole
-import com.radiotelescope.repository.thresholds.IThresholdsRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.videoFile.IVideoFileRepository
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Assert.*
 import org.junit.Before
@@ -11,64 +11,60 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class UserThresholdsWrapperTest : AbstractSpringTest() {
+internal class UserVideoFileWrapperTest : AbstractSpringTest() {
     @Autowired
-    private lateinit var thresholdsRepo: IThresholdsRepository
+    private lateinit var videoFileRepo: IVideoFileRepository
 
     private lateinit var admin: User
 
     val context = FakeUserContext()
-    lateinit var factory: ThresholdsFactory
-    lateinit var wrapper: UserThresholdsWrapper
+    lateinit var factory: VideoFileFactory
+    lateinit var wrapper: UserVideoFileWrapper
+
+    private val createRequest = Create.Request(
+            thumbnailPath = "thumbnail.png",
+            videoPath = "video.mp4",
+            videoLength = "01:00:00",
+            token = "testid"
+    )
+
+    private val listBetweenDatesRequest = ListBetweenCreationDates.Request(
+            lowerDate = Date(System.currentTimeMillis()),
+            upperDate = Date(System.currentTimeMillis() + 60000L)
+    )
 
     @Before
     fun init() {
         // Initialize the factory and wrapper
-        factory = BaseThresholdsFactory(
-                thresholdsRepo = thresholdsRepo
+        factory = BaseVideoFileFactory(
+                videoFileRepo = videoFileRepo
         )
 
-        wrapper = UserThresholdsWrapper(
+        wrapper = UserVideoFileWrapper(
                 context = context,
                 factory = factory
         )
 
+        // Create admin with default roles
         admin = testUtil.createUser("admin@ycpradiotelescope.com")
         testUtil.createUserRoleForUser(admin, UserRole.Role.ADMIN, true)
-
-        testUtil.populateDefaultThresholds()
     }
 
     @Test
-    fun adminRetrieve_Success() {
-        context.login(admin.id)
-        context.currentRoles.add(UserRole.Role.USER)
-        context.currentRoles.add(UserRole.Role.ADMIN)
+    fun create_Success() {
+        val result = wrapper.create(
+                request = createRequest,
+                uuid = "testid",
+                profile = "LOCAL"
+        )
 
-        val error = wrapper.retrieve(
-                sensorName = "WIND"
-        ) {
-            assertNotNull(it.success)
-            assertNull(it.error)
-        }
-
-        assertNull(error)
-    }
-
-    @Test
-    fun retrieve_NotLoggedIn_Failure() {
-        // Do not log the user in
-        val error = wrapper.retrieve(
-                sensorName = "WIND"
-        ) {
-            fail("Should fail on precondition")
-        }
-
-        assertNotNull(error)
+        assertNotNull(result)
     }
 
     @Test
@@ -77,7 +73,9 @@ internal class UserThresholdsWrapperTest : AbstractSpringTest() {
         context.currentRoles.add(UserRole.Role.USER)
         context.currentRoles.add(UserRole.Role.ADMIN)
 
-        val error = wrapper.retrieveList() {
+        val error = wrapper.retrieveList(
+                pageable = PageRequest.of(0, 10)
+        ) {
             assertNotNull(it.success)
             assertNull(it.error)
         }
@@ -88,7 +86,9 @@ internal class UserThresholdsWrapperTest : AbstractSpringTest() {
     @Test
     fun retrieveList_NotLoggedIn_Failure() {
         // Do not log the user in
-        val error = wrapper.retrieveList {
+        val error = wrapper.retrieveList(
+                pageable = PageRequest.of(0, 10)
+        ) {
             fail("Should fail on precondition")
         }
 
@@ -96,14 +96,13 @@ internal class UserThresholdsWrapperTest : AbstractSpringTest() {
     }
 
     @Test
-    fun adminUpdate_Success() {
+    fun adminListBetweenCreationDates_Success() {
         context.login(admin.id)
         context.currentRoles.add(UserRole.Role.USER)
         context.currentRoles.add(UserRole.Role.ADMIN)
 
-        val error = wrapper.update(
-                sensorName = "WIND",
-                maximum = 1.0
+        val error = wrapper.listBetweenCreationDates(
+                request = listBetweenDatesRequest
         ) {
             assertNotNull(it.success)
             assertNull(it.error)
@@ -113,11 +112,10 @@ internal class UserThresholdsWrapperTest : AbstractSpringTest() {
     }
 
     @Test
-    fun update_NotLoggedIn_Failure() {
+    fun listBetweenCreationDates_NotLoggedIn_Failure() {
         // Do not log the user in
-        val error = wrapper.update(
-                sensorName = "WIND",
-                maximum = 1.0
+        val error = wrapper.listBetweenCreationDates(
+                request = listBetweenDatesRequest
         ) {
             fail("Should fail on precondition")
         }

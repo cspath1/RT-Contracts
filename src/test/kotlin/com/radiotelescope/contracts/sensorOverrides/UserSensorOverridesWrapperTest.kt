@@ -3,7 +3,6 @@ package com.radiotelescope.contracts.sensorOverrides
 import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.sensorOverrides.ISensorOverridesRepository
-import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
 import org.junit.Assert.*
@@ -17,9 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 internal class UserSensorOverridesWrapperTest : AbstractSpringTest() {
-    @Autowired
-    private lateinit var userRepo: IUserRepository
-
     @Autowired
     private lateinit var sensorOverridesRepo: ISensorOverridesRepository
 
