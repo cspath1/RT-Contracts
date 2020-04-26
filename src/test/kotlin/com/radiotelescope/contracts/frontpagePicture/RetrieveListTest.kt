@@ -29,7 +29,7 @@ internal class RetrieveListTest : BaseFrontpagePictureFactoryTest() {
     }
 
     @Test
-    fun retrieveList() {
+    fun retrieveListOfFrontpagePictures() {
         val (page, error) = RetrieveList(
                 frontpagePictureRepo = frontpagePictureRepo
         ).execute()
