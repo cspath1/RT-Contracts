@@ -4,10 +4,12 @@ import com.radiotelescope.contracts.spectracyberConfig.BaseSpectracyberConfigFac
 import com.radiotelescope.contracts.spectracyberConfig.UserSpectracyberConfigWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.controller.model.spectracyberConfig.UpdateForm
+import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -38,7 +41,12 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
 
     private lateinit var baseForm: UpdateForm
     private lateinit var updateForm: UpdateForm
+
     private lateinit var user: User
+    private lateinit var otherUser: User
+
+    private lateinit var theSpectracyberConfig: SpectracyberConfig
+    private lateinit var theAppointment: Appointment
 
     private var userContext = getContext()
 
@@ -58,10 +66,25 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
                 logger = getLogger()
         )
 
+        otherUser = testUtil.createUser("otheruser@ycp.edu")
+
         user = testUtil.createUser("jhorne@ycp.edu")
         // simulate a login
         userContext.login(user.id)
         userContext.currentRoles.add(UserRole.Role.USER)
+
+        // Persist a default appointment with a default spectracyber config
+        theAppointment = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(System.currentTimeMillis()),
+                endTime = Date(System.currentTimeMillis() + 60000L),
+                isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.FREE_CONTROL
+        )
+        theSpectracyberConfig = theAppointment.spectracyberConfig!!
 
         baseForm = UpdateForm(
                 id = 1,
@@ -76,11 +99,9 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
 
     @Test
     fun testUserResponseOwnRecord_Success() {
-        testUtil.createDefaultSpectracyberConfig()
-
         // set the update form to the newest entry in the repo
         // ensures grabbing correct record id
-        updateForm = baseForm.copy(id = spectracyberConfigRepo.findAll().first().id)
+        updateForm = baseForm.copy(id = theSpectracyberConfig.id)
 
         // update the spectracyber config record
         val result = spectracyberConfigUpdateController.execute(
@@ -101,10 +122,20 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
 
     @Test
     fun testUserResponseOtherRecord_Failure() {
-        testUtil.createDefaultSpectracyberConfig()
-        testUtil.createDefaultSpectracyberConfig()
+        // Persist an appointment with a default spectracyber config
+        val otherAppointment = testUtil.createAppointment(
+                user = otherUser,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(System.currentTimeMillis()),
+                endTime = Date(System.currentTimeMillis() + 60000L),
+                isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.FREE_CONTROL
+        )
+        val otherSpectracyberConfig = otherAppointment.spectracyberConfig!!
 
-        updateForm = baseForm.copy(id = spectracyberConfigRepo.findAll().first().id)
+        updateForm = baseForm.copy(id = otherSpectracyberConfig.id)
 
         // attempt to update the spectracyber config record
         val result = spectracyberConfigUpdateController.execute(
@@ -129,10 +160,20 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
         // make the user an admin
         userContext.currentRoles.add(UserRole.Role.ADMIN)
 
-        testUtil.createDefaultSpectracyberConfig()
-        testUtil.createDefaultSpectracyberConfig()
+        // Persist an appointment with a default spectracyber config
+        val otherAppointment = testUtil.createAppointment(
+                user = otherUser,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(System.currentTimeMillis()),
+                endTime = Date(System.currentTimeMillis() + 60000L),
+                isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.FREE_CONTROL
+        )
+        val otherSpectracyberConfig = otherAppointment.spectracyberConfig!!
 
-        updateForm = baseForm.copy(id = spectracyberConfigRepo.findAll().first().id)
+        updateForm = baseForm.copy(id = otherSpectracyberConfig.id)
 
         // attempt to update the spectracyber config record
         val result = spectracyberConfigUpdateController.execute(
