@@ -3,6 +3,7 @@ package com.radiotelescope.controller.spectracyberConfig
 import com.radiotelescope.contracts.spectracyberConfig.BaseSpectracyberConfigFactory
 import com.radiotelescope.contracts.spectracyberConfig.UserSpectracyberConfigWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
+import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
@@ -27,6 +28,9 @@ internal class SpectracyberConfigRetrieveControllerTest : BaseRestControllerTest
     private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
     @Autowired
+    private lateinit var appointmentRepo: IAppointmentRepository
+
+    @Autowired
     private lateinit var userRepo: IUserRepository
 
     private lateinit var spectracyberConfigRetrieveController: SpectracyberConfigRetrieveController
@@ -45,7 +49,8 @@ internal class SpectracyberConfigRetrieveControllerTest : BaseRestControllerTest
                         factory = BaseSpectracyberConfigFactory(
                                 spectracyberConfigRepo = spectracyberConfigRepo
                         ),
-                        userRepo = userRepo
+                        userRepo = userRepo,
+                        appointmentRepo = appointmentRepo
                 ),
                 logger = getLogger()
         )

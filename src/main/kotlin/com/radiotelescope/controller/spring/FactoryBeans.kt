@@ -409,7 +409,8 @@ class FactoryBeans(
                 factory = BaseSpectracyberConfigFactory(
                         spectracyberConfigRepo = repositories.spectracyberConfigRepo
                 ),
-                userRepo = repositories.userRepo
+                userRepo = repositories.userRepo,
+                appointmentRepo = repositories.appointmentRepo
         )
     }
 

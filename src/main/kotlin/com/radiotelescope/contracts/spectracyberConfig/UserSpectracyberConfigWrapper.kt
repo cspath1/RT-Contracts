@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap
 import com.radiotelescope.security.UserContext
 import com.radiotelescope.contracts.Command
 import com.radiotelescope.contracts.SimpleResult
+import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
@@ -20,7 +21,8 @@ import com.radiotelescope.security.AccessReport
 class UserSpectracyberConfigWrapper (
         private val context: UserContext,
         private val factory: SpectracyberConfigFactory,
-        private val userRepo: IUserRepository
+        private val userRepo: IUserRepository,
+        private val appointmentRepo: IAppointmentRepository
 ) {
     /**
      * Wrapper method for the [SpectracyberConfigFactory.update] method.
@@ -33,6 +35,7 @@ class UserSpectracyberConfigWrapper (
         // If the user is logged in
         if (context.currentUserId() != null) {
             val theUser = userRepo.findById(context.currentUserId()!!)
+            val theSpectracyberConfig = appointmentRepo.findAppointmentBySpectracyberConfigId(request.id).spectracyberConfig
 
             // If the user exists, they must have the same id as the to-be-updated record
             // or they must be an admin
