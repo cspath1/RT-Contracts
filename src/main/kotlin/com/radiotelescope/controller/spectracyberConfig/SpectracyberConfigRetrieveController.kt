@@ -19,7 +19,7 @@ class SpectracyberConfigRetrieveController(
 ) : BaseRestController(logger) {
 
     @CrossOrigin(value = ["http://localhost:8081"])
-    @GetMapping(value = ["/api/appointments/{userId}/{spectracyberConfigId}/spectracyberConfig"])
+    @GetMapping(value = ["/api/appointments/{spectracyberConfigId}/spectracyberConfig"])
     fun execute(@PathVariable("spectracyberConfigId") spectracyberConfigId: Long): Result {
         // Call the factory command
         spectracyberConfigWrapper.retrieve(
