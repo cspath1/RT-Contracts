@@ -1,6 +1,7 @@
 package com.radiotelescope.controller.spectracyberConfig
 
 import com.radiotelescope.contracts.spectracyberConfig.UserSpectracyberConfigWrapper
+import com.radiotelescope.contracts.spectracyberConfig.Update
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.spectracyberConfig.UpdateForm
 import com.radiotelescope.controller.spring.Logger
@@ -21,7 +22,15 @@ class SpectracyberConfigUpdateController(
         private val spectracyberConfigWrapper: UserSpectracyberConfigWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
-
+    /**
+     * Execute method that is in charge of adapting the [UpdateForm]
+     * into a [Update.Request] after ensuring no fields are null. If
+     * any are, it will instead respond with errors.
+     *
+     * Otherwise, it will execute the [UserSpectracyberConfigWrapper.update] method.
+     * Based on the result of this call, the method will either respond with
+     * the data or the errors from the method call.
+     */
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["/api/appointments/{userId}/spectracyberConfig"])
     fun execute(@PathVariable("userId") userId: Long,
