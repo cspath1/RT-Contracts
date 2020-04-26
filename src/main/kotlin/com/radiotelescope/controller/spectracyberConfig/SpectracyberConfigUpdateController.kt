@@ -24,8 +24,7 @@ class SpectracyberConfigUpdateController(
 
     @CrossOrigin(value = ["http://localhost:8081"])
     @PutMapping(value = ["/api/appointments/{userId}/spectracyberConfig"])
-    fun execute(@PathVariable("userId") userId: Long,
-                @RequestBody form: UpdateForm): Result {
+    fun execute(@RequestBody form: UpdateForm): Result {
         form.validateRequest()?.let {
             // Create error logs
             logger.createErrorLogs(
@@ -42,7 +41,6 @@ class SpectracyberConfigUpdateController(
         } ?: let {
             // Otherwise call the factory command
             spectracyberConfigWrapper.update(
-                    userId = userId,
                     request = form.toRequest()
             ) { response ->
                 // If the command was a success

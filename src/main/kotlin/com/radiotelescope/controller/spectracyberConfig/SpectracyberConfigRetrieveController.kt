@@ -20,11 +20,9 @@ class SpectracyberConfigRetrieveController(
 
     @CrossOrigin(value = ["http://localhost:8081"])
     @GetMapping(value = ["/api/appointments/{userId}/{spectracyberConfigId}/spectracyberConfig"])
-    fun execute(@PathVariable("userId") userId: Long,
-                @PathVariable("spectracyberConfigId") spectracyberConfigId: Long): Result {
+    fun execute(@PathVariable("spectracyberConfigId") spectracyberConfigId: Long): Result {
         // Call the factory command
         spectracyberConfigWrapper.retrieve(
-                userId = userId,
                 spectracyberConfigId = spectracyberConfigId
         ) { response ->
             // If the command was a success

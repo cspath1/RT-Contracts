@@ -221,7 +221,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
      * @return an [Appointment] object
      */
     @Query(value = "SELECT * FROM appointment " +
-            "WHERE spectracyber_config_id = ?1"
-    )
+            "WHERE spectracyber_config_id=?1",
+            nativeQuery = true)
     fun findAppointmentBySpectracyberConfigId(spectracyberConfigId: Long): Appointment
 }

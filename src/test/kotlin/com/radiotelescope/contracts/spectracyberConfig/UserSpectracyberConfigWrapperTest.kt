@@ -1,6 +1,8 @@
 package com.radiotelescope.contracts.spectracyberConfig
 
 import com.radiotelescope.AbstractSpringTest
+import com.radiotelescope.repository.appointment.Appointment
+import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
@@ -14,6 +16,7 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -24,10 +27,15 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
     @Autowired
     private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
+    @Autowired
+    private lateinit var appointmentRepo: IAppointmentRepository
+
     private lateinit var user: User
+    private lateinit var otherUser: User
     private lateinit var admin: User
 
     private lateinit var theSpectracyberConfig: SpectracyberConfig
+    private lateinit var theAppointment: Appointment
 
     val context = FakeUserContext()
     lateinit var factory: SpectracyberConfigFactory
@@ -43,27 +51,40 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
         wrapper = UserSpectracyberConfigWrapper(
                 context = context,
                 factory = factory,
-                userRepo = userRepo
+                userRepo = userRepo,
+                appointmentRepo = appointmentRepo
         )
 
-        // Create user and admin with default roles
+        // Create user, other user, and admin with default roles
         user = testUtil.createUser("jhorne@ycp.edu")
         testUtil.createUserRoleForUser(user, UserRole.Role.USER, true)
+
+        otherUser = testUtil.createUser("otheruser@ycp.edu")
+        testUtil.createUserRoleForUser(otherUser, UserRole.Role.USER, true)
 
         admin = testUtil.createUser("admin@ycpradiotelescope.com")
         testUtil.createUserRoleForUser(admin, UserRole.Role.ADMIN, true)
 
-        // Persist a default Spectracyber Config
-        theSpectracyberConfig = testUtil.createDefaultSpectracyberConfig()
+        // Persist a default appointment with a default spectracyber config
+        theAppointment = testUtil.createAppointment(
+                user = user,
+                telescopeId = 1L,
+                status = Appointment.Status.SCHEDULED,
+                startTime = Date(System.currentTimeMillis()),
+                endTime = Date(System.currentTimeMillis() + 60000L),
+                isPublic = true,
+                priority = Appointment.Priority.PRIMARY,
+                type = Appointment.Type.FREE_CONTROL
+        )
+        theSpectracyberConfig = theAppointment.spectracyberConfig!!
     }
 
     @Test
-    fun specifiedUserRetrieve_Success() {
+    fun userRetrieve_Success() {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
         val error = wrapper.retrieve(
-                userId = user.id,
                 spectracyberConfigId = theSpectracyberConfig.id
         ) {
             assertNotNull(it.success)
@@ -75,11 +96,10 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
 
     @Test
     fun specifiedUserRetrieve_OtherUserId_Failure() {
-        context.login(user.id)
+        context.login(otherUser.id)
         context.currentRoles.add(UserRole.Role.USER)
 
         val error = wrapper.retrieve(
-                userId = -1L,
                 spectracyberConfigId = theSpectracyberConfig.id
         ) {
             fail("Should fail on precondition")
@@ -95,7 +115,6 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
         context.currentRoles.add(UserRole.Role.ADMIN)
 
         val error = wrapper.retrieve(
-                userId = user.id,
                 spectracyberConfigId = theSpectracyberConfig.id
         ) {
             assertNotNull(it.success)
@@ -109,7 +128,6 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
     fun retrieve_NotLoggedIn_Failure() {
         // Do not log the user in
         val error = wrapper.retrieve(
-                userId = user.id,
                 spectracyberConfigId = theSpectracyberConfig.id
         ) {
             fail("Should fail on precondition")
@@ -119,12 +137,11 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
     }
 
     @Test
-    fun specifiedUserUpdate_Success() {
+    fun userUpdate_Success() {
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.USER)
 
         val error = wrapper.update(
-                userId = user.id,
                 request = Update.Request(
                         theSpectracyberConfig.id,
                         "SPECTRAL",
@@ -144,12 +161,11 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
     }
 
     @Test
-    fun specifiedUserUpdate_OtherUserId_Failure() {
-        context.login(user.id)
+    fun userUpdate_OtherUserId_Failure() {
+        context.login(otherUser.id)
         context.currentRoles.add(UserRole.Role.USER)
 
         val error = wrapper.update(
-                userId = -1L,
                 request = Update.Request(
                         theSpectracyberConfig.id,
                         "SPECTRAL",
@@ -173,7 +189,6 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
         context.currentRoles.add(UserRole.Role.ADMIN)
 
         val error = wrapper.update(
-                userId = user.id,
                 request = Update.Request(
                         theSpectracyberConfig.id,
                         "SPECTRAL",
@@ -195,7 +210,6 @@ internal class UserSpectracyberConfigWrapperTest : AbstractSpringTest() {
     fun update_NotLoggedIn_Failure() {
         // Do not log the user in
         val error = wrapper.update(
-                userId = user.id,
                 request = Update.Request(
                         theSpectracyberConfig.id,
                         "SPECTRAL",
