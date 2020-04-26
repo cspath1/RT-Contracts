@@ -84,7 +84,6 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
 
         // update the spectracyber config record
         val result = spectracyberConfigUpdateController.execute(
-                userId = user.id,
                 form = updateForm
         )
 
@@ -109,7 +108,6 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
 
         // attempt to update the spectracyber config record
         val result = spectracyberConfigUpdateController.execute(
-                userId = user.id + 1,
                 form = updateForm
         )
 
@@ -138,7 +136,6 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
 
         // attempt to update the spectracyber config record
         val result = spectracyberConfigUpdateController.execute(
-                userId = user.id + 1,
                 form = updateForm
         )
 
@@ -161,7 +158,6 @@ internal class SpectracyberConfigUpdateControllerTest : BaseRestControllerTest()
 
         // update the spectracyber config record
         val result = spectracyberConfigUpdateController.execute(
-                userId = user.id,
                 form = baseForm
         )
 

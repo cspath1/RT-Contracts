@@ -67,7 +67,6 @@ internal class SpectracyberConfigRetrieveControllerTest : BaseRestControllerTest
 
         // retrieve the spectracyber config record
         val result = spectracyberConfigRetrieveController.execute(
-                userId = user.id,
                 spectracyberConfigId = spectracyberConfigRepo.findAll().first().id
         )
 
@@ -90,7 +89,6 @@ internal class SpectracyberConfigRetrieveControllerTest : BaseRestControllerTest
 
         // attempt to retrieve the spectracyber config record
         val result = spectracyberConfigRetrieveController.execute(
-                userId = user.id + 1,
                 spectracyberConfigId = spectracyberConfigRepo.findAll().first().id
         )
 
@@ -117,7 +115,6 @@ internal class SpectracyberConfigRetrieveControllerTest : BaseRestControllerTest
 
         // retrieve the spectracyber config record
         val result = spectracyberConfigRetrieveController.execute(
-                userId = user.id + 1,
                 spectracyberConfigId = spectracyberConfigRepo.findAll().first().id
         )
 
@@ -142,7 +139,6 @@ internal class SpectracyberConfigRetrieveControllerTest : BaseRestControllerTest
 
         // attempt to retrieve the spectracyber config record
         val result = spectracyberConfigRetrieveController.execute(
-                userId = user.id,
                 spectracyberConfigId = spectracyberConfigRepo.findAll().first().id
         )
 
