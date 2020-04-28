@@ -334,6 +334,7 @@ class FactoryBeans(
     @Bean
     override fun getFeedbackWrapper(): UserFeedbackWrapper {
         return UserFeedbackWrapper(
+                context = userContext,
                 factory = BaseFeedbackFactory(
                         feedbackRepo = repositories.feedbackRepo
                 )

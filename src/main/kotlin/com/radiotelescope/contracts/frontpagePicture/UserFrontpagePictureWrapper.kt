@@ -7,7 +7,6 @@ import com.radiotelescope.security.UserContext
 import com.radiotelescope.repository.frontpagePicture.FrontpagePicture
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.security.AccessReport
-import org.apache.catalina.User
 
 /**
  * Wrapper that takes a [FrontpagePictureFactory] and is responsible for all
