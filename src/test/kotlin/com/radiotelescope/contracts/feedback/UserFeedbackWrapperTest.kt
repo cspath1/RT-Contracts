@@ -58,7 +58,7 @@ internal class UserFeedbackWrapperTest : AbstractSpringTest() {
     }
 
     @Test
-    fun testFeedbackList() {
+    fun list_Success() {
         context.login(admin.id)
         context.currentRoles.add(UserRole.Role.ADMIN)
 
@@ -68,5 +68,16 @@ internal class UserFeedbackWrapperTest : AbstractSpringTest() {
         }
 
         assertNull(error)
+    }
+
+    @Test
+    fun list_NotValidated_Failure() {
+        // Do not log the user in
+        val error = wrapper.list(pageable) {
+            assertNull(it.success)
+            assertNotNull(it.error)
+        }
+
+        assertNotNull(error)
     }
 }

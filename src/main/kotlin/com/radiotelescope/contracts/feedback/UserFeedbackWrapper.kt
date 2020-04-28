@@ -38,9 +38,13 @@ class UserFeedbackWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun list(pageable: Pageable, withAccess: (result: SimpleResult<Page<Feedback>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        return context.require(
-                requiredRoles = listOf(UserRole.Role.ADMIN),
-                successCommand = factory.list(pageable)
-        ).execute(withAccess)
+        if (context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.list(pageable)
+            ).execute(withAccess)
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN), invalidResourceId = null)
     }
 }

@@ -49,8 +49,8 @@ internal class ListTest : AbstractSpringTest() {
                 feedbackRepo = feedbackRepo
         ).execute()
 
-        assertNotNull(errors)
-        assertNull(page)
+        assertNotNull(page)
+        assertNull(errors)
         assertEquals(0, page!!.content.size)
     }
 }
