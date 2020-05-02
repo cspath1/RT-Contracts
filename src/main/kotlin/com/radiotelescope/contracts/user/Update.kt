@@ -47,13 +47,19 @@ class Update(
      * create request. It will ensure the first name and last name are not blank and
      * are under the max length, that the email is not blank, is a valid email, and
      * is not already in use and that the password is not blank and matches the
-     * password confirm field
+     * password confirm field. As well, it will check that the user's phone number exists
+     * or a phone number is being input, and if not ensures the notification type cannot
+     * be SMS or ALL
      */
     private fun validateRequest(): Multimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
             if (userRepo.existsById(id)) {
+                if ((userRepo.findById(id).get().phoneNumber == null && phoneNumber.isNullOrBlank()) && (
+                                User.NotificationType.valueOf(notificationType) == User.NotificationType.SMS ||
+                                User.NotificationType.valueOf(notificationType) == User.NotificationType.ALL))
+                    errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification Type may not be SMS or ALL when phone number is blank")
                 if (firstName.isBlank())
                     errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
                 if (firstName.length > 100)
