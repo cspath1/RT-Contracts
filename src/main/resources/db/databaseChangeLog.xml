@@ -4,6 +4,7 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <include file="classpath:/db/changelog/49-create-primary-key-databasechangelog.sql"/>
     <include file="classpath:/db/changelog/01-create-user-and-roles.sql"/>
     <include file="classpath:/db/changelog/02-create-appointment-and-telescope.sql"/>
     <include file="classpath:/db/changelog/03-create-log-and-error.sql"/>
@@ -51,5 +52,4 @@
     <include file="classpath:/db/changelog/46-create-frontpage-picture.sql"/>
     <include file="classpath:/db/changelog/47-add-foreign-key-rf-data-appointment.sql"/>
     <include file="classpath:/db/changelog/48-user-profile-picture-approved.sql"/>
-    <include file="classpath:/db/changelog/49-create-primary-key-databasechangelog.sql"/>
 </databaseChangeLog>
