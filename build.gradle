@@ -28,7 +28,7 @@ apply plugin: 'jacoco'
 apply plugin: 'org.jetbrains.dokka'
 
 group = 'com.radiotelescope'
-version = '4.1.1'
+version = '4.2.0'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
