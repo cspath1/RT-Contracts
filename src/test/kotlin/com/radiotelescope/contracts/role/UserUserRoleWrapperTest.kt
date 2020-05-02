@@ -205,8 +205,8 @@ internal class UserUserRoleWrapperTest : AbstractSpringTest() {
         }
 
         assertNotNull(error)
-        assertEquals(2, error!!.missingRoles!!.size)
-        assertTrue(error.missingRoles!!.containsAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN)))
+        assertEquals(3, error!!.missingRoles!!.size)
+        assertTrue(error.missingRoles!!.containsAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN, UserRole.Role.ALUMNUS)))
     }
 
     @Test
@@ -228,6 +228,20 @@ internal class UserUserRoleWrapperTest : AbstractSpringTest() {
         // Log the user in as the student user
         context.login(adminId!!)
         context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.retrieve(unapprovedRoleId) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testRetrieve_Alumnus_Success() {
+        // Log the user in as the student user
+        context.login(adminId!!)
+        context.currentRoles.add(UserRole.Role.ALUMNUS)
 
         val error = wrapper.retrieve(unapprovedRoleId) {
             assertNotNull(it.success)

@@ -1,23 +1,37 @@
 package com.radiotelescope.controller.spectracyberConfig
 
+import com.radiotelescope.contracts.spectracyberConfig.Retrieve
 import com.radiotelescope.contracts.spectracyberConfig.UserSpectracyberConfigWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
+/**
+ * REST Controller to handle retrieving SpectracyberConfig records
+ *
+ * @param spectracyberConfigWrapper the [UserSpectracyberConfigWrapper]
+ * @param logger the [Logger] service
+ */
 @RestController
 class SpectracyberConfigRetrieveController(
         private val spectracyberConfigWrapper: UserSpectracyberConfigWrapper,
         logger: Logger
 ) : BaseRestController(logger) {
-
+    /**
+     * Execute method that is in charge of taking the spectracyberConfigId [PathVariable]
+     * and executing the [UserSpectracyberConfigWrapper.retrieve] method. If this method
+     * returns an [AccessReport], this means they did not pass authentication and
+     * we should respond with errors.
+     *
+     * Otherwise, this means the [Retrieve] command was executed, and the controller
+     * will check whether or not this command was a success or not, responding
+     * appropriately.
+     */
     @CrossOrigin(value = ["http://localhost:8081"])
     @GetMapping(value = ["/api/appointments/{spectracyberConfigId}/spectracyberConfig"])
     fun execute(@PathVariable("spectracyberConfigId") spectracyberConfigId: Long): Result {

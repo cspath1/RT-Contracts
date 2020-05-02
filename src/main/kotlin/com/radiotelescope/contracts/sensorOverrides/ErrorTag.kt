@@ -1,5 +1,8 @@
 package com.radiotelescope.contracts.sensorOverrides
 
+/**
+ * Enum representing field validation failures for the Sensor Overrides Entity
+ */
 enum class ErrorTag {
     ID,
     NAME,

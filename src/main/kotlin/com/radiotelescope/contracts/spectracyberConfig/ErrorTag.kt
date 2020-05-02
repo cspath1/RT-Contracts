@@ -1,9 +1,7 @@
 package com.radiotelescope.contracts.spectracyberConfig
 
-import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
-
 /**
- * Enum representing field validation failures for the [SpectracyberConfig]] Entity
+ * Enum representing field validation failures for the Spectracyber Config Entity
  */
 enum class ErrorTag {
     ID,

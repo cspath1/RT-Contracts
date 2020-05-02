@@ -45,8 +45,8 @@ class UserCelestialBodyWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun retrieve(id: Long, withAccess: (result: SimpleResult<CelestialBodyInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        return context.require(
-                requiredRoles = listOf(UserRole.Role.ADMIN),
+        return context.requireAny(
+                requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.ALUMNUS),
                 successCommand = factory.retrieve(id)
         ).execute(withAccess)
     }
@@ -60,8 +60,8 @@ class UserCelestialBodyWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun list(pageable: Pageable, withAccess: (result: SimpleResult<Page<CelestialBodyInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        return context.require(
-                requiredRoles = listOf(UserRole.Role.ADMIN),
+        return context.requireAny(
+                requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.ALUMNUS),
                 successCommand = factory.list(pageable)
         ).execute(withAccess)
     }

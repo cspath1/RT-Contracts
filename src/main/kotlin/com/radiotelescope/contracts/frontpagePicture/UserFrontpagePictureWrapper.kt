@@ -63,7 +63,7 @@ class UserFrontpagePictureWrapper (
     /**
      * Wrapper method for the [FrontpagePictureFactory.retrieveApproved] method.
      *
-     * @return An [AccessReport] if authentication fails, null otherwise
+     * @return a [Command] object
      */
     fun retrieveApproved() : Command<List<FrontpagePicture>, Multimap<ErrorTag, String>> {
         return factory.retrieveApproved()

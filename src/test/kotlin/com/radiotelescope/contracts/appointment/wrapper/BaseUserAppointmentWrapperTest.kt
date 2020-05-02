@@ -329,6 +329,23 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
     }
 
     @Test
+    fun testValidGetFutureAppointmentsForUser_Alumnus_Success() {
+        // Simulate a login
+        context.login(admin.id)
+        context.currentRoles.add(UserRole.Role.ALUMNUS)
+
+        val error = wrapper.userFutureList(
+                pageable = PageRequest.of(0, 10),
+                userId = user.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
     fun testInvalidGetFutureAppointmentsForUser_NoUserRole_Failure(){
         // Simulate a login
         context.login(user.id)
@@ -433,6 +450,23 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
         // Log the user in as an admin
         context.login(user2.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        val error = wrapper.userCompleteList(
+                userId = user.id,
+                pageable = PageRequest.of(0, 20)
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testPastAppointmentsForUserList_Alumnus_Success() {
+        // Log the user in as an admin
+        context.login(user2.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ALUMNUS))
 
         val error = wrapper.userCompleteList(
                 userId = user.id,
@@ -714,6 +748,22 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
         // Simulate a login and make the user a researcher
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.requestedList(
+                pageable = PageRequest.of(0, 10)
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testListRequest_Alumnus_Success() {
+        // Simulate a login and make the user a researcher
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.ALUMNUS)
 
         val error = wrapper.requestedList(
                 pageable = PageRequest.of(0, 10)

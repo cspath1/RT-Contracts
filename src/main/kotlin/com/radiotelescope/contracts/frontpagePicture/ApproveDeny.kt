@@ -14,6 +14,7 @@ import com.radiotelescope.service.s3.IAwsS3DeleteService
  *
  * @param request the [ApproveDeny.Request]
  * @param frontpagePictureRepo the [IFrontpagePictureRepository] interface
+ * @param s3DeleteService the [IAwsS3DeleteService] interface
  */
 class ApproveDeny (
         private val request: Request,

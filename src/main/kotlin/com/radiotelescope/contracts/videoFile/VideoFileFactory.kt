@@ -14,6 +14,8 @@ interface VideoFileFactory {
      * Abstract command used to create a new [VideoFile] object
      *
      * @param request the [Create.Request] request
+     * @param uuid the private uuid for submitting videos locally
+     * @param profile the current user profile
      * @return a [Command] object
      */
     fun create(request: Create.Request, uuid: String, profile: String): Command<Long, Multimap<ErrorTag, String>>

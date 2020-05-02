@@ -24,6 +24,7 @@ class UserSensorStatusWrapper(
      *
      * @param request the [Create.Request] object
      * @param uuid the uuid used by the control room app
+     * @param profile the user profile
      * @return A [Command] object
      */
     fun create(request: Create.Request, uuid: String, profile: String): Command<Long, Multimap<ErrorTag, String>> {

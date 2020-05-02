@@ -19,7 +19,7 @@ class BaseThresholdsFactory(
      * command object
      *
      * @param sensorName the name of the sensor to retrieve
-     * @return a [Retrieve] command object
+     * @return a [Command] object
      */
     override fun retrieve(sensorName: String): Command<Thresholds, Multimap<ErrorTag, String>> {
         return Retrieve (
@@ -32,7 +32,7 @@ class BaseThresholdsFactory(
      * Override of the [ThresholdsFactory] method that will return a [RetrieveList]
      * command object
      *
-     * @return a [RetrieveList] command object
+     * @return a [Command] object
      */
     override fun retrieveList(): Command<List<Thresholds>, Multimap<ErrorTag, String>> {
         return RetrieveList (
@@ -46,7 +46,7 @@ class BaseThresholdsFactory(
      *
      * @param sensorName the name of the sensor to update
      * @param maximum the maximum sensor value to update
-     * @return a [Update] command object
+     * @return a [Command] object
      */
     override fun update(sensorName: String, maximum: Double): Command<Thresholds, Multimap<ErrorTag, String>> {
         return Update (

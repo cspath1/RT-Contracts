@@ -27,7 +27,8 @@ class UserSpectracyberConfigWrapper (
      * Wrapper method for the [SpectracyberConfigFactory.update] method.
      *
      * @param request the [Update.Request] object
-     * @return a [Command] object
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun update(request: Update.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in
@@ -63,7 +64,8 @@ class UserSpectracyberConfigWrapper (
      *
      * @param userId the user id associated with the appointment that is the parent of the record
      * @param spectracyberConfigId the spectracyber config id to retrieve
-     * @return a [Command] object
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun retrieve(spectracyberConfigId: Long, withAccess: (result: SimpleResult<SpectracyberConfig, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         // If the user is logged in

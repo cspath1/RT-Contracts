@@ -113,6 +113,13 @@ class AdminUserBanController(
         return result
     }
 
+    /**
+     * Sends a text message to the selected email address. If there is no custom message,
+     * sends a default message.
+     *
+     * @param email the email to send to
+     * @param message the message to send
+     */
     private fun sendEmail(email: String, message: String?) {
         val sendForm: SesSendForm
         if(!message.isNullOrBlank()) {
@@ -136,6 +143,13 @@ class AdminUserBanController(
         awsSesSendService.execute(sendForm)
     }
 
+    /**
+     * Sends a text message to the selected phone number. If there is no custom message,
+     * sends a default message.
+     *
+     * @param phoneNumber the number to send to
+     * @param message the message to send
+     */
     private fun sendSms(phoneNumber: String, message: String?) {
         val sendForm: SnsSendForm
         if(!message.isNullOrBlank()) {

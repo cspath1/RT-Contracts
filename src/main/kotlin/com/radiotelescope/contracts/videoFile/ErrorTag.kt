@@ -1,7 +1,7 @@
 package com.radiotelescope.contracts.videoFile
 
 /**
- * Enum representing field validation failures for the VideoFile Entity
+ * Enum representing field validation failures for the Video File Entity
  */
 enum class ErrorTag {
     ID,
