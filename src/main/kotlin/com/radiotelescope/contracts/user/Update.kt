@@ -56,7 +56,7 @@ class Update(
 
         with(request) {
             if (userRepo.existsById(id)) {
-                if ((userRepo.findById(id).get().phoneNumber == null || phoneNumber.isNullOrBlank()) && (
+                if ((userRepo.findById(id).get().phoneNumber == null && phoneNumber.isNullOrBlank()) && (
                                 User.NotificationType.valueOf(notificationType) == User.NotificationType.SMS ||
                                 User.NotificationType.valueOf(notificationType) == User.NotificationType.ALL))
                     errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification Type may not be SMS or ALL when phone number is blank")

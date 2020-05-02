@@ -17,7 +17,6 @@ internal class UpdateTest : AbstractSpringTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
-
     private lateinit var user: User
     private lateinit var otherUser: User
 
@@ -34,7 +33,6 @@ internal class UpdateTest : AbstractSpringTest() {
         userId = user.id
         otherUserId = otherUser.id
     }
-
 
     @Test
     fun testValidConstraints_Success() {
@@ -55,8 +53,6 @@ internal class UpdateTest : AbstractSpringTest() {
         assertNull(error)
         assertNotNull(id)
     }
-
-
 
     @Test
     fun testBlankFirstName_Failure() {
@@ -140,6 +136,31 @@ internal class UpdateTest : AbstractSpringTest() {
         assertNotNull(error)
         assertNull(id)
         assertTrue(error!![ErrorTag.LAST_NAME].isNotEmpty())
+    }
+
+    @Test
+    fun testUserDoesNotHavePhoneNumber_Failure() {
+        // Ensure phone number is null
+        user.phoneNumber = null
+        userRepo.save(user)
+
+        // Execute the command
+        val (id, error) = Update(
+                request = Update.Request(
+                        id = userId,
+                        firstName = "Evil",
+                        lastName = "Twin",
+                        phoneNumber = "",
+                        company = "Evil Twin Company",
+                        notificationType = "SMS"
+                ),
+                userRepo = userRepo
+        ).execute()
+
+        // Should have failed
+        assertNotNull(error)
+        assertNull(id)
+        assertTrue(error!![ErrorTag.NOTIFICATION_TYPE].isNotEmpty())
     }
 
     @Test
