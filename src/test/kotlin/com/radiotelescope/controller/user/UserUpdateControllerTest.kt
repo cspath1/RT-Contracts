@@ -48,9 +48,6 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         userUpdateController = UserUpdateController(
                 userWrapper = getWrapper(),
-                uploadService = MockAwsS3UploadService(true),
-                deleteService = MockAwsS3DeleteService(true),
-                userRepo = userRepo,
                 awsSnsService = MockAwsSnsService(true),
                 logger = getLogger()
         )
@@ -63,8 +60,6 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
                 lastName = "lastname",
                 company = "company",
                 phoneNumber = "0001112222",
-                profilePicture = "firstnamepic.jpg",
-                profilePictureApproved = false,
                 notificationType = "SMS"
         )
     }

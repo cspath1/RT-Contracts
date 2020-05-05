@@ -10,9 +10,6 @@ import com.radiotelescope.toStringMap
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
-import com.radiotelescope.repository.user.IUserRepository
-import com.radiotelescope.service.s3.IAwsS3DeleteService
-import com.radiotelescope.service.s3.IAwsS3UploadService
 import com.radiotelescope.service.sns.IAwsSnsService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
@@ -27,9 +24,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class UserUpdateController(
         private val userWrapper: UserUserWrapper,
-        private val uploadService: IAwsS3UploadService,
-        private val deleteService: IAwsS3DeleteService,
-        private val userRepo: IUserRepository,
         private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger){
@@ -50,7 +44,7 @@ class UserUpdateController(
      * @param form the [UpdateForm] object
      */
     @CrossOrigin(value = ["http://localhost:8081"])
-    @PutMapping(value = ["/api/users/{userId}"], consumes = ["multipart/form-data"])
+    @PutMapping(value = ["/api/users/{userId}"])
     fun execute(@PathVariable("userId") userId: Long,
                 @RequestBody form: UpdateForm): Result {
         // If the form validation fails, respond with errors

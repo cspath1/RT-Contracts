@@ -23,8 +23,6 @@ data class UpdateForm(
         val lastName: String?,
         val phoneNumber: String?,
         val company: String?,
-        val profilePicture: String?,
-        val profilePictureApproved: Boolean,
         val notificationType: String?
 ) : BaseForm<Update.Request> {
     /**

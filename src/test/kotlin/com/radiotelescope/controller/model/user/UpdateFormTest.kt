@@ -13,8 +13,6 @@ class UpdateFormTest {
             lastName = "Pim",
             phoneNumber = "717-555-1111",
             company = "York College of PA",
-            profilePicture = "rathanapic.jpg",
-            profilePictureApproved = false,
             notificationType = "SMS"
     )
 
