@@ -28,7 +28,7 @@ apply plugin: 'jacoco'
 apply plugin: 'org.jetbrains.dokka'
 
 group = 'com.radiotelescope'
-version = '4.2.0-dev-cluster'
+version = '4.2.1'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -53,7 +53,7 @@ dependencyManagement {
 }
 
 processResources {
-	def profile = (project.hasProperty('profile') ? project.profile : 'dev').toLowerCase()
+	def profile = (project.hasProperty('profile') ? project.profile : 'local').toLowerCase()
 
 	copy {
 		from "src/main/resources/properties/application_${profile}.properties"
