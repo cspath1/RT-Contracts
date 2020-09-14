@@ -165,3 +165,20 @@ accessed [here](https://317377631261.signin.aws.amazon.com/console).
 
 In order to access the management console, you need an IAM User account. If you do not have one, contact the 
 console root user (mentioned above) and they will create an IAM user for you and send you the credentials.
+
+### Useful Troubleshooting
+#### Correct Versioning
+For the backend, we use:
+* Java JDK 8, openjdk or through oracle, either way just needs to be jdk 8
+* Gradle 4.7
+* Intellij Ultimate Edition (You can get this for free using your YCP email)
+
+#### The super secret properties files
+
+There is a lot going on with these files, and if something isn't working the problem most likely resides here. Important Things to check:
+* The spring.datasource.username is set to the correct user of your database
+* The spring.datasource.password is set to the correct password of your database
+* The file name of properties files is set to application_{insert correct name here}.properties
+    This is the connection string it looks for when running 
+    ["src/main/resources/properties/application_${profile}.properties"]
+
