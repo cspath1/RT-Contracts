@@ -124,7 +124,10 @@ Note: specify the database url as the one found in the local application propert
 ### Properties Files
 
 The application depends on certain application properties files that unfortunately cannot be added to GitHub.
-These files must be obtained from the repository owner. The properties files must be placed in /RT-Contracts/src/main/resources/properties.
+These files must be obtained from the repository owner. The properties files must be placed in 
+
+**/RT-Contracts/src/main/resources/properties.**
+
 As well, to run the database locally you must add your local MySQL password to the spring.datasource.password field of the application_local.properties file. 
 
 ### Install Gradle Wrapper
