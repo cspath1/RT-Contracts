@@ -1,0 +1,49 @@
+#################################
+#                               #
+#      LOCAL PROPERTIES         #
+#                               #
+#################################
+# Note: This will need manually added for each contributor
+# since the repository is public. At least until the credentials
+# are stored on AWS
+
+radio_telescope.profile=LOCAL
+radio_telescope.jwt-secret=gW4wKdxdaq0qp4zXyiGZ
+
+radio-telescope.video-uuid-secret=d09b57c2-9ffe-4b12-bcc4-622c2afe41fd-5dfa774a-f2f2-416b-bfb4-17353ed6546e-f23af822-dae3-417c-ad26-65c160accee1
+radio-telescope.control-room-uuid-secret=115151a4-d491-4f67-8679-16eb14bcd276-8f71eb8d-92a6-45e9-84d8-a41c49c015db-513aa797-20f4-4478-9292-26ed0c2bb832
+
+# Datasource
+spring.datasource.name=radio_telescope
+# spring.datasource.url=jdbc:mysql://ec2-18-209-171-65.compute-1.amazonaws.com:3306/radio_telescope?verifyServerCertificate=false&useSSL=false&requireSSL=false
+# spring.datasource.username=replUser
+# spring.datasource.password=teslaRoadster3!
+spring.datasource.url=jdbc:mysql://localhost:3306/radio_telescope?verifyServerCertificate=false&useSSL=false&requireSSL=false
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.username=root
+spring.datasource.password=~2Z!pp3r2
+
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+
+spring.jpa.properties.hibernate.jdbc.batch_size=100
+spring.jpa.properties.hibernate.cache.use_second_level_cache=false
+spring.jpa.properties.hibernate.order_inserts=true
+spring.jpa.properties.hibernate.order_updates=true
+
+# AWS S3 - file storage - *NON PROD KEY*
+amazon.aws.s3.bucket=ycpradiotelescope-pictures
+amazon.aws.s3.access-key-id=AKIAUTZJOKQOXAG2M24P
+amazon.aws.s3.access-key-secret=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
+
+# AWS SES - email service *NON PROD KEY*
+amazon.aws.ses.access-key-id=AKIAUTZJOKQOQTSJUARQ
+amazon.aws.ses.access-key-secret=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
+
+# AWS SNS - notification service
+amazon.aws.sns.access-key-id=AKIAUTZJOKQOS7L66A6N
+amazon.aws.sns.access-key-secret=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
+amazon.aws.sns.default-topic=arn:aws:sns:us-east-1:317377631261:defaultTopic
+
+# Liquibase Change Log location
+spring.liquibase.change-log=classpath:db/databaseChangeLog.xml
