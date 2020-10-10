@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
-
-# if container already exists (running or not), needs to be removed
-# if no container exists, this will fail but will not interrupt the script
-#echo 'attempting to remove previous container...'
-#docker rm --force rt-backend-app
-#
-#
-## running container on port 8080, naming it rt-backend-app, using latest image
-#docker run -it -p 8080:8080 --name rt-backend-app rt/backend:latest
+# script for running the backend as a container
 
 # check if we have more than 1 argument
 if [ $# -gt 1 ]; then
@@ -21,11 +13,30 @@ then
   echo 'No arguments, defaulting to running in shell'
   ARG='-it'
   else
+    if [ "$1" = "-h" ];
+      then
+        echo '--------------------- run.sh help ---------------------'
+        echo 'Arguments: '
+        echo '  -d: [Detached Mode]'
+        echo '      runs the container detached from the terminal. '
+        echo '      Container will persist and run in the background, and '
+        echo '      the container ID will be printed to the terminal. '
+        echo ''
+        echo '  -it: [Interactive Mode]'
+        echo '      runs the container ATTACHED to the terminal '
+        echo '      any output to STDOUT will be written to the  '
+        echo '      terminal, and closing the terminal exits the '
+        echo '      the container. Functions identical to exec, replacing '
+        echo '      the terminal process with the docker process.'
+        echo ''
+        echo '---------------------- end ----------------------------'
+        exit 1
+    fi
     if [[ ("$1" = "-d")  || ("$1" = "-it") ]];
       then
         ARG=$1
       else
-        echo "$1 is not a valid argument, needs to be -d or -it for detached mode or exec mode"
+        echo "$1 is not a valid argument, use -h for help"
         exit 1
     fi
 fi
