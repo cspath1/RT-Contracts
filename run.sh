@@ -41,7 +41,7 @@ then
     fi
 fi
 
-#
+# check if rt app already exists as a container
 if [ "$(docker ps -aq -f status=exited -f name=rt-backend-app)" ];
   then
     # cleanup lifeless container and send it into the void
@@ -51,7 +51,16 @@ if [ "$(docker ps -aq -f status=exited -f name=rt-backend-app)" ];
     echo 'container not found, creating new'
 fi
 
+## set up volume for mysql instance
+#docker volume create mysql-local-volume
+#
+## run mysql container, expose on port 3306, and use the volume we just created
+#docker run --name=mysql-rt -p 3307:3307 -v mysql-local-volume:/var/lib/mysql \
+#-e MYSQL_ROOT_PASSWORD=testPass1234 \
+#-d mysql/mysql-server:latest
+
 # run the container on port 8080
 echo ''
 echo "running rt/backend:latest in $ARG mode..."
-docker run "$ARG" -p 8080:8080 --name rt-backend-app rt/backend:latest
+docker run "$ARG" --name=rt-backend-app rt/backend:latest
+# docker run "$ARG" --name=rt-backend-app rt/backend:latest
