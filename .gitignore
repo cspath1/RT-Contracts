@@ -1,11 +1,10 @@
 .gradle
 /build/
-!gradle/wrapper/gradle-wrapper.jar
-gradlew
-gradle
-gradlew.bat
 docs/
 
+### AWS KEYS ###
+/src/main/resources/properties/.
+*.properties
 **/application_dev.properties
 **/application_local.properties
 **/application_remote.properties
