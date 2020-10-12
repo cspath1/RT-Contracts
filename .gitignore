@@ -4,7 +4,6 @@ docs/
 
 ### AWS KEYS ###
 /src/main/resources/properties/.
-*.properties
 **/application_dev.properties
 **/application_local.properties
 **/application_remote.properties
