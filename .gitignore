@@ -1,6 +1,7 @@
 .gradle
 /build/
 docs/
+/gradle/
 
 ### AWS KEYS ###
 /src/main/resources/properties/.
