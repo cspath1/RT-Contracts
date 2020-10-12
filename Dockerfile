@@ -18,7 +18,6 @@ COPY ./build/libs/radio-telescope-4.2.1.jar /usr/app.jar
 # ref: https://docs.docker.com/engine/reference/builder/#workdir
 WORKDIR /usr/app
 
-
 # port we will use to talk to our container over
 # defaults to TCP, but doesn't hurt to be explicit
 # ref: https://docs.docker.com/engine/reference/builder/#expose
