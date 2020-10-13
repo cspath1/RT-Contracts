@@ -33,11 +33,103 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Write Profile
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: radio_telescope.profile
+        value: secrets.TELESCOPE_PROFILE
+        
+    - name: Write JWT
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: radio_telescope.jwt-secret
+        value: secrets.JWT_SECRET
+
+    - name: Write Video-UUID
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: radio-telescope.video-uuid-secret
+        value: secrets.VIDEO_UUID_SECRET
+
+    - name: Write Control Room UUID
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: radio-telescope.control-room-uuid-secret
+        value: secrets.CONTROL_ROOM_UUID
+
+    - name: Write initstmt
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: initstmt
+        value: secrets.INITSTMT
+        
+    - name: Write Server Port
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: server.port
+        value: secrets.SERVER_PORT
+  
+    - name: Write Require SSL
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: security.require-ssl
+        value: secrets.REQUIRE_SLL
+        
+    - name: Write Remote IP Header
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: server.tomcat.remote_ip_header
+        value: secrets.REMOTE_IP_HEADER
+    
+    - name: Write Tomcat Protocol
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: server.tomcat.protocol_header
+        value: secrets.TOMCAT_PROTOCOL
+    
+    - name: Write Datasource Name
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.datasource.name
+        value: secrets.DATASOURCE_NAME
+
+    - name: Write Datasource URL
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.datasource.url
+        value: secrets.DATASOURCE_URL
+    
+    - name: Write Datasource URL
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.datasource.username
+        value: secrets.DATASOURCE_USERNAME
+        
+    - name: Write Datasource Password
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.datasource.username
+        value: secrets.DATASOURCE_USERNAME
+  
+#########################################################################
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
