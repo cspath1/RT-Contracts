@@ -21,6 +21,7 @@ FROM openjdk:8-jre-slim
 # NOTE: you may need to update your gradle version to 4.9 to
 #       build the app
 # ref: https://docs.docker.com/engine/reference/builder/#copy
+
 COPY --from=builder /home/gradle/src/build/libs/*.jar usr/app.jar
 # COPY ./build/libs/radio-telescope-4.2.1.jar /usr/app.jar
 
