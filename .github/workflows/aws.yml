@@ -128,7 +128,127 @@ jobs:
         path: './src/main/resources/application.properties'
         property: spring.datasource.username
         value: secrets.DATASOURCE_USERNAME
+        
+    - name: Write Datasource Driver
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.datasource.driver-class-name
+        value: secrets.DRIVER_CLASS_NAME
+        
+    - name: Write Dialect
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.dialect
+        value: secrets.DIALECT
   
+    - name: Write Batch Size
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.jdbc.batch_size
+        value: secrets.BATCH_SIZE
+  
+    - name: Write Batch Size
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.jdbc.batch_size
+        value: secrets.BATCH_SIZE
+  
+    - name: Write Second Level Cache
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.cache.use_second_level_cache
+        value: secrets.USE_SECOND_LEVEL_CACHE
+  
+    - name: Write Order Inserts
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.order_inserts
+        value: secrets.ORDER_INSERTS
+  
+    - name: Write Order Updates
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.order_updates
+        value: secrets.ORDER_UPDATES 
+        
+    - name: Write Enable Liquibase
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.order_updates
+        value: secrets.ENABLE_LIQUIBASE
+
+    - name: Write S3 Bucket Name
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.s3.bucket
+        value: secrets.S3_BUCKET_NAME
+
+    - name: Write S3 Access Key ID
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.s3.access-key-id
+        value: secrets.S3_ACCESS_KEY_ID
+
+    - name: Write S3 Access Key Secret
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.s3.access-key-secret
+        value: secrets.S3_ACCESS_KEY_SECRET
+
+    - name: Write SES Access Key ID
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.ses.access-key-id
+        value: secrets.SES_ACCESS_KEY_ID
+
+    - name: Write SES Access Key ID Secret
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.ses.access-key-secret
+        value: secrets.SES_ACCESS_KEY_SECRET
+
+    - name: Write SNS ID
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.sns.access-key-id
+        value: secrets.SNS_ID
+
+    - name: Write SNS Secret
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.sns.access-key-secret
+        value: secrets.SNS_SECRET
+
+    - name: Write SNS Default Topic
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.sns.default-topic
+        value: secrets.SNS_DEFAULT_TOPIC
+
+
+    - name: Write Liquibase Change Log Location
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.liquibase.change-log
+        value: secrets.LIQUIBASE_CHANGE_LOG_LOCATION
+
 #########################################################################
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
