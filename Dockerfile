@@ -4,8 +4,17 @@
 
 # JDK 8 base image
 # ref: https://docs.docker.com/engine/reference/builder/#from
-
 FROM openjdk:8
+
+# grab gradle as well, need to generate the jar
+FROM gradle:4.9
+
+# make gradle runnable
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+
+# run gradle build to create .jar file
+RUN gradle clean jar
 
 # copy over .jar created using gradle build
 # NOTE: you may need to update your gradle version to 4.9 to
