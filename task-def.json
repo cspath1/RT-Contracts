@@ -1,0 +1,31 @@
+{
+  "family": "rt-backend",
+  "taskRoleArn": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+  "executionRoleArn": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+  "networkMode": "none",
+  "containerDefinitions": [
+    {
+      "name": "rt-app",
+      "image": "httpd:2.4",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "entryPoint": [
+        "\"java\", \"-jar\", \"app.jar\""
+      ],
+      "command": [
+        ""
+      ]
+    }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512"
+}
