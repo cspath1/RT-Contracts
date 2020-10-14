@@ -1,27 +1,28 @@
 # YCP RT Dockerfile
 # used to create a container which can run a .jar
+# multi stage dockerfile. first stage pulls gralde 4.9 and creates the .jar
+# then, the second stage copies the .jar made over and creates the end image
 # ref: https://docs.docker.com/engine/reference/builder/
 
-# JDK 8 base image
-# ref: https://docs.docker.com/engine/reference/builder/#from
-FROM openjdk:8
-
-# grab gradle as well, need to generate the jar
-FROM gradle:4.9
-
-# make gradle runnable
-COPY --chown=gradle:gradle . /home/gradle/src
+# grag gradle 4.9 so we can build our jar
+FROM gradle:4.9 AS builder
 WORKDIR /home/gradle/src
+# chown gradle so it is runnable
+COPY --chown=gradle:gradle . /home/gradle/src
 
-# run gradle build to create .jar file
-RUN gradle clean jar
+# build the jar
+RUN gradle assemble --no-daemon
+
+# JDK 8 base image slim version
+# ref: https://docs.docker.com/engine/reference/builder/#from
+FROM openjdk:8-jre-slim
 
 # copy over .jar created using gradle build
 # NOTE: you may need to update your gradle version to 4.9 to
 #       build the app
 # ref: https://docs.docker.com/engine/reference/builder/#copy
-
-COPY ./build/libs/radio-telescope-4.2.1.jar /usr/app.jar
+COPY --from=builder /home/gradle/src/build/libs/*.jar usr/app.jar
+# COPY ./build/libs/radio-telescope-4.2.1.jar /usr/app.jar
 
 # set dir in docker file (like cd'ing into it)
 # ref: https://docs.docker.com/engine/reference/builder/#workdir
