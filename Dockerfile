@@ -20,7 +20,6 @@ RUN gradle clean jar
 # NOTE: you may need to update your gradle version to 4.9 to
 #       build the app
 # ref: https://docs.docker.com/engine/reference/builder/#copy
-RUN gradle build
 COPY ./build/libs/radio-telescope-4.2.1.jar /usr/app.jar
 
 # set dir in docker file (like cd'ing into it)
