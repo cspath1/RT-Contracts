@@ -31,7 +31,7 @@ class RadioTelescope {
     private lateinit var calibrationOrientation: Orientation
 
     // This is a regular column because it is not a reference to a different table
-    @Column(name = "telescope_type", nullable = false)
+    @Column(name = "telescope_type", nullable = true)
     private var telescopeType: TelescopeType = TelescopeType.NONE
 
     fun getId(): Long {
