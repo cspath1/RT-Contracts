@@ -58,8 +58,12 @@ data class User(
     enum class NotificationType(val label:String) {
         EMAIL("Email"),
         SMS("SMS"),
+        PUSHNOTIFICATION("PushNotification"),
         ALL("All")
     }
+
+    @Column(name = "firebase_id")
+    var firebaseID: String? = null
 
     companion object {
         fun isEmailValid(email: String): Boolean {
