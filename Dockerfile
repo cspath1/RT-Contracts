@@ -11,7 +11,7 @@ WORKDIR /home/gradle/src
 COPY --chown=gradle:gradle . /home/gradle/src
 
 # build the jar
-RUN gradlew assemble --no-daemon --stacktrace
+RUN ./gradlew assemble --no-daemon --stacktrace
 
 # JDK 8 base image slim version
 # ref: https://docs.docker.com/engine/reference/builder/#from
