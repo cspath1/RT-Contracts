@@ -8,7 +8,10 @@
 FROM gradle:4.9 AS builder
 WORKDIR /home/gradle/src
 # chown gradle so it is runnable
-COPY --chown=gradle:gradle . /home/gradle/src
+# COPY --chown=gradle:gradle . /home/gradle/src
+USER root
+RUN chown -r gradle:gradle /home/gradle/src
+USER gradle
 
 # build the jar
 RUN gradle assemble --no-daemon --stacktrace
