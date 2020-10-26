@@ -29,7 +29,7 @@ data class UserInfo(
         val phoneNumber: String?,
         val active: Boolean,
         val status: String,
-        // val notificationType: String,
+        val notificationType: User.NotificationType,
         val firebaseID: String?,
         val membershipRole: String?,
         val allottedTime: Long?
@@ -51,7 +51,7 @@ data class UserInfo(
             phoneNumber = user.phoneNumber,
             active = user.active,
             status = user.status.label,
-            // notificationType = user.NotificationType.valueOf(notificationType),
+            notificationType = user.notificationType,
             firebaseID = user.firebaseID,
             membershipRole = userRoleLabel,
             allottedTime = allottedTime

@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
--- changeset tswann2ycp:105
+-- changeset tswann2ycp:106
 ALTER TABLE user
 ADD firebase_id VARCHAR(100) AFTER notification_type;
 
--- rollback alter table user drop firebase_id
+-- rollback alter table user drop firebase_id;
