@@ -9,14 +9,16 @@ internal class UserInfoTest {
     @Test
     fun testPrimaryConstructor() {
         val userInfo = UserInfo(
+                id = 1L,
                 firstName = "Cody",
                 lastName = "Spath",
                 email = "cspath1@ycp.edu",
-                id = 1L,
                 company = "York College of PA",
                 phoneNumber = "717-823-2216",
                 active = true,
                 status = User.Status.ACTIVE.label,
+                notificationType = User.NotificationType.PUSHNOTIFICATION,
+                firebaseID = "abc123",
                 membershipRole = UserRole.Role.GUEST.label,
                 allottedTime = 100L
         )
@@ -28,6 +30,8 @@ internal class UserInfoTest {
         assertEquals("York College of PA", userInfo.company)
         assertEquals("717-823-2216", userInfo.phoneNumber)
         assertTrue(userInfo.active)
+        assertEquals(User.NotificationType.PUSHNOTIFICATION, userInfo.notificationType)
+        assertEquals("abc123", userInfo.firebaseID)
         assertEquals(User.Status.ACTIVE.label, userInfo.status)
         assertEquals(UserRole.Role.GUEST.label, userInfo.membershipRole)
         assertEquals(100L, userInfo.allottedTime)

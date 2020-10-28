@@ -14,6 +14,8 @@ import com.radiotelescope.repository.user.User
  * @param phoneNumber the User's phone number
  * @param active the User's active status
  * @param status the User's status
+ * @param notificationType the users preferred method of notification
+ * @param firebaseID the users firebase ID
  * @param membershipRole the User's membership role (i.e not the base USER role),
  * given that it has been accepted by an admin
  * @param allottedTime the User's allotted time
@@ -27,6 +29,8 @@ data class UserInfo(
         val phoneNumber: String?,
         val active: Boolean,
         val status: String,
+        val notificationType: User.NotificationType,
+        val firebaseID: String?,
         val membershipRole: String?,
         val allottedTime: Long?
 ) {
@@ -47,6 +51,8 @@ data class UserInfo(
             phoneNumber = user.phoneNumber,
             active = user.active,
             status = user.status.label,
+            notificationType = user.notificationType,
+            firebaseID = user.firebaseID,
             membershipRole = userRoleLabel,
             allottedTime = allottedTime
     )

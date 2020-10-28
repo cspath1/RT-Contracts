@@ -55,4 +55,5 @@
     <include file="classpath:/db/changelog/50-radio-telescope-add-telescope-type.sql"/>
     <include file="classpath:/db/changelog/51-create-location-table.sql"/>
     <include file="classpath:/db/changelog/52-radio-telescope-add-location.sql"/>
+    <include file="classpath:/db/changelog/53-add-firebase-id.sql"/>
 </databaseChangeLog>

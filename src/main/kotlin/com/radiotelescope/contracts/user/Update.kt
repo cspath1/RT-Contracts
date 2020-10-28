@@ -49,7 +49,8 @@ class Update(
      * is not already in use and that the password is not blank and matches the
      * password confirm field. As well, it will check that the user's phone number exists
      * or a phone number is being input, and if not ensures the notification type cannot
-     * be SMS or ALL
+     * be SMS or ALL. Similarly, if the firebaseID field is null then the notification
+     * type cannot be PUSHNOTIFICATION or ALL.
      */
     private fun validateRequest(): Multimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
@@ -60,6 +61,9 @@ class Update(
                                 User.NotificationType.valueOf(notificationType) == User.NotificationType.SMS ||
                                 User.NotificationType.valueOf(notificationType) == User.NotificationType.ALL))
                     errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification Type may not be SMS or ALL when phone number is blank")
+                if (userRepo.findById(id).get().firebaseID == null && (User.NotificationType.valueOf(notificationType) == User.NotificationType.PUSHNOTIFICATION ||
+                                User.NotificationType.valueOf(notificationType) == User.NotificationType.ALL))
+                    errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification Type may not be PUSHNOTIFICATION or ALL when firebase ID is blank")
                 if (firstName.isBlank())
                     errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
                 if (firstName.length > 100)
