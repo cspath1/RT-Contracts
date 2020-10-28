@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset tswann2ycp:106
+-- changeset tswann2ycp:107
 ALTER TABLE user
 ADD firebase_id VARCHAR(100) AFTER notification_type;
 
