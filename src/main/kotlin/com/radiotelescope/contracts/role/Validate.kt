@@ -131,7 +131,6 @@ class Validate(
 
         return theAccountActivateToken.token
     }
-
     /**
      * Method responsible for constraint checking and validations for the
      * [UserRole] approval. It ensures the [UserRole] exists and is not
