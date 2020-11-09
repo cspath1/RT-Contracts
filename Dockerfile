@@ -4,39 +4,22 @@
 # then, the second stage copies the .jar made over and creates the end image
 # ref: https://docs.docker.com/engine/reference/builder/
 
-# grag gradle 4.9 so we can build our jar
-FROM gradle:4.9 AS builder
-WORKDIR /home/gradle/src
-# chown gradle so it is runnable
-COPY --chown=gradle:gradle . /home/gradle/src
-#USER root
-#RUN chown -r gradle:gradle /home/gradle/src
-#USER gradle
-
-# build the jar
-RUN gradle assemble --no-daemon --stacktrace
-
 # JDK 8 base image slim version
 # ref: https://docs.docker.com/engine/reference/builder/#from
 FROM openjdk:8-jre-slim
-
-# copy over .jar created using gradle build
-# NOTE: you may need to update your gradle version to 4.9 to
-#       build the app
-# ref: https://docs.docker.com/engine/reference/builder/#copy
-
-COPY --from=builder /home/gradle/src/build/libs/*.jar usr/app.jar
-# COPY ./build/libs/radio-telescope-4.2.1.jar /usr/app.jar
 
 # set dir in docker file (like cd'ing into it)
 # ref: https://docs.docker.com/engine/reference/builder/#workdir
 WORKDIR /usr/
 
+# COPY /home/gradle/src/build/libs/*.jar usr/app.jar
+COPY ./build/libs/radio-telescope-4.2.1.jar /usr/app.jar
+
 # port we will use to talk to our container over
 # defaults to TCP, but doesn't hurt to be explicit
 # ref: https://docs.docker.com/engine/reference/builder/#expose
 
-EXPOSE 8080/tcp 3306/tcp
+EXPOSE 8080/tcp
 
 # think of this as a command you would run in a terminal to start
 # the app. With the base image we are pulling from (JDK 8), we are creating
