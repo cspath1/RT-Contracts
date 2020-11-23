@@ -52,7 +52,7 @@ CREATE TABLE acceleration(
 -- changeset jlandau2:61
 CREATE TABLE temperature(
     id INT(11) NOT NULL AUTO_INCREMENT,
-    temperature FLOAT(4,3),
+    temperature FLOAT(5,2),
     location INT(16),
     time LONG,
     insert_timestamp TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6),
