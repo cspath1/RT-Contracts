@@ -3,23 +3,23 @@
 ## Web-Application Back-End Server for YCAS Radio Telescope
 
 ### GitHub Repository
-Website URL: https://github.com/cspath1/RT-Contracts
+Website URL: https://github.com/YCPRadioTelescope/RT-Contracts
 
-Clone command (https): ```git clone https://github.com/cspath1/RT-Contracts```
+Clone command (https): ```git clone https://github.com/YCPRadioTelescope/RT-Contracts```
 
-Clone command (git): ```git@github.com:cspath1/RT-Contracts```
+Clone command (git): ```git@github.com:YCPRadioTelescope/RT-Contracts```
 
 ### Repository Owner
-Name: Cody Spath
+Name: YCPRadioTelescope
 
-GitHub Account: cspath1
+GitHub Account: https://github.com/YCPRadioTelescope
 
-Email Address: cspath1@ycp.edu
+Email Address: jhorne@ycp.edu
 
 ### Amazon Web Services Account Owner
-Name: Cody Spath
+Name: Joel Horne
 
-Email Address: cspath1@ycp.edu
+Email Address: jhorne@ycp.edu
 
 ### Installation
 
@@ -64,16 +64,17 @@ The steps needed to install via Linux are as follows:
 8. After choosing your preferences, verify your installation using your JetBrains account 
 
 #### Mac Setup
-**CURRENTLY UNKNOWN**
+1.  Download the disk image (DMG)
+2.  Mount the disk image and follow the installation instructions
 
 ### Gradle Setup
 
 #### Windows Setup
 For Windows users, you should be able to follow the steps [here](https://gradle.org/install) to install Gradle.
 
-#### Linux Setup
-If you are using Linux, it is highly recommended to [install SDKMAN](https://sdkman.io/), which allows you
-to then easily install Gradle using SDKMAN. The list of steps to install Gradle on linux are:
+#### Mac and Linux Setup
+If you are using Mac or Linux, it is highly recommended to [install SDKMAN](https://sdkman.io/), which allows you
+to then easily install Gradle using SDKMAN. The list of steps to install Gradle on Mac and Linux are:
 
 1. Install SDKMAN (curl -s “https://get.sdkman.io” | bash)
 2. Initialize SDKMAN (source "$HOME/.sdkman/bin/sdkman-init.sh")
@@ -82,9 +83,6 @@ to then easily install Gradle using SDKMAN. The list of steps to install Gradle 
     1. Note: This will install the most recent version
     2. To install a specific version, supply the version (sdk install gradle 4.7)
 5. Verify the installation was a success (gradle -v)
-
-#### Mac Setup
-**CURRENTLY UNKNOWN**
 
 ### Install MySQL
 
@@ -101,7 +99,11 @@ If you are using linux, do the following:
 Verify your credentials (mysql -u root -p). This will prompt you to enter the password you entered in step 4.
 
 #### Mac Setup
-**CURRENTLY UNKNOWN**
+1.  Download disk image (DMG) from dev.mysql.com/downloads/mysql/
+2.  Mount the disk image and follow the installer instructions
+3.  In the terminal, change the directory to the MySQL folder (cd /usr/local/mysql)
+4.  Run the secure installation (sudo bin/mysql_secure_installation) and follow the setup
+5.  To start running MySQL, open your Mac's System Preferences and open the application near the bottom of the window.  There will be a button to start the server.
 
 ### Initialize Database in IntelliJ
 
@@ -109,20 +111,36 @@ IntelliJ has a built-in database tab that allows you to manage the contents of y
 In order to add your localhost database to IntelliJ, do the following:
 
 1. Open Database Tab in IntelliJ
-2. Add New MySQL Datasource & Test Connection (using credentials used for MySQL installation)
-Note: specify the database url as the one found in the local application properties file
-3. If the connection works, you're good to go!
+2. Add ```radio_telescope``` schema to MySQL using ```create database radio_telescope```
+3. Edit the line in build.gradle
+```def profile = (project.hasProperty('profile') ? project.profile : 'prod').toLowerCase()```
+to
+```def profile = (project.hasProperty('profile') ? project.profile : 'local').toLowerCase()```
+to setup the database on your local machine.
+4. Add New MySQL Datasource & Test Connection (using credentials used for MySQL installation)
+Note: specify the database url as the one found in the local application properties file 
+5. If the connection works, you're good to go!
+
+### Properties Files
+
+The application depends on certain application properties files that unfortunately cannot be added to GitHub.
+These files must be obtained from the repository owner. The properties files must be placed in 
+
+**/RT-Contracts/src/main/resources/properties.**
+
+As well, to run the database locally you must add your local MySQL password to the spring.datasource.password field of the application_local.properties file. 
 
 ### Install Gradle Wrapper
 
 In order to install the gradle wrapper (needed to boot up the application locally), issue the following
 command in the terminal inside of IntelliJ:
 ```gradle wrapper```
+Then, boot the application with ```gradlew bootRun``` (```./gradlew bootRun``` on Linux). This will populate the local database.
 
-### Properties Files
+### API Endpoints Documentation
 
-The application depends on certain application properties files that unfortunately cannot be added to GitHub.
-These files must be obtained from the repository owner.
+The API endpoints and their respective form templates are hosted on SwaggerHub [here](https://app.swaggerhub.com/apis-docs/jhorne98/radio-telescope_back_end_api/3.5.0#/).
+They will be updated as new endpoints are added.
 
 ### Javadocs
 
@@ -150,3 +168,20 @@ accessed [here](https://317377631261.signin.aws.amazon.com/console).
 
 In order to access the management console, you need an IAM User account. If you do not have one, contact the 
 console root user (mentioned above) and they will create an IAM user for you and send you the credentials.
+
+### Useful Troubleshooting
+#### Correct Versioning
+For the backend, we use:
+* Java JDK 8, openjdk or through oracle, either way just needs to be jdk 8
+* Gradle 4.7
+* Intellij Ultimate Edition (You can get this for free using your YCP email)
+
+#### The super secret properties files
+
+There is a lot going on with these files, and if something isn't working the problem most likely resides here. Important Things to check:
+* The spring.datasource.username is set to the correct user of your database
+* The spring.datasource.password is set to the correct password of your database
+* The file name of properties files is set to application_{insert correct name here}.properties
+    This is the connection string it looks for when running 
+    ["src/main/resources/properties/application_${profile}.properties"]
+

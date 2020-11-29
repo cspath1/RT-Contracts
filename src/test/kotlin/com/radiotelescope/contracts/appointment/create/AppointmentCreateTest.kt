@@ -8,6 +8,8 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -43,6 +45,9 @@ internal class CreateTest : AbstractSpringTest() {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
+
     private lateinit var user: User
 
     private lateinit var create: CoordinateAppointmentCreate
@@ -56,7 +61,6 @@ internal class CreateTest : AbstractSpringTest() {
             priority = Appointment.Priority.PRIMARY,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0
     )
 
@@ -71,8 +75,8 @@ internal class CreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                coordinateRepo = coordinateRepo
-
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
     }
 
@@ -126,7 +130,7 @@ internal class CreateTest : AbstractSpringTest() {
     }
 
     @Test
-    fun testValidateAvailableAllotedTime_ValidConstraints_Success(){
+    fun testValidateAvailableAllottedTime_ValidConstraints_Success(){
         // Give the user unlimited time
         testUtil.createAllottedTimeCapForUser(
                 user = user,
@@ -151,7 +155,7 @@ internal class CreateTest : AbstractSpringTest() {
     }
 
     @Test
-    fun testValidateAvailableAllotedTime_NotEnough_Failure(){
+    fun testValidateAvailableAllottedTime_NotEnough_Failure(){
         // Give the user 5 hours
         testUtil.createAllottedTimeCapForUser(
                 user = user,
@@ -270,7 +274,7 @@ internal class CreateTest : AbstractSpringTest() {
     }
 
     @Test
-    fun testBasicValidateRequest_AllotedTimeCapDoesNotExist_Failure(){
+    fun testBasicValidateRequest_AllottedTimeCapDoesNotExist_Failure(){
         // Make the user a guest
         testUtil.createUserRolesForUser(
                 user = user,

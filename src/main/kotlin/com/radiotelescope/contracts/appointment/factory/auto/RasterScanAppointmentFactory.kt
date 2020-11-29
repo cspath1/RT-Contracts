@@ -15,6 +15,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
@@ -28,7 +29,8 @@ class RasterScanAppointmentFactory(
         private val userRoleRepo: IUserRoleRepository,
         private val coordinateRepo: ICoordinateRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository,
-        private val orientationRepo: IOrientationRepository
+        private val orientationRepo: IOrientationRepository,
+        private val spectracyberConfigRepo: ISpectracyberConfigRepository
 ) : AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
@@ -51,7 +53,8 @@ class RasterScanAppointmentFactory(
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
     }
 
@@ -68,7 +71,8 @@ class RasterScanAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
     }
 

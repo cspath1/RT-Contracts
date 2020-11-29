@@ -60,7 +60,6 @@ internal class AddFreeControlAppointmentCommandControllerTest : BaseAppointmentR
         baseForm = AddFreeControlAppointmentCommandForm(
                 hours = 1,
                 minutes = 2,
-                seconds = 3,
                 declination = 4.20
         )
     }

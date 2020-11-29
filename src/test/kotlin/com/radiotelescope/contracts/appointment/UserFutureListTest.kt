@@ -33,7 +33,6 @@ internal class UserFutureListTest : AbstractSpringTest() {
             userId = -1L,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 311.0,
             priority = Appointment.Priority.PRIMARY
     )

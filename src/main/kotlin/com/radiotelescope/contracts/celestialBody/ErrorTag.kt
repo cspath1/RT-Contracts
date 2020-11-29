@@ -9,7 +9,6 @@ enum class ErrorTag {
     STATUS,
     HOURS,
     MINUTES,
-    SECONDS,
     DECLINATION,
     PAGE_PARAMS,
     SEARCH

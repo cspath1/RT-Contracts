@@ -9,7 +9,6 @@ internal class UpdateFormTest {
             name = "Crab Nebula",
             hours = 5,
             minutes = 34,
-            seconds = 32,
             declination = 20.0
     )
 
@@ -23,7 +22,6 @@ internal class UpdateFormTest {
         assertEquals(baseForm.declination, theRequest.declination)
         assertEquals(baseForm.hours, theRequest.hours)
         assertEquals(baseForm.minutes, theRequest.minutes)
-        assertEquals(baseForm.seconds, theRequest.seconds)
         assertEquals(-1L, theRequest.id)
     }
 

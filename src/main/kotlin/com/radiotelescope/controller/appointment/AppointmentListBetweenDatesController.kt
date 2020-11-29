@@ -27,7 +27,7 @@ class AppointmentListBetweenDatesController (
 ) : BaseRestController(logger){
     /**
      * Execute method that is in charge of returning a list of appointments
-     * between the two given time.
+     * between the two given times.
      *
      * If the fields in the [ListBetweenDatesForm] are null or invalid,
      * respond with errors. Otherwise, call the [UserAutoAppointmentWrapper.listBetweenDates]

@@ -14,6 +14,8 @@ import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
+import com.radiotelescope.repository.frontpagePicture.FrontpagePicture
+import com.radiotelescope.repository.frontpagePicture.IFrontpagePictureRepository
 import com.radiotelescope.repository.loginAttempt.ILoginAttemptRepository
 import com.radiotelescope.repository.loginAttempt.LoginAttempt
 import com.radiotelescope.repository.orientation.IOrientationRepository
@@ -22,11 +24,23 @@ import com.radiotelescope.repository.resetPasswordToken.IResetPasswordTokenRepos
 import com.radiotelescope.repository.resetPasswordToken.ResetPasswordToken
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.sensorOverrides.ISensorOverridesRepository
+import com.radiotelescope.repository.sensorOverrides.SensorOverrides
+import com.radiotelescope.repository.sensorStatus.ISensorStatusRepository
+import com.radiotelescope.repository.sensorStatus.SensorStatus
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
+import com.radiotelescope.repository.thresholds.IThresholdsRepository
+import com.radiotelescope.repository.thresholds.Thresholds
 import com.radiotelescope.repository.updateEmailToken.IUpdateEmailTokenRepository
 import com.radiotelescope.repository.updateEmailToken.UpdateEmailToken
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.repository.videoFile.IVideoFileRepository
+import com.radiotelescope.repository.videoFile.VideoFile
+import com.radiotelescope.repository.weatherData.IWeatherDataRepository
+import com.radiotelescope.repository.weatherData.WeatherData
 import com.radiotelescope.repository.viewer.IViewerRepository
 import com.radiotelescope.repository.viewer.Viewer
 import org.springframework.beans.factory.annotation.Autowired
@@ -80,6 +94,27 @@ internal class TestUtil {
 
     @Autowired
     private lateinit var loginAttemptRepo: ILoginAttemptRepository
+
+    @Autowired
+    private lateinit var videoFileRepo: IVideoFileRepository
+
+    @Autowired
+    private lateinit var sensorStatusRepo: ISensorStatusRepository
+
+    @Autowired
+    private lateinit var weatherDataRepo: IWeatherDataRepository
+
+    @Autowired
+    private lateinit var thresholdsRepo: IThresholdsRepository
+
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
+
+    @Autowired
+    private lateinit var sensorOverridesRepo: ISensorOverridesRepository
+
+    @Autowired
+    private lateinit var frontpagePictureRepo: IFrontpagePictureRepository
 
     fun createUser(email: String): User {
         val user = User(
@@ -240,15 +275,13 @@ internal class TestUtil {
         )
 
         val startingCoordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateRepo.save(startingCoordinate)
@@ -256,6 +289,7 @@ internal class TestUtil {
         theAppointment.status = status
         theAppointment.user = user
         theAppointment.coordinateList = mutableListOf(startingCoordinate)
+        theAppointment.spectracyberConfig = createDefaultSpectracyberConfig()
         appointmentRepo.save(theAppointment)
 
         startingCoordinate.appointment = theAppointment
@@ -292,6 +326,7 @@ internal class TestUtil {
         theAppointment.status = status
         theAppointment.user = user
         theAppointment.orientation = orientation
+        theAppointment.spectracyberConfig = createDefaultSpectracyberConfig()
 
         return appointmentRepo.save(theAppointment)
     }
@@ -306,29 +341,25 @@ internal class TestUtil {
             priority: Appointment.Priority
     ): Appointment {
         val coordinateOne = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateRepo.save(coordinateOne)
 
         val coordinateTwo = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateRepo.save(coordinateTwo)
@@ -345,6 +376,7 @@ internal class TestUtil {
         theAppointment.status = status
         theAppointment.user = user
         theAppointment.coordinateList = arrayListOf(coordinateOne, coordinateTwo)
+        theAppointment.spectracyberConfig = createDefaultSpectracyberConfig()
         appointmentRepo.save(theAppointment)
 
         coordinateOne.appointment = theAppointment
@@ -365,15 +397,13 @@ internal class TestUtil {
             priority: Appointment.Priority
     ): Appointment {
         val coordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateRepo.save(coordinate)
@@ -395,6 +425,7 @@ internal class TestUtil {
         theAppointment.status = status
         theAppointment.user = user
         theAppointment.celestialBody = celestialBody
+        theAppointment.spectracyberConfig = createDefaultSpectracyberConfig()
 
         return appointmentRepo.save(theAppointment)
     }
@@ -409,15 +440,13 @@ internal class TestUtil {
             priority: Appointment.Priority
     ): Appointment {
         val coordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateRepo.save(coordinate)
@@ -434,6 +463,7 @@ internal class TestUtil {
         theAppointment.status = status
         theAppointment.user = user
         theAppointment.coordinateList = arrayListOf(coordinate)
+        theAppointment.spectracyberConfig = createDefaultSpectracyberConfig()
         appointmentRepo.save(theAppointment)
 
         coordinate.appointment = theAppointment
@@ -576,5 +606,92 @@ internal class TestUtil {
         loginAttempt.user = user
 
         return loginAttemptRepo.save(loginAttempt)
+    }
+
+    fun createVideoFileRecord(
+            thumbnailPath: String,
+            videoPath: String,
+            videoLength: String
+    ): VideoFile {
+        return videoFileRepo.save(VideoFile(thumbnailPath, videoPath, videoLength))
+    }
+
+    fun createWeatherDataRecord(
+        windSpeed: Float,
+        windDirectionDeg: Float,
+        windDirectionStr: String,
+        outsideTemperatureDegF: Float,
+        insideTemperatureDegF: Float,
+        rainRate: Float,
+        rainTotal: Float,
+        rainDay: Float,
+        rainMonth: Float,
+        barometricPressure: Float,
+        dewPoint: Float,
+        windChill: Float,
+        humidity: Float,
+        heatIndex: Float,
+        timeCaptured: Int
+    ): WeatherData {
+        val weatherData = WeatherData(
+                windSpeed = windSpeed,
+                windDirectionDeg = windDirectionDeg,
+                windDirectionStr = windDirectionStr,
+                outsideTemperatureDegF = outsideTemperatureDegF,
+                insideTemperatureDegF = insideTemperatureDegF,
+                rainRate = rainRate,
+                rainTotal = rainTotal,
+                rainDay = rainDay,
+                rainMonth = rainMonth,
+                barometricPressure = barometricPressure,
+                dewPoint = dewPoint,
+                windChill = windChill,
+                humidity = humidity,
+                heatIndex = heatIndex,
+                timeCaptured = timeCaptured
+        )
+        return weatherDataRepo.save(weatherData)
+    }
+
+    fun createSensorStatus(
+            gate: Int,
+            proximity: Int,
+            azimuthMotor: Int,
+            elevationMotor: Int,
+            weatherStation: Int
+    ): SensorStatus {
+        return sensorStatusRepo.save(SensorStatus(gate, proximity, azimuthMotor, elevationMotor, weatherStation))
+    }
+
+    fun createDefaultSpectracyberConfig() : SpectracyberConfig {
+        return spectracyberConfigRepo.save(SpectracyberConfig(SpectracyberConfig.Mode.SPECTRAL, 0.3, 0.0, 10.0, 1, 1200))
+    }
+
+    fun populateDefaultThresholds() {
+        thresholdsRepo.save(Thresholds(Thresholds.Name.WIND, 30.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.AZ_MOTOR_TEMP, 80.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.ELEV_MOTOR_TEMP, 80.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.AZ_MOTOR_VIBRATION, 1.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.ELEV_MOTOR_VIBRATION, 1.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.AZ_MOTOR_CURRENT, 6.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.ELEV_MOTOR_CURRENT, 6.0))
+        thresholdsRepo.save(Thresholds(Thresholds.Name.COUNTER_BALANCE_VIBRATION, 0.42))
+    }
+
+    fun populateDefaultSensorOverrides() {
+        sensorOverridesRepo.save(SensorOverrides(SensorOverrides.Name.GATE, false))
+        sensorOverridesRepo.save(SensorOverrides(SensorOverrides.Name.PROXIMITY, false))
+        sensorOverridesRepo.save(SensorOverrides(SensorOverrides.Name.AZIMUTH_MOTOR, false))
+        sensorOverridesRepo.save(SensorOverrides(SensorOverrides.Name.ELEVATION_MOTOR, false))
+        sensorOverridesRepo.save(SensorOverrides(SensorOverrides.Name.WEATHER_STATION, false))
+    }
+
+    fun createFrontpagePicture(
+            pictureTitle: String,
+            pictureUrl: String,
+            description: String,
+            approved: Boolean
+    ) : FrontpagePicture {
+        return frontpagePictureRepo.save(FrontpagePicture(pictureTitle, pictureUrl, description, approved))
     }
 }

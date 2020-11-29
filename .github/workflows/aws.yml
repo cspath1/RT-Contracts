@@ -1,0 +1,293 @@
+# This workflow will build and push a new container image to Amazon ECR,
+# and then will deploy a new task definition to Amazon ECS, when a release is created
+#
+# To use this workflow, you will need to complete the following set-up steps:
+#
+# 1. Create an ECR repository to store your images.
+#    For example: `aws ecr create-repository --repository-name my-ecr-repo --region us-east-2`.
+#    Replace the value of `ECR_REPOSITORY` in the workflow below with your repository's name.
+#    Replace the value of `aws-region` in the workflow below with your repository's region.
+#
+# 2. Create an ECS task definition, an ECS cluster, and an ECS service.
+#    For example, follow the Getting Started guide on the ECS console:
+#      https://us-east-2.console.aws.amazon.com/ecs/home?region=us-east-2#/firstRun
+#    Replace the values for `service` and `cluster` in the workflow below with your service and cluster names.
+#
+# 3. Store your ECS task definition as a JSON file in your repository.
+#    The format should follow the output of `aws ecs register-task-definition --generate-cli-skeleton`.
+#    Replace the value of `task-definition` in the workflow below with your JSON file's name.
+#    Replace the value of `container-name` in the workflow below with the name of the container
+#    in the `containerDefinitions` section of the task definition.
+#
+# 4. Store an IAM user access key in GitHub Actions secrets named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+#    See the documentation for each action used below for the recommended IAM policies for this IAM user,
+#    and best practices on handling the access key credentials.
+
+on:
+  release:
+    types: [published]
+    branches: master
+
+name: Deploy to Amazon ECS
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Write Profile
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: radio_telescope.profile
+        value: secrets.TELESCOPE_PROFILE
+        
+    - name: Write JWT
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: radio_telescope.jwt-secret
+        value: secrets.JWT_SECRET
+
+    - name: Write Video-UUID
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: radio-telescope.video-uuid-secret
+        value: secrets.VIDEO_UUID_SECRET
+
+    - name: Write Control Room UUID
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: radio-telescope.control-room-uuid-secret
+        value: secrets.CONTROL_ROOM_UUID
+
+    - name: Write initstmt
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: initstmt
+        value: secrets.INITSTMT
+        
+    - name: Write Server Port
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: server.port
+        value: secrets.SERVER_PORT
+  
+    - name: Write Require SSL
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: security.require-ssl
+        value: secrets.REQUIRE_SLL
+        
+    - name: Write Remote IP Header
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: server.tomcat.remote_ip_header
+        value: secrets.REMOTE_IP_HEADER
+    
+    - name: Write Tomcat Protocol
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: server.tomcat.protocol_header
+        value: secrets.TOMCAT_PROTOCOL
+    
+    - name: Write Datasource Name
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.datasource.name
+        value: secrets.DATASOURCE_NAME
+
+    - name: Write Datasource URL
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.datasource.url
+        value: secrets.DATASOURCE_URL
+    
+    - name: Write Datasource URL
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.datasource.username
+        value: secrets.DATASOURCE_USERNAME
+        
+    - name: Write Datasource Password
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.datasource.username
+        value: secrets.DATASOURCE_USERNAME
+        
+    - name: Write Datasource Driver
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.datasource.driver-class-name
+        value: secrets.DRIVER_CLASS_NAME
+        
+    - name: Write Dialect
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.dialect
+        value: secrets.DIALECT
+  
+    - name: Write Batch Size
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.jdbc.batch_size
+        value: secrets.BATCH_SIZE
+  
+    - name: Write Batch Size
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.jdbc.batch_size
+        value: secrets.BATCH_SIZE
+  
+    - name: Write Second Level Cache
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.cache.use_second_level_cache
+        value: secrets.USE_SECOND_LEVEL_CACHE
+  
+    - name: Write Order Inserts
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.order_inserts
+        value: secrets.ORDER_INSERTS
+  
+    - name: Write Order Updates
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.order_updates
+        value: secrets.ORDER_UPDATES 
+        
+    - name: Write Enable Liquibase
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.jpa.properties.hibernate.order_updates
+        value: secrets.ENABLE_LIQUIBASE
+
+    - name: Write S3 Bucket Name
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.s3.bucket
+        value: secrets.S3_BUCKET_NAME
+
+    - name: Write S3 Access Key ID
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.s3.access-key-id
+        value: secrets.S3_ACCESS_KEY_ID
+
+    - name: Write S3 Access Key Secret
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.s3.access-key-secret
+        value: secrets.S3_ACCESS_KEY_SECRET
+
+    - name: Write SES Access Key ID
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.ses.access-key-id
+        value: secrets.SES_ACCESS_KEY_ID
+
+    - name: Write SES Access Key ID Secret
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.ses.access-key-secret
+        value: secrets.SES_ACCESS_KEY_SECRET
+
+    - name: Write SNS ID
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.sns.access-key-id
+        value: secrets.SNS_ID
+
+    - name: Write SNS Secret
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.sns.access-key-secret
+        value: secrets.SNS_SECRET
+
+    - name: Write SNS Default Topic
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: amazon.aws.sns.default-topic
+        value: secrets.SNS_DEFAULT_TOPIC
+
+
+    - name: Write Liquibase Change Log Location
+      uses: christian-draeger/write-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: spring.liquibase.change-log
+        value: secrets.LIQUIBASE_CHANGE_LOG_LOCATION
+
+#########################################################################
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: my-ecr-repo
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: rt-app
+        image: ${{ steps.build-image.outputs.image }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: rt-backend-service
+        cluster: rt-cluster
+        wait-for-service-stability: true

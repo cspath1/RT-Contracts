@@ -6,6 +6,7 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -35,6 +36,9 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
+
     private val baseRequest = CoordinateAppointmentRequest.Request(
             userId = -1L,
             telescopeId = 1L,
@@ -43,7 +47,6 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
             isPublic = true,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0,
             priority = Appointment.Priority.PRIMARY
     )
@@ -69,7 +72,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -86,6 +90,10 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
         assertEquals(requestCopy.userId, theAppointment.user.id)
         assertEquals(Appointment.Type.POINT, theAppointment.type)
         assertEquals(Appointment.Status.REQUESTED, theAppointment.status)
+
+        // Make sure the spectracyber configuration record was persisted
+        val theSpectracyberConfig = spectracyberConfigRepo.findById(theAppointment.spectracyberConfig!!.id)
+        assertNotNull(theSpectracyberConfig)
     }
 
     @Test
@@ -101,7 +109,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -126,7 +135,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -151,7 +161,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -177,7 +188,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -202,7 +214,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -227,7 +240,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -252,7 +266,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -277,7 +292,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -287,7 +303,7 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
         // Make sure it failed for the correct reason
         assertTrue(errors!![ErrorTag.HOURS].isNotEmpty())
     }
-
+    /*
     @Test
     fun testSecondsTooLow_Failure() {
         // Create a copy of the request with seconds below 0
@@ -302,7 +318,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -327,7 +344,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -337,7 +355,7 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
         // Make sure it failed for the correct reason
         assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testDeclinationTooLow_Failure() {
         // Create a copy of the request with a declination below 0
@@ -352,7 +370,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -377,7 +396,8 @@ internal class CoordinateAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success

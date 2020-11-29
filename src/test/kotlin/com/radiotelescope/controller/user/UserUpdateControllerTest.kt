@@ -2,8 +2,13 @@ package com.radiotelescope.controller.user
 
 import com.radiotelescope.controller.model.user.UpdateForm
 import com.radiotelescope.repository.log.ILogRepository
+import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.services.s3.MockAwsS3DeleteService
+import com.radiotelescope.services.s3.MockAwsS3UploadService
+import com.radiotelescope.services.sns.MockAwsSnsService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -11,7 +16,9 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.http.HttpStatus
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.context.junit4.SpringRunner
+import java.io.File
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
@@ -20,6 +27,9 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
     private lateinit var logRepo: ILogRepository
 
     private lateinit var userUpdateController: UserUpdateController
+
+    @Autowired
+    private lateinit var userRepo: IUserRepository
 
     private lateinit var baseForm: UpdateForm
 
@@ -38,15 +48,19 @@ internal class UserUpdateControllerTest : BaseUserRestControllerTest() {
 
         userUpdateController = UserUpdateController(
                 userWrapper = getWrapper(),
+                awsSnsService = MockAwsSnsService(true),
                 logger = getLogger()
         )
+
+        userUpdateController.defaultSendTopic = "testARN"
 
         baseForm = UpdateForm(
                 id = user.id,
                 firstName = "firstname",
                 lastName = "lastname",
                 company = "company",
-                phoneNumber = "0001112222"
+                phoneNumber = "0001112222",
+                notificationType = "SMS"
         )
     }
 

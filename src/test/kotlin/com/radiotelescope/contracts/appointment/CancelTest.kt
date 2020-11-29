@@ -27,7 +27,6 @@ internal class CancelTest : AbstractSpringTest() {
             userId = 23,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0,
             priority = Appointment.Priority.PRIMARY
     )
@@ -40,7 +39,6 @@ internal class CancelTest : AbstractSpringTest() {
             userId = 54,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0,
             priority = Appointment.Priority.PRIMARY
     )
@@ -53,7 +51,6 @@ internal class CancelTest : AbstractSpringTest() {
             userId = 55,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0,
             priority = Appointment.Priority.PRIMARY
     )
@@ -66,7 +63,6 @@ internal class CancelTest : AbstractSpringTest() {
             userId = 56,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0,
             priority = Appointment.Priority.PRIMARY
     )

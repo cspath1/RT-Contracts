@@ -10,7 +10,6 @@ import com.radiotelescope.repository.coordinate.Coordinate
 data class CoordinateRequest(
         val hours: Int,
         val minutes: Int,
-        val seconds: Int,
         val declination: Double
 ) : BaseCreateRequest<Coordinate> {
     /**
@@ -21,11 +20,9 @@ data class CoordinateRequest(
         return Coordinate(
                 hours = hours,
                 minutes = minutes,
-                seconds = seconds,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = hours,
-                        minutes = minutes,
-                        seconds = seconds
+                        minutes = minutes
                 ),
                 declination = declination
         )

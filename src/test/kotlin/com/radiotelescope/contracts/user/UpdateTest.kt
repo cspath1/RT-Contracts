@@ -17,7 +17,6 @@ internal class UpdateTest : AbstractSpringTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
-
     private lateinit var user: User
     private lateinit var otherUser: User
 
@@ -25,7 +24,7 @@ internal class UpdateTest : AbstractSpringTest() {
     private var otherUserId = -1L
 
     @Before
-    fun init(){
+    fun init() {
         // Persist the users
         user = testUtil.createUser("rpim@ycp.edu")
         otherUser = testUtil.createUser("rpim1@ycp.edu")
@@ -34,7 +33,6 @@ internal class UpdateTest : AbstractSpringTest() {
         userId = user.id
         otherUserId = otherUser.id
     }
-
 
     @Test
     fun testValidConstraints_Success() {
@@ -45,7 +43,8 @@ internal class UpdateTest : AbstractSpringTest() {
                     firstName = "Evil",
                     lastName = "Twin",
                     phoneNumber = "717-000-0000",
-                    company = "Evil Twin Company"
+                    company = "Evil Twin Company",
+                    notificationType = "SMS"
             ),
             userRepo = userRepo
         ).execute()
@@ -54,8 +53,6 @@ internal class UpdateTest : AbstractSpringTest() {
         assertNull(error)
         assertNotNull(id)
     }
-
-
 
     @Test
     fun testBlankFirstName_Failure() {
@@ -66,7 +63,8 @@ internal class UpdateTest : AbstractSpringTest() {
                         firstName = "",
                         lastName = "Twin",
                         phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
+                        company = "Evil Twin Company",
+                        notificationType = "SMS"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -86,7 +84,8 @@ internal class UpdateTest : AbstractSpringTest() {
                         firstName = "Evil".repeat(50),
                         lastName = "Twin",
                         phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
+                        company = "Evil Twin Company",
+                        notificationType = "SMS"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -106,7 +105,8 @@ internal class UpdateTest : AbstractSpringTest() {
                         firstName = "Evil",
                         lastName = "",
                         phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
+                        company = "Evil Twin Company",
+                        notificationType = "SMS"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -126,7 +126,8 @@ internal class UpdateTest : AbstractSpringTest() {
                         firstName = "Evil",
                         lastName = "Twin".repeat(50),
                         phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
+                        company = "Evil Twin Company",
+                        notificationType = "SMS"
                 ),
                 userRepo = userRepo
         ).execute()
@@ -138,6 +139,31 @@ internal class UpdateTest : AbstractSpringTest() {
     }
 
     @Test
+    fun testUserDoesNotHavePhoneNumber_Failure() {
+        // Ensure phone number is null
+        user.phoneNumber = null
+        userRepo.save(user)
+
+        // Execute the command
+        val (id, error) = Update(
+                request = Update.Request(
+                        id = userId,
+                        firstName = "Evil",
+                        lastName = "Twin",
+                        phoneNumber = "",
+                        company = "Evil Twin Company",
+                        notificationType = "SMS"
+                ),
+                userRepo = userRepo
+        ).execute()
+
+        // Should have failed
+        assertNotNull(error)
+        assertNull(id)
+        assertTrue(error!![ErrorTag.NOTIFICATION_TYPE].isNotEmpty())
+    }
+
+    @Test
     fun testUserDoesNotExist_Failure() {
         // Execute the command
         val (id, error) = Update(
@@ -146,7 +172,8 @@ internal class UpdateTest : AbstractSpringTest() {
                         firstName = "Evil",
                         lastName = "Twin",
                         phoneNumber = "717-000-0000",
-                        company = "Evil Twin Company"
+                        company = "Evil Twin Company",
+                        notificationType = "SMS"
                 ),
                 userRepo = userRepo
         ).execute()

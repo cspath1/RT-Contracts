@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -33,6 +34,9 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
+
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
     private val baseRequest = DriftScanAppointmentRequest.Request(
             userId = -1L,
@@ -66,7 +70,8 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -86,6 +91,10 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
         assertNotNull(theAppointment.orientation)
         assertEquals(requestCopy.azimuth, theAppointment.orientation!!.azimuth, 0.0001)
         assertEquals(requestCopy.elevation, theAppointment.orientation!!.elevation, 0.0001)
+
+        // Make sure the spectracyber configuration record was persisted
+        val theSpectracyberConfig = spectracyberConfigRepo.findById(theAppointment.spectracyberConfig!!.id)
+        assertNotNull(theSpectracyberConfig)
     }
 
     @Test
@@ -101,7 +110,8 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -126,7 +136,8 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -151,7 +162,8 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -177,7 +189,8 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -202,7 +215,8 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -227,7 +241,8 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -252,7 +267,8 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -277,7 +293,8 @@ internal class DriftScanAppointmentRequestTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success

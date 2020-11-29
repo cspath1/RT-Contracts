@@ -1,5 +1,6 @@
 package com.radiotelescope.repository.telescope
 
+import com.radiotelescope.repository.location.Location
 import com.radiotelescope.repository.orientation.Orientation
 import javax.persistence.*
 
@@ -30,6 +31,15 @@ class RadioTelescope {
     @JoinColumn(name = "calibration_orientation_id")
     private lateinit var calibrationOrientation: Orientation
 
+    // This is a regular column because it is not a reference to a different table
+    @Column(name = "telescope_type", nullable = true)
+    private var telescopeType: TelescopeType = TelescopeType.NONE
+
+    // This references the location table
+    @OneToOne
+    @JoinColumn(name = "location_id")
+    private lateinit var location: Location
+
     fun getId(): Long {
         return id
     }
@@ -44,5 +54,13 @@ class RadioTelescope {
     
     fun getCalibrationOrientation(): Orientation {
         return calibrationOrientation
+    }
+
+    fun getTelescopeType(): TelescopeType {
+        return telescopeType
+    }
+
+    fun getLocation(): Location {
+        return location
     }
 }

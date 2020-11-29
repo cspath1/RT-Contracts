@@ -11,7 +11,6 @@ internal class StartFreeControlAppointmentFormTest {
             duration = 30,
             hours = 1,
             minutes = 2,
-            seconds = 3,
             declination = 20.0,
             isPublic = true
     )
@@ -28,7 +27,6 @@ internal class StartFreeControlAppointmentFormTest {
         assertEquals(baseForm.duration!!, theRequest.duration)
         assertEquals(baseForm.hours!!, theRequest.hours)
         assertEquals(baseForm.minutes!!, theRequest.minutes)
-        assertEquals(baseForm.seconds!!, theRequest.seconds)
         assertEquals(baseForm.declination!!, theRequest.declination, 0.0001)
         assertEquals(baseForm.isPublic!!, theRequest.isPublic)
     }
@@ -116,7 +114,7 @@ internal class StartFreeControlAppointmentFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
     }
-
+    /*
     @Test
     fun testNullSeconds_Failure() {
         // Create a copy of the form with a null seconds
@@ -131,7 +129,7 @@ internal class StartFreeControlAppointmentFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testNullDeclination_Failure() {
         // Create a copy of the form with a null declination

@@ -8,7 +8,6 @@ import java.util.*
  *
  * @param hours the right ascension hours
  * @param minutes the right ascension minutes
- * @param seconds the right ascension seconds
  * @param rightAscension the right ascension in degrees
  * @param declination the declination
  */
@@ -25,9 +24,9 @@ data class PointAppointmentInfo(
         override val status: String,
         override val type: String,
         override val priority: String,
+        override val spectracyberConfigId: Long,
         val hours: Int,
         val minutes: Int,
-        val seconds: Int,
         val rightAscension: Double,
         val declination: Double
 ) : AppointmentInfo(
@@ -42,7 +41,8 @@ data class PointAppointmentInfo(
         userEmail = userEmail,
         status = status,
         type = type,
-        priority = priority
+        priority = priority,
+        spectracyberConfigId = spectracyberConfigId
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -65,8 +65,8 @@ data class PointAppointmentInfo(
             priority = appointment.priority.label,
             hours = appointment.coordinateList[0].hours,
             minutes = appointment.coordinateList[0].minutes,
-            seconds = appointment.coordinateList[0].seconds,
             rightAscension = appointment.coordinateList[0].rightAscension,
-            declination = appointment.coordinateList[0].declination
+            declination = appointment.coordinateList[0].declination,
+            spectracyberConfigId = appointment.spectracyberConfig!!.id
     )
 }

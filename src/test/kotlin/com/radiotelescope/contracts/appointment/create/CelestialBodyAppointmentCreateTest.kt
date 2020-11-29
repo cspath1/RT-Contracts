@@ -11,6 +11,8 @@ import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -49,6 +51,9 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
+
     private val baseRequest = CelestialBodyAppointmentCreate.Request(
             userId = -1L,
             startTime = Date(System.currentTimeMillis() + 100000L),
@@ -72,11 +77,9 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
         val coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 5,
-                        minutes = 34,
-                        seconds = 32
+                        minutes = 34
                 ),
                 declination = 22.0
         )
@@ -116,7 +119,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -133,6 +137,10 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
         assertEquals(requestCopy.userId, theAppointment.user.id)
         assertTrue(theAppointment.isPublic)
         assertEquals(Appointment.Type.CELESTIAL_BODY, theAppointment.type)
+
+        // Make sure the spectracyber configuration record was persisted
+        val theSpectracyberConfig = spectracyberConfigRepo.findById(theAppointment.spectracyberConfig!!.id)
+        assertNotNull(theSpectracyberConfig)
     }
 
     @Test
@@ -158,7 +166,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -190,7 +199,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -223,7 +233,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -259,7 +270,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -295,7 +307,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -337,7 +350,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -385,7 +399,8 @@ internal class CelestialBodyAppointmentCreateTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 celestialBodyRepo = celestialBodyRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure

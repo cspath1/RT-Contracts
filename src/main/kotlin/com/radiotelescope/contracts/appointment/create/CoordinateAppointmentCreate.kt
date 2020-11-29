@@ -12,6 +12,8 @@ import com.radiotelescope.repository.allottedTimeCap.IAllottedTimeCapRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -33,7 +35,8 @@ class CoordinateAppointmentCreate(
         private val userRoleRepo: IUserRoleRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val coordinateRepo: ICoordinateRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val spectracyberConfigRepo: ISpectracyberConfigRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -52,6 +55,11 @@ class CoordinateAppointmentCreate(
             coordinateRepo.save(theCoordinate)
 
             theAppointment.user = userRepo.findById(request.userId).get()
+
+            // Insert a new SpectracyberConfig record into the database related to the appointment
+            val theSpectracyberConfig = SpectracyberConfig(SpectracyberConfig.Mode.SPECTRAL, 0.3, 0.0, 10.0, 1, 1200)
+            spectracyberConfigRepo.save(theSpectracyberConfig)
+            theAppointment.spectracyberConfig = theSpectracyberConfig
 
             // "Point" Appointments will have a single Coordinate
             theAppointment.coordinateList = arrayListOf(theCoordinate)
@@ -89,8 +97,6 @@ class CoordinateAppointmentCreate(
                 errors!!.put(ErrorTag.HOURS, "Hours must be between 0 and 24")
             if (minutes < 0 || minutes >= 60)
                 errors!!.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
-            if (seconds < 0 || seconds >= 60)
-                errors!!.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
             if (declination > 90 || declination < -90)
                 errors!!.put(ErrorTag.DECLINATION, "Declination must be between -90 and 90")
 
@@ -121,7 +127,6 @@ class CoordinateAppointmentCreate(
             override val priority: Appointment.Priority,
             val hours: Int,
             val minutes: Int,
-            val seconds: Int,
             val declination: Double
     ) : AppointmentCreate.Request() {
         /**
@@ -147,11 +152,9 @@ class CoordinateAppointmentCreate(
             return Coordinate(
                     hours = hours,
                     minutes = minutes,
-                    seconds = seconds,
-                    rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                    rightAscension = Coordinate.hoursMinutesToDegrees(
                             hours = hours,
-                            minutes = minutes,
-                            seconds = seconds
+                            minutes = minutes
                     ),
                     declination = declination
             )

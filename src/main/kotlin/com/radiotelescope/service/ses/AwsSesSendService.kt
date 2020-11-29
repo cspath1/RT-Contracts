@@ -3,7 +3,7 @@ package com.radiotelescope.service.ses
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
 import com.amazonaws.services.simpleemail.model.*
 import com.google.common.collect.HashMultimap
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 import org.springframework.stereotype.Service
 
 /**
@@ -16,10 +16,10 @@ class AwsSesSendService(
         private val emailService: AmazonSimpleEmailService
 ) : IAwsSesSendService {
     /**
-     * Execute method that takes a [SendForm] and, given there are no errors with the request,
+     * Execute method that takes a [SesSendForm] and, given there are no errors with the request,
      * will send an email using the AWS Simple Email Service.
      */
-    override fun execute(sendForm: SendForm): HashMultimap<ErrorTag, String>? {
+    override fun execute(sendForm: SesSendForm): HashMultimap<ErrorTag, String>? {
         validateRequest(sendForm)?.let { return it } ?: let {
             val destination = Destination().withToAddresses(sendForm.toAddresses)
             val subject = Content().withData(sendForm.subject)
@@ -36,7 +36,7 @@ class AwsSesSendService(
                 emailService.sendEmail(email)
             } catch (e: Exception) {
                 val errors = HashMultimap.create<ErrorTag, String>()
-                System.out.println("Error sending email: ${e.message}")
+                print("Error sending email: ${e.message}")
                 errors.put(ErrorTag.SEND_EMAIL, e.message)
 
                 return errors
@@ -49,10 +49,10 @@ class AwsSesSendService(
     /**
      * Private method used to validate the request to send the email
      *
-     * @param sendForm the [SendForm]
+     * @param sendForm the [SesSendForm]
      * @return a [HashMultimap] if there are errors null otherwise
      */
-    private fun validateRequest(sendForm: SendForm): HashMultimap<ErrorTag, String>? {
+    private fun validateRequest(sendForm: SesSendForm): HashMultimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(sendForm) {

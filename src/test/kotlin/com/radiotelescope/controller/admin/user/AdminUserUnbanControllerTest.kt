@@ -3,8 +3,10 @@ package com.radiotelescope.controller.admin.user
 import com.radiotelescope.controller.user.BaseUserRestControllerTest
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.services.ses.MockAwsSesSendService
+import com.radiotelescope.services.sns.MockAwsSnsService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -20,6 +22,9 @@ internal class AdminUserUnbanControllerTest : BaseUserRestControllerTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
 
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
     private lateinit var admin: User
     private lateinit var user: User
     private lateinit var adminUserUnbanController: AdminUserUnbanController
@@ -31,7 +36,9 @@ internal class AdminUserUnbanControllerTest : BaseUserRestControllerTest() {
         adminUserUnbanController = AdminUserUnbanController(
                 userWrapper = getWrapper(),
                 awsSesSendService = MockAwsSesSendService(true),
-                logger = getLogger()
+                awsSnsService = MockAwsSnsService(true),
+                logger = getLogger(),
+                userRepo = userRepo
         )
 
         admin = testUtil.createUser("rpim1@ycp.edu")

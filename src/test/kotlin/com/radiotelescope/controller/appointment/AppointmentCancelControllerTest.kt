@@ -4,7 +4,10 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
+import com.radiotelescope.services.ses.MockAwsSesSendService
+import com.radiotelescope.services.sns.MockAwsSnsService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -25,6 +28,9 @@ internal class AppointmentCancelControllerTest : BaseAppointmentRestControllerTe
     @Autowired
     private lateinit var appointmentRepo: IAppointmentRepository
 
+    @Autowired
+    private lateinit var userRepo: IUserRepository
+
     private lateinit var appointmentCancelController: AppointmentCancelController
     private lateinit var user: User
     private lateinit var appointment: Appointment
@@ -35,6 +41,10 @@ internal class AppointmentCancelControllerTest : BaseAppointmentRestControllerTe
 
         appointmentCancelController = AppointmentCancelController(
                 autoAppointmentWrapper = getCoordinateCreateWrapper(),
+                userRepo = userRepo,
+                appointmentRepo = appointmentRepo,
+                awsSesSendService = MockAwsSesSendService(true),
+                awsSnsService = MockAwsSnsService(true),
                 logger = getLogger()
         )
 

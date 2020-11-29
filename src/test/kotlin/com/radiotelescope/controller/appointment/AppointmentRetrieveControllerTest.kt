@@ -93,7 +93,7 @@ internal class AppointmentRetrieveControllerTest : BaseAppointmentRestController
 
     @Test
     fun testFailedAuthenticationResponse() {
-        // Do no log the user in
+        // Do not log the user in
         val result = appointmentRetrieveController.execute(appointment.id)
 
         assertNotNull(result)

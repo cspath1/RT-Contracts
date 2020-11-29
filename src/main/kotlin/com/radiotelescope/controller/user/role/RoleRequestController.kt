@@ -4,7 +4,7 @@ import com.radiotelescope.contracts.role.UserUserRoleWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.role.RequestRoleForm
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.repository.role.UserRole
@@ -127,9 +127,9 @@ class RoleRequestController (
      * @param emails the list of admin emails
      */
     private fun sendEmail(emails: List<String>) {
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = emails,
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "User Role Request",
                 htmlBody = "<p>A new user role has been requested by a user and requires your approval.</p>"
         )

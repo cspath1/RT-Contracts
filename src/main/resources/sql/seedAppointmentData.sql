@@ -14,8 +14,8 @@ INSERT INTO appointment(id, user_id, start_time, end_time, status, telescope_id,
 VALUES(1, 1, '2018-10-10 12:00:00', '2018-10-10 15:00:00', 'COMPLETED', 1, 1, NULL, 'PRIMARY', 'POINT', NULL );
 
 -- Then a coordinate --
-INSERT INTO coordinate(id, right_ascension, declination, hours, minutes, seconds, appointment_id)
-VALUES(1, 311.0, 69.0, 12, 12, 12, 1);
+INSERT INTO coordinate(id, right_ascension, declination, hours, minutes, appointment_id)
+VALUES(1, 311.0, 69.0, 12, 12, 1);
 
 -- Then some seed RF Data --
 INSERT INTO rf_data(id, appointment_id, intensity, time_captured) VALUES(1, 1, 1, CURRENT_TIMESTAMP);

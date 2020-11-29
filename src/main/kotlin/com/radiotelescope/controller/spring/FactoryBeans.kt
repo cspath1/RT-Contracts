@@ -15,6 +15,9 @@ import com.radiotelescope.contracts.celestialBody.BaseCelestialBodyFactory
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.BaseFeedbackFactory
 import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
+import com.radiotelescope.contracts.frontpagePicture.BaseFrontpagePictureFactory
+import com.radiotelescope.contracts.frontpagePicture.FrontpagePictureFactory
+import com.radiotelescope.contracts.frontpagePicture.UserFrontpagePictureWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.log.BaseLogFactory
 import com.radiotelescope.contracts.resetPasswordToken.BaseResetPasswordTokenFactory
@@ -23,14 +26,28 @@ import com.radiotelescope.contracts.rfdata.BaseRFDataFactory
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.BaseUserRoleFactory
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.sensorOverrides.BaseSensorOverridesFactory
+import com.radiotelescope.contracts.sensorOverrides.UserSensorOverridesWrapper
+import com.radiotelescope.contracts.sensorStatus.BaseSensorStatusFactory
+import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
+import com.radiotelescope.contracts.spectracyberConfig.BaseSpectracyberConfigFactory
+import com.radiotelescope.contracts.spectracyberConfig.UserSpectracyberConfigWrapper
+import com.radiotelescope.contracts.thresholds.BaseThresholdsFactory
+import com.radiotelescope.contracts.thresholds.UserThresholdsWrapper
 import com.radiotelescope.contracts.updateEmailToken.BaseUpdateEmailTokenFactory
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.BaseUserFactory
 import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.videoFile.BaseVideoFileFactory
+import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
 import com.radiotelescope.contracts.viewer.BaseViewerFactory
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
+import com.radiotelescope.contracts.weatherData.BaseWeatherDataFactory
+import com.radiotelescope.contracts.weatherData.UserWeatherDataWrapper
 import com.radiotelescope.security.UserContextImpl
 import com.radiotelescope.security.service.RetrieveAuthUserService
+import com.radiotelescope.service.s3.IAwsS3DeleteService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -45,6 +62,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class FactoryBeans(
         private var repositories: RepositoryBeans,
+        private var services: ServiceBeans,
         retrieveAuthUserService: RetrieveAuthUserService
 ) : FactoryProvider {
     private val userContext = UserContextImpl(
@@ -66,7 +84,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         accountActivateTokenRepo = repositories.accountActivateTokenRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
-                        loginAttemptRepo = repositories.loginAttemptRepo
+                        loginAttemptRepo = repositories.loginAttemptRepo,
+                        deleteService = services.s3DeleteService
                 ),
                 userRepo = repositories.userRepo
         )
@@ -105,7 +124,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         coordinateRepo = repositories.coordinateRepo,
                         orientationRepo = repositories.orientationRepo,
-                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo,
+                        spectracyberConfigRepo = repositories.spectracyberConfigRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -127,7 +147,8 @@ class FactoryBeans(
                         celestialBodyRepo = repositories.celestialBodyRepo,
                         coordinateRepo = repositories.coordinateRepo,
                         orientationRepo = repositories.orientationRepo,
-                        allottedTimeCapRepo = repositories.allottedTimeCapRepo
+                        allottedTimeCapRepo = repositories.allottedTimeCapRepo,
+                        spectracyberConfigRepo = repositories.spectracyberConfigRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -148,7 +169,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         coordinateRepo = repositories.coordinateRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
-                        orientationRepo = repositories.orientationRepo
+                        orientationRepo = repositories.orientationRepo,
+                        spectracyberConfigRepo = repositories.spectracyberConfigRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -166,7 +188,8 @@ class FactoryBeans(
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
                         orientationRepo = repositories.orientationRepo,
-                        coordinateRepo = repositories.coordinateRepo
+                        coordinateRepo = repositories.coordinateRepo,
+                        spectracyberConfigRepo = repositories.spectracyberConfigRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -187,7 +210,8 @@ class FactoryBeans(
                         coordinateRepo = repositories.coordinateRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo,
-                        orientationRepo = repositories.orientationRepo
+                        orientationRepo = repositories.orientationRepo,
+                        spectracyberConfigRepo = repositories.spectracyberConfigRepo
                 ),
                 appointmentRepo = repositories.appointmentRepo,
                 viewerRepo = repositories.viewerRepo
@@ -310,8 +334,37 @@ class FactoryBeans(
     @Bean
     override fun getFeedbackWrapper(): UserFeedbackWrapper {
         return UserFeedbackWrapper(
+                context = userContext,
                 factory = BaseFeedbackFactory(
                         feedbackRepo = repositories.feedbackRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [UserVideoFileWrapper] object, allowing it to be autowired
+     * in controllers
+     */
+    @Bean
+    override fun getVideoFileWrapper(): UserVideoFileWrapper {
+        return UserVideoFileWrapper(
+                context = userContext,
+                factory = BaseVideoFileFactory(
+                        videoFileRepo = repositories.videoFileRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [UserSensorStatusWrapper] object, allowing it to be autowired
+     * in controllers
+     */
+    @Bean
+    override fun getSensorStatusWrapper(): UserSensorStatusWrapper {
+        return UserSensorStatusWrapper(
+                context = userContext,
+                factory = BaseSensorStatusFactory(
+                        sensorStatusRepo = repositories.sensorStatusRepo
                 )
         )
     }
@@ -328,6 +381,79 @@ class FactoryBeans(
                         userRepo = repositories.userRepo,
                         userRoleRepo = repositories.userRoleRepo,
                         allottedTimeCapRepo = repositories.allottedTimeCapRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [UserWeatherDataWrapper] object, allowing it to be autowired
+     * in  controllers
+     */
+    @Bean
+    override fun getWeatherDataWrapper(): UserWeatherDataWrapper{
+        return UserWeatherDataWrapper(
+                context = userContext,
+                factory = BaseWeatherDataFactory(
+                        weatherDataRepo = repositories.weatherDataRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [UserSpectracyberConfigWrapper] object, allowing it to be autowired
+     * in  controllers
+     */
+    @Bean
+    override fun getSpectracyberConfigWrapper(): UserSpectracyberConfigWrapper {
+        return UserSpectracyberConfigWrapper(
+                context = userContext,
+                factory = BaseSpectracyberConfigFactory(
+                        spectracyberConfigRepo = repositories.spectracyberConfigRepo
+                ),
+                userRepo = repositories.userRepo,
+                appointmentRepo = repositories.appointmentRepo
+        )
+    }
+
+    /**
+     * Returns a [UserThresholdsWrapper] object, allowing it to be autowired
+     * in  controllers
+     */
+    @Bean
+    override fun getThresholdsWrapper(): UserThresholdsWrapper {
+        return UserThresholdsWrapper(
+                context = userContext,
+                factory = BaseThresholdsFactory(
+                        thresholdsRepo = repositories.thresholdsRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [UserSensorOverridesWrapper] object, allowing it to be autowired
+     * in  controllers
+     */
+    @Bean
+    override fun getSensorOverridesWrapper(): UserSensorOverridesWrapper {
+        return UserSensorOverridesWrapper(
+                context = userContext,
+                factory = BaseSensorOverridesFactory (
+                        sensorOverridesRepo = repositories.sensorOverridesRepo
+                )
+        )
+    }
+
+    /**
+     * Returns a [UserFrontpagePictureWrapper] object, allowing it to be autowired
+     * in  controllers
+     */
+    @Bean
+    override fun getFrontpagePictureWrapper(): UserFrontpagePictureWrapper {
+        return UserFrontpagePictureWrapper(
+                context = userContext,
+                factory = BaseFrontpagePictureFactory (
+                        frontpagePictureRepo = repositories.frontpagePictureRepo,
+                        s3DeleteService = services.s3DeleteService
                 )
         )
     }

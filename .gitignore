@@ -1,11 +1,10 @@
 .gradle
 /build/
-!gradle/wrapper/gradle-wrapper.jar
-gradlew
-gradle
-gradlew.bat
 docs/
+/gradle/
 
+### AWS KEYS ###
+/src/main/resources/properties/.
 **/application_dev.properties
 **/application_local.properties
 **/application_remote.properties
@@ -19,6 +18,7 @@ docs/
 .settings
 .springBeans
 .sts4-cache
+.bash_profile.swp
 
 ### IntelliJ IDEA ###
 .idea

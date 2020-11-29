@@ -10,40 +10,34 @@ internal class CoordinateInfoTest {
         val info = CoordinateInfo(
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0
         )
 
-        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
+        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesToDegrees(
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         assertEquals(hoursMinutesSecondsInDegrees, info.rightAscension, 0.00001)
         assertEquals(12, info.hours)
         assertEquals(12, info.minutes)
-        assertEquals(12, info.seconds)
         assertEquals(69.0, info.declination, 0.00001)
     }
 
     @Test
     fun testSecondaryConstructor() {
         val coordinate = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         val info = CoordinateInfo(coordinate)
@@ -52,6 +46,5 @@ internal class CoordinateInfoTest {
         assertEquals(info.declination, coordinate.declination, 0.00001)
         assertEquals(info.hours, coordinate.hours)
         assertEquals(info.minutes, coordinate.minutes)
-        assertEquals(info.seconds, coordinate.seconds)
     }
 }

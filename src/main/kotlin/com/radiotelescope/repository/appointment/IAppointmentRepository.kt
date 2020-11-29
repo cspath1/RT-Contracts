@@ -184,7 +184,7 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
 
     /**
      * Currently used to find the first in progress appointment for a specific telescope
-     * to determine if it is a free control appointment (meaning it cannot be overriden)
+     * to determine if it is a free control appointment (meaning it cannot be overridden)
      *
      * @param status the [Appointment.Status]
      * @param telescopeId the Radio Telescope id
@@ -213,4 +213,15 @@ interface IAppointmentRepository : PagingAndSortingRepository<Appointment, Long>
             "WHERE status = 'IN_PROGRESS'",
             nativeQuery = true)
     fun findAllInProgressAppointments(): List<Appointment>
+
+    /**
+     * Retrieves an appointment from a matching Spectracyber Config
+     *
+     * @param spectracyberConfigId the id of the Spectracyber Config
+     * @return an [Appointment] object
+     */
+    @Query(value = "SELECT * FROM appointment " +
+            "WHERE spectracyber_config_id=?1",
+            nativeQuery = true)
+    fun findAppointmentBySpectracyberConfigId(spectracyberConfigId: Long): Appointment
 }

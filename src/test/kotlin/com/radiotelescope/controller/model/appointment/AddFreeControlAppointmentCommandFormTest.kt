@@ -8,7 +8,6 @@ internal class AddFreeControlAppointmentCommandFormTest {
     private val baseForm = AddFreeControlAppointmentCommandForm(
             hours = 1,
             minutes = 2,
-            seconds = 3,
             declination = 4.20
     )
 
@@ -21,7 +20,6 @@ internal class AddFreeControlAppointmentCommandFormTest {
 
         assertEquals(baseForm.hours!!, theRequest.hours)
         assertEquals(baseForm.minutes!!, theRequest.minutes)
-        assertEquals(baseForm.seconds!!, theRequest.seconds)
         assertEquals(baseForm.declination!!, theRequest.declination, 0.0001)
 
         // The appointment id will be -1 since that is set via the controller's path variable
@@ -66,7 +64,7 @@ internal class AddFreeControlAppointmentCommandFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
     }
-
+    /*
     @Test
     fun testNullSeconds_Failure() {
         // Create a copy of the form with a null seconds
@@ -81,7 +79,7 @@ internal class AddFreeControlAppointmentCommandFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testNullDeclination_Failure() {
         // Create a copy of the form with a null declination

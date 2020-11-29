@@ -31,7 +31,6 @@ internal class UserCelestialBodyWrapperTest : AbstractSpringTest() {
             name = "Crab Nebula",
             hours = 5,
             minutes = 34,
-            seconds = 32,
             declination = 22.0
     )
 
@@ -40,7 +39,6 @@ internal class UserCelestialBodyWrapperTest : AbstractSpringTest() {
             name = "Crab Nebula",
             hours = 5,
             minutes = 34,
-            seconds = 32,
             declination = 22.0
     )
 
@@ -87,11 +85,9 @@ internal class UserCelestialBodyWrapperTest : AbstractSpringTest() {
         val coordinate = Coordinate(
                 hours = 14,
                 minutes = 39,
-                seconds = 37,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 14,
-                        minutes = 39,
-                        seconds = 37
+                        minutes = 39
                 ),
                 declination = -60.5
         )
@@ -166,6 +162,20 @@ internal class UserCelestialBodyWrapperTest : AbstractSpringTest() {
     }
 
     @Test
+    fun testRetrieve_Alumnus_Success() {
+        // Simulate a login
+        context.login(adminId)
+        context.currentRoles.add(UserRole.Role.ALUMNUS)
+
+        val error = wrapper.retrieve(celestialBody.id) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
     fun testRetrieve_NotAdmin_Failure() {
         // Simulate a login
         context.login(userId)
@@ -198,6 +208,20 @@ internal class UserCelestialBodyWrapperTest : AbstractSpringTest() {
         // Simulate a login
         context.login(adminId)
         context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.list(PageRequest.of(0, 10)) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testList_Alumnus_Success() {
+        // Simulate a login
+        context.login(adminId)
+        context.currentRoles.add(UserRole.Role.ALUMNUS)
 
         val error = wrapper.list(PageRequest.of(0, 10)) {
             assertNotNull(it.success)

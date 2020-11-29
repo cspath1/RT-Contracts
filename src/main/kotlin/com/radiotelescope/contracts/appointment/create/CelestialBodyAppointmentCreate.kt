@@ -11,6 +11,8 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -33,7 +35,8 @@ class CelestialBodyAppointmentCreate(
         private val userRoleRepo: IUserRoleRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val celestialBodyRepo: ICelestialBodyRepository,
-        private val allottedTimeCapRepo: IAllottedTimeCapRepository
+        private val allottedTimeCapRepo: IAllottedTimeCapRepository,
+        private val spectracyberConfigRepo: ISpectracyberConfigRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentCreate {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -51,6 +54,11 @@ class CelestialBodyAppointmentCreate(
             // "Celestial Body" Appointments will have reference to a Celestial Body
             val theCelestialBody = celestialBodyRepo.findById(request.celestialBodyId).get()
             theAppointment.celestialBody = theCelestialBody
+
+            // Insert a new SpectracyberConfig record into the database related to the appointment
+            val theSpectracyberConfig = SpectracyberConfig(SpectracyberConfig.Mode.SPECTRAL, 0.3, 0.0, 10.0, 1, 1200)
+            spectracyberConfigRepo.save(theSpectracyberConfig)
+            theAppointment.spectracyberConfig = theSpectracyberConfig
 
             theAppointment.user = userRepo.findById(request.userId).get()
 

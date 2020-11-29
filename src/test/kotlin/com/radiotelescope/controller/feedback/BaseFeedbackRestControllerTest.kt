@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.feedback.FeedbackFactory
 import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
 import com.radiotelescope.controller.BaseRestControllerTest
 import com.radiotelescope.repository.feedback.IFeedbackRepository
+import com.radiotelescope.security.FakeUserContext
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -24,6 +25,7 @@ internal abstract class BaseFeedbackRestControllerTest : BaseRestControllerTest(
         )
 
         wrapper = UserFeedbackWrapper(
+                context = getContext(),
                 factory = factory
         )
     }

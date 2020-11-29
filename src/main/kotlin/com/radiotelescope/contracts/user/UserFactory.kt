@@ -53,6 +53,22 @@ interface UserFactory {
     fun update(request: Update.Request): Command<Long, Multimap<ErrorTag, String>>
 
     /**
+     * Abstract command used to update the user's information
+     *
+     * @param request the [UpdateProfilePicture.Request] request
+     * @return a [Command] object
+     */
+    fun updateProfilePicture(request: UpdateProfilePicture.Request): Command<Long, Multimap<ErrorTag, String>>
+
+    /**
+     * Abstract command used to update the user's information
+     *
+     * @param request the [ApproveDeny.Request] request
+     * @return a [Command] object
+     */
+    fun approveDenyProfilePicture(request: ApproveDeny.Request): Command<User, Multimap<ErrorTag, String>>
+
+    /**
      * Abstract command used to "delete" a user's account
      *
      * @param id the User id

@@ -5,13 +5,12 @@ import org.junit.Test
 
 internal class CoordinateTest {
     @Test
-    fun testHoursMinutesSecondsToDegrees() {
-        val rightAscensionDegrees = Coordinate.hoursMinutesSecondsToDegrees(
+    fun testhoursMinutesToDegrees() {
+        val rightAscensionDegrees = Coordinate.hoursMinutesToDegrees(
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
-        assertEquals(183.0500, rightAscensionDegrees, 0.0001)
+        assertEquals(183.0, rightAscensionDegrees, 0.0001)
     }
 }

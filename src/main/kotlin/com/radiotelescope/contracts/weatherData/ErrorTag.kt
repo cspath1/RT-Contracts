@@ -1,0 +1,21 @@
+package com.radiotelescope.contracts.weatherData
+
+enum class ErrorTag {
+    WIND_SPEED,
+    WIND_DIRECTION_DEG,
+    WIND_DIRECTION_STR,
+    OUTSIDE_TEMPERATURE_DEG_F,
+    INSIDE_TEMPERATURE_DEG_F,
+    RAIN_RATE,
+    RAIN_TOTAL,
+    RAIN_DAY,
+    RAIN_MONTH,
+    BAROMETRIC_PRESSURE,
+    DEW_POINT,
+    WIND_CHILL,
+    HUMIDITY,
+    HEAT_INDEX,
+    INSERT_TIMESTAMP,
+    UPDATE_TIMESTAMP,
+    PAGE_PARAMS
+}

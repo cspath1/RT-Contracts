@@ -9,6 +9,8 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.celestialBody.ICelestialBodyRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -27,7 +29,8 @@ class CelestialBodyAppointmentRequest(
         private val appointmentRepo: IAppointmentRepository,
         private val userRepo: IUserRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
-        private val celestialBodyRepo: ICelestialBodyRepository
+        private val celestialBodyRepo: ICelestialBodyRepository,
+        private val spectracyberConfigRepo: ISpectracyberConfigRepository
 ) : Command<Long, Multimap<ErrorTag, String>>, AppointmentRequest {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest]
@@ -47,6 +50,8 @@ class CelestialBodyAppointmentRequest(
             theAppointment.celestialBody = theCelestialBody
 
             theAppointment.user = userRepo.findById(request.userId).get()
+
+            theAppointment.spectracyberConfig = spectracyberConfigRepo.save(SpectracyberConfig(SpectracyberConfig.Mode.SPECTRAL, 0.3, 0.0, 10.0, 1, 1200))
 
             // Mark as request
             theAppointment.status = Appointment.Status.REQUESTED

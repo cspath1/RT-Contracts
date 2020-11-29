@@ -13,7 +13,6 @@ internal class CelestialBodyInfoTest {
                 name = "Crab Nebula",
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
                 declination = 22.0
         )
 
@@ -21,7 +20,6 @@ internal class CelestialBodyInfoTest {
         assertEquals("Crab Nebula", celestialBodyInfo.name)
         assertEquals(5, celestialBodyInfo.hours)
         assertEquals(34, celestialBodyInfo.minutes)
-        assertEquals(32, celestialBodyInfo.seconds)
         assertEquals(22.0, celestialBodyInfo.declination)
     }
 
@@ -32,11 +30,9 @@ internal class CelestialBodyInfoTest {
         val coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 5,
-                        minutes = 34,
-                        seconds = 32
+                        minutes = 34
                 ),
                 declination = 22.0
         )
@@ -48,7 +44,6 @@ internal class CelestialBodyInfoTest {
         assertEquals(celestialBody.name, celestialBodyInfo.name)
         assertEquals(celestialBody.coordinate!!.hours, celestialBodyInfo.hours)
         assertEquals(celestialBody.coordinate!!.minutes, celestialBodyInfo.minutes)
-        assertEquals(celestialBody.coordinate!!.seconds, celestialBodyInfo.seconds)
         assertEquals(celestialBody.coordinate!!.declination, celestialBodyInfo.declination)
     }
 }

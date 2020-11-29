@@ -3,6 +3,7 @@ package com.radiotelescope.repository.appointment
 import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.orientation.Orientation
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.user.User
 import java.util.*
 import javax.persistence.*
@@ -50,6 +51,10 @@ data class Appointment(
     @JoinColumn(name = "celestial_body_id")
     var celestialBody: CelestialBody? = null
 
+    @OneToOne
+    @JoinColumn(name = "spectracyber_config_id")
+    var spectracyberConfig: SpectracyberConfig? = null
+
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
     var status: Appointment.Status = Status.SCHEDULED
@@ -79,9 +84,11 @@ data class Appointment(
     companion object {
         // 5 hours for guests
         const val GUEST_APPOINTMENT_TIME_CAP: Long = (5 * 60 * 60 * 1000)
-        // 24 hours for students
+        // 24 hours for students and alumni
         const val STUDENT_APPOINTMENT_TIME_CAP: Long = (24 * 60 * 60 * 1000)
-        // 48 hours for members
+        // 48 hours for members, alumni, and researchers
         const val MEMBER_APPOINTMENT_TIME_CAP: Long = (48 * 60 * 60 * 1000)
+        const val RESEARCHER_APPOINTMENT_TIME_CAP: Long = (48 * 60 * 60 * 1000)
+        const val ALUMNUS_APPOINTMENT_TIME_CAP: Long = (48 * 60 * 60 * 1000)
     }
 }
