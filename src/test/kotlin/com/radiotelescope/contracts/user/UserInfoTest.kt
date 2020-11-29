@@ -15,6 +15,8 @@ internal class UserInfoTest {
                 email = "cspath1@ycp.edu",
                 company = "York College of PA",
                 phoneNumber = "717-823-2216",
+                profilePicture = "dummy image",
+                profilePictureApproved = true,
                 active = true,
                 status = User.Status.ACTIVE.label,
                 notificationType = User.NotificationType.PUSHNOTIFICATION,
