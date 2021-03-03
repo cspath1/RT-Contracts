@@ -9,6 +9,7 @@ import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -37,8 +38,8 @@ class WeatherDataListBetweenCreationDatesController(
      * and the method should respond accordingly based on each scenario.
      */
     @GetMapping(value = ["/api/weather-data/listBetweenCreatedDates"])
-    fun execute(@RequestParam("lowerDate") lowerDate: Date,
-                @RequestParam("upperDate") upperDate: Date) : Result {
+    fun execute(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) lowerDate: Date,
+                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) upperDate: Date) : Result {
 
         val form = ListBetweenCreationDatesForm(
                 lowerDate = lowerDate,
