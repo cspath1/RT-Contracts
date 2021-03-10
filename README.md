@@ -110,7 +110,7 @@ Verify your credentials (mysql -u root -p). This will prompt you to enter the pa
 IntelliJ has a built-in database tab that allows you to manage the contents of your database from within the IDE.
 In order to add your localhost database to IntelliJ, do the following:
 
-1. Open Database Tab in IntelliJ
+1. Open Database Tab in IntelliJ. In most cases, this is located on the right-hand side of the screen. On some Linux distributions, you may need to manually access it through `View -> Tool Windows -> Database`.
 2. Add ```radio_telescope``` schema to MySQL using ```create database radio_telescope```
 3. Edit the line in build.gradle
 ```def profile = (project.hasProperty('profile') ? project.profile : 'prod').toLowerCase()```
