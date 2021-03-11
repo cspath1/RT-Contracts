@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # script for running the backend as a container
 
 # check if we have more than 1 argument
