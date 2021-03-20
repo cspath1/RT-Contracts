@@ -6,11 +6,7 @@ import javax.persistence.*
  * Entity Class representing a Sensor Network Configuration for the
  * Sensor Network, which is related to the Radio Telescope.
  * This information will only be updated by the control room, thus,
- * has no contracts implementation thus far.
- *
- * It is possible, if the desire to modify these settings from the
- * mobile or web applications arises, we may need to implement
- * contracts logic and an API call.
+ * has no contracts implementation.
  *
  * This Entity correlates to the sensor_network_config SQL table.
  */
@@ -25,14 +21,38 @@ data class SensorNetworkConfig(
      @Column(name = "telescope_id")
      var telescopeId: Int,
 
-     @Column(name = "sensor_initialization")
-     var sensorInitialization: Int,
-
      @Column(name = "timeout_data_retrieval")
      var timeoutDataRetrieval: Int,
 
      @Column(name = "timeout_initialization")
-     var timeoutInitialization: Int
+     var timeoutInitialization: Int,
+
+     @Column(name = "elevation_temp_1_init")
+     var elevationTemp1Init: Int,
+
+     @Column(name = "elevation_temp_2_init")
+     var elevationTemp2Init: Int,
+
+     @Column(name = "azimuth_temp_1_init")
+     var azimuthTemp1Init: Int,
+
+     @Column(name = "azimuth_temp_2_init")
+     var azimuthTemp2Init: Int,
+
+     @Column(name = "azimuth_accelerometer_init")
+     var azimuthAccelerometerInit: Int,
+
+     @Column(name = "elevation_accelerometer_init")
+     var elevationAccelerometerInit: Int,
+
+     @Column(name = "counterbalance_accelerometer_init")
+     var counterbalanceAccelerometerInit: Int,
+
+     @Column(name = "azimuth_encoder_init")
+     var azimuthEncoderInit: Int,
+
+     @Column(name = "elevation_encoder_init")
+     var elevationEncoderInit: Int
 ) {
 
     @Id
