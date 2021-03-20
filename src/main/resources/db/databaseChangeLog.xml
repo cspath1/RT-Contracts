@@ -60,4 +60,5 @@
     <include file="classpath:/db/changelog/55-make-telescope-orientations-foreign-keys.sql"/>
     <include file="classpath:/db/changelog/56-add-sensor-network-config-table.sql"/>
     <include file="classpath:/db/changelog/57-add-sensor-network-overrides.sql"/>
+    <include file="classpath:/db/changelog/58-add-additional-sensor-initialization.sql"/>
 </databaseChangeLog>
