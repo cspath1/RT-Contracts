@@ -39,4 +39,11 @@ INSERT INTO sensor_overrides(sensor_name, overridden)
 INSERT INTO sensor_overrides(sensor_name, overridden)
     VALUES('EL_PROXIMITY_90', 0);
 
--- rollback drop table sensor_network_config ;
+-- rollback delete from sensor_overrides where
+-- sensor_name = "EL_PROXIMITY_90" or
+-- sensor_name = "EL_PROXIMITY_0" or
+-- sensor_name = "COUNTER_BALANCE_VIBRATION" or
+-- sensor_name = "ELEV_MOTOR_VIBRATION" or
+-- sensor_name = "AZ_MOTOR_VIBRATION" or
+-- sensor_name = "AZIMUTH_ABS_ENCODER" or
+-- sensor_name = "ELEVATION_ABS_ENCODER";
