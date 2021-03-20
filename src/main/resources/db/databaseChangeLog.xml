@@ -59,4 +59,5 @@
     <include file="classpath:/db/changelog/54-make-user_id-in-user_role-foreign-key.sql"/>
     <include file="classpath:/db/changelog/55-make-telescope-orientations-foreign-keys.sql"/>
     <include file="classpath:/db/changelog/56-add-sensor-network-config-table.sql"/>
+    <include file="classpath:/db/changelog/57-add-sensor-network-overrides.sql"/>
 </databaseChangeLog>
