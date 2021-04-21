@@ -1,6 +1,6 @@
 package com.radiotelescope.security
 
-import com.radiotelescope.security.service.RetrieveAuthUserService
+import com.radiotelescope.security.service.RetrieveAuthAdminService
 import com.radiotelescope.repository.log.ILogRepository
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
@@ -19,7 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class RetrieveAuthUserServiceTest : AbstractSpringTest() {
+internal class RetrieveAuthAdminServiceTest : AbstractSpringTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
     @Autowired
@@ -27,7 +27,7 @@ internal class RetrieveAuthUserServiceTest : AbstractSpringTest() {
     @Autowired
     private lateinit var userRepo: IUserRepository
 
-    private lateinit var retrieveAuthUserService: RetrieveAuthUserService
+    private lateinit var retrieveAuthAdminService: RetrieveAuthAdminService
 
     private lateinit var user: User
 
@@ -37,14 +37,14 @@ internal class RetrieveAuthUserServiceTest : AbstractSpringTest() {
         // Status is auto set to ACTIVE in the default create user function
         user = testUtil.createUser("vmaresca@ycp.edu")
 
-        retrieveAuthUserService = RetrieveAuthUserService(
+        retrieveAuthAdminService = RetrieveAuthAdminService(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
         )
     }
 
     @Test
-    fun testSuccessfulExecute(){
+    fun testSuccessfulExecuteAdmin(){
         // Give the user a role of ADMIN
         testUtil.createUserRoleForUser(
                 user = user,
@@ -68,28 +68,26 @@ internal class RetrieveAuthUserServiceTest : AbstractSpringTest() {
         // Login the user through spring
         SecurityContextHolder.getContext().authentication = authenticatedUserToken
 
-        val result = retrieveAuthUserService.execute()
+        val result = retrieveAuthAdminService.execute()
 
         assertNotNull(result)
         assertTrue(result.success is UserSession)
         assertNull(result.error)
     }
-
     @Test
-    fun testFailedStatusValidation(){
-        // Give the user a role of ADMIN
+    fun testFailedExecuteGuest(){
+        // Give the user a role of GUEST so they cannot access this api
         testUtil.createUserRoleForUser(
                 user = user,
-                role = UserRole.Role.ADMIN,
+                role = UserRole.Role.GUEST,
                 isApproved = true
         )
-        user.status = User.Status.BANNED
 
         // Create a list of GrantedAuthority objects that matches the fake user to send to the authUserController
         // Because that is the object type that it is expecting
         val userAuthorities = arrayListOf<SimpleGrantedAuthority>()
         userAuthorities.add(SimpleGrantedAuthority("ROLE_USER"))
-        userAuthorities.add(SimpleGrantedAuthority("ROLE_ADMIN"))
+        userAuthorities.add(SimpleGrantedAuthority("ROLE_GUEST"))
 
         val authenticatedUserToken = AuthenticatedUserToken(
                 email = user.email,
@@ -101,12 +99,13 @@ internal class RetrieveAuthUserServiceTest : AbstractSpringTest() {
         // Login the user through spring
         SecurityContextHolder.getContext().authentication = authenticatedUserToken
 
-        val result = retrieveAuthUserService.execute()
+        val result = retrieveAuthAdminService.execute()
 
         assertNotNull(result)
+        assertNull(result.success)
+        //println("Result errors were: " + result.error)
         assertNotNull(result.error)
-        assertEquals("{STATUS=[Account is currently banned]}", result.error.toString())
-        assertTrue(result.success !is UserSession)
+        assertEquals(result.error.toString(), "{ROLES=[User is not an admin]}")
     }
 
     @Test
@@ -133,7 +132,7 @@ internal class RetrieveAuthUserServiceTest : AbstractSpringTest() {
         // Login the user through spring
         SecurityContextHolder.getContext().authentication = authenticatedUserToken
 
-        val result = retrieveAuthUserService.execute()
+        val result = retrieveAuthAdminService.execute()
 
         assertNotNull(result)
         assertTrue(result.success is UserSession)
