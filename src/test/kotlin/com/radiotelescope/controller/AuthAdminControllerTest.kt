@@ -6,8 +6,7 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AuthenticatedUserToken
-import com.radiotelescope.security.UserContext
-import com.radiotelescope.security.service.RetrieveAuthUserService
+import com.radiotelescope.security.service.RetrieveAuthAdminService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -15,15 +14,13 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.http.HttpStatus
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.junit4.SpringRunner
 
 @DataJpaTest
 @RunWith(SpringRunner::class)
-internal class AuthUserControllerTest : BaseRestControllerTest() {
+internal class AuthAdminControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var logRepo: ILogRepository
     @Autowired
@@ -31,9 +28,9 @@ internal class AuthUserControllerTest : BaseRestControllerTest() {
     @Autowired
     private lateinit var userRoleRepo: IUserRoleRepository
 
-    private lateinit var retrieveAuthUserService: RetrieveAuthUserService
+    private lateinit var retrieveAuthAdminService: RetrieveAuthAdminService
 
-    private lateinit var authUserController: AuthUserController
+    private lateinit var authAdminController: AuthAdminController
 
     private lateinit var user: User
 
@@ -43,14 +40,14 @@ internal class AuthUserControllerTest : BaseRestControllerTest() {
         // Create a user
         user = testUtil.createUser("vmaresca@ycp.edu")
 
-        retrieveAuthUserService = RetrieveAuthUserService(
+        retrieveAuthAdminService = RetrieveAuthAdminService(
                 userRepo = userRepo,
                 userRoleRepo = userRoleRepo
         )
 
         // initialize the authUserController
-        authUserController = AuthUserController(
-                retrieveAuthUserService,
+        authAdminController = AuthAdminController(
+                retrieveAuthAdminService,
                 logger = getLogger()
         )
     }
@@ -79,7 +76,7 @@ internal class AuthUserControllerTest : BaseRestControllerTest() {
 
         SecurityContextHolder.getContext().authentication = authenticatedUserToken
 
-        val result = authUserController.execute()
+        val result = authAdminController.execute()
 
         assertNotNull(result)
         assertTrue(result.data != null)
@@ -91,8 +88,8 @@ internal class AuthUserControllerTest : BaseRestControllerTest() {
     }
 
     @Test
-    fun testSuccessfulGuestResponse(){
-        // Give the user a role of GUEST
+    fun testFailedGuestResponse(){
+        // Give the user a role of GUEST and make sure that a guest cannot access ADMIN information
         testUtil.createUserRoleForUser(
                 user = user,
                 role = UserRole.Role.GUEST,
@@ -114,21 +111,7 @@ internal class AuthUserControllerTest : BaseRestControllerTest() {
 
         SecurityContextHolder.getContext().authentication = authenticatedUserToken
 
-        val result = authUserController.execute()
-
-        assertNotNull(result)
-        assertTrue(result.data != null)
-        assertEquals(HttpStatus.OK, result.status)
-        assertNull(result.errors)
-
-        // Ensure a log record was created, log records are not implemented in userContext
-        //assertEquals(1, logRepo.count())
-    }
-
-    @Test
-    fun testFailedResponse(){
-        // Execute the controller without 'logging in' a user through spring
-        val result = authUserController.execute()
+        val result = authAdminController.execute()
 
         assertNotNull(result)
         assertTrue(result.data == null)
