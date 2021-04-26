@@ -173,7 +173,7 @@ console root user (mentioned above) and they will create an IAM user for you and
 #### Correct Versioning
 For the backend, we use:
 * Java JDK 8, openjdk or through oracle, either way just needs to be jdk 8
-* Gradle 4.7
+* Gradle 4.9
 * Intellij Ultimate Edition (You can get this for free using your YCP email)
 
 #### The super secret properties files
