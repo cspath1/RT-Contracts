@@ -19,6 +19,9 @@ data class AccelerationBlob (
     @Column(name = "id", unique = true, nullable = false)
     private var id: Long = 0
 
+    @Column(name = "time_captured", nullable = false)
+    private var TimeCaptured: Long = 0
+
     fun getId(): Long {
         return id
     }
