@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset dmchugh:119
+-- changeset janderson7:119
 
 DROP TABLE acceleration_blob;
 
