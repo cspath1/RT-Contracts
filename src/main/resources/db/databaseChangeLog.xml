@@ -64,4 +64,5 @@
     <include file="classpath:/db/changelog/59-update-firebase-id-varchar-limit-500.sql"/>
     <include file="classpath:/db/changelog/60-add-acceleration-blob-table.sql"/>
     <include file="classpath:/db/changelog/61-change-acceleration-fields.sql"/>
+    <include file="classpath:/db/changelog/64-acceleration-blob-table-updates.sql"/>
 </databaseChangeLog>
