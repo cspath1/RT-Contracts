@@ -16,16 +16,38 @@ import org.springframework.test.context.junit4.SpringRunner
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = ["classpath:sql/seedAccelerationBlob.sql"])
 internal class AccelerationBlobTest : AbstractSpringTest() {
     @Autowired
-    private lateinit var AccelerationBlobRepo: IAccelerationBlobRepository
+    private lateinit var AzimuthAccelerationBlob: IAzimuthAccelerationBlobRepository
+    @Autowired
+    private lateinit var ElevationAccelerationBlob: IElevationAccelerationBlobRepository
+    @Autowired
+    private lateinit var CounterbalanceAccelerationBlob: ICounterbalanceAccelerationBlobRepository
 
     @Before
     fun setUp() {
-        assertEquals(1, AccelerationBlobRepo.count())
+        assertEquals(1, AzimuthAccelerationBlob.count())
+        assertEquals(1, ElevationAccelerationBlob.count())
+        assertEquals(1, CounterbalanceAccelerationBlob.count())
     }
 
     @Test
-    fun testRetrieveAccelerationBlob() {
-        val acceleration = AccelerationBlobRepo.findById(1)
+    fun testRetrieveAzimuthAccelerationBlob() {
+        val acceleration = AzimuthAccelerationBlob.findById(1)
+
+        assertTrue(acceleration.isPresent)
+        assertEquals(1, acceleration.get().getId())
+    }
+
+    @Test
+    fun testRetrieveElevationAccelerationBlob() {
+        val acceleration = ElevationAccelerationBlob.findById(1)
+
+        assertTrue(acceleration.isPresent)
+        assertEquals(1, acceleration.get().getId())
+    }
+
+    @Test
+    fun testRetrieveCounterbalanceAccelerationBlob() {
+        val acceleration = CounterbalanceAccelerationBlob.findById(1)
 
         assertTrue(acceleration.isPresent)
         assertEquals(1, acceleration.get().getId())
