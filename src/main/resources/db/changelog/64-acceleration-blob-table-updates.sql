@@ -6,7 +6,7 @@ DROP TABLE acceleration_blob;
 
 CREATE TABLE azimuth_acceleration_blob (
                                    id INT(11) NOT NULL AUTO_INCREMENT,
-                                   acc_blob BLOB DEFAULT NULL,
+                                   acc_blob MEDIUMBLOB DEFAULT NULL,
                                    first_time_captured BIGINT(20) DEFAULT NULL,
 
                                    PRIMARY KEY (id)
@@ -14,7 +14,7 @@ CREATE TABLE azimuth_acceleration_blob (
 
 CREATE TABLE elevation_acceleration_blob (
                                     id INT(11) NOT NULL AUTO_INCREMENT,
-                                    acc_blob BLOB DEFAULT NULL,
+                                    acc_blob MEDIUMBLOB DEFAULT NULL,
                                     first_time_captured BIGINT(20) DEFAULT NULL,
 
                                     PRIMARY KEY (id)
@@ -22,7 +22,7 @@ CREATE TABLE elevation_acceleration_blob (
 
 CREATE TABLE counterbalance_acceleration_blob (
                                     id INT(11) NOT NULL AUTO_INCREMENT,
-                                    acc_blob BLOB DEFAULT NULL,
+                                    acc_blob MEDIUMBLOB DEFAULT NULL,
                                     first_time_captured BIGINT(20) DEFAULT NULL,
 
                                     PRIMARY KEY (id)
