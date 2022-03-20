@@ -67,4 +67,5 @@
     <include file="classpath:db/changelog/63-add-software-stops-thresholds.sql"/>
     <include file="classpath:/db/changelog/64-acceleration-blob-table-updates.sql"/>
     <include file="classpath:/db/changelog/65-DHT22-integration.sql"/>
+    <include file="classpath:/db/changelog/66-update-sensor-status.sql"/>
 </databaseChangeLog>
