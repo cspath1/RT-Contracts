@@ -19,8 +19,13 @@ ALTER TABLE thresholds MODIFY COLUMN sensor_name
     'AMBIENT_HUMIDITY'
     );
 
+INSERT INTO thresholds(sensor_name, maximum, minimum)
+    VALUES('AMBIENT_TEMP', 100.0, 95.0);
 
---ALTER TABLE sensor_status
-    --DROP COLUMN minimum;
--- rollback DELETE FROM sensor_overrides WHERE
+INSERT INTO thresholds(sensor_name, maximum, minimum)
+    VALUES('AMBIENT_HUMIDITY', 90.0, 85.0);
+
+-- rollback ALTER TABLE sensor_status
+-- DROP COLUMN minimum;
+-- rollback DELETE FROM thresholds WHERE
 -- sensor_name = "AMBIENT_HUMIDITY" OR sensor_name = "AMBIENT_TEMP";
