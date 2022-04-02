@@ -3,7 +3,7 @@
 -- changeset tfranks:122
 
 ALTER TABLE thresholds
-    ADD minimum FLOAT(7, 4);
+    ADD minimum FLOAT(7, 4) NOT NULL;
 
 ALTER TABLE thresholds MODIFY COLUMN sensor_name
     ENUM(
