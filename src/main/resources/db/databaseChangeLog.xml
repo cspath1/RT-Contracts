@@ -69,4 +69,5 @@
     <include file="classpath:/db/changelog/65-DHT22-integration.sql"/>
     <include file="classpath:/db/changelog/66-update-sensor-status.sql"/>
     <include file="classpath:/db/changelog/67-ambient-temp-humidity-thresholds.sql"/>
+    <include file="classpath:/db/changelog/69-accelerometer-config.sql"/>
 </databaseChangeLog>
