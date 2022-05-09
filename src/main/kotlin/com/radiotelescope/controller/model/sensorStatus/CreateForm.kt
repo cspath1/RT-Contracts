@@ -19,10 +19,18 @@ import com.radiotelescope.controller.model.BaseForm
  */
 data class CreateForm (
         val gate: Int?,
-        val proximity: Int?,
-        val azimuthMotor: Int?,
-        val elevationMotor: Int?,
         val weatherStation: Int?,
+        val elevation_abs_encoder : Int?,
+        val azimuth_abs_encoder: Int?,
+        val el_proximity_0 : Int?,
+        val el_proximity_90 : Int?,
+        val az_motor_temp_1 : Int?,
+        val az_motor_temp_2: Int?,
+        val el_motor_temp_1 : Int?,
+        val el_motor_temp_2 : Int?,
+        val az_accel : Int?,
+        val el_accel : Int?,
+        val counter_balance_accel: Int?,
         val token: String?
 ) : BaseForm<Create.Request> {
     /**
@@ -34,10 +42,18 @@ data class CreateForm (
     override fun toRequest(): Create.Request {
         return Create.Request(
                 gate = gate!!,
-                proximity = proximity!!,
-                azimuthMotor = azimuthMotor!!,
-                elevationMotor = elevationMotor!!,
                 weatherStation = weatherStation!!,
+                elevation_abs_encoder = elevation_abs_encoder!!,
+                azimuth_abs_encoder = azimuth_abs_encoder!!,
+                el_proximity_0 = el_proximity_0!!,
+                el_proximity_90 = el_proximity_90!!,
+                az_motor_temp_1 = az_motor_temp_1!!,
+                az_motor_temp_2 = az_motor_temp_2!!,
+                el_motor_temp_1 = el_motor_temp_1!!,
+                el_motor_temp_2 = el_motor_temp_2!!,
+                az_accel = az_accel!!,
+                el_accel = el_accel!!,
+                counter_balance_accel = counter_balance_accel!!,
                 token = token!!
         )
     }
@@ -52,14 +68,30 @@ data class CreateForm (
 
         if (gate == null)
             errors.put(ErrorTag.GATE, "Required Field")
-        if (proximity == null)
-            errors.put(ErrorTag.PROXIMITY, "Required Field")
-        if (azimuthMotor == null)
-            errors.put(ErrorTag.AZIMUTH_MOTOR, "Required Field")
-        if (elevationMotor == null)
-            errors.put(ErrorTag.ELEVATION_MOTOR, "Required Field")
         if (weatherStation == null)
             errors.put(ErrorTag.WEATHER_STATION, "Required Field")
+        if (elevation_abs_encoder  == null)
+            errors.put(ErrorTag.elevation_abs_encoder , "Required Field")
+        if (azimuth_abs_encoder  == null)
+            errors.put(ErrorTag.azimuth_abs_encoder , "Required Field")
+        if (el_proximity_0  == null)
+            errors.put(ErrorTag.el_proximity_0 , "Required Field")
+        if (el_proximity_90  == null)
+            errors.put(ErrorTag.el_proximity_90 , "Required Field")
+        if (az_motor_temp_1  == null)
+            errors.put(ErrorTag.az_motor_temp_1 , "Required Field")
+        if (az_motor_temp_2 == null)
+            errors.put(ErrorTag.az_motor_temp_2, "Required Field")
+        if (el_motor_temp_1  == null)
+            errors.put(ErrorTag.el_motor_temp_1 , "Required Field")
+        if (el_motor_temp_2  == null)
+            errors.put(ErrorTag.el_motor_temp_2 , "Required Field")
+        if (az_accel  == null)
+            errors.put(ErrorTag.az_accel , "Required Field")
+        if (el_accel == null)
+            errors.put(ErrorTag.el_accel, "Required Field")
+        if (counter_balance_accel  == null)
+            errors.put(ErrorTag.counter_balance_accel , "Required Field")
         if (token == null)
             errors.put(ErrorTag.TOKEN, "Required Field")
 
