@@ -175,7 +175,8 @@ For the backend, we use:
 * Java JDK 8, openjdk or through oracle, either way just needs to be jdk 8
 * Gradle 4.9
 * Intellij Ultimate Edition (You can get this for free using your YCP email)
-
+* make sure to change the "changeset tfranks:" number to 125
+* make sure that your mySql plugins correlate to the version of your mySql installer
 #### The super secret properties files
 
 There is a lot going on with these files, and if something isn't working the problem most likely resides here. Important Things to check:
