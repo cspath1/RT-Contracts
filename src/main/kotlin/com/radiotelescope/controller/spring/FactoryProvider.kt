@@ -21,6 +21,7 @@ import com.radiotelescope.contracts.user.UserUserWrapper
 import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
 import com.radiotelescope.contracts.weatherData.UserWeatherDataWrapper
+import com.radiotelescope.mobileContracts.mobileWeatherData.UserMobileWeatherDataWrapper
 
 /**
  * Interface to get instantiations of all User Wrappers
@@ -145,4 +146,6 @@ interface FactoryProvider {
      * Abstract method to return the [UserFrontpagePictureWrapper] class
      */
     fun getFrontpagePictureWrapper(): UserFrontpagePictureWrapper
+
+    fun getMobileWeatherDataWrapper(): UserMobileWeatherDataWrapper
 }

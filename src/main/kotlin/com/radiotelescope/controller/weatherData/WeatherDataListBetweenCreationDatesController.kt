@@ -3,8 +3,8 @@ package com.radiotelescope.controller.weatherData
 
 import com.radiotelescope.contracts.weatherData.UserWeatherDataWrapper
 import com.radiotelescope.controller.BaseRestController
-import com.radiotelescope.controller.model.weatherData.ListBetweenCreationDatesForm
 import com.radiotelescope.controller.model.Result
+import com.radiotelescope.controller.model.weatherData.ListBetweenCreationDatesForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
