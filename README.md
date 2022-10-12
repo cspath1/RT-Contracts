@@ -190,7 +190,8 @@ There is a lot going on with these files, and if something isn't working the pro
 The backend will not run on any other Java JDK version than 1.8. If the build fails during the compile step, verify the java version it is looking for is correct
 
 The backend may run into another issue with the bean creation: 
-"2022-10-12 11:29:00.140 ERROR 9340 --- [ost-startStop-1] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception: org.springframework.beans.factory.BeanCreationException. Message: Error creating bean with name 'servletEndpointRegistrar' [...] "
+
+"2022-10-12 11:29:00.140 ERROR 9340 --- [ost-startStop-1] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception:      org.springframework.beans.factory.BeanCreationException. Message: Error creating bean with name 'servletEndpointRegistrar' [...] "
     
     
     - Suggested fix is to restart the computer since Tomcat is very moody 
