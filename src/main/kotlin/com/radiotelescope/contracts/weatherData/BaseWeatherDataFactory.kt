@@ -52,4 +52,10 @@ class BaseWeatherDataFactory (
                 weatherDataRepo = weatherDataRepo
         )
     }
+
+    override fun getMostRecent(): Command<WeatherData, Multimap<ErrorTag, String>> {
+        return GetMostRecent(
+            weatherDataRepo = weatherDataRepo
+        )
+    }
 }

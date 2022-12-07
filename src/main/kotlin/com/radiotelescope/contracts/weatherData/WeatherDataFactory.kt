@@ -30,4 +30,6 @@ interface WeatherDataFactory {
      * @return a [Command] object
      */
     fun listBetweenCreationDates(request: ListBetweenCreationDates.Request): Command<List<WeatherData>, Multimap<ErrorTag, String>>
+
+    fun getMostRecent(): Command<WeatherData, Multimap<ErrorTag,String>>
 }

@@ -1,11 +1,13 @@
-package com.radiotelescope.controller.model.weatherData
+package com.radiotelescope.mobileController.mobileModel.MobileWeatherData
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import com.radiotelescope.controller.model.BaseForm
 import com.radiotelescope.contracts.weatherData.Create
 import com.radiotelescope.contracts.weatherData.ErrorTag
+import com.radiotelescope.mobileContracts.mobileWeatherData.MobileCreateWeatherData
 import java.util.*
+
 /**
  * Create form that takes nullable versions of the [Create.Request] object.
  * It is in charge of making sure these values are not null before adapting it
@@ -26,46 +28,48 @@ import java.util.*
  * @param humidity humidity level float
  * @param heatIndex heat index float
  */
-data class CreateForm(
-        val windSpeed: Float?,
-        val windDirectionDeg: Float?,
-        val windDirectionStr: String?,
-        val outsideTemperatureDegF: Float?,
-        val insideTemperatureDegF: Float?,
-        val rainRate: Float?,
-        val rainTotal: Float?,
-        val rainDay: Float?,
-        val rainMonth: Float?,
-        val barometricPressure: Float?,
-        val dewPoint: Float?,
-        val windChill: Float?,
-        val humidity: Float?,
-        val heatIndex: Float?,
-        val timeCaptured: Int?
-) : BaseForm<Create.Request> {
+
+class MobileCreateForm(
+    val windSpeed: Float?,
+    val windDirectionDeg: Float?,
+    val windDirectionStr: String?,
+    val outsideTemperatureDegF: Float?,
+    val insideTemperatureDegF: Float?,
+    val rainRate: Float?,
+    val rainTotal: Float?,
+    val rainDay: Float?,
+    val rainMonth: Float?,
+    val barometricPressure: Float?,
+    val dewPoint: Float?,
+    val windChill: Float?,
+    val humidity: Float?,
+    val heatIndex: Float?,
+    val timeCaptured: Int?
+) : BaseForm<MobileCreateWeatherData.Request>{
     /**
      * Override of the [BaseForm.toRequest] method that
      * adapts the form into a [Create.Request] object
      *
      * @return the [Create.Request] object
      */
-    override fun toRequest(): Create.Request {
-        return Create.Request(
-                windSpeed = windSpeed!!,
-                windDirectionStr = windDirectionStr!!,
-                windDirectionDeg = windDirectionDeg!!,
-                outsideTemperatureDegF = outsideTemperatureDegF!!,
-                insideTemperatureDegF = insideTemperatureDegF!!,
-                rainRate = rainRate!!,
-                rainTotal = rainTotal!!,
-                rainDay = rainDay!!,
-                rainMonth = rainMonth!!,
-                barometricPressure = barometricPressure!!,
-                dewPoint = dewPoint!!,
-                windChill = windChill!!,
-                humidity = humidity!!,
-                heatIndex = heatIndex!!,
-                timeCaptured = timeCaptured!!)
+    override fun toRequest(): MobileCreateWeatherData.Request {
+        return MobileCreateWeatherData.Request(
+            windSpeed = windSpeed!!,
+            windDirectionStr = windDirectionStr!!,
+            windDirectionDeg = windDirectionDeg!!,
+            outsideTemperatureDegF = outsideTemperatureDegF!!,
+            insideTemperatureDegF = insideTemperatureDegF!!,
+            rainRate = rainRate!!,
+            rainTotal = rainTotal!!,
+            rainDay = rainDay!!,
+            rainMonth = rainMonth!!,
+            barometricPressure = barometricPressure!!,
+            dewPoint = dewPoint!!,
+            windChill = windChill!!,
+            humidity = humidity!!,
+            heatIndex = heatIndex!!,
+            timeCaptured = timeCaptured!!
+        )
     }
     /**
      * Makes sure the required fields are not null
@@ -75,8 +79,8 @@ data class CreateForm(
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-       // if (windSpeed == null)
-           // errors.put(ErrorTag.WIND_SPEED, "Required Field")
+        if (windSpeed == null)
+            errors.put(ErrorTag.WIND_SPEED, "Required Field")
         if (windDirectionStr == null)
             errors.put(ErrorTag.WIND_DIRECTION_STR, "Required Field")
         if (windDirectionDeg== null)

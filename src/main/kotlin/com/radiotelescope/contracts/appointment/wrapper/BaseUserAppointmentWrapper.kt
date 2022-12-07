@@ -242,9 +242,7 @@ open class BaseUserAppointmentWrapper(
     fun listBetweenDates(request: ListBetweenDates.Request, withAccess: (result: SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),
-                successCommand = factory.listBetweenDates(
-                        request = request
-                )
+                successCommand = factory.listBetweenDates(request = request)
         ).execute(withAccess)
     }
 

@@ -1,4 +1,4 @@
-package com.radiotelescope.controller.weatherData
+package com.radiotelescope.mobileController.mobileWeatherData
 
 
 import com.radiotelescope.contracts.weatherData.UserWeatherDataWrapper
@@ -6,6 +6,8 @@ import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.weatherData.ListBetweenCreationDatesForm
 import com.radiotelescope.controller.spring.Logger
+import com.radiotelescope.mobileContracts.mobileWeatherData.UserMobileWeatherDataWrapper
+import com.radiotelescope.mobileController.mobileModel.MobileWeatherData.MobileListBetweenCreationDatesForm
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
@@ -14,16 +16,11 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
-/**
- * Rest Controller to handle retrieving a video file path
- *
- * @param logger the [Logger] service
- */
-@RestController
-class WeatherDataListBetweenCreationDatesController(
-        private val weatherDataWrapper: UserWeatherDataWrapper,
-        logger: Logger
-) : BaseRestController(logger) {
+
+class MobileWeatherDatalistBetweenCreationDatesController(
+    private val weatherDataWrapper: UserMobileWeatherDataWrapper,
+    logger: Logger
+) : BaseRestController(logger){
     /**
      * Execute method in charge of listing the weather data records created between the
      * lower and upper dates.
@@ -37,45 +34,48 @@ class WeatherDataListBetweenCreationDatesController(
      * If not, the command object was executed, and was either a success or failure,
      * and the method should respond accordingly based on each scenario.
      */
-    @GetMapping(value = ["/api/weather-data/listBetweenCreatedDates"])
-    fun execute(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) lowerDate: Date?,
-                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) upperDate: Date?) : Result {
+    @GetMapping(value = ["/api/weather-data/mobileListBetweenCreatedDates"])
+    fun execute(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) lowerDate: Date,
+                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) upperDate: Date) : Result{
 
-        val form = ListBetweenCreationDatesForm(
-                lowerDate = lowerDate,
-                upperDate = upperDate
+        val form = MobileListBetweenCreationDatesForm(
+            lowerDate = lowerDate,
+            upperDate = upperDate
         )
 
         // If any of the request params are null, respond with errors
         val errors = form.validateRequest()
-        if(errors != null) {
-            // Create error logs
+        if (errors != null){
+            //create error logs
             logger.createErrorLogs(
-                    info = Logger.createInfo(
-                            affectedTable = Log.AffectedTable.WEATHER_DATA,
-                            action = "Weather Data List Between Creation Times",
-                            affectedRecordId = null,
-                            status = HttpStatus.BAD_REQUEST.value()
-                    ),
-                    errors = errors.toStringMap()
+                info = Logger.createInfo(
+                        affectedTable = Log.AffectedTable.WEATHER_DATA,
+                        action = "Mobile Weather Data List Between Creation Times",
+                        affectedRecordId = null,
+                        status = HttpStatus.BAD_REQUEST.value()
+                ),
+                errors = errors.toStringMap()
             )
             result = Result(errors = errors.toStringMap())
         }
         // Otherwise, call the wrapper method
-        else {
+        else{
             val request = form.toRequest()
-            weatherDataWrapper.listBetweenCreationDates(request) { response ->
+            weatherDataWrapper.listBetweenCreationDates(
+                request
+            ){ response ->
+
                 // If the command was a success
                 response.success?.let { list ->
                     // Create success logs for each retrieval
-                    list.forEach { info ->
+                    list.forEach{ info ->
                         logger.createSuccessLog(
-                                info = Logger.createInfo(
-                                        Log.AffectedTable.WEATHER_DATA,
-                                        action = "Weather Data List Between Times",
-                                        affectedRecordId = info.id,
-                                        status = HttpStatus.OK.value()
-                                )
+                            info = Logger.createInfo(
+                                    Log.AffectedTable.WEATHER_DATA,
+                                    action = "Mobile Weather Data List Between Times",
+                                    affectedRecordId = info.id,
+                                    status = HttpStatus.OK.value()
+                            )
                         )
                     }
 
@@ -86,7 +86,7 @@ class WeatherDataListBetweenCreationDatesController(
                     logger.createErrorLogs(
                             info = Logger.createInfo(
                                     affectedTable = Log.AffectedTable.WEATHER_DATA,
-                                    action = "Weather Data List Between Times",
+                                    action = "Mobile Weather Data List Between Times",
                                     affectedRecordId = null,
                                     status = HttpStatus.BAD_REQUEST.value()
                             ),
@@ -100,10 +100,10 @@ class WeatherDataListBetweenCreationDatesController(
                 // Create error logs
                 logger.createErrorLogs(
                         info = Logger.createInfo(
-                                affectedTable = Log.AffectedTable.WEATHER_DATA,
-                                action = "Weather Data List Between Times",
-                                affectedRecordId = null,
-                                status = HttpStatus.FORBIDDEN.value()
+                            affectedTable = Log.AffectedTable.WEATHER_DATA,
+                            action = "Mobile Weather Data List Between Times",
+                            affectedRecordId = null,
+                            status = HttpStatus.FORBIDDEN.value()
                         ),
                         errors = it.toStringMap()
                 )

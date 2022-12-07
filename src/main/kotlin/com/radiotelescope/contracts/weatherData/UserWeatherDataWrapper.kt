@@ -9,6 +9,7 @@ import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import javax.persistence.Access
 
 /**
  * Wrapper that takes a [WeatherDataFactory] and is responsible for all
@@ -60,13 +61,20 @@ class UserWeatherDataWrapper (
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun listBetweenCreationDates(request: ListBetweenCreationDates.Request, withAccess: (result: SimpleResult<List<WeatherData>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        if(context.currentUserId() != null) {
+        //if(context.currentUserId() != null) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
-                    successCommand = factory.listBetweenCreationDates(request)
+                    successCommand = factory.listBetweenCreationDates(request = request)
             ).execute(withAccess)
-        }
+       // }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
+        //return AccessReport(missingRoles = listOf(UserRole.Role.ADMIN), invalidResourceId = null)
+    }
+
+    fun getMostRecent(withAccess: (result: SimpleResult<WeatherData, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        return context.require(
+            requiredRoles = listOf(UserRole.Role.ADMIN),
+            successCommand = factory.getMostRecent()
+        ).execute(withAccess)
     }
 }

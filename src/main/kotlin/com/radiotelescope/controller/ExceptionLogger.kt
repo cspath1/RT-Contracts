@@ -56,11 +56,11 @@ class ExceptionLogger(
                         action = "Unknown",
                         timestamp = Date(),
                         affectedRecordId = null,
-                        status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+                        status = HttpStatus.UNAUTHORIZED.value()
                 ),
                 errors = logErrors
         )
 
-        return Result(status = HttpStatus.BAD_REQUEST, errors = resultErrors.toMap())
+        return Result(status = HttpStatus.UNAUTHORIZED, errors = resultErrors.toMap())
     }
 }
