@@ -75,8 +75,8 @@ data class CreateForm(
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
 
-        if (windSpeed == null)
-            errors.put(ErrorTag.WIND_SPEED, "Required Field")
+       // if (windSpeed == null)
+           // errors.put(ErrorTag.WIND_SPEED, "Required Field")
         if (windDirectionStr == null)
             errors.put(ErrorTag.WIND_DIRECTION_STR, "Required Field")
         if (windDirectionDeg== null)

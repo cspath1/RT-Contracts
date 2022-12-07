@@ -20,4 +20,8 @@ interface IWeatherDataRepository: PagingAndSortingRepository<WeatherData, Long> 
             nativeQuery = true
     )
     fun findVideosCreatedBetweenDates(lowerDate: Date, upperDate: Date): List<WeatherData>
+
+    @Query(value = "SELECT * FROM weather_data ORDER BY id DESC LIMIT 1",
+            nativeQuery = true)
+    fun getMostRecentWeatherData(): WeatherData
 }

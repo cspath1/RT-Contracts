@@ -10,7 +10,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "weather_data")
 data class WeatherData (
-        @Column(name = "wind_speed", nullable = false)
+       @Column(name = "wind_speed", nullable = false)
         var windSpeed: Float?,
         @Column(name = "wind_direction_deg", nullable = false)
         var windDirectionDeg: Float?,

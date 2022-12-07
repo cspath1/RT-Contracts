@@ -40,6 +40,7 @@ class MobileWeatherDataCreateController(
         // If the form validation fails, respond with errors
         form.validateRequest()?.let {
             // Create error logs
+
             logger.createErrorLogs(
                 info = Logger.createInfo(
                     affectedTable = Log.AffectedTable.WEATHER_DATA,

@@ -23,7 +23,7 @@ data class ListBetweenCreationDatesForm(
         val errors = HashMultimap.create<ErrorTag, String>()
 
         if (lowerDate == null)
-            errors.put(ErrorTag.INSERT_TIMESTAMP, "Required field: Lower Date")
+            errors.put(ErrorTag.INSERT_TIMESTAMP, "Required field: Low Date")
         if (upperDate == null)
             errors.put(ErrorTag.INSERT_TIMESTAMP, "Required field: Upper Date")
 
