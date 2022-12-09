@@ -1,0 +1,30 @@
+INSERT INTO sensor_network_config(
+    id,
+    telescope_id,
+    timeout_data_retrieval,
+    timeout_initialization,
+    elevation_temp_1_init,
+    elevation_temp_2_init,
+    azimuth_temp_1_init,
+    azimuth_temp_2_init,
+    azimuth_accelerometer_init,
+    elevation_accelerometer_init,
+    counterbalance_accelerometer_init,
+    azimuth_encoder_init,
+    elevation_encoder_init
+)
+VALUES(
+    1,
+    2,
+    3,
+    4,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+);

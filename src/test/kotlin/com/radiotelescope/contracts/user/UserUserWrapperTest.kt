@@ -12,6 +12,7 @@ import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.FakeUserContext
+import com.radiotelescope.services.s3.MockAwsS3DeleteService
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -82,7 +83,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 accountActivateTokenRepo = accountActivateTokenRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                loginAttemptRepo = loginAttemptRepo
+                loginAttemptRepo = loginAttemptRepo,
+                deleteService = MockAwsS3DeleteService(true)
         )
 
         wrapper = UserUserWrapper(
@@ -187,6 +189,25 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
     }
 
     @Test
+    fun testValidRetrieve_Alumnus_Success() {
+        // Simulate login as admin
+        context.login(otherUserId)
+        context.currentRoles.add(UserRole.Role.ALUMNUS)
+
+        var userInfo: UserInfo? = null
+
+        val error = wrapper.retrieve(
+                request = userId
+        ) {
+            userInfo = it.success
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+        assertNotNull(userInfo)
+    }
+
+    @Test
     fun testValidRetrieve_Admin_InvalidId_Failure() {
         // Simulate login as an admin
         context.login(otherUserId)
@@ -266,6 +287,25 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
     }
 
     @Test
+    fun testValidList_Alumnus_Success() {
+        // Log the user in and make them an admin
+        context.login(otherUserId)
+        context.currentRoles.addAll(listOf(UserRole.Role.ALUMNUS, UserRole.Role.USER))
+
+        var info: Page<UserInfo> = PageImpl<UserInfo>(arrayListOf())
+
+        val error = wrapper.list(
+                request = PageRequest.of(0, 5)
+        ) {
+            info = it.success!!
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+        assertEquals(2, info.content.size)
+    }
+
+    @Test
     fun testInvalidList_UserNotLoggedIn_Failure() {
         val error = wrapper.list(
                 request = PageRequest.of(0, 5)
@@ -306,7 +346,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         firstName = "Rathana",
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
-                        company = "York College of Pennsylvania"
+                        company = "York College of Pennsylvania",
+                        notificationType = "SMS"
                 )
         ){
             id = it.success!!
@@ -330,7 +371,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         firstName = "Rathana",
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
-                        company = "York College of Pennsylvania"
+                        company = "York College of Pennsylvania",
+                        notificationType = "SMS"
                 )
         ){
             id = it.success!!
@@ -353,7 +395,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         firstName = "Rathana",
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
-                        company = "York College of Pennsylvania"
+                        company = "York College of Pennsylvania",
+                        notificationType = "SMS"
                 )
         ) {
             fail("Should fail on precondition")
@@ -375,7 +418,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         firstName = "Rathana",
                         lastName = "Pim",
                         phoneNumber = "717-555-1111",
-                        company = "York College of Pennsylvania"
+                        company = "York College of Pennsylvania",
+                        notificationType = "SMS"
                 )
         ){
             fail("Should fail on precondition")
@@ -395,7 +439,8 @@ internal class UserUserWrapperTest : AbstractSpringTest() {
                         firstName = "Codiferous",
                         lastName = "Spath",
                         phoneNumber = "717-823-2216",
-                        company = "Business, None of Your, Inc."
+                        company = "Business, None of Your, Inc.",
+                        notificationType = "SMS"
                 )
         ) {
             fail("Should fail on precondition")

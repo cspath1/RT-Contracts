@@ -10,6 +10,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.assertTrue
@@ -45,6 +46,9 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var allottedTimeCapRepo: IAllottedTimeCapRepository
 
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
+
     private lateinit var factory: CoordinateAppointmentFactory
 
     @Before
@@ -56,7 +60,8 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
                 userRepo = userRepo,
                 coordinateRepo = coordinateRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
     }
 
@@ -73,7 +78,6 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
                         telescopeId = 1L,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 69.0
                 )
         )
@@ -95,7 +99,6 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
                         priority = Appointment.Priority.PRIMARY,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 42.0
                 )
         )
@@ -117,7 +120,6 @@ internal class CoordinateAppointmentFactoryTest : AbstractSpringTest() {
                         priority = Appointment.Priority.PRIMARY,
                         hours = 12,
                         minutes = 12,
-                        seconds = 12,
                         declination = 69.0
                 )
         )

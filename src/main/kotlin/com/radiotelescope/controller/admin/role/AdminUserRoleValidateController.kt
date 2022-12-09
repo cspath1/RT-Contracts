@@ -7,11 +7,14 @@ import com.radiotelescope.controller.model.Profile
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.role.ValidateForm
 import com.radiotelescope.controller.model.ses.AppLink
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
+import com.radiotelescope.controller.model.sns.SnsSubscribeForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.log.Log
 import com.radiotelescope.service.ses.IAwsSesSendService
+import com.radiotelescope.service.sns.IAwsSnsService
 import com.radiotelescope.toStringMap
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -27,8 +30,12 @@ class AdminUserRoleValidateController(
         private val roleWrapper: UserUserRoleWrapper,
         private val profile: Profile,
         private val awsSesSendService: IAwsSesSendService,
+        private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger) {
+    @Value("\${amazon.aws.sns.default-topic}")
+    lateinit var defaultSendTopic: String
+
     /**
      * Execute method that is in charge of adapting a [ValidateForm]
      * to a [Validate.Request] command (if possible). Otherwise, it
@@ -72,6 +79,19 @@ class AdminUserRoleValidateController(
                             )
                     )
 
+                    subscribeEndpoint(
+                            endpoint = theResponse.email,
+                            type = "email"
+                    )
+
+                    // If the user has input a phone number, subscribe it to the default topic
+                    if (theResponse.phoneNumber != null) {
+                        subscribeEndpoint(
+                                endpoint = theResponse.phoneNumber,
+                                type = "sms"
+                        )
+                    }
+
                     sendEmail(
                             email = theResponse.email,
                             token = theResponse.token
@@ -114,12 +134,28 @@ class AdminUserRoleValidateController(
         return result
     }
 
+    /**
+     * Subscribe a user to the default announcement topic.
+     *
+     * @param endpoint the endpoint to subscribe
+     * @param type the type of the endpoint: must be "sms" or "email"
+     */
+    private fun subscribeEndpoint(endpoint: String, type: String) {
+        val subscribeForm = SnsSubscribeForm(
+                topic = defaultSendTopic,
+                protocol = type,
+                endpoint = endpoint
+        )
+
+        awsSnsService.subscribe(subscribeForm)
+    }
+
     private fun sendEmail(email: String, token: String) {
         val activateAccountLink = AppLink.generate(profile) + "/activateAccount?token=" + token
 
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Account Approved",
                 htmlBody = "<p>Your account has been approved!</p>" +
                         "<p>Please <a href='$activateAccountLink'>click here </a> to activate your account so you can start</p> " +

@@ -48,14 +48,12 @@ internal class RasterScanAppointmentUpdateTest : AbstractSpringTest() {
     private var coordinateRequestOne = CoordinateRequest(
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 45.0
     )
 
     private var coordinateRequestTwo = CoordinateRequest(
             hours = 13,
             minutes = 13,
-            seconds = 13,
             declination = 25.0
     )
 
@@ -558,7 +556,7 @@ internal class RasterScanAppointmentUpdateTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.MINUTES].isNotEmpty())
     }
-
+    /*
     @Test
     fun testSecondsTooLow_Failure() {
         // Give the user 5 hours time
@@ -628,7 +626,7 @@ internal class RasterScanAppointmentUpdateTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testDeclinationTooLow_Failure() {
         // Give the user 5 hours time

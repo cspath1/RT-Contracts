@@ -8,7 +8,6 @@ internal class CoordinateFormTest {
     private val baseForm = CoordinateForm(
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 45.0
     )
 
@@ -21,7 +20,6 @@ internal class CoordinateFormTest {
 
         assertEquals(theRequest.hours, baseForm.hours!!)
         assertEquals(theRequest.minutes, baseForm.minutes!!)
-        assertEquals(theRequest.seconds, baseForm.seconds!!)
         assertEquals(theRequest.declination, baseForm.declination!!, 0.0001)
     }
 
@@ -63,7 +61,7 @@ internal class CoordinateFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
     }
-
+    /*
     @Test
     fun testNullSeconds_Failure() {
         // Create a copy of the form with a null seconds field
@@ -78,7 +76,7 @@ internal class CoordinateFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testNullDeclination_Failure() {
         // Create a copy of the form with a null declination field

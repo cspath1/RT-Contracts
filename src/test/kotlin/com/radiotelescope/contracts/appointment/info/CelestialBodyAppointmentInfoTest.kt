@@ -1,14 +1,20 @@
 package com.radiotelescope.contracts.appointment.info
 
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.celestialBody.CelestialBody
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
-internal class CelestialBodyAppointmentInfoTest {
+@DataJpaTest
+@RunWith(SpringRunner::class)
+internal class CelestialBodyAppointmentInfoTest : AbstractSpringTest() {
     private var startTime = Date(System.currentTimeMillis() + 10000L)
     private var endTime = Date(System.currentTimeMillis() + 30000L)
 
@@ -30,13 +36,12 @@ internal class CelestialBodyAppointmentInfoTest {
                 celestialBodyName = "Alpha Centauri",
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
-                declination = 69.0
+                declination = 69.0,
+                spectracyberConfigId = 1L
         )
 
         assertEquals(1L, info.id)
@@ -52,16 +57,14 @@ internal class CelestialBodyAppointmentInfoTest {
         assertEquals(Appointment.Type.CELESTIAL_BODY.label, info.type)
         assertEquals(Appointment.Priority.PRIMARY.label, info.priority)
 
-        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesSecondsToDegrees(
+        val hoursMinutesSecondsInDegrees = Coordinate.hoursMinutesToDegrees(
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         assertEquals(hoursMinutesSecondsInDegrees, info.rightAscension)
         assertEquals(12, info.hours)
         assertEquals(12, info.minutes)
-        assertEquals(12, info.seconds)
         assertEquals(69.0, info.declination)
     }
 
@@ -89,11 +92,9 @@ internal class CelestialBodyAppointmentInfoTest {
         celestialBody.coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 5,
-                        minutes = 34,
-                        seconds = 32
+                        minutes = 34
                 ),
                 declination = 22.0
         )
@@ -102,6 +103,7 @@ internal class CelestialBodyAppointmentInfoTest {
         appointment.id = 1L
         appointment.status = Appointment.Status.SCHEDULED
         appointment.celestialBody = celestialBody
+        appointment.spectracyberConfig = testUtil.createDefaultSpectracyberConfig()
 
         val appointmentInfo = CelestialBodyAppointmentInfo(appointment)
 
@@ -121,6 +123,5 @@ internal class CelestialBodyAppointmentInfoTest {
         assertEquals(appointment.celestialBody!!.coordinate!!.declination, appointmentInfo.declination)
         assertEquals(appointment.celestialBody!!.coordinate!!.hours, appointmentInfo.hours)
         assertEquals(appointment.celestialBody!!.coordinate!!.minutes, appointmentInfo.minutes)
-        assertEquals(appointment.celestialBody!!.coordinate!!.seconds, appointmentInfo.seconds)
     }
 }

@@ -36,11 +36,12 @@ class UserUserRoleWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun unapprovedList(pageable: Pageable, withAccess: (result: SimpleResult<Page<UserRoleInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        if (context.currentUserId() != null)
+        if (context.currentUserId() != null) {
             return context.require(
                     requiredRoles = listOf(UserRole.Role.ADMIN),
                     successCommand = factory.unapprovedList(pageable)
             ).execute(withAccess)
+        }
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN), invalidResourceId = null)
     }
@@ -73,13 +74,13 @@ class UserUserRoleWrapper(
      */
     fun retrieve(id: Long, withAccess: (result: SimpleResult<UserRoleInfo, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         context.currentUserId()?.let {
-            return context.require(
-                    requiredRoles = listOf(UserRole.Role.ADMIN),
+            return context.requireAny(
+                    requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.ALUMNUS),
                     successCommand = factory.retrieve(id)
             ).execute(withAccess)
         }
 
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN), invalidResourceId = null)
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN, UserRole.Role.ALUMNUS), invalidResourceId = null)
     }
 
     /**

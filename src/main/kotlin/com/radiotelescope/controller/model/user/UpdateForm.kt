@@ -22,7 +22,8 @@ data class UpdateForm(
         val firstName: String?,
         val lastName: String?,
         val phoneNumber: String?,
-        val company: String?
+        val company: String?,
+        val notificationType: String?
 ) : BaseForm<Update.Request> {
     /**
      * Override of the [BaseForm.toRequest] method that adapts
@@ -34,7 +35,8 @@ data class UpdateForm(
                 firstName = firstName!!,
                 lastName = lastName!!,
                 phoneNumber = phoneNumber,
-                company = company
+                company = company,
+                notificationType = notificationType!!
         )
     }
 
@@ -45,12 +47,14 @@ data class UpdateForm(
      */
     fun validateRequest(): Multimap<ErrorTag, String>? {
         val errors = HashMultimap.create<ErrorTag, String>()
-        if(id == null || id <= 0 )
+        if(id == null || id <= 0)
             errors.put(ErrorTag.ID, "ID may not be blank")
         if (firstName.isNullOrBlank())
             errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
         if (lastName.isNullOrBlank())
             errors.put(ErrorTag.LAST_NAME, "Last Name may not be blank")
+        if (notificationType.isNullOrBlank())
+            errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification Type may not be blank")
         return if (errors.isEmpty) null else errors
     }
 }

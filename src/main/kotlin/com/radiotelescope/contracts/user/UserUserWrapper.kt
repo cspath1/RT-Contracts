@@ -7,6 +7,7 @@ import com.radiotelescope.contracts.SimpleResult
 import com.radiotelescope.repository.model.user.SearchCriteria
 import com.radiotelescope.repository.role.UserRole
 import com.radiotelescope.repository.user.IUserRepository
+import com.radiotelescope.repository.user.User
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.security.UserContext
 import com.radiotelescope.toStringMap
@@ -70,8 +71,8 @@ class UserUserWrapper(
                             successCommand = factory.retrieve(request)
                     ).execute(withAccess)
                 } else {
-                    context.require(
-                            requiredRoles = listOf(UserRole.Role.ADMIN),
+                    context.requireAny(
+                            requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.ALUMNUS),
                             successCommand = factory.retrieve(request)
                     ).execute(withAccess)
                 }
@@ -90,14 +91,14 @@ class UserUserWrapper(
      * @return An [AccessReport] if authentication fails, null otherwise
      */
     fun list(request: Pageable, withAccess: (result: SimpleResult<Page<UserInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
-        if (context.currentUserId() != null)
-            return context.require(
-                    requiredRoles = listOf(UserRole.Role.ADMIN),
+        if (context.currentUserId() != null) {
+            return context.requireAny(
+                    requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.ALUMNUS),
                     successCommand = factory.list(request)
             ).execute(withAccess)
+        }
 
-
-        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN), invalidResourceId = null)
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER, UserRole.Role.ADMIN, UserRole.Role.ALUMNUS), invalidResourceId = null)
     }
 
     /**
@@ -128,6 +129,59 @@ class UserUserWrapper(
                     ).execute(withAccess)
                 }
             }
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
+     * Wrapper method for the [UserFactory.updateProfilePicture] method used to add
+     * Spring Security authentication to the [UpdateProfilePicture] command object
+     *
+     * @param request the [UpdateProfilePicture.Request] object
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun updateProfilePicture(request: UpdateProfilePicture.Request, withAccess: (result: SimpleResult<Long, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        // If the user is logged in
+        if (context.currentUserId() != null) {
+            if (!userRepo.existsById(request.id)) {
+                return AccessReport(missingRoles = null, invalidResourceId = invalidUserIdErrors(request.id))
+            } else {
+                // If the user exists, they must either be the owner or an admin
+                val theUser = userRepo.findById(request.id).get()
+                return if (theUser.id == context.currentUserId()) {
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.USER),
+                            successCommand = factory.updateProfilePicture(request)
+                    ).execute(withAccess)
+                } else {
+                    context.require(
+                            requiredRoles = listOf(UserRole.Role.ADMIN),
+                            successCommand = factory.updateProfilePicture(request)
+                    ).execute(withAccess)
+                }
+            }
+        }
+
+        return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)
+    }
+
+    /**
+     * Wrapper method for the [UserFactory.approveDenyProfilePicture] method used to add
+     * Spring Security authentication to the [ApproveDeny] command object
+     *
+     * @param request the [ApproveDeny.Request] object
+     * @param withAccess anonymous function that uses the command's result object
+     * @return An [AccessReport] if authentication fails, null otherwise
+     */
+    fun approveDenyProfilePicture(request: ApproveDeny.Request, withAccess: (result: SimpleResult<User, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
+        // If the user is logged in
+        if (context.currentUserId() != null) {
+            return context.require(
+                    requiredRoles = listOf(UserRole.Role.ADMIN),
+                    successCommand = factory.approveDenyProfilePicture(request)
+            ).execute(withAccess)
         }
 
         return AccessReport(missingRoles = listOf(UserRole.Role.USER), invalidResourceId = null)

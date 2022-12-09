@@ -64,6 +64,8 @@ class Validate(
                 UserRole.Role.GUEST -> Appointment.GUEST_APPOINTMENT_TIME_CAP
                 UserRole.Role.STUDENT -> Appointment.STUDENT_APPOINTMENT_TIME_CAP
                 UserRole.Role.MEMBER -> Appointment.MEMBER_APPOINTMENT_TIME_CAP
+                UserRole.Role.RESEARCHER -> Appointment.RESEARCHER_APPOINTMENT_TIME_CAP
+                UserRole.Role.ALUMNUS -> Appointment.ALUMNUS_APPOINTMENT_TIME_CAP
                 else -> null
             }
 
@@ -83,6 +85,7 @@ class Validate(
             val theResponse = Response(
                     id = id,
                     email = theUser.email,
+                    phoneNumber = theUser.phoneNumber,
                     token = generateActivateAccountToken(theUser)
             )
             return SimpleResult(theResponse, null)
@@ -128,7 +131,6 @@ class Validate(
 
         return theAccountActivateToken.token
     }
-
     /**
      * Method responsible for constraint checking and validations for the
      * [UserRole] approval. It ensures the [UserRole] exists and is not
@@ -179,6 +181,7 @@ class Validate(
     data class Response(
             val id: Long,
             val email: String,
+            val phoneNumber: String?,
             val token: String
     )
 }

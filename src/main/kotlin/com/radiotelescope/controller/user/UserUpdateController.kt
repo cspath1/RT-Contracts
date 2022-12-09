@@ -5,10 +5,13 @@ import com.radiotelescope.contracts.user.Update
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.user.UpdateForm
 import com.radiotelescope.controller.model.Result
+import com.radiotelescope.controller.model.sns.SnsSubscribeForm
 import com.radiotelescope.toStringMap
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
+import com.radiotelescope.service.sns.IAwsSnsService
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -21,8 +24,12 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class UserUpdateController(
         private val userWrapper: UserUserWrapper,
+        private val awsSnsService: IAwsSnsService,
         logger: Logger
 ) : BaseRestController(logger){
+    @Value("\${amazon.aws.sns.default-topic}")
+    lateinit var defaultSendTopic: String
+
     /**
      * Execute method that is in charge of taking the [UpdateForm]
      * and adapting it to the a [Update.Request] if possible.
@@ -73,6 +80,13 @@ class UserUpdateController(
                                     status = HttpStatus.OK.value()
                             )
                     )
+
+                    if (form.phoneNumber != null) {
+                        subscribeEndpoint(
+                                endpoint = form.phoneNumber,
+                                type = "sms"
+                        )
+                    }
                 }
                 // Otherwise, it was a failure
                 response.error?.let { error ->
@@ -116,5 +130,21 @@ class UserUpdateController(
         }
 
         return result
+    }
+
+    /**
+     * Subscribe a user to the default announcement topic.
+     *
+     * @param endpoint the endpoint to subscribe
+     * @param type the type of the endpoint: must be "sms" or "email"
+     */
+    private fun subscribeEndpoint(endpoint: String, type: String) {
+        val subscribeForm = SnsSubscribeForm(
+                topic = defaultSendTopic,
+                protocol = type,
+                endpoint = endpoint
+        )
+
+        awsSnsService.subscribe(subscribeForm)
     }
 }

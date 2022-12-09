@@ -64,8 +64,8 @@ open class BaseUserAppointmentWrapper(
                     successCommand = factory.retrieve(id)
             ).execute(withAccess)
         } else {
-            return context.require(
-                    requiredRoles = listOf(UserRole.Role.ADMIN),
+            return context.requireAny(
+                    requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.ALUMNUS),
                     successCommand = factory.retrieve(id)
             ).execute(withAccess)
         }
@@ -91,10 +91,10 @@ open class BaseUserAppointmentWrapper(
                         )
                 ).execute(withAccess)
             }
-            // Otherwise, they need to be an admin
+            // Otherwise, they need to be an admin or alumnus
             else {
-                return context.require(
-                        requiredRoles = listOf(UserRole.Role.ADMIN),
+                return context.requireAny(
+                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.ALUMNUS),
                         successCommand = factory.userFutureList(
                                 userId = userId,
                                 pageable = pageable
@@ -126,8 +126,8 @@ open class BaseUserAppointmentWrapper(
                         )
                 ).execute(withAccess)
             } else {
-                context.require(
-                        requiredRoles = listOf(UserRole.Role.ADMIN),
+                context.requireAny(
+                        requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.ALUMNUS),
                         successCommand = factory.userCompletedList(
                                 userId = userId,
                                 pageable = pageable
@@ -242,9 +242,7 @@ open class BaseUserAppointmentWrapper(
     fun listBetweenDates(request: ListBetweenDates.Request, withAccess: (result: SimpleResult<List<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         return context.require(
                 requiredRoles = listOf(UserRole.Role.USER),
-                successCommand = factory.listBetweenDates(
-                        request = request
-                )
+                successCommand = factory.listBetweenDates(request = request)
         ).execute(withAccess)
     }
 
@@ -275,8 +273,8 @@ open class BaseUserAppointmentWrapper(
      */
     fun requestedList(pageable: Pageable, withAccess: (result: SimpleResult<Page<AppointmentInfo>, Multimap<ErrorTag, String>>) -> Unit): AccessReport? {
         if(context.currentUserId() != null) {
-            return context.require(
-                    requiredRoles = listOf(UserRole.Role.ADMIN),
+            return context.requireAny(
+                    requiredRoles = listOf(UserRole.Role.ADMIN, UserRole.Role.ALUMNUS),
                     successCommand = factory.requestedList(
                             pageable = pageable
                     )

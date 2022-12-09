@@ -15,6 +15,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 
@@ -28,7 +29,8 @@ class DriftScanAppointmentFactory(
         private val userRoleRepo: IUserRoleRepository,
         private val orientationRepo: IOrientationRepository,
         private val allottedTimeCapRepo: IAllottedTimeCapRepository,
-        private val coordinateRepo: ICoordinateRepository
+        private val coordinateRepo: ICoordinateRepository,
+        private val spectracyberConfigRepo: ISpectracyberConfigRepository
 ) : AutoAppointmentFactory, BaseAppointmentFactory(
         appointmentRepo = appointmentRepo,
         userRepo = userRepo,
@@ -51,7 +53,8 @@ class DriftScanAppointmentFactory(
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRoleRepo = userRoleRepo,
                 orientationRepo = orientationRepo,
-                allottedTimeCapRepo = allottedTimeCapRepo
+                allottedTimeCapRepo = allottedTimeCapRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
     }
 
@@ -87,7 +90,8 @@ class DriftScanAppointmentFactory(
                 appointmentRepo = appointmentRepo,
                 userRepo = userRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
     }
 }

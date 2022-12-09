@@ -1,13 +1,19 @@
 package com.radiotelescope.contracts.appointment.info
 
+import com.radiotelescope.AbstractSpringTest
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.user.User
 import org.junit.Assert.*
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
-internal class MultiPointAppointmentInfoTest {
+@DataJpaTest
+@RunWith(SpringRunner::class)
+internal class MultiPointAppointmentInfoTest : AbstractSpringTest() {
     private var startTime = Date(System.currentTimeMillis() + 10000L)
     private var endTime = Date(System.currentTimeMillis() + 30000L)
 
@@ -26,7 +32,8 @@ internal class MultiPointAppointmentInfoTest {
                 status = Appointment.Status.SCHEDULED.label,
                 type = Appointment.Type.RASTER_SCAN.label,
                 priority = Appointment.Priority.PRIMARY.label,
-                coordinates = arrayListOf()
+                coordinates = arrayListOf(),
+                spectracyberConfigId = 1L
         )
 
         assertEquals(1L, info.id)
@@ -66,30 +73,26 @@ internal class MultiPointAppointmentInfoTest {
 
         // Two coordinates
         val coordinateOne = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 12,
-                        minutes = 12,
-                        seconds = 12
+                        minutes = 12
                 ),
                 declination = 69.0,
                 hours = 12,
-                minutes = 12,
-                seconds = 12
+                minutes = 12
         )
 
         coordinateOne.appointment = appointment
         appointment.coordinateList.add(coordinateOne)
 
         val coordinateTwo = Coordinate(
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 13,
-                        minutes = 13,
-                        seconds = 13
+                        minutes = 13
                 ),
                 declination = 70.0,
                 hours = 13,
-                minutes = 13,
-                seconds = 13
+                minutes = 13
         )
 
         coordinateTwo.appointment = appointment
@@ -98,6 +101,7 @@ internal class MultiPointAppointmentInfoTest {
         appointment.user = user
         appointment.id = 1L
         appointment.status = Appointment.Status.SCHEDULED
+        appointment.spectracyberConfig = testUtil.createDefaultSpectracyberConfig()
 
         val appointmentInfo = MultiPointAppointmentInfo(appointment)
 

@@ -58,6 +58,8 @@ class UserAvailableTimeController (
                         )
                 )
 
+
+
                 result = Result(data = time)
             }
             // Otherwise it was a failure

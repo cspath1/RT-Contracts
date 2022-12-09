@@ -9,6 +9,7 @@ import com.radiotelescope.repository.log.Log
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.toStringMap
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -27,7 +28,7 @@ class AppointmentListBetweenDatesController (
 ) : BaseRestController(logger){
     /**
      * Execute method that is in charge of returning a list of appointments
-     * between the two given time.
+     * between the two given times.
      *
      * If the fields in the [ListBetweenDatesForm] are null or invalid,
      * respond with errors. Otherwise, call the [UserAutoAppointmentWrapper.listBetweenDates]
@@ -40,8 +41,8 @@ class AppointmentListBetweenDatesController (
      */
     @GetMapping(value = ["/api/appointments/telescopes/{telescopeId}/listBetweenDates"])
     @CrossOrigin(value = ["http://localhost:8081"])
-    fun execute(@RequestParam("startTime" ) startTime: Date,
-                @RequestParam("endTime") endTime: Date,
+    fun execute(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) startTime: Date,
+                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) endTime: Date,
                 @PathVariable("telescopeId") telescopeId: Long
     ): Result {
         val form = ListBetweenDatesForm(

@@ -4,7 +4,7 @@ import com.radiotelescope.contracts.viewer.SharePrivateAppointment
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.log.Log
@@ -101,9 +101,9 @@ class ViewerSharePrivateController(
 
 
     private fun sendEmail(email: String, appointmentId: Long) {
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = listOf(email),
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Share Private Appointment",
                 htmlBody = "<p>Appointment #$appointmentId has been shared with you."
         )

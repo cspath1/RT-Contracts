@@ -30,7 +30,6 @@ internal class CelestialBodyCreateControllerTest : BaseCelestialBodyRestControll
             name = "Crab Nebula",
             hours = 5,
             minutes = 34,
-            seconds = 32,
             declination = 20.0
     )
 

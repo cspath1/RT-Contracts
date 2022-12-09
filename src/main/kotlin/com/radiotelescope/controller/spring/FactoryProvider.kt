@@ -7,13 +7,21 @@ import com.radiotelescope.contracts.appointment.wrapper.UserManualAppointmentWra
 import com.radiotelescope.contracts.appointment.create.DriftScanAppointmentCreate
 import com.radiotelescope.contracts.celestialBody.UserCelestialBodyWrapper
 import com.radiotelescope.contracts.feedback.UserFeedbackWrapper
+import com.radiotelescope.contracts.frontpagePicture.UserFrontpagePictureWrapper
 import com.radiotelescope.contracts.log.AdminLogWrapper
 import com.radiotelescope.contracts.resetPasswordToken.UserResetPasswordTokenWrapper
 import com.radiotelescope.contracts.rfdata.UserRFDataWrapper
 import com.radiotelescope.contracts.role.UserUserRoleWrapper
+import com.radiotelescope.contracts.sensorOverrides.UserSensorOverridesWrapper
+import com.radiotelescope.contracts.sensorStatus.UserSensorStatusWrapper
+import com.radiotelescope.contracts.spectracyberConfig.UserSpectracyberConfigWrapper
+import com.radiotelescope.contracts.thresholds.UserThresholdsWrapper
 import com.radiotelescope.contracts.updateEmailToken.UserUpdateEmailTokenWrapper
 import com.radiotelescope.contracts.user.UserUserWrapper
+import com.radiotelescope.contracts.videoFile.UserVideoFileWrapper
 import com.radiotelescope.contracts.viewer.UserViewerWrapper
+import com.radiotelescope.contracts.weatherData.UserWeatherDataWrapper
+import com.radiotelescope.mobileContracts.mobileWeatherData.UserMobileWeatherDataWrapper
 
 /**
  * Interface to get instantiations of all User Wrappers
@@ -100,7 +108,44 @@ interface FactoryProvider {
     fun getFeedbackWrapper(): UserFeedbackWrapper
 
     /**
+     * Abstract method to return the [UserVideoFileWrapper] class
+     */
+    fun getVideoFileWrapper(): UserVideoFileWrapper
+
+    /**
+     * Abstract method to return the [UserSensorStatusWrapper] class
+     */
+    fun getSensorStatusWrapper(): UserSensorStatusWrapper
+
+    /**
      * Abstract method to return the [UserAllottedTimeCapWrapper] class
      */
     fun getAllottedTimeCapWrapper(): UserAllottedTimeCapWrapper
+
+    /**
+     * Abstract method to return the [UserWeatherDataWrapper] class
+     */
+    fun getWeatherDataWrapper(): UserWeatherDataWrapper
+
+    /**
+     * Abstract method to return the [UserSpectracyberConfigWrapper] class
+     */
+    fun getSpectracyberConfigWrapper(): UserSpectracyberConfigWrapper
+
+    /**
+     * Abstract method to return the [UserThresholdsWrapper]  class
+     */
+    fun getThresholdsWrapper(): UserThresholdsWrapper
+
+    /**
+     * Abstract method to return the [UserSensorOverridesWrapper]  class
+     */
+    fun getSensorOverridesWrapper(): UserSensorOverridesWrapper
+
+    /**
+     * Abstract method to return the [UserFrontpagePictureWrapper] class
+     */
+    fun getFrontpagePictureWrapper(): UserFrontpagePictureWrapper
+
+    fun getMobileWeatherDataWrapper(): UserMobileWeatherDataWrapper
 }

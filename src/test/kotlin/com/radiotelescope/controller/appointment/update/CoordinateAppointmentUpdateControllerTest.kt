@@ -70,7 +70,6 @@ internal class CoordinateAppointmentUpdateControllerTest : BaseAppointmentRestCo
                 isPublic = appointment.isPublic,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 42.0,
                 priority = Appointment.Priority.PRIMARY
         )

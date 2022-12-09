@@ -5,6 +5,7 @@ import com.radiotelescope.contracts.appointment.ErrorTag
 import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -34,6 +35,9 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
     @Autowired
     private lateinit var coordinateRepo: ICoordinateRepository
 
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
+
     private lateinit var baseRequest: StartFreeControlAppointment.Request
 
     private lateinit var user: User
@@ -48,7 +52,6 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 duration = 30,
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
                 declination = 22.0,
                 isPublic = true
         )
@@ -62,7 +65,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a success
@@ -82,6 +86,10 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
         val startTime = theAppointment.startTime
         val endTime = Date(startTime.time + (baseRequest.duration * 1000 * 60))
         assertEquals(endTime, theAppointment.endTime)
+
+        // Make sure the spectracyber configuration record was persisted
+        val theSpectracyberConfig = spectracyberConfigRepo.findById(theAppointment.spectracyberConfig!!.id)
+        assertNotNull(theSpectracyberConfig)
     }
 
     @Test
@@ -97,7 +105,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -121,7 +130,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -145,7 +155,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -169,7 +180,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -193,7 +205,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -217,7 +230,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -228,7 +242,7 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.MINUTES].isNotEmpty())
     }
-
+    /*
     @Test
     fun testSecondsTooLow_Failure() {
         // Create a copy of the request with invalid seconds
@@ -241,7 +255,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -265,7 +280,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -276,7 +292,7 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
         assertEquals(1, errors!!.size())
         assertTrue(errors[ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testDeclinationTooLow_Failure() {
         // Create a copy of the request with an invalid declination
@@ -289,7 +305,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -313,7 +330,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure
@@ -343,7 +361,8 @@ internal class StartFreeControlAppointmentTest : AbstractSpringTest() {
                 appointmentRepo = appointmentRepo,
                 radioTelescopeRepo = radioTelescopeRepo,
                 userRepo = userRepo,
-                coordinateRepo = coordinateRepo
+                coordinateRepo = coordinateRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         ).execute()
 
         // Make sure the command was a failure

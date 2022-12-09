@@ -49,6 +49,8 @@ data class Log(
         USER_ROLE("User Role"),
         APPOINTMENT("Appointment"),
         RF_DATA("RF Data"),
+        VIDEO_FILE("Video File"),
+        SENSOR_STATUS("Sensor Status"),
         LOG("Log"),
         ERROR("Error"),
         RESET_PASSWORD_TOKEN("Reset Password Token"),
@@ -57,6 +59,11 @@ data class Log(
         ALLOTTED_TIME_CAP("Allotted Time Cap"),
         CELESTIAL_BODY("Celestial Body"),
         VIEWER("Viewer"),
-        FEEDBACK("Feedback")
+        FEEDBACK("Feedback"),
+        WEATHER_DATA("Weather Data"),
+        SPECTRACYBER_CONFIG("Spectracyber Config"),
+        THRESHOLDS("Thresholds"),
+        SENSOR_OVERRIDES("Sensor Overrides"),
+        FRONTPAGE_PICTURE("Frontpage Pictures")
     }
 }

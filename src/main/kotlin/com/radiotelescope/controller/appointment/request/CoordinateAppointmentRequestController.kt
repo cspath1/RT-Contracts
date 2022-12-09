@@ -5,7 +5,7 @@ import com.radiotelescope.contracts.appointment.wrapper.UserAutoAppointmentWrapp
 import com.radiotelescope.controller.BaseRestController
 import com.radiotelescope.controller.model.Result
 import com.radiotelescope.controller.model.appointment.request.CoordinateAppointmentRequestForm
-import com.radiotelescope.controller.model.ses.SendForm
+import com.radiotelescope.controller.model.ses.SesSendForm
 import com.radiotelescope.controller.spring.Logger
 import com.radiotelescope.security.AccessReport
 import com.radiotelescope.repository.log.Log
@@ -128,9 +128,9 @@ class CoordinateAppointmentRequestController(
      * @param emails a list of admin email addresses
      */
     private fun sendEmail(emails: List<String>) {
-        val sendForm = SendForm(
+        val sendForm = SesSendForm(
                 toAddresses = emails,
-                fromAddress = "YCAS Radio Telescope <cspath1@ycp.edu>",
+                fromAddress = "YCAS Radio Telescope <info@astroyork.com>",
                 subject = "Appointment Request",
                 htmlBody = "<p>A new observation has been requested by a user at their " +
                         "allotted quota and requires your approval.</p>"

@@ -46,11 +46,9 @@ internal class CelestialBodyListControllerTest : BaseCelestialBodyRestController
         val coordinate = Coordinate(
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 5,
-                        minutes = 34,
-                        seconds = 32
+                        minutes = 34
                 ),
                 declination = 22.0
         )

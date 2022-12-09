@@ -70,9 +70,15 @@ class ActivateAccount(
 
         val theToken = accountActivateTokenRepo.findByToken(token)
 
-        if (theToken.expirationDate.before(Date()))
-            errors.put(ErrorTag.EXPIRATION_DATE, "Token has expired")
 
-        return if (errors.isEmpty) null else errors
+        if (theToken.expirationDate.before(Date())){
+            errors.put(ErrorTag.EXPIRATION_DATE, "Token has expired")
+        }
+
+        if (errors.isEmpty){
+            return null
+        }else{
+            return errors;
+        }
     }
 }

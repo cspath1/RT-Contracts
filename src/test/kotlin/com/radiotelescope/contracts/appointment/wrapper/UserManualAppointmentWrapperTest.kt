@@ -12,6 +12,7 @@ import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -55,6 +56,9 @@ internal class UserManualAppointmentWrapperTest : AbstractSpringTest() {
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
 
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
+
     private lateinit var user: User
     private lateinit var appointment: Appointment
 
@@ -84,7 +88,8 @@ internal class UserManualAppointmentWrapperTest : AbstractSpringTest() {
                 coordinateRepo = coordinateRepo,
                 userRoleRepo = userRoleRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
 
         wrapper = UserManualAppointmentWrapper(
@@ -111,7 +116,6 @@ internal class UserManualAppointmentWrapperTest : AbstractSpringTest() {
                 duration = 30,
                 hours = 1,
                 minutes = 2,
-                seconds = 3,
                 declination = 4.20,
                 isPublic = true
         )
@@ -213,7 +217,6 @@ internal class UserManualAppointmentWrapperTest : AbstractSpringTest() {
                 appointmentId = appointment.id,
                 hours = 2,
                 minutes = 3,
-                seconds = 4,
                 declination = 4.20
         )
 
@@ -235,7 +238,6 @@ internal class UserManualAppointmentWrapperTest : AbstractSpringTest() {
                 appointmentId = appointment.id,
                 hours = 2,
                 minutes = 3,
-                seconds = 4,
                 declination = 4.20
         )
 
@@ -253,7 +255,6 @@ internal class UserManualAppointmentWrapperTest : AbstractSpringTest() {
                 appointmentId = appointment.id,
                 hours = 2,
                 minutes = 3,
-                seconds = 4,
                 declination = 4.20
         )
 

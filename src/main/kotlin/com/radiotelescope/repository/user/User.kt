@@ -1,6 +1,6 @@
 package com.radiotelescope.repository.user
 
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.util.regex.Pattern
 import javax.persistence.*
 /**
@@ -31,6 +31,12 @@ data class User(
     @Column(name = "phone_number")
     var phoneNumber: String? = null
 
+    @Column(name = "profile_picture")
+    var profilePicture: String? = null
+
+    @Column(name = "profile_picture_approved")
+    var profilePictureApproved: Boolean? = null
+
     @Column(name = "active")
     var active: Boolean = false
 
@@ -44,6 +50,20 @@ data class User(
         BANNED("Banned"),
         DELETED("Deleted")
     }
+
+    @Column(name = "notification_type")
+    @Enumerated(value = EnumType.STRING)
+    var notificationType: User.NotificationType = NotificationType.EMAIL
+
+    enum class NotificationType(val label:String) {
+        EMAIL("Email"),
+        SMS("SMS"),
+        PUSHNOTIFICATION("PushNotification"),
+        ALL("All")
+    }
+
+    @Column(name = "firebase_id")
+    var firebaseID: String? = null
 
     companion object {
         fun isEmailValid(email: String): Boolean {
@@ -65,10 +85,7 @@ data class User(
         const val passwordErrorMessage = "Passwords must be at least 8 characters long and have 3 or 4 of the following: " +
                 "Upper Case, Lower Case, Special Character, Digit"
 
-        val rtPasswordEncoder = Pbkdf2PasswordEncoder(
-                "YCAS2018",
-                50,
-                256
-        )
+        // BCrypt: used to salt and hash passwords
+        val rtPasswordEncoder: BCryptPasswordEncoder = BCryptPasswordEncoder(13)
     }
 }

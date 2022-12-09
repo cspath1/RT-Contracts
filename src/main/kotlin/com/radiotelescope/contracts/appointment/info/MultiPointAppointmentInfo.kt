@@ -25,6 +25,7 @@ data class MultiPointAppointmentInfo(
         override val status: String,
         override val type: String,
         override val priority: String,
+        override val spectracyberConfigId: Long,
         val coordinates: ArrayList<CoordinateInfo> = arrayListOf()
 ) : AppointmentInfo(
         id = id,
@@ -38,7 +39,8 @@ data class MultiPointAppointmentInfo(
         userEmail = userEmail,
         status = status,
         type = type,
-        priority = priority
+        priority = priority,
+        spectracyberConfigId = spectracyberConfigId
 ) {
     /**
      * Secondary constructor that takes an appointment object
@@ -58,7 +60,8 @@ data class MultiPointAppointmentInfo(
             userEmail = appointment.user.email,
             status = appointment.status.label,
             type = appointment.type.label,
-            priority = appointment.priority.label
+            priority = appointment.priority.label,
+            spectracyberConfigId = appointment.spectracyberConfig!!.id
     ) {
         appointment.coordinateList.forEach {
             coordinates.add(CoordinateInfo(it))

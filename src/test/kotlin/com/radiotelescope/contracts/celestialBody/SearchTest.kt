@@ -35,11 +35,9 @@ internal class SearchTest : AbstractSpringTest() {
         val coordinateOne = Coordinate(
                 hours = 5,
                 minutes = 34,
-                seconds = 32,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 5,
-                        minutes = 34,
-                        seconds = 32
+                        minutes = 34
                 ),
                 declination = 22.0
         )
@@ -53,11 +51,9 @@ internal class SearchTest : AbstractSpringTest() {
         val coordinateTwo = Coordinate(
                 hours = 14,
                 minutes = 39,
-                seconds = 37,
-                rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                rightAscension = Coordinate.hoursMinutesToDegrees(
                         hours = 14,
-                        minutes = 39,
-                        seconds = 37
+                        minutes = 39
                 ),
                 declination = -60.5
         )

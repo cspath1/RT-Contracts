@@ -10,6 +10,7 @@ import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import org.junit.Assert.assertTrue
@@ -44,6 +45,9 @@ internal class FreeControlAppointmentFactoryTest : AbstractSpringTest() {
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
 
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
+
     private lateinit var factory: FreeControlAppointmentFactory
 
     @Before
@@ -55,7 +59,8 @@ internal class FreeControlAppointmentFactoryTest : AbstractSpringTest() {
                 radioTelescopeRepo = radioTelescopeRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
     }
 
@@ -68,7 +73,6 @@ internal class FreeControlAppointmentFactoryTest : AbstractSpringTest() {
                         duration = 30,
                         hours = 5,
                         minutes = 34,
-                        seconds = 32,
                         declination = 22.0,
                         isPublic = true
                 )
@@ -85,7 +89,6 @@ internal class FreeControlAppointmentFactoryTest : AbstractSpringTest() {
                         appointmentId = 1L,
                         hours = 1,
                         minutes = 2,
-                        seconds = 3,
                         declination = 4.20
                 )
         )

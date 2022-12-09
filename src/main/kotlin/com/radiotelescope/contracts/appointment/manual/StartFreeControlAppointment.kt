@@ -11,6 +11,8 @@ import com.radiotelescope.repository.appointment.Appointment
 import com.radiotelescope.repository.appointment.IAppointmentRepository
 import com.radiotelescope.repository.coordinate.Coordinate
 import com.radiotelescope.repository.coordinate.ICoordinateRepository
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
+import com.radiotelescope.repository.spectracyberConfig.SpectracyberConfig
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import java.util.*
@@ -29,7 +31,8 @@ class StartFreeControlAppointment(
         private val appointmentRepo: IAppointmentRepository,
         private val radioTelescopeRepo: IRadioTelescopeRepository,
         private val userRepo: IUserRepository,
-        private val coordinateRepo: ICoordinateRepository
+        private val coordinateRepo: ICoordinateRepository,
+        private val spectracyberConfigRepo: ISpectracyberConfigRepository
 ) : Command<Long, Multimap<ErrorTag, String>> {
     /**
      * Override of the [Command.execute] method. Calls the [validateRequest] method
@@ -52,6 +55,8 @@ class StartFreeControlAppointment(
             coordinateRepo.save(theCoordinate)
 
             theAppointment.user = userRepo.findById(request.userId).get()
+
+            theAppointment.spectracyberConfig = spectracyberConfigRepo.save(SpectracyberConfig(SpectracyberConfig.Mode.SPECTRAL, 0.3, 0.0, 10.0, 1, 1200))
 
             // "Free Control" Appointments will have a single Coordinate
             // to indicate the starting coordinate for the appointment
@@ -97,8 +102,6 @@ class StartFreeControlAppointment(
                 errors!!.put(ErrorTag.HOURS, "Hours must be between 0 and 23")
             if (minutes < 0 || minutes >= 60)
                 errors!!.put(ErrorTag.MINUTES, "Minutes must be between 0 and 60")
-            if (seconds < 0 || seconds >= 60)
-                errors!!.put(ErrorTag.SECONDS, "Seconds must be between 0 and 60")
             if (declination > 90 || declination < -90)
                 errors!!.put(ErrorTag.DECLINATION, "Declination must be between -90 and 90")
 
@@ -127,7 +130,6 @@ class StartFreeControlAppointment(
             val duration: Long,
             val hours: Int,
             val minutes: Int,
-            val seconds: Int,
             val declination: Double,
             val isPublic: Boolean
     ) : BaseCreateRequest<Appointment> {
@@ -154,11 +156,9 @@ class StartFreeControlAppointment(
             return Coordinate(
                     hours = hours,
                     minutes = minutes,
-                    seconds = seconds,
-                    rightAscension = Coordinate.hoursMinutesSecondsToDegrees(
+                    rightAscension = Coordinate.hoursMinutesToDegrees(
                             hours = hours,
-                            minutes = minutes,
-                            seconds = seconds
+                            minutes = minutes
                     ),
                     declination = declination
             )

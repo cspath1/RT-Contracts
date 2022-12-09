@@ -38,7 +38,7 @@ class ControlRoomSimulator(
      */
     @Scheduled(cron = Settings.EVERY_MINUTE)
     fun execute() {
-        if (profile == Profile.DEV) {
+        if (profile == Profile.LOCAL) {
             val scheduledAppointments = appointmentRepo.findAllScheduledAppointments()
 
             // Handle all scheduled appointments that have "ended" in the past

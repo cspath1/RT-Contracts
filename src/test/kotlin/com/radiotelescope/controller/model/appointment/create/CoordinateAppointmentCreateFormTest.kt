@@ -15,7 +15,6 @@ internal class CoordinateAppointmentCreateFormTest {
             isPublic = true,
             hours = 12,
             minutes = 12,
-            seconds = 12,
             declination = 69.0,
             priority = Appointment.Priority.PRIMARY
     )
@@ -36,7 +35,6 @@ internal class CoordinateAppointmentCreateFormTest {
         assertEquals(theRequest.priority, baseForm.priority!!)
         assertEquals(theRequest.hours, baseForm.hours)
         assertEquals(theRequest.minutes, baseForm.minutes)
-        assertEquals(theRequest.seconds, baseForm.seconds)
     }
 
     @Test
@@ -212,7 +210,7 @@ internal class CoordinateAppointmentCreateFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
     }
-
+    /*
     @Test
     fun testNullSeconds_Failure() {
         // Create a copy of the form with a null seconds field
@@ -257,7 +255,7 @@ internal class CoordinateAppointmentCreateFormTest {
         assertNotNull(errors)
         assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testNullDeclination_Failure() {
         // Create a copy of the form with a null declination

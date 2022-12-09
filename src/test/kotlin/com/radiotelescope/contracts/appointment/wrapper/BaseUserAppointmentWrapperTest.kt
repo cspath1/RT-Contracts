@@ -14,6 +14,7 @@ import com.radiotelescope.repository.model.appointment.SearchCriteria
 import com.radiotelescope.repository.orientation.IOrientationRepository
 import com.radiotelescope.repository.role.IUserRoleRepository
 import com.radiotelescope.repository.role.UserRole
+import com.radiotelescope.repository.spectracyberConfig.ISpectracyberConfigRepository
 import com.radiotelescope.repository.telescope.IRadioTelescopeRepository
 import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
@@ -57,6 +58,9 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
 
     @Autowired
     private lateinit var orientationRepo: IOrientationRepository
+
+    @Autowired
+    private lateinit var spectracyberConfigRepo: ISpectracyberConfigRepository
 
     private lateinit var user: User
     private lateinit var admin: User
@@ -137,7 +141,8 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
                 userRoleRepo = userRoleRepo,
                 coordinateRepo = coordinateRepo,
                 allottedTimeCapRepo = allottedTimeCapRepo,
-                orientationRepo = orientationRepo
+                orientationRepo = orientationRepo,
+                spectracyberConfigRepo = spectracyberConfigRepo
         )
 
         wrapper = BaseUserAppointmentWrapper(
@@ -324,6 +329,23 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
     }
 
     @Test
+    fun testValidGetFutureAppointmentsForUser_Alumnus_Success() {
+        // Simulate a login
+        context.login(admin.id)
+        context.currentRoles.add(UserRole.Role.ALUMNUS)
+
+        val error = wrapper.userFutureList(
+                pageable = PageRequest.of(0, 10),
+                userId = user.id
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
     fun testInvalidGetFutureAppointmentsForUser_NoUserRole_Failure(){
         // Simulate a login
         context.login(user.id)
@@ -428,6 +450,23 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
         // Log the user in as an admin
         context.login(user2.id)
         context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ADMIN))
+
+        val error = wrapper.userCompleteList(
+                userId = user.id,
+                pageable = PageRequest.of(0, 20)
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testPastAppointmentsForUserList_Alumnus_Success() {
+        // Log the user in as an admin
+        context.login(user2.id)
+        context.currentRoles.addAll(listOf(UserRole.Role.USER, UserRole.Role.ALUMNUS))
 
         val error = wrapper.userCompleteList(
                 userId = user.id,
@@ -709,6 +748,22 @@ internal class BaseUserAppointmentWrapperTest : AbstractSpringTest() {
         // Simulate a login and make the user a researcher
         context.login(user.id)
         context.currentRoles.add(UserRole.Role.ADMIN)
+
+        val error = wrapper.requestedList(
+                pageable = PageRequest.of(0, 10)
+        ) {
+            assertNotNull(it.success)
+            assertNull(it.error)
+        }
+
+        assertNull(error)
+    }
+
+    @Test
+    fun testListRequest_Alumnus_Success() {
+        // Simulate a login and make the user a researcher
+        context.login(user.id)
+        context.currentRoles.add(UserRole.Role.ALUMNUS)
 
         val error = wrapper.requestedList(
                 pageable = PageRequest.of(0, 10)

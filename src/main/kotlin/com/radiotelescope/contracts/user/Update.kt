@@ -10,7 +10,7 @@ import com.radiotelescope.repository.user.IUserRepository
 import com.radiotelescope.repository.user.User
 
 /**
- * Override of the [Command] interface method used for User registration
+ * Override of the [Command] interface method used for updating a User
  *
  * @param request the [Request] object
  * @param userRepo the [IUserRepository]
@@ -47,13 +47,23 @@ class Update(
      * create request. It will ensure the first name and last name are not blank and
      * are under the max length, that the email is not blank, is a valid email, and
      * is not already in use and that the password is not blank and matches the
-     * password confirm field
+     * password confirm field. As well, it will check that the user's phone number exists
+     * or a phone number is being input, and if not ensures the notification type cannot
+     * be SMS or ALL. Similarly, if the firebaseID field is null then the notification
+     * type cannot be PUSHNOTIFICATION or ALL.
      */
     private fun validateRequest(): Multimap<ErrorTag, String> {
         val errors = HashMultimap.create<ErrorTag, String>()
 
         with(request) {
             if (userRepo.existsById(id)) {
+                if ((userRepo.findById(id).get().phoneNumber == null && phoneNumber.isNullOrBlank()) && (
+                                User.NotificationType.valueOf(notificationType) == User.NotificationType.SMS ||
+                                User.NotificationType.valueOf(notificationType) == User.NotificationType.ALL))
+                    errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification Type may not be SMS or ALL when phone number is blank")
+                if (userRepo.findById(id).get().firebaseID == null && (User.NotificationType.valueOf(notificationType) == User.NotificationType.PUSHNOTIFICATION ||
+                                User.NotificationType.valueOf(notificationType) == User.NotificationType.ALL))
+                    errors.put(ErrorTag.NOTIFICATION_TYPE, "Notification Type may not be PUSHNOTIFICATION or ALL when firebase ID is blank")
                 if (firstName.isBlank())
                     errors.put(ErrorTag.FIRST_NAME, "First Name may not be blank")
                 if (firstName.length > 100)
@@ -81,7 +91,8 @@ class Update(
             val firstName: String,
             val lastName: String,
             val phoneNumber: String?,
-            val company: String?
+            val company: String?,
+            val notificationType: String
     ) : BaseUpdateRequest<User> {
         /**
          * Override of the [BaseUpdateRequest.updateEntity] method that will take
@@ -93,6 +104,7 @@ class Update(
             entity.lastName = lastName
             entity.phoneNumber = phoneNumber
             entity.company = company
+            entity.notificationType = User.NotificationType.valueOf(notificationType)
 
             return entity
         }

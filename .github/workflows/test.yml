@@ -1,0 +1,31 @@
+# workflow to run tests on pull request to master
+
+name: Backend CI 
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  pull_request:
+    branches: [ master1 ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set Up JDK 1.8
+        uses: actions/setup-java@v1
+        with: 
+          java-version: 1.8
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+      - name: Gradle Build
+        run: ./gradlew build
+      
+
+
+    
+

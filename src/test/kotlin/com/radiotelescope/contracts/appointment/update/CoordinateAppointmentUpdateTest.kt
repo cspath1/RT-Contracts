@@ -85,7 +85,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -486,7 +485,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -543,7 +541,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -604,7 +601,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -665,7 +661,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -726,7 +721,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -787,7 +781,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -848,7 +841,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -909,7 +901,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -970,7 +961,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -1030,7 +1020,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -1086,7 +1075,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -1154,7 +1142,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -1226,7 +1213,6 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
                 isPublic = true,
                 hours = 12,
                 minutes = 12,
-                seconds = 12,
                 declination = 69.0,
                 priority = Appointment.Priority.PRIMARY
         )
@@ -1377,7 +1363,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
         // Make sure it was for the expected reason
         assertTrue(errors!![ErrorTag.MINUTES].isNotEmpty())
     }
-
+    /*
     @Test
     fun testInvalid_SecondsTooLow_Failure() {
         // Give the user 20 hours time
@@ -1441,7 +1427,7 @@ internal class CoordinateAppointmentUpdateTest : AbstractSpringTest() {
         // Make sure it was for the expected reason
         assertTrue(errors!![ErrorTag.SECONDS].isNotEmpty())
     }
-
+    */
     @Test
     fun testInvalid_DeclinationTooLow_Failure() {
         // Give the user 20 hours time

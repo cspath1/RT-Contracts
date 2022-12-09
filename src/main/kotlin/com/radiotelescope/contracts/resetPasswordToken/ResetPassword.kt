@@ -102,6 +102,9 @@ class ResetPassword (
             // Uses SHA-1 by default. Adds the salt value (secret)
             // to the password and encrypts it 50 times, specifying
             // a hash size of 256
+
+            // Default password encoder has been changed to BCrypt with
+            // a strength of 15. - jhorne
             val passwordEncoder = User.rtPasswordEncoder
             entity.password = passwordEncoder.encode(password)
 
