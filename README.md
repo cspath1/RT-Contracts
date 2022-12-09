@@ -185,7 +185,9 @@ There is a lot going on with these files, and if something isn't working the pro
 * The file name of properties files is set to application_{insert correct name here}.properties
     This is the connection string it looks for when running 
     ["src/main/resources/properties/application_${profile}.properties"]
-    
+#### fixing Bean error for BackEnd
+* as weird as it is in order to fix the Bean error is to setup up a new backend project and make sure it runs correctly
+* then after that return to the original project and now the error should now be gone
 ### Troubleshooting failed builds when getting started
 The backend will not run on any other Java JDK version than 1.8. If the build fails during the compile step, verify the java version it is looking for is correct
 
